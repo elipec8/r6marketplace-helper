@@ -2,11 +2,11 @@ package github.ricemonger.marketplace.updateFetcher;
 
 public class MarketplacePayloadMapper {
 
-    public static MarketplacePayload toPayload(String payload) {
-        return new MarketplacePayload();
+    public static FetchUpdateRequestVariables toPayload(String payload) {
+        return new FetchUpdateRequestVariables();
     }
 
-    public static String fromPayload(MarketplacePayload payload) {
+    public static String fromPayload(FetchUpdateRequestVariables payload) {
         return "";
     }
 }
