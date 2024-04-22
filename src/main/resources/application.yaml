@@ -1,3 +1,10 @@
+ubi:
+  urls:
+    updateItems: https://public-ubiservices.ubi.com/v1/profiles/me/uplay/graphql
+
+
+
+
 server:
   port: 8080
 
