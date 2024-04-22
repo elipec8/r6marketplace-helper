@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: r6s-helper
+  config:
+    import:
+      - auth-values.yaml
+auth:
+  telegram:
+    bot:
+      token: ${TELEGRAM_BOT_TOKEN}
+      username: ${TELEGRAM_BOT_USERNAME}
+
+logging:
+  level:
+    app: trace
+  file:
+    name: ./${spring.application.name}/logs/${spring.application.name}.log
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
