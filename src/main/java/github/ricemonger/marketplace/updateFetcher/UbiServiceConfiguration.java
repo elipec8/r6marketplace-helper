@@ -10,9 +10,6 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 public class UbiServiceConfiguration {
 
-
-    @Value("${ubi.urls.updateItems}")
-    private String url;
     @Value("${ubi.session.spaceId}")
     private String spaceId;
     @Value("${ubi.session.authorization}")

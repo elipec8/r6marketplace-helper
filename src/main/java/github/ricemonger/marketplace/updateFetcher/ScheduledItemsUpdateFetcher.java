@@ -1,6 +1,8 @@
 package github.ricemonger.marketplace.updateFetcher;
 
 
+import github.ricemonger.marketplace.updateFetcher.feign.ItemsUpdateFetcherFeignClient;
+import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.client.GraphQlClient;
 import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.http.HttpHeaders;
@@ -14,32 +16,17 @@ import java.util.Optional;
 
 
 @Component
+@RequiredArgsConstructor
 public class ScheduledItemsUpdateFetcher {
-
-    private final WebClient configClient;
 
     private final UbiServiceConfiguration ubiServiceConfiguration;
 
-    public ScheduledItemsUpdateFetcher(UbiServiceConfiguration ubiServiceConfiguration) {
-        this.ubiServiceConfiguration = ubiServiceConfiguration;
-       this.configClient = WebClient.builder()
-                .baseUrl(ubiServiceConfiguration.getUrl())
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultHeader("Ubi-Appid", ubiServiceConfiguration.getUbiAppId())
-                .defaultHeader("Ubi-Localecode", ubiServiceConfiguration.getLocaleCode())
-                .defaultHeader("Ubi-Regionid", ubiServiceConfiguration.getRegionId())
-                .build();
-    }
+    private final ItemsUpdateFetcherFeignClient itemsUpdateFetcherFeignClient;
 
     @Scheduled(fixedRate = 1 * 60 * 1000) // 5min
     public void fetchUpdates() {
 
-        GraphQlClient graphQlClient = HttpGraphQlClient
-                .builder(configClient)
-                .header("Authorization", ubiServiceConfiguration.getAuthorization())
-                .header("Ubi-Sessionid", ubiServiceConfiguration.getSessionId())
-                .header("Ubi-Profileid", ubiServiceConfiguration.getProfileId())
-                .build();
+        System.out.println(ubiServiceConfiguration.getAuthorization());
 
         int offset = 0;
 
@@ -54,10 +41,16 @@ public class ScheduledItemsUpdateFetcher {
         vars.setSortByField(SortingField.ACTIVE_COUNT);
         vars.setSortByOrderType(OrderType.Sell);
 
-        String document = buildPayload(vars);
+        String update = itemsUpdateFetcherFeignClient.fetchUpdate(
+                ubiServiceConfiguration.getAuthorization(),
+                ubiServiceConfiguration.getRegionId(),
+                ubiServiceConfiguration.getLocaleCode(),
+                ubiServiceConfiguration.getUbiAppId(),
+                ubiServiceConfiguration.getSessionId(),
+                ubiServiceConfiguration.getProfileId(),
+                buildPayload(vars));
 
-
-        System.out.println(Optional.ofNullable(graphQlClient.document(document).execute().block().getData()));
+        System.out.println(update);
     }
 
     private String buildPayload(FetchUpdateRequestVariables payloadVariables) {
