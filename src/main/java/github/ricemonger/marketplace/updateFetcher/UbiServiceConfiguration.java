@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 public class UbiServiceConfiguration {
 
+    @Value("${ubi.session.contentType}")
+    private String contentType;
     @Value("${ubi.session.spaceId}")
     private String spaceId;
     @Value("${ubi.session.authorization}")

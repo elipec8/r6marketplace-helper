@@ -3,6 +3,7 @@ ubi:
     updateItems: https://public-ubiservices.ubi.com/v1/profiles/me/uplay/graphql
 
   session:
+    contentType: "application/json"
     spaceId: ${UBI_SPACE_ID}
     appId: ${UBI_APP_ID}
     authorization: ${UBI_AUTHORIZATION}
