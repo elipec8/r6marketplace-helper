@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MarketData {
 
-    private SellStats sellStats;
+    private SellStats[] sellStats;
 
-    private BuyStats buyStats;
+    private BuyStats[] buyStats;
 
-    private LastSoldAt lastSoldAt;
+    private LastSoldAt[] lastSoldAt;
 }

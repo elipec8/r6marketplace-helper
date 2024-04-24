@@ -1,6 +1,5 @@
 package github.ricemonger.marketplace.updateFetcher.graphs.game.marketableItems.node;
 
-import github.ricemonger.marketplace.updateFetcher.ItemType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +19,6 @@ public class Item {
 
     private List<String> tags;
 
-    private ItemType type;
+    private String type;
 
 }

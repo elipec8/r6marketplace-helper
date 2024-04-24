@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.updateFetcher;
+package github.ricemonger.marketplace.updateFetcher.graphs.game.enums;
 
 public enum ItemType {
     WeaponSkin,
