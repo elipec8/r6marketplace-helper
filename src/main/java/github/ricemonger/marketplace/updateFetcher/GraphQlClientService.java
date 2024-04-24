@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.updateFetcher;
 
-import github.ricemonger.marketplace.updateFetcher.graphsDTOs.game.MarketableItems;
+import github.ricemonger.marketplace.updateFetcher.graphs.graphsDTOs.MarketableItems;
 import org.springframework.graphql.client.GraphQlClient;
 import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.stereotype.Component;

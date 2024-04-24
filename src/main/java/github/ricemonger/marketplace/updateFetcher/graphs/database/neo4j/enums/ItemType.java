@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.updateFetcher.enums;
+package github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.enums;
 
 public enum ItemType {
     WeaponSkin,
@@ -8,5 +8,6 @@ public enum ItemType {
     Charm,
     OperatorCardPortrait,
     OperatorCardBackground,
-    DroneSkin
+    DroneSkin,
+    GadgetSkin
 }

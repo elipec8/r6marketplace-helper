@@ -1,0 +1,38 @@
+version: '2.4'
+
+services:
+ neo4j:
+    container_name: r6helper-neo4j
+    image: neo4j:ubi9
+    ports:
+     - "7474:7474"
+     - "7687:7687"
+    environment:
+     - NEO4J_AUTH=neo4j/password
+    volumes:
+     - neo4j-data:/data
+     - neo4j-logs:/logs
+     - neo4j-import:/var/lib/neo4j/import
+     - neo4j-plugins:/plugins
+    networks:
+     - neo4j-net
+    restart: always
+
+ zipkin:
+    container_name: r6helper-zipkin
+    image: openzipkin/zipkin:3.1.0
+    ports:
+     - "9411:9411"
+    networks:
+     - zipkin-net
+    restart: always
+
+networks:
+    neo4j-net:
+    zipkin-net:
+
+volumes:
+ neo4j-data:
+ neo4j-logs:
+ neo4j-import:
+ neo4j-plugins:

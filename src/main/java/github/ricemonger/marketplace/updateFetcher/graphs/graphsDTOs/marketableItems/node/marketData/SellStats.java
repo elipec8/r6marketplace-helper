@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.updateFetcher.graphsDTOs.game.marketableItems.node.marketData;
+package github.ricemonger.marketplace.updateFetcher.graphs.graphsDTOs.marketableItems.node.marketData;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BuyStats {
+public class SellStats {
+
+    private String id;
 
     private int lowestPrice;
 

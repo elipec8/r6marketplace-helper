@@ -11,7 +11,6 @@ ubi:
     sessionId: ${UBI_SESSION_ID} #User specific, changes every time, but old can be used
     authorization: ${UBI_AUTHORIZATION} #User specific, expires fast
 
-
 server:
   port: 8080
 
@@ -21,6 +20,14 @@ spring:
   config:
     import:
       - auth-values.yaml
+
+  neo4j:
+    uri: bolt://localhost:7687
+    authentication:
+      username: ${NEO4J_AUTH_USERNAME:neo4j}
+      password: ${NEO4J_AUTH_PASSWORD:password}
+
+
 auth:
   telegram:
     bot:

@@ -1,6 +1,6 @@
-package github.ricemonger.marketplace.updateFetcher.graphsDTOs.game;
+package github.ricemonger.marketplace.updateFetcher.graphs.graphsDTOs;
 
-import github.ricemonger.marketplace.updateFetcher.graphsDTOs.game.marketableItems.Node;
+import github.ricemonger.marketplace.updateFetcher.graphs.graphsDTOs.marketableItems.Node;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

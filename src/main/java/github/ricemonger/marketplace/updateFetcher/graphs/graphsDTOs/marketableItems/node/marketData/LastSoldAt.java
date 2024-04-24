@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.updateFetcher.graphsDTOs.game.marketableItems.node.marketData;
+package github.ricemonger.marketplace.updateFetcher.graphs.graphsDTOs.marketableItems.node.marketData;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LastSoldAt {
 
+    private String id;
+
     private int price;
 
-    private String lastPerformedAt;
+    private String performedAt;
 }
