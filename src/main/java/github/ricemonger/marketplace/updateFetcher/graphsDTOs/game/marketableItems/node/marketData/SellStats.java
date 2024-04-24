@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.updateFetcher.graphs.game.marketableItems.node.marketData;
+package github.ricemonger.marketplace.updateFetcher.graphsDTOs.game.marketableItems.node.marketData;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

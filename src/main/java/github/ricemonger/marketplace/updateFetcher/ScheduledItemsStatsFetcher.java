@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.updateFetcher;
 
 
-import github.ricemonger.marketplace.updateFetcher.graphs.game.MarketableItems;
-import github.ricemonger.marketplace.updateFetcher.graphs.game.marketableItems.Node;
+import github.ricemonger.marketplace.updateFetcher.graphsDTOs.game.MarketableItems;
+import github.ricemonger.marketplace.updateFetcher.graphsDTOs.game.marketableItems.Node;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -29,7 +29,7 @@ public class ScheduledItemsStatsFetcher {
         MarketableItems marketableItems;
 
         do {
-            marketableItems = graphQlClientService.fetchItemStats(offset).getMarketableItems();
+            marketableItems = graphQlClientService.fetchItemStats(offset);
 
             nodes.addAll(marketableItems.getNodes());
 
@@ -37,6 +37,6 @@ public class ScheduledItemsStatsFetcher {
         }
         while(marketableItems.getTotalCount() == GraphQlClientServiceStatics.MAX_LIMIT);
 
-        log.info("Fetched {} items", nodes.size());
+        log.info("Fetched {} items' stats", nodes.size());
     }
 }

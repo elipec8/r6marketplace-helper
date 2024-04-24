@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.updateFetcher;
 
-import github.ricemonger.marketplace.updateFetcher.graphs.Game;
+import github.ricemonger.marketplace.updateFetcher.graphsDTOs.game.MarketableItems;
 import org.springframework.graphql.client.GraphQlClient;
 import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.stereotype.Component;
@@ -42,7 +42,7 @@ public class GraphQlClientService {
                 .defaultHeader("Ubi-LocaleCode", ubiSessionConfiguration.getLocaleCode());
     }
 
-    public Game fetchItemStats(Integer offset) {
+    public MarketableItems fetchItemStats(Integer offset) {
 
         Map<String, Object> variables = GraphQlClientServiceStatics.getDefaultUpdateItemsVariables();
         variables.put("offset", offset);
@@ -50,8 +50,8 @@ public class GraphQlClientService {
        return fetchItemStatsClient
                 .documentName(GraphQlClientServiceStatics.FETCH_ITEMS_STATS_DOCUMENT_NAME)
                 .variables(variables)
-                .retrieve("game")
-                .toEntity(Game.class)
+                .retrieve("game.marketableItems")
+                .toEntity(MarketableItems.class)
                 .block();
     }
 }
