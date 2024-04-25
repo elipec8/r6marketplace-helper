@@ -4,11 +4,11 @@ import github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.entitie
 import github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.repositories.ItemRepository;
 import github.ricemonger.marketplace.updateFetcher.graphs.graphsDTOs.marketableItems.Node;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class ItemService {
 

@@ -1,6 +1,9 @@
 ubi:
   urls:
     updateItems: https://public-ubiservices.ubi.com/v1/profiles/me/uplay/graphql
+  password:
+    encryption:
+      key: ${UBI_ENCRYPTION_KEY}
 
   session:
     regionId: ${UBI_REGION_ID:WW}

@@ -7,19 +7,22 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 
-@Node("BuyStats")
+@Node("UbiCredentials")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BuyStatsEntity {
+public class UbiCredentialsEntity {
 
     @Id
-    private String buyStatsId;
+    private String ubiProfileId;
 
-    private int lowestPrice;
+    private String email;
 
-    private int highestPrice;
+    private String password;
 
-    private int activeCount;
+    private String ubiSessionId;
+
+    private String ubiAuthTicket;
+
 }

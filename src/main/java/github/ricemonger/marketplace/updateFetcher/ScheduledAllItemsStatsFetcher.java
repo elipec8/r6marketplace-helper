@@ -5,6 +5,7 @@ import github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.service
 import github.ricemonger.marketplace.updateFetcher.graphs.graphsDTOs.marketableItems.Node;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 

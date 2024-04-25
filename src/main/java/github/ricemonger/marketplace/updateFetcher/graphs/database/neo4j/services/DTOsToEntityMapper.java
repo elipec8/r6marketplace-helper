@@ -34,7 +34,7 @@ public class DTOsToEntityMapper {
         MarketData marketDataDTO = node.getMarketData();
 
         return ItemEntity.builder()
-                .id(itemDTO.getId())
+                .itemFullId(itemDTO.getId())
                 .assertUrl(itemDTO.getAssertUrl())
                 .name(itemDTO.getName())
                 .tags(itemDTO.getTags())
@@ -54,7 +54,7 @@ public class DTOsToEntityMapper {
         }
         else {
             return BuyStatsEntity.builder()
-                    .id(buyStatsDTO.getId())
+                    .buyStatsId(buyStatsDTO.getId())
                     .lowestPrice(buyStatsDTO.getLowestPrice())
                     .highestPrice(buyStatsDTO.getHighestPrice())
                     .activeCount(buyStatsDTO.getActiveCount())
@@ -71,7 +71,7 @@ public class DTOsToEntityMapper {
         }
         else {
             return SellStatsEntity.builder()
-                    .id(sellStatsDTO.getId())
+                    .sellStatsId(sellStatsDTO.getId())
                     .lowestPrice(sellStatsDTO.getLowestPrice())
                     .highestPrice(sellStatsDTO.getHighestPrice())
                     .activeCount(sellStatsDTO.getActiveCount())
@@ -90,7 +90,7 @@ public class DTOsToEntityMapper {
             SimpleDateFormat sdf = new SimpleDateFormat(PERFORMED_AT_DATE_FORMAT);
             try {
                 return LastSoldAtEntity.builder()
-                        .id(lastSoldAtDTO.getId())
+                        .lastSoldAtId(lastSoldAtDTO.getId())
                         .price(lastSoldAtDTO.getPrice())
                         .performedAt(sdf.parse(lastSoldAtDTO.getPerformedAt()))
                         .build();

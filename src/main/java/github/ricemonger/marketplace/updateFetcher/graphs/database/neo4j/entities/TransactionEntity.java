@@ -5,11 +5,9 @@ import github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.enums.T
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Version;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
-
 
 import java.util.Date;
 
@@ -20,10 +18,7 @@ import java.util.Date;
 public class TransactionEntity {
 
     @Id
-    private String id;
-
-    @Version
-    private Long version;
+    private String transactionId;
 
     @Relationship(value = "OWNER", direction = Relationship.Direction.INCOMING)
     private UserEntity user;
@@ -36,4 +31,8 @@ public class TransactionEntity {
     private TransactionStatus status;
 
     private Date createdAt;
+
+    private Date lastUpdatedAt;
+
+    private Date finishedAt;
 }
