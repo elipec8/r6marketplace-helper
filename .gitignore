@@ -5,6 +5,8 @@ target/
 !**/src/test/**/target/
 
 auth-values.yaml
+*.log
+*.gz
 
 ### STS ###
 .apt_generated
@@ -33,3 +35,4 @@ build/
 
 ### VS Code ###
 .vscode/
+

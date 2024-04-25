@@ -36,7 +36,7 @@ auth:
 
 logging:
   level:
-    app: trace
+    github: debug
   file:
     name: ./${spring.application.name}/logs/${spring.application.name}.log
 

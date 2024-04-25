@@ -11,6 +11,8 @@ public class GraphQlClientServiceStatics {
 
     public static final int MAX_LIMIT = 500; // Ubisoft's GraphQL API limit - 500
 
+    public final static int ITEMS_COUNT = 4345; //To be replaced with redis value
+
     private final static Map<String, Object> defaultUpdateItemsVariables;
 
     static{
