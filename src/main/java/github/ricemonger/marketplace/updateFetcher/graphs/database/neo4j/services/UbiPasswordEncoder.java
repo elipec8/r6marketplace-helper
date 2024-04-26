@@ -1,6 +1,5 @@
 package github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.services;
 
-import github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.entities.UbiCredentialsException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

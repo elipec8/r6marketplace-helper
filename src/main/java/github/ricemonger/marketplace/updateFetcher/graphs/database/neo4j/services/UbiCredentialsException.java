@@ -1,6 +1,4 @@
-package github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.entities;
-
-import java.security.GeneralSecurityException;
+package github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.services;
 
 public class UbiCredentialsException extends RuntimeException{
     public UbiCredentialsException(Exception e) {

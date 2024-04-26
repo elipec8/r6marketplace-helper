@@ -3,7 +3,7 @@ ubi:
     updateItems: https://public-ubiservices.ubi.com/v1/profiles/me/uplay/graphql
   password:
     encryption:
-      key: ${UBI_ENCRYPTION_KEY}
+      key: ${UBI_ENCRYPTION_KEY} #AES Key
 
   session:
     regionId: ${UBI_REGION_ID:WW}
@@ -11,7 +11,7 @@ ubi:
     spaceId: ${UBI_SPACE_ID:0d2ae42d-4c27-4cb7-af6c-2099062302bb}
     appId: ${UBI_APP_ID:80a4a0e8-8797-440f-8f4c-eaba87d0fdda}
     profileId: ${UBI_PROFILE_ID} #User specific, doesnt change
-    sessionId: ${UBI_SESSION_ID} #User specific, changes every time, but old can be used
+    sessionId: ${UBI_SESSION_ID} #User specific, changed every time, but old can be used
     authorization: ${UBI_AUTHORIZATION} #User specific, expires fast
 
 server:

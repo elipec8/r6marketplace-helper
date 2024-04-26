@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Component
 public class DTOsToEntityMapper {
 
-    private final static String PERFORMED_AT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    public final static String PERFORMED_AT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
     public List<ItemEntity> NodesDTOToItemEntities(List<Node> nodes) {
         return nodes.stream().map(this::nodeDTOToItemEntity).collect(Collectors.toList());
