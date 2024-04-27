@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace;
 
-import github.ricemonger.marketplace.updateFetcher.GraphQlClientServiceStatics;
+import github.ricemonger.marketplace.graphs.GraphQlClientServiceStatics;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;

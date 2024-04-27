@@ -1,17 +1,16 @@
 package github.ricemonger.marketplace.graphs.database.neo4j.services;
 
-import github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.entities.BuyStatsEntity;
-import github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.entities.ItemEntity;
-import github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.entities.LastSoldAtEntity;
-import github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.entities.SellStatsEntity;
-import github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.enums.ItemType;
-import github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.services.DTOsToEntityMapper;
-import github.ricemonger.marketplace.updateFetcher.graphs.graphsDTOs.marketableItems.Node;
-import github.ricemonger.marketplace.updateFetcher.graphs.graphsDTOs.marketableItems.node.Item;
-import github.ricemonger.marketplace.updateFetcher.graphs.graphsDTOs.marketableItems.node.MarketData;
-import github.ricemonger.marketplace.updateFetcher.graphs.graphsDTOs.marketableItems.node.marketData.BuyStats;
-import github.ricemonger.marketplace.updateFetcher.graphs.graphsDTOs.marketableItems.node.marketData.LastSoldAt;
-import github.ricemonger.marketplace.updateFetcher.graphs.graphsDTOs.marketableItems.node.marketData.SellStats;
+import github.ricemonger.marketplace.graphs.database.neo4j.entities.BuyStatsEntity;
+import github.ricemonger.marketplace.graphs.database.neo4j.entities.ItemEntity;
+import github.ricemonger.marketplace.graphs.database.neo4j.entities.LastSoldAtEntity;
+import github.ricemonger.marketplace.graphs.database.neo4j.entities.SellStatsEntity;
+import github.ricemonger.marketplace.graphs.database.neo4j.enums.ItemType;
+import github.ricemonger.marketplace.graphs.graphsDTOs.marketableItems.Node;
+import github.ricemonger.marketplace.graphs.graphsDTOs.marketableItems.node.Item;
+import github.ricemonger.marketplace.graphs.graphsDTOs.marketableItems.node.MarketData;
+import github.ricemonger.marketplace.graphs.graphsDTOs.marketableItems.node.marketData.BuyStats;
+import github.ricemonger.marketplace.graphs.graphsDTOs.marketableItems.node.marketData.LastSoldAt;
+import github.ricemonger.marketplace.graphs.graphsDTOs.marketableItems.node.marketData.SellStats;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -20,7 +19,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import static github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.services.DTOsToEntityMapper.PERFORMED_AT_DATE_FORMAT;
+import static github.ricemonger.marketplace.graphs.database.neo4j.services.DTOsToEntityMapper.PERFORMED_AT_DATE_FORMAT;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest

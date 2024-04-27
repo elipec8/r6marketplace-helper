@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace;
 
-import github.ricemonger.marketplace.updateFetcher.UbiServiceConfiguration;
+import github.ricemonger.marketplace.graphs.UbiServiceConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +16,7 @@ public class UbiServiceConfigurationTests {
     @Test
     public void ubiServiceConfigurationPropertiesShouldBeAutowired(){
         assertNotNull(ubiServiceConfiguration.getUpdateItemsUrl());
-        assertNotNull(ubiServiceConfiguration.getSpaceId());
+        assertNotNull(ubiServiceConfiguration.getPlatform());
         assertNotNull(ubiServiceConfiguration.getAuthorization());
         assertNotNull(ubiServiceConfiguration.getRegionId());
         assertNotNull(ubiServiceConfiguration.getLocaleCode());

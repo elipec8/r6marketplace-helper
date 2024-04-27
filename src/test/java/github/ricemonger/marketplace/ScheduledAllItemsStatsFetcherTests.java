@@ -1,9 +1,9 @@
 package github.ricemonger.marketplace;
 
-import github.ricemonger.marketplace.updateFetcher.GraphQlClientService;
+import github.ricemonger.marketplace.graphs.GraphQlClientService;
 import github.ricemonger.marketplace.updateFetcher.ScheduledAllItemsStatsFetcher;
-import github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.services.ItemService;
-import github.ricemonger.marketplace.updateFetcher.graphs.graphsDTOs.marketableItems.Node;
+import github.ricemonger.marketplace.graphs.database.neo4j.services.ItemService;
+import github.ricemonger.marketplace.graphs.graphsDTOs.marketableItems.Node;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
