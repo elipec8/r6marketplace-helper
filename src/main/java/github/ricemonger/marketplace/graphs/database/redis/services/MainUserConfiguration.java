@@ -1,9 +1,13 @@
 package github.ricemonger.marketplace.graphs.database.redis.services;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@Setter
+@Getter
 public class MainUserConfiguration {
 
     @Value("${auth.ubi_credentials.email}")

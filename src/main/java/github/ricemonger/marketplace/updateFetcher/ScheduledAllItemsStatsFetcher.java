@@ -22,7 +22,7 @@ public class ScheduledAllItemsStatsFetcher {
 
     private final ItemService itemService;
 
-    @Scheduled(fixedRate = 5 * 60 * 1000, initialDelay = 60 * 1000) // every 5 minutes after 1 minute of delay
+    @Scheduled(fixedRate = 5 * 60 * 1000, initialDelay = 15 * 1000) // every 5m after 15s of delay
     public void fetchAllItemStats() {
 
         List<Node> nodes = graphQlClientService.fetchAllItemStats();

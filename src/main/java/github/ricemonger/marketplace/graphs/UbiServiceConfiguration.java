@@ -14,6 +14,10 @@ public class UbiServiceConfiguration {
     private String updateItemsUrl;
     @Value("${ubi.urls.authorization}")
     private String authorizationUrl;
+    @Value("${ubi.session.contentType}")
+    private String contentType;
+    @Value("${ubi.session.userAgent}")
+    private String userAgent;
     @Value("${ubi.session.appId}")
     private String ubiAppId;
     @Value("${ubi.session.regionId}")

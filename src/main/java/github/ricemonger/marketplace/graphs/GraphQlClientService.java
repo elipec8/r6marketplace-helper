@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.graphs;
 
-import github.ricemonger.marketplace.graphs.database.neo4j.enums.UserPlatform;
+import github.ricemonger.marketplace.graphs.database.redis.services.RedisService;
 import github.ricemonger.marketplace.graphs.graphsDTOs.MarketableItems;
 import github.ricemonger.marketplace.graphs.graphsDTOs.marketableItems.Node;
 import org.springframework.graphql.client.ClientGraphQlResponse;
@@ -17,10 +17,13 @@ import java.util.Map;
 @Component
 public class GraphQlClientService {
 
-    private final GraphQlClient fetchItemStatsClient;
+    private final GraphQlClient updateAllItemsStatsClient;
 
-    public GraphQlClientService(UbiServiceConfiguration ubiSessionConfiguration){
-        fetchItemStatsClient = buildFetchUpdatesClient(ubiSessionConfiguration);
+    private final RedisService redisService;
+
+    public GraphQlClientService(UbiServiceConfiguration ubiSessionConfiguration, RedisService redisService){
+        this.redisService = redisService;
+        updateAllItemsStatsClient = buildFetchUpdatesClient(ubiSessionConfiguration);
     }
     private HttpGraphQlClient buildFetchUpdatesClient(UbiServiceConfiguration ubiSessionConfiguration){
         WebClient webClient =
@@ -38,13 +41,15 @@ public class GraphQlClientService {
 
         return WebClient.builder()
                 .exchangeStrategies(strategies)
-                .defaultHeader("Content-Type", "application/json")
-                .defaultHeader("Authorization", ubiSessionConfiguration.getAuthorization())
+                .defaultHeader("Authorization", redisService.getMainUserAuthorizationToken())
+                .defaultHeader("Ubi-SessionId", redisService.getMainUserSessionId())
+                .defaultHeader("Ubi-ProfileId", redisService.getMainUserProfileId())
+                .defaultHeader("Ubi-SpaceId", redisService.getMainUserSpaceId())
+                .defaultHeader("Content-Type", ubiSessionConfiguration.getContentType())
                 .defaultHeader("Ubi-AppId", ubiSessionConfiguration.getUbiAppId())
-                .defaultHeader("Ubi-SessionId", ubiSessionConfiguration.getSessionId())
-                .defaultHeader("Ubi-ProfileId", ubiSessionConfiguration.getProfileId())
                 .defaultHeader("Ubi-RegionId", ubiSessionConfiguration.getRegionId())
-                .defaultHeader("Ubi-LocaleCode", ubiSessionConfiguration.getLocaleCode());
+                .defaultHeader("Ubi-LocaleCode", ubiSessionConfiguration.getLocaleCode())
+                .defaultHeader("User-Agent", ubiSessionConfiguration.getUserAgent());
     }
 
     public List<Node> fetchAllItemStats() {
@@ -69,7 +74,7 @@ public class GraphQlClientService {
             int offset = i * GraphQlClientServiceStatics.MAX_LIMIT;
             variables.put("offset", offset);
 
-            responses.add(fetchItemStatsClient
+            responses.add(updateAllItemsStatsClient
                     .documentName(GraphQlClientServiceStatics.FETCH_ITEMS_STATS_DOCUMENT_NAME)
                     .variables(variables)
                     .execute()
@@ -95,7 +100,7 @@ public class GraphQlClientService {
         do {
             variables.put("offset", offset);
 
-            marketableItems = fetchItemStatsClient
+            marketableItems = updateAllItemsStatsClient
                     .documentName(GraphQlClientServiceStatics.FETCH_ITEMS_STATS_DOCUMENT_NAME)
                     .variables(variables)
                     .retrieve("game.marketableItems")

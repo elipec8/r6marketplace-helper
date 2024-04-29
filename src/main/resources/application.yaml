@@ -3,12 +3,10 @@ auth:
     bot:
       token: ${TELEGRAM_BOT_TOKEN}
       username: ${TELEGRAM_BOT_USERNAME}
-
   ubi_credentials:
     platform: ${UBI_PLATFORM:UPLAY}
     email: ${UBI_EMAIL}
     password: ${UBI_PASSWORD}
-
   user_service:
     password:
       encryption:
@@ -17,8 +15,10 @@ auth:
 ubi:
   urls:
     updateItems: https://public-ubiservices.ubi.com/v1/profiles/me/uplay/graphql
-    authorization: 
+    authorization: https://public-ubiservices.ubi.com/v3/profiles/sessions
   session:
+    contentType: application/json
+    userAgent: UbiServices_SDK_2020.Release.58_PC64_ansi_static
     appId: ${UBI_APP_ID:80a4a0e8-8797-440f-8f4c-eaba87d0fdda}
     regionId: ${UBI_REGION_ID:WW}
     localeCode: ${UBI_LOCALE_CODE:en-US}
