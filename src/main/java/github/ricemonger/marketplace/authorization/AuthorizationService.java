@@ -2,6 +2,7 @@ package github.ricemonger.marketplace.authorization;
 
 import github.ricemonger.marketplace.graphs.UbiServiceConfiguration;
 import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -22,7 +23,7 @@ public class AuthorizationService {
                 .defaultHeader("Ubi-Appid", ubiServiceConfiguration.getUbiAppId())
                 .build();
 
-        AuthorizationDTO dto = webClient.post().attribute("rememberMe",true).retrieve().bodyToMono(AuthorizationDTO.class).block();
+        AuthorizationDTO dto = webClient.post().bodyValue(new AuthorizationBodyValue(true)).retrieve().bodyToMono(AuthorizationDTO.class).block();
         dto.setTicket("ubi_v1 t=" + dto.getTicket());
         return dto;
     }

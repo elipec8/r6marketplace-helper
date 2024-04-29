@@ -23,6 +23,8 @@ services:
     image: redis:7.2.4-bookworm
     ports:
      - "6379:6379"
+    volumes:
+      - redis-data:/data
     networks:
      - redis-net
     restart: always
@@ -46,3 +48,4 @@ volumes:
  neo4j-logs:
  neo4j-import:
  neo4j-plugins:
+ redis-data:

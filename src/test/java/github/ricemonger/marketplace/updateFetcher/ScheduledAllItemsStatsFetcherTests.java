@@ -1,7 +1,6 @@
-package github.ricemonger.marketplace;
+package github.ricemonger.marketplace.updateFetcher;
 
 import github.ricemonger.marketplace.graphs.GraphQlClientService;
-import github.ricemonger.marketplace.updateFetcher.ScheduledAllItemsStatsFetcher;
 import github.ricemonger.marketplace.graphs.database.neo4j.services.ItemService;
 import github.ricemonger.marketplace.graphs.graphsDTOs.marketableItems.Node;
 import org.junit.jupiter.api.Test;
