@@ -1,10 +1,8 @@
 package github.ricemonger.marketplace.graphs.database.neo4j.services;
 
-import github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.entities.ItemEntity;
-import github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.repositories.ItemRepository;
-import github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.services.DTOsToEntityMapper;
-import github.ricemonger.marketplace.updateFetcher.graphs.database.neo4j.services.ItemService;
-import github.ricemonger.marketplace.updateFetcher.graphs.graphsDTOs.marketableItems.Node;
+import github.ricemonger.marketplace.graphs.database.neo4j.entities.ItemEntity;
+import github.ricemonger.marketplace.graphs.database.neo4j.repositories.ItemRepository;
+import github.ricemonger.marketplace.graphs.graphsDTOs.marketableItems.Node;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

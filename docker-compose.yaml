@@ -18,6 +18,17 @@ services:
      - neo4j-net
     restart: always
 
+ redis:
+    container_name: r6helper-redis
+    image: redis:7.2.4-bookworm
+    ports:
+     - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+     - redis-net
+    restart: always
+
  zipkin:
     container_name: r6helper-zipkin
     image: openzipkin/zipkin:3.1.0
@@ -30,9 +41,11 @@ services:
 networks:
     neo4j-net:
     zipkin-net:
+    redis-net:
 
 volumes:
  neo4j-data:
  neo4j-logs:
  neo4j-import:
  neo4j-plugins:
+ redis-data:

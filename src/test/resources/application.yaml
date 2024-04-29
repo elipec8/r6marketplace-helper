@@ -30,16 +30,26 @@ spring:
   application:
     name: r6s-helper
 
+
+
+
+# Test values
+
   data:
     neo4j:
-      database: r6s-helper
+      database: r6s-helper-test
     redis:
-      database: 0
+      database: 99
   neo4j:
     uri: bolt://localhost:7687
     authentication:
       username: ${NEO4J_AUTH_USERNAME:neo4j}
       password: ${NEO4J_AUTH_PASSWORD:password}
+
+
+# Test values
+
+
 
   config:
     import:
