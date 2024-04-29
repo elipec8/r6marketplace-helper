@@ -3,6 +3,7 @@ package github.ricemonger.marketplace.authorization;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class AuthorizationDTOTests {
 
@@ -31,12 +32,12 @@ public class AuthorizationDTOTests {
 
     @Test
     public void equalsShouldReturnFalseIfNotSame(){
-        assertEquals(ALT_TICKET, AUTHORIZATION_DTO);
-        assertEquals(ALT_PROFILE, AUTHORIZATION_DTO);
-        assertEquals(ALT_SPACE, AUTHORIZATION_DTO);
-        assertEquals(ALT_SESSION, AUTHORIZATION_DTO);
-        assertEquals(ALT_TWO_FACTOR, AUTHORIZATION_DTO);
-        assertEquals(ALT_REMEMBER_DEVICE, AUTHORIZATION_DTO);
-        assertEquals(ALT_REMEMBER_ME, AUTHORIZATION_DTO);
+        assertNotEquals(ALT_TICKET, AUTHORIZATION_DTO);
+        assertNotEquals(ALT_PROFILE, AUTHORIZATION_DTO);
+        assertNotEquals(ALT_SPACE, AUTHORIZATION_DTO);
+        assertNotEquals(ALT_SESSION, AUTHORIZATION_DTO);
+        assertNotEquals(ALT_TWO_FACTOR, AUTHORIZATION_DTO);
+        assertNotEquals(ALT_REMEMBER_DEVICE, AUTHORIZATION_DTO);
+        assertNotEquals(ALT_REMEMBER_ME, AUTHORIZATION_DTO);
     }
 }

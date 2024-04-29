@@ -21,10 +21,4 @@ public class Item {
 
     private String type;
 
-
-    public boolean equals(Object o) {
-        if (o == this) return true;
-        if (!(o instanceof Item)) return false;
-        return id.equals(((Item) o).id);
-    }
 }
