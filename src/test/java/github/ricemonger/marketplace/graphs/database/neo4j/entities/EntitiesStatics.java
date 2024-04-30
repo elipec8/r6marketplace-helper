@@ -1,7 +1,6 @@
 package github.ricemonger.marketplace.graphs.database.neo4j.entities;
 
 import github.ricemonger.marketplace.graphs.database.neo4j.enums.ItemType;
-import github.ricemonger.marketplace.graphs.database.neo4j.enums.TransactionType;
 
 import java.util.Date;
 import java.util.List;
