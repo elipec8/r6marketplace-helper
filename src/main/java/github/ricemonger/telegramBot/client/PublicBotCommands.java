@@ -12,4 +12,10 @@ public class PublicBotCommands {
         new BotCommand("/help", "Get help")
     );
 
+    public static String getHelpText() {
+        return """
+                /start - Start the bot
+                /help - Get help
+                """;
+    }
 }

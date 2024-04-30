@@ -35,6 +35,9 @@ spring:
 
 # Test values
 
+  config:
+    import:
+      - auth-values.yaml
   data:
     neo4j:
       database: r6s-helper-test
@@ -46,14 +49,13 @@ spring:
       username: ${NEO4J_AUTH_USERNAME:neo4j}
       password: ${NEO4J_AUTH_PASSWORD:password}
 
+app:
+  scheduling:
+    enable: false
 
 # Test values
 
 
-
-  config:
-    import:
-      - auth-values.yaml
 
 logging:
   level:

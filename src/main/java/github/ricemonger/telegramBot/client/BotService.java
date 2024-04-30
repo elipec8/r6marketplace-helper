@@ -7,6 +7,8 @@ import github.ricemonger.telegramBot.client.executors.InputState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BotService {
@@ -80,5 +82,13 @@ public class BotService {
 
     public void removeCredentialsByUserInputs(Long chatId) {
         userService.removeCredentialsByUserInputs(chatId);
+    }
+
+    public void removeUserAllCredentials(Long chatId) {
+        userService.removeAllCredentials(chatId);
+    }
+
+    public List<String> getCredentialsEmailsList(Long chatId) {
+        return userService.getCredentialsEmailsList(chatId);
     }
 }

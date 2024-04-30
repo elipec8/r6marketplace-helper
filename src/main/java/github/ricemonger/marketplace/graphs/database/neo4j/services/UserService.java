@@ -6,6 +6,8 @@ import github.ricemonger.telegramBot.client.executors.InputState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -15,8 +17,7 @@ public class UserService {
     private final AesPasswordEncoder AESPasswordEncoder;
 
     public boolean isTelegramUserRegistered(Long chatId) {
-
-
+        return false;
     }
 
     public void registerTelegramUser(Long chatId) {
@@ -32,7 +33,7 @@ public class UserService {
     }
 
     public InputState getUserInputStateOrNull(Long chatId) {
-
+        return null;
     }
 
     public InputGroup getUserInputGroupOrNull(Long chatId) {
@@ -57,5 +58,13 @@ public class UserService {
 
     public void removeCredentialsByUserInputs(Long chatId) {
 
+    }
+
+    public void removeAllCredentials(Long chatId) {
+
+    }
+
+    public List<String> getCredentialsEmailsList(Long chatId) {
+        return null;
     }
 }
