@@ -36,7 +36,7 @@ public class TelegramBotUpdateReceiverTests {
     }
 
     @Test
-    public void consumeShouldCallUpdatesToListenersDistributorDistribute(){
+    public void consumeShouldHandleMappedUpdateInfoToUpdateDistributor(){
         when(updateToUpdateInfoMapper.map(UPDATE)).thenReturn(UPDATE_INFO);
         telegramBotUpdateReceiver.consume(UPDATE);
 

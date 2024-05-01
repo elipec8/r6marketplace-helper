@@ -5,9 +5,10 @@ import github.ricemonger.telegramBot.client.Callbacks;
 import github.ricemonger.telegramBot.client.executors.ExecutorsService;
 import github.ricemonger.telegramBot.client.executors.InputState;
 import github.ricemonger.telegramBot.client.executors.cancel.Cancel;
-import github.ricemonger.telegramBot.client.executors.credentials.add.CredentialsAddInputFullOrEmail;
-import github.ricemonger.telegramBot.client.executors.credentials.add.CredentialsAddInputPassword;
-import github.ricemonger.telegramBot.client.executors.credentials.remove.CredentialsRemoveOneInputEmail;
+import github.ricemonger.telegramBot.client.executors.cancel.SilentCancel;
+import github.ricemonger.telegramBot.client.executors.credentials.add.CredentialsAddFullOrEmailInput;
+import github.ricemonger.telegramBot.client.executors.credentials.add.CredentialsAddPasswordInput;
+import github.ricemonger.telegramBot.client.executors.credentials.remove.CredentialsRemoveOneEmailInput;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,8 @@ public class InputCommandListener {
     public void handleUpdate(UpdateInfo updateInfo) {
         if (cancelMessageTextOrCallbackQueryText(updateInfo)) {
             executorsService.execute(Cancel.class, updateInfo);
+        } else if (silentCancelMessageTextOrCallbackQueryText(updateInfo)) {
+            executorsService.execute(SilentCancel.class, updateInfo);
         } else {
             switch (updateInfo.getInputGroup()) {
 
@@ -35,7 +38,11 @@ public class InputCommandListener {
     private boolean cancelMessageTextOrCallbackQueryText(UpdateInfo updateInfo) {
         return (updateInfo.isHasMessage() && updateInfo.getMessageText().equals("/cancel"))
                 ||
-                updateInfo.isHasCallBackQuery() && updateInfo.getCallbackQueryData().equals(Callbacks.CANCEL)
+                updateInfo.isHasCallBackQuery() && updateInfo.getCallbackQueryData().equals(Callbacks.CANCEL);
+    }
+
+    private boolean silentCancelMessageTextOrCallbackQueryText(UpdateInfo updateInfo) {
+        return (updateInfo.isHasMessage() && updateInfo.getMessageText().equals("/silentCancel"))
                 ||
                 updateInfo.isHasCallBackQuery() && updateInfo.getCallbackQueryData().equals(Callbacks.SILENT_CANCEL);
     }
@@ -45,11 +52,12 @@ public class InputCommandListener {
 
         switch (inputState) {
 
-            case InputState.CREDENTIALS_FULL_OR_EMAIL -> executorsService.execute(CredentialsAddInputFullOrEmail.class, updateInfo);
+            case InputState.CREDENTIALS_FULL_OR_EMAIL -> executorsService.execute(CredentialsAddFullOrEmailInput.class, updateInfo);
 
-            case InputState.CREDENTIALS_PASSWORD -> executorsService.execute(CredentialsAddInputPassword.class, updateInfo);
+            case InputState.CREDENTIALS_PASSWORD -> executorsService.execute(CredentialsAddPasswordInput.class, updateInfo);
 
-            default -> throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+            default ->
+                    throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
         }
     }
 
@@ -58,9 +66,10 @@ public class InputCommandListener {
 
         switch (inputState) {
 
-            case InputState.CREDENTIALS_FULL_OR_EMAIL -> executorsService.execute(CredentialsRemoveOneInputEmail.class, updateInfo);
+            case InputState.CREDENTIALS_FULL_OR_EMAIL -> executorsService.execute(CredentialsRemoveOneEmailInput.class, updateInfo);
 
-            default -> throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+            default ->
+                    throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
         }
     }
 }
