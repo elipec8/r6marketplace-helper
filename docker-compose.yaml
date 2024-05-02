@@ -9,6 +9,8 @@ services:
      - "7687:7687"
     environment:
      - NEO4J_AUTH=neo4j/password
+     - NEO4J_initial.dbms.default_database=r6s-helper
+     - NEO4J_initials.dbms.
     volumes:
      - neo4j-data:/data
      - neo4j-logs:/logs

@@ -2,19 +2,22 @@ package github.ricemonger.marketplace.graphs.database.redis.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationDTO;
 import github.ricemonger.marketplace.authorization.AuthorizationService;
+import github.ricemonger.marketplace.graphs.GraphQlClientService;
+import github.ricemonger.marketplace.updateFetcher.ScheduledAllItemsStatsFetcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class RedisServiceTests {
+
+    @MockBean
+    private GraphQlClientService graphQlClientService; // Beans init exception without it
 
     @Autowired
     private MainUserConfiguration mainUserConfiguration;
@@ -22,16 +25,16 @@ public class RedisServiceTests {
     @MockBean
     private AuthorizationService authorizationService;
 
-    @SpyBean
+    @Autowired
     private RedisService redisService;
 
-    //RedisTemplate interactions didn't tested cause of RedisConfiguration's beans initialization problems in test environment
+    //RedisTemplate interactions didn't tested cause of RedisConfiguration's MockBeans initialization problems in test environment
 
     @BeforeEach
     public void setUp() {
         when(authorizationService.getUserAuthorizationDTO(mainUserConfiguration.getEmail(), mainUserConfiguration.getPassword())).thenReturn(
                 new AuthorizationDTO("ticket",
-                         "profileId",
+                        "profileId",
                         "spaceId",
                         "sessionId",
                         "twoFactorAuthTicket",

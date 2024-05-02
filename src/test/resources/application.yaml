@@ -29,7 +29,9 @@ server:
 spring:
   application:
     name: r6s-helper
-
+  config:
+    import:
+      - auth-values.yaml
 
 
 
@@ -39,21 +41,20 @@ spring:
     neo4j:
       database: r6s-helper-test
     redis:
-      database: 99
+      database: 14
   neo4j:
     uri: bolt://localhost:7687
     authentication:
       username: ${NEO4J_AUTH_USERNAME:neo4j}
       password: ${NEO4J_AUTH_PASSWORD:password}
 
+app:
+  scheduling:
+    enabled: false
 
 # Test values
 
 
-
-  config:
-    import:
-      - auth-values.yaml
 
 logging:
   level:
