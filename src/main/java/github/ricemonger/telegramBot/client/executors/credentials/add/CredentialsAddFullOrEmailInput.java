@@ -16,7 +16,7 @@ public class CredentialsAddFullOrEmailInput extends AbstractBotCommandExecutor {
             botService.addCredentialsFromUserInputs(updateInfo.getChatId());
         }
         else {
-            processMiddleInput(updateInfo, InputState.CREDENTIALS_PASSWORD, "Please provide your Ubisoft password:");
+            processMiddleInput(InputState.CREDENTIALS_PASSWORD, "Please provide your Ubisoft password:");
         }
     }
 }

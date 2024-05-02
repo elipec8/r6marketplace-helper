@@ -21,25 +21,25 @@ public abstract class AbstractBotCommandExecutor {
 
     protected abstract void executeCommand();
 
-    protected final void processFirstInput(UpdateInfo updateInfo, InputState nextState,InputGroup inputGroup, String question) {
-        botService.setUserNextInputState(updateInfo.getChatId(), nextState);
-        botService.setUserNextInputGroup(updateInfo.getChatId(), inputGroup);
+    protected final void processFirstInput(InputState nextInputState, InputGroup nextInputGroup, String question) {
+        botService.setUserNextInputState(updateInfo.getChatId(), nextInputState);
+        botService.setUserNextInputGroup(updateInfo.getChatId(), nextInputGroup);
 
         sendText(question);
     }
-    protected final void processMiddleInput(UpdateInfo updateInfo, InputState nextState, String question) {
-        saveCurrentInputAndSetNextState(updateInfo, nextState);
+    protected final void processMiddleInput(InputState nextInputState, String question) {
+        saveCurrentInputAndSetNextState(nextInputState);
 
         sendText(question);
     }
 
     protected final void processLastInput(UpdateInfo updateInfo, String text) {
-        saveCurrentInputAndSetNextState(updateInfo, InputState.BASE);
+        saveCurrentInputAndSetNextState(InputState.BASE);
         botService.setUserNextInputGroup(updateInfo.getChatId(), InputGroup.BASE);
         sendText(text);
     }
 
-    protected final void saveCurrentInputAndSetNextState(UpdateInfo updateInfo, InputState nextState) {
+    protected final void saveCurrentInputAndSetNextState(InputState nextState) {
         botService.saveUserInputOrThrow(updateInfo);
         botService.setUserNextInputState(updateInfo.getChatId(), nextState);
     }
@@ -92,12 +92,20 @@ public abstract class AbstractBotCommandExecutor {
         botService.clearUserInputs(updateInfo.getChatId());
     }
 
-    protected final boolean isRegistered(Long chatId) {
-        return botService.isRegistered(chatId);
+    protected final boolean isRegistered() {
+        return botService.isRegistered(updateInfo.getChatId());
     }
 
     protected final void sendText(String answer) {
         botService.sendText(updateInfo, answer);
+    }
+
+    protected final void executeCommandOrAskToRegister(MyFunctionalInterface command) {
+        if (isRegistered()) {
+            command.executeCommand();
+        } else {
+            sendText("You are not registered. Please use /start to register.");
+        }
     }
 
     @Override

@@ -51,6 +51,12 @@ public class BotService {
         clearUserInputs(chatId);
     }
 
+    public void removeCredentialsByUserInputs(Long chatId) {
+        userService.removeCredentialsByUserInputs(chatId);
+
+        clearUserInputs(chatId);
+    }
+
     public void saveUserInputOrThrow(UpdateInfo updateInfo) {
         String userInput;
 
@@ -78,10 +84,6 @@ public class BotService {
 
     public String getUserInputByState(Long chatId, InputState inputState){
         return userService.getUserInputByState(chatId, inputState);
-    }
-
-    public void removeCredentialsByUserInputs(Long chatId) {
-        userService.removeCredentialsByUserInputs(chatId);
     }
 
     public void removeUserAllCredentials(Long chatId) {

@@ -8,7 +8,7 @@ public class StartDirect extends AbstractBotCommandExecutor {
 
     @Override
     protected void executeCommand() {
-        if (isRegistered(updateInfo.getChatId())) {
+        if (isRegistered()) {
             sendText("You are already registered");
         } else {
             askYesOrNoFromInlineKeyboard("Do you want to register?", START_YES, CANCEL);

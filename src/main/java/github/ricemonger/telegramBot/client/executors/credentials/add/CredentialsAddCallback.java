@@ -10,6 +10,6 @@ public class CredentialsAddCallback extends AbstractBotCommandExecutor {
     protected void executeCommand() {
         String text = "Please provide your Ubisoft Account's email and password separated in two messages OR in the following format: email:password";
 
-        processFirstInput(updateInfo, InputState.CREDENTIALS_FULL_OR_EMAIL, InputGroup.CREDENTIALS_ADD, text);
+        processFirstInput(InputState.CREDENTIALS_FULL_OR_EMAIL, InputGroup.CREDENTIALS_ADD, text);
     }
 }

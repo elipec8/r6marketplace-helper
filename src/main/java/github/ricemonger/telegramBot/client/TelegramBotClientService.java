@@ -21,7 +21,7 @@ public class TelegramBotClientService {
     public void askFromInlineKeyboard(UpdateInfo updateInfo, String text, int buttonsInLine, CallbackButton... buttons) {
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboardMarkup(buttonsInLine, buttons);
 
-        SendMessage sendMessage = new SendMessage(text, String.valueOf(updateInfo.getChatId()));
+        SendMessage sendMessage = new SendMessage(String.valueOf(updateInfo.getChatId()), text);
         sendMessage.setReplyMarkup(inlineKeyboardMarkup);
 
         executeMessageOnBot(sendMessage);
@@ -54,11 +54,11 @@ public class TelegramBotClientService {
         executeMessageOnBot(sendMessage);
     }
 
-    public void executeMessageOnBot(SendMessage sendMessage){
+    private void executeMessageOnBot(SendMessage sendMessage){
         try {
             telegramBotClient.execute(sendMessage);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            throw  new TelegramApiRuntimeException(e);
         }
     }
 }

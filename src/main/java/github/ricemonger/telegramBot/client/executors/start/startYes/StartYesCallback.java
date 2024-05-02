@@ -7,7 +7,7 @@ public class StartYesCallback extends AbstractBotCommandExecutor {
 
     @Override
     protected void executeCommand() {
-        if (isRegistered(updateInfo.getChatId())) {
+        if (isRegistered()) {
             sendText("You are already registered");
         } else {
             registerUser(updateInfo.getChatId());
