@@ -1,6 +1,6 @@
 package github.ricemonger.telegramBot.client.executors.help;
 
-import github.ricemonger.telegramBot.client.BotService;
+import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.client.PublicBotCommands;
 import github.ricemonger.telegramBot.client.executors.MockUpdateInfos;
 import org.junit.jupiter.api.Test;
@@ -15,14 +15,14 @@ import static org.mockito.Mockito.verify;
 class HelpDirectTests {
 
     @MockBean
-    private BotService botService;
+    private BotInnerService botInnerService;
 
     @Test
     public void initAndExecuteShouldSendHelpText() {
         HelpDirect helpDirect = new HelpDirect();
-        helpDirect.initAndExecute(MockUpdateInfos.UPDATE_INFO, botService);
+        helpDirect.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botService).sendText(any(), eq(PublicBotCommands.getHelpText()));
+        verify(botInnerService).sendText(any(), eq(PublicBotCommands.getHelpText()));
     }
 
 }

@@ -1,12 +1,11 @@
 package github.ricemonger.telegramBot.client.executors.credentials.remove;
 
-import github.ricemonger.telegramBot.client.BotService;
+import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.client.executors.MockUpdateInfos;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 
@@ -14,15 +13,15 @@ import static org.mockito.Mockito.verify;
 class CredentialsRemoveAllCallbackTests {
 
     @MockBean
-    private BotService botService;
+    private BotInnerService botInnerService;
 
     @Test
     public void initAndExecute(){
 
         CredentialsRemoveAllCallback credentialsRemoveAllCallback = new CredentialsRemoveAllCallback();
 
-        credentialsRemoveAllCallback.initAndExecute(MockUpdateInfos.UPDATE_INFO,botService);
+        credentialsRemoveAllCallback.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botService).askFromInlineKeyboard(same(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());
+        verify(botInnerService).askFromInlineKeyboard(same(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());
     }
 }

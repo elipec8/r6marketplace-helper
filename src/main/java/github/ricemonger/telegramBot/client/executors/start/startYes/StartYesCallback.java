@@ -19,6 +19,6 @@ public class StartYesCallback extends AbstractBotCommandExecutor {
     }
 
     private void registerUser(Long chatId) {
-        botService.registerUser(chatId);
+        botInnerService.registerUser(chatId);
     }
 }

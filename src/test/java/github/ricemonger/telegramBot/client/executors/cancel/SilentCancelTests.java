@@ -1,6 +1,6 @@
 package github.ricemonger.telegramBot.client.executors.cancel;
 
-import github.ricemonger.telegramBot.client.BotService;
+import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.client.executors.InputGroup;
 import github.ricemonger.telegramBot.client.executors.InputState;
 import github.ricemonger.telegramBot.client.executors.MockUpdateInfos;
@@ -17,18 +17,18 @@ import static org.mockito.Mockito.verify;
 class SilentCancelTests {
 
     @MockBean
-    private BotService botService;
+    private BotInnerService botInnerService;
 
     @Test
     public void initAndExecuteShould() {
         SilentCancel cancel = new SilentCancel();
-        cancel.initAndExecute(MockUpdateInfos.UPDATE_INFO, botService);
+        cancel.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botService).setUserNextInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.BASE);
-        verify(botService).setUserNextInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.BASE);
-        verify(botService).clearUserInputs(MockUpdateInfos.UPDATE_INFO.getChatId());
+        verify(botInnerService).setUserNextInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.BASE);
+        verify(botInnerService).setUserNextInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.BASE);
+        verify(botInnerService).clearUserInputs(MockUpdateInfos.UPDATE_INFO.getChatId());
 
-        verify(botService, never()).sendText(same(MockUpdateInfos.UPDATE_INFO), anyString());
+        verify(botInnerService, never()).sendText(same(MockUpdateInfos.UPDATE_INFO), anyString());
     }
 
 }

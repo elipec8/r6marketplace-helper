@@ -7,6 +7,7 @@ auth:
     platform: ${UBI_PLATFORM:UPLAY}
     email: ${UBI_EMAIL}
     password: ${UBI_PASSWORD}
+    expireTimeout: ${UBI_EXPIRE_TIMEOUT:3} # seconds, test value
   user_service:
     password:
       encryption:
@@ -22,6 +23,7 @@ ubi:
     appId: ${UBI_APP_ID:80a4a0e8-8797-440f-8f4c-eaba87d0fdda}
     regionId: ${UBI_REGION_ID:WW}
     localeCode: ${UBI_LOCALE_CODE:en-US}
+    expireTimeout: ${auth.ubi_credentials.expireTimeout}
 
 server:
   port: 8080
@@ -33,8 +35,6 @@ spring:
     import:
       - auth-values.yaml
 
-
-
 # Test values
 
   data:
@@ -42,6 +42,9 @@ spring:
       database: r6s-helper-test
     redis:
       database: 14
+      repositories:
+        enabled: false
+
   neo4j:
     uri: bolt://localhost:7687
     authentication:
@@ -53,8 +56,6 @@ app:
     enabled: false
 
 # Test values
-
-
 
 logging:
   level:

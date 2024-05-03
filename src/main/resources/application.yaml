@@ -7,6 +7,7 @@ auth:
     platform: ${UBI_PLATFORM:UPLAY}
     email: ${UBI_EMAIL}
     password: ${UBI_PASSWORD}
+    expireTimeout: ${UBI_EXPIRE_TIMEOUT:9000} # seconds, 2.5 hours. Ubisoft's session expires in 3 hours
   user_service:
     password:
       encryption:
@@ -22,6 +23,7 @@ ubi:
     appId: ${UBI_APP_ID:80a4a0e8-8797-440f-8f4c-eaba87d0fdda}
     regionId: ${UBI_REGION_ID:WW}
     localeCode: ${UBI_LOCALE_CODE:en-US}
+    expireTimeout: ${auth.ubi_credentials.expireTimeout}
 
 server:
   port: 8080
@@ -29,21 +31,25 @@ server:
 spring:
   application:
     name: r6s-helper
-
+  config:
+    import:
+      - auth-values.yaml
   data:
     neo4j:
       database: r6s-helper
     redis:
       database: 0
+      repositories:
+        enabled: false
   neo4j:
     uri: bolt://localhost:7687
     authentication:
       username: ${NEO4J_AUTH_USERNAME:neo4j}
       password: ${NEO4J_AUTH_PASSWORD:password}
 
-  config:
-    import:
-      - auth-values.yaml
+app:
+  scheduling:
+    enabled: true
 
 logging:
   level:

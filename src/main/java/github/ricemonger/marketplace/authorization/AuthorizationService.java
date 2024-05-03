@@ -1,8 +1,7 @@
 package github.ricemonger.marketplace.authorization;
 
-import github.ricemonger.marketplace.graphs.UbiServiceConfiguration;
+import github.ricemonger.marketplace.UbiServiceConfiguration;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 

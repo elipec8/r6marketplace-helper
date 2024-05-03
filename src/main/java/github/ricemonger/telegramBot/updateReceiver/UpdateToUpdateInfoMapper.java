@@ -1,6 +1,6 @@
 package github.ricemonger.telegramBot.updateReceiver;
 
-import github.ricemonger.marketplace.graphs.database.neo4j.services.UserService;
+import github.ricemonger.marketplace.databases.neo4j.services.UserService;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.client.executors.InputGroup;
 import github.ricemonger.telegramBot.client.executors.InputState;

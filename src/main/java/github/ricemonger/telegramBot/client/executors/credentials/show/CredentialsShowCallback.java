@@ -9,7 +9,7 @@ public class CredentialsShowCallback extends AbstractBotCommandExecutor {
     protected void executeCommand() {
         StringBuilder sb = new StringBuilder("Here are your credentials:\n\n");
 
-        List<String> emails = botService.getCredentialsEmailsList(updateInfo.getChatId());
+        List<String> emails = botInnerService.getCredentialsEmailsList(updateInfo.getChatId());
 
         for(String email : emails){
             sb.append(email).append("\n");

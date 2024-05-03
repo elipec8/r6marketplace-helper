@@ -1,6 +1,6 @@
 package github.ricemonger.telegramBot.client.executors;
 
-import github.ricemonger.telegramBot.client.BotService;
+import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.client.CallbackButton;
 import github.ricemonger.telegramBot.client.Callbacks;
@@ -11,19 +11,19 @@ public abstract class AbstractBotCommandExecutor {
 
     protected UpdateInfo updateInfo;
 
-    protected BotService botService;
+    protected BotInnerService botInnerService;
 
-    public final void initAndExecute(UpdateInfo updateInfo, BotService botService) {
+    public final void initAndExecute(UpdateInfo updateInfo, BotInnerService botInnerService) {
         this.updateInfo = updateInfo;
-        this.botService = botService;
+        this.botInnerService = botInnerService;
         executeCommand();
     }
 
     protected abstract void executeCommand();
 
     protected final void processFirstInput(InputState nextInputState, InputGroup nextInputGroup, String question) {
-        botService.setUserNextInputState(updateInfo.getChatId(), nextInputState);
-        botService.setUserNextInputGroup(updateInfo.getChatId(), nextInputGroup);
+        botInnerService.setUserNextInputState(updateInfo.getChatId(), nextInputState);
+        botInnerService.setUserNextInputGroup(updateInfo.getChatId(), nextInputGroup);
 
         sendText(question);
     }
@@ -35,13 +35,13 @@ public abstract class AbstractBotCommandExecutor {
 
     protected final void processLastInput(UpdateInfo updateInfo, String text) {
         saveCurrentInputAndSetNextState(InputState.BASE);
-        botService.setUserNextInputGroup(updateInfo.getChatId(), InputGroup.BASE);
+        botInnerService.setUserNextInputGroup(updateInfo.getChatId(), InputGroup.BASE);
         sendText(text);
     }
 
     protected final void saveCurrentInputAndSetNextState(InputState nextState) {
-        botService.saveUserInputOrThrow(updateInfo);
-        botService.setUserNextInputState(updateInfo.getChatId(), nextState);
+        botInnerService.saveUserInputOrThrow(updateInfo);
+        botInnerService.setUserNextInputState(updateInfo.getChatId(), nextState);
     }
 
     protected final String getUserCurrentInput(){
@@ -76,7 +76,7 @@ public abstract class AbstractBotCommandExecutor {
     }
 
     protected final void askFromInlineKeyboard(String text, int buttonsInLine, CallbackButton... buttons) {
-        botService.askFromInlineKeyboard(updateInfo, text, buttonsInLine, buttons);
+        botInnerService.askFromInlineKeyboard(updateInfo, text, buttonsInLine, buttons);
     }
 
     protected final void cancel(){
@@ -85,19 +85,19 @@ public abstract class AbstractBotCommandExecutor {
     }
 
     protected final void silentCancel(){
-        botService.setUserNextInputState(updateInfo.getChatId(), InputState.BASE);
+        botInnerService.setUserNextInputState(updateInfo.getChatId(), InputState.BASE);
 
-        botService.setUserNextInputGroup(updateInfo.getChatId(), InputGroup.BASE);
+        botInnerService.setUserNextInputGroup(updateInfo.getChatId(), InputGroup.BASE);
 
-        botService.clearUserInputs(updateInfo.getChatId());
+        botInnerService.clearUserInputs(updateInfo.getChatId());
     }
 
     protected final boolean isRegistered() {
-        return botService.isRegistered(updateInfo.getChatId());
+        return botInnerService.isRegistered(updateInfo.getChatId());
     }
 
     protected final void sendText(String answer) {
-        botService.sendText(updateInfo, answer);
+        botInnerService.sendText(updateInfo, answer);
     }
 
     protected final void executeCommandOrAskToRegister(MyFunctionalInterface command) {
@@ -110,7 +110,7 @@ public abstract class AbstractBotCommandExecutor {
 
     @Override
     public String toString() {
-        return String.format("%s(updateInfo=%s,botService=%s)", this.getClass().getSimpleName(),updateInfo, botService);
+        return String.format("%s(updateInfo=%s,botService=%s)", this.getClass().getSimpleName(),updateInfo, botInnerService);
     }
 
     @FunctionalInterface

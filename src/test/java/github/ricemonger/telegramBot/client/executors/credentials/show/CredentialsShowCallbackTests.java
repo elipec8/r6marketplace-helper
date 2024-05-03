@@ -1,6 +1,6 @@
 package github.ricemonger.telegramBot.client.executors.credentials.show;
 
-import github.ricemonger.telegramBot.client.BotService;
+import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.client.executors.MockUpdateInfos;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,17 +16,17 @@ import static org.mockito.Mockito.when;
 class CredentialsShowCallbackTests {
 
     @MockBean
-    private BotService botService;
+    private BotInnerService botInnerService;
 
     @Test
     public void initAndExecuteShouldSendListOfCredentials() {
         CredentialsShowCallback credentialsShowCallback = new CredentialsShowCallback();
-        when(botService.getCredentialsEmailsList(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(List.of("email1", "email2"));
+        when(botInnerService.getCredentialsEmailsList(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(List.of("email1", "email2"));
 
-        credentialsShowCallback.initAndExecute(MockUpdateInfos.UPDATE_INFO, botService);
+        credentialsShowCallback.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botService).getCredentialsEmailsList(MockUpdateInfos.UPDATE_INFO.getChatId());
-        verify(botService).sendText(eq(MockUpdateInfos.UPDATE_INFO),contains("email1"));
-        verify(botService).sendText(eq(MockUpdateInfos.UPDATE_INFO),contains("email2"));
+        verify(botInnerService).getCredentialsEmailsList(MockUpdateInfos.UPDATE_INFO.getChatId());
+        verify(botInnerService).sendText(eq(MockUpdateInfos.UPDATE_INFO),contains("email1"));
+        verify(botInnerService).sendText(eq(MockUpdateInfos.UPDATE_INFO),contains("email2"));
     }
 }

@@ -7,6 +7,6 @@ public class CredentialsAddPasswordInput extends AbstractBotCommandExecutor {
     protected void executeCommand() {
         processLastInput(updateInfo, "Credentials successfully provided.");
 
-        botService.addCredentialsFromUserInputs(updateInfo.getChatId());
+        botInnerService.addCredentialsFromUserInputs(updateInfo.getChatId());
     }
 }

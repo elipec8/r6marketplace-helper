@@ -5,6 +5,6 @@ import github.ricemonger.telegramBot.client.executors.AbstractBotCommandExecutor
 public class CredentialsRemoveAllConfirmedCallback extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        botService.removeUserAllCredentials(updateInfo.getChatId());
+        botInnerService.removeUserAllCredentials(updateInfo.getChatId());
     }
 }

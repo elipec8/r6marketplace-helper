@@ -10,6 +10,8 @@ import github.ricemonger.telegramBot.client.executors.cancel.SilentCancel;
 import github.ricemonger.telegramBot.client.executors.credentials.add.CredentialsAddFullOrEmailInput;
 import github.ricemonger.telegramBot.client.executors.credentials.add.CredentialsAddPasswordInput;
 import github.ricemonger.telegramBot.client.executors.credentials.remove.CredentialsRemoveOneEmailInput;
+import github.ricemonger.utils.exceptions.InvalidUserInputGroupException;
+import github.ricemonger.utils.exceptions.InvalidUserInputStateAndGroupConjunctionException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,6 +1,6 @@
 package github.ricemonger.telegramBot.client.executors.credentials.add;
 
-import github.ricemonger.telegramBot.client.BotService;
+import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.client.executors.InputGroup;
 import github.ricemonger.telegramBot.client.executors.InputState;
 import github.ricemonger.telegramBot.client.executors.MockUpdateInfos;
@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.verify;
@@ -17,18 +16,18 @@ import static org.mockito.Mockito.verify;
 class CredentialsAddCallbackTests {
 
     @MockBean
-    private BotService botService;
+    private BotInnerService botInnerService;
 
     @Test
     public void initAndExecuteShould(){
         CredentialsAddCallback credentialsAddCallback = new CredentialsAddCallback();
 
-        credentialsAddCallback.initAndExecute(MockUpdateInfos.UPDATE_INFO, botService);
+        credentialsAddCallback.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botService).setUserNextInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.CREDENTIALS_FULL_OR_EMAIL);
-        verify(botService).setUserNextInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.CREDENTIALS_ADD);
+        verify(botInnerService).setUserNextInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.CREDENTIALS_FULL_OR_EMAIL);
+        verify(botInnerService).setUserNextInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.CREDENTIALS_ADD);
 
-        verify(botService).sendText(same(MockUpdateInfos.UPDATE_INFO), anyString());
+        verify(botInnerService).sendText(same(MockUpdateInfos.UPDATE_INFO), anyString());
     }
 
 }
