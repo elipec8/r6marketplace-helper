@@ -11,7 +11,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.lang.reflect.Executable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,12 +90,27 @@ class TelegramBotClientServiceTests {
     }
 
     @Test
+    public void sendTextShouldHandleMessageToClientWithChatIdAsParam() throws Exception{
+        UpdateInfo updateInfo = new UpdateInfo();
+        updateInfo.setChatId(1L);
+        String answer = "answer";
+
+        telegramBotClientService.sendText(String.valueOf(updateInfo.getChatId()), answer);
+
+        SendMessage sendMessage = new SendMessage(String.valueOf(updateInfo.getChatId()), answer);
+
+        verify(telegramBotClient).execute(sendMessage);
+    }
+
+    @Test
     public void sendTextShouldThrowExceptionWhenClientThrowsException() throws Exception{
         UpdateInfo updateInfo = new UpdateInfo();
+        updateInfo.setChatId(1L);
         SendMessage sendMessage = new SendMessage(String.valueOf(updateInfo.getChatId()), "message");
 
         doThrow(new TelegramApiException("message")).when(telegramBotClient).execute(sendMessage);
 
         assertThrows(TelegramApiRuntimeException.class, () -> telegramBotClientService.sendText(updateInfo, "message"));
+        assertThrows(TelegramApiRuntimeException.class, () -> telegramBotClientService.sendText(String.valueOf(updateInfo.getChatId()), "message"));
     }
 }

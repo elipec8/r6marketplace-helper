@@ -1,9 +1,9 @@
 package github.ricemonger.telegramBot.updateReceiver;
 
-import github.ricemonger.marketplace.databases.neo4j.services.UserService;
+import github.ricemonger.marketplace.databases.neo4j.services.TelegramLinkedUserService;
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.telegramBot.client.executors.InputGroup;
-import github.ricemonger.telegramBot.client.executors.InputState;
+import github.ricemonger.telegramBot.executors.InputGroup;
+import github.ricemonger.telegramBot.executors.InputState;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 public class UpdateToUpdateInfoMapperTests {
 
     @MockBean
-    private UserService userService;
+    private TelegramLinkedUserService telegramLinkedUserService;
 
     @Autowired
     private UpdateToUpdateInfoMapper updateToUpdateInfoMapper;
@@ -61,23 +61,23 @@ public class UpdateToUpdateInfoMapperTests {
 
     @Test
     public void updateInfoShouldHaveRightFieldsFromUpdateAndUserService(){
-        when(userService.getUserInputStateOrNull(1L)).thenReturn(InputState.CREDENTIALS_PASSWORD);
-        when(userService.getUserInputGroupOrNull(1L)).thenReturn(InputGroup.CREDENTIALS_ADD);
+        when(telegramLinkedUserService.getUserInputState(1L)).thenReturn(InputState.CREDENTIALS_PASSWORD);
+        when(telegramLinkedUserService.getUserInputGroup(1L)).thenReturn(InputGroup.CREDENTIALS_ADD);
 
         assertEquals(updateToUpdateInfoMapper.map(UPDATE), UPDATE_INFO);
 
-        verify(userService).getUserInputStateOrNull(1L);
-        verify(userService).getUserInputGroupOrNull(1L);
+        verify(telegramLinkedUserService).getUserInputState(1L);
+        verify(telegramLinkedUserService).getUserInputGroup(1L);
     }
 
     @Test
     public void updateInfoShouldGetBaseInputStateAndInputGroupIfUserServiceReturnsNull(){
-        when(userService.getUserInputStateOrNull(1L)).thenReturn(null);
-        when(userService.getUserInputGroupOrNull(1L)).thenReturn(null);
+        when(telegramLinkedUserService.getUserInputState(1L)).thenReturn(null);
+        when(telegramLinkedUserService.getUserInputGroup(1L)).thenReturn(null);
 
         assertEquals(updateToUpdateInfoMapper.map(UPDATE), UPDATE_INFO_BASE_INPUTS);
 
-        verify(userService).getUserInputStateOrNull(1L);
-        verify(userService).getUserInputGroupOrNull(1L);
+        verify(telegramLinkedUserService).getUserInputState(1L);
+        verify(telegramLinkedUserService).getUserInputGroup(1L);
     }
 }

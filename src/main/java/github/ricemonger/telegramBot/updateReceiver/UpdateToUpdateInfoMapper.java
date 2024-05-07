@@ -1,9 +1,10 @@
 package github.ricemonger.telegramBot.updateReceiver;
 
-import github.ricemonger.marketplace.databases.neo4j.services.UserService;
+import github.ricemonger.marketplace.databases.neo4j.services.TelegramLinkedUserService;
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.telegramBot.client.executors.InputGroup;
-import github.ricemonger.telegramBot.client.executors.InputState;
+import github.ricemonger.telegramBot.executors.InputGroup;
+import github.ricemonger.telegramBot.executors.InputState;
+import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -12,7 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @RequiredArgsConstructor
 public class UpdateToUpdateInfoMapper {
 
-    private final UserService userService;
+    private final TelegramLinkedUserService telegramLinkedUserService;
 
     public UpdateInfo map(Update update) {
         UpdateInfo updateInfo = new UpdateInfo();
@@ -30,8 +31,20 @@ public class UpdateToUpdateInfoMapper {
             updateInfo.setCallbackQueryData(update.getCallbackQuery().getData());
         }
 
-        updateInfo.setInputState(userService.getUserInputStateOrNull(updateInfo.getChatId()));
-        updateInfo.setInputGroup(userService.getUserInputGroupOrNull(updateInfo.getChatId()));
+        InputState inputState;
+        InputGroup inputGroup;
+
+        try{
+            inputState = telegramLinkedUserService.getUserInputState(updateInfo.getChatId());
+            inputGroup = telegramLinkedUserService.getUserInputGroup(updateInfo.getChatId());
+        }
+        catch(TelegramUserDoesntExistException e){
+            inputState = InputState.BASE;
+            inputGroup = InputGroup.BASE;
+        }
+
+        updateInfo.setInputState(inputState);
+        updateInfo.setInputGroup(inputGroup);
 
         if (updateInfo.getInputState() == null) {
             updateInfo.setInputState(InputState.BASE);

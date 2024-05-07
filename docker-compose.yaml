@@ -9,8 +9,6 @@ services:
      - "7687:7687"
     environment:
      - NEO4J_AUTH=neo4j/password
-     - NEO4J_initial.dbms.default_database=r6s-helper
-     - NEO4J_initials.dbms.
     volumes:
      - neo4j-data:/data
      - neo4j-logs:/logs
@@ -19,6 +17,22 @@ services:
     networks:
      - neo4j-net
     restart: always
+
+ neo4j-test:
+   container_name: r6helper-neo4j-test
+   image: neo4j:ubi9
+   ports:
+     - "7475:7474"
+     - "7688:7687"
+   environment:
+     - NEO4J_AUTH=neo4j/password
+   volumes:
+     - test-neo4j-data:/data
+     - test-neo4j-logs:/logs
+     - test-neo4j-import:/var/lib/neo4j/import
+     - test-neo4j-plugins:/plugins
+   networks:
+     - neo4j-net
 
  redis:
     container_name: r6helper-redis
@@ -30,6 +44,16 @@ services:
     networks:
      - redis-net
     restart: always
+
+ redis-test:
+   container_name: r6helper-redis-test
+   image: redis:7.2.4-bookworm
+   ports:
+     - "6380:6379"
+   volumes:
+     - test-redis-data:/data
+   networks:
+     - redis-net
 
  zipkin:
     container_name: r6helper-zipkin
@@ -51,3 +75,9 @@ volumes:
  neo4j-import:
  neo4j-plugins:
  redis-data:
+
+ test-neo4j-data:
+ test-neo4j-logs:
+ test-neo4j-import:
+ test-neo4j-plugins:
+ test-redis-data:

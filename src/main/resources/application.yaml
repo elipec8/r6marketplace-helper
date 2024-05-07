@@ -35,12 +35,10 @@ spring:
     import:
       - auth-values.yaml
   data:
-    neo4j:
-      database: r6s-helper
     redis:
-      database: 0
       repositories:
         enabled: false
+      url: redis://localhost:6379
   neo4j:
     uri: bolt://localhost:7687
     authentication:
@@ -54,8 +52,14 @@ app:
 logging:
   level:
     github: debug
+    org:
+      springframework:
+        data:
+          neo4j:
+            cypher:
+              unrecognized: off
   file:
-    name: ./${spring.application.name}/logs/${spring.application.name}.log
+    name: ./logs/prod/${spring.application.name}.log
 
 management:
   tracing:

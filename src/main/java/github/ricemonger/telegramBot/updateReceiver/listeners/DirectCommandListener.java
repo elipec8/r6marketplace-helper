@@ -1,11 +1,11 @@
 package github.ricemonger.telegramBot.updateReceiver.listeners;
 
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.telegramBot.client.executors.ExecutorsService;
-import github.ricemonger.telegramBot.client.executors.cancel.Cancel;
-import github.ricemonger.telegramBot.client.executors.credentials.CredentialsDirect;
-import github.ricemonger.telegramBot.client.executors.help.HelpDirect;
-import github.ricemonger.telegramBot.client.executors.start.StartDirect;
+import github.ricemonger.telegramBot.executors.ExecutorsService;
+import github.ricemonger.telegramBot.executors.cancel.Cancel;
+import github.ricemonger.telegramBot.executors.credentials.CredentialsDirect;
+import github.ricemonger.telegramBot.executors.help.HelpDirect;
+import github.ricemonger.telegramBot.executors.start.StartDirect;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -8,6 +8,7 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Node("BuyOrders")
@@ -19,13 +20,10 @@ public class BuyOrdersEntity {
     @Id
     private String id;
 
-    @Relationship(value = "OWNER", direction = Relationship.Direction.INCOMING)
+    @Relationship(value = "CONTROLS", direction = Relationship.Direction.INCOMING)
     private UbiUserEntity user;
-
-    @Relationship(value = "TRANSACTIONS", direction = Relationship.Direction.OUTGOING)
-    private List<TransactionEntity> transaction;
 
     private int currentAmount;
 
-    private int createdToday;
+    private int finishedIn24h;
 }

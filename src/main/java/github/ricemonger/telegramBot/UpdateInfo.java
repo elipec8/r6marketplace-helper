@@ -1,7 +1,7 @@
 package github.ricemonger.telegramBot;
 
-import github.ricemonger.telegramBot.client.executors.InputGroup;
-import github.ricemonger.telegramBot.client.executors.InputState;
+import github.ricemonger.telegramBot.executors.InputGroup;
+import github.ricemonger.telegramBot.executors.InputState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
