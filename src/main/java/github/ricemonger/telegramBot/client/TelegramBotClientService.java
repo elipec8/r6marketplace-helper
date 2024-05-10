@@ -49,8 +49,12 @@ public class TelegramBotClientService {
         return new InlineKeyboardMarkup(inlineRowsList);
     }
 
-    public void sendText(UpdateInfo updateInfo, String answer) {
-        SendMessage sendMessage = new SendMessage(String.valueOf(updateInfo.getChatId()), answer);
+    public void sendText(UpdateInfo updateInfo, String message) {
+        sendText(String.valueOf(updateInfo.getChatId()), message);
+    }
+
+    public void sendText(String chatId, String message) {
+        SendMessage sendMessage = new SendMessage(String.valueOf(chatId), message);
         executeMessageOnBot(sendMessage);
     }
 

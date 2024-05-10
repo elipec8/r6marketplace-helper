@@ -1,9 +1,9 @@
 package github.ricemonger.telegramBot.client;
 
-import github.ricemonger.marketplace.databases.neo4j.services.UserService;
+import github.ricemonger.marketplace.databases.neo4j.services.TelegramLinkedUserService;
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.telegramBot.client.executors.InputGroup;
-import github.ricemonger.telegramBot.client.executors.InputState;
+import github.ricemonger.telegramBot.executors.InputGroup;
+import github.ricemonger.telegramBot.executors.InputState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class BotInnerService {
 
     private final TelegramBotClientService telegramBotClientService;
 
-    private final UserService userService;
+    private final TelegramLinkedUserService telegramLinkedUserService;
 
     public void askFromInlineKeyboard(UpdateInfo updateInfo, String text, int buttonsInLine, CallbackButton[] buttons) {
         telegramBotClientService.askFromInlineKeyboard(updateInfo, text, buttonsInLine, buttons);
@@ -26,11 +26,11 @@ public class BotInnerService {
     }
 
     public boolean isRegistered(Long chatId) {
-        return userService.isTelegramUserRegistered(chatId);
+        return telegramLinkedUserService.isTelegramUserRegistered(chatId);
     }
 
     public void registerUser(Long chatId) {
-        userService.registerTelegramUser(chatId);
+        telegramLinkedUserService.registerTelegramUser(chatId);
     }
 
     public void addCredentialsFromUserInputs(Long chatId) {
@@ -39,18 +39,18 @@ public class BotInnerService {
         if (fullOrEmail.contains(":")) {
             String email = fullOrEmail.substring(0, fullOrEmail.indexOf(":"));
             String password = fullOrEmail.substring(fullOrEmail.indexOf(":") + 1);
-            userService.addCredentials(chatId, email, password);
+            telegramLinkedUserService.addCredentials(chatId, email, password);
         }
         else{
             String password = getUserInputByState(chatId, InputState.CREDENTIALS_PASSWORD);
-            userService.addCredentials(chatId, fullOrEmail, password);
+            telegramLinkedUserService.addCredentials(chatId, fullOrEmail, password);
         }
 
         clearUserInputs(chatId);
     }
 
     public void removeCredentialsByUserInputs(Long chatId) {
-        userService.removeCredentialsByUserInputs(chatId);
+        telegramLinkedUserService.removeCredentialsByUserInputs(chatId);
 
         clearUserInputs(chatId);
     }
@@ -65,30 +65,30 @@ public class BotInnerService {
         } else {
             throw new IllegalStateException("UpdateInfo has no message or callback query");
         }
-        userService.saveUserInput(updateInfo.getChatId(),updateInfo.getInputState(), userInput);
+        telegramLinkedUserService.saveUserInput(updateInfo.getChatId(),updateInfo.getInputState(), userInput);
     }
 
     public void clearUserInputs(Long chatId) {
-        userService.clearUserInputs(chatId);
+        telegramLinkedUserService.clearUserInputs(chatId);
     }
 
     public void setUserNextInputState(Long chatId, InputState inputState) {
-        userService.setUserNextInput(chatId, inputState);
+        telegramLinkedUserService.setUserNextInputState(chatId, inputState);
     }
 
     public void setUserNextInputGroup(Long chatId, InputGroup inputGroup) {
-        userService.setUserNextInputGroup(chatId, inputGroup);
+        telegramLinkedUserService.setUserNextInputGroup(chatId, inputGroup);
     }
 
     public String getUserInputByState(Long chatId, InputState inputState){
-        return userService.getUserInputByState(chatId, inputState);
+        return telegramLinkedUserService.getUserInputByStateOrNull(chatId, inputState);
     }
 
     public void removeUserAllCredentials(Long chatId) {
-        userService.removeAllCredentials(chatId);
+        telegramLinkedUserService.removeAllCredentials(chatId);
     }
 
     public List<String> getCredentialsEmailsList(Long chatId) {
-        return userService.getCredentialsEmailsList(chatId);
+        return telegramLinkedUserService.getCredentialsEmailsList(chatId);
     }
 }

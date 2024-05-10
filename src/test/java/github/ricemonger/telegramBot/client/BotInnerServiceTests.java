@@ -1,9 +1,9 @@
 package github.ricemonger.telegramBot.client;
 
-import github.ricemonger.marketplace.databases.neo4j.services.UserService;
+import github.ricemonger.marketplace.databases.neo4j.services.TelegramLinkedUserService;
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.telegramBot.client.executors.InputGroup;
-import github.ricemonger.telegramBot.client.executors.InputState;
+import github.ricemonger.telegramBot.executors.InputGroup;
+import github.ricemonger.telegramBot.executors.InputState;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +23,7 @@ public class BotInnerServiceTests {
     public TelegramBotClientService telegramBotClientService;
 
     @MockBean
-    public UserService userService;
+    public TelegramLinkedUserService telegramLinkedUserService;
 
     @Autowired
     public BotInnerService botInnerService;
@@ -56,18 +56,18 @@ public class BotInnerServiceTests {
 
         botInnerService.isRegistered(chatId);
 
-        verify(userService).isTelegramUserRegistered(chatId);
+        verify(telegramLinkedUserService).isTelegramUserRegistered(chatId);
     }
 
     @Test
     public void isRegisteredShouldReturnServiceAnswerIfTrue() {
         Long chatId = 1L;
 
-        when(userService.isTelegramUserRegistered(chatId)).thenReturn(true);
+        when(telegramLinkedUserService.isTelegramUserRegistered(chatId)).thenReturn(true);
 
         assertTrue(botInnerService.isRegistered(chatId));
 
-        when(userService.isTelegramUserRegistered(chatId)).thenReturn(true);
+        when(telegramLinkedUserService.isTelegramUserRegistered(chatId)).thenReturn(true);
 
         assertTrue(botInnerService.isRegistered(chatId));
     }
@@ -78,32 +78,32 @@ public class BotInnerServiceTests {
 
         botInnerService.registerUser(chatId);
 
-        verify(userService).registerTelegramUser(chatId);
+        verify(telegramLinkedUserService).registerTelegramUser(chatId);
     }
 
     @Test
     public void addCredentialsFromUserInputsShouldHandleToServiceAndAddIfFull() {
         Long chatId = 1L;
-        when(userService.getUserInputByState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn("email:password");
+        when(telegramLinkedUserService.getUserInputByStateOrNull(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn("email:password");
 
         botInnerService.addCredentialsFromUserInputs(chatId);
 
-        verify(userService).addCredentials(chatId, "email", "password");
+        verify(telegramLinkedUserService).addCredentials(chatId, "email", "password");
 
-        verify(userService).clearUserInputs(chatId);
+        verify(telegramLinkedUserService).clearUserInputs(chatId);
     }
 
     @Test
     public void addCredentialsFromUserInputsShouldHandleToServiceAndAddIfSeparated() {
         Long chatId = 1L;
-        when(userService.getUserInputByState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn("email");
-        when(userService.getUserInputByState(chatId, InputState.CREDENTIALS_PASSWORD)).thenReturn("password");
+        when(telegramLinkedUserService.getUserInputByStateOrNull(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn("email");
+        when(telegramLinkedUserService.getUserInputByStateOrNull(chatId, InputState.CREDENTIALS_PASSWORD)).thenReturn("password");
 
         botInnerService.addCredentialsFromUserInputs(chatId);
 
-        verify(userService).addCredentials(chatId, "email", "password");
+        verify(telegramLinkedUserService).addCredentials(chatId, "email", "password");
 
-        verify(userService).clearUserInputs(chatId);
+        verify(telegramLinkedUserService).clearUserInputs(chatId);
     }
 
     @Test
@@ -114,7 +114,7 @@ public class BotInnerServiceTests {
 
         botInnerService.saveUserInputOrThrow(updateInfo);
 
-        verify(userService).saveUserInput(updateInfo.getChatId(), updateInfo.getInputState(), "userInput");
+        verify(telegramLinkedUserService).saveUserInput(updateInfo.getChatId(), updateInfo.getInputState(), "userInput");
     }
 
     @Test
@@ -123,7 +123,7 @@ public class BotInnerServiceTests {
 
         botInnerService.clearUserInputs(chatId);
 
-        verify(userService).clearUserInputs(chatId);
+        verify(telegramLinkedUserService).clearUserInputs(chatId);
     }
 
     @Test
@@ -132,7 +132,7 @@ public class BotInnerServiceTests {
 
         botInnerService.setUserNextInputState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL);
 
-        verify(userService).setUserNextInput(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL);
+        verify(telegramLinkedUserService).setUserNextInputState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL);
     }
 
     @Test
@@ -141,7 +141,7 @@ public class BotInnerServiceTests {
 
         botInnerService.setUserNextInputGroup(chatId, InputGroup.CREDENTIALS_ADD);
 
-        verify(userService).setUserNextInputGroup(chatId, InputGroup.CREDENTIALS_ADD);
+        verify(telegramLinkedUserService).setUserNextInputGroup(chatId, InputGroup.CREDENTIALS_ADD);
     }
 
     @Test
@@ -150,14 +150,14 @@ public class BotInnerServiceTests {
 
         botInnerService.getUserInputByState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL);
 
-        verify(userService).getUserInputByState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL);
+        verify(telegramLinkedUserService).getUserInputByStateOrNull(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL);
     }
 
     @Test
     public void getUserInputByStateShouldReturnServiceAnswer() {
         Long chatId = 1L;
 
-        when(userService.getUserInputByState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn("userInput");
+        when(telegramLinkedUserService.getUserInputByStateOrNull(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn("userInput");
 
         assertEquals("userInput", botInnerService.getUserInputByState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL));
     }
@@ -168,7 +168,7 @@ public class BotInnerServiceTests {
 
         botInnerService.removeCredentialsByUserInputs(chatId);
 
-        verify(userService).removeCredentialsByUserInputs(chatId);
+        verify(telegramLinkedUserService).removeCredentialsByUserInputs(chatId);
     }
 
     @Test
@@ -177,7 +177,7 @@ public class BotInnerServiceTests {
 
         botInnerService.removeUserAllCredentials(chatId);
 
-        verify(userService).removeAllCredentials(chatId);
+        verify(telegramLinkedUserService).removeAllCredentials(chatId);
     }
 
     @Test
@@ -186,14 +186,14 @@ public class BotInnerServiceTests {
 
         botInnerService.getCredentialsEmailsList(chatId);
 
-        verify(userService).getCredentialsEmailsList(chatId);
+        verify(telegramLinkedUserService).getCredentialsEmailsList(chatId);
     }
 
     @Test
     public void getCredentialsEmailsListShouldReturnServiceAnswer() {
         Long chatId = 1L;
 
-        when(userService.getCredentialsEmailsList(chatId)).thenReturn(List.of("email1", "email2"));
+        when(telegramLinkedUserService.getCredentialsEmailsList(chatId)).thenReturn(List.of("email1", "email2"));
 
         assertEquals(List.of("email1", "email2"), botInnerService.getCredentialsEmailsList(chatId));
     }

@@ -34,34 +34,34 @@ spring:
   config:
     import:
       - auth-values.yaml
-
-# Test values
-
   data:
-    neo4j:
-      database: r6s-helper-test
     redis:
-      database: 14
       repositories:
         enabled: false
+      url: redis://localhost:6379 # test value
 
   neo4j:
-    uri: bolt://localhost:7687
+    uri: bolt://localhost:7688 # test value
     authentication:
       username: ${NEO4J_AUTH_USERNAME:neo4j}
       password: ${NEO4J_AUTH_PASSWORD:password}
 
 app:
   scheduling:
-    enabled: false
+    enabled: false # test value
 
-# Test values
 
 logging:
   level:
-    github: debug
+    github: trace
+    org:
+      springframework:
+        data:
+          neo4j:
+            cypher:
+              unrecognized: off
   file:
-    name: ./${spring.application.name}/logs/${spring.application.name}.log
+    name: ./logs/test/${spring.application.name}.log # test value
 
 management:
   tracing:

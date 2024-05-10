@@ -7,22 +7,6 @@ import java.util.List;
 
 public class EntitiesStatics {
 
-    public final static UbiCredentialsEntity UBI_CREDENTIALS = new UbiCredentialsEntity("1", "2", "3", "4", "5");
-
-    public final static UbiCredentialsEntity UBI_CREDENTIALS_SAME = new UbiCredentialsEntity("1", "2", "3", "4", "5");
-
-    public final static UbiCredentialsEntity UBI_CREDENTIALS_ALT_ID = new UbiCredentialsEntity("99", "2", "3", "4", "5");
-
-    public final static UbiCredentialsEntity UBI_CREDENTIALS_ALT_EMAIL = new UbiCredentialsEntity("1", "99", "3", "4", "5");
-
-    public final static UbiCredentialsEntity UBI_CREDENTIALS_ALT_PASSWORD = new UbiCredentialsEntity("1", "2", "99", "4", "5");
-
-    public final static UbiCredentialsEntity UBI_CREDENTIALS_ALT_UBI_SESSION_ID = new UbiCredentialsEntity("1", "2", "3", "99", "5");
-
-    public final static UbiCredentialsEntity UBI_CREDENTIALS_ALT_UBI_AUTH_TICKET = new UbiCredentialsEntity("1", "2", "3", "4", "99");
-
-
-
     public final static SellStatsEntity SELL_STATS = new SellStatsEntity("1", 2, 3, 4);
 
     public final static SellStatsEntity SELL_STATS_SAME = new SellStatsEntity("1", 2, 3, 4);

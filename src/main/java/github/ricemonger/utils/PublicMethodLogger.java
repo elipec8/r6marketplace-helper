@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class PublicMethodLogger {
 
-    @Around("execution(* github.ricemonger.marketplace.*..*.*(..))")
+    @Around("execution(* github.ricemonger.*..*.*(..))")
     public Object logMethodCall(ProceedingJoinPoint joinPoint) throws Throwable {
         String className = joinPoint.getTarget().getClass().getSimpleName();
         String methodName = ((MethodSignature) joinPoint.getSignature()).getMethod().getName();
