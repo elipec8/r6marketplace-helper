@@ -53,7 +53,7 @@ app:
 
 logging:
   level:
-    github: debug
+    github: trace
     org:
       springframework:
         data:

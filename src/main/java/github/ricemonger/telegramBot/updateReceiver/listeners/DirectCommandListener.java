@@ -31,6 +31,5 @@ public class DirectCommandListener {
 
             default -> throw new IllegalStateException("Unexpected message text value: " + text);
         }
-
     }
 }

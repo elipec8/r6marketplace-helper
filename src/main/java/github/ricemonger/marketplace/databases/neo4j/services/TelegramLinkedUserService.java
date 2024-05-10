@@ -3,7 +3,9 @@ package github.ricemonger.marketplace.databases.neo4j.services;
 import github.ricemonger.marketplace.databases.neo4j.entities.TelegramInputValuesEntity;
 import github.ricemonger.marketplace.databases.neo4j.entities.TelegramLinkedUserEntity;
 import github.ricemonger.marketplace.databases.neo4j.entities.UbiUserEntity;
+import github.ricemonger.marketplace.databases.neo4j.repositories.TelegramInputValuesRepository;
 import github.ricemonger.marketplace.databases.neo4j.repositories.TelegramLinkedUserRepository;
+import github.ricemonger.marketplace.databases.neo4j.repositories.UbiUserRepository;
 import github.ricemonger.telegramBot.executors.InputGroup;
 import github.ricemonger.telegramBot.executors.InputState;
 import github.ricemonger.utils.exceptions.AesPasswordEncoder;
@@ -14,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -24,6 +25,10 @@ import java.util.NoSuchElementException;
 public class TelegramLinkedUserService {
 
     private final TelegramLinkedUserRepository telegramLinkedUserRepository;
+
+    private final UbiUserRepository ubiUserRepository;
+
+    private final TelegramInputValuesRepository telegramInputValuesRepository;
 
     private final AesPasswordEncoder AESPasswordEncoder;
 
@@ -74,7 +79,7 @@ public class TelegramLinkedUserService {
 
     public void addCredentials(Long chatId, String email, String password) throws TelegramUserDoesntExistException {
         TelegramLinkedUserEntity telegramLinkedUserEntity = getTelegramUserOrThrow(chatId);
-        List<UbiUserEntity> credentialsList = new ArrayList<>(telegramLinkedUserEntity.getLinkedUbisoftAccounts());
+        List<UbiUserEntity> credentialsList = telegramLinkedUserEntity.getLinkedUbisoftAccounts();
 
         credentialsList.add(new UbiUserEntity(email, AESPasswordEncoder.getEncodedPassword(password)));
 
@@ -86,12 +91,12 @@ public class TelegramLinkedUserService {
     public void saveUserInput(Long chatId, InputState inputState, String userInput) throws TelegramUserDoesntExistException {
 
         TelegramLinkedUserEntity telegramLinkedUserEntity = getTelegramUserOrThrow(chatId);
-        List<TelegramInputValuesEntity> inputValues = new ArrayList<>(telegramLinkedUserEntity.getInputValues());
+        List<TelegramInputValuesEntity> inputValues = telegramLinkedUserEntity.getInputValues();
 
         for (TelegramInputValuesEntity value : inputValues) {
             if (value.getInputState().equals(inputState)) {
                 value.setValue(userInput);
-                log.info("Input value updated, instead of adding new one.");
+                log.info("Input value updated, instead of adding new one. For user-{} and state-{}", chatId, inputState);
                 return;
             }
         }
@@ -105,33 +110,21 @@ public class TelegramLinkedUserService {
     public void clearUserInputs(Long chatId) throws TelegramUserDoesntExistException {
         TelegramLinkedUserEntity telegramLinkedUserEntity = getTelegramUserOrThrow(chatId);
 
-        telegramLinkedUserEntity.setInputValues(new ArrayList<>());
-
-        telegramLinkedUserRepository.save(telegramLinkedUserEntity);
+        telegramInputValuesRepository.deleteAllByOwnerChatId(String.valueOf(chatId));
     }
 
     public void removeCredentialsByUserInputs(Long chatId) throws TelegramUserDoesntExistException {
         TelegramLinkedUserEntity telegramLinkedUserEntity = getTelegramUserOrThrow(chatId);
-        List<UbiUserEntity> credentialsList = new ArrayList<>(telegramLinkedUserEntity.getLinkedUbisoftAccounts());
 
         String emailToRemove = getInputValueByState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL);
-        credentialsList.removeIf(ubiUserEntity -> ubiUserEntity.getEmail().equals(emailToRemove));
 
-        telegramLinkedUserEntity.setLinkedUbisoftAccounts(credentialsList);
-
-        telegramLinkedUserRepository.save(telegramLinkedUserEntity);
+        ubiUserRepository.deleteByLinkedTelegramUserChatIdAndEmail(String.valueOf(chatId), emailToRemove);
     }
 
     public void removeAllCredentials(Long chatId) throws TelegramUserDoesntExistException {
         TelegramLinkedUserEntity telegramLinkedUserEntity = getTelegramUserOrThrow(chatId);
 
-        List<UbiUserEntity> credentialsList = new ArrayList<>(telegramLinkedUserEntity.getLinkedUbisoftAccounts());
-
-        credentialsList.clear();
-
-        telegramLinkedUserEntity.setLinkedUbisoftAccounts(credentialsList);
-
-        telegramLinkedUserRepository.save(telegramLinkedUserEntity);
+        ubiUserRepository.deleteAllByLinkedTelegramUserChatId(String.valueOf(chatId));
     }
 
     public List<String> getCredentialsEmailsList(Long chatId) throws TelegramUserDoesntExistException {
@@ -151,10 +144,14 @@ public class TelegramLinkedUserService {
                 .toList();
     }
 
+    public TelegramLinkedUserEntity getTelegramUser(Long chatId) throws TelegramUserDoesntExistException{
+        return getTelegramUserOrThrow(chatId);
+    }
+
     private String getInputValueByState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException {
         TelegramLinkedUserEntity telegramLinkedUserEntity = getTelegramUserOrThrow(chatId);
 
-        List<TelegramInputValuesEntity> inputValues = new ArrayList<>(telegramLinkedUserEntity.getInputValues());
+        List<TelegramInputValuesEntity> inputValues = telegramLinkedUserEntity.getInputValues();
 
         for (TelegramInputValuesEntity value : inputValues) {
             if (value.getInputState().equals(inputState)) {

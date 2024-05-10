@@ -3,6 +3,8 @@ package github.ricemonger.marketplace.databases.neo4j.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
@@ -22,6 +24,7 @@ public class UbiUserEntity {
     }
 
     @Id
+    @GeneratedValue
     private String id;
 
     private String ubiProfileId;
@@ -33,6 +36,10 @@ public class UbiUserEntity {
     private String ubiSessionId;
 
     private String ubiAuthTicket;
+
+    @Relationship(value = "LINKED_ACCOUNTS", direction = Relationship.Direction.INCOMING)
+    @ToString.Exclude
+    private TelegramLinkedUserEntity linkedTelegramUser;
 
     @Relationship(value = "OWNS", direction = Relationship.Direction.OUTGOING)
     private List<ItemEntity> ownedItems = new ArrayList<>();

@@ -3,7 +3,9 @@ package github.ricemonger.marketplace.databases.neo4j.services;
 import github.ricemonger.marketplace.databases.neo4j.entities.TelegramInputValuesEntity;
 import github.ricemonger.marketplace.databases.neo4j.entities.TelegramLinkedUserEntity;
 import github.ricemonger.marketplace.databases.neo4j.entities.UbiUserEntity;
+import github.ricemonger.marketplace.databases.neo4j.repositories.TelegramInputValuesRepository;
 import github.ricemonger.marketplace.databases.neo4j.repositories.TelegramLinkedUserRepository;
+import github.ricemonger.marketplace.databases.neo4j.repositories.UbiUserRepository;
 import github.ricemonger.telegramBot.executors.InputGroup;
 import github.ricemonger.telegramBot.executors.InputState;
 import github.ricemonger.utils.exceptions.AesPasswordEncoder;
@@ -29,6 +31,12 @@ class TelegramLinkedUserServiceTests {
     @SpyBean
     private TelegramLinkedUserRepository telegramLinkedUserRepository;
 
+    @SpyBean
+    private UbiUserRepository ubiUserRepository;
+
+    @SpyBean
+    private TelegramInputValuesRepository telegramInputValuesRepository;
+
 
     @Autowired
     private TelegramLinkedUserService telegramLinkedUserService;
@@ -39,6 +47,7 @@ class TelegramLinkedUserServiceTests {
     @BeforeEach
     public void setUp() {
         telegramLinkedUserRepository.deleteAll();
+
     }
 
     @AfterEach
@@ -229,13 +238,16 @@ class TelegramLinkedUserServiceTests {
     @Test
     public void clearUserInputsShouldClearInputsIfUserExists() {
         TelegramLinkedUserEntity telegramLinkedUserEntity = new TelegramLinkedUserEntity();
+        telegramLinkedUserEntity.setChatId("123");
         telegramLinkedUserEntity.setInputValues(List.of(new TelegramInputValuesEntity(InputState.CREDENTIALS_FULL_OR_EMAIL, "email")));
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserEntity));
+        telegramLinkedUserRepository.save(telegramLinkedUserEntity);
 
         telegramLinkedUserService.clearUserInputs(123L);
 
-        assertTrue(telegramLinkedUserEntity.getInputValues().isEmpty());
-        verify(telegramLinkedUserRepository).save(telegramLinkedUserEntity);
+        TelegramLinkedUserEntity resultEntity = telegramLinkedUserRepository.findById("123").get();
+
+        assertTrue(resultEntity.getInputValues().isEmpty());
+        verify(telegramInputValuesRepository).deleteAllByOwnerChatId("123");
     }
 
     @Test
@@ -248,15 +260,18 @@ class TelegramLinkedUserServiceTests {
     @Test
     public void removeCredentialsByUserInputsShouldRemoveCredentialsIfUserExists() {
         TelegramLinkedUserEntity telegramLinkedUserEntity = new TelegramLinkedUserEntity();
+        telegramLinkedUserEntity.setChatId("123");
         telegramLinkedUserEntity.setLinkedUbisoftAccounts(List.of(new UbiUserEntity("email", "password")));
         telegramLinkedUserEntity.setInputValues(List.of(new TelegramInputValuesEntity(InputState.CREDENTIALS_FULL_OR_EMAIL, "email")));
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserEntity));
+        telegramLinkedUserRepository.save(telegramLinkedUserEntity);
 
         telegramLinkedUserService.removeCredentialsByUserInputs(123L);
 
-        assertTrue(telegramLinkedUserEntity.getLinkedUbisoftAccounts().isEmpty());
+        TelegramLinkedUserEntity resultEntity = telegramLinkedUserRepository.findById("123").get();
 
-        verify(telegramLinkedUserRepository).save(telegramLinkedUserEntity);
+        assertTrue(resultEntity.getLinkedUbisoftAccounts().isEmpty());
+
+        verify(ubiUserRepository).deleteByLinkedTelegramUserChatIdAndEmail("123", "email");
     }
 
     @Test
@@ -269,14 +284,18 @@ class TelegramLinkedUserServiceTests {
     @Test
     public void removeAllCredentialsShouldRemoveAllCredentialsIfUserExists() {
         TelegramLinkedUserEntity telegramLinkedUserEntity = new TelegramLinkedUserEntity();
+        telegramLinkedUserEntity.setChatId("123");
         telegramLinkedUserEntity.setLinkedUbisoftAccounts(List.of(new UbiUserEntity("email", "password")));
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserEntity));
+        telegramLinkedUserEntity.setInputValues(List.of(new TelegramInputValuesEntity(InputState.CREDENTIALS_FULL_OR_EMAIL, "email")));
+        telegramLinkedUserRepository.save(telegramLinkedUserEntity);
 
         telegramLinkedUserService.removeAllCredentials(123L);
 
-        assertTrue(telegramLinkedUserEntity.getLinkedUbisoftAccounts().isEmpty());
+        TelegramLinkedUserEntity resultEntity = telegramLinkedUserRepository.findById("123").get();
 
-        verify(telegramLinkedUserRepository).save(telegramLinkedUserEntity);
+        assertTrue(resultEntity.getLinkedUbisoftAccounts().isEmpty());
+
+        verify(ubiUserRepository).deleteAllByLinkedTelegramUserChatId("123");
     }
 
     @Test
