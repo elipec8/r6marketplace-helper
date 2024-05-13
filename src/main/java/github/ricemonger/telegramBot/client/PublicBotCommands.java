@@ -10,7 +10,8 @@ public class PublicBotCommands {
     public final static List<BotCommand> botCommands = List.of(
             new BotCommand("/start", "Start the bot"),
             new BotCommand("/help", "Get help"),
-            new BotCommand("/credentials", "credentials operations")
+            new BotCommand("/credentials", "credentials operations"),
+            new BotCommand("/marketplace", "marketplace operations")
     );
 
     public static String getHelpText() {

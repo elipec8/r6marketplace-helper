@@ -19,4 +19,8 @@ public class Callbacks {
     public static final String CREDENTIALS_REMOVE_ALL = "CREDENTIALS_REMOVE_ALL";
 
     public static final String CREDENTIALS_REMOVE_ALL_CONFIRMED = "CREDENTIALS_REMOVE_ALL_CONFIRMED";
+
+    public static final String SPECULATIVE_ITEMS = "SPECULATIVE_ITEMS";
+
+    public static final String SPECULATIVE_ITEMS_SHOW_ALL = "SPECULATIVE_ITEMS_SHOW_ALL";
 }

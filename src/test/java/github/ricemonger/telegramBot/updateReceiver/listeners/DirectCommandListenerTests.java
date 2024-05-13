@@ -5,6 +5,7 @@ import github.ricemonger.telegramBot.executors.ExecutorsService;
 import github.ricemonger.telegramBot.executors.cancel.Cancel;
 import github.ricemonger.telegramBot.executors.credentials.CredentialsDirect;
 import github.ricemonger.telegramBot.executors.help.HelpDirect;
+import github.ricemonger.telegramBot.executors.marketplace.MarketplaceDirect;
 import github.ricemonger.telegramBot.executors.start.StartDirect;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,16 @@ class DirectCommandListenerTests {
         directCommandListener.handleUpdate(updateInfo);
 
         verify(executorsService).execute(CredentialsDirect.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdateShouldExecuteMarketplaceOnItsCommand() {
+        UpdateInfo updateInfo = new UpdateInfo();
+        updateInfo.setMessageText("/marketplace");
+
+        directCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(MarketplaceDirect.class, updateInfo);
     }
 
     @Test

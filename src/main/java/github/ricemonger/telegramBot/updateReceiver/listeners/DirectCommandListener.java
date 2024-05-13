@@ -5,6 +5,7 @@ import github.ricemonger.telegramBot.executors.ExecutorsService;
 import github.ricemonger.telegramBot.executors.cancel.Cancel;
 import github.ricemonger.telegramBot.executors.credentials.CredentialsDirect;
 import github.ricemonger.telegramBot.executors.help.HelpDirect;
+import github.ricemonger.telegramBot.executors.marketplace.MarketplaceDirect;
 import github.ricemonger.telegramBot.executors.start.StartDirect;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,8 @@ public class DirectCommandListener {
             case "/help" -> executorsService.execute(HelpDirect.class, updateInfo);
 
             case "/credentials" -> executorsService.execute(CredentialsDirect.class, updateInfo);
+
+            case "/marketplace" -> executorsService.execute(MarketplaceDirect.class, updateInfo);
 
             case "/cancel" -> executorsService.execute(Cancel.class, updateInfo);
 
