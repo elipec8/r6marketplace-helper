@@ -1,5 +1,8 @@
 package github.ricemonger.telegramBot.client;
 
+import github.ricemonger.marketplace.databases.neo4j.entities.ItemEntity;
+import github.ricemonger.marketplace.databases.neo4j.enums.ItemType;
+import github.ricemonger.marketplace.databases.neo4j.services.ItemService;
 import github.ricemonger.marketplace.databases.neo4j.services.TelegramLinkedUserService;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.InputGroup;
@@ -9,24 +12,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class BotInnerServiceTests {
 
     @MockBean
-    public TelegramBotClientService telegramBotClientService;
+    private TelegramBotClientService telegramBotClientService;
 
     @MockBean
-    public TelegramLinkedUserService telegramLinkedUserService;
+    private TelegramLinkedUserService telegramLinkedUserService;
+
+    @MockBean
+    private ItemService itemService;
 
     @Autowired
-    public BotInnerService botInnerService;
+    private BotInnerService botInnerService;
 
     @Test
     public void askFromInlineKeyboardShouldHandleToService() {
@@ -196,5 +202,34 @@ public class BotInnerServiceTests {
         when(telegramLinkedUserService.getCredentialsEmailsList(chatId)).thenReturn(List.of("email1", "email2"));
 
         assertEquals(List.of("email1", "email2"), botInnerService.getCredentialsEmailsList(chatId));
+    }
+
+    @Test
+    public void sendDefaultSpeculativeItemsAsMessagesShouldGetFromServiceWithDefaultValuesAndSendByItemsAmount() {
+        ItemEntity itemEntity = ItemEntity.builder()
+                .itemFullId("id")
+                .assetUrl("url")
+                .name("name")
+                .tags(List.of("tag1", "tag2"))
+                .type(ItemType.WeaponSkin)
+                .maxBuyPrice(100)
+                .buyOrders(200)
+                .minSellPrice(50)
+                .sellOrders(100)
+                .lastSoldPrice(150)
+                .lastSoldAt(new Date())
+                .expectedProfit(15)
+                .expectedProfitPercentage(12)
+                .build();
+
+        Long chatId = 1L;
+
+        when(itemService.getSpeculativeItems(50, 40, 0, 15000)).thenReturn(List.of(itemEntity, itemEntity));
+
+        botInnerService.sendDefaultSpeculativeItemsAsMessages(chatId);
+
+        verify(itemService).getSpeculativeItems(50, 40, 0, 15000);
+
+        verify(telegramBotClientService,times(2)).sendText(eq(String.valueOf(chatId)), anyString());
     }
 }

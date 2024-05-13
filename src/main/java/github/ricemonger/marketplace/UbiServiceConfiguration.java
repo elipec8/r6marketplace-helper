@@ -28,4 +28,6 @@ public class UbiServiceConfiguration {
     private int expireTimeout;
     @Value("${ubi.session.marketplaceProfit}")
     private float marketplaceProfitPercent;
+    @Value("${ubi.session.marketplacePerformedAtDateFormat}")
+    private String performedAtDateFormat;
 }

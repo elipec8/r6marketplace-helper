@@ -98,13 +98,38 @@ public class BotInnerService {
         return telegramLinkedUserService.getCredentialsEmailsList(chatId);
     }
 
-    public String getDefaultSpeculativeItemsText() {
+    public void sendDefaultSpeculativeItemsAsMessages(Long chatId) {
         List<ItemEntity> speculativeItems = itemService.getSpeculativeItems(50, 40, 0, 15000);
-        StringBuilder sb = new StringBuilder();
-        log.debug("Speculative items: {}", speculativeItems.size());
+        log.debug("Speculative items amount: {}", speculativeItems.size());
         for (ItemEntity item : speculativeItems) {
-            sb.append(item.getName()).append(" - ").append(item.getBuyStats().getHighestPrice()).append(" - ").append(item.getSellStats().getLowestPrice()).append("\n");
+            telegramBotClientService.sendText(String.valueOf(chatId), getItemString(item));
         }
+    }
+
+    private String getItemString(ItemEntity entity){
+        String name = entity.getName();
+        String maxBuyPrice = String.valueOf(entity.getMaxBuyPrice());
+        String buyOrders = String.valueOf(entity.getBuyOrders());
+        String minSellPrice = String.valueOf(entity.getMinSellPrice());
+        String sellOrders = String.valueOf(entity.getSellOrders());
+        String expectedProfit = String.valueOf(entity.getExpectedProfit());
+        String expectedProfitPercentage = String.valueOf(entity.getExpectedProfitPercentage());
+        String lastSoldAt = entity.getLastSoldAt().toString();
+        String lastSoldPrice = String.valueOf(entity.getLastSoldPrice());
+        String pictureUrl = entity.getAssetUrl();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Name: ").append(name).append("\n")
+                .append("Min sell price: ").append(minSellPrice).append("\n")
+                .append("Sell orders: ").append(sellOrders).append("\n")
+                .append("Max buy price: ").append(maxBuyPrice).append("\n")
+                .append("Buy orders: ").append(buyOrders).append("\n")
+                .append("Expected profit: ").append(expectedProfit).append("\n")
+                .append("Expected profit percentage: ").append(expectedProfitPercentage).append("\n")
+                .append("Last sold price: ").append(lastSoldPrice).append("\n")
+                .append("Last sold at: ").append(lastSoldAt).append("\n")
+                .append("Picture: ").append(pictureUrl).append("\n");
+
         return sb.toString();
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -30,12 +31,55 @@ public class ItemServiceTests {
     public void saveAllShouldMapAndCallRepositorySaveAll() {
         List<Node> nodes = new ArrayList<>();
         List<ItemEntity> items = new ArrayList<>();
-        when(mapper.NodesDTOToItemEntities(nodes)).thenReturn(items);
+        when(mapper.nodesDTOToItemEntities(nodes)).thenReturn(items);
 
         itemService.saveAll(nodes);
 
-        verify(mapper).NodesDTOToItemEntities(nodes);
+        verify(mapper).nodesDTOToItemEntities(nodes);
 
         verify(itemRepository).saveAll(items);
+    }
+
+    @Test
+    public void getSpeculativeItemsShouldGetFromRepositoryByValues() {
+        ItemEntity itemEntity1 = new ItemEntity();
+        itemEntity1.setExpectedProfit(10);
+        itemEntity1.setExpectedProfitPercentage(10);
+        itemEntity1.setMinSellPrice(0);
+
+        ItemEntity itemEntity2 = new ItemEntity();
+        itemEntity2.setExpectedProfit(0);
+        itemEntity2.setExpectedProfitPercentage(10);
+        itemEntity2.setMinSellPrice(10);
+
+        ItemEntity itemEntity3 = new ItemEntity();
+        itemEntity3.setExpectedProfit(10);
+        itemEntity3.setExpectedProfitPercentage(10);
+        itemEntity3.setMinSellPrice(1000);
+
+        ItemEntity itemEntity4 = new ItemEntity();
+        itemEntity4.setExpectedProfit(10);
+        itemEntity4.setExpectedProfitPercentage(0);
+        itemEntity4.setMinSellPrice(10);
+
+        ItemEntity itemEntity5 = new ItemEntity();
+        itemEntity5.setExpectedProfit(10);
+        itemEntity5.setExpectedProfitPercentage(10);
+        itemEntity5.setMinSellPrice(10);
+
+        List<ItemEntity> items = new ArrayList<>();
+        items.add(itemEntity1);
+        items.add(itemEntity2);
+        items.add(itemEntity3);
+        items.add(itemEntity4);
+        items.add(itemEntity5);
+        when(itemRepository.findAll()).thenReturn(items);
+
+        List<ItemEntity> result = itemService.getSpeculativeItems(1, 1, 1, 100);
+
+        verify(itemRepository).findAll();
+
+        assertEquals(1, result.size());
+        assertEquals(itemEntity5, result.get(0));
     }
 }

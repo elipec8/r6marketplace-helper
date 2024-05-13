@@ -25,6 +25,7 @@ ubi:
     localeCode: ${UBI_LOCALE_CODE:en-US}
     expireTimeout: ${auth.ubi_credentials.expireTimeout}
     marketplaceProfit: 0.9
+    marketplacePerformedAtDateFormat: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
 
 server:
   port: 8080
@@ -48,11 +49,11 @@ spring:
 
 app:
   scheduling:
-    enabled: false
+    enabled: true
 
 logging:
   level:
-    github: trace
+    github: debug
     org:
       springframework:
         data:

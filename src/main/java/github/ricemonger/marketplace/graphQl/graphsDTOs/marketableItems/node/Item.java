@@ -13,7 +13,7 @@ public class Item {
 
     private String id;
 
-    private String assertUrl;
+    private String assetUrl;
 
     private String name;
 

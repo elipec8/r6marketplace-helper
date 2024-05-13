@@ -4,8 +4,8 @@ import github.ricemonger.marketplace.databases.neo4j.enums.ItemType;
 import lombok.*;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
-import org.springframework.data.neo4j.core.schema.Relationship;
 
+import java.util.Date;
 import java.util.List;
 
 @Node("Item")
@@ -18,7 +18,7 @@ public class ItemEntity {
     @Id
     private String itemFullId;
 
-    private String assertUrl;
+    private String assetUrl;
 
     private String name;
 
@@ -26,19 +26,19 @@ public class ItemEntity {
 
     private ItemType type;
 
-    @Relationship(value = "SELL_STATS", direction = Relationship.Direction.OUTGOING)
-    @ToString.Exclude
-    private SellStatsEntity sellStats;
+    private int maxBuyPrice;
 
-    @Relationship(value = "BUY_STATS", direction = Relationship.Direction.OUTGOING)
-    @ToString.Exclude
-    private BuyStatsEntity buyStats;
+    private int buyOrders;
 
-    @Relationship(value = "LAST_SOLD_AT", direction = Relationship.Direction.OUTGOING)
-    @ToString.Exclude
-    private LastSoldAtEntity lastSoldAt;
+    private int minSellPrice;
 
-    @Relationship(value = "SALES", direction = Relationship.Direction.OUTGOING)
-    @ToString.Exclude
-    private List<LastSoldAtHistoryEntity> lastSoldAtHistory;
+    private int sellOrders;
+
+    private int expectedProfit;
+
+    private int expectedProfitPercentage;
+
+    private Date lastSoldAt;
+
+    private int lastSoldPrice;
 }

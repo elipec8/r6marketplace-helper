@@ -40,13 +40,4 @@ public class UbiUserEntity {
     @Relationship(value = "LINKED_ACCOUNTS", direction = Relationship.Direction.INCOMING)
     @ToString.Exclude
     private TelegramLinkedUserEntity linkedTelegramUser;
-
-    @Relationship(value = "OWNS", direction = Relationship.Direction.OUTGOING)
-    private List<ItemEntity> ownedItems = new ArrayList<>();
-
-    @Relationship(value = "CONTROLS", direction = Relationship.Direction.OUTGOING)
-    private List<BuyOrdersEntity> buyOrders = new ArrayList<>();
-
-    @Relationship(value = "CONTROLS", direction = Relationship.Direction.OUTGOING)
-    private List<SellOrdersEntity> sellOrders = new ArrayList<>();
 }
