@@ -1,14 +1,18 @@
 package github.ricemonger.telegramBot.client;
 
+import github.ricemonger.marketplace.databases.neo4j.entities.ItemEntity;
+import github.ricemonger.marketplace.databases.neo4j.services.ItemService;
 import github.ricemonger.marketplace.databases.neo4j.services.TelegramLinkedUserService;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.InputGroup;
 import github.ricemonger.telegramBot.executors.InputState;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BotInnerService {
@@ -16,6 +20,8 @@ public class BotInnerService {
     private final TelegramBotClientService telegramBotClientService;
 
     private final TelegramLinkedUserService telegramLinkedUserService;
+
+    private final ItemService itemService;
 
     public void askFromInlineKeyboard(UpdateInfo updateInfo, String text, int buttonsInLine, CallbackButton[] buttons) {
         telegramBotClientService.askFromInlineKeyboard(updateInfo, text, buttonsInLine, buttons);
@@ -90,5 +96,15 @@ public class BotInnerService {
 
     public List<String> getCredentialsEmailsList(Long chatId) {
         return telegramLinkedUserService.getCredentialsEmailsList(chatId);
+    }
+
+    public String getDefaultSpeculativeItemsText() {
+        List<ItemEntity> speculativeItems = itemService.getSpeculativeItems(50, 40, 0, 15000);
+        StringBuilder sb = new StringBuilder();
+        log.debug("Speculative items: {}", speculativeItems.size());
+        for (ItemEntity item : speculativeItems) {
+            sb.append(item.getName()).append(" - ").append(item.getBuyStats().getHighestPrice()).append(" - ").append(item.getSellStats().getLowestPrice()).append("\n");
+        }
+        return sb.toString();
     }
 }

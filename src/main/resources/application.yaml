@@ -24,6 +24,7 @@ ubi:
     regionId: ${UBI_REGION_ID:WW}
     localeCode: ${UBI_LOCALE_CODE:en-US}
     expireTimeout: ${auth.ubi_credentials.expireTimeout}
+    marketplaceProfit: 0.9
 
 server:
   port: 8080
@@ -51,7 +52,7 @@ app:
 
 logging:
   level:
-    github: debug
+    github: trace
     org:
       springframework:
         data:

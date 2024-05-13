@@ -11,6 +11,8 @@ import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRem
 import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRemoveCallback;
 import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRemoveOneCallback;
 import github.ricemonger.telegramBot.executors.credentials.show.CredentialsShowCallback;
+import github.ricemonger.telegramBot.executors.marketplace.speculative.SpeculativeItemsCallback;
+import github.ricemonger.telegramBot.executors.marketplace.speculative.show.SpeculativeItemsShowAllCallback;
 import github.ricemonger.telegramBot.executors.start.startYes.StartYesCallback;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -39,6 +41,10 @@ public class CallbackCommandListener {
             case Callbacks.CREDENTIALS_REMOVE_ONE -> executorsService.execute(CredentialsRemoveOneCallback.class, updateInfo);
 
             case Callbacks.CREDENTIALS_SHOW -> executorsService.execute(CredentialsShowCallback.class, updateInfo);
+
+            case Callbacks.SPECULATIVE_ITEMS -> executorsService.execute(SpeculativeItemsCallback.class, updateInfo);
+
+            case Callbacks.SPECULATIVE_ITEMS_SHOW_ALL -> executorsService.execute(SpeculativeItemsShowAllCallback.class, updateInfo);
 
             case Callbacks.CANCEL -> executorsService.execute(Cancel.class, updateInfo);
 
