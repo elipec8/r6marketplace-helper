@@ -16,14 +16,14 @@ public class AesPasswordEncoderTests {
 
     @Test
     public void encryptionShouldReturnEncodedPassword() {
-        assertNotEquals(AESPasswordEncoder.getEncodedPassword("password"), "password");
+        assertNotEquals(AESPasswordEncoder.encode("password"), "password");
     }
 
     @Test
     public void decryptionShouldReturnOriginalPassword() {
         String password = "password";
-        String encodedPassword = AESPasswordEncoder.getEncodedPassword(password);
+        String encodedPassword = AESPasswordEncoder.encode(password);
 
-        assertEquals(AESPasswordEncoder.getDecodedPassword(encodedPassword), password);
+        assertEquals(AESPasswordEncoder.decode(encodedPassword), password);
     }
 }

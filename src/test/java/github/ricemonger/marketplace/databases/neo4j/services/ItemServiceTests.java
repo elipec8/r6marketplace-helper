@@ -41,7 +41,7 @@ public class ItemServiceTests {
     }
 
     @Test
-    public void getSpeculativeItemsShouldGetFromRepositoryByValues() {
+    public void getSpeculativeItemsShouldGetFromRepositoryByValuesByExpectedProfit() {
         ItemEntity itemEntity1 = new ItemEntity();
         itemEntity1.setExpectedProfit(10);
         itemEntity1.setExpectedProfitPercentage(10);
@@ -75,7 +75,7 @@ public class ItemServiceTests {
         items.add(itemEntity5);
         when(itemRepository.findAll()).thenReturn(items);
 
-        List<ItemEntity> result = itemService.getSpeculativeItems(1, 1, 1, 100);
+        List<ItemEntity> result = itemService.getSpeculativeItemsByExpectedProfit(1, 1, 1, 100);
 
         verify(itemRepository).findAll();
 

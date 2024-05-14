@@ -21,10 +21,16 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class DTOsToEntityMapper {
 
-    private final UbiServiceConfiguration ubisoftServiceConfiguration;
+    public DTOsToEntityMapper(UbiServiceConfiguration ubisoftServiceConfiguration) {
+        performedAtDateFormat = new SimpleDateFormat(ubisoftServiceConfiguration.getPerformedAtDateFormat());
+        marketplaceProfitPercent = ubisoftServiceConfiguration.getMarketplaceProfitPercent();
+    }
+
+    private final SimpleDateFormat performedAtDateFormat;
+
+    private final float marketplaceProfitPercent;
 
     public List<ItemEntity> nodesDTOToItemEntities(List<Node> nodes) {
         return nodes.stream().map(this::nodeDTOToItemEntity).collect(Collectors.toList());
@@ -90,11 +96,10 @@ public class DTOsToEntityMapper {
                     .lastSoldPrice(0)
                     .lastSoldAt(new Date(0));
         } else {
-            SimpleDateFormat sdf = new SimpleDateFormat(ubisoftServiceConfiguration.getPerformedAtDateFormat());
             try {
                 builder
                         .lastSoldPrice(lastSoldAtDTO.getPrice())
-                        .lastSoldAt(sdf.parse(lastSoldAtDTO.getPerformedAt()));
+                        .lastSoldAt(performedAtDateFormat.parse(lastSoldAtDTO.getPerformedAt()));
             } catch (ParseException e) {
                 log.error("Error parsing date: " + lastSoldAtDTO.getPerformedAt());
             }
@@ -107,7 +112,7 @@ public class DTOsToEntityMapper {
         int sellPrice = entity.getSellOrders() == 0 ? entity.getLastSoldPrice() : entity.getMinSellPrice();
         int buyPrice = getNextFancyBuyPrice(entity.getMaxBuyPrice(), sellPrice);
 
-        int priceDifference = (int) (sellPrice * ubisoftServiceConfiguration.getMarketplaceProfitPercent()) - buyPrice;
+        int priceDifference = (int) (sellPrice * marketplaceProfitPercent) - buyPrice;
         int expectedProfit = priceDifference < 0 ? 0 : priceDifference;
 
         int expectedProfitPercentage = (int) ((expectedProfit * 100.0) / buyPrice);

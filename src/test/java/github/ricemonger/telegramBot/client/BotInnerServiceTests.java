@@ -224,11 +224,11 @@ public class BotInnerServiceTests {
 
         Long chatId = 1L;
 
-        when(itemService.getSpeculativeItems(50, 40, 0, 15000)).thenReturn(List.of(itemEntity, itemEntity));
+        when(itemService.getSpeculativeItemsByExpectedProfit(50, 40, 0, 15000)).thenReturn(List.of(itemEntity, itemEntity));
 
         botInnerService.sendDefaultSpeculativeItemsAsMessages(chatId);
 
-        verify(itemService).getSpeculativeItems(50, 40, 0, 15000);
+        verify(itemService).getSpeculativeItemsByExpectedProfit(50, 40, 0, 15000);
 
         verify(telegramBotClientService,times(2)).sendText(eq(String.valueOf(chatId)), anyString());
     }

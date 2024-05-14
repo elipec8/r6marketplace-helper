@@ -32,14 +32,16 @@ class TelegramLinkedUserServiceTests {
     private TelegramLinkedUserRepository telegramLinkedUserRepository;
 
     @SpyBean
-    private UbiUserRepository ubiUserRepository;
-
-    @SpyBean
     private TelegramInputValuesRepository telegramInputValuesRepository;
-
 
     @Autowired
     private TelegramLinkedUserService telegramLinkedUserService;
+
+    @SpyBean
+    private UbiUserService ubiUserService;
+
+    @Autowired
+    private UbiUserRepository ubiUserRepository;
 
     @SpyBean
     private AesPasswordEncoder aesPasswordEncoder;
@@ -47,12 +49,15 @@ class TelegramLinkedUserServiceTests {
     @BeforeEach
     public void setUp() {
         telegramLinkedUserRepository.deleteAll();
-
+        telegramInputValuesRepository.deleteAll();
+        ubiUserRepository.deleteAll();
     }
 
     @AfterEach
     public void cleanUp() {
         telegramLinkedUserRepository.deleteAll();
+        telegramInputValuesRepository.deleteAll();
+        ubiUserRepository.deleteAll();
     }
 
     @Test
@@ -205,7 +210,7 @@ class TelegramLinkedUserServiceTests {
         telegramLinkedUserService.addCredentials(123L, "email", "password");
 
         assertEquals("email", telegramLinkedUserEntity.getLinkedUbisoftAccounts().getFirst().getEmail());
-        assertEquals(aesPasswordEncoder.getEncodedPassword("password"),
+        assertEquals(aesPasswordEncoder.encode("password"),
                 telegramLinkedUserEntity.getLinkedUbisoftAccounts().getFirst().getPassword());
         verify(telegramLinkedUserRepository).save(telegramLinkedUserEntity);
     }
@@ -271,7 +276,7 @@ class TelegramLinkedUserServiceTests {
 
         assertTrue(resultEntity.getLinkedUbisoftAccounts().isEmpty());
 
-        verify(ubiUserRepository).deleteByLinkedTelegramUserChatIdAndEmail("123", "email");
+        verify(ubiUserService).deleteByLinkedTelegramUserChatIdAndEmail("123", "email");
     }
 
     @Test
@@ -295,7 +300,7 @@ class TelegramLinkedUserServiceTests {
 
         assertTrue(resultEntity.getLinkedUbisoftAccounts().isEmpty());
 
-        verify(ubiUserRepository).deleteAllByLinkedTelegramUserChatId("123");
+        verify(ubiUserService).deleteAllByLinkedTelegramUserChatId("123");
     }
 
     @Test
