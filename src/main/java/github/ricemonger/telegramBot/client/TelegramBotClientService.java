@@ -65,4 +65,8 @@ public class TelegramBotClientService {
             throw  new TelegramApiRuntimeException(e);
         }
     }
+
+    public void notifyUserAboutUbiAuthorizationFailure(String chatId, String email) {
+        sendText(chatId, String.format("Your Ubisoft account with email:%s could no be authorized. Please check for errors.", email));
+    }
 }

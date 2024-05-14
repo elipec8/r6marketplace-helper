@@ -37,6 +37,14 @@ public class UbiUserEntity {
 
     private String ubiAuthTicket;
 
+    private String ubiSpaceId;
+
+    private String ubiTwoFactorAuthTicket;
+
+    private String ubiRememberDeviceTicket;
+
+    private String ubiRememberMeTicket;
+
     @Relationship(value = "LINKED_ACCOUNTS", direction = Relationship.Direction.INCOMING)
     @ToString.Exclude
     private TelegramLinkedUserEntity linkedTelegramUser;

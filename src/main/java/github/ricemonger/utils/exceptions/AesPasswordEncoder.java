@@ -15,7 +15,7 @@ public class AesPasswordEncoder {
     @Value("${auth.user_service.password.encryption.key}")
     private String encryptionKey;
 
-    public String getEncodedPassword(String password) {
+    public String encode(String password) {
         String encodedPassword;
         try {
             Key aesKey = new SecretKeySpec(encryptionKey.getBytes(), "AES");
@@ -29,7 +29,7 @@ public class AesPasswordEncoder {
         }
     }
 
-    public String getDecodedPassword(String encodedPassword) {
+    public String decode(String encodedPassword) {
         try {
             Key aesKey = new SecretKeySpec(encryptionKey.getBytes(), "AES");
             Cipher cipher = Cipher.getInstance("AES");

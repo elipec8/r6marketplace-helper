@@ -99,7 +99,7 @@ public class BotInnerService {
     }
 
     public void sendDefaultSpeculativeItemsAsMessages(Long chatId) {
-        List<ItemEntity> speculativeItems = itemService.getSpeculativeItems(50, 40, 0, 15000);
+        List<ItemEntity> speculativeItems = itemService.getSpeculativeItemsByExpectedProfit(50, 40, 0, 15000);
         log.debug("Speculative items amount: {}", speculativeItems.size());
         for (ItemEntity item : speculativeItems) {
             telegramBotClientService.sendText(String.valueOf(chatId), getItemString(item));
