@@ -7,10 +7,7 @@ import github.ricemonger.utils.exceptions.UbiUserEntityDoesntExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -55,10 +52,11 @@ public class ItemService {
     }
 
     private final ItemRepository itemRepository;
+
     private final DTOsToEntityMapper mapper;
 
-    public void saveAll(List<Node> nodeDTOs) {
-        List<ItemEntity> entities = mapper.nodesDTOToItemEntities(nodeDTOs);
+    public void saveAll(Collection<Node> nodeDTOs) {
+        Set<ItemEntity> entities = mapper.nodesDTOToItemEntities(nodeDTOs);
         itemRepository.saveAll(entities);
     }
 

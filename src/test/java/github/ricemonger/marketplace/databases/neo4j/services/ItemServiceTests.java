@@ -9,7 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -29,8 +31,8 @@ public class ItemServiceTests {
 
     @Test
     public void saveAllShouldMapAndCallRepositorySaveAll() {
-        List<Node> nodes = new ArrayList<>();
-        List<ItemEntity> items = new ArrayList<>();
+        Set<Node> nodes = new HashSet<>();
+        Set<ItemEntity> items = new HashSet<>();
         when(mapper.nodesDTOToItemEntities(nodes)).thenReturn(items);
 
         itemService.saveAll(nodes);

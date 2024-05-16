@@ -9,9 +9,7 @@ import org.springframework.graphql.client.GraphQlClient;
 import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
@@ -20,11 +18,11 @@ public class GraphQlClientService {
     private final GraphQlClientFactory graphQlClientFactory;
 
 
-    public List<Node> fetchAllItemStats(int expectedItemCount) {
+    public Collection<Node> fetchAllItemStats(int expectedItemCount) {
 
         HttpGraphQlClient client = graphQlClientFactory.getOrCreateAllItemsStatsFetcherClient();
 
-        List<Node> nodes = fetchExpectedAmountOfAllItemsStats(client, expectedItemCount);
+        Collection<Node> nodes = fetchExpectedAmountOfAllItemsStats(client, expectedItemCount);
 
         if (nodes.size() > expectedItemCount) {
             nodes.addAll(fetchAllItemStatsFromOffset(client, nodes.size()));
@@ -33,9 +31,9 @@ public class GraphQlClientService {
         return nodes;
     }
 
-    private List<Node> fetchExpectedAmountOfAllItemsStats(GraphQlClient graphQlClient, int expectedItemCount) {
+    private Set<Node> fetchExpectedAmountOfAllItemsStats(GraphQlClient graphQlClient, int expectedItemCount) {
         int expectedQueriesCount = (expectedItemCount / GraphQlClientServiceStatics.MAX_LIMIT) + 1;
-        List<ClientGraphQlResponse> responses = new ArrayList<>(expectedQueriesCount);
+        Set<ClientGraphQlResponse> responses = new HashSet<>(expectedQueriesCount);
 
         MarketableItems marketableItems;
 
@@ -52,7 +50,7 @@ public class GraphQlClientService {
                     .block());
         }
 
-        List<Node> nodes = new ArrayList<>();
+        Set<Node> nodes = new HashSet<>();
 
         for (ClientGraphQlResponse response : responses) {
             marketableItems = response.field("game.marketableItems").toEntity(MarketableItems.class);

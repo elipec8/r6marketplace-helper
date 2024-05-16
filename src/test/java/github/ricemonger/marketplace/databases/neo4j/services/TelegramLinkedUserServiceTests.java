@@ -209,9 +209,9 @@ class TelegramLinkedUserServiceTests {
 
         telegramLinkedUserService.addCredentials(123L, "email", "password");
 
-        assertEquals("email", telegramLinkedUserEntity.getLinkedUbisoftAccounts().getFirst().getEmail());
+        assertEquals("email", telegramLinkedUserEntity.getLinkedUbisoftAccounts().get(0).getEmail());
         assertEquals(aesPasswordEncoder.encode("password"),
-                telegramLinkedUserEntity.getLinkedUbisoftAccounts().getFirst().getPassword());
+                telegramLinkedUserEntity.getLinkedUbisoftAccounts().get(0).getPassword());
         verify(telegramLinkedUserRepository).save(telegramLinkedUserEntity);
     }
 

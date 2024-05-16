@@ -9,13 +9,13 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 class NodeTests {
 
     @Test
-    public void equalsShouldReturnTrueForSame(){
+    public void equalsShouldReturnTrueForSameItemId(){
         assertEquals(NODE, NODE_SAME);
+        assertEquals(NODE, NODE_ALT_MARKET_DATA);
     }
 
     @Test
-    public void equalsShouldReturnFalseForDifferent(){
+    public void equalsShouldReturnFalseForNotSameItemId(){
         assertNotEquals(NODE,NODE_ALT_ITEM);
-        assertNotEquals(NODE,NODE_ALT_MARKET_DATA);
     }
 }

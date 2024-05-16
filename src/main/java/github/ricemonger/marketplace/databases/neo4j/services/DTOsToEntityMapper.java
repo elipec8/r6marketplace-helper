@@ -15,8 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -32,8 +31,8 @@ public class DTOsToEntityMapper {
 
     private final float marketplaceProfitPercent;
 
-    public List<ItemEntity> nodesDTOToItemEntities(List<Node> nodes) {
-        return nodes.stream().map(this::nodeDTOToItemEntity).collect(Collectors.toList());
+    public Set<ItemEntity> nodesDTOToItemEntities(Collection<Node> nodes) {
+        return nodes.stream().map(this::nodeDTOToItemEntity).collect(Collectors.toSet());
     }
 
     public ItemEntity nodeDTOToItemEntity(Node node) {
