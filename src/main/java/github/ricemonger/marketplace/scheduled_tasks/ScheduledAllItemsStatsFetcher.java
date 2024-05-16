@@ -45,6 +45,8 @@ public class ScheduledAllItemsStatsFetcher {
 
         itemService.saveAll(nodes);
 
+        itemService.calculateItemsSaleStats();
+
         log.info("Fetched {} items' stats", nodes.size());
     }
 

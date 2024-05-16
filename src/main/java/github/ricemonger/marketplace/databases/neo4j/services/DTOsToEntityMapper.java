@@ -2,6 +2,7 @@ package github.ricemonger.marketplace.databases.neo4j.services;
 
 import github.ricemonger.marketplace.UbiServiceConfiguration;
 import github.ricemonger.marketplace.databases.neo4j.entities.ItemEntity;
+import github.ricemonger.marketplace.databases.neo4j.entities.ItemSaleEntity;
 import github.ricemonger.marketplace.databases.neo4j.enums.ItemType;
 import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.Node;
 import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.node.Item;
@@ -33,6 +34,28 @@ public class DTOsToEntityMapper {
 
     public Set<ItemEntity> nodesDTOToItemEntities(Collection<Node> nodes) {
         return nodes.stream().map(this::nodeDTOToItemEntity).collect(Collectors.toSet());
+    }
+
+    public Set<ItemSaleEntity> nodesDTOToItemSaleEntities(Collection<Node> nodes) {
+        return nodes.stream().map(this::nodeDTOToItemSaleEntity).collect(Collectors.toSet());
+    }
+
+    public ItemSaleEntity nodeDTOToItemSaleEntity(Node node) {
+        Item itemDTO = node.getItem();
+        MarketData marketDataDTO = node.getMarketData();
+
+        if(marketDataDTO.getLastSoldAt() == null || marketDataDTO.getLastSoldAt().length == 0) {
+            return new ItemSaleEntity(itemDTO.getId(), new Date(0), 0);
+        }
+        else{
+            LastSoldAt lastSoldAtDTO = marketDataDTO.getLastSoldAt()[0];
+            try {
+                return new ItemSaleEntity(itemDTO.getId(), performedAtDateFormat.parse(lastSoldAtDTO.getPerformedAt()), lastSoldAtDTO.getPrice());
+            } catch (ParseException e) {
+                log.error("Error parsing date: " + lastSoldAtDTO.getPerformedAt());
+                return new ItemSaleEntity(itemDTO.getId(), new Date(0), 0);
+            }
+        }
     }
 
     public ItemEntity nodeDTOToItemEntity(Node node) {

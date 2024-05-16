@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.neo4j.entities;
 
-import github.ricemonger.telegramBot.executors.InputState;
 import github.ricemonger.telegramBot.executors.InputGroup;
+import github.ricemonger.telegramBot.executors.InputState;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,22 +18,10 @@ import java.util.List;
 @AllArgsConstructor
 public class TelegramLinkedUserEntity {
 
-    public TelegramLinkedUserEntity(String chatId){
-        this.chatId = chatId;
-    }
-
-    public TelegramLinkedUserEntity(String chatId, InputState inputState, InputGroup inputGroup, boolean publicNotificationsEnabledFlag, int speculativeItemSearchProfitPercentSetting, int speculativeItemSearchProfitAbsoluteSetting, int speculativeItemSearchMinSellPriceSetting, int speculativeItemSearchMaxSellPriceSetting){
-        this.chatId = chatId;
-        this.inputState = inputState;
-        this.inputGroup = inputGroup;
-        this.publicNotificationsEnabledFlag = publicNotificationsEnabledFlag;
-    }
-
     @Id
     private String chatId;
 
     private InputState inputState = InputState.BASE;
-
     private InputGroup inputGroup = InputGroup.BASE;
 
     private boolean publicNotificationsEnabledFlag = true;
@@ -48,4 +36,15 @@ public class TelegramLinkedUserEntity {
 
     @Relationship(value = "LINKED_ACCOUNTS", direction = Relationship.Direction.OUTGOING)
     private List<UbiUserEntity> linkedUbisoftAccounts = new ArrayList<>();
+
+    public TelegramLinkedUserEntity(String chatId) {
+        this.chatId = chatId;
+    }
+
+    public TelegramLinkedUserEntity(String chatId, InputState inputState, InputGroup inputGroup, boolean publicNotificationsEnabledFlag, int speculativeItemSearchProfitPercentSetting, int speculativeItemSearchProfitAbsoluteSetting, int speculativeItemSearchMinSellPriceSetting, int speculativeItemSearchMaxSellPriceSetting) {
+        this.chatId = chatId;
+        this.inputState = inputState;
+        this.inputGroup = inputGroup;
+        this.publicNotificationsEnabledFlag = publicNotificationsEnabledFlag;
+    }
 }

@@ -2,6 +2,7 @@ package github.ricemonger.marketplace.databases.neo4j.services;
 
 import github.ricemonger.marketplace.UbiServiceConfiguration;
 import github.ricemonger.marketplace.databases.neo4j.entities.ItemEntity;
+import github.ricemonger.marketplace.databases.neo4j.entities.ItemSaleEntity;
 import github.ricemonger.marketplace.databases.neo4j.enums.ItemType;
 import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.Node;
 import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.node.Item;
@@ -52,7 +53,6 @@ public class DTOsToEntityMapperTests {
     @Test
     public void NodeDTOToItemEntityShouldMapValues() throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat(ubisoftServiceConfiguration.getPerformedAtDateFormat());
-        dtosToEntityMapper.nodeDTOToItemEntity(NODE);
 
         ItemEntity itemEntity = ItemEntity.builder()
                 .itemFullId(ITEM.getId())
@@ -71,5 +71,21 @@ public class DTOsToEntityMapperTests {
                 .build();
 
         assertEquals(itemEntity, dtosToEntityMapper.nodeDTOToItemEntity(NODE));
+    }
+
+    @Test
+    public void NodeDTOsToItemSaleEntitiesShouldCallNodeDTOToItemSaleEntityForEveryEntity() {
+        dtosToEntityMapper.nodesDTOToItemSaleEntities(List.of(NODE, NODE));
+
+        verify(dtosToEntityMapper, times(2)).nodeDTOToItemSaleEntity(NODE);
+    }
+
+    @Test
+    public void NodeDTOToItemSaleEntityShouldMapValues() throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat(ubisoftServiceConfiguration.getPerformedAtDateFormat());
+
+        ItemSaleEntity itemSaleEntity = new ItemSaleEntity(ITEM.getId(),sdf.parse(LAST_SOLD_AT.getPerformedAt()),LAST_SOLD_AT.getPrice());
+
+        assertEquals(itemSaleEntity, dtosToEntityMapper.nodeDTOToItemSaleEntity(NODE));
     }
 }
