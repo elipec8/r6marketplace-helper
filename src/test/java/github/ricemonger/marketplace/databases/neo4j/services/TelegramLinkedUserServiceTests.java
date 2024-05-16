@@ -1,5 +1,7 @@
 package github.ricemonger.marketplace.databases.neo4j.services;
 
+import github.ricemonger.marketplace.authorization.AuthorizationDTO;
+import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.marketplace.databases.neo4j.entities.TelegramInputValuesEntity;
 import github.ricemonger.marketplace.databases.neo4j.entities.TelegramLinkedUserEntity;
 import github.ricemonger.marketplace.databases.neo4j.entities.UbiUserEntity;
@@ -16,6 +18,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.util.List;
@@ -45,6 +48,9 @@ class TelegramLinkedUserServiceTests {
 
     @SpyBean
     private AesPasswordEncoder aesPasswordEncoder;
+
+    @MockBean
+    private AuthorizationService authorizationService;
 
     @BeforeEach
     public void setUp() {
@@ -203,16 +209,16 @@ class TelegramLinkedUserServiceTests {
     }
 
     @Test
-    public void addCredentialsShouldAddCredentialsAndEncodePasswordIfUserExists() {
+    public void addCredentialsShouldCallUbiUserServiceMethod() {
         TelegramLinkedUserEntity telegramLinkedUserEntity = new TelegramLinkedUserEntity();
         when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserEntity));
 
+        when(authorizationService.getUserAuthorizationDTO("email","password")).thenReturn(new AuthorizationDTO());
+        when(aesPasswordEncoder.encode("password")).thenReturn("encodedPassword");
+
         telegramLinkedUserService.addCredentials(123L, "email", "password");
 
-        assertEquals("email", telegramLinkedUserEntity.getLinkedUbisoftAccounts().getFirst().getEmail());
-        assertEquals(aesPasswordEncoder.encode("password"),
-                telegramLinkedUserEntity.getLinkedUbisoftAccounts().getFirst().getPassword());
-        verify(telegramLinkedUserRepository).save(telegramLinkedUserEntity);
+        verify(ubiUserService).createAndAuthorizeOrThrowForTelegramUser(telegramLinkedUserEntity, "email", "password");
     }
 
     @Test

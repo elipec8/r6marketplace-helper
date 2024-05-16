@@ -65,5 +65,7 @@ public class ScheduledAllItemsStatsFetcherTests {
         verify(graphQlClientService).fetchAllItemStats(expectedItemCount);
 
         verify(itemService).saveAll(nodes);
+
+        verify(itemService).calculateItemsSaleStats();
     }
 }

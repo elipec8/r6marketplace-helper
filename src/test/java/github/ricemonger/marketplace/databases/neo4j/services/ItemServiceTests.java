@@ -1,17 +1,21 @@
 package github.ricemonger.marketplace.databases.neo4j.services;
 
 import github.ricemonger.marketplace.databases.neo4j.entities.ItemEntity;
+import github.ricemonger.marketplace.databases.neo4j.entities.ItemSaleEntity;
+import github.ricemonger.marketplace.databases.neo4j.entities.ItemSaleHistoryEntity;
 import github.ricemonger.marketplace.databases.neo4j.repositories.ItemRepository;
+import github.ricemonger.marketplace.databases.neo4j.repositories.ItemSaleHistoryRepository;
+import github.ricemonger.marketplace.databases.neo4j.repositories.ItemSaleRepository;
 import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.Node;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -22,6 +26,12 @@ public class ItemServiceTests {
     private ItemRepository itemRepository;
 
     @MockBean
+    private ItemSaleRepository itemSaleRepository;
+
+    @MockBean
+    private ItemSaleHistoryRepository itemSaleHistoryRepository;
+
+    @MockBean
     private DTOsToEntityMapper mapper;
 
     @Autowired
@@ -29,8 +39,8 @@ public class ItemServiceTests {
 
     @Test
     public void saveAllShouldMapAndCallRepositorySaveAll() {
-        List<Node> nodes = new ArrayList<>();
-        List<ItemEntity> items = new ArrayList<>();
+        Set<Node> nodes = new HashSet<>();
+        Set<ItemEntity> items = new HashSet<>();
         when(mapper.nodesDTOToItemEntities(nodes)).thenReturn(items);
 
         itemService.saveAll(nodes);
@@ -81,5 +91,16 @@ public class ItemServiceTests {
 
         assertEquals(1, result.size());
         assertEquals(itemEntity5, result.get(0));
+    }
+
+    @Test
+    public void calculateItemSaleStatsShouldCallRepositories(){
+        itemService.calculateItemsSaleStats();
+
+        verify(itemRepository).findAll();
+
+        verify(itemSaleRepository).findAll();
+
+        verify(itemSaleHistoryRepository).saveAll(any());
     }
 }

@@ -11,7 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 
 @Component
@@ -32,7 +34,7 @@ public class ScheduledAllItemsStatsFetcher {
 
         int expectedItemCount = redisService.getExpectedItemCount();
 
-        List<Node> nodes = graphQlClientService.fetchAllItemStats(expectedItemCount);
+        Collection<Node> nodes = graphQlClientService.fetchAllItemStats(expectedItemCount);
 
         if (nodes.size() < expectedItemCount) {
             log.error("Fetched {} items' stats, expected {}", nodes.size(), expectedItemCount);
@@ -42,6 +44,8 @@ public class ScheduledAllItemsStatsFetcher {
         }
 
         itemService.saveAll(nodes);
+
+        itemService.calculateItemsSaleStats();
 
         log.info("Fetched {} items' stats", nodes.size());
     }

@@ -67,6 +67,10 @@ public class UpdateToUpdateInfoMapperTests {
                         InputState.CREDENTIALS_PASSWORD,
                         InputGroup.CREDENTIALS_ADD,
                         true,
+                        40,
+                        50,
+                        0,
+                        15000,
                         new ArrayList<>(),
                         new ArrayList<>()
                 ));
@@ -84,6 +88,10 @@ public class UpdateToUpdateInfoMapperTests {
                         null,
                         null,
                         true,
+                        40,
+                        50,
+                        0,
+                        15000,
                         new ArrayList<>(),
                         new ArrayList<>()
                 ));
