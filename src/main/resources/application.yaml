@@ -36,20 +36,21 @@ spring:
   config:
     import:
       - auth-values.yaml
+      - test-values.yaml
   data:
     redis:
       repositories:
         enabled: false
-      url: redis://localhost:6379
+      url: ${REDIS_URL:redis://localhost:6379}
   neo4j:
-    uri: bolt://localhost:7687
+    uri: ${NEO4J_URL:bolt://localhost:7687}
     authentication:
       username: ${NEO4J_AUTH_USERNAME:neo4j}
       password: ${NEO4J_AUTH_PASSWORD:password}
 
 app:
   scheduling:
-    enabled: true
+    enabled: ${SCHEDULING_ENABLED:true}
 
 logging:
   level:
@@ -61,7 +62,7 @@ logging:
             cypher:
               unrecognized: off
   file:
-    name: ./logs/prod/${spring.application.name}.log
+    name: ./logs/${LOG_FILE_DIRECTORY:prod}/${spring.application.name}.log
 
 management:
   tracing:

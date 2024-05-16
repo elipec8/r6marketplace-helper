@@ -10,9 +10,7 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Node("TelegramLinkedUser")
 @Data
@@ -24,6 +22,13 @@ public class TelegramLinkedUserEntity {
         this.chatId = chatId;
     }
 
+    public TelegramLinkedUserEntity(String chatId, InputState inputState, InputGroup inputGroup, boolean publicNotificationsEnabledFlag, int speculativeItemSearchProfitPercentSetting, int speculativeItemSearchProfitAbsoluteSetting, int speculativeItemSearchMinSellPriceSetting, int speculativeItemSearchMaxSellPriceSetting){
+        this.chatId = chatId;
+        this.inputState = inputState;
+        this.inputGroup = inputGroup;
+        this.publicNotificationsEnabledFlag = publicNotificationsEnabledFlag;
+    }
+
     @Id
     private String chatId;
 
@@ -32,6 +37,11 @@ public class TelegramLinkedUserEntity {
     private InputGroup inputGroup = InputGroup.BASE;
 
     private boolean publicNotificationsEnabledFlag = true;
+
+    private int speculativeItemSearchProfitPercentSetting = 40;
+    private int speculativeItemSearchProfitAbsoluteSetting = 50;
+    private int speculativeItemSearchMinSellPriceSetting = 0;
+    private int speculativeItemSearchMaxSellPriceSetting = 15000;
 
     @Relationship(value = "INPUT_VALUES", direction = Relationship.Direction.OUTGOING)
     private List<TelegramInputValuesEntity> inputValues = new ArrayList<>();
