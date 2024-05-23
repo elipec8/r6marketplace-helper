@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
-import github.ricemonger.marketplace.databases.neo4j.entities.TelegramLinkedUserEntity;
-import github.ricemonger.marketplace.databases.neo4j.entities.UbiUserEntity;
-import github.ricemonger.marketplace.databases.neo4j.services.UbiUserService;
+import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUserEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.UbiUserEntity;
+import github.ricemonger.marketplace.databases.postgres.services.UbiUserService;
 import github.ricemonger.telegramBot.client.TelegramBotClientService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ class ScheduledUbiUsersReauthorizationTests {
 
         UbiUserEntity ubiUserEntity = new UbiUserEntity();
         ubiUserEntity.setEmail("email");
-        ubiUserEntity.setLinkedTelegramUser(telegramUserEntity);
+        //ubiUserEntity.setLinkedTelegramUser(telegramUserEntity);
 
         toNotify.add(ubiUserEntity);
         toNotify.add(ubiUserEntity);

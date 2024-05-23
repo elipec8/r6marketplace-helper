@@ -1,5 +1,6 @@
-package github.ricemonger.utils.exceptions;
+package github.ricemonger.marketplace.databases.postgres.services;
 
+import github.ricemonger.utils.exceptions.UbiCredentialsException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

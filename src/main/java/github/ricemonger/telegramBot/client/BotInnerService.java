@@ -1,8 +1,8 @@
 package github.ricemonger.telegramBot.client;
 
-import github.ricemonger.marketplace.databases.neo4j.entities.ItemEntity;
-import github.ricemonger.marketplace.databases.neo4j.services.ItemService;
-import github.ricemonger.marketplace.databases.neo4j.services.TelegramLinkedUserService;
+import github.ricemonger.marketplace.databases.postgres.services.TelegramUserService;
+import github.ricemonger.marketplace.databases.postgres.services.Item;
+import github.ricemonger.marketplace.databases.postgres.services.ItemService;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.InputGroup;
 import github.ricemonger.telegramBot.executors.InputState;
@@ -19,7 +19,7 @@ public class BotInnerService {
 
     private final TelegramBotClientService telegramBotClientService;
 
-    private final TelegramLinkedUserService telegramLinkedUserService;
+    private final TelegramUserService telegramUserService;
 
     private final ItemService itemService;
 
@@ -32,11 +32,11 @@ public class BotInnerService {
     }
 
     public boolean isRegistered(Long chatId) {
-        return telegramLinkedUserService.isTelegramUserRegistered(chatId);
+        return telegramUserService.isTelegramUserRegistered(chatId);
     }
 
     public void registerUser(Long chatId) {
-        telegramLinkedUserService.registerTelegramUser(chatId);
+        telegramUserService.registerTelegramUser(chatId);
     }
 
     public void addCredentialsFromUserInputs(Long chatId) {
@@ -45,18 +45,18 @@ public class BotInnerService {
         if (fullOrEmail.contains(":")) {
             String email = fullOrEmail.substring(0, fullOrEmail.indexOf(":"));
             String password = fullOrEmail.substring(fullOrEmail.indexOf(":") + 1);
-            telegramLinkedUserService.addCredentials(chatId, email, password);
-        }
-        else{
+            clearUserInputs(chatId);
+            telegramUserService.addCredentialsIfValidOrThrowException(chatId, email, password);
+        } else {
             String password = getUserInputByState(chatId, InputState.CREDENTIALS_PASSWORD);
-            telegramLinkedUserService.addCredentials(chatId, fullOrEmail, password);
+            clearUserInputs(chatId);
+            telegramUserService.addCredentialsIfValidOrThrowException(chatId, fullOrEmail, password);
         }
 
-        clearUserInputs(chatId);
     }
 
     public void removeCredentialsByUserInputs(Long chatId) {
-        telegramLinkedUserService.removeCredentialsByUserInputs(chatId);
+        telegramUserService.removeCredentialsByUserInputs(chatId);
 
         clearUserInputs(chatId);
     }
@@ -71,52 +71,52 @@ public class BotInnerService {
         } else {
             throw new IllegalStateException("UpdateInfo has no message or callback query");
         }
-        telegramLinkedUserService.saveUserInput(updateInfo.getChatId(),updateInfo.getInputState(), userInput);
+        telegramUserService.saveUserInput(updateInfo.getChatId(), updateInfo.getInputState(), userInput);
     }
 
     public void clearUserInputs(Long chatId) {
-        telegramLinkedUserService.clearUserInputs(chatId);
+        telegramUserService.clearUserInputs(chatId);
     }
 
     public void setUserNextInputState(Long chatId, InputState inputState) {
-        telegramLinkedUserService.setUserNextInputState(chatId, inputState);
+        telegramUserService.setUserNextInputState(chatId, inputState);
     }
 
     public void setUserNextInputGroup(Long chatId, InputGroup inputGroup) {
-        telegramLinkedUserService.setUserNextInputGroup(chatId, inputGroup);
+        telegramUserService.setUserNextInputGroup(chatId, inputGroup);
     }
 
-    public String getUserInputByState(Long chatId, InputState inputState){
-        return telegramLinkedUserService.getUserInputByStateOrNull(chatId, inputState);
+    public String getUserInputByState(Long chatId, InputState inputState) {
+        return telegramUserService.getUserInputByStateOrNull(chatId, inputState);
     }
 
     public void removeUserAllCredentials(Long chatId) {
-        telegramLinkedUserService.removeAllCredentials(chatId);
+        telegramUserService.removeAllCredentials(chatId);
     }
 
     public List<String> getCredentialsEmailsList(Long chatId) {
-        return telegramLinkedUserService.getCredentialsEmailsList(chatId);
+        return telegramUserService.getCredentialsEmailsList(chatId);
     }
 
     public void sendDefaultSpeculativeItemsAsMessages(Long chatId) {
-        List<ItemEntity> speculativeItems = itemService.getSpeculativeItemsByExpectedProfit(50, 40, 0, 15000);
+        List<? extends Item> speculativeItems = itemService.getSpeculativeItemsByExpectedProfit(50, 40, 0, 15000);
         log.debug("Speculative items amount: {}", speculativeItems.size());
-        for (ItemEntity item : speculativeItems) {
+        for (Item item : speculativeItems) {
             telegramBotClientService.sendText(String.valueOf(chatId), getItemString(item));
         }
     }
 
-    private String getItemString(ItemEntity entity){
-        String name = entity.getName();
-        String maxBuyPrice = String.valueOf(entity.getMaxBuyPrice());
-        String buyOrders = String.valueOf(entity.getBuyOrders());
-        String minSellPrice = String.valueOf(entity.getMinSellPrice());
-        String sellOrders = String.valueOf(entity.getSellOrders());
-        String expectedProfit = String.valueOf(entity.getExpectedProfit());
-        String expectedProfitPercentage = String.valueOf(entity.getExpectedProfitPercentage());
-        String lastSoldAt = entity.getLastSoldAt().toString();
-        String lastSoldPrice = String.valueOf(entity.getLastSoldPrice());
-        String pictureUrl = entity.getAssetUrl();
+    private String getItemString(Item item) {
+        String name = item.getName();
+        String maxBuyPrice = String.valueOf(item.getMaxBuyPrice());
+        String buyOrders = String.valueOf(item.getBuyOrdersCount());
+        String minSellPrice = String.valueOf(item.getMinSellPrice());
+        String sellOrders = String.valueOf(item.getSellOrdersCount());
+        String expectedProfit = String.valueOf(item.getExpectedProfit());
+        String expectedProfitPercentage = String.valueOf(item.getExpectedProfitPercentage());
+        String lastSoldAt = item.getLastSoldAt().toString();
+        String lastSoldPrice = String.valueOf(item.getLastSoldPrice());
+        String pictureUrl = item.getAssetUrl();
 
         StringBuilder sb = new StringBuilder();
         sb.append("Name: ").append(name).append("\n")

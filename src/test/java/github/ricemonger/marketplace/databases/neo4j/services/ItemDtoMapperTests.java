@@ -1,9 +1,11 @@
 package github.ricemonger.marketplace.databases.neo4j.services;
 
 import github.ricemonger.marketplace.UbiServiceConfiguration;
-import github.ricemonger.marketplace.databases.neo4j.entities.ItemEntity;
-import github.ricemonger.marketplace.databases.neo4j.entities.ItemSaleEntity;
-import github.ricemonger.marketplace.databases.neo4j.enums.ItemType;
+import github.ricemonger.marketplace.databases.postgres.entities.ItemEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.ItemSaleEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.TagEntity;
+import github.ricemonger.marketplace.databases.postgres.enums.ItemType;
+import github.ricemonger.marketplace.databases.postgres.services.ItemDtoMapper;
 import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.Node;
 import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.node.Item;
 import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.node.MarketData;
@@ -23,7 +25,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-public class DTOsToEntityMapperTests {
+public class ItemDtoMapperTests {
 
     private static final Item ITEM = new Item("id", "url", "name", List.of("tag1", "tag2"), "WeaponSkin");
 
@@ -41,51 +43,69 @@ public class DTOsToEntityMapperTests {
     private UbiServiceConfiguration ubisoftServiceConfiguration;
 
     @SpyBean
-    private DTOsToEntityMapper dtosToEntityMapper;
+    private ItemDtoMapper itemDtoMapper;
 
     @Test
     public void NodeDTOsToItemEntitiesShouldCallNodeDTOToItemEntityForEveryEntity() {
-        dtosToEntityMapper.nodesDTOToItemEntities(List.of(NODE, NODE));
+        itemDtoMapper.nodesDTOToItemEntities(List.of(NODE, NODE));
 
-        verify(dtosToEntityMapper, times(2)).nodeDTOToItemEntity(NODE);
+        verify(itemDtoMapper, times(2)).nodeDTOToItemEntity(NODE);
     }
 
     @Test
     public void NodeDTOToItemEntityShouldMapValues() throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat(ubisoftServiceConfiguration.getPerformedAtDateFormat());
 
-        ItemEntity itemEntity = ItemEntity.builder()
+        ItemEntity expected = ItemEntity.builder()
                 .itemFullId(ITEM.getId())
                 .assetUrl(ITEM.getAssetUrl())
                 .name(ITEM.getName())
-                .tags(ITEM.getTags())
+                .tags(List.of(new TagEntity("tag1"), new TagEntity("tag2")))
                 .type(ItemType.valueOf(ITEM.getType()))
                 .maxBuyPrice(BUY_STATS.getHighestPrice())
-                .buyOrders(BUY_STATS.getActiveCount())
+                .buyOrdersCount(BUY_STATS.getActiveCount())
                 .minSellPrice(SELL_STATS.getLowestPrice())
-                .sellOrders(SELL_STATS.getActiveCount())
+                .sellOrdersCount(SELL_STATS.getActiveCount())
                 .lastSoldPrice(LAST_SOLD_AT.getPrice())
                 .lastSoldAt(sdf.parse(LAST_SOLD_AT.getPerformedAt()))
                 .expectedProfit(15)
                 .expectedProfitPercentage(12)
                 .build();
 
-        assertEquals(itemEntity, dtosToEntityMapper.nodeDTOToItemEntity(NODE));
+        ItemEntity mapped = itemDtoMapper.nodeDTOToItemEntity(NODE);
+
+        assertEquals(expected.getItemFullId(), mapped.getItemFullId());
+        assertEquals(expected.getAssetUrl(), mapped.getAssetUrl());
+        assertEquals(expected.getName(), mapped.getName());
+        assertEquals(expected.getTags(), mapped.getTags());
+        assertEquals(expected.getType(), mapped.getType());
+        assertEquals(expected.getMaxBuyPrice(), mapped.getMaxBuyPrice());
+        assertEquals(expected.getBuyOrdersCount(), mapped.getBuyOrdersCount());
+        assertEquals(expected.getMinSellPrice(), mapped.getMinSellPrice());
+        assertEquals(expected.getSellOrdersCount(), mapped.getSellOrdersCount());
+        assertEquals(expected.getLastSoldPrice(), mapped.getLastSoldPrice());
+        assertEquals(expected.getLastSoldAt(), mapped.getLastSoldAt());
+        assertEquals(expected.getExpectedProfit(), mapped.getExpectedProfit());
+        assertEquals(expected.getExpectedProfitPercentage(), mapped.getExpectedProfitPercentage());
     }
 
     @Test
     public void NodeDTOsToItemSaleEntitiesShouldCallNodeDTOToItemSaleEntityForEveryEntity() {
-        dtosToEntityMapper.nodesDTOToItemSaleEntities(List.of(NODE, NODE));
+        itemDtoMapper.nodesDTOToItemSaleEntities(List.of(NODE, NODE));
 
-        verify(dtosToEntityMapper, times(2)).nodeDTOToItemSaleEntity(NODE);
+        verify(itemDtoMapper, times(2)).nodeDTOToItemSaleEntity(NODE);
     }
 
     @Test
-    public void NodeDTOToItemSaleEntityShouldMapValues() throws ParseException {
+    public void NodeDTOToItemSaleNodeShouldMapValues() throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat(ubisoftServiceConfiguration.getPerformedAtDateFormat());
 
-        ItemSaleEntity itemSaleEntity = new ItemSaleEntity(ITEM.getId(),sdf.parse(LAST_SOLD_AT.getPerformedAt()),LAST_SOLD_AT.getPrice());
+        ItemSaleEntity expected = new ItemSaleEntity(ITEM.getId(), sdf.parse(LAST_SOLD_AT.getPerformedAt()), LAST_SOLD_AT.getPrice());
 
-        assertEquals(itemSaleEntity, dtosToEntityMapper.nodeDTOToItemSaleEntity(NODE));
+        ItemSaleEntity mapped = itemDtoMapper.nodeDTOToItemSaleEntity(NODE);
+
+        assertEquals(expected.getItemId(), mapped.getItemId());
+        assertEquals(expected.getSoldAt(), mapped.getSoldAt());
+        assertEquals(expected.getPrice(), mapped.getPrice());
     }
 }

@@ -1,9 +1,7 @@
 package github.ricemonger.telegramBot.client;
 
-import github.ricemonger.marketplace.databases.neo4j.entities.ItemEntity;
-import github.ricemonger.marketplace.databases.neo4j.enums.ItemType;
-import github.ricemonger.marketplace.databases.neo4j.services.ItemService;
-import github.ricemonger.marketplace.databases.neo4j.services.TelegramLinkedUserService;
+import github.ricemonger.marketplace.databases.postgres.services.TelegramUserService;
+import github.ricemonger.marketplace.databases.postgres.services.ItemService;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.InputGroup;
 import github.ricemonger.telegramBot.executors.InputState;
@@ -12,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,7 +23,7 @@ public class BotInnerServiceTests {
     private TelegramBotClientService telegramBotClientService;
 
     @MockBean
-    private TelegramLinkedUserService telegramLinkedUserService;
+    private TelegramUserService telegramUserService;
 
     @MockBean
     private ItemService itemService;
@@ -62,18 +59,18 @@ public class BotInnerServiceTests {
 
         botInnerService.isRegistered(chatId);
 
-        verify(telegramLinkedUserService).isTelegramUserRegistered(chatId);
+        verify(telegramUserService).isTelegramUserRegistered(chatId);
     }
 
     @Test
     public void isRegisteredShouldReturnServiceAnswerIfTrue() {
         Long chatId = 1L;
 
-        when(telegramLinkedUserService.isTelegramUserRegistered(chatId)).thenReturn(true);
+        when(telegramUserService.isTelegramUserRegistered(chatId)).thenReturn(true);
 
         assertTrue(botInnerService.isRegistered(chatId));
 
-        when(telegramLinkedUserService.isTelegramUserRegistered(chatId)).thenReturn(true);
+        when(telegramUserService.isTelegramUserRegistered(chatId)).thenReturn(true);
 
         assertTrue(botInnerService.isRegistered(chatId));
     }
@@ -84,32 +81,32 @@ public class BotInnerServiceTests {
 
         botInnerService.registerUser(chatId);
 
-        verify(telegramLinkedUserService).registerTelegramUser(chatId);
+        verify(telegramUserService).registerTelegramUser(chatId);
     }
 
     @Test
     public void addCredentialsFromUserInputsShouldHandleToServiceAndAddIfFull() {
         Long chatId = 1L;
-        when(telegramLinkedUserService.getUserInputByStateOrNull(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn("email:password");
+        when(telegramUserService.getUserInputByStateOrNull(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn("email:password");
 
         botInnerService.addCredentialsFromUserInputs(chatId);
 
-        verify(telegramLinkedUserService).addCredentials(chatId, "email", "password");
+        verify(telegramUserService).addCredentialsIfValidOrThrowException(chatId, "email", "password");
 
-        verify(telegramLinkedUserService).clearUserInputs(chatId);
+        verify(telegramUserService).clearUserInputs(chatId);
     }
 
     @Test
     public void addCredentialsFromUserInputsShouldHandleToServiceAndAddIfSeparated() {
         Long chatId = 1L;
-        when(telegramLinkedUserService.getUserInputByStateOrNull(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn("email");
-        when(telegramLinkedUserService.getUserInputByStateOrNull(chatId, InputState.CREDENTIALS_PASSWORD)).thenReturn("password");
+        when(telegramUserService.getUserInputByStateOrNull(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn("email");
+        when(telegramUserService.getUserInputByStateOrNull(chatId, InputState.CREDENTIALS_PASSWORD)).thenReturn("password");
 
         botInnerService.addCredentialsFromUserInputs(chatId);
 
-        verify(telegramLinkedUserService).addCredentials(chatId, "email", "password");
+        verify(telegramUserService).addCredentialsIfValidOrThrowException(chatId, "email", "password");
 
-        verify(telegramLinkedUserService).clearUserInputs(chatId);
+        verify(telegramUserService).clearUserInputs(chatId);
     }
 
     @Test
@@ -120,7 +117,7 @@ public class BotInnerServiceTests {
 
         botInnerService.saveUserInputOrThrow(updateInfo);
 
-        verify(telegramLinkedUserService).saveUserInput(updateInfo.getChatId(), updateInfo.getInputState(), "userInput");
+        verify(telegramUserService).saveUserInput(updateInfo.getChatId(), updateInfo.getInputState(), "userInput");
     }
 
     @Test
@@ -129,7 +126,7 @@ public class BotInnerServiceTests {
 
         botInnerService.clearUserInputs(chatId);
 
-        verify(telegramLinkedUserService).clearUserInputs(chatId);
+        verify(telegramUserService).clearUserInputs(chatId);
     }
 
     @Test
@@ -138,7 +135,7 @@ public class BotInnerServiceTests {
 
         botInnerService.setUserNextInputState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL);
 
-        verify(telegramLinkedUserService).setUserNextInputState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL);
+        verify(telegramUserService).setUserNextInputState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL);
     }
 
     @Test
@@ -147,7 +144,7 @@ public class BotInnerServiceTests {
 
         botInnerService.setUserNextInputGroup(chatId, InputGroup.CREDENTIALS_ADD);
 
-        verify(telegramLinkedUserService).setUserNextInputGroup(chatId, InputGroup.CREDENTIALS_ADD);
+        verify(telegramUserService).setUserNextInputGroup(chatId, InputGroup.CREDENTIALS_ADD);
     }
 
     @Test
@@ -156,14 +153,14 @@ public class BotInnerServiceTests {
 
         botInnerService.getUserInputByState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL);
 
-        verify(telegramLinkedUserService).getUserInputByStateOrNull(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL);
+        verify(telegramUserService).getUserInputByStateOrNull(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL);
     }
 
     @Test
     public void getUserInputByStateShouldReturnServiceAnswer() {
         Long chatId = 1L;
 
-        when(telegramLinkedUserService.getUserInputByStateOrNull(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn("userInput");
+        when(telegramUserService.getUserInputByStateOrNull(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn("userInput");
 
         assertEquals("userInput", botInnerService.getUserInputByState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL));
     }
@@ -174,7 +171,7 @@ public class BotInnerServiceTests {
 
         botInnerService.removeCredentialsByUserInputs(chatId);
 
-        verify(telegramLinkedUserService).removeCredentialsByUserInputs(chatId);
+        verify(telegramUserService).removeCredentialsByUserInputs(chatId);
     }
 
     @Test
@@ -183,7 +180,7 @@ public class BotInnerServiceTests {
 
         botInnerService.removeUserAllCredentials(chatId);
 
-        verify(telegramLinkedUserService).removeAllCredentials(chatId);
+        verify(telegramUserService).removeAllCredentials(chatId);
     }
 
     @Test
@@ -192,39 +189,21 @@ public class BotInnerServiceTests {
 
         botInnerService.getCredentialsEmailsList(chatId);
 
-        verify(telegramLinkedUserService).getCredentialsEmailsList(chatId);
+        verify(telegramUserService).getCredentialsEmailsList(chatId);
     }
 
     @Test
     public void getCredentialsEmailsListShouldReturnServiceAnswer() {
         Long chatId = 1L;
 
-        when(telegramLinkedUserService.getCredentialsEmailsList(chatId)).thenReturn(List.of("email1", "email2"));
+        when(telegramUserService.getCredentialsEmailsList(chatId)).thenReturn(List.of("email1", "email2"));
 
         assertEquals(List.of("email1", "email2"), botInnerService.getCredentialsEmailsList(chatId));
     }
 
     @Test
     public void sendDefaultSpeculativeItemsAsMessagesShouldGetFromServiceWithDefaultValuesAndSendByItemsAmount() {
-        ItemEntity itemEntity = ItemEntity.builder()
-                .itemFullId("id")
-                .assetUrl("url")
-                .name("name")
-                .tags(List.of("tag1", "tag2"))
-                .type(ItemType.WeaponSkin)
-                .maxBuyPrice(100)
-                .buyOrders(200)
-                .minSellPrice(50)
-                .sellOrders(100)
-                .lastSoldPrice(150)
-                .lastSoldAt(new Date())
-                .expectedProfit(15)
-                .expectedProfitPercentage(12)
-                .build();
-
         Long chatId = 1L;
-
-        when(itemService.getSpeculativeItemsByExpectedProfit(50, 40, 0, 15000)).thenReturn(List.of(itemEntity, itemEntity));
 
         botInnerService.sendDefaultSpeculativeItemsAsMessages(chatId);
 

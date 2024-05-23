@@ -1,106 +1,56 @@
 package github.ricemonger.marketplace.databases.neo4j.services;
 
-import github.ricemonger.marketplace.databases.neo4j.entities.ItemEntity;
-import github.ricemonger.marketplace.databases.neo4j.entities.ItemSaleEntity;
-import github.ricemonger.marketplace.databases.neo4j.entities.ItemSaleHistoryEntity;
-import github.ricemonger.marketplace.databases.neo4j.repositories.ItemRepository;
-import github.ricemonger.marketplace.databases.neo4j.repositories.ItemSaleHistoryRepository;
-import github.ricemonger.marketplace.databases.neo4j.repositories.ItemSaleRepository;
+import github.ricemonger.marketplace.databases.postgres.services.ItemEntityRepositoryService;
+import github.ricemonger.marketplace.databases.postgres.services.ItemService;
 import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.Node;
+import github.ricemonger.utils.exceptions.UbiUserEntityDoesntExistException;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class ItemServiceTests {
 
     @MockBean
-    private ItemRepository itemRepository;
+    private ItemEntityRepositoryService itemRepositoryService;
 
-    @MockBean
-    private ItemSaleRepository itemSaleRepository;
-
-    @MockBean
-    private ItemSaleHistoryRepository itemSaleHistoryRepository;
-
-    @MockBean
-    private DTOsToEntityMapper mapper;
-
-    @Autowired
+    @SpyBean
     private ItemService itemService;
 
     @Test
-    public void saveAllShouldMapAndCallRepositorySaveAll() {
-        Set<Node> nodes = new HashSet<>();
-        Set<ItemEntity> items = new HashSet<>();
-        when(mapper.nodesDTOToItemEntities(nodes)).thenReturn(items);
+    public void saveAll() {
+        Collection<Node> nodeDTOs = new ArrayList<>();
+        itemService.saveAll(nodeDTOs);
 
-        itemService.saveAll(nodes);
-
-        verify(mapper).nodesDTOToItemEntities(nodes);
-
-        verify(itemRepository).saveAll(items);
+        verify(itemRepositoryService).saveAll(nodeDTOs);
     }
 
     @Test
-    public void getSpeculativeItemsShouldGetFromRepositoryByValuesByExpectedProfit() {
-        ItemEntity itemEntity1 = new ItemEntity();
-        itemEntity1.setExpectedProfit(10);
-        itemEntity1.setExpectedProfitPercentage(10);
-        itemEntity1.setMinSellPrice(0);
+    public void getSpeculativeItemsByExpectedProfit() throws UbiUserEntityDoesntExistException {
 
-        ItemEntity itemEntity2 = new ItemEntity();
-        itemEntity2.setExpectedProfit(0);
-        itemEntity2.setExpectedProfitPercentage(10);
-        itemEntity2.setMinSellPrice(10);
+        itemService.getSpeculativeItemsByExpectedProfit(100, 10, 1000, 10000);
 
-        ItemEntity itemEntity3 = new ItemEntity();
-        itemEntity3.setExpectedProfit(10);
-        itemEntity3.setExpectedProfitPercentage(10);
-        itemEntity3.setMinSellPrice(1000);
-
-        ItemEntity itemEntity4 = new ItemEntity();
-        itemEntity4.setExpectedProfit(10);
-        itemEntity4.setExpectedProfitPercentage(0);
-        itemEntity4.setMinSellPrice(10);
-
-        ItemEntity itemEntity5 = new ItemEntity();
-        itemEntity5.setExpectedProfit(10);
-        itemEntity5.setExpectedProfitPercentage(10);
-        itemEntity5.setMinSellPrice(10);
-
-        List<ItemEntity> items = new ArrayList<>();
-        items.add(itemEntity1);
-        items.add(itemEntity2);
-        items.add(itemEntity3);
-        items.add(itemEntity4);
-        items.add(itemEntity5);
-        when(itemRepository.findAll()).thenReturn(items);
-
-        List<ItemEntity> result = itemService.getSpeculativeItemsByExpectedProfit(1, 1, 1, 100);
-
-        verify(itemRepository).findAll();
-
-        assertEquals(1, result.size());
-        assertEquals(itemEntity5, result.get(0));
+        verify(itemRepositoryService, times(1)).getSpeculativeItemsByExpectedProfit(
+                any(),
+                eq(100),
+                eq(10),
+                eq(1000),
+                eq(10000));
     }
 
     @Test
-    public void calculateItemSaleStatsShouldCallRepositories(){
+    public void calculateItemsSaleStats() {
         itemService.calculateItemsSaleStats();
 
-        verify(itemRepository).findAll();
-
-        verify(itemSaleRepository).findAll();
-
-        verify(itemSaleHistoryRepository).saveAll(any());
+        verify(itemRepositoryService).calculateItemsSaleStats();
     }
 }

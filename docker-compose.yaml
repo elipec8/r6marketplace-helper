@@ -1,38 +1,45 @@
 version: '2.4'
 
 services:
- neo4j:
-    container_name: r6helper-neo4j
-    image: neo4j:ubi9
+
+ postgres:
+    container_name: r6helper-postgres
+    image: postgres:16.3
     ports:
-     - "7474:7474"
-     - "7687:7687"
+     - "5432:5432"
     environment:
-     - NEO4J_AUTH=neo4j/password
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=1234
+     - POSTGRES_DB=r6helper
     volumes:
-     - neo4j-data:/data
-     - neo4j-logs:/logs
-     - neo4j-import:/var/lib/neo4j/import
-     - neo4j-plugins:/plugins
+     - postgres-data:/var/lib/postgresql/data
     networks:
-     - neo4j-net
+     - postgres-net
     restart: always
 
- neo4j-test:
-   container_name: r6helper-neo4j-test
-   image: neo4j:ubi9
+ postgres-test:
+   container_name: r6helper-postgres-test
+   image: postgres:16.3
    ports:
-     - "7475:7474"
-     - "7688:7687"
+     - "5433:5432"
    environment:
-     - NEO4J_AUTH=neo4j/password
-   volumes:
-     - test-neo4j-data:/data
-     - test-neo4j-logs:/logs
-     - test-neo4j-import:/var/lib/neo4j/import
-     - test-neo4j-plugins:/plugins
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=1234
+     - POSTGRES_DB=r6helper
    networks:
-     - neo4j-net
+     - postgres-net
+
+ pgadmin:
+    container_name: r6helper-pgadmin
+    image: dpage/pgadmin4:8.6
+    ports:
+     - "5050:80"
+    networks:
+      - postgres-net
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: 1234
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
 
  redis:
     container_name: r6helper-redis
@@ -65,19 +72,11 @@ services:
     restart: always
 
 networks:
-    neo4j-net:
+    postgres-net:
     zipkin-net:
     redis-net:
 
 volumes:
- neo4j-data:
- neo4j-logs:
- neo4j-import:
- neo4j-plugins:
+ postgres-data:
  redis-data:
-
- test-neo4j-data:
- test-neo4j-logs:
- test-neo4j-import:
- test-neo4j-plugins:
  test-redis-data:

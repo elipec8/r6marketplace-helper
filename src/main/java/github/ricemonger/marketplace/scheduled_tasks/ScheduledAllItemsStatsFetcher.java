@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
 
-import github.ricemonger.marketplace.databases.neo4j.services.ItemService;
 import github.ricemonger.marketplace.databases.redis.services.RedisService;
+import github.ricemonger.marketplace.databases.postgres.services.ItemService;
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.Node;
 import github.ricemonger.telegramBot.BotService;
@@ -12,8 +12,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 
 @Component
@@ -50,7 +48,7 @@ public class ScheduledAllItemsStatsFetcher {
         log.info("Fetched {} items' stats", nodes.size());
     }
 
-    private void onItemsAmountIncrease(int expectedItemCount,int fetchedItemsCount) {
+    private void onItemsAmountIncrease(int expectedItemCount, int fetchedItemsCount) {
         redisService.setExpectedItemCount(fetchedItemsCount);
 
         botService.notifyAllUsersAboutItemAmountIncrease(expectedItemCount, fetchedItemsCount);

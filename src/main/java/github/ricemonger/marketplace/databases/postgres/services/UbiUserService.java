@@ -1,11 +1,11 @@
-package github.ricemonger.marketplace.databases.neo4j.services;
+package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationDTO;
 import github.ricemonger.marketplace.authorization.AuthorizationService;
-import github.ricemonger.marketplace.databases.neo4j.entities.TelegramLinkedUserEntity;
-import github.ricemonger.marketplace.databases.neo4j.entities.UbiUserEntity;
-import github.ricemonger.marketplace.databases.neo4j.repositories.UbiUserRepository;
-import github.ricemonger.utils.exceptions.AesPasswordEncoder;
+import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUserEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.UbiUserEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.UbiUserEntityId;
+import github.ricemonger.marketplace.databases.postgres.repositories.UbiUserEntityRepository;
 import github.ricemonger.utils.exceptions.UbiUserAuthorizationClientErrorException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,18 +17,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UbiUserService {
 
-    private final UbiUserRepository ubiUserRepository;
+    private final UbiUserEntityRepository ubiUserRepository;
 
     private final AesPasswordEncoder AESPasswordEncoder;
 
     private final AuthorizationService authorizationService;
 
     public void deleteByLinkedTelegramUserChatIdAndEmail(String chatId, String emailToRemove) {
-        ubiUserRepository.deleteByLinkedTelegramUserChatIdAndEmail(chatId, emailToRemove);
+        ubiUserRepository.deleteById(new UbiUserEntityId(chatId, emailToRemove));
+    }
+
+    public List<UbiUserEntity> findAllByLinkedTelegramUserChatId(String chatId) {
+        return ubiUserRepository.findAllByChatId(chatId);
     }
 
     public void deleteAllByLinkedTelegramUserChatId(String chatId) {
-        ubiUserRepository.deleteAllByLinkedTelegramUserChatId(chatId);
+        ubiUserRepository.deleteAllByChatId(chatId);
     }
 
     public List<UbiUserEntity> reauthorizeAllUbiUsersAndGetUnauthorizedList(){
@@ -62,10 +66,10 @@ public class UbiUserService {
             ubiUserRepository.save(entity);
     }
 
-    public void createAndAuthorizeOrThrowForTelegramUser(TelegramLinkedUserEntity telegramLinkedUserEntity, String email, String password) throws UbiUserAuthorizationClientErrorException {
+    public void createAndAuthorizeOrThrowForTelegramUser(String chatId, String email, String password) throws UbiUserAuthorizationClientErrorException {
         UbiUserEntity ubiUserEntity = authorizeAndGetUbiUser(email, password);
 
-        ubiUserEntity.setLinkedTelegramUser(telegramLinkedUserEntity);
+        ubiUserEntity.setChatId(chatId);
 
         ubiUserRepository.save(ubiUserEntity);
     }

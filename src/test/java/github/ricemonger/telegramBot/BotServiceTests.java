@@ -1,6 +1,6 @@
 package github.ricemonger.telegramBot;
 
-import github.ricemonger.marketplace.databases.neo4j.services.TelegramLinkedUserService;
+import github.ricemonger.marketplace.databases.postgres.services.TelegramUserService;
 import github.ricemonger.telegramBot.client.TelegramBotClientService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ class BotServiceTests {
     private TelegramBotClientService telegramBotClientService;
 
     @MockBean
-    private TelegramLinkedUserService telegramLinkedUserService;
+    private TelegramUserService telegramUserService;
 
     @Autowired
     private BotService botService;
@@ -32,11 +32,11 @@ class BotServiceTests {
         List<String> chatIds = new ArrayList<>();
         chatIds.add("1");
         chatIds.add("2");
-        when(telegramLinkedUserService.getAllChatIdsForNotifiableUsers()).thenReturn(chatIds);
+        when(telegramUserService.getAllChatIdsForNotifiableUsers()).thenReturn(chatIds);
 
         botService.notifyAllUsersAboutItemAmountIncrease(1, 2);
 
-        verify(telegramLinkedUserService).getAllChatIdsForNotifiableUsers();
+        verify(telegramUserService).getAllChatIdsForNotifiableUsers();
 
         verify(telegramBotClientService).sendText(eq(chatIds.get(0)), anyString());
         verify(telegramBotClientService).sendText(eq(chatIds.get(1)), anyString());

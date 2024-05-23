@@ -1,7 +1,7 @@
 package github.ricemonger.telegramBot.updateReceiver;
 
-import github.ricemonger.marketplace.databases.neo4j.entities.TelegramLinkedUserEntity;
-import github.ricemonger.marketplace.databases.neo4j.services.TelegramLinkedUserService;
+import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUserEntity;
+import github.ricemonger.marketplace.databases.postgres.services.TelegramUserService;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.InputGroup;
 import github.ricemonger.telegramBot.executors.InputState;
@@ -14,7 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @RequiredArgsConstructor
 public class UpdateToUpdateInfoMapper {
 
-    private final TelegramLinkedUserService telegramLinkedUserService;
+    private final TelegramUserService telegramUserService;
 
     public UpdateInfo map(Update update) {
         UpdateInfo updateInfo = new UpdateInfo();
@@ -36,7 +36,7 @@ public class UpdateToUpdateInfoMapper {
         InputGroup inputGroup;
 
         try{
-            TelegramLinkedUserEntity entity = telegramLinkedUserService.getTelegramUser(updateInfo.getChatId());
+            TelegramLinkedUserEntity entity = telegramUserService.getTelegramUser(updateInfo.getChatId());
 
             inputState = entity.getInputState();
             if(inputState == null) {

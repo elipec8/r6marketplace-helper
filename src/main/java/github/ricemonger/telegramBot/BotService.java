@@ -1,6 +1,6 @@
 package github.ricemonger.telegramBot;
 
-import github.ricemonger.marketplace.databases.neo4j.services.TelegramLinkedUserService;
+import github.ricemonger.marketplace.databases.postgres.services.TelegramUserService;
 import github.ricemonger.telegramBot.client.TelegramBotClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ public class BotService {
 
     private final TelegramBotClientService telegramBotClientService;
 
-    private final TelegramLinkedUserService telegramLinkedUserService;
+    private final TelegramUserService telegramUserService;
 
     public void notifyAllUsersAboutItemAmountIncrease(int expectedItemCount, int actualItemCount) {
         String message = "The amount of items on marketplace increased from " + expectedItemCount + " to " + actualItemCount + "\n" +
@@ -23,7 +23,7 @@ public class BotService {
     }
 
     private void notifyAllUsers(String message) {
-        List<String> chatIds = telegramLinkedUserService.getAllChatIdsForNotifiableUsers();
+        List<String> chatIds = telegramUserService.getAllChatIdsForNotifiableUsers();
 
         chatIds.forEach(chatId -> telegramBotClientService.sendText(chatId, message));
     }

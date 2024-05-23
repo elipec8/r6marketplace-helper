@@ -1,83 +1,46 @@
-package github.ricemonger.marketplace.databases.neo4j.services;
+package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.neo4j.entities.ItemEntity;
-import github.ricemonger.marketplace.databases.neo4j.entities.ItemSaleEntity;
-import github.ricemonger.marketplace.databases.neo4j.entities.ItemSaleHistoryEntity;
-import github.ricemonger.marketplace.databases.neo4j.repositories.ItemRepository;
-import github.ricemonger.marketplace.databases.neo4j.repositories.ItemSaleHistoryRepository;
-import github.ricemonger.marketplace.databases.neo4j.repositories.ItemSaleRepository;
+import github.ricemonger.marketplace.databases.postgres.entities.ItemEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.ItemSaleEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.ItemSaleHistoryEntity;
+import github.ricemonger.marketplace.databases.postgres.repositories.ItemEntityRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.ItemSaleEntityRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.ItemSaleHistoryEntityRepository;
 import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.Node;
 import github.ricemonger.utils.exceptions.UbiUserEntityDoesntExistException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-@Service
+@Component
 @RequiredArgsConstructor
-public class ItemService {
+public class ItemEntityRepositoryService implements ItemRepositoryService {
 
-    private final static Set<String> IGNORED_NAMES = new HashSet<>();
+    private final ItemEntityRepository itemEntityRepository;
 
-    static {
-        IGNORED_NAMES.add("BLACK ICE");
-        IGNORED_NAMES.add("DUST LINE");
-        IGNORED_NAMES.add("SKULL RAIN");
-        IGNORED_NAMES.add("RED CROW");
-        IGNORED_NAMES.add("VELVET SHELL");
-        IGNORED_NAMES.add("HEALTH");
-        IGNORED_NAMES.add("BLOOD ORCHID");
-        IGNORED_NAMES.add("WHITE NOISE");
-        IGNORED_NAMES.add("CHIMERA");
-        IGNORED_NAMES.add("PARA BELLUM");
-        IGNORED_NAMES.add("GRIM SKY");
-        IGNORED_NAMES.add("WIND BASTION");
-        IGNORED_NAMES.add("BURNT HORIZON");
-        IGNORED_NAMES.add("PHANTOM SIGHT");
-        IGNORED_NAMES.add("EMBER RISE");
-        IGNORED_NAMES.add("SHIFTING TIDES");
-        IGNORED_NAMES.add("VOID EDGE");
-        IGNORED_NAMES.add("STEEL WAVE");
-        IGNORED_NAMES.add("SHADOW LEGACY");
-        IGNORED_NAMES.add("NEON DAWN");
-        IGNORED_NAMES.add("CRIMSON HEIST");
-        IGNORED_NAMES.add("NORTH STAR");
-        IGNORED_NAMES.add("CRYSTAL GUARD");
-        IGNORED_NAMES.add("HIGH CALIBRE");
-        IGNORED_NAMES.add("DEMON VEIL");
-        IGNORED_NAMES.add("VECTOR GLARE");
-        IGNORED_NAMES.add("BRUTAL SWARM");
-        IGNORED_NAMES.add("SOLAR RAID");
-        IGNORED_NAMES.add("COMMANDING FORCE");
-        IGNORED_NAMES.add("DREAD FACTOR");
-        IGNORED_NAMES.add("HEAVY METTLE");
-        IGNORED_NAMES.add("DEEP FREEZE");
-        IGNORED_NAMES.add("DEADLY OMEN");
-    }
+    private final ItemSaleEntityRepository itemSaleEntityRepository;
 
-    private final ItemRepository itemRepository;
+    private final ItemSaleHistoryEntityRepository itemSaleHistoryEntityRepository;
 
-    private final ItemSaleRepository itemSaleRepository;
-
-    private final ItemSaleHistoryRepository itemSaleHistoryRepository;
-
-    private final DTOsToEntityMapper mapper;
+    private final ItemDtoMapper mapper;
 
     public void saveAll(Collection<Node> nodeDTOs) {
         Set<ItemEntity> entities = mapper.nodesDTOToItemEntities(nodeDTOs);
 
         Set<ItemSaleEntity> saleEntities = mapper.nodesDTOToItemSaleEntities(nodeDTOs);
 
-        itemRepository.saveAll(entities);
-        itemSaleRepository.saveAll(saleEntities);
+        itemEntityRepository.saveAll(entities);
+        itemSaleEntityRepository.saveAll(saleEntities);
     }
 
-    public List<ItemEntity> getSpeculativeItemsByExpectedProfit(int minProfitAbsolute, int minProfitPercentOfBuyPrice, int minSellPrice, int maxSellPrice) throws UbiUserEntityDoesntExistException {
-        return itemRepository
+    public List<ItemEntity> getSpeculativeItemsByExpectedProfit(List<String> ignoredNames, int minProfitAbsolute, int minProfitPercentOfBuyPrice,
+                                                                int minSellPrice,
+                                                                int maxSellPrice) throws UbiUserEntityDoesntExistException {
+        return itemEntityRepository
                 .findAll()
                 .stream()
-                .filter(itemEntity -> !IGNORED_NAMES.contains(itemEntity.getName()))
+                .filter(itemEntity -> !ignoredNames.contains(itemEntity.getName()))
                 .map(itemEntity -> {
                     if (itemEntity.getExpectedProfit() >= minProfitAbsolute &&
                             itemEntity.getExpectedProfitPercentage() >= minProfitPercentOfBuyPrice &&
@@ -87,24 +50,27 @@ public class ItemService {
                     }
                     return null;
                 }).filter(Objects::nonNull)
-                .sorted((o1, o2) -> o2.getExpectedProfit() * o2.getExpectedProfitPercentage() * o2.getSellOrders() - o1.getExpectedProfit() * o1.getExpectedProfitPercentage() * o1.getSellOrders()).toList();
+                .sorted((o1, o2) -> o2.getExpectedProfit() * o2.getExpectedProfitPercentage() * o2.getSellOrdersCount() - o1.getExpectedProfit() * o1.getExpectedProfitPercentage() * o1.getSellOrdersCount()).toList();
     }
 
     public void calculateItemsSaleStats() {
 
-        List<ItemEntity> items = itemRepository.findAll();
-
-        List<ItemSaleEntity> sales = itemSaleRepository.findAll();
-
         List<ItemSaleHistoryEntity> histories = new ArrayList<>();
 
-        for(ItemEntity item : items){
+        List<ItemEntity> items = itemEntityRepository.findAll();
+
+        List<ItemSaleEntity> sales = itemSaleEntityRepository.findAll();
+
+        for (ItemEntity item : items) {
+
+            ItemSaleHistoryEntity history = new ItemSaleHistoryEntity();
+            history.setItemId(item.getItemFullId());
+
             List<ItemSaleEntity> itemSales = sales.stream().filter(sale -> sale.getItemId().equals(item.getItemFullId())).toList();
 
-            if(itemSales.isEmpty()){
-                ItemSaleHistoryEntity history = new ItemSaleHistoryEntity();
-                history.setItemId(item.getItemFullId());
+            if (itemSales.isEmpty()) {
                 histories.add(history);
+                continue;
             }
 
             List<ItemSaleEntity> monthSales =
@@ -118,10 +84,10 @@ public class ItemService {
             int monthLowPriceSalesPerDay = 0;
             int monthHighPriceSalesPerDay = 0;
 
-            if(!monthSales.isEmpty()){
-                monthAveragePrice = (int )monthSales.stream().mapToInt(ItemSaleEntity::getPrice).average().orElse(0);
-                int monthLowPriceThreshold = (int)(monthAveragePrice * 0.75);
-                int monthHighPriceThreshold = (int)(monthAveragePrice * 1.2);
+            if (!monthSales.isEmpty()) {
+                monthAveragePrice = (int) monthSales.stream().mapToInt(ItemSaleEntity::getPrice).average().orElse(0);
+                int monthLowPriceThreshold = (int) (monthAveragePrice * 0.75);
+                int monthHighPriceThreshold = (int) (monthAveragePrice * 1.2);
                 monthMedianPrice = monthSales.stream().mapToInt(ItemSaleEntity::getPrice).sorted().boxed().toList().get(monthSales.size() / 2);
                 monthMaxPrice = monthSales.stream().mapToInt(ItemSaleEntity::getPrice).max().orElse(0);
                 monthMinPrice = monthSales.stream().mapToInt(ItemSaleEntity::getPrice).min().orElse(0);
@@ -141,10 +107,10 @@ public class ItemService {
             int dayLowPriceSalesCount = 0;
             int dayHighPriceSalesCount = 0;
 
-            if(!daySales.isEmpty()){
+            if (!daySales.isEmpty()) {
                 dayAveragePrice = (int) daySales.stream().mapToInt(ItemSaleEntity::getPrice).average().orElse(0);
-                int dayLowPriceThreshold = (int)(dayAveragePrice * 0.75);
-                int dayHighPriceThreshold = (int)(dayAveragePrice * 1.2);
+                int dayLowPriceThreshold = (int) (dayAveragePrice * 0.75);
+                int dayHighPriceThreshold = (int) (dayAveragePrice * 1.2);
                 dayMaxPrice = daySales.stream().mapToInt(ItemSaleEntity::getPrice).max().orElse(0);
                 dayMinPrice = daySales.stream().mapToInt(ItemSaleEntity::getPrice).min().orElse(0);
                 dayMedianPrice = daySales.stream().mapToInt(ItemSaleEntity::getPrice).sorted().boxed().toList().get(daySales.size() / 2);
@@ -152,10 +118,6 @@ public class ItemService {
                 dayLowPriceSalesCount = (int) daySales.stream().filter(sale -> sale.getPrice() <= dayLowPriceThreshold).count();
                 dayHighPriceSalesCount = (int) daySales.stream().filter(sale -> sale.getPrice() >= dayHighPriceThreshold).count();
             }
-
-            ItemSaleHistoryEntity history = new ItemSaleHistoryEntity();
-
-            history.setItemId(item.getItemFullId());
 
             history.setMonthAveragePrice(monthAveragePrice);
             history.setMonthMedianPrice(monthMedianPrice);
@@ -175,6 +137,6 @@ public class ItemService {
 
             histories.add(history);
         }
-        itemSaleHistoryRepository.saveAll(histories);
+        itemSaleHistoryEntityRepository.saveAll(histories);
     }
 }
