@@ -1,9 +1,7 @@
-package github.ricemonger.marketplace.service;
+package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.UbiServiceConfiguration;
-import github.ricemonger.marketplace.databases.neo4j.entities.ItemNode;
-import github.ricemonger.marketplace.databases.neo4j.entities.ItemSaleNode;
-import github.ricemonger.marketplace.databases.neo4j.enums.ItemType;
+import github.ricemonger.marketplace.databases.postgres.enums.ItemType;
 import github.ricemonger.marketplace.databases.postgres.entities.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.ItemSaleEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.TagEntity;
@@ -46,7 +44,7 @@ public class ItemDtoMapper {
 
         Item itemDTO = node.getItem();
 
-        Set<TagEntity> tags = new HashSet<>();
+        List<TagEntity> tags = new ArrayList<>();
         for (String tag : itemDTO.getTags()) {
             tags.add(new TagEntity(tag));
         }
@@ -87,78 +85,15 @@ public class ItemDtoMapper {
     public ItemSaleEntity nodeDTOToItemSaleEntity(Node node) {
         Item itemDTO = node.getItem();
 
-        ItemEntity itemEntity = new ItemEntity();
-        itemEntity.setItemFullId(itemDTO.getId());
-
         MarketData marketDataDTO = node.getMarketData();
 
         LastSoldAt lastSoldAtDTO = getLastSoldAt(marketDataDTO);
 
         try {
-            return new ItemSaleEntity(itemEntity, performedAtDateFormat.parse(lastSoldAtDTO.getPerformedAt()), lastSoldAtDTO.getPrice());
+            return new ItemSaleEntity(itemDTO.getId(), performedAtDateFormat.parse(lastSoldAtDTO.getPerformedAt()), lastSoldAtDTO.getPrice());
         } catch (ParseException e) {
             log.error("Error parsing date: " + lastSoldAtDTO.getPerformedAt());
-            return new ItemSaleEntity(itemEntity, new Date(0), 0);
-        }
-    }
-
-    public Set<ItemNode> nodesDTOToItemNodes(Collection<Node> nodes) {
-        return nodes.stream().map(this::nodeDTOToItemNode).collect(Collectors.toSet());
-    }
-
-    public Set<ItemSaleNode> nodesDTOToItemSaleNodes(Collection<Node> nodes) {
-        return nodes.stream().map(this::nodeDTOToItemSaleNode).collect(Collectors.toSet());
-    }
-
-    public ItemNode nodeDTOToItemNode(Node node) {
-        Item itemDTO = node.getItem();
-        MarketData marketDataDTO = node.getMarketData();
-
-        ItemNode.ItemNodeBuilder builder = ItemNode.builder();
-
-        SellStats sellStatsDTO = getSellStats(marketDataDTO);
-        BuyStats buyStatsDTO = getBuyStats(marketDataDTO);
-        LastSoldAt lastSoldAtDTO = getLastSoldAt(marketDataDTO);
-
-        int sellPrice = sellStatsDTO.getActiveCount() == 0 ? lastSoldAtDTO.getPrice() : sellStatsDTO.getLowestPrice();
-        int buyPrice = getNextFancyBuyPrice(buyStatsDTO.getHighestPrice(), sellPrice);
-        int priceDifference = (int) (sellPrice * marketplaceProfitPercent) - buyPrice;
-        int expectedProfit = Math.max(priceDifference, 0);
-        int expectedProfitPercentage = (int) ((expectedProfit * 100.0) / buyPrice);
-
-        builder
-                .itemFullId(itemDTO.getId())
-                .assetUrl(itemDTO.getAssetUrl())
-                .name(itemDTO.getName())
-                .tags(itemDTO.getTags())
-                .type(ItemType.valueOf(itemDTO.getType()))
-                .minSellPrice(sellStatsDTO.getLowestPrice())
-                .sellOrders(sellStatsDTO.getActiveCount())
-                .maxBuyPrice(buyStatsDTO.getHighestPrice())
-                .buyOrders(buyStatsDTO.getActiveCount())
-                .lastSoldPrice(lastSoldAtDTO.getPrice())
-                .expectedProfit(expectedProfit)
-                .expectedProfitPercentage(expectedProfitPercentage);
-        try {
-            builder.lastSoldAt(performedAtDateFormat.parse(lastSoldAtDTO.getPerformedAt()));
-        } catch (ParseException e) {
-            log.error("Error parsing date: " + lastSoldAtDTO.getPerformedAt());
-            builder.lastSoldAt(new Date(0));
-        }
-
-        return builder.build();
-    }
-
-    public ItemSaleNode nodeDTOToItemSaleNode(Node node) {
-        Item itemDTO = node.getItem();
-        MarketData marketDataDTO = node.getMarketData();
-
-        LastSoldAt lastSoldAtDTO = getLastSoldAt(marketDataDTO);
-        try {
-            return new ItemSaleNode(itemDTO.getId(), performedAtDateFormat.parse(lastSoldAtDTO.getPerformedAt()), lastSoldAtDTO.getPrice());
-        } catch (ParseException e) {
-            log.error("Error parsing date: " + lastSoldAtDTO.getPerformedAt());
-            return new ItemSaleNode(itemDTO.getId(), new Date(0), 0);
+            return new ItemSaleEntity(itemDTO.getId(), new Date(0), 0);
         }
     }
 

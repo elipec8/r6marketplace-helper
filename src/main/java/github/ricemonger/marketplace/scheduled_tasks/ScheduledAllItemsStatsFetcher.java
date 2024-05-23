@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
 
-import github.ricemonger.marketplace.databases.postgres.services.ItemEntityRepositoryService;
 import github.ricemonger.marketplace.databases.redis.services.RedisService;
+import github.ricemonger.marketplace.databases.postgres.services.ItemService;
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.Node;
 import github.ricemonger.telegramBot.BotService;
@@ -21,7 +21,7 @@ public class ScheduledAllItemsStatsFetcher {
 
     private final GraphQlClientService graphQlClientService;
 
-    private final ItemEntityRepositoryService itemEntityRepositoryService;
+    private final ItemService itemService;
 
     private final RedisService redisService;
 
@@ -41,14 +41,14 @@ public class ScheduledAllItemsStatsFetcher {
             onItemsAmountIncrease(expectedItemCount, nodes.size());
         }
 
-        itemEntityRepositoryService.saveAll(nodes);
+        itemService.saveAll(nodes);
 
-        itemEntityRepositoryService.calculateItemsSaleStats();
+        itemService.calculateItemsSaleStats();
 
         log.info("Fetched {} items' stats", nodes.size());
     }
 
-    private void onItemsAmountIncrease(int expectedItemCount,int fetchedItemsCount) {
+    private void onItemsAmountIncrease(int expectedItemCount, int fetchedItemsCount) {
         redisService.setExpectedItemCount(fetchedItemsCount);
 
         botService.notifyAllUsersAboutItemAmountIncrease(expectedItemCount, fetchedItemsCount);

@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
-import github.ricemonger.marketplace.databases.neo4j.entities.UbiUserNode;
-import github.ricemonger.marketplace.databases.neo4j.services.UbiUserService;
+import github.ricemonger.marketplace.databases.postgres.entities.UbiUserEntity;
+import github.ricemonger.marketplace.databases.postgres.services.UbiUserService;
 import github.ricemonger.telegramBot.client.TelegramBotClientService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +22,10 @@ public class ScheduledUbiUsersReauthorization {
     @Scheduled(fixedRate = 150 * 60 * 1000, initialDelay = 45 * 1000) // every 2.5h after 45s of delay
 
     public void reauthorizeUbiUsersAndNotifyAboutFailures() {
-        List<UbiUserNode> removed = ubiUserService.reauthorizeAllUbiUsersAndGetUnauthorizedList();
+        List<UbiUserEntity> removed = ubiUserService.reauthorizeAllUbiUsersAndGetUnauthorizedList();
 
-        for(UbiUserNode entity: removed){
-            telegramBotClientService.notifyUserAboutUbiAuthorizationFailure(entity.getLinkedTelegramUser().getChatId(), entity.getEmail());
+        for(UbiUserEntity entity: removed){
+            telegramBotClientService.notifyUserAboutUbiAuthorizationFailure(entity.getChatId(), entity.getEmail());
         }
     }
 }

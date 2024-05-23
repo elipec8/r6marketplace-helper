@@ -1,12 +1,11 @@
 package github.ricemonger.marketplace.databases.postgres.entities;
 
-import github.ricemonger.marketplace.databases.neo4j.enums.ItemType;
+import github.ricemonger.marketplace.databases.postgres.enums.ItemType;
+import github.ricemonger.marketplace.databases.postgres.services.Item;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 
 @Entity(name = "item")
@@ -15,7 +14,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemEntity {
+public class ItemEntity implements Item {
 
     @Id
     @Column(name = "item_full_id")
@@ -43,29 +42,14 @@ public class ItemEntity {
 
     private int lastSoldPrice;
 
-    private int monthAveragePrice;
-    private int monthMedianPrice;
-    private int monthMaxPrice;
-    private int monthMinPrice;
-    private int monthSalesPerDay;
-    private int monthLowPriceSalesPerDay;
-    private int monthHighPriceSalesPerDay;
-
-    private int dayAveragePrice;
-    private int dayMedianPrice;
-    private int dayMaxPrice;
-    private int dayMinPrice;
-    private int daySales;
-    private int dayLowPriceSales;
-    private int dayHighPriceSales;
-
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name="items_tags",
             joinColumns=  @JoinColumn(name="item_id", referencedColumnName="item_full_id"),
             inverseJoinColumns= @JoinColumn(name="tag", referencedColumnName="tag"))
-    private Set<TagEntity> tags = new HashSet<>();
+    private List<TagEntity> tags = new ArrayList<>();
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    private Set<ItemSaleEntity> sales = new HashSet<>();
-
+    @Override
+    public List<String> getTagsList() {
+        return tags.stream().map(TagEntity::getTag).toList();
+    }
 }

@@ -30,13 +30,30 @@ ubi:
 server:
   port: 8080
 
+app:
+  scheduling:
+    enabled: ${SCHEDULING_ENABLED:true}
+
+logging:
+  level:
+    github: debug
+    org:
+      springframework:
+        data:
+          neo4j:
+            cypher:
+              unrecognized: off
+  file:
+    name: ./logs/${LOG_FILE_DIRECTORY:prod}/${spring.application.name}.log
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
 spring:
   application:
     name: r6s-helper
-  config:
-    import:
-      - auth-values.yaml
-      - test-values.yaml
   data:
     redis:
       repositories:
@@ -59,23 +76,7 @@ spring:
     hibernate:
       ddl-auto: update
 
-app:
-  scheduling:
-    enabled: ${SCHEDULING_ENABLED:true}
-
-logging:
-  level:
-    github: debug
-    org:
-      springframework:
-        data:
-          neo4j:
-            cypher:
-              unrecognized: off
-  file:
-    name: ./logs/${LOG_FILE_DIRECTORY:prod}/${spring.application.name}.log
-
-management:
-  tracing:
-    sampling:
-      probability: 1.0
+  config:
+    import:
+      - auth-values.yaml
+      - test-values.yaml

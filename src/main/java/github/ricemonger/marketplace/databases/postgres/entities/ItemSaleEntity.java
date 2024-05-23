@@ -11,26 +11,14 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@IdClass(ItemSaleEntityId.class)
 public class ItemSaleEntity {
 
-    @EmbeddedId
-    private ItemSaleEntityId id;
+    @Id
+    private String itemId;
 
-    @MapsId("itemId")
-    @ManyToOne
-    @JoinColumn(name = "item_id")
-    private ItemEntity item;
+    @Id
+    private Date soldAt;
 
     private int price;
-
-    public ItemSaleEntity(ItemEntity item, Date soldAt, int price) {
-        this.item = item;
-        this.id = new ItemSaleEntityId(item.getItemFullId(), soldAt);
-        this.price = price;
-    }
-
-    public Date getSoldAt() {
-        return id.getSoldAt();
-    }
-
 }

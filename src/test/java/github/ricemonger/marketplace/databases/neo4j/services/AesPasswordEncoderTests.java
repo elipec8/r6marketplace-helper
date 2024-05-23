@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.neo4j.services;
 
-import github.ricemonger.utils.exceptions.AesPasswordEncoder;
+import github.ricemonger.marketplace.databases.postgres.services.AesPasswordEncoder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

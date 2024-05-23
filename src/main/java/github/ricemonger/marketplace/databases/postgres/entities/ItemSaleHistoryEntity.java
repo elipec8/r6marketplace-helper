@@ -1,16 +1,17 @@
-package github.ricemonger.marketplace.databases.neo4j.entities;
+package github.ricemonger.marketplace.databases.postgres.entities;
 
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.*;
-import org.springframework.data.neo4j.core.schema.Id;
-import org.springframework.data.neo4j.core.schema.Node;
 
-@Node("ItemSaleHistory")
+@Entity(name = "item_sale_history")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemSaleHistoryNode {
+public class ItemSaleHistoryEntity {
 
     @Id
     private String itemId;

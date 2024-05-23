@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
+import github.ricemonger.marketplace.databases.postgres.services.ItemService;
 import github.ricemonger.marketplace.databases.redis.services.RedisService;
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
-import github.ricemonger.marketplace.databases.neo4j.services.ItemNodeRepositoryService;
 import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.Node;
 import github.ricemonger.telegramBot.BotService;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ public class ScheduledAllItemsStatsFetcherTests {
     private BotService botService;
 
     @MockBean
-    private ItemNodeRepositoryService itemNodeRepositoryService;
+    private ItemService itemService;
 
     @MockBean
     private RedisService redisService;
@@ -64,8 +64,8 @@ public class ScheduledAllItemsStatsFetcherTests {
 
         verify(graphQlClientService).fetchAllItemStats(expectedItemCount);
 
-        verify(itemNodeRepositoryService).saveAll(nodes);
+        verify(itemService).saveAll(nodes);
 
-        verify(itemNodeRepositoryService).calculateItemsSaleStats();
+        verify(itemService).calculateItemsSaleStats();
     }
 }

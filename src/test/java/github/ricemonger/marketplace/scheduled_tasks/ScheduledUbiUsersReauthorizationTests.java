@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
-import github.ricemonger.marketplace.databases.neo4j.entities.TelegramLinkedUserNode;
-import github.ricemonger.marketplace.databases.neo4j.entities.UbiUserNode;
-import github.ricemonger.marketplace.databases.neo4j.services.UbiUserService;
+import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUserEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.UbiUserEntity;
+import github.ricemonger.marketplace.databases.postgres.services.UbiUserService;
 import github.ricemonger.telegramBot.client.TelegramBotClientService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +28,18 @@ class ScheduledUbiUsersReauthorizationTests {
 
     @Test
     public void reauthorizeUbiUsersAndNotifyAboutFailuresShouldReauthorizeAndNotifyViaServices() {
-        List<UbiUserNode> toNotify = new ArrayList<>();
+        List<UbiUserEntity> toNotify = new ArrayList<>();
 
 
-        TelegramLinkedUserNode telegramUserEntity = new TelegramLinkedUserNode();
+        TelegramLinkedUserEntity telegramUserEntity = new TelegramLinkedUserEntity();
         telegramUserEntity.setChatId("chatId");
 
-        UbiUserNode ubiUserNode = new UbiUserNode();
-        ubiUserNode.setEmail("email");
-        ubiUserNode.setLinkedTelegramUser(telegramUserEntity);
+        UbiUserEntity ubiUserEntity = new UbiUserEntity();
+        ubiUserEntity.setEmail("email");
+        //ubiUserEntity.setLinkedTelegramUser(telegramUserEntity);
 
-        toNotify.add(ubiUserNode);
-        toNotify.add(ubiUserNode);
+        toNotify.add(ubiUserEntity);
+        toNotify.add(ubiUserEntity);
 
         when(ubiUserService.reauthorizeAllUbiUsersAndGetUnauthorizedList()).thenReturn(toNotify);
 
@@ -47,6 +47,6 @@ class ScheduledUbiUsersReauthorizationTests {
 
         verify(ubiUserService).reauthorizeAllUbiUsersAndGetUnauthorizedList();
 
-        verify(telegramBotClientService, times(2)).notifyUserAboutUbiAuthorizationFailure(telegramUserEntity.getChatId(), ubiUserNode.getEmail());
+        verify(telegramBotClientService, times(2)).notifyUserAboutUbiAuthorizationFailure(telegramUserEntity.getChatId(), ubiUserEntity.getEmail());
     }
 }

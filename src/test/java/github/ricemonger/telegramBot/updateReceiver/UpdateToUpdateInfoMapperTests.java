@@ -1,7 +1,7 @@
 package github.ricemonger.telegramBot.updateReceiver;
 
-import github.ricemonger.marketplace.databases.neo4j.entities.TelegramLinkedUserNode;
-import github.ricemonger.marketplace.databases.neo4j.services.TelegramLinkedUserService;
+import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUserEntity;
+import github.ricemonger.marketplace.databases.postgres.services.TelegramUserService;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.InputGroup;
 import github.ricemonger.telegramBot.executors.InputState;
@@ -13,8 +13,6 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
-
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -55,49 +53,37 @@ public class UpdateToUpdateInfoMapperTests {
     }
 
     @MockBean
-    private TelegramLinkedUserService telegramLinkedUserService;
+    private TelegramUserService telegramUserService;
     @Autowired
     private UpdateToUpdateInfoMapper updateToUpdateInfoMapper;
 
     @Test
     public void updateInfoShouldHaveRightFieldsFromUpdateAndUserService() {
-        when(telegramLinkedUserService.getTelegramUser(1L)).thenReturn(
-                new TelegramLinkedUserNode(
+        when(telegramUserService.getTelegramUser(1L)).thenReturn(
+                new TelegramLinkedUserEntity(
                         "1",
                         InputState.CREDENTIALS_PASSWORD,
                         InputGroup.CREDENTIALS_ADD,
-                        true,
-                        40,
-                        50,
-                        0,
-                        15000,
-                        new ArrayList<>(),
-                        new ArrayList<>()
+                        true
                 ));
 
         assertEquals(updateToUpdateInfoMapper.map(UPDATE), UPDATE_INFO_CREDENTIALS_INPUTS);
 
-        verify(telegramLinkedUserService).getTelegramUser(1L);
+        verify(telegramUserService).getTelegramUser(1L);
     }
 
     @Test
     public void updateInfoShouldGetBaseInputStateAndInputGroupIfUserServiceReturnsNull() {
-        when(telegramLinkedUserService.getTelegramUser(1L)).thenReturn(
-                new TelegramLinkedUserNode(
+        when(telegramUserService.getTelegramUser(1L)).thenReturn(
+                new TelegramLinkedUserEntity(
                         "1",
                         null,
                         null,
-                        true,
-                        40,
-                        50,
-                        0,
-                        15000,
-                        new ArrayList<>(),
-                        new ArrayList<>()
+                        true
                 ));
 
         assertEquals(updateToUpdateInfoMapper.map(UPDATE), UPDATE_INFO_BASE_INPUTS);
 
-        verify(telegramLinkedUserService).getTelegramUser(1L);
+        verify(telegramUserService).getTelegramUser(1L);
     }
 }

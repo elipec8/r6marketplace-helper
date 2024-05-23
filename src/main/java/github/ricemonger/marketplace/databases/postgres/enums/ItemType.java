@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.databases.neo4j.enums;
+package github.ricemonger.marketplace.databases.postgres.enums;
 
 public enum ItemType {
     WeaponSkin,
