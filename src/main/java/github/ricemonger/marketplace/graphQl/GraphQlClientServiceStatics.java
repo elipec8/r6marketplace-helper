@@ -9,6 +9,8 @@ public class GraphQlClientServiceStatics {
 
     public final static String FETCH_ITEMS_STATS_DOCUMENT_NAME = "fetchItemsStats";
 
+    public final static String FETCH_OWNED_ITEMS_STATS_DOCUMENT_NAME = "fetchOwnedItemsStats";
+
     public static final int MAX_LIMIT = 500; // Ubisoft's GraphQL API limit - 500
 
     private final static Map<String, Object> defaultUpdateItemsVariables;

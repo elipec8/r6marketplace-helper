@@ -2,7 +2,6 @@ package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationDTO;
 import github.ricemonger.marketplace.authorization.AuthorizationService;
-import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.UbiUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.UbiUserEntityId;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiUserEntityRepository;
@@ -50,6 +49,25 @@ public class UbiUserService {
         }
 
         return notifyList;
+    }
+
+    public AuthorizationDTO getAuthorizationDTOFromDbOrThrow(String chatId, String email) throws UbiUserAuthorizationClientErrorException{
+        UbiUserEntity entity = ubiUserRepository.findById(new UbiUserEntityId(chatId, email)).orElse(null);
+
+        if(entity == null){
+            return null;
+        }
+
+        AuthorizationDTO authorizationDTO = new AuthorizationDTO();
+        authorizationDTO.setProfileId(entity.getUbiProfileId());
+        authorizationDTO.setSessionId(entity.getUbiSessionId());
+        authorizationDTO.setTicket(entity.getUbiAuthTicket());
+        authorizationDTO.setSpaceId(entity.getUbiSpaceId());
+        authorizationDTO.setRememberMeTicket(entity.getUbiRememberMeTicket());
+        authorizationDTO.setRememberDeviceTicket(entity.getUbiRememberDeviceTicket());
+        authorizationDTO.setTwoFactorAuthenticationTicket(entity.getUbiTwoFactorAuthTicket());
+
+        return authorizationDTO;
     }
 
     public void reauthorizeUserOrThrow(UbiUserEntity entity) {

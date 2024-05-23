@@ -1,8 +1,10 @@
 package github.ricemonger.telegramBot.client;
 
+import github.ricemonger.marketplace.authorization.AuthorizationDTO;
 import github.ricemonger.marketplace.databases.postgres.services.TelegramUserService;
 import github.ricemonger.marketplace.databases.postgres.services.Item;
 import github.ricemonger.marketplace.databases.postgres.services.ItemService;
+import github.ricemonger.marketplace.databases.postgres.services.UbiUserService;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.InputGroup;
 import github.ricemonger.telegramBot.executors.InputState;
@@ -22,6 +24,8 @@ public class BotInnerService {
     private final TelegramUserService telegramUserService;
 
     private final ItemService itemService;
+
+    private final UbiUserService ubiUserService;
 
     public void askFromInlineKeyboard(UpdateInfo updateInfo, String text, int buttonsInLine, CallbackButton[] buttons) {
         telegramBotClientService.askFromInlineKeyboard(updateInfo, text, buttonsInLine, buttons);
@@ -99,7 +103,18 @@ public class BotInnerService {
     }
 
     public void sendDefaultSpeculativeItemsAsMessages(Long chatId) {
-        List<? extends Item> speculativeItems = itemService.getSpeculativeItemsByExpectedProfit(50, 40, 0, 15000);
+        List<? extends Item> speculativeItems = itemService.getAllSpeculativeItemsByExpectedProfit(50, 40, 0, 15000);
+        log.debug("Speculative items amount: {}", speculativeItems.size());
+        for (Item item : speculativeItems) {
+            telegramBotClientService.sendText(String.valueOf(chatId), getItemString(item));
+        }
+    }
+
+    public void sendOwnedSpeculativeItemsAsMessages(Long chatId, String email) {
+
+        AuthorizationDTO authorizationDTO = ubiUserService.getAuthorizationDTOFromDbOrThrow(String.valueOf(chatId), email);
+
+        List<? extends Item> speculativeItems = itemService.getOwnedSpeculativeItemsByExpectedProfit(authorizationDTO,50, 40, 0, 15000);
         log.debug("Speculative items amount: {}", speculativeItems.size());
         for (Item item : speculativeItems) {
             telegramBotClientService.sendText(String.valueOf(chatId), getItemString(item));

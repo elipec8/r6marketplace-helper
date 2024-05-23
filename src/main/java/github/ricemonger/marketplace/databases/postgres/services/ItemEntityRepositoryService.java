@@ -34,23 +34,9 @@ public class ItemEntityRepositoryService implements ItemRepositoryService {
         itemSaleEntityRepository.saveAll(saleEntities);
     }
 
-    public List<ItemEntity> getSpeculativeItemsByExpectedProfit(List<String> ignoredNames, int minProfitAbsolute, int minProfitPercentOfBuyPrice,
-                                                                int minSellPrice,
-                                                                int maxSellPrice) throws UbiUserEntityDoesntExistException {
+    public List<ItemEntity> findAll() throws UbiUserEntityDoesntExistException {
         return itemEntityRepository
-                .findAll()
-                .stream()
-                .filter(itemEntity -> !ignoredNames.contains(itemEntity.getName()))
-                .map(itemEntity -> {
-                    if (itemEntity.getExpectedProfit() >= minProfitAbsolute &&
-                            itemEntity.getExpectedProfitPercentage() >= minProfitPercentOfBuyPrice &&
-                            itemEntity.getMinSellPrice() >= minSellPrice &&
-                            itemEntity.getMinSellPrice() <= maxSellPrice) {
-                        return itemEntity;
-                    }
-                    return null;
-                }).filter(Objects::nonNull)
-                .sorted((o1, o2) -> o2.getExpectedProfit() * o2.getExpectedProfitPercentage() * o2.getSellOrdersCount() - o1.getExpectedProfit() * o1.getExpectedProfitPercentage() * o1.getSellOrdersCount()).toList();
+                .findAll();
     }
 
     public void calculateItemsSaleStats() {

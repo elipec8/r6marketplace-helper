@@ -9,12 +9,7 @@ public interface ItemRepositoryService {
 
     void saveAll(Collection<Node> nodeDTOs);
 
-    List<? extends Item> getSpeculativeItemsByExpectedProfit(
-            List<String> ignoreNames,
-            int minProfitAbsolute,
-            int minProfitPercentOfBuyPrice,
-            int minSellPrice,
-            int maxSellPrice);
+    List<? extends Item> findAll();
 
     void calculateItemsSaleStats();
 }

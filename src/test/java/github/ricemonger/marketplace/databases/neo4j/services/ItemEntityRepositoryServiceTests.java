@@ -85,7 +85,7 @@ public class ItemEntityRepositoryServiceTests {
         items.add(itemNode5);
         when(itemRepository.findAll()).thenReturn(items);
 
-        List<ItemEntity> result = itemRepositoryService.getSpeculativeItemsByExpectedProfit(new ArrayList<>(),1, 1, 1, 100);
+        List<ItemEntity> result = itemRepositoryService.findAll(new ArrayList<>(),1, 1, 1, 100);
 
         verify(itemRepository).findAll();
 

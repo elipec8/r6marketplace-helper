@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.graphQl;
 
-import github.ricemonger.marketplace.databases.redis.services.RedisService;
+import github.ricemonger.marketplace.authorization.AuthorizationDTO;
 import github.ricemonger.marketplace.graphQl.graphsDTOs.MarketableItems;
 import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.Node;
 import lombok.RequiredArgsConstructor;
@@ -20,19 +20,26 @@ public class GraphQlClientService {
 
     public Collection<Node> fetchAllItemStats(int expectedItemCount) {
 
-        HttpGraphQlClient client = graphQlClientFactory.getOrCreateAllItemsStatsFetcherClient();
+        HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
 
-        Collection<Node> nodes = fetchExpectedAmountOfAllItemsStats(client, expectedItemCount);
+        Collection<Node> nodes = fetchItemsStatsTillOffset(client,GraphQlClientServiceStatics.FETCH_ITEMS_STATS_DOCUMENT_NAME, expectedItemCount);
 
         if (nodes.size() > expectedItemCount) {
-            nodes.addAll(fetchAllItemStatsFromOffset(client, nodes.size()));
+            nodes.addAll(fetchItemsStatsFromOffset(client,GraphQlClientServiceStatics.FETCH_ITEMS_STATS_DOCUMENT_NAME, nodes.size()));
         }
 
         return nodes;
     }
 
-    private Set<Node> fetchExpectedAmountOfAllItemsStats(GraphQlClient graphQlClient, int expectedItemCount) {
-        int expectedQueriesCount = (expectedItemCount / GraphQlClientServiceStatics.MAX_LIMIT) + 1;
+    public Collection<Node> fetchAllOwnedItemStatsForUser(AuthorizationDTO authorizationDTO) {
+
+        HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
+
+        return fetchItemsStatsFromOffset(client,GraphQlClientServiceStatics.FETCH_OWNED_ITEMS_STATS_DOCUMENT_NAME, 0);
+    }
+
+    private Set<Node> fetchItemsStatsTillOffset(GraphQlClient graphQlClient, String documentName, int finalOffset) {
+        int expectedQueriesCount = (finalOffset / GraphQlClientServiceStatics.MAX_LIMIT) + 1;
         Set<ClientGraphQlResponse> responses = new HashSet<>(expectedQueriesCount);
 
         MarketableItems marketableItems;
@@ -44,7 +51,7 @@ public class GraphQlClientService {
             variables.put("offset", offset);
 
             responses.add(graphQlClient
-                    .documentName(GraphQlClientServiceStatics.FETCH_ITEMS_STATS_DOCUMENT_NAME)
+                    .documentName(documentName)
                     .variables(variables)
                     .execute()
                     .block());
@@ -60,7 +67,7 @@ public class GraphQlClientService {
         return nodes;
     }
 
-    private List<Node> fetchAllItemStatsFromOffset(GraphQlClient graphQlClient, int offset) {
+    private List<Node> fetchItemsStatsFromOffset(GraphQlClient graphQlClient, String documentName, int offset) {
         List<Node> nodes = new ArrayList<>();
 
         MarketableItems marketableItems;
@@ -70,7 +77,7 @@ public class GraphQlClientService {
             variables.put("offset", offset);
 
             marketableItems = graphQlClient
-                    .documentName(GraphQlClientServiceStatics.FETCH_ITEMS_STATS_DOCUMENT_NAME)
+                    .documentName(documentName)
                     .variables(variables)
                     .retrieve("game.marketableItems")
                     .toEntity(MarketableItems.class)

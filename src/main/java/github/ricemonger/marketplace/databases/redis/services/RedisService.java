@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -34,6 +35,16 @@ public class RedisService {
         return getOrCreateMainUserField("mainUserRememberMeTicket");
     }
 
+    public Date getAuthorizationUpdatedDateOrNull() {
+        String value = redisTemplate.opsForValue().get("authorizationUpdatedDate");
+
+        if (value == null) {
+            return null;
+        }
+
+        return new Date(value);
+    }
+
     public String getMainUserSpaceId() {
         return getOrCreateMainUserField("mainUserSpaceId");
     }
@@ -60,6 +71,8 @@ public class RedisService {
         setFieldAndExpire("mainUserSessionId", dto.getSessionId());
 
         setFieldAndExpire("mainUserSpaceId", dto.getSpaceId());
+
+        setFieldAndExpire("authorizationUpdatedDate", new Date().toString());
 
         if (dto.getRememberMeTicket() != null) {
             setFieldAndExpire("mainUserRememberMeTicket", dto.getRememberMeTicket());

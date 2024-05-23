@@ -9,6 +9,7 @@ import github.ricemonger.telegramBot.executors.cancel.SilentCancel;
 import github.ricemonger.telegramBot.executors.credentials.add.CredentialsAddFullOrEmailInput;
 import github.ricemonger.telegramBot.executors.credentials.add.CredentialsAddPasswordInput;
 import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRemoveOneEmailInput;
+import github.ricemonger.telegramBot.executors.marketplace.speculative.show.SpeculativeItemsShowOwnedFinishInput;
 import github.ricemonger.utils.exceptions.InvalidUserInputGroupException;
 import github.ricemonger.utils.exceptions.InvalidUserInputStateAndGroupConjunctionException;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,8 @@ public class InputCommandListener {
                 case CREDENTIALS_ADD -> credentialsAddInputGroup(updateInfo);
 
                 case CREDENTIALS_REMOVE_ONE -> credentialsRemoveOneInputGroup(updateInfo);
+
+                case SPECULATIVE_ITEMS_SHOW_OWNED -> speculativeItemsShowOwnedInputGroup(updateInfo);
 
                 default -> throw new InvalidUserInputGroupException(updateInfo.getInputGroup().name());
             }
@@ -69,6 +72,18 @@ public class InputCommandListener {
         switch (inputState) {
 
             case CREDENTIALS_FULL_OR_EMAIL -> executorsService.execute(CredentialsRemoveOneEmailInput.class, updateInfo);
+
+            default ->
+                    throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+        }
+    }
+
+    private void speculativeItemsShowOwnedInputGroup(UpdateInfo updateInfo) {
+        InputState inputState = updateInfo.getInputState();
+
+        switch (inputState) {
+
+            case CREDENTIALS_FULL_OR_EMAIL -> executorsService.execute(SpeculativeItemsShowOwnedFinishInput.class, updateInfo);
 
             default ->
                     throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());

@@ -207,7 +207,7 @@ public class BotInnerServiceTests {
 
         botInnerService.sendDefaultSpeculativeItemsAsMessages(chatId);
 
-        verify(itemService).getSpeculativeItemsByExpectedProfit(50, 40, 0, 15000);
+        verify(itemService).getAllSpeculativeItemsByExpectedProfit(50, 40, 0, 15000);
 
         verify(telegramBotClientService,times(2)).sendText(eq(String.valueOf(chatId)), anyString());
     }

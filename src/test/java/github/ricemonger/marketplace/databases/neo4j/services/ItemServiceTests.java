@@ -35,11 +35,11 @@ public class ItemServiceTests {
     }
 
     @Test
-    public void getSpeculativeItemsByExpectedProfit() throws UbiUserEntityDoesntExistException {
+    public void getAllSpeculativeItemsByExpectedProfit() throws UbiUserEntityDoesntExistException {
 
-        itemService.getSpeculativeItemsByExpectedProfit(100, 10, 1000, 10000);
+        itemService.getAllSpeculativeItemsByExpectedProfit(100, 10, 1000, 10000);
 
-        verify(itemRepositoryService, times(1)).getSpeculativeItemsByExpectedProfit(
+        verify(itemRepositoryService, times(1)).findAll(
                 any(),
                 eq(100),
                 eq(10),
