@@ -1,24 +1,20 @@
 package github.ricemonger.marketplace.databases.neo4j.entities;
 
 import github.ricemonger.marketplace.databases.neo4j.enums.ItemType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
-import org.springframework.data.neo4j.core.schema.Relationship;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Node("Item")
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemEntity {
+public class ItemNode {
 
     @Id
     private String itemFullId;

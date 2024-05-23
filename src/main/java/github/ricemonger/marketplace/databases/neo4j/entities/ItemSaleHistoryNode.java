@@ -1,18 +1,16 @@
 package github.ricemonger.marketplace.databases.neo4j.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 
 @Node("ItemSaleHistory")
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemSaleHistoryEntity {
+public class ItemSaleHistoryNode {
 
     @Id
     private String itemId;

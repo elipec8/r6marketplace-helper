@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
 
-import github.ricemonger.marketplace.databases.neo4j.services.ItemService;
+import github.ricemonger.marketplace.databases.postgres.services.ItemEntityRepositoryService;
 import github.ricemonger.marketplace.databases.redis.services.RedisService;
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.Node;
@@ -12,8 +12,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 
 @Component
@@ -23,7 +21,7 @@ public class ScheduledAllItemsStatsFetcher {
 
     private final GraphQlClientService graphQlClientService;
 
-    private final ItemService itemService;
+    private final ItemEntityRepositoryService itemEntityRepositoryService;
 
     private final RedisService redisService;
 
@@ -43,9 +41,9 @@ public class ScheduledAllItemsStatsFetcher {
             onItemsAmountIncrease(expectedItemCount, nodes.size());
         }
 
-        itemService.saveAll(nodes);
+        itemEntityRepositoryService.saveAll(nodes);
 
-        itemService.calculateItemsSaleStats();
+        itemEntityRepositoryService.calculateItemsSaleStats();
 
         log.info("Fetched {} items' stats", nodes.size());
     }

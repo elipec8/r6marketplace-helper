@@ -1,19 +1,17 @@
 package github.ricemonger.marketplace.databases.neo4j.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
 @Node("UbiUser")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UbiUserEntity {
+public class UbiUserNode {
 
     @Id
     @GeneratedValue
@@ -32,9 +30,9 @@ public class UbiUserEntity {
 
     @Relationship(value = "LINKED_ACCOUNTS", direction = Relationship.Direction.INCOMING)
     @ToString.Exclude
-    private TelegramLinkedUserEntity linkedTelegramUser;
+    private TelegramLinkedUserNode linkedTelegramUser;
 
-    public UbiUserEntity(String email, String password) {
+    public UbiUserNode(String email, String password) {
         this.email = email;
         this.password = password;
     }

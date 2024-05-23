@@ -2,12 +2,12 @@ package github.ricemonger.marketplace.databases.neo4j.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationDTO;
 import github.ricemonger.marketplace.authorization.AuthorizationService;
-import github.ricemonger.marketplace.databases.neo4j.entities.TelegramInputValuesEntity;
-import github.ricemonger.marketplace.databases.neo4j.entities.TelegramLinkedUserEntity;
-import github.ricemonger.marketplace.databases.neo4j.entities.UbiUserEntity;
-import github.ricemonger.marketplace.databases.neo4j.repositories.TelegramInputValuesRepository;
-import github.ricemonger.marketplace.databases.neo4j.repositories.TelegramLinkedUserRepository;
-import github.ricemonger.marketplace.databases.neo4j.repositories.UbiUserRepository;
+import github.ricemonger.marketplace.databases.neo4j.entities.TelegramInputValuesNode;
+import github.ricemonger.marketplace.databases.neo4j.entities.TelegramLinkedUserNode;
+import github.ricemonger.marketplace.databases.neo4j.entities.UbiUserNode;
+import github.ricemonger.marketplace.databases.neo4j.repositories.TelegramInputValuesNodeRepository;
+import github.ricemonger.marketplace.databases.neo4j.repositories.TelegramLinkedUserNodeRepository;
+import github.ricemonger.marketplace.databases.neo4j.repositories.UbiUserNodeRepository;
 import github.ricemonger.telegramBot.executors.InputGroup;
 import github.ricemonger.telegramBot.executors.InputState;
 import github.ricemonger.utils.exceptions.AesPasswordEncoder;
@@ -32,10 +32,10 @@ import static org.mockito.Mockito.when;
 class TelegramLinkedUserServiceTests {
 
     @SpyBean
-    private TelegramLinkedUserRepository telegramLinkedUserRepository;
+    private TelegramLinkedUserNodeRepository telegramLinkedUserNodeRepository;
 
     @SpyBean
-    private TelegramInputValuesRepository telegramInputValuesRepository;
+    private TelegramInputValuesNodeRepository telegramInputValuesNodeRepository;
 
     @Autowired
     private TelegramLinkedUserService telegramLinkedUserService;
@@ -44,7 +44,7 @@ class TelegramLinkedUserServiceTests {
     private UbiUserService ubiUserService;
 
     @Autowired
-    private UbiUserRepository ubiUserRepository;
+    private UbiUserNodeRepository ubiUserNodeRepository;
 
     @SpyBean
     private AesPasswordEncoder aesPasswordEncoder;
@@ -54,231 +54,231 @@ class TelegramLinkedUserServiceTests {
 
     @BeforeEach
     public void setUp() {
-        telegramLinkedUserRepository.deleteAll();
-        telegramInputValuesRepository.deleteAll();
-        ubiUserRepository.deleteAll();
+        telegramLinkedUserNodeRepository.deleteAll();
+        telegramInputValuesNodeRepository.deleteAll();
+        ubiUserNodeRepository.deleteAll();
     }
 
     @AfterEach
     public void cleanUp() {
-        telegramLinkedUserRepository.deleteAll();
-        telegramInputValuesRepository.deleteAll();
-        ubiUserRepository.deleteAll();
+        telegramLinkedUserNodeRepository.deleteAll();
+        telegramInputValuesNodeRepository.deleteAll();
+        ubiUserNodeRepository.deleteAll();
     }
 
     @Test
     void isTelegramUserRegisteredShouldReturnTrueIfExists() {
-        when(telegramLinkedUserRepository.existsById("123")).thenReturn(true);
+        when(telegramLinkedUserNodeRepository.existsById("123")).thenReturn(true);
 
         assertTrue(telegramLinkedUserService.isTelegramUserRegistered(123L));
 
-        verify(telegramLinkedUserRepository).existsById("123");
+        verify(telegramLinkedUserNodeRepository).existsById("123");
     }
 
     @Test
     void isTelegramUserRegisteredFalseShouldReturnFalseIfDoesntExist() {
-        when(telegramLinkedUserRepository.existsById("123")).thenReturn(false);
+        when(telegramLinkedUserNodeRepository.existsById("123")).thenReturn(false);
 
         assertFalse(telegramLinkedUserService.isTelegramUserRegistered(123L));
 
-        verify(telegramLinkedUserRepository).existsById("123");
+        verify(telegramLinkedUserNodeRepository).existsById("123");
     }
 
     @Test
     void registerTelegramUserShouldSaveInRepositoryIfDoesntExist() {
-        when(telegramLinkedUserRepository.existsById("123")).thenReturn(false);
+        when(telegramLinkedUserNodeRepository.existsById("123")).thenReturn(false);
 
         telegramLinkedUserService.registerTelegramUser(123L);
 
-        verify(telegramLinkedUserRepository).save(any());
+        verify(telegramLinkedUserNodeRepository).save(any());
     }
 
     @Test
     public void registerTelegramUserShouldThrowExceptionIfAlreadyExists() {
-        when(telegramLinkedUserRepository.existsById("123")).thenReturn(true);
+        when(telegramLinkedUserNodeRepository.existsById("123")).thenReturn(true);
 
         assertThrows(TelegramUserAlreadyExistsException.class, () -> telegramLinkedUserService.registerTelegramUser(123L));
     }
 
     @Test
     public void setUserNextInputOrThrowShouldSetInputStateIfUserExistsState() {
-        TelegramLinkedUserEntity telegramLinkedUserEntity = new TelegramLinkedUserEntity();
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserEntity));
+        TelegramLinkedUserNode telegramLinkedUserNode = new TelegramLinkedUserNode();
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserNode));
 
         telegramLinkedUserService.setUserNextInputState(123L, InputState.CREDENTIALS_FULL_OR_EMAIL);
 
-        assertEquals(InputState.CREDENTIALS_FULL_OR_EMAIL, telegramLinkedUserEntity.getInputState());
-        verify(telegramLinkedUserRepository).save(telegramLinkedUserEntity);
+        assertEquals(InputState.CREDENTIALS_FULL_OR_EMAIL, telegramLinkedUserNode.getInputState());
+        verify(telegramLinkedUserNodeRepository).save(telegramLinkedUserNode);
     }
 
     @Test
     public void setUserNextInputOrThrowShouldThrowExceptionIfUserDoesntExistState() {
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.empty());
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.empty());
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramLinkedUserService.setUserNextInputState(123L, InputState.CREDENTIALS_FULL_OR_EMAIL));
     }
 
     @Test
     public void setUserNextInputGroupOrThrowShouldSetInputGroupIfUserExists() {
-        TelegramLinkedUserEntity telegramLinkedUserEntity = new TelegramLinkedUserEntity();
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserEntity));
+        TelegramLinkedUserNode telegramLinkedUserNode = new TelegramLinkedUserNode();
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserNode));
 
         telegramLinkedUserService.setUserNextInputGroup(123L, InputGroup.CREDENTIALS_ADD);
 
-        assertEquals(InputGroup.CREDENTIALS_ADD, telegramLinkedUserEntity.getInputGroup());
-        verify(telegramLinkedUserRepository).save(telegramLinkedUserEntity);
+        assertEquals(InputGroup.CREDENTIALS_ADD, telegramLinkedUserNode.getInputGroup());
+        verify(telegramLinkedUserNodeRepository).save(telegramLinkedUserNode);
     }
 
     @Test
     public void setUserNextInputGroupOrThrowShouldThrowExceptionIfUserDoesntExist() {
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.empty());
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.empty());
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramLinkedUserService.setUserNextInputGroup(123L, InputGroup.CREDENTIALS_ADD));
     }
 
     @Test
     public void getUserInputStateShouldReturnStateIfUserExists() {
-        TelegramLinkedUserEntity telegramLinkedUserEntity = new TelegramLinkedUserEntity();
-        telegramLinkedUserEntity.setInputState(InputState.CREDENTIALS_FULL_OR_EMAIL);
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserEntity));
+        TelegramLinkedUserNode telegramLinkedUserNode = new TelegramLinkedUserNode();
+        telegramLinkedUserNode.setInputState(InputState.CREDENTIALS_FULL_OR_EMAIL);
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserNode));
 
         assertEquals(InputState.CREDENTIALS_FULL_OR_EMAIL, telegramLinkedUserService.getUserInputState(123L));
     }
 
     @Test
     public void getUserInputStateShouldReturnBaseIfUserExistsAndStateIsNull() {
-        TelegramLinkedUserEntity telegramLinkedUserEntity = new TelegramLinkedUserEntity();
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserEntity));
+        TelegramLinkedUserNode telegramLinkedUserNode = new TelegramLinkedUserNode();
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserNode));
 
         assertEquals(InputState.BASE, telegramLinkedUserService.getUserInputState(123L));
     }
 
     @Test
     public void getUserInputStateShouldThrowExceptionIfUserDoesntExist() {
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.empty());
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.empty());
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramLinkedUserService.getUserInputState(123L));
     }
 
     @Test
     public void getUserInputGroupShouldReturnGroupIfUserExists() {
-        TelegramLinkedUserEntity telegramLinkedUserEntity = new TelegramLinkedUserEntity();
-        telegramLinkedUserEntity.setInputGroup(InputGroup.CREDENTIALS_ADD);
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserEntity));
+        TelegramLinkedUserNode telegramLinkedUserNode = new TelegramLinkedUserNode();
+        telegramLinkedUserNode.setInputGroup(InputGroup.CREDENTIALS_ADD);
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserNode));
 
         assertEquals(InputGroup.CREDENTIALS_ADD, telegramLinkedUserService.getUserInputGroup(123L));
     }
 
     @Test
     public void getUserInputGroupShouldReturnBaseIfUserExistsAndGroupIsNull() {
-        TelegramLinkedUserEntity telegramLinkedUserEntity = new TelegramLinkedUserEntity();
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserEntity));
+        TelegramLinkedUserNode telegramLinkedUserNode = new TelegramLinkedUserNode();
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserNode));
 
         assertEquals(InputGroup.BASE, telegramLinkedUserService.getUserInputGroup(123L));
     }
 
     @Test
     public void getUserInputGroupShouldThrowExceptionIfUserDoesntExist() {
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.empty());
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.empty());
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramLinkedUserService.getUserInputGroup(123L));
     }
 
     @Test
     public void getUserInputByStateOrNullShouldReturnInputIfUserExists() {
-        TelegramLinkedUserEntity telegramLinkedUserEntity = new TelegramLinkedUserEntity();
-        telegramLinkedUserEntity.setInputValues(List.of(new TelegramInputValuesEntity(InputState.CREDENTIALS_FULL_OR_EMAIL, "email")));
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserEntity));
+        TelegramLinkedUserNode telegramLinkedUserNode = new TelegramLinkedUserNode();
+        telegramLinkedUserNode.setInputValues(List.of(new TelegramInputValuesNode(InputState.CREDENTIALS_FULL_OR_EMAIL, "email")));
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserNode));
 
         assertEquals("email", telegramLinkedUserService.getUserInputByStateOrNull(123L, InputState.CREDENTIALS_FULL_OR_EMAIL));
     }
 
     @Test
     public void getUserInputByStateOrNullShouldReturnNullIfUserExistsAndInputIsNull() {
-        TelegramLinkedUserEntity telegramLinkedUserEntity = new TelegramLinkedUserEntity();
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserEntity));
+        TelegramLinkedUserNode telegramLinkedUserNode = new TelegramLinkedUserNode();
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserNode));
 
         assertNull(telegramLinkedUserService.getUserInputByStateOrNull(123L, InputState.CREDENTIALS_FULL_OR_EMAIL));
     }
 
     @Test
     public void getUserInputByStateOrNullShouldThrowExceptionIfUserDoesntExist() {
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.empty());
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.empty());
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramLinkedUserService.getUserInputByStateOrNull(123L, InputState.CREDENTIALS_FULL_OR_EMAIL));
     }
 
     @Test
     public void addCredentialsShouldCallUbiUserServiceMethod() {
-        TelegramLinkedUserEntity telegramLinkedUserEntity = new TelegramLinkedUserEntity();
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserEntity));
+        TelegramLinkedUserNode telegramLinkedUserNode = new TelegramLinkedUserNode();
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserNode));
 
         when(authorizationService.getUserAuthorizationDTO("email","password")).thenReturn(new AuthorizationDTO());
         when(aesPasswordEncoder.encode("password")).thenReturn("encodedPassword");
 
         telegramLinkedUserService.addCredentials(123L, "email", "password");
 
-        verify(ubiUserService).createAndAuthorizeOrThrowForTelegramUser(telegramLinkedUserEntity, "email", "password");
+        verify(ubiUserService).createAndAuthorizeOrThrowForTelegramUser(telegramLinkedUserNode, "email", "password");
     }
 
     @Test
     public void addCredentialsShouldThrowExceptionIfUserDoesntExist() {
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.empty());
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.empty());
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramLinkedUserService.addCredentials(123L, "email", "password"));
     }
 
     @Test
     public void saveUserInputShouldSaveInputIfUserExists() {
-        TelegramLinkedUserEntity telegramLinkedUserEntity = new TelegramLinkedUserEntity();
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserEntity));
+        TelegramLinkedUserNode telegramLinkedUserNode = new TelegramLinkedUserNode();
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserNode));
 
         telegramLinkedUserService.saveUserInput(123L, InputState.CREDENTIALS_FULL_OR_EMAIL, "email");
 
-        assertEquals("email", telegramLinkedUserEntity.getInputValues().get(0).getValue());
-        verify(telegramLinkedUserRepository).save(telegramLinkedUserEntity);
+        assertEquals("email", telegramLinkedUserNode.getInputValues().get(0).getValue());
+        verify(telegramLinkedUserNodeRepository).save(telegramLinkedUserNode);
     }
 
     @Test
     public void saveUserInputShouldThrowExceptionIfUserDoesntExist() {
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.empty());
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.empty());
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramLinkedUserService.saveUserInput(123L, InputState.CREDENTIALS_FULL_OR_EMAIL, "email"));
     }
 
     @Test
     public void clearUserInputsShouldClearInputsIfUserExists() {
-        TelegramLinkedUserEntity telegramLinkedUserEntity = new TelegramLinkedUserEntity();
-        telegramLinkedUserEntity.setChatId("123");
-        telegramLinkedUserEntity.setInputValues(List.of(new TelegramInputValuesEntity(InputState.CREDENTIALS_FULL_OR_EMAIL, "email")));
-        telegramLinkedUserRepository.save(telegramLinkedUserEntity);
+        TelegramLinkedUserNode telegramLinkedUserNode = new TelegramLinkedUserNode();
+        telegramLinkedUserNode.setChatId("123");
+        telegramLinkedUserNode.setInputValues(List.of(new TelegramInputValuesNode(InputState.CREDENTIALS_FULL_OR_EMAIL, "email")));
+        telegramLinkedUserNodeRepository.save(telegramLinkedUserNode);
 
         telegramLinkedUserService.clearUserInputs(123L);
 
-        TelegramLinkedUserEntity resultEntity = telegramLinkedUserRepository.findById("123").get();
+        TelegramLinkedUserNode resultEntity = telegramLinkedUserNodeRepository.findById("123").get();
 
         assertTrue(resultEntity.getInputValues().isEmpty());
-        verify(telegramInputValuesRepository).deleteAllByOwnerChatId("123");
+        verify(telegramInputValuesNodeRepository).deleteAllByOwnerChatId("123");
     }
 
     @Test
     public void clearUserInputsShouldThrowExceptionIfUserDoesntExist() {
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.empty());
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.empty());
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramLinkedUserService.clearUserInputs(123L));
     }
 
     @Test
     public void removeCredentialsByUserInputsShouldRemoveCredentialsIfUserExists() {
-        TelegramLinkedUserEntity telegramLinkedUserEntity = new TelegramLinkedUserEntity();
-        telegramLinkedUserEntity.setChatId("123");
-        telegramLinkedUserEntity.setLinkedUbisoftAccounts(List.of(new UbiUserEntity("email", "password")));
-        telegramLinkedUserEntity.setInputValues(List.of(new TelegramInputValuesEntity(InputState.CREDENTIALS_FULL_OR_EMAIL, "email")));
-        telegramLinkedUserRepository.save(telegramLinkedUserEntity);
+        TelegramLinkedUserNode telegramLinkedUserNode = new TelegramLinkedUserNode();
+        telegramLinkedUserNode.setChatId("123");
+        telegramLinkedUserNode.setLinkedUbisoftAccounts(List.of(new UbiUserNode("email", "password")));
+        telegramLinkedUserNode.setInputValues(List.of(new TelegramInputValuesNode(InputState.CREDENTIALS_FULL_OR_EMAIL, "email")));
+        telegramLinkedUserNodeRepository.save(telegramLinkedUserNode);
 
         telegramLinkedUserService.removeCredentialsByUserInputs(123L);
 
-        TelegramLinkedUserEntity resultEntity = telegramLinkedUserRepository.findById("123").get();
+        TelegramLinkedUserNode resultEntity = telegramLinkedUserNodeRepository.findById("123").get();
 
         assertTrue(resultEntity.getLinkedUbisoftAccounts().isEmpty());
 
@@ -287,22 +287,22 @@ class TelegramLinkedUserServiceTests {
 
     @Test
     public void removeCredentialsByUserInputsShouldThrowExceptionIfUserDoesntExist() {
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.empty());
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.empty());
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramLinkedUserService.removeCredentialsByUserInputs(123L));
     }
 
     @Test
     public void removeAllCredentialsShouldRemoveAllCredentialsIfUserExists() {
-        TelegramLinkedUserEntity telegramLinkedUserEntity = new TelegramLinkedUserEntity();
-        telegramLinkedUserEntity.setChatId("123");
-        telegramLinkedUserEntity.setLinkedUbisoftAccounts(List.of(new UbiUserEntity("email", "password")));
-        telegramLinkedUserEntity.setInputValues(List.of(new TelegramInputValuesEntity(InputState.CREDENTIALS_FULL_OR_EMAIL, "email")));
-        telegramLinkedUserRepository.save(telegramLinkedUserEntity);
+        TelegramLinkedUserNode telegramLinkedUserNode = new TelegramLinkedUserNode();
+        telegramLinkedUserNode.setChatId("123");
+        telegramLinkedUserNode.setLinkedUbisoftAccounts(List.of(new UbiUserNode("email", "password")));
+        telegramLinkedUserNode.setInputValues(List.of(new TelegramInputValuesNode(InputState.CREDENTIALS_FULL_OR_EMAIL, "email")));
+        telegramLinkedUserNodeRepository.save(telegramLinkedUserNode);
 
         telegramLinkedUserService.removeAllCredentials(123L);
 
-        TelegramLinkedUserEntity resultEntity = telegramLinkedUserRepository.findById("123").get();
+        TelegramLinkedUserNode resultEntity = telegramLinkedUserNodeRepository.findById("123").get();
 
         assertTrue(resultEntity.getLinkedUbisoftAccounts().isEmpty());
 
@@ -311,41 +311,41 @@ class TelegramLinkedUserServiceTests {
 
     @Test
     public void removeAllCredentialsShouldThrowExceptionIfUserDoesntExist() {
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.empty());
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.empty());
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramLinkedUserService.removeAllCredentials(123L));
     }
 
     @Test
     public void getCredentialsEmailsListShouldReturnEmailsListIfUserExists() {
-        TelegramLinkedUserEntity telegramLinkedUserEntity = new TelegramLinkedUserEntity();
-        telegramLinkedUserEntity.setLinkedUbisoftAccounts(List.of(new UbiUserEntity("email", "password")));
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserEntity));
+        TelegramLinkedUserNode telegramLinkedUserNode = new TelegramLinkedUserNode();
+        telegramLinkedUserNode.setLinkedUbisoftAccounts(List.of(new UbiUserNode("email", "password")));
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.of(telegramLinkedUserNode));
 
         assertEquals(List.of("email"), telegramLinkedUserService.getCredentialsEmailsList(123L));
     }
 
     @Test
     public void getCredentialsEmailsListShouldThrowExceptionIfUserDoesntExist() {
-        when(telegramLinkedUserRepository.findById("123")).thenReturn(java.util.Optional.empty());
+        when(telegramLinkedUserNodeRepository.findById("123")).thenReturn(java.util.Optional.empty());
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramLinkedUserService.getCredentialsEmailsList(123L));
     }
 
     @Test
     void getAllChatIdsForNotifiableUsersShouldReturnOnlyUsersWithFlag() {
-        TelegramLinkedUserEntity telegramLinkedUserEntity1 = new TelegramLinkedUserEntity();
-        telegramLinkedUserEntity1.setPublicNotificationsEnabledFlag(true);
-        telegramLinkedUserEntity1.setChatId("1");
-        TelegramLinkedUserEntity telegramLinkedUserEntity2 = new TelegramLinkedUserEntity();
-        telegramLinkedUserEntity2.setPublicNotificationsEnabledFlag(true);
-        telegramLinkedUserEntity2.setChatId("2");
-        TelegramLinkedUserEntity telegramLinkedUserEntity3 = new TelegramLinkedUserEntity();
-        telegramLinkedUserEntity3.setPublicNotificationsEnabledFlag(false);
-        telegramLinkedUserEntity3.setChatId("3");
-        telegramLinkedUserRepository.save(telegramLinkedUserEntity1);
-        telegramLinkedUserRepository.save(telegramLinkedUserEntity2);
-        telegramLinkedUserRepository.save(telegramLinkedUserEntity3);
+        TelegramLinkedUserNode telegramLinkedUserNode1 = new TelegramLinkedUserNode();
+        telegramLinkedUserNode1.setPublicNotificationsEnabledFlag(true);
+        telegramLinkedUserNode1.setChatId("1");
+        TelegramLinkedUserNode telegramLinkedUserNode2 = new TelegramLinkedUserNode();
+        telegramLinkedUserNode2.setPublicNotificationsEnabledFlag(true);
+        telegramLinkedUserNode2.setChatId("2");
+        TelegramLinkedUserNode telegramLinkedUserNode3 = new TelegramLinkedUserNode();
+        telegramLinkedUserNode3.setPublicNotificationsEnabledFlag(false);
+        telegramLinkedUserNode3.setChatId("3");
+        telegramLinkedUserNodeRepository.save(telegramLinkedUserNode1);
+        telegramLinkedUserNodeRepository.save(telegramLinkedUserNode2);
+        telegramLinkedUserNodeRepository.save(telegramLinkedUserNode3);
 
         List<String> expected = List.of("1", "2");
         List<String> result = telegramLinkedUserService.getAllChatIdsForNotifiableUsers();

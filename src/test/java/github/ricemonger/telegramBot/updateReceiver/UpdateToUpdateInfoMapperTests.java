@@ -1,6 +1,6 @@
 package github.ricemonger.telegramBot.updateReceiver;
 
-import github.ricemonger.marketplace.databases.neo4j.entities.TelegramLinkedUserEntity;
+import github.ricemonger.marketplace.databases.neo4j.entities.TelegramLinkedUserNode;
 import github.ricemonger.marketplace.databases.neo4j.services.TelegramLinkedUserService;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.InputGroup;
@@ -62,7 +62,7 @@ public class UpdateToUpdateInfoMapperTests {
     @Test
     public void updateInfoShouldHaveRightFieldsFromUpdateAndUserService() {
         when(telegramLinkedUserService.getTelegramUser(1L)).thenReturn(
-                new TelegramLinkedUserEntity(
+                new TelegramLinkedUserNode(
                         "1",
                         InputState.CREDENTIALS_PASSWORD,
                         InputGroup.CREDENTIALS_ADD,
@@ -83,7 +83,7 @@ public class UpdateToUpdateInfoMapperTests {
     @Test
     public void updateInfoShouldGetBaseInputStateAndInputGroupIfUserServiceReturnsNull() {
         when(telegramLinkedUserService.getTelegramUser(1L)).thenReturn(
-                new TelegramLinkedUserEntity(
+                new TelegramLinkedUserNode(
                         "1",
                         null,
                         null,

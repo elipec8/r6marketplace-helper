@@ -1,22 +1,21 @@
-package github.ricemonger.marketplace.databases.neo4j.services;
+package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.neo4j.entities.ItemEntity;
-import github.ricemonger.marketplace.databases.neo4j.entities.ItemSaleEntity;
-import github.ricemonger.marketplace.databases.neo4j.entities.ItemSaleHistoryEntity;
-import github.ricemonger.marketplace.databases.neo4j.repositories.ItemRepository;
-import github.ricemonger.marketplace.databases.neo4j.repositories.ItemSaleHistoryRepository;
-import github.ricemonger.marketplace.databases.neo4j.repositories.ItemSaleRepository;
+import github.ricemonger.marketplace.databases.postgres.entities.ItemEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.ItemSaleEntity;
+import github.ricemonger.marketplace.databases.postgres.repositories.ItemEntityRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.ItemSaleEntityRepository;
 import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.Node;
+import github.ricemonger.marketplace.service.ItemDtoMapper;
+import github.ricemonger.marketplace.service.ItemRepositoryService;
 import github.ricemonger.utils.exceptions.UbiUserEntityDoesntExistException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-@Service
+@Component
 @RequiredArgsConstructor
-public class ItemService {
+public class ItemEntityRepositoryService implements ItemRepositoryService {
 
     private final static Set<String> IGNORED_NAMES = new HashSet<>();
 
@@ -56,25 +55,24 @@ public class ItemService {
         IGNORED_NAMES.add("DEADLY OMEN");
     }
 
-    private final ItemRepository itemRepository;
+    private final ItemEntityRepository itemEntityRepository;
 
-    private final ItemSaleRepository itemSaleRepository;
+    private final ItemSaleEntityRepository itemSaleEntityRepository;
 
-    private final ItemSaleHistoryRepository itemSaleHistoryRepository;
-
-    private final DTOsToEntityMapper mapper;
+    private final ItemDtoMapper mapper;
 
     public void saveAll(Collection<Node> nodeDTOs) {
         Set<ItemEntity> entities = mapper.nodesDTOToItemEntities(nodeDTOs);
 
         Set<ItemSaleEntity> saleEntities = mapper.nodesDTOToItemSaleEntities(nodeDTOs);
 
-        itemRepository.saveAll(entities);
-        itemSaleRepository.saveAll(saleEntities);
+        itemEntityRepository.saveAll(entities);
+        itemSaleEntityRepository.saveAll(saleEntities);
     }
 
-    public List<ItemEntity> getSpeculativeItemsByExpectedProfit(int minProfitAbsolute, int minProfitPercentOfBuyPrice, int minSellPrice, int maxSellPrice) throws UbiUserEntityDoesntExistException {
-        return itemRepository
+    public List<ItemEntity> getSpeculativeItemsByExpectedProfit(int minProfitAbsolute, int minProfitPercentOfBuyPrice, int minSellPrice,
+                                                                int maxSellPrice) throws UbiUserEntityDoesntExistException {
+        return itemEntityRepository
                 .findAll()
                 .stream()
                 .filter(itemEntity -> !IGNORED_NAMES.contains(itemEntity.getName()))
@@ -87,24 +85,20 @@ public class ItemService {
                     }
                     return null;
                 }).filter(Objects::nonNull)
-                .sorted((o1, o2) -> o2.getExpectedProfit() * o2.getExpectedProfitPercentage() * o2.getSellOrders() - o1.getExpectedProfit() * o1.getExpectedProfitPercentage() * o1.getSellOrders()).toList();
+                .sorted((o1, o2) -> o2.getExpectedProfit() * o2.getExpectedProfitPercentage() * o2.getSellOrdersCount() - o1.getExpectedProfit() * o1.getExpectedProfitPercentage() * o1.getSellOrdersCount()).toList();
     }
 
     public void calculateItemsSaleStats() {
 
-        List<ItemEntity> items = itemRepository.findAll();
+        List<ItemEntity> items = itemEntityRepository.findAll();
 
-        List<ItemSaleEntity> sales = itemSaleRepository.findAll();
+        List<ItemSaleEntity> sales = itemSaleEntityRepository.findAll();
 
-        List<ItemSaleHistoryEntity> histories = new ArrayList<>();
+        for (ItemEntity item : items) {
+            List<ItemSaleEntity> itemSales = sales.stream().filter(sale -> sale.getItem().getItemFullId().equals(item.getItemFullId())).toList();
 
-        for(ItemEntity item : items){
-            List<ItemSaleEntity> itemSales = sales.stream().filter(sale -> sale.getItemId().equals(item.getItemFullId())).toList();
-
-            if(itemSales.isEmpty()){
-                ItemSaleHistoryEntity history = new ItemSaleHistoryEntity();
-                history.setItemId(item.getItemFullId());
-                histories.add(history);
+            if (itemSales.isEmpty()) {
+                continue;
             }
 
             List<ItemSaleEntity> monthSales =
@@ -118,10 +112,10 @@ public class ItemService {
             int monthLowPriceSalesPerDay = 0;
             int monthHighPriceSalesPerDay = 0;
 
-            if(!monthSales.isEmpty()){
-                monthAveragePrice = (int )monthSales.stream().mapToInt(ItemSaleEntity::getPrice).average().orElse(0);
-                int monthLowPriceThreshold = (int)(monthAveragePrice * 0.75);
-                int monthHighPriceThreshold = (int)(monthAveragePrice * 1.2);
+            if (!monthSales.isEmpty()) {
+                monthAveragePrice = (int) monthSales.stream().mapToInt(ItemSaleEntity::getPrice).average().orElse(0);
+                int monthLowPriceThreshold = (int) (monthAveragePrice * 0.75);
+                int monthHighPriceThreshold = (int) (monthAveragePrice * 1.2);
                 monthMedianPrice = monthSales.stream().mapToInt(ItemSaleEntity::getPrice).sorted().boxed().toList().get(monthSales.size() / 2);
                 monthMaxPrice = monthSales.stream().mapToInt(ItemSaleEntity::getPrice).max().orElse(0);
                 monthMinPrice = monthSales.stream().mapToInt(ItemSaleEntity::getPrice).min().orElse(0);
@@ -141,10 +135,10 @@ public class ItemService {
             int dayLowPriceSalesCount = 0;
             int dayHighPriceSalesCount = 0;
 
-            if(!daySales.isEmpty()){
+            if (!daySales.isEmpty()) {
                 dayAveragePrice = (int) daySales.stream().mapToInt(ItemSaleEntity::getPrice).average().orElse(0);
-                int dayLowPriceThreshold = (int)(dayAveragePrice * 0.75);
-                int dayHighPriceThreshold = (int)(dayAveragePrice * 1.2);
+                int dayLowPriceThreshold = (int) (dayAveragePrice * 0.75);
+                int dayHighPriceThreshold = (int) (dayAveragePrice * 1.2);
                 dayMaxPrice = daySales.stream().mapToInt(ItemSaleEntity::getPrice).max().orElse(0);
                 dayMinPrice = daySales.stream().mapToInt(ItemSaleEntity::getPrice).min().orElse(0);
                 dayMedianPrice = daySales.stream().mapToInt(ItemSaleEntity::getPrice).sorted().boxed().toList().get(daySales.size() / 2);
@@ -153,28 +147,22 @@ public class ItemService {
                 dayHighPriceSalesCount = (int) daySales.stream().filter(sale -> sale.getPrice() >= dayHighPriceThreshold).count();
             }
 
-            ItemSaleHistoryEntity history = new ItemSaleHistoryEntity();
+            item.setMonthAveragePrice(monthAveragePrice);
+            item.setMonthMedianPrice(monthMedianPrice);
+            item.setMonthMaxPrice(monthMaxPrice);
+            item.setMonthMinPrice(monthMinPrice);
+            item.setMonthSalesPerDay(monthSalesPerDay);
+            item.setMonthLowPriceSalesPerDay(monthLowPriceSalesPerDay);
+            item.setMonthHighPriceSalesPerDay(monthHighPriceSalesPerDay);
 
-            history.setItemId(item.getItemFullId());
-
-            history.setMonthAveragePrice(monthAveragePrice);
-            history.setMonthMedianPrice(monthMedianPrice);
-            history.setMonthMaxPrice(monthMaxPrice);
-            history.setMonthMinPrice(monthMinPrice);
-            history.setMonthSalesPerDay(monthSalesPerDay);
-            history.setMonthLowPriceSalesPerDay(monthLowPriceSalesPerDay);
-            history.setMonthHighPriceSalesPerDay(monthHighPriceSalesPerDay);
-
-            history.setDayAveragePrice(dayAveragePrice);
-            history.setDayMedianPrice(dayMedianPrice);
-            history.setDayMaxPrice(dayMaxPrice);
-            history.setDayMinPrice(dayMinPrice);
-            history.setDaySales(daySalesCount);
-            history.setDayLowPriceSales(dayLowPriceSalesCount);
-            history.setDayHighPriceSales(dayHighPriceSalesCount);
-
-            histories.add(history);
+            item.setDayAveragePrice(dayAveragePrice);
+            item.setDayMedianPrice(dayMedianPrice);
+            item.setDayMaxPrice(dayMaxPrice);
+            item.setDayMinPrice(dayMinPrice);
+            item.setDaySales(daySalesCount);
+            item.setDayLowPriceSales(dayLowPriceSalesCount);
+            item.setDayHighPriceSales(dayHighPriceSalesCount);
         }
-        itemSaleHistoryRepository.saveAll(histories);
+        itemEntityRepository.saveAll(items);
     }
 }

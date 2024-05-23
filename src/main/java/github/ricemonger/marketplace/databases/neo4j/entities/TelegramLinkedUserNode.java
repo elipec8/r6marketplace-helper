@@ -2,9 +2,7 @@ package github.ricemonger.marketplace.databases.neo4j.entities;
 
 import github.ricemonger.telegramBot.executors.InputGroup;
 import github.ricemonger.telegramBot.executors.InputState;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
@@ -13,10 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Node("TelegramLinkedUser")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TelegramLinkedUserEntity {
+public class TelegramLinkedUserNode {
 
     @Id
     private String chatId;
@@ -32,16 +31,16 @@ public class TelegramLinkedUserEntity {
     private int speculativeItemSearchMaxSellPriceSetting = 15000;
 
     @Relationship(value = "INPUT_VALUES", direction = Relationship.Direction.OUTGOING)
-    private List<TelegramInputValuesEntity> inputValues = new ArrayList<>();
+    private List<TelegramInputValuesNode> inputValues = new ArrayList<>();
 
     @Relationship(value = "LINKED_ACCOUNTS", direction = Relationship.Direction.OUTGOING)
-    private List<UbiUserEntity> linkedUbisoftAccounts = new ArrayList<>();
+    private List<UbiUserNode> linkedUbisoftAccounts = new ArrayList<>();
 
-    public TelegramLinkedUserEntity(String chatId) {
+    public TelegramLinkedUserNode(String chatId) {
         this.chatId = chatId;
     }
 
-    public TelegramLinkedUserEntity(String chatId, InputState inputState, InputGroup inputGroup, boolean publicNotificationsEnabledFlag, int speculativeItemSearchProfitPercentSetting, int speculativeItemSearchProfitAbsoluteSetting, int speculativeItemSearchMinSellPriceSetting, int speculativeItemSearchMaxSellPriceSetting) {
+    public TelegramLinkedUserNode(String chatId, InputState inputState, InputGroup inputGroup, boolean publicNotificationsEnabledFlag, int speculativeItemSearchProfitPercentSetting, int speculativeItemSearchProfitAbsoluteSetting, int speculativeItemSearchMinSellPriceSetting, int speculativeItemSearchMaxSellPriceSetting) {
         this.chatId = chatId;
         this.inputState = inputState;
         this.inputGroup = inputGroup;

@@ -1,8 +1,8 @@
 package github.ricemonger.telegramBot.client;
 
-import github.ricemonger.marketplace.databases.neo4j.entities.ItemEntity;
+import github.ricemonger.marketplace.databases.neo4j.entities.ItemNode;
 import github.ricemonger.marketplace.databases.neo4j.enums.ItemType;
-import github.ricemonger.marketplace.databases.neo4j.services.ItemService;
+import github.ricemonger.marketplace.databases.neo4j.services.ItemNodeRepositoryService;
 import github.ricemonger.marketplace.databases.neo4j.services.TelegramLinkedUserService;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.InputGroup;
@@ -29,7 +29,7 @@ public class BotInnerServiceTests {
     private TelegramLinkedUserService telegramLinkedUserService;
 
     @MockBean
-    private ItemService itemService;
+    private ItemNodeRepositoryService itemNodeRepositoryService;
 
     @Autowired
     private BotInnerService botInnerService;
@@ -206,7 +206,7 @@ public class BotInnerServiceTests {
 
     @Test
     public void sendDefaultSpeculativeItemsAsMessagesShouldGetFromServiceWithDefaultValuesAndSendByItemsAmount() {
-        ItemEntity itemEntity = ItemEntity.builder()
+        ItemNode itemNode = ItemNode.builder()
                 .itemFullId("id")
                 .assetUrl("url")
                 .name("name")
@@ -224,11 +224,11 @@ public class BotInnerServiceTests {
 
         Long chatId = 1L;
 
-        when(itemService.getSpeculativeItemsByExpectedProfit(50, 40, 0, 15000)).thenReturn(List.of(itemEntity, itemEntity));
+        when(itemNodeRepositoryService.getSpeculativeItemsByExpectedProfit(50, 40, 0, 15000)).thenReturn(List.of(itemNode, itemNode));
 
         botInnerService.sendDefaultSpeculativeItemsAsMessages(chatId);
 
-        verify(itemService).getSpeculativeItemsByExpectedProfit(50, 40, 0, 15000);
+        verify(itemNodeRepositoryService).getSpeculativeItemsByExpectedProfit(50, 40, 0, 15000);
 
         verify(telegramBotClientService,times(2)).sendText(eq(String.valueOf(chatId)), anyString());
     }

@@ -2,9 +2,9 @@ package github.ricemonger.marketplace.databases.neo4j.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationDTO;
 import github.ricemonger.marketplace.authorization.AuthorizationService;
-import github.ricemonger.marketplace.databases.neo4j.entities.TelegramLinkedUserEntity;
-import github.ricemonger.marketplace.databases.neo4j.entities.UbiUserEntity;
-import github.ricemonger.marketplace.databases.neo4j.repositories.UbiUserRepository;
+import github.ricemonger.marketplace.databases.neo4j.entities.TelegramLinkedUserNode;
+import github.ricemonger.marketplace.databases.neo4j.entities.UbiUserNode;
+import github.ricemonger.marketplace.databases.neo4j.repositories.UbiUserNodeRepository;
 import github.ricemonger.utils.exceptions.AesPasswordEncoder;
 import github.ricemonger.utils.exceptions.UbiUserAuthorizationClientErrorException;
 import lombok.RequiredArgsConstructor;
@@ -17,26 +17,26 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UbiUserService {
 
-    private final UbiUserRepository ubiUserRepository;
+    private final UbiUserNodeRepository ubiUserNodeRepository;
 
     private final AesPasswordEncoder AESPasswordEncoder;
 
     private final AuthorizationService authorizationService;
 
     public void deleteByLinkedTelegramUserChatIdAndEmail(String chatId, String emailToRemove) {
-        ubiUserRepository.deleteByLinkedTelegramUserChatIdAndEmail(chatId, emailToRemove);
+        ubiUserNodeRepository.deleteByLinkedTelegramUserChatIdAndEmail(chatId, emailToRemove);
     }
 
     public void deleteAllByLinkedTelegramUserChatId(String chatId) {
-        ubiUserRepository.deleteAllByLinkedTelegramUserChatId(chatId);
+        ubiUserNodeRepository.deleteAllByLinkedTelegramUserChatId(chatId);
     }
 
-    public List<UbiUserEntity> reauthorizeAllUbiUsersAndGetUnauthorizedList(){
-        List<UbiUserEntity> entities = ubiUserRepository.findAll();
+    public List<UbiUserNode> reauthorizeAllUbiUsersAndGetUnauthorizedList(){
+        List<UbiUserNode> entities = ubiUserNodeRepository.findAll();
 
-        List<UbiUserEntity> notifyList = new ArrayList<>();
+        List<UbiUserNode> notifyList = new ArrayList<>();
 
-        for(UbiUserEntity entity: entities){
+        for(UbiUserNode entity: entities){
             try {
                 reauthorizeUserOrThrow(entity);
             }
@@ -48,7 +48,7 @@ public class UbiUserService {
         return notifyList;
     }
 
-    public void reauthorizeUserOrThrow(UbiUserEntity entity) {
+    public void reauthorizeUserOrThrow(UbiUserNode entity) {
             AuthorizationDTO authorizationDTO = authorizationService.getUserAuthorizationDTO(entity.getEmail(), AESPasswordEncoder.decode(entity.getPassword()));
 
             entity.setUbiProfileId(authorizationDTO.getProfileId());
@@ -59,32 +59,32 @@ public class UbiUserService {
             entity.setUbiRememberDeviceTicket(authorizationDTO.getRememberDeviceTicket());
             entity.setUbiTwoFactorAuthTicket(authorizationDTO.getTwoFactorAuthenticationTicket());
 
-            ubiUserRepository.save(entity);
+            ubiUserNodeRepository.save(entity);
     }
 
-    public void createAndAuthorizeOrThrowForTelegramUser(TelegramLinkedUserEntity telegramLinkedUserEntity, String email, String password) throws UbiUserAuthorizationClientErrorException {
-        UbiUserEntity ubiUserEntity = authorizeAndGetUbiUser(email, password);
+    public void createAndAuthorizeOrThrowForTelegramUser(TelegramLinkedUserNode telegramLinkedUserNode, String email, String password) throws UbiUserAuthorizationClientErrorException {
+        UbiUserNode ubiUserNode = authorizeAndGetUbiUser(email, password);
 
-        ubiUserEntity.setLinkedTelegramUser(telegramLinkedUserEntity);
+        ubiUserNode.setLinkedTelegramUser(telegramLinkedUserNode);
 
-        ubiUserRepository.save(ubiUserEntity);
+        ubiUserNodeRepository.save(ubiUserNode);
     }
 
-    private UbiUserEntity authorizeAndGetUbiUser(String email, String password) throws UbiUserAuthorizationClientErrorException {
-        UbiUserEntity ubiUserEntity = new UbiUserEntity();
+    private UbiUserNode authorizeAndGetUbiUser(String email, String password) throws UbiUserAuthorizationClientErrorException {
+        UbiUserNode ubiUserNode = new UbiUserNode();
 
         AuthorizationDTO userAuthorizationDTO = authorizationService.getUserAuthorizationDTO(email, password);
-        ubiUserEntity.setUbiProfileId(userAuthorizationDTO.getProfileId());
-        ubiUserEntity.setUbiSessionId(userAuthorizationDTO.getSessionId());
-        ubiUserEntity.setUbiAuthTicket(userAuthorizationDTO.getTicket());
-        ubiUserEntity.setUbiSpaceId(userAuthorizationDTO.getSpaceId());
-        ubiUserEntity.setUbiRememberMeTicket(userAuthorizationDTO.getRememberMeTicket());
-        ubiUserEntity.setUbiRememberDeviceTicket(userAuthorizationDTO.getRememberDeviceTicket());
-        ubiUserEntity.setUbiTwoFactorAuthTicket(userAuthorizationDTO.getTwoFactorAuthenticationTicket());
+        ubiUserNode.setUbiProfileId(userAuthorizationDTO.getProfileId());
+        ubiUserNode.setUbiSessionId(userAuthorizationDTO.getSessionId());
+        ubiUserNode.setUbiAuthTicket(userAuthorizationDTO.getTicket());
+        ubiUserNode.setUbiSpaceId(userAuthorizationDTO.getSpaceId());
+        ubiUserNode.setUbiRememberMeTicket(userAuthorizationDTO.getRememberMeTicket());
+        ubiUserNode.setUbiRememberDeviceTicket(userAuthorizationDTO.getRememberDeviceTicket());
+        ubiUserNode.setUbiTwoFactorAuthTicket(userAuthorizationDTO.getTwoFactorAuthenticationTicket());
 
-        ubiUserEntity.setEmail(email);
-        ubiUserEntity.setPassword(AESPasswordEncoder.encode(password));
+        ubiUserNode.setEmail(email);
+        ubiUserNode.setPassword(AESPasswordEncoder.encode(password));
 
-        return ubiUserEntity;
+        return ubiUserNode;
     }
 }

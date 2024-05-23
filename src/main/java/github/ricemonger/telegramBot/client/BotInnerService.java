@@ -1,8 +1,9 @@
 package github.ricemonger.telegramBot.client;
 
-import github.ricemonger.marketplace.databases.neo4j.entities.ItemEntity;
-import github.ricemonger.marketplace.databases.neo4j.services.ItemService;
+import github.ricemonger.marketplace.databases.neo4j.entities.ItemNode;
 import github.ricemonger.marketplace.databases.neo4j.services.TelegramLinkedUserService;
+import github.ricemonger.marketplace.databases.postgres.entities.ItemEntity;
+import github.ricemonger.marketplace.databases.postgres.services.ItemEntityRepositoryService;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.InputGroup;
 import github.ricemonger.telegramBot.executors.InputState;
@@ -21,7 +22,7 @@ public class BotInnerService {
 
     private final TelegramLinkedUserService telegramLinkedUserService;
 
-    private final ItemService itemService;
+    private final ItemEntityRepositoryService itemEntityRepositoryService;
 
     public void askFromInlineKeyboard(UpdateInfo updateInfo, String text, int buttonsInLine, CallbackButton[] buttons) {
         telegramBotClientService.askFromInlineKeyboard(updateInfo, text, buttonsInLine, buttons);
@@ -99,7 +100,7 @@ public class BotInnerService {
     }
 
     public void sendDefaultSpeculativeItemsAsMessages(Long chatId) {
-        List<ItemEntity> speculativeItems = itemService.getSpeculativeItemsByExpectedProfit(50, 40, 0, 15000);
+        List<ItemEntity> speculativeItems = itemEntityRepositoryService.getSpeculativeItemsByExpectedProfit(50, 40, 0, 15000);
         log.debug("Speculative items amount: {}", speculativeItems.size());
         for (ItemEntity item : speculativeItems) {
             telegramBotClientService.sendText(String.valueOf(chatId), getItemString(item));
@@ -109,9 +110,9 @@ public class BotInnerService {
     private String getItemString(ItemEntity entity){
         String name = entity.getName();
         String maxBuyPrice = String.valueOf(entity.getMaxBuyPrice());
-        String buyOrders = String.valueOf(entity.getBuyOrders());
+        String buyOrders = String.valueOf(entity.getBuyOrdersCount());
         String minSellPrice = String.valueOf(entity.getMinSellPrice());
-        String sellOrders = String.valueOf(entity.getSellOrders());
+        String sellOrders = String.valueOf(entity.getSellOrdersCount());
         String expectedProfit = String.valueOf(entity.getExpectedProfit());
         String expectedProfitPercentage = String.valueOf(entity.getExpectedProfitPercentage());
         String lastSoldAt = entity.getLastSoldAt().toString();

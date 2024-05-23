@@ -1,6 +1,22 @@
 version: '2.4'
 
 services:
+
+ postgres:
+    container_name: r6helper-postgres
+    image: postgres:16.3
+    ports:
+     - "5432:5432"
+    environment:
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=1234
+     - POSTGRES_DB=r6helper
+    volumes:
+     - postgres-data:/var/lib/postgresql/data
+    networks:
+     - postgres-net
+    restart: always
+
  neo4j:
     container_name: r6helper-neo4j
     image: neo4j:ubi9
@@ -65,11 +81,13 @@ services:
     restart: always
 
 networks:
+    postgres-net:
     neo4j-net:
     zipkin-net:
     redis-net:
 
 volumes:
+ postgres-data:
  neo4j-data:
  neo4j-logs:
  neo4j-import:
