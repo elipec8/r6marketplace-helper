@@ -1,4 +1,4 @@
-package github.ricemonger.telegramBot.executors.marketplace.speculative.show;
+package github.ricemonger.telegramBot.executors.marketplace.speculative.showOwned;
 
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 import github.ricemonger.telegramBot.executors.InputState;

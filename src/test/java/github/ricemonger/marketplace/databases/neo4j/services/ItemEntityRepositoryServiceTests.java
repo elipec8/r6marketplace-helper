@@ -95,7 +95,7 @@ public class ItemEntityRepositoryServiceTests {
 
     @Test
     public void calculateItemSaleStatsShouldCallRepositories(){
-        itemRepositoryService.calculateItemsSaleStats();
+        itemRepositoryService.calculateItemsSaleHistoryStats();
 
         verify(itemRepository).findAll();
 

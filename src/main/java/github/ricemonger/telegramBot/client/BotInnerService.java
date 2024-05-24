@@ -114,7 +114,9 @@ public class BotInnerService {
 
         AuthorizationDTO authorizationDTO = ubiUserService.getAuthorizationDTOFromDbOrThrow(String.valueOf(chatId), email);
 
+
         List<? extends Item> speculativeItems = itemService.getOwnedSpeculativeItemsByExpectedProfit(authorizationDTO,50, 40, 0, 15000);
+
         log.debug("Speculative items amount: {}", speculativeItems.size());
         for (Item item : speculativeItems) {
             telegramBotClientService.sendText(String.valueOf(chatId), getItemString(item));

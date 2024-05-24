@@ -8,7 +8,7 @@ public class GraphQlClientServiceStaticsTests {
 
     @Test
     public void variablesShouldHaveRightTypes(){
-        Map<String, Object> variables = GraphQlClientServiceStatics.getDefaultUpdateItemsVariables();
+        Map<String, Object> variables = GraphQlClientServiceStatics.getFetchItemsVariables();
 
         assert(variables.get("spaceId") instanceof String);
 

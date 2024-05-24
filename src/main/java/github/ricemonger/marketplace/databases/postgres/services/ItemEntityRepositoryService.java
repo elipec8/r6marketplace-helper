@@ -8,6 +8,7 @@ import github.ricemonger.marketplace.databases.postgres.repositories.ItemSaleEnt
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemSaleHistoryEntityRepository;
 import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.Node;
 import github.ricemonger.utils.exceptions.UbiUserEntityDoesntExistException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -39,7 +40,7 @@ public class ItemEntityRepositoryService implements ItemRepositoryService {
                 .findAll();
     }
 
-    public void calculateItemsSaleStats() {
+    public void calculateItemsSaleHistoryStats() {
 
         List<ItemSaleHistoryEntity> histories = new ArrayList<>();
 

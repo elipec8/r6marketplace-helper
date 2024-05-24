@@ -11,7 +11,6 @@ import java.util.*;
 @Entity(name = "item")
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemEntity implements Item {
@@ -47,9 +46,4 @@ public class ItemEntity implements Item {
             joinColumns=  @JoinColumn(name="item_id", referencedColumnName="item_full_id"),
             inverseJoinColumns= @JoinColumn(name="tag", referencedColumnName="tag"))
     private List<TagEntity> tags = new ArrayList<>();
-
-    @Override
-    public List<String> getTagsList() {
-        return tags.stream().map(TagEntity::getTag).toList();
-    }
 }

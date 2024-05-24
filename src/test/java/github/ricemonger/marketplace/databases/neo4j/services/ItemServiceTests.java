@@ -51,6 +51,6 @@ public class ItemServiceTests {
     public void calculateItemsSaleStats() {
         itemService.calculateItemsSaleStats();
 
-        verify(itemRepositoryService).calculateItemsSaleStats();
+        verify(itemRepositoryService).calculateItemsSaleHistoryStats();
     }
 }

@@ -53,6 +53,8 @@ public class ItemService {
 
     private final ItemRepositoryService itemRepositoryService;
 
+    private final UbiUserService ubiUserService;
+
     private final GraphQlClientService graphQlClientService;
 
     private final ItemDtoMapper itemDtoMapper;
@@ -95,6 +97,6 @@ public class ItemService {
     }
 
     public void calculateItemsSaleStats() {
-        itemRepositoryService.calculateItemsSaleStats();
+        itemRepositoryService.calculateItemsSaleHistoryStats();
     }
 }

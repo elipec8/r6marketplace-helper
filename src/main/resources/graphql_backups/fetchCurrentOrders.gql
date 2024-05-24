@@ -1,105 +1,27 @@
-query GetMarketableItems($spaceId: String!, $limit: Int!, $offset: Int, $filterBy: MarketableItemFilter, $withOwnership: Boolean = true, $sortBy: MarketableItemSort) {
+query GetTransactionsPending($spaceId: String!, $limit: Int!, $offset: Int) {
     game(spaceId: $spaceId) {
         id
-        marketableItems(
-            limit: $limit
-            offset: $offset
-            filterBy: $filterBy
-            sortBy: $sortBy
-            withMarketData: true
-        ) {
-            nodes {
-                ...MarketableItemFragment
-                __typename
-            }
-            totalCount
-            __typename
-        }
-        __typename
-    }
-}
-
-fragment MarketableItemFragment on MarketableItem {
-    item {
-        ...SecondaryStoreItemFragment
-        ...SecondaryStoreItemOwnershipFragment @include(if: $withOwnership)
-        __typename
-    }
-    marketData {
-        ...MarketDataFragment
-        __typename
-    }
-    viewer {
-        meta {
-            id
-            activeTrade {
-                ...TradeFragment
+        viewer {
+            meta {
+                id
+                trades(
+                    limit: $limit
+                    offset: $offset
+                    filterBy: {states: [Created]}
+                    sortBy: {field: LAST_MODIFIED_AT}
+                ) {
+                    nodes {
+                        ...TradeFragment
+                        __typename
+                    }
+                    __typename
+                }
                 __typename
             }
             __typename
         }
         __typename
     }
-    __typename
-}
-
-fragment SecondaryStoreItemFragment on SecondaryStoreItem {
-    id
-    assetUrl
-    itemId
-    name
-    tags
-    type
-    viewer {
-        meta {
-            id
-            isReserved
-            __typename
-        }
-        __typename
-    }
-    __typename
-}
-
-fragment SecondaryStoreItemOwnershipFragment on SecondaryStoreItem {
-    viewer {
-        meta {
-            id
-            isOwned
-            quantity
-            __typename
-        }
-        __typename
-    }
-    __typename
-}
-
-fragment MarketDataFragment on MarketableItemMarketData {
-    id
-    sellStats {
-        id
-        paymentItemId
-        lowestPrice
-        highestPrice
-        activeCount
-        __typename
-    }
-    buyStats {
-        id
-        paymentItemId
-        lowestPrice
-        highestPrice
-        activeCount
-        __typename
-    }
-    lastSoldAt {
-        id
-        paymentItemId
-        price
-        performedAt
-        __typename
-    }
-    __typename
 }
 
 fragment TradeFragment on Trade {
@@ -156,6 +78,37 @@ fragment TradeFragment on Trade {
                 ...TradesLimitationsFragment
                 __typename
             }
+            __typename
+        }
+        __typename
+    }
+    __typename
+}
+
+fragment SecondaryStoreItemFragment on SecondaryStoreItem {
+    id
+    assetUrl
+    itemId
+    name
+    tags
+    type
+    viewer {
+        meta {
+            id
+            isReserved
+            __typename
+        }
+        __typename
+    }
+    __typename
+}
+
+fragment SecondaryStoreItemOwnershipFragment on SecondaryStoreItem {
+    viewer {
+        meta {
+            id
+            isOwned
+            quantity
             __typename
         }
         __typename

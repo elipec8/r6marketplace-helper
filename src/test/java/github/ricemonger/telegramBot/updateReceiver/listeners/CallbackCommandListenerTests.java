@@ -12,7 +12,7 @@ import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRem
 import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRemoveOneCallback;
 import github.ricemonger.telegramBot.executors.credentials.show.CredentialsShowCallback;
 import github.ricemonger.telegramBot.executors.marketplace.speculative.SpeculativeItemsCallback;
-import github.ricemonger.telegramBot.executors.marketplace.speculative.show.SpeculativeItemsShowAllCallback;
+import github.ricemonger.telegramBot.executors.marketplace.speculative.showAll.SpeculativeItemsShowAllCallback;
 import github.ricemonger.telegramBot.executors.start.startYes.StartYesCallback;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

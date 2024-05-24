@@ -11,6 +11,7 @@ import github.ricemonger.telegramBot.executors.InputState;
 import github.ricemonger.utils.exceptions.TelegramUserAlreadyExistsException;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.UbiUserAuthorizationClientErrorException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -80,6 +81,7 @@ public class TelegramUserService {
         telegramInputValuesRepository.save(new TelegramInputValueEntity(String.valueOf(chatId), inputState, userInput));
     }
 
+    @Transactional
     public void clearUserInputs(Long chatId) throws TelegramUserDoesntExistException {
         getTelegramUserOrThrow(chatId);
 

@@ -18,41 +18,49 @@ public class GraphQlClientService {
     private final GraphQlClientFactory graphQlClientFactory;
 
 
+    public Collection<Node> fetchAllOwnedItemStatsForUser(AuthorizationDTO authorizationDTO) {
+
+        HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
+
+        Map<String, Object> ownedItemsVariables = new HashMap<>(GraphQlClientServiceStatics.getFetchItemsVariables());
+
+        return fetchItemsStatsFromOffset(client, GraphQlClientServiceStatics.FETCH_OWNED_ITEMS_STATS_DOCUMENT_NAME,ownedItemsVariables, 0);
+    }
+
     public Collection<Node> fetchAllItemStats(int expectedItemCount) {
 
         HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
 
-        Collection<Node> nodes = fetchItemsStatsTillOffset(client,GraphQlClientServiceStatics.FETCH_ITEMS_STATS_DOCUMENT_NAME, expectedItemCount);
+        Collection<Node> nodes = fetchItemsStatsTillOffset(
+                client,
+                GraphQlClientServiceStatics.FETCH_ITEMS_STATS_DOCUMENT_NAME,
+                GraphQlClientServiceStatics.getFetchItemsVariables(),
+                expectedItemCount);
 
         if (nodes.size() > expectedItemCount) {
-            nodes.addAll(fetchItemsStatsFromOffset(client,GraphQlClientServiceStatics.FETCH_ITEMS_STATS_DOCUMENT_NAME, nodes.size()));
+            nodes.addAll(fetchItemsStatsFromOffset(
+                    client,
+                    GraphQlClientServiceStatics.FETCH_ITEMS_STATS_DOCUMENT_NAME,
+                    GraphQlClientServiceStatics.getFetchItemsVariables(),
+                    nodes.size()));
         }
 
         return nodes;
     }
 
-    public Collection<Node> fetchAllOwnedItemStatsForUser(AuthorizationDTO authorizationDTO) {
-
-        HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
-
-        return fetchItemsStatsFromOffset(client,GraphQlClientServiceStatics.FETCH_OWNED_ITEMS_STATS_DOCUMENT_NAME, 0);
-    }
-
-    private Set<Node> fetchItemsStatsTillOffset(GraphQlClient graphQlClient, String documentName, int finalOffset) {
+    private Set<Node> fetchItemsStatsTillOffset(GraphQlClient graphQlClient, String documentName, Map<String, Object> documentVariables, int finalOffset) {
         int expectedQueriesCount = (finalOffset / GraphQlClientServiceStatics.MAX_LIMIT) + 1;
         Set<ClientGraphQlResponse> responses = new HashSet<>(expectedQueriesCount);
 
         MarketableItems marketableItems;
 
-        Map<String, Object> variables = GraphQlClientServiceStatics.getDefaultUpdateItemsVariables();
-
         for (int i = 0; i < expectedQueriesCount; i++) {
             int offset = i * GraphQlClientServiceStatics.MAX_LIMIT;
-            variables.put("offset", offset);
 
             responses.add(graphQlClient
                     .documentName(documentName)
-                    .variables(variables)
+                    .variables(documentVariables)
+                    .variable("offset", offset)
                     .execute()
                     .block());
         }
@@ -67,18 +75,17 @@ public class GraphQlClientService {
         return nodes;
     }
 
-    private List<Node> fetchItemsStatsFromOffset(GraphQlClient graphQlClient, String documentName, int offset) {
+    private List<Node> fetchItemsStatsFromOffset(GraphQlClient graphQlClient, String documentName, Map<String, Object> documentVariables, int offset) {
         List<Node> nodes = new ArrayList<>();
 
         MarketableItems marketableItems;
-        Map<String, Object> variables = GraphQlClientServiceStatics.getDefaultUpdateItemsVariables();
 
         do {
-            variables.put("offset", offset);
 
             marketableItems = graphQlClient
                     .documentName(documentName)
-                    .variables(variables)
+                    .variables(documentVariables)
+                    .variable("offset", offset)
                     .retrieve("game.marketableItems")
                     .toEntity(MarketableItems.class)
                     .block();

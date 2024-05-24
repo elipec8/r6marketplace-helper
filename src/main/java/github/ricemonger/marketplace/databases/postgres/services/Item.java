@@ -15,8 +15,6 @@ public interface Item {
 
     ItemType getType();
 
-    List<String> getTagsList();
-
     int getMaxBuyPrice();
 
     int getBuyOrdersCount();

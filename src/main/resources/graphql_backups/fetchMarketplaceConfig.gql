@@ -1,0 +1,76 @@
+query GetMarketplaceGameConfig($spaceId: String!) {
+    game(spaceId: $spaceId) {
+        id
+        marketplace {
+            tags {
+                color
+                value
+                displayName
+                __typename
+            }
+            tagGroups {
+                type
+                values
+                displayName
+                __typename
+            }
+            types {
+                value
+                displayName
+                __typename
+            }
+            homeTypes {
+                value
+                displayName
+                iconUrl
+                __typename
+            }
+            filters {
+                categoryId
+                type
+                displayName
+                sortType
+                sortDirection
+                values {
+                    value
+                    displayName
+                    __typename
+                }
+                __typename
+            }
+            tabConfig {
+                buy {
+                    filterSelection {
+                        categoryId
+                        values
+                        __typename
+                    }
+                    sortSelection {
+                        field
+                        direction
+                        orderType
+                        __typename
+                    }
+                    __typename
+                }
+                sell {
+                    filterSelection {
+                        categoryId
+                        values
+                        __typename
+                    }
+                    sortSelection {
+                        field
+                        direction
+                        orderType
+                        __typename
+                    }
+                    __typename
+                }
+                __typename
+            }
+            __typename
+        }
+        __typename
+    }
+}

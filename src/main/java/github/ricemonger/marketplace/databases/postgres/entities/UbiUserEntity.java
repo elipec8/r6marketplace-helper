@@ -1,9 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -27,10 +24,14 @@ public class UbiUserEntity {
 
     private String ubiProfileId;
     private String ubiSessionId;
-    private String ubiAuthTicket;
     private String ubiSpaceId;
+    @Column(columnDefinition = "TEXT")
+    private String ubiAuthTicket;
+    @Column(columnDefinition = "TEXT")
     private String ubiTwoFactorAuthTicket;
+    @Column(columnDefinition = "TEXT")
     private String ubiRememberDeviceTicket;
+    @Column(columnDefinition = "TEXT")
     private String ubiRememberMeTicket;
 
     @ManyToMany

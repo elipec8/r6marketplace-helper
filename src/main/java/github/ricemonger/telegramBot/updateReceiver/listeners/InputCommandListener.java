@@ -9,7 +9,7 @@ import github.ricemonger.telegramBot.executors.cancel.SilentCancel;
 import github.ricemonger.telegramBot.executors.credentials.add.CredentialsAddFullOrEmailInput;
 import github.ricemonger.telegramBot.executors.credentials.add.CredentialsAddPasswordInput;
 import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRemoveOneEmailInput;
-import github.ricemonger.telegramBot.executors.marketplace.speculative.show.SpeculativeItemsShowOwnedFinishInput;
+import github.ricemonger.telegramBot.executors.marketplace.speculative.showOwned.SpeculativeItemsShowOwnedFinishInput;
 import github.ricemonger.utils.exceptions.InvalidUserInputGroupException;
 import github.ricemonger.utils.exceptions.InvalidUserInputStateAndGroupConjunctionException;
 import lombok.RequiredArgsConstructor;

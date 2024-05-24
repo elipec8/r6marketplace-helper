@@ -11,5 +11,5 @@ public interface ItemRepositoryService {
 
     List<? extends Item> findAll();
 
-    void calculateItemsSaleStats();
+    void calculateItemsSaleHistoryStats();
 }
