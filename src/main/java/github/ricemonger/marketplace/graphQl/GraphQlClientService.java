@@ -22,7 +22,7 @@ public class GraphQlClientService {
 
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
-        Map<String, Object> ownedItemsVariables = new HashMap<>(GraphQlClientServiceStatics.getFetchItemsVariables());
+        Map<String, Object> ownedItemsVariables = new HashMap<>(GraphQlClientServiceStatics.getFetchItemsVariables(0));
 
         return fetchItemsStatsFromOffset(client, GraphQlClientServiceStatics.FETCH_OWNED_ITEMS_STATS_DOCUMENT_NAME,ownedItemsVariables, 0);
     }
@@ -34,14 +34,14 @@ public class GraphQlClientService {
         Collection<Node> nodes = fetchItemsStatsTillOffset(
                 client,
                 GraphQlClientServiceStatics.FETCH_ITEMS_STATS_DOCUMENT_NAME,
-                GraphQlClientServiceStatics.getFetchItemsVariables(),
+                GraphQlClientServiceStatics.getFetchItemsVariables(0),
                 expectedItemCount);
 
         if (nodes.size() > expectedItemCount) {
             nodes.addAll(fetchItemsStatsFromOffset(
                     client,
                     GraphQlClientServiceStatics.FETCH_ITEMS_STATS_DOCUMENT_NAME,
-                    GraphQlClientServiceStatics.getFetchItemsVariables(),
+                    GraphQlClientServiceStatics.getFetchItemsVariables(0),
                     nodes.size()));
         }
 

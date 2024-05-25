@@ -99,17 +99,17 @@ public class ItemDtoMapper {
 
     private BuyStats getBuyStats(MarketData marketDataDTO) {
         BuyStats buyStats = marketDataDTO.getBuyStats() == null ? null : marketDataDTO.getBuyStats()[0];
-        return Objects.requireNonNullElseGet(buyStats, () -> new BuyStats(null, 0, 0, 0));
+        return Objects.requireNonNullElseGet(buyStats, () -> new BuyStats(0, 0));
     }
 
     private SellStats getSellStats(MarketData marketDataDTO) {
         SellStats sellStats = marketDataDTO.getSellStats() == null ? null : marketDataDTO.getSellStats()[0];
-        return Objects.requireNonNullElseGet(sellStats, () -> new SellStats(null, 0, 0, 0));
+        return Objects.requireNonNullElseGet(sellStats, () -> new SellStats(0, 0));
     }
 
     private LastSoldAt getLastSoldAt(MarketData marketDataDTO) {
         LastSoldAt lastSoldAt = marketDataDTO.getLastSoldAt() == null ? null : marketDataDTO.getLastSoldAt()[0];
-        return Objects.requireNonNullElseGet(lastSoldAt, () -> new LastSoldAt(null, 0, "1970-01-01T00:00:00.000Z"));
+        return Objects.requireNonNullElseGet(lastSoldAt, () -> new LastSoldAt(0, "1970-01-01T00:00:00.000Z"));
     }
 
     private int getNextFancyBuyPrice(int buyPrice, int sellPrice) {

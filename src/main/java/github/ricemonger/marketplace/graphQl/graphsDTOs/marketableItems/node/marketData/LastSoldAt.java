@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LastSoldAt {
 
-    private String id;
-
     private int price;
 
     private String performedAt;

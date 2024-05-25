@@ -1,0 +1,49 @@
+query GetTransactionsPending($spaceId: String!) {
+    game(spaceId: $spaceId) {
+        viewer {
+            meta {
+                trades(
+                    limit: 1
+                    offset: 0
+                    filterBy: {states: [Created,Succeeded,Failed]}
+                    sortBy: {field: LAST_MODIFIED_AT}
+                ) {
+                    nodes {
+                        ...TradeFragment
+                        __typename
+                    }
+                    __typename
+                }
+                __typename
+            }
+            __typename
+        }
+        __typename
+    }
+}
+
+fragment TradeFragment on Trade {
+    viewer {
+        meta {
+            tradesLimitations {
+                ...TradesLimitationsFragment
+                __typename
+            }
+            __typename
+        }
+        __typename
+    }
+    __typename
+}
+
+fragment TradesLimitationsFragment on UserGameTradesLimitations {
+    buy {
+        resolvedTransactionPeriodInMinutes
+        __typename
+    }
+    sell {
+        resolvedTransactionPeriodInMinutes
+        __typename
+    }
+    __typename
+}

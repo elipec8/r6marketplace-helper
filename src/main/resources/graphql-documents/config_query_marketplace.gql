@@ -1,6 +1,5 @@
 query GetMarketplaceGameConfig($spaceId: String!) {
     game(spaceId: $spaceId) {
-        id
         marketplace {
             tags {
                 color

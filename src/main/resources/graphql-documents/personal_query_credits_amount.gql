@@ -1,12 +1,9 @@
 query GetBalance($spaceId: String!, $itemId: String!) {
     game(spaceId: $spaceId) {
-        id
         viewer {
             meta {
-                id
                 secondaryStoreItem(itemId: $itemId) {
                     meta {
-                        id
                         quantity
                         __typename
                     }

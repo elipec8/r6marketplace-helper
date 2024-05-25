@@ -9,11 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SellStats {
 
-    private String id;
-
     private int lowestPrice;
-
-    private int highestPrice;
 
     private int activeCount;
 }

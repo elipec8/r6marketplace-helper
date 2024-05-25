@@ -1,8 +1,6 @@
 query GetTradesConfig($spaceId: String!) {
     game(spaceId: $spaceId) {
-        id
         tradesConfig {
-            id
             saleExpiresAfterMinutes
             buySlots
             sellSlots

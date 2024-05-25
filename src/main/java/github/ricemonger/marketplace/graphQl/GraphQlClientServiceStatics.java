@@ -2,6 +2,7 @@ package github.ricemonger.marketplace.graphQl;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -81,12 +82,14 @@ public class GraphQlClientServiceStatics {
 
         defaultCreateUpdateOrderVariables = Map.of( // Requires tradeItems.itemId, paymentOptions.price
                 "spaceId", SPACE_ID,
-                "tradeItems", Map.of(
+                "tradeItems", List.of(
+                Map.of(
                         "itemId", "",
-                        "quantity", 1),
-                "paymentOptions", Map.of(
+                        "quantity", 1)),
+                "paymentOptions", List.of(
+                        Map.of(
                         "paymentItemId", "9ef71262-515b-46e8-b9a8-b6b6ad456c67",
-                        "price", 0)
+                        "price", 0))
         );
 
         defaultCancelOrderVariables = Map.of( //Requires tradeId
@@ -124,8 +127,12 @@ public class GraphQlClientServiceStatics {
 
     public static Map<String, Object> getCreateUpdateOrderVariables(String itemId, int price) {
         HashMap<String, Object> createUpdateOrderVariables = new HashMap<>(defaultCreateUpdateOrderVariables);
-        ((Map<String, Object>) createUpdateOrderVariables.get("tradeItems")).put("itemId", itemId);
-        ((Map<String, Object>) createUpdateOrderVariables.get("paymentOptions")).put("price", price);
+
+        List<Map<String, Object>> tradeItems = (List<Map<String, Object>>) createUpdateOrderVariables.get("tradeItems");
+        tradeItems.get(0).put("itemId", itemId);
+        List<Map<String, Object>> paymentOptions = (List<Map<String, Object>>) createUpdateOrderVariables.get("paymentOptions");
+        paymentOptions.get(0).put("price", price);
+
         return createUpdateOrderVariables;
     }
 
