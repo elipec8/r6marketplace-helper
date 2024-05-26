@@ -74,7 +74,7 @@ public class ItemDtoMapperTests {
 
         ItemEntity mapped = itemDtoMapper.nodeDTOToItemEntity(NODE);
 
-        assertEquals(expected.getItemFullId(), mapped.getItemFullId());
+        assertEquals(expected.getItemId(), mapped.getItemId());
         assertEquals(expected.getAssetUrl(), mapped.getAssetUrl());
         assertEquals(expected.getName(), mapped.getName());
         assertEquals(expected.getTags(), mapped.getTags());

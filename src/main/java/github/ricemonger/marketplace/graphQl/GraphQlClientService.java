@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.graphQl;
 
 import github.ricemonger.marketplace.authorization.AuthorizationDTO;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.MarketableItems;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.Node;
+import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.MarketableItems;
+import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.Node;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.client.ClientGraphQlResponse;
 import org.springframework.graphql.client.GraphQlClient;
@@ -21,7 +21,7 @@ public class GraphQlClientService {
     public Collection<Node> fetchAllOwnedItemStatsForUser(AuthorizationDTO authorizationDTO) {
 
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
-
+        
         Map<String, Object> ownedItemsVariables = new HashMap<>(GraphQlClientServiceStatics.getFetchItemsVariables(0));
 
         return fetchItemsStatsFromOffset(client, GraphQlClientServiceStatics.FETCH_OWNED_ITEMS_STATS_DOCUMENT_NAME,ownedItemsVariables, 0);

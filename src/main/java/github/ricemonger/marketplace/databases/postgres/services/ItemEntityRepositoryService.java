@@ -6,9 +6,8 @@ import github.ricemonger.marketplace.databases.postgres.entities.ItemSaleHistory
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemEntityRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemSaleEntityRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemSaleHistoryEntityRepository;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.Node;
+import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.Node;
 import github.ricemonger.utils.exceptions.UbiUserEntityDoesntExistException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -51,9 +50,9 @@ public class ItemEntityRepositoryService implements ItemRepositoryService {
         for (ItemEntity item : items) {
 
             ItemSaleHistoryEntity history = new ItemSaleHistoryEntity();
-            history.setItemId(item.getItemFullId());
+            history.setItemId(item.getItemId());
 
-            List<ItemSaleEntity> itemSales = sales.stream().filter(sale -> sale.getItemId().equals(item.getItemFullId())).toList();
+            List<ItemSaleEntity> itemSales = sales.stream().filter(sale -> sale.getItemId().equals(item.getItemId())).toList();
 
             if (itemSales.isEmpty()) {
                 histories.add(history);

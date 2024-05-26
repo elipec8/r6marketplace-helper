@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.Node;
+import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.Node;
 
 import java.util.Collection;
 import java.util.List;

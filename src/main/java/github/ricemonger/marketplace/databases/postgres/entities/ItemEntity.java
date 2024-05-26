@@ -16,8 +16,8 @@ import java.util.*;
 public class ItemEntity implements Item {
 
     @Id
-    @Column(name = "item_full_id")
-    private String itemFullId;
+    @Column(name = "item_id")
+    private String itemId;
 
     private String assetUrl;
 
@@ -43,7 +43,7 @@ public class ItemEntity implements Item {
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name="items_tags",
-            joinColumns=  @JoinColumn(name="item_id", referencedColumnName="item_full_id"),
+            joinColumns=  @JoinColumn(name="item_id", referencedColumnName="item_id"),
             inverseJoinColumns= @JoinColumn(name="tag", referencedColumnName="tag"))
     private List<TagEntity> tags = new ArrayList<>();
 }

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface Item {
 
-    String getItemFullId();
+    String getItemId();
 
     String getAssetUrl();
 

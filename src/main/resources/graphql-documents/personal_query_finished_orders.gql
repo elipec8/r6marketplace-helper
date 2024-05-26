@@ -35,6 +35,11 @@ fragment TradeFragment on Trade {
         }
         __typename
     }
+    payment {
+        price
+        transactionFee
+        __typename
+    }
     paymentOptions {
         price
         transactionFee

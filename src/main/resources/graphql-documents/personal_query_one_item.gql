@@ -19,8 +19,7 @@ query GetItemDetails($spaceId: String!, $itemId: String!) {
         }
         viewer {
             meta {
-                id
-                trades(filterBy: {states: [Created], itemIds: [$itemId]}) {
+                trades(filterBy: {states: [Created,Succeeded, Failed], itemIds: [$itemId]}) {
                     nodes {
                         ...TradeFragment
                         __typename
@@ -36,18 +35,11 @@ query GetItemDetails($spaceId: String!, $itemId: String!) {
 }
 
 fragment SecondaryStoreItemFragment on SecondaryStoreItem {
-    id
+    itemId
     assetUrl
     name
     tags
     type
-    viewer {
-        meta {
-            isReserved
-            __typename
-        }
-        __typename
-    }
     __typename
 }
 

@@ -31,6 +31,6 @@ fragment MarketableItemFragment on MarketableItem {
 }
 
 fragment SecondaryStoreItemFragment on SecondaryStoreItem {
-    id
+    itemId
     __typename
 }

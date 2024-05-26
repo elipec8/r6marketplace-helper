@@ -1,6 +1,5 @@
 query GetMarketableItems($spaceId: String!, $limit: Int!, $offset: Int, $filterBy: MarketableItemFilter, $sortBy: MarketableItemSort) {
     game(spaceId: $spaceId) {
-        id
         marketableItems(
             limit: $limit
             offset: $offset
@@ -32,7 +31,7 @@ fragment MarketableItemFragment on MarketableItem {
 }
 
 fragment SecondaryStoreItemFragment on SecondaryStoreItem {
-    id
+    itemId
     assetUrl
     name
     tags

@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationDTO;
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.Node;
+import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.Node;
 import github.ricemonger.utils.exceptions.UbiUserEntityDoesntExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

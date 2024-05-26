@@ -1,0 +1,22 @@
+# "privilegeIds":["2798fec3-9010-4a24-b902-f21fa1b25e1f"]
+query GetPlayerProfile($spaceId: String!, $privilegeIds: [String!]!) {
+    viewer {
+        id
+        is2FActive
+        game(spaceId: $spaceId) {
+            meta {
+                id
+                isOwned
+                privileges(privilegeIds: $privilegeIds) {
+                    id
+                    privilegeId
+                    isGranted
+                    __typename
+                }
+                __typename
+            }
+            __typename
+        }
+        __typename
+    }
+}

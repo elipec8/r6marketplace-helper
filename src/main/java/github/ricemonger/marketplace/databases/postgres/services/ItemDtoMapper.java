@@ -5,12 +5,12 @@ import github.ricemonger.marketplace.databases.postgres.enums.ItemType;
 import github.ricemonger.marketplace.databases.postgres.entities.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.ItemSaleEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.TagEntity;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.Node;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.node.Item;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.node.MarketData;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.node.marketData.BuyStats;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.node.marketData.LastSoldAt;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.node.marketData.SellStats;
+import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.Node;
+import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.node.Item;
+import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.node.MarketData;
+import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.node.marketData.BuyStats;
+import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.node.marketData.LastSoldAt;
+import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.node.marketData.SellStats;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -61,7 +61,7 @@ public class ItemDtoMapper {
         int expectedProfit = Math.max(priceDifference, 0);
         int expectedProfitPercentage = (int) ((expectedProfit * 100.0) / buyPrice);
 
-        itemEntity.setItemFullId(itemDTO.getId());
+        itemEntity.setItemId(itemDTO.getItemId());
         itemEntity.setAssetUrl(itemDTO.getAssetUrl());
         itemEntity.setName(itemDTO.getName());
         itemEntity.setTags(tags);
@@ -90,10 +90,10 @@ public class ItemDtoMapper {
         LastSoldAt lastSoldAtDTO = getLastSoldAt(marketDataDTO);
 
         try {
-            return new ItemSaleEntity(itemDTO.getId(), performedAtDateFormat.parse(lastSoldAtDTO.getPerformedAt()), lastSoldAtDTO.getPrice());
+            return new ItemSaleEntity(itemDTO.getItemId(), performedAtDateFormat.parse(lastSoldAtDTO.getPerformedAt()), lastSoldAtDTO.getPrice());
         } catch (ParseException e) {
             log.error("Error parsing date: " + lastSoldAtDTO.getPerformedAt());
-            return new ItemSaleEntity(itemDTO.getId(), new Date(0), 0);
+            return new ItemSaleEntity(itemDTO.getItemId(), new Date(0), 0);
         }
     }
 
