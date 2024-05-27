@@ -1,9 +1,8 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.enums.ItemType;
+import github.ricemonger.utils.enums.ItemType;
 
 import java.util.Date;
-import java.util.List;
 
 public interface Item {
 

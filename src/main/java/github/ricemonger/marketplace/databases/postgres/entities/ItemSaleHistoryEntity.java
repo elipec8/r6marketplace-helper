@@ -12,7 +12,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemSaleHistoryEntity {
-
     @Id
     private String itemId;
 

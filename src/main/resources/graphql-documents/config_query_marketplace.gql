@@ -2,20 +2,17 @@ query GetMarketplaceGameConfig($spaceId: String!) {
     game(spaceId: $spaceId) {
         marketplace {
             tags {
-                color
                 value
                 displayName
                 __typename
             }
             tagGroups {
-                type
                 values
                 displayName
                 __typename
             }
             types {
                 value
-                displayName
                 __typename
             }
             __typename

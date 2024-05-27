@@ -12,6 +12,5 @@ import java.util.Date;
 @Data
 public class ItemSaleEntityId implements Serializable {
     private String itemId;
-
     private Date soldAt;
 }

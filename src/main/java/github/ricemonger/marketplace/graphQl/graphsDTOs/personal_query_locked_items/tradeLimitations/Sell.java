@@ -5,11 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Sell {
     private int resolvedTransactionCount;
     private int activeTransactionCount;
-    private ResaleLocks[] resaleLocks;
+    private List<ResaleLocks> resaleLocks;
 }

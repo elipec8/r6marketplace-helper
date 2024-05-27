@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.UbiServiceConfiguration;
-import github.ricemonger.marketplace.databases.postgres.enums.ItemType;
+import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.marketplace.databases.postgres.entities.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.ItemSaleEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.TagEntity;
@@ -27,7 +27,7 @@ public class ItemDtoMapper {
     private final float marketplaceProfitPercent;
 
     public ItemDtoMapper(UbiServiceConfiguration ubisoftServiceConfiguration) {
-        performedAtDateFormat = new SimpleDateFormat(ubisoftServiceConfiguration.getPerformedAtDateFormat());
+        performedAtDateFormat = new SimpleDateFormat(ubisoftServiceConfiguration.getDateFormat());
         marketplaceProfitPercent = ubisoftServiceConfiguration.getMarketplaceProfitPercent();
     }
 

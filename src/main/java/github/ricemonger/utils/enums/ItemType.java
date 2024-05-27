@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.databases.postgres.enums;
+package github.ricemonger.utils.enums;
 
 public enum ItemType {
     WeaponSkin,
@@ -9,5 +9,6 @@ public enum ItemType {
     OperatorCardPortrait,
     OperatorCardBackground,
     DroneSkin,
-    GadgetSkin
+    GadgetSkin,
+    Unknown
 }

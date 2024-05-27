@@ -4,14 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class TagGroups {
-
-    private String type;
-
-    private String[] values;
+    private List<String> values;
 
     private String displayName;
 }
