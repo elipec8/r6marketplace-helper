@@ -2,7 +2,8 @@ package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationDTO;
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.Node;
+import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.Node;
+import github.ricemonger.utils.dtos.Item;
 import github.ricemonger.utils.exceptions.UbiUserEntityDoesntExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -51,9 +52,7 @@ public class ItemService {
         IGNORED_NAMES.add("DEADLY OMEN");
     }
 
-    private final ItemRepositoryService itemRepositoryService;
-
-    private final UbiUserService ubiUserService;
+    private final ItemEntityRepositoryService itemRepositoryService;
 
     private final GraphQlClientService graphQlClientService;
 
@@ -63,19 +62,20 @@ public class ItemService {
         itemRepositoryService.saveAll(nodeDTOs);
     }
 
-    public List<? extends Item> getAllSpeculativeItemsByExpectedProfit(int minProfitAbsolute, int minProfitPercentOfBuyPrice, int minSellPrice, int maxSellPrice)
+    public Collection<Item> getAllSpeculativeItemsByExpectedProfit(int minProfitAbsolute, int minProfitPercentOfBuyPrice, int minSellPrice,
+                                                                   int maxSellPrice)
             throws UbiUserEntityDoesntExistException {
 
         return getSpeculativeItemsFromListByExpectedProfit(itemRepositoryService.findAll(), minProfitAbsolute, minProfitPercentOfBuyPrice, minSellPrice, maxSellPrice);
     }
 
-    public List<? extends Item> getOwnedSpeculativeItemsByExpectedProfit(AuthorizationDTO authorizationDTO, int i, int i1, int i2, int i3) {
-        Set<? extends Item> items = itemDtoMapper.nodesDTOToItemEntities(graphQlClientService.fetchAllOwnedItemStatsForUser(authorizationDTO));
+    public Collection<Item> getOwnedSpeculativeItemsByExpectedProfit(AuthorizationDTO authorizationDTO, int i, int i1, int i2, int i3) {
+        Set<? extends Item> items = itemDtoMapper.nodesDTOToItemEntities(graphQlClientService.fetchAllOwnedItemsIdsForUser(authorizationDTO));
 
         return getSpeculativeItemsFromListByExpectedProfit(items, i, i1, i2, i3);
     }
 
-    public List<? extends Item> getSpeculativeItemsFromListByExpectedProfit(Collection<? extends Item> items,
+    public Collection<Item> getSpeculativeItemsFromListByExpectedProfit(Collection<? extends Item> items,
                                                                              int minProfitAbsolute,
                                                                              int minProfitPercentOfBuyPrice,
                                                                              int minSellPrice,

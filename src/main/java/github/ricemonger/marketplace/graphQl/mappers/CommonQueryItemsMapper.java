@@ -1,12 +1,12 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
 import github.ricemonger.marketplace.UbiServiceConfiguration;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.MarketableItems;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.Node;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.node.MarketData;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.node.marketData.BuyStats;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.node.marketData.LastSoldAt;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.node.marketData.SellStats;
+import github.ricemonger.marketplace.graphQl.dtos.common_query_items.MarketableItems;
+import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.Node;
+import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.MarketData;
+import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.marketData.BuyStats;
+import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.marketData.LastSoldAt;
+import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.marketData.SellStats;
 import github.ricemonger.utils.dtos.Item;
 import github.ricemonger.utils.enums.ItemType;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +16,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -28,19 +29,18 @@ public class CommonQueryItemsMapper {
         sdf = new SimpleDateFormat(ubiServiceConfiguration.getDateFormat());
     }
 
-    public Collection<? extends Item> mapItems(MarketableItems marketableItems) {
-        return marketableItems.getNodes().stream().map(this::mapItem).collect(Collectors.toList());
+    public Collection<Item> mapItems(Collection<Node> nodes) {
+        return nodes.stream().map(this::mapItem).collect(Collectors.toList());
     }
 
     public Item mapItem(Node node) {
-        github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.node.Item item = node.getItem();
+        github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.Item item = node.getItem();
 
             Item.ItemBuilder itemBuilder = Item.builder()
                     .itemId(item.getItemId())
                     .assetUrl(item.getAssetUrl())
                     .name(item.getName())
                     .tags(item.getTags());
-
 
             try {
                 itemBuilder

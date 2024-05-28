@@ -1,9 +1,8 @@
-query GetMarketableItems($spaceId: String!, $limit: Int!, $offset: Int, $filterBy: MarketableItemFilter, $sortBy: MarketableItemSort) {
+query GetMarketableItems($spaceId: String!, $limit: Int!, $offset: Int, $sortBy: MarketableItemSort) {
     game(spaceId: $spaceId) {
         marketableItems(
             limit: $limit
             offset: $offset
-            filterBy: $filterBy
             sortBy: $sortBy
             withMarketData: true
         ) {

@@ -5,12 +5,12 @@ import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.marketplace.databases.postgres.entities.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.ItemSaleEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.TagEntity;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.Node;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.node.Item;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.node.MarketData;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.node.marketData.BuyStats;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.node.marketData.LastSoldAt;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.node.marketData.SellStats;
+import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.Node;
+import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.Item;
+import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.MarketData;
+import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.marketData.BuyStats;
+import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.marketData.LastSoldAt;
+import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.marketData.SellStats;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

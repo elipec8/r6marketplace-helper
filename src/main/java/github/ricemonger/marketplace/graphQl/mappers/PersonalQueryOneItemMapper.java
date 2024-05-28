@@ -1,14 +1,14 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
 import github.ricemonger.marketplace.UbiServiceConfiguration;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.personal_query_one_item.Game;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.personal_query_one_item.game.MarketableItem;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.personal_query_one_item.game.marketableItem.MarketData;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.personal_query_one_item.game.marketableItem.marketData.BuyStats;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.personal_query_one_item.game.marketableItem.marketData.LastSoldAt;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.personal_query_one_item.game.marketableItem.marketData.SellStats;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.personal_query_one_item.game.viewer.meta.trades.Nodes;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.personal_query_one_item.game.viewer.meta.trades.nodes.PaymentOptions;
+import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.Game;
+import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.MarketableItem;
+import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.marketableItem.MarketData;
+import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.marketableItem.marketData.BuyStats;
+import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.marketableItem.marketData.LastSoldAt;
+import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.marketableItem.marketData.SellStats;
+import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.viewer.meta.trades.Nodes;
+import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.viewer.meta.trades.nodes.PaymentOptions;
 import github.ricemonger.utils.dtos.Item;
 import github.ricemonger.utils.dtos.Trade;
 import github.ricemonger.utils.enums.ItemType;
@@ -34,7 +34,7 @@ public class PersonalQueryOneItemMapper {
     public Item mapItem(Game game) {
 
         MarketableItem marketableItem = game.getMarketableItem();
-        github.ricemonger.marketplace.graphQl.graphsDTOs.personal_query_one_item.game.marketableItem.Item item = marketableItem.getItem();
+        github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.marketableItem.Item item = marketableItem.getItem();
         String itemId = item.getItemId();
 
         Item.ItemBuilder itemBuilder = Item.builder()

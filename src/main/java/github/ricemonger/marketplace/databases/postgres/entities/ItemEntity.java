@@ -1,7 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities;
 
 import github.ricemonger.utils.enums.ItemType;
-import github.ricemonger.marketplace.databases.postgres.services.Item;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +12,7 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemEntity implements Item {
+public class ItemEntity{
     @Id
     private String itemId;
     private String assetUrl;

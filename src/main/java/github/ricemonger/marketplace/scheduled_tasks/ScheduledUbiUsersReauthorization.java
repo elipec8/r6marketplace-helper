@@ -19,12 +19,12 @@ public class ScheduledUbiUsersReauthorization {
 
     private final TelegramBotClientService telegramBotClientService;
 
-    @Scheduled(fixedRate = 150 * 60 * 1000, initialDelay = 45 * 1000) // every 2.5h after 45s of delay
+    @Scheduled(fixedRate = 150 * 60 * 1000, initialDelay = 30 * 1000) // every 2.5h after 30s of delay
 
     public void reauthorizeUbiUsersAndNotifyAboutFailures() {
-        List<UbiUserEntity> removed = ubiUserService.reauthorizeAllUbiUsersAndGetUnauthorizedList();
+        List<UbiUserEntity> toNotify = ubiUserService.reauthorizeAllUbiUsersAndGetUnauthorizedList();
 
-        for(UbiUserEntity entity: removed){
+        for(UbiUserEntity entity: toNotify){
             telegramBotClientService.notifyUserAboutUbiAuthorizationFailure(entity.getChatId(), entity.getEmail());
         }
     }

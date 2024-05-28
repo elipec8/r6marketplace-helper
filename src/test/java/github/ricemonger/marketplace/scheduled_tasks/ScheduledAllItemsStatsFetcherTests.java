@@ -3,7 +3,7 @@ package github.ricemonger.marketplace.scheduled_tasks;
 import github.ricemonger.marketplace.databases.postgres.services.ItemService;
 import github.ricemonger.marketplace.databases.redis.services.RedisService;
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.marketableItems.Node;
+import github.ricemonger.marketplace.graphQl.dtos.marketableItems.Node;
 import github.ricemonger.telegramBot.BotService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

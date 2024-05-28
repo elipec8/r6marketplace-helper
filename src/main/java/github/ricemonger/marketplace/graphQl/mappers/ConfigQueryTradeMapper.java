@@ -1,9 +1,9 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.graphsDTOs.config_query_trade.TradesConfig;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.config_query_trade.tradesConfig.BuyLimit;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.config_query_trade.tradesConfig.SellLimit;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.config_query_trade.tradesConfig.TransactionFeesConfig;
+import github.ricemonger.marketplace.graphQl.dtos.config_query_trade.TradesConfig;
+import github.ricemonger.marketplace.graphQl.dtos.config_query_trade.tradesConfig.BuyLimit;
+import github.ricemonger.marketplace.graphQl.dtos.config_query_trade.tradesConfig.SellLimit;
+import github.ricemonger.marketplace.graphQl.dtos.config_query_trade.tradesConfig.TransactionFeesConfig;
 import github.ricemonger.utils.dtos.ConfigTrades;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

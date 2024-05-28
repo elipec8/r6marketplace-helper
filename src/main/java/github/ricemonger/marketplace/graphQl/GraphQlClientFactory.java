@@ -20,7 +20,7 @@ public class GraphQlClientFactory {
     public HttpGraphQlClient createMainUserClient() {
         WebClient webClient =
                 mainUserWebClientConfigs()
-                        .baseUrl(ubiServiceConfiguration.getUpdateItemsUrl())
+                        .baseUrl(ubiServiceConfiguration.getGraphqlUrl())
                         .build();
         return HttpGraphQlClient.builder(webClient).build();
     }
@@ -28,7 +28,7 @@ public class GraphQlClientFactory {
     public HttpGraphQlClient createAuthorizedUserClient(AuthorizationDTO authorizationDTO) {
         WebClient webClient =
                 authorizedUserWebClientConfigs(authorizationDTO)
-                        .baseUrl(ubiServiceConfiguration.getUpdateItemsUrl())
+                        .baseUrl(ubiServiceConfiguration.getGraphqlUrl())
                         .build();
         return HttpGraphQlClient.builder(webClient).build();
     }

@@ -6,7 +6,7 @@ import github.ricemonger.marketplace.databases.postgres.entities.ItemSaleHistory
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemEntityRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemSaleEntityRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemSaleHistoryEntityRepository;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.common_query_items.marketableItems.Node;
+import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.Node;
 import github.ricemonger.utils.exceptions.UbiUserEntityDoesntExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

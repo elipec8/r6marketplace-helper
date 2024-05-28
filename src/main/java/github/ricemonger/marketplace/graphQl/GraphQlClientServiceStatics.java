@@ -1,6 +1,5 @@
 package github.ricemonger.marketplace.graphQl;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,35 +7,35 @@ import java.util.Map;
 
 public class GraphQlClientServiceStatics {
 
-    public final static String FETCH_CREDIT_AMOUNT_DOCUMENT_NAME = "fetchCreditAmount";
+    public final static String QUERY_ITEMS_STATS_DOCUMENT_NAME = "common_query_items";
 
-    public final static String CANCEL_ORDER_DOCUMENT_NAME = "cancelOrder";
+    public final static String QUERY_MARKETPLACE_CONFIG_DOCUMENT_NAME = "config_query_marketplace";
 
-    public final static String CREATE__BUY_ORDER_DOCUMENT_NAME = "createBuyOrder";
+    public final static String QUERY_RESOLVED_TRANSACTION_PERIOD_CONFIG_DOCUMENT_NAME = "config_query_resolved_transaction_period";
 
-    public final static String CREATE__SELL_ORDER_DOCUMENT_NAME = "createSellOrder";
+    public final static String QUERY_TRADE_CONFIG_DOCUMENT_NAME = "config_query_trade";
 
-    public final static String FETCH_CREDITS_AMOUNT_DOCUMENT_NAME = "fetchCreditsAmount";
+    public final static String MUTATION_ORDER_BUY_CREATE_DOCUMENT_NAME = "personal_mutation_order_buy_create";
 
-    public final static String FETCH_CURRENT_ORDERS_DOCUMENT_NAME = "fetchCurrentOrders";
+    public final static String MUTATION_ORDER_BUY_UPDATE_DOCUMENT_NAME = "personal_mutation_order_buy_update";
 
-    public final static String FETCH_FINISHED_ORDERS_DOCUMENT_NAME = "fetchFinishedOrders";
+    public final static String MUTATION_ORDER_CANCEL_DOCUMENT_NAME = "personal_mutation_order_cancel";
 
-    public final static String FETCH_ITEMS_STATS_DOCUMENT_NAME = "fetchItemsStats";
+    public final static String MUTATION_ORDER_SELL_CREATE_DOCUMENT_NAME = "personal_mutation_order_sell_create";
 
-    public final static String FETCH_LOCKED_ITEMS_STATS_DOCUMENT_NAME = "fetchLockedItems";
+    public final static String MUTATION_ORDER_SELL_UPDATE_DOCUMENT_NAME = "personal_mutation_order_sell_update";
 
-    public final static String FETCH_MARKETPLACE_CONFIG_DOCUMENT_NAME = "fetchMarketplaceConfig";
+    public final static String QUERY_CREDITS_AMOUNT_DOCUMENT_NAME = "personal_query_credits_amount";
 
-    public final static String FETCH_ONE_ITEM_STATS_DOCUMENT_NAME = "fetchOneItemStats";
+    public final static String QUERY_CURRENT_ORDERS_DOCUMENT_NAME = "personal_query_current_orders";
 
-    public final static String FETCH_OWNED_ITEMS_STATS_DOCUMENT_NAME = "fetchOwnedItemsStats";
+    public final static String QUERY_FINISHED_ORDERS_DOCUMENT_NAME = "personal_query_finished_orders";
 
-    public final static String FETCH_TRADE_CONFIG_DOCUMENT_NAME = "fetchTradeConfig";
+    public final static String QUERY_LOCKED_ITEMS_DOCUMENT_NAME = "personal_query_locked_items";
 
-    public final static String UPDATE_BUY_ORDER_DOCUMENT_NAME = "updateBuyOrder";
+    public final static String QUERY_ONE_ITEM_STATS_DOCUMENT_NAME = "personal_query_one_item";
 
-    public final static String UPDATE_SELL_ORDER_DOCUMENT_NAME = "updateSellOrder";
+    public final static String QUERY_OWNED_ITEMS_DOCUMENT_NAME = "personal_query_owned_items";
 
     public static final int MAX_LIMIT = 500; // Ubisoft's GraphQL API limit - 500
 
@@ -45,6 +44,8 @@ public class GraphQlClientServiceStatics {
     public static final String PAYMENT_ITEM_ID = "9ef71262-515b-46e8-b9a8-b6b6ad456c67";
 
     private final static Map<String, Object> defaultFetchItemsVariables;
+
+    private final static Map<String, Object> defaultFetchConfigVariables;
 
     private final static Map<String, Object> defaultFetchOneItemVariables;
 
@@ -56,28 +57,25 @@ public class GraphQlClientServiceStatics {
 
     private final static Map<String, Object> defaultFetchCreditAmountVariables;
 
-    private final static Map<String, Object> defaultFetchConfigVariables;
-
     static {
-        defaultFetchItemsVariables = Map.of(
+        defaultFetchItemsVariables = Map.of(//Requires offset
                 "withOwnership", false, //Important to be non-String Boolean
                 "spaceId", SPACE_ID,
                 "limit", MAX_LIMIT,//Important to be non-String Integer
                 "offset", 0,//Important to be non-String Integer
-
-                "filterBy", Map.of(
-                        "types", Collections.emptyList(),
-                        "tags", Collections.emptyList()), "sortBy", Map.of(
+                "sortBy", Map.of(
                         "field", "ACTIVE_COUNT",
                         "orderType", "Sell",
                         "direction", "DESC",
                         "paymentItemId", PAYMENT_ITEM_ID));
 
+        defaultFetchConfigVariables = Map.of(
+                "spaceId", SPACE_ID
+        );
+
         defaultFetchOneItemVariables = Map.of( //Requires itemId
                 "spaceId", SPACE_ID,
-                "itemId", "",
-                "tradeId", "",
-                "fetchTrade", false
+                "itemId", ""
         );
 
         defaultCreateUpdateOrderVariables = Map.of( // Requires tradeItems.itemId, paymentOptions.price
@@ -106,10 +104,6 @@ public class GraphQlClientServiceStatics {
         defaultFetchCreditAmountVariables = Map.of(
                 "spaceId", SPACE_ID,
                 "itemId", PAYMENT_ITEM_ID
-        );
-
-        defaultFetchConfigVariables = Map.of(
-                "spaceId", SPACE_ID
         );
     }
 

@@ -1,10 +1,10 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
 import github.ricemonger.marketplace.UbiServiceConfiguration;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.personal_query_current_orders.Trades;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.personal_query_current_orders.trades.Nodes;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.personal_query_current_orders.trades.nodes.PaymentOptions;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.personal_query_current_orders.trades.nodes.TradeItems;
+import github.ricemonger.marketplace.graphQl.dtos.personal_query_current_orders.Trades;
+import github.ricemonger.marketplace.graphQl.dtos.personal_query_current_orders.trades.Nodes;
+import github.ricemonger.marketplace.graphQl.dtos.personal_query_current_orders.trades.nodes.PaymentOptions;
+import github.ricemonger.marketplace.graphQl.dtos.personal_query_current_orders.trades.nodes.TradeItems;
 import github.ricemonger.utils.dtos.Trade;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;

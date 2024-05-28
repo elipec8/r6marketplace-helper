@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
 import github.ricemonger.marketplace.UbiServiceConfiguration;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.personal_query_locked_items.TradeLimitations;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.personal_query_locked_items.tradeLimitations.sell.ResaleLocks;
+import github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.TradeLimitations;
+import github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.tradeLimitations.sell.ResaleLocks;
 import github.ricemonger.utils.dtos.LockedItem;
 import github.ricemonger.utils.dtos.UserTransactionsInfo;
 import lombok.extern.slf4j.Slf4j;

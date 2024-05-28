@@ -14,7 +14,7 @@ public class UbiServiceConfigurationTests {
 
     @Test
     public void ubiServiceConfigurationPropertiesShouldBeAutowired(){
-        assertNotNull(ubiServiceConfiguration.getUpdateItemsUrl());
+        assertNotNull(ubiServiceConfiguration.getGraphqlUrl());
         assertNotNull(ubiServiceConfiguration.getAuthorizationUrl());
         assertNotNull(ubiServiceConfiguration.getContentType());
         assertNotNull(ubiServiceConfiguration.getUserAgent());

@@ -1,9 +1,9 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.graphsDTOs.config_query_marketplace.Marketplace;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.config_query_marketplace.marketplace.TagGroups;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.config_query_marketplace.marketplace.Tags;
-import github.ricemonger.marketplace.graphQl.graphsDTOs.config_query_marketplace.marketplace.Types;
+import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.Marketplace;
+import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.TagGroups;
+import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.Tags;
+import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.Types;
 import github.ricemonger.utils.dtos.Tag;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TagGroup;
