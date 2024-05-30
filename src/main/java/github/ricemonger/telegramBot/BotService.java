@@ -1,6 +1,6 @@
 package github.ricemonger.telegramBot;
 
-import github.ricemonger.marketplace.databases.postgres.services.TelegramUserService;
+import github.ricemonger.marketplace.services.TelegramUserService;
 import github.ricemonger.telegramBot.client.TelegramBotClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

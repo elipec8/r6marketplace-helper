@@ -1,7 +1,7 @@
 package github.ricemonger.telegramBot.updateReceiver;
 
-import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUserEntity;
-import github.ricemonger.marketplace.databases.postgres.services.TelegramUserService;
+import github.ricemonger.marketplace.databases.postgres.entities.TelegramUserEntity;
+import github.ricemonger.marketplace.services.TelegramUserService;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.InputGroup;
 import github.ricemonger.telegramBot.executors.InputState;
@@ -60,7 +60,7 @@ public class UpdateToUpdateInfoMapperTests {
     @Test
     public void updateInfoShouldHaveRightFieldsFromUpdateAndUserService() {
         when(telegramUserService.getTelegramUser(1L)).thenReturn(
-                new TelegramLinkedUserEntity(
+                new TelegramUserEntity(
                         "1",
                         InputState.CREDENTIALS_PASSWORD,
                         InputGroup.CREDENTIALS_ADD,
@@ -75,7 +75,7 @@ public class UpdateToUpdateInfoMapperTests {
     @Test
     public void updateInfoShouldGetBaseInputStateAndInputGroupIfUserServiceReturnsNull() {
         when(telegramUserService.getTelegramUser(1L)).thenReturn(
-                new TelegramLinkedUserEntity(
+                new TelegramUserEntity(
                         "1",
                         null,
                         null,

@@ -13,12 +13,9 @@ import java.util.Date;
 @AllArgsConstructor
 @IdClass(ItemSaleEntityId.class)
 public class ItemSaleEntity {
-
     @Id
     private String itemId;
-
     @Id
     private Date soldAt;
-
     private int price;
 }

@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities;
 
+import github.ricemonger.utils.enums.TagGroup;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.*;
@@ -11,8 +12,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TagEntity {
-
     @Id
-    private String tag;
-
+    private String value;
+    private String name;
+    private TagGroup tagGroup;
 }

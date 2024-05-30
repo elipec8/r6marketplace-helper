@@ -27,8 +27,8 @@ public class GraphQlClientFactoryTests {
     }
 
     @Test
-    public void getOrCreateAllItemsStatsFetcherClientShouldGetFieldsFromRedis() {
-        graphQlClientFactory.getOrCreateAllItemsStatsFetcherClient();
+    public void getOrCreateAllItemsStatsFetcherClientShouldGetFieldsFromRedisMainUser() {
+        graphQlClientFactory.createMainUserClient();
 
         verify(redisService).getMainUserAuthorizationToken();
         verify(redisService).getMainUserSessionId();
@@ -37,12 +37,12 @@ public class GraphQlClientFactoryTests {
     }
 
     @Test
-    public void getOrCreateAllItemsStatsFetcherClientShouldNotBuildFromRedisIfClientAlreadyExists() {
-        graphQlClientFactory.getOrCreateAllItemsStatsFetcherClient();
+    public void createMainUserClientShouldNotBuildFromRedisIfClientAlreadyExists() {
+        graphQlClientFactory.createMainUserClient();
 
         reset(redisService);
 
-        graphQlClientFactory.getOrCreateAllItemsStatsFetcherClient();
+        graphQlClientFactory.createMainUserClient();
 
         verify(redisService, never()).getMainUserAuthorizationToken();
         verify(redisService, never()).getMainUserSessionId();
@@ -51,14 +51,14 @@ public class GraphQlClientFactoryTests {
     }
 
     @Test
-    public void getOrCreateAllItemsStatsFetcherClientShouldBuildFromRedisIfClientExpired() throws InterruptedException {
-        graphQlClientFactory.getOrCreateAllItemsStatsFetcherClient();
+    public void createMainUserClientShouldBuildFromRedisIfClientExpired() throws InterruptedException {
+        graphQlClientFactory.createMainUserClient();
 
         reset(redisService);
 
         Thread.sleep(ubiServiceConfiguration.getExpireTimeout() * 1000L + 1);
 
-        graphQlClientFactory.getOrCreateAllItemsStatsFetcherClient();
+        graphQlClientFactory.createMainUserClient();
 
         verify(redisService).getMainUserAuthorizationToken();
         verify(redisService).getMainUserSessionId();

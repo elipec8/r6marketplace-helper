@@ -1,10 +1,11 @@
 package github.ricemonger.telegramBot.updateReceiver;
 
-import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUserEntity;
-import github.ricemonger.marketplace.databases.postgres.services.TelegramUserService;
+import github.ricemonger.marketplace.databases.postgres.entities.TelegramUserEntity;
+import github.ricemonger.marketplace.services.TelegramUserService;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.InputGroup;
 import github.ricemonger.telegramBot.executors.InputState;
+import github.ricemonger.utils.dtos.TelegramUser;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -36,14 +37,14 @@ public class UpdateToUpdateInfoMapper {
         InputGroup inputGroup;
 
         try{
-            TelegramLinkedUserEntity entity = telegramUserService.getTelegramUser(updateInfo.getChatId());
+            TelegramUser telegramUser = telegramUserService.getTelegramUser(updateInfo.getChatId());
 
-            inputState = entity.getInputState();
+            inputState = telegramUser.getInputState();
             if(inputState == null) {
                 inputState = InputState.BASE;
             }
 
-            inputGroup = entity.getInputGroup();
+            inputGroup = telegramUser.getInputGroup();
             if(inputGroup == null) {
                 inputGroup = InputGroup.BASE;
             }

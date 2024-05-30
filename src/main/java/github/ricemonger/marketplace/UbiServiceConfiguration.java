@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 public class UbiServiceConfiguration {
 
-    @Value("${ubi.urls.updateItems}")
-    private String updateItemsUrl;
+    @Value("${ubi.urls.graphql}")
+    private String graphqlUrl;
     @Value("${ubi.urls.authorization}")
     private String authorizationUrl;
     @Value("${ubi.session.contentType}")
@@ -28,6 +28,6 @@ public class UbiServiceConfiguration {
     private int expireTimeout;
     @Value("${ubi.session.marketplaceProfit}")
     private float marketplaceProfitPercent;
-    @Value("${ubi.session.marketplacePerformedAtDateFormat}")
-    private String performedAtDateFormat;
+    @Value("${ubi.session.dateFormat}")
+    private String dateFormat;
 }

@@ -1,0 +1,22 @@
+query GetMarketplaceGameConfig($spaceId: String!) {
+    game(spaceId: $spaceId) {
+        marketplace {
+            tags {
+                value
+                displayName
+                __typename
+            }
+            tagGroups {
+                values
+                displayName
+                __typename
+            }
+            types {
+                value
+                __typename
+            }
+            __typename
+        }
+        __typename
+    }
+}

@@ -8,6 +8,7 @@ public class SpeculativeItemsCallback extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
         CallbackButton showAllButton = new CallbackButton("Show All", Callbacks.SPECULATIVE_ITEMS_SHOW_ALL);
-        askFromInlineKeyboard("Please choose operation:",1, showAllButton);
+        CallbackButton showOwnedButton = new CallbackButton("Show Owned", Callbacks.SPECULATIVE_ITEMS_SHOW_OWNED);
+        askFromInlineKeyboard("Please choose operation:",1, showAllButton, showOwnedButton);
     }
 }

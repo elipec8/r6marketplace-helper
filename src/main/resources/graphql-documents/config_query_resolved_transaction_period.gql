@@ -1,0 +1,27 @@
+query GetTradesLimitations($spaceId: String!) {
+    game(spaceId: $spaceId) {
+        viewer {
+            meta {
+                tradesLimitations {
+                    ...TradesLimitationsFragment
+                    __typename
+                }
+                __typename
+            }
+            __typename
+        }
+        __typename
+    }
+}
+
+fragment TradesLimitationsFragment on UserGameTradesLimitations {
+    buy {
+        resolvedTransactionPeriodInMinutes
+        __typename
+    }
+    sell {
+        resolvedTransactionPeriodInMinutes
+        __typename
+    }
+    __typename
+}

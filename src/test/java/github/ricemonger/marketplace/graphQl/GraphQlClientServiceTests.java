@@ -1,6 +1,5 @@
 package github.ricemonger.marketplace.graphQl;
 
-import github.ricemonger.marketplace.databases.redis.services.RedisService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,6 +25,6 @@ class GraphQlClientServiceTests {
 
         }
 
-        verify(graphQlClientFactory).getOrCreateAllItemsStatsFetcherClient();
+        verify(graphQlClientFactory).createMainUserClient();
     }
 }

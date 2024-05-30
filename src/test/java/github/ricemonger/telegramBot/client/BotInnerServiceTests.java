@@ -1,7 +1,7 @@
 package github.ricemonger.telegramBot.client;
 
-import github.ricemonger.marketplace.databases.postgres.services.TelegramUserService;
-import github.ricemonger.marketplace.databases.postgres.services.ItemService;
+import github.ricemonger.marketplace.services.TelegramUserService;
+import github.ricemonger.marketplace.services.ItemService;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.InputGroup;
 import github.ricemonger.telegramBot.executors.InputState;
@@ -207,7 +207,7 @@ public class BotInnerServiceTests {
 
         botInnerService.sendDefaultSpeculativeItemsAsMessages(chatId);
 
-        verify(itemService).getSpeculativeItemsByExpectedProfit(50, 40, 0, 15000);
+        verify(itemService).getAllSpeculativeItemsByExpectedProfit(50, 40, 0, 15000);
 
         verify(telegramBotClientService,times(2)).sendText(eq(String.valueOf(chatId)), anyString());
     }

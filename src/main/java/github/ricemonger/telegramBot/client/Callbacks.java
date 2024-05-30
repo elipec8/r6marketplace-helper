@@ -23,4 +23,6 @@ public class Callbacks {
     public static final String SPECULATIVE_ITEMS = "SPECULATIVE_ITEMS";
 
     public static final String SPECULATIVE_ITEMS_SHOW_ALL = "SPECULATIVE_ITEMS_SHOW_ALL";
+
+    public static final String SPECULATIVE_ITEMS_SHOW_OWNED = "SPECULATIVE_ITEMS_SHOW_OWNED";
 }
