@@ -1,6 +1,7 @@
 package github.ricemonger.marketplace.authorization;
 
 import github.ricemonger.marketplace.UbiServiceConfiguration;
+import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.utils.exceptions.UbiUserAuthorizationClientErrorException;
 import github.ricemonger.utils.exceptions.UbiUserAuthorizationServerErrorException;
 import lombok.RequiredArgsConstructor;

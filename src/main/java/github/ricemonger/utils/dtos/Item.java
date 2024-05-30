@@ -2,7 +2,6 @@ package github.ricemonger.utils.dtos;
 
 import github.ricemonger.utils.enums.ItemType;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,10 +9,9 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Item {
+public class Item implements SoldItemDetails {
     private String itemId;
     private String assetUrl;
     private String name;

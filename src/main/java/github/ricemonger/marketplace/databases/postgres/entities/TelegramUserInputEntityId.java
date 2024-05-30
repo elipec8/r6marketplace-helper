@@ -7,9 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TelegramInputValueEntityId {
-
+public class TelegramUserInputEntityId {
     private String chatId;
-
     private InputState inputState;
 }

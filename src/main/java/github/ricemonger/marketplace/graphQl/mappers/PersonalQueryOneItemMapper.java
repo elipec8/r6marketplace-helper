@@ -37,18 +37,17 @@ public class PersonalQueryOneItemMapper {
         github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.marketableItem.Item item = marketableItem.getItem();
         String itemId = item.getItemId();
 
-        Item.ItemBuilder itemBuilder = Item.builder()
-                .itemId(itemId)
-                .assetUrl(item.getAssetUrl())
-                .name(item.getName())
-                .tags(item.getTags());
+        Item result = new Item();
+        result.setItemId(itemId);
+        result.setAssetUrl(item.getAssetUrl());
+        result.setName(item.getName());
+        result.setTags(item.getTags());
 
         try {
-            itemBuilder
-                    .type(ItemType.valueOf(item.getType()));
+            result.setType(ItemType.valueOf(item.getType()));
         } catch (IllegalArgumentException e) {
             log.error("Unknown item type: {}", item.getType());
-            itemBuilder.type(ItemType.Unknown);
+            result.setType(ItemType.Unknown);
         }
 
         MarketData marketData = marketableItem.getMarketData();
@@ -57,94 +56,85 @@ public class PersonalQueryOneItemMapper {
         LastSoldAt lastSoldAt = marketData.getLastSoldAt() == null ? null : marketData.getLastSoldAt()[0];
 
         if (buyStats != null) {
-            itemBuilder
-                    .maxBuyPrice(buyStats.getHighestPrice())
-                    .buyOrdersCount(buyStats.getActiveCount());
+            result.setMaxBuyPrice(buyStats.getHighestPrice());
+            result.setBuyOrdersCount(buyStats.getActiveCount());
         } else {
-            itemBuilder
-                    .maxBuyPrice(0)
-                    .buyOrdersCount(0);
+            result.setMaxBuyPrice(0);
+            result.setBuyOrdersCount(0);
         }
 
         if (sellStats != null) {
-            itemBuilder
-                    .minSellPrice(sellStats.getLowestPrice())
-                    .sellOrdersCount(sellStats.getActiveCount());
+            result.setMinSellPrice(sellStats.getLowestPrice());
+            result.setSellOrdersCount(sellStats.getActiveCount());
         } else {
-            itemBuilder
-                    .minSellPrice(0)
-                    .sellOrdersCount(0);
+            result.setMinSellPrice(0);
+            result.setSellOrdersCount(0);
         }
 
         if (lastSoldAt != null) {
             try {
-                itemBuilder
-                        .lastSoldAt(sdf.parse(lastSoldAt.getPerformedAt()));
+                result.setLastSoldAt(sdf.parse(lastSoldAt.getPerformedAt()));
             } catch (ParseException e) {
-                itemBuilder
-                        .lastSoldAt(new Date(0));
+                result.setLastSoldAt(new Date(0));
                 log.error("Error parsing date: {}", lastSoldAt.getPerformedAt());
             }
-            itemBuilder
-                    .lastSoldPrice(lastSoldAt.getPrice());
+            result.setLastSoldPrice(lastSoldAt.getPrice());
         } else {
-            itemBuilder
-                    .lastSoldAt(new Date(0))
-                    .lastSoldPrice(0);
+            result.setLastSoldAt(new Date(0));
+            result.setLastSoldPrice(0);
         }
 
-        itemBuilder.limitMinPrice(marketableItem.getPaymentLimitations().getMinPrice())
-                .limitMaxPrice(marketableItem.getPaymentLimitations().getMaxPrice());
+        result.setLimitMinPrice(marketableItem.getPaymentLimitations().getMinPrice());
+        result.setLimitMaxPrice(marketableItem.getPaymentLimitations().getMaxPrice());
 
-        itemBuilder.isOwned(marketableItem.getItem().getViewer().getMeta().isOwned());
+        result.setOwned(marketableItem.getItem().getViewer().getMeta().isOwned());
 
-        itemBuilder.trades(game.getViewer().getMeta().getTrades().getNodes().stream().map((Nodes node) -> mapTrade(node,itemId)).toList());
+        result.setTrades(game.getViewer().getMeta().getTrades().getNodes().stream().map((Nodes node) -> mapTrade(node, itemId)).toList());
 
 
-        return itemBuilder.build();
+        return result;
     }
 
     private Trade mapTrade(Nodes node, String itemId) {
-        Trade.TradeBuilder builder = Trade.builder();
+        Trade result = new Trade();
 
-        builder.tradeId(node.getTradeId());
-        builder.itemId(itemId);
+        result.setTradeId(node.getTradeId());
+        result.setItemId(itemId);
 
         try {
-            builder.state(TradeState.valueOf(node.getState()));
+            result.setState(TradeState.valueOf(node.getState()));
         } catch (IllegalArgumentException e) {
-            builder.state(TradeState.Unknown);
+            result.setState(TradeState.Unknown);
             log.error("Invalid tradeState: {}", node.getState());
         }
 
         try {
-            builder.category(TradeCategory.valueOf(node.getCategory()));
+            result.setCategory(TradeCategory.valueOf(node.getCategory()));
         } catch (IllegalArgumentException e) {
-            builder.category(TradeCategory.Unknown);
+            result.setCategory(TradeCategory.Unknown);
             log.error("Invalid tradeCategory: {}", node.getCategory());
         }
 
         try {
-            builder.expiresAt(sdf.parse(node.getExpiresAt()));
+            result.setExpiresAt(sdf.parse(node.getExpiresAt()));
         } catch (ParseException e) {
-            builder.expiresAt(new Date(0));
+            result.setExpiresAt(new Date(0));
             log.error("Invalid expiresAt: {}", node.getExpiresAt());
         }
 
         try {
-            builder.lastModifiedAt(sdf.parse(node.getLastModifiedAt()));
+            result.setLastModifiedAt(sdf.parse(node.getLastModifiedAt()));
         } catch (ParseException e) {
-            builder.lastModifiedAt(new Date(0));
+            result.setLastModifiedAt(new Date(0));
             log.error("Invalid lastModifiedAt: {}", node.getLastModifiedAt());
         }
 
-        if(node.getPayment() != null){
-            builder.successPaymentPrice(node.getPayment().getPrice());
-            builder.successPaymentFee(node.getPayment().getTransactionFee());
-        }
-        else{
-            builder.successPaymentPrice(0);
-            builder.successPaymentFee(0);
+        if (node.getPayment() != null) {
+            result.setSuccessPaymentPrice(node.getPayment().getPrice());
+            result.setSuccessPaymentFee(node.getPayment().getTransactionFee());
+        } else {
+            result.setSuccessPaymentPrice(0);
+            result.setSuccessPaymentFee(0);
             log.error("Invalid payment: {}", node.getPayment());
         }
 
@@ -152,17 +142,17 @@ public class PersonalQueryOneItemMapper {
         PaymentOptions paymentOptions = node.getPaymentOptions() == null ? null : node.getPaymentOptions()[0];
 
         if (paymentOptions != null) {
-            builder.proposedPaymentPrice(paymentOptions.getPrice());
-            builder.proposedPaymentFee((int) Math.ceil(paymentOptions.getPrice() / 10.));
+            result.setProposedPaymentPrice(paymentOptions.getPrice());
+            result.setProposedPaymentFee((int) Math.ceil(paymentOptions.getPrice() / 10.));
         } else if (node.getPaymentProposal() != null) {
-            builder.proposedPaymentPrice(node.getPaymentProposal().getPrice());
-            builder.proposedPaymentFee(node.getPaymentProposal().getTransactionFee());
+            result.setProposedPaymentPrice(node.getPaymentProposal().getPrice());
+            result.setProposedPaymentFee(node.getPaymentProposal().getTransactionFee());
         } else {
-            builder.proposedPaymentPrice(0);
-            builder.proposedPaymentFee(0);
+            result.setProposedPaymentPrice(0);
+            result.setProposedPaymentFee(0);
             log.error("Invalid paymentOptions or paymentProposal: {}", paymentOptions);
         }
 
-        return builder.build();
+        return result;
     }
 }

@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.authorization;
 
+import github.ricemonger.utils.dtos.AuthorizationDTO;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

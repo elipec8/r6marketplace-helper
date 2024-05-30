@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.graphQl;
 
 import github.ricemonger.marketplace.UbiServiceConfiguration;
-import github.ricemonger.marketplace.authorization.AuthorizationDTO;
+import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.marketplace.databases.redis.services.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.client.HttpGraphQlClient;

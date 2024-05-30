@@ -34,37 +34,37 @@ public class PersonalQueryLockedItemsMapper {
     }
 
     public LockedItem mapLockedItem(ResaleLocks resaleLocks) {
-        LockedItem.LockedItemBuilder builder = LockedItem.builder()
-                .itemId(resaleLocks.getItemId());
+        LockedItem result = new LockedItem();
+        result.setItemId(resaleLocks.getItemId());
         try {
-            builder.expiresAt(sdf.parse(resaleLocks.getExpiresAt()));
+            result.setExpiresAt(sdf.parse(resaleLocks.getExpiresAt()));
 
         } catch (ParseException e) {
-            builder.expiresAt(new Date(0));
+            result.setExpiresAt(new Date(0));
             log.error("Error parsing date: {}", e.getMessage());
         }
 
-        return builder.build();
+        return result;
     }
 
     public UserTransactionsInfo mapUserTransactionsInfo(TradeLimitations tradeLimitations) {
-        UserTransactionsInfo.UserTransactionsInfoBuilder builder = UserTransactionsInfo.builder();
+        UserTransactionsInfo result = new UserTransactionsInfo();
         if (tradeLimitations.getBuy() != null) {
-            builder.buyResolvedTransactionCount(tradeLimitations.getBuy().getResolvedTransactionCount())
-                    .buyActiveTransactionCount(tradeLimitations.getBuy().getActiveTransactionCount());
+            result.setBuyResolvedTransactionCount(tradeLimitations.getBuy().getResolvedTransactionCount());
+            result.setBuyActiveTransactionCount(tradeLimitations.getBuy().getActiveTransactionCount());
         } else {
-            builder.buyResolvedTransactionCount(0)
-                    .buyActiveTransactionCount(0);
+            result.setBuyResolvedTransactionCount(0);
+            result.setBuyActiveTransactionCount(0);
             log.error("Buy trade limitations is null, no user transactions info to map.");
         }
         if (tradeLimitations.getSell() != null) {
-            builder.sellResolvedTransactionCount(tradeLimitations.getSell().getResolvedTransactionCount())
-                    .sellActiveTransactionCount(tradeLimitations.getSell().getActiveTransactionCount());
+            result.setSellResolvedTransactionCount(tradeLimitations.getSell().getResolvedTransactionCount());
+            result.setSellActiveTransactionCount(tradeLimitations.getSell().getActiveTransactionCount());
         } else {
-            builder.sellResolvedTransactionCount(0)
-                    .sellActiveTransactionCount(0);
+            result.setSellResolvedTransactionCount(0);
+            result.setSellActiveTransactionCount(0);
             log.error("Sell trade limitations is null, no user transactions info to map.");
         }
-        return builder.build();
+        return result;
     }
 }

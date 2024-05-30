@@ -1,7 +1,6 @@
 package github.ricemonger.marketplace.graphQl;
 
-import github.ricemonger.marketplace.authorization.AuthorizationDTO;
-import github.ricemonger.marketplace.databases.redis.services.RedisService;
+import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.marketplace.graphQl.mappers.*;
 import github.ricemonger.utils.dtos.*;
 import lombok.RequiredArgsConstructor;

@@ -7,20 +7,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import lombok.*;
 
-@Entity(name = "telegram_user_input_values")
+@Entity(name = "telegram_user_input")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(TelegramInputValueEntityId.class)
-public class TelegramInputValueEntity {
-
+@IdClass(TelegramUserInputEntityId.class)
+public class TelegramUserInputEntity {
     @Id
     private String chatId;
-
     @Id
     private InputState inputState;
-
     private String value;
 }

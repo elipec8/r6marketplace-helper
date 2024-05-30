@@ -1,7 +1,7 @@
 package github.ricemonger.telegramBot.client;
 
-import github.ricemonger.marketplace.databases.postgres.services.TelegramUserService;
-import github.ricemonger.marketplace.databases.postgres.services.ItemService;
+import github.ricemonger.marketplace.services.TelegramUserService;
+import github.ricemonger.marketplace.services.ItemService;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.InputGroup;
 import github.ricemonger.telegramBot.executors.InputState;

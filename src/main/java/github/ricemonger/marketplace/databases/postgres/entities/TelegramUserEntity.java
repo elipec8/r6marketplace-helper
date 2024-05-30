@@ -6,14 +6,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.*;
 
-@Entity(name = "telegram_linked_user")
+@Entity(name = "telegram_user")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TelegramLinkedUserEntity {
-
+public class TelegramUserEntity {
     @Id
     private String chatId;
 
@@ -22,7 +21,7 @@ public class TelegramLinkedUserEntity {
 
     private boolean publicNotificationsEnabledFlag = true;
 
-    public TelegramLinkedUserEntity(String chatId) {
+    public TelegramUserEntity(String chatId) {
         this.chatId = chatId;
     }
 }

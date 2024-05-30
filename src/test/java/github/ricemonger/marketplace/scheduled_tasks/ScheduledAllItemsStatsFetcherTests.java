@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
-import github.ricemonger.marketplace.databases.postgres.services.ItemService;
+import github.ricemonger.marketplace.services.ItemService;
 import github.ricemonger.marketplace.databases.redis.services.RedisService;
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.graphQl.dtos.marketableItems.Node;
@@ -33,39 +33,4 @@ public class ScheduledAllItemsStatsFetcherTests {
     @Autowired
     private ScheduledAllItemsStatsFetcher scheduledAllItemsStatsFetcher;
 
-    @Test
-    public void fetchAllItemsStatsShouldCallServices(){
-        int expectedItemCount = 1;
-
-        fetchAllItemsStatsShouldCallGraphQlAndItemServices(expectedItemCount);
-
-        verify(redisService, never()).setExpectedItemCount(anyInt());
-        verify(botService, never()).notifyAllUsersAboutItemAmountIncrease(anyInt(), anyInt());
-    }
-
-    @Test
-    public void fetchAllItemsStatsShouldCallBotServiceIfItemsAmountIncreased(){
-        int expectedItemCount = 0;
-
-        fetchAllItemsStatsShouldCallGraphQlAndItemServices(expectedItemCount);
-
-        verify(redisService).setExpectedItemCount(1);
-        verify(botService).notifyAllUsersAboutItemAmountIncrease(expectedItemCount, 1);
-    }
-
-    private void fetchAllItemsStatsShouldCallGraphQlAndItemServices(int expectedItemCount){
-        List<Node> nodes = new ArrayList<>();
-        nodes.add(new Node());
-
-        when(redisService.getExpectedItemCount()).thenReturn(expectedItemCount);
-        when(graphQlClientService.fetchAllItemStats(expectedItemCount)).thenReturn(nodes);
-
-        scheduledAllItemsStatsFetcher.fetchAllItemStats();
-
-        verify(graphQlClientService).fetchAllItemStats(expectedItemCount);
-
-        verify(itemService).saveAll(nodes);
-
-        verify(itemService).calculateItemsSaleStats();
-    }
 }

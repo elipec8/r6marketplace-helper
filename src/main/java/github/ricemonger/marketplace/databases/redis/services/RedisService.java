@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.redis.services;
 
-import github.ricemonger.marketplace.authorization.AuthorizationDTO;
+import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.marketplace.authorization.AuthorizationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;

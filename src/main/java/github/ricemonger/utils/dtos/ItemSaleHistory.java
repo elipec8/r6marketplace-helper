@@ -1,20 +1,15 @@
-package github.ricemonger.marketplace.databases.postgres.entities;
+package github.ricemonger.utils.dtos;
 
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-@Entity(name = "item_sale_history")
-@Getter
-@Setter
-@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemSaleHistoryEntity {
-    @Id
+public class ItemSaleHistory {
     private String itemId;
 
     private int monthAveragePrice;

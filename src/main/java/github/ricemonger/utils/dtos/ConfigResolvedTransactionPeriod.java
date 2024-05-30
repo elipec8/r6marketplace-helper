@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConfigResolvedTransactionPeriod {
-        private int buyResolvedTransactionPeriod;
-        private int sellResolvedTransactionPeriod;
+    private int buyResolvedTransactionPeriod;
+    private int sellResolvedTransactionPeriod;
 }

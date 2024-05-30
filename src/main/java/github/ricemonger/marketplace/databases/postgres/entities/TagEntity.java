@@ -13,9 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 public class TagEntity {
     @Id
-    private String tag;
-
+    private String value;
     private String name;
-
     private TagGroup tagGroup;
 }

@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
-import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUserEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.UbiUserEntity;
-import github.ricemonger.marketplace.databases.postgres.services.UbiUserService;
+import github.ricemonger.marketplace.databases.postgres.services.UbiUserPostgresRepositoryService;
 import github.ricemonger.telegramBot.client.TelegramBotClientService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 class ScheduledUbiUsersReauthorizationTests {
 
     @MockBean
-    private UbiUserService ubiUserService;
+    private UbiUserPostgresRepositoryService ubiUserService;
 
     @MockBean
     private TelegramBotClientService telegramBotClientService;
@@ -31,7 +31,7 @@ class ScheduledUbiUsersReauthorizationTests {
         List<UbiUserEntity> toNotify = new ArrayList<>();
 
 
-        TelegramLinkedUserEntity telegramUserEntity = new TelegramLinkedUserEntity();
+        TelegramUserEntity telegramUserEntity = new TelegramUserEntity();
         telegramUserEntity.setChatId("chatId");
 
         UbiUserEntity ubiUserEntity = new UbiUserEntity();

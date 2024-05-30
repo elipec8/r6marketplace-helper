@@ -34,69 +34,69 @@ public class PersonalQueryCurrentOrdersMapper {
     }
 
     public Trade mapCurrentOrder(Nodes node) {
-        Trade.TradeBuilder builder = Trade.builder();
+        Trade result = new Trade();
 
-        builder.tradeId(node.getTradeId());
+        result.setTradeId(node.getTradeId());
 
         try{
-            builder.state(TradeState.valueOf(node.getState()));
+            result.setState(TradeState.valueOf(node.getState()));
         } catch (IllegalArgumentException e) {
-            builder.state(TradeState.Unknown);
+            result.setState(TradeState.Unknown);
             log.error("Invalid tradeState: {}", node.getState());
         }
 
         try{
-            builder.category(TradeCategory.valueOf(node.getCategory()));
+            result.setCategory(TradeCategory.valueOf(node.getCategory()));
         }
         catch (IllegalArgumentException e) {
-            builder.category(TradeCategory.Unknown);
+            result.setCategory(TradeCategory.Unknown);
             log.error("Invalid tradeCategory: {}", node.getCategory());
         }
 
         try{
-            builder.expiresAt(sdf.parse(node.getExpiresAt()));
+            result.setExpiresAt(sdf.parse(node.getExpiresAt()));
         }
         catch (ParseException e) {
-            builder.expiresAt(new Date(0));
+            result.setExpiresAt(new Date(0));
             log.error("Invalid expiresAt: {}", node.getExpiresAt());
         }
 
         try{
-            builder.lastModifiedAt(sdf.parse(node.getLastModifiedAt()));
+            result.setLastModifiedAt(sdf.parse(node.getLastModifiedAt()));
         }
         catch (ParseException e) {
-            builder.lastModifiedAt(new Date(0));
+            result.setLastModifiedAt(new Date(0));
             log.error("Invalid lastModifiedAt: {}", node.getLastModifiedAt());
         }
 
         TradeItems tradeItems = node.getTradeItems() == null ? null : node.getTradeItems()[0];
         if(tradeItems != null && tradeItems.getItem() != null) {
-            builder.itemId(tradeItems.getItem().getItemId());
+            result.setItemId(tradeItems.getItem().getItemId());
         }
         else{
-            builder.itemId("");
+            result.setItemId("");
             log.error("Invalid tradeItem or itemId: {}", tradeItems);
         }
 
-        builder.successPaymentPrice(0);
-        builder.successPaymentFee(0);
+        result.setSuccessPaymentPrice(0);
+        result.setSuccessPaymentFee(0);
 
         PaymentOptions paymentOptions = node.getPaymentOptions() == null? null : node.getPaymentOptions()[0];
 
         if(paymentOptions != null) {
-            builder.proposedPaymentPrice(paymentOptions.getPrice());
-            builder.proposedPaymentFee((int)Math.ceil(paymentOptions.getPrice()/10.));
+            result.setProposedPaymentPrice(paymentOptions.getPrice());
+            result.setProposedPaymentFee((int)Math.ceil(paymentOptions.getPrice()/10.));
         }
         else if(node.getPaymentProposal() != null){
-            builder.proposedPaymentPrice(node.getPaymentProposal().getPrice());
-            builder.proposedPaymentFee(node.getPaymentProposal().getTransactionFee());
+            result.setProposedPaymentPrice(node.getPaymentProposal().getPrice());
+            result.setProposedPaymentFee(node.getPaymentProposal().getTransactionFee());
         }
         else{
-            builder.proposedPaymentPrice(0);
-            builder.proposedPaymentFee(0);
+            result.setProposedPaymentPrice(0);
+            result.setProposedPaymentFee(0);
             log.error("Invalid paymentOptions or paymentProposal: {}", paymentOptions);
         }
 
-        return builder.build();
+        return result;
     }
 }

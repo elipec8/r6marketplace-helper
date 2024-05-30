@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.redis.services;
 
-import github.ricemonger.marketplace.authorization.AuthorizationDTO;
+import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.marketplace.authorization.AuthorizationService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

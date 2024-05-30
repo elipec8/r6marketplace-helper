@@ -7,6 +7,5 @@ import lombok.*;
 @AllArgsConstructor
 public class UbiUserEntityId {
     private String chatId;
-
     private String email;
 }

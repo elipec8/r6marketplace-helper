@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.authorization;
+package github.ricemonger.utils.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

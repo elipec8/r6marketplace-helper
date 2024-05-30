@@ -14,7 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @IdClass(UbiUserEntityId.class)
 public class UbiUserEntity {
-
     @Id
     private String chatId;
 
@@ -34,8 +33,8 @@ public class UbiUserEntity {
     @Column(columnDefinition = "TEXT")
     private String ubiRememberMeTicket;
 
-    @ManyToMany
-    private List<ItemEntity> ownedItems = new ArrayList<>();
+    @Column(columnDefinition = "TEXT")
+    private String ownedItemsIds;
 
     public UbiUserEntity(String chatId, String email, String password) {
         this.chatId = chatId;

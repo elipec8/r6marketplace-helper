@@ -36,19 +36,18 @@ public class CommonQueryItemsMapper {
     public Item mapItem(Node node) {
         github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.Item item = node.getItem();
 
-            Item.ItemBuilder itemBuilder = Item.builder()
-                    .itemId(item.getItemId())
-                    .assetUrl(item.getAssetUrl())
-                    .name(item.getName())
-                    .tags(item.getTags());
+            Item result = new Item();
+                    result.setItemId(item.getItemId());
+        result.setAssetUrl(item.getAssetUrl());
+        result.setName(item.getName());
+        result.setTags(item.getTags());
 
             try {
-                itemBuilder
-                    .type(ItemType.valueOf(item.getType()));
+                result.setType(ItemType.valueOf(item.getType()));
             }
             catch (IllegalArgumentException e) {
                 log.error("Unknown item type: {}", item.getType());
-                itemBuilder.type(ItemType.Unknown);
+                result.setType(ItemType.Unknown);
             }
 
         MarketData marketData = node.getMarketData();
@@ -57,46 +56,38 @@ public class CommonQueryItemsMapper {
         LastSoldAt lastSoldAt = marketData.getLastSoldAt() == null ? null : marketData.getLastSoldAt()[0];
 
         if(buyStats != null) {
-            itemBuilder
-                .maxBuyPrice(buyStats.getHighestPrice())
-                .buyOrdersCount(buyStats.getActiveCount());
+            result.setMaxBuyPrice(buyStats.getHighestPrice());
+            result.setBuyOrdersCount(buyStats.getActiveCount());;
         }
         else{
-            itemBuilder
-                .maxBuyPrice(0)
-                .buyOrdersCount(0);
+            result.setMaxBuyPrice(0);
+            result.setBuyOrdersCount(0);
         }
 
         if(sellStats != null) {
-            itemBuilder
-                .minSellPrice(sellStats.getLowestPrice())
-                .sellOrdersCount(sellStats.getActiveCount());
+            result.setMinSellPrice(sellStats.getLowestPrice());
+            result.setSellOrdersCount(sellStats.getActiveCount());
         }
         else{
-            itemBuilder
-                .minSellPrice(0)
-                .sellOrdersCount(0);
+            result.setMinSellPrice(0);
+            result.setSellOrdersCount(0);
         }
 
         if(lastSoldAt != null) {
             try{
-                itemBuilder
-                        .lastSoldAt(sdf.parse(lastSoldAt.getPerformedAt()));
+                result.setLastSoldAt(sdf.parse(lastSoldAt.getPerformedAt()));
             }
             catch (ParseException e){
-                itemBuilder
-                        .lastSoldAt(new Date(0));
+                result.setLastSoldAt(new Date(0));
                 log.error("Error parsing date: {}", lastSoldAt.getPerformedAt());
             }
-            itemBuilder
-                .lastSoldPrice(lastSoldAt.getPrice());
+            result.setLastSoldPrice(lastSoldAt.getPrice());
         }
         else{
-            itemBuilder
-                .lastSoldAt(new Date(0))
-                .lastSoldPrice(0);
+            result.setLastSoldAt(new Date(0));
+            result.setLastSoldPrice(0);
         }
 
-        return itemBuilder.build();
+        return result;
     }
 }
