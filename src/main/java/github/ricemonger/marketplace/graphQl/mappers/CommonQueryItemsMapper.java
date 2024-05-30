@@ -1,7 +1,6 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
 import github.ricemonger.marketplace.UbiServiceConfiguration;
-import github.ricemonger.marketplace.graphQl.dtos.common_query_items.MarketableItems;
 import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.Node;
 import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.MarketData;
 import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.marketData.BuyStats;
@@ -16,7 +15,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j

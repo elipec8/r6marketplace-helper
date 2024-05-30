@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.services;
 
+import github.ricemonger.marketplace.services.abstractions.TelegramUserDatabaseService;
 import github.ricemonger.telegramBot.executors.InputGroup;
 import github.ricemonger.telegramBot.executors.InputState;
 import github.ricemonger.utils.dtos.TelegramUser;
@@ -20,32 +21,32 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TelegramUserService {
 
-    private final TelegramUserRepositoryService telegramUserRepositoryService;
+    private final TelegramUserDatabaseService telegramUserDatabaseService;
 
     private final UbiUserService ubiUserService;
 
     public boolean isTelegramUserRegistered(Long chatId) {
-        return telegramUserRepositoryService.userExistsById(String.valueOf(chatId));
+        return telegramUserDatabaseService.userExistsById(String.valueOf(chatId));
     }
 
     public void registerTelegramUser(Long chatId) throws TelegramUserAlreadyExistsException {
-        if (telegramUserRepositoryService.userExistsById(String.valueOf(chatId))) {
+        if (telegramUserDatabaseService.userExistsById(String.valueOf(chatId))) {
             throw new TelegramUserAlreadyExistsException();
         } else {
-            telegramUserRepositoryService.saveUser(new TelegramUser(chatId));
+            telegramUserDatabaseService.saveUser(new TelegramUser(chatId));
         }
     }
 
     public void setUserNextInputState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException {
         TelegramUser telegramUser = getTelegramUserOrThrow(chatId);
         telegramUser.setInputState(inputState);
-        telegramUserRepositoryService.saveUser(telegramUser);
+        telegramUserDatabaseService.saveUser(telegramUser);
     }
 
     public void setUserNextInputGroup(Long chatId, InputGroup inputGroup) throws TelegramUserDoesntExistException {
         TelegramUser telegramUser = getTelegramUserOrThrow(chatId);
         telegramUser.setInputGroup(inputGroup);
-        telegramUserRepositoryService.saveUser(telegramUser);
+        telegramUserDatabaseService.saveUser(telegramUser);
     }
 
     public InputState getUserInputState(Long chatId) throws TelegramUserDoesntExistException {
@@ -64,14 +65,14 @@ public class TelegramUserService {
 
     public void saveUserInput(Long chatId, InputState inputState, String userInput) throws TelegramUserDoesntExistException {
         getTelegramUserOrThrow(chatId);
-        telegramUserRepositoryService.saveInput(String.valueOf(chatId), inputState, userInput);
+        telegramUserDatabaseService.saveInput(String.valueOf(chatId), inputState, userInput);
     }
 
     @Transactional
     public void clearUserInputs(Long chatId) throws TelegramUserDoesntExistException {
         getTelegramUserOrThrow(chatId);
 
-        telegramUserRepositoryService.deleteAllInputsByChatId(String.valueOf(chatId));
+        telegramUserDatabaseService.deleteAllInputsByChatId(String.valueOf(chatId));
     }
 
     public void addCredentialsIfValidOrThrowException(Long chatId, String email, String password) throws TelegramUserDoesntExistException, UbiUserAuthorizationClientErrorException {
@@ -87,7 +88,7 @@ public class TelegramUserService {
 
         ubiUserService.deleteByLinkedTelegramUserChatIdAndEmail(String.valueOf(chatId), emailToRemove);
 
-        telegramUserRepositoryService.deleteAllInputsByChatId(String.valueOf(chatId));
+        telegramUserDatabaseService.deleteAllInputsByChatId(String.valueOf(chatId));
     }
 
     public void removeAllCredentials(Long chatId) throws TelegramUserDoesntExistException {
@@ -107,7 +108,7 @@ public class TelegramUserService {
     }
 
     public List<String> getAllChatIdsForNotifiableUsers() {
-        return telegramUserRepositoryService.findAllUsers().stream()
+        return telegramUserDatabaseService.findAllUsers().stream()
                 .filter(TelegramUser::isPublicNotificationsEnabledFlag)
                 .map(TelegramUser::getChatId)
                 .toList();
@@ -120,10 +121,10 @@ public class TelegramUserService {
     private String getInputValueByState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException {
         getTelegramUserOrThrow(chatId);
 
-        return telegramUserRepositoryService.findInputByIdOrEmpty(String.valueOf(chatId), inputState).getValue();
+        return telegramUserDatabaseService.findInputByIdOrEmpty(String.valueOf(chatId), inputState).getValue();
     }
 
     private TelegramUser getTelegramUserOrThrow(Long chatId) throws TelegramUserDoesntExistException{
-        return telegramUserRepositoryService.findUserById(String.valueOf(chatId));
+        return telegramUserDatabaseService.findUserById(String.valueOf(chatId));
     }
 }

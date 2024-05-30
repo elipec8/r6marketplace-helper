@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.services;
 
+import github.ricemonger.marketplace.services.abstractions.UbiUserDatabaseService;
 import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.marketplace.authorization.AuthorizationService;
-import github.ricemonger.marketplace.databases.postgres.services.AesPasswordEncoder;
 import github.ricemonger.utils.dtos.UbiUser;
 import github.ricemonger.utils.exceptions.UbiUserAuthorizationClientErrorException;
 import lombok.RequiredArgsConstructor;
@@ -18,26 +18,26 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UbiUserService {
 
-    private final UbiUserRepositoryService ubiUserRepositoryService;
+    private final UbiUserDatabaseService ubiUserDatabaseService;
 
     private final AesPasswordEncoder AESPasswordEncoder;
 
     private final AuthorizationService authorizationService;
 
     public void deleteByLinkedTelegramUserChatIdAndEmail(String chatId, String email) {
-        ubiUserRepositoryService.deleteById(chatId, email);
+        ubiUserDatabaseService.deleteById(chatId, email);
     }
 
     public Collection<UbiUser> findAllByLinkedTelegramUserChatId(String chatId) {
-        return ubiUserRepositoryService.findAllByChatId(chatId);
+        return ubiUserDatabaseService.findAllByChatId(chatId);
     }
 
     public void deleteAllByLinkedTelegramUserChatId(String chatId) {
-        ubiUserRepositoryService.deleteAllByChatId(chatId);
+        ubiUserDatabaseService.deleteAllByChatId(chatId);
     }
 
     public Collection<UbiUser> reauthorizeAllUbiUsersAndGetUnauthorizedList(){
-        List<UbiUser> users = new ArrayList<>(ubiUserRepositoryService.findAll());
+        List<UbiUser> users = new ArrayList<>(ubiUserDatabaseService.findAll());
 
         List<UbiUser> unauthorizedUsers = new ArrayList<>();
 
@@ -54,7 +54,7 @@ public class UbiUserService {
     }
 
     public AuthorizationDTO getAuthorizationDTOFromDbOrThrow(String chatId, String email) throws UbiUserAuthorizationClientErrorException{
-        UbiUser user = ubiUserRepositoryService.findById(chatId, email);
+        UbiUser user = ubiUserDatabaseService.findById(chatId, email);
 
         return buildAuthorizationDTO(user);
     }
@@ -64,7 +64,7 @@ public class UbiUserService {
 
         buildUbiUser(authorizationDTO, user.getEmail(), AESPasswordEncoder.decode(user.getPassword()));
 
-        ubiUserRepositoryService.save(user);
+        ubiUserDatabaseService.save(user);
     }
 
     public void createAndAuthorizeOrThrowForTelegramUser(String chatId, String email, String password) throws UbiUserAuthorizationClientErrorException {
@@ -72,7 +72,7 @@ public class UbiUserService {
 
         user.setChatId(chatId);
 
-        ubiUserRepositoryService.save(user);
+        ubiUserDatabaseService.save(user);
     }
 
     private UbiUser authorizeAndGetUbiUser(String email, String password) throws UbiUserAuthorizationClientErrorException {
@@ -112,6 +112,6 @@ public class UbiUserService {
     }
 
     public Collection<String> getOwnedItemsIds(String chatId, String email) {
-        return ubiUserRepositoryService.getOwnedItemsIds(chatId, email);
+        return ubiUserDatabaseService.getOwnedItemsIds(chatId, email);
     }
 }

@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.services;
 
+import github.ricemonger.marketplace.services.abstractions.ItemDatabaseService;
 import github.ricemonger.utils.dtos.Item;
 import github.ricemonger.utils.dtos.ItemSale;
 import github.ricemonger.utils.dtos.ItemSaleHistory;
@@ -12,16 +13,16 @@ import java.util.*;
 @RequiredArgsConstructor
 public class ItemService {
 
-    private final ItemRepositoryService itemRepositoryService;
+    private final ItemDatabaseService itemDatabaseService;
 
     public void saveAll(Collection<Item> items) {
-        itemRepositoryService.saveAllItemsAndItemSales(items);
+        itemDatabaseService.saveAllItemsAndItemSales(items);
     }
 
     public void calculateItemsSaleHistoryStats() {
         List<ItemSaleHistory> histories = new ArrayList<>();
-        Collection<Item> items = itemRepositoryService.findAllItems();
-        Collection<ItemSale> sales = itemRepositoryService.findAllItemSales();
+        Collection<Item> items = itemDatabaseService.findAllItems();
+        Collection<ItemSale> sales = itemDatabaseService.findAllItemSales();
 
         for (Item item : items) {
 
@@ -83,7 +84,7 @@ public class ItemService {
 
             histories.add(history);
         }
-        itemRepositoryService.saveAllItemSaleHistoryStats(histories);
+        itemDatabaseService.saveAllItemSaleHistoryStats(histories);
     }
 
     public Collection<Item> getAllSpeculativeItemsByExpectedProfit(int i, int i1, int i2, int i3) {

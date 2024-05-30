@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.databases.postgres.entities.TelegramUserInp
 import github.ricemonger.marketplace.databases.postgres.mappers.TelegramUserPostgresMapper;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserInputPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
-import github.ricemonger.marketplace.services.TelegramUserRepositoryService;
+import github.ricemonger.marketplace.services.abstractions.TelegramUserDatabaseService;
 import github.ricemonger.telegramBot.executors.InputState;
 import github.ricemonger.utils.dtos.TelegramUser;
 import github.ricemonger.utils.dtos.TelegramUserInput;
@@ -20,7 +20,7 @@ import java.util.NoSuchElementException;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class TelegramUserPostgresService implements TelegramUserRepositoryService {
+public class TelegramUserPostgresService implements TelegramUserDatabaseService {
 
     private final TelegramUserPostgresRepository telegramUserPostgresRepository;
 
