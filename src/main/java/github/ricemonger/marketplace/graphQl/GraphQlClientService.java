@@ -17,6 +17,8 @@ public class GraphQlClientService {
 
     private final GraphQlClientFactory graphQlClientFactory;
 
+    private final GraphQlVariablesService graphQlVariablesService;
+
     private final CommonQueryItemsMapper commonQueryItemsMapper;
 
     private final ConfigQueryMarketplaceMapper configQueryMarketplaceMapper;
@@ -45,17 +47,17 @@ public class GraphQlClientService {
 
         do {
             marketableItems = client
-                    .documentName(GraphQlClientServiceStatics.QUERY_ITEMS_STATS_DOCUMENT_NAME)
-                    .variables(GraphQlClientServiceStatics.getFetchItemsVariables(offset))
+                    .documentName(GraphQlDocuments.QUERY_ITEMS_STATS_DOCUMENT_NAME)
+                    .variables(graphQlVariablesService.getFetchItemsVariables(offset))
                     .retrieve("game.marketableItems")
                     .toEntity(github.ricemonger.marketplace.graphQl.dtos.common_query_items.MarketableItems.class)
                     .block();
 
             nodes.addAll(marketableItems.getNodes());
 
-            offset += GraphQlClientServiceStatics.MAX_LIMIT;
+            offset += GraphQlVariablesService.MAX_LIMIT;
         }
-        while (marketableItems.getTotalCount() == GraphQlClientServiceStatics.MAX_LIMIT);
+        while (marketableItems.getTotalCount() == GraphQlVariablesService.MAX_LIMIT);
 
         return commonQueryItemsMapper.mapItems(nodes);
     }
@@ -63,7 +65,7 @@ public class GraphQlClientService {
     public Collection<Tag> fetchAllTags() {
         HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
         github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.Marketplace marketplace = client
-                .documentName(GraphQlClientServiceStatics.QUERY_MARKETPLACE_CONFIG_DOCUMENT_NAME)
+                .documentName(GraphQlDocuments.QUERY_MARKETPLACE_CONFIG_DOCUMENT_NAME)
                 .retrieve("game.marketplace")
                 .toEntity(github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.Marketplace.class)
                 .block();
@@ -74,7 +76,7 @@ public class GraphQlClientService {
     public void checkItemTypes() {
         HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
         github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.Marketplace marketplace = client
-                .documentName(GraphQlClientServiceStatics.QUERY_MARKETPLACE_CONFIG_DOCUMENT_NAME)
+                .documentName(GraphQlDocuments.QUERY_MARKETPLACE_CONFIG_DOCUMENT_NAME)
                 .retrieve("game.marketplace")
                 .toEntity(github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.Marketplace.class)
                 .block();
@@ -85,7 +87,7 @@ public class GraphQlClientService {
     public ConfigResolvedTransactionPeriod fetchConfigResolvedTransactionPeriod() {
         HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
         github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transaction_period.TradeLimitations tradeLimitations = client
-                .documentName(GraphQlClientServiceStatics.QUERY_RESOLVED_TRANSACTION_PERIOD_CONFIG_DOCUMENT_NAME)
+                .documentName(GraphQlDocuments.QUERY_RESOLVED_TRANSACTION_PERIOD_CONFIG_DOCUMENT_NAME)
                 .retrieve("game.viewer.meta.tradeLimitations")
                 .toEntity(github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transaction_period.TradeLimitations.class)
                 .block();
@@ -96,7 +98,7 @@ public class GraphQlClientService {
     public ConfigTrades fetchConfigTrades() {
         HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
         github.ricemonger.marketplace.graphQl.dtos.config_query_trade.TradesConfig tradesConfig = client
-                .documentName(GraphQlClientServiceStatics.QUERY_TRADE_CONFIG_DOCUMENT_NAME)
+                .documentName(GraphQlDocuments.QUERY_TRADE_CONFIG_DOCUMENT_NAME)
                 .retrieve("game.tradesConfig")
                 .toEntity(github.ricemonger.marketplace.graphQl.dtos.config_query_trade.TradesConfig.class)
                 .block();
@@ -107,7 +109,7 @@ public class GraphQlClientService {
     public int fetchCreditAmountForUser(AuthorizationDTO authorizationDTO) {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
         github.ricemonger.marketplace.graphQl.dtos.personal_query_credits_amount.Meta meta = client
-                .documentName(GraphQlClientServiceStatics.QUERY_CREDITS_AMOUNT_DOCUMENT_NAME)
+                .documentName(GraphQlDocuments.QUERY_CREDITS_AMOUNT_DOCUMENT_NAME)
                 .retrieve("game.viewer.meta.secondaryStoreItem.meta")
                 .toEntity(github.ricemonger.marketplace.graphQl.dtos.personal_query_credits_amount.Meta.class)
                 .block();
@@ -122,8 +124,8 @@ public class GraphQlClientService {
         List<github.ricemonger.marketplace.graphQl.dtos.personal_query_current_orders.trades.Nodes> nodes = new ArrayList<>();
 
         trades = client
-                .documentName(GraphQlClientServiceStatics.QUERY_CURRENT_ORDERS_DOCUMENT_NAME)
-                .variables(GraphQlClientServiceStatics.getFetchItemsVariables(0))
+                .documentName(GraphQlDocuments.QUERY_CURRENT_ORDERS_DOCUMENT_NAME)
+                .variables(graphQlVariablesService.getFetchItemsVariables(0))
                 .retrieve("game.viewer.meta.trades")
                 .toEntity(github.ricemonger.marketplace.graphQl.dtos.personal_query_current_orders.Trades.class)
                 .block();
@@ -142,8 +144,8 @@ public class GraphQlClientService {
 
         do {
             trades = client
-                    .documentName(GraphQlClientServiceStatics.QUERY_FINISHED_ORDERS_DOCUMENT_NAME)
-                    .variables(GraphQlClientServiceStatics.getFetchItemsVariables(offset))
+                    .documentName(GraphQlDocuments.QUERY_FINISHED_ORDERS_DOCUMENT_NAME)
+                    .variables(graphQlVariablesService.getFetchItemsVariables(offset))
                     .retrieve("game.viewer.meta.trades")
                     .toEntity(github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.Trades.class)
                     .block();
@@ -152,9 +154,9 @@ public class GraphQlClientService {
 
             totalCount = trades.getNodes().size();
 
-            offset += GraphQlClientServiceStatics.MAX_LIMIT;
+            offset += GraphQlVariablesService.MAX_LIMIT;
         }
-        while (totalCount == GraphQlClientServiceStatics.MAX_LIMIT);
+        while (totalCount == GraphQlVariablesService.MAX_LIMIT);
 
         return personalQueryFinishedOrdersMapper.mapFinishedOrders(trades);
     }
@@ -165,7 +167,7 @@ public class GraphQlClientService {
         github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.TradeLimitations tradeLimitations;
 
         tradeLimitations = client
-                .documentName(GraphQlClientServiceStatics.QUERY_LOCKED_ITEMS_DOCUMENT_NAME)
+                .documentName(GraphQlDocuments.QUERY_LOCKED_ITEMS_DOCUMENT_NAME)
                 .retrieve("game.viewer.meta.tradeLimitations")
                 .toEntity(github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.TradeLimitations.class)
                 .block();
@@ -177,8 +179,8 @@ public class GraphQlClientService {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
         github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.Game game = client
-                .documentName(GraphQlClientServiceStatics.QUERY_ONE_ITEM_STATS_DOCUMENT_NAME)
-                .variables(GraphQlClientServiceStatics.getFetchOneItemVariables(itemId))
+                .documentName(GraphQlDocuments.QUERY_ONE_ITEM_STATS_DOCUMENT_NAME)
+                .variables(graphQlVariablesService.getFetchOneItemVariables(itemId))
                 .retrieve("game")
                 .toEntity(github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.Game.class)
                 .block();
@@ -195,17 +197,17 @@ public class GraphQlClientService {
 
         do {
             marketableItems = client
-                    .documentName(GraphQlClientServiceStatics.QUERY_OWNED_ITEMS_DOCUMENT_NAME)
-                    .variables(GraphQlClientServiceStatics.getFetchItemsVariables(offset))
+                    .documentName(GraphQlDocuments.QUERY_OWNED_ITEMS_DOCUMENT_NAME)
+                    .variables(graphQlVariablesService.getFetchItemsVariables(offset))
                     .retrieve("game.viewer.meta.marketableItems")
                     .toEntity(github.ricemonger.marketplace.graphQl.dtos.personal_query_owned_items.MarketableItems.class)
                     .block();
 
             nodes.addAll(marketableItems.getNodes());
 
-            offset += GraphQlClientServiceStatics.MAX_LIMIT;
+            offset += GraphQlVariablesService.MAX_LIMIT;
         }
-        while (marketableItems.getTotalCount() == GraphQlClientServiceStatics.MAX_LIMIT);
+        while (marketableItems.getTotalCount() == GraphQlVariablesService.MAX_LIMIT);
 
         return personalQueryOwnedItemsMapper.mapOwnedItems(nodes);
     }
@@ -213,40 +215,40 @@ public class GraphQlClientService {
     public void createBuyOrderForUser(AuthorizationDTO authorizationDTO, String itemId, int price) {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
-        client.documentName(GraphQlClientServiceStatics.MUTATION_ORDER_BUY_CREATE_DOCUMENT_NAME)
-                .variables(GraphQlClientServiceStatics.getCreateUpdateOrderVariables(itemId, price))
+        client.documentName(GraphQlDocuments.MUTATION_ORDER_BUY_CREATE_DOCUMENT_NAME)
+                .variables(graphQlVariablesService.getCreateUpdateOrderVariables(itemId, price))
                 .execute();
     }
 
     public void updateBuyOrderForUser(AuthorizationDTO authorizationDTO, String tradeId, int price) {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
-        client.documentName(GraphQlClientServiceStatics.MUTATION_ORDER_BUY_UPDATE_DOCUMENT_NAME)
-                .variables(GraphQlClientServiceStatics.getCreateUpdateOrderVariables(tradeId, price))
+        client.documentName(GraphQlDocuments.MUTATION_ORDER_BUY_UPDATE_DOCUMENT_NAME)
+                .variables(graphQlVariablesService.getCreateUpdateOrderVariables(tradeId, price))
                 .execute();
     }
 
     public void createSellOrderForUser(AuthorizationDTO authorizationDTO, String itemId, int price) {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
-        client.documentName(GraphQlClientServiceStatics.MUTATION_ORDER_SELL_CREATE_DOCUMENT_NAME)
-                .variables(GraphQlClientServiceStatics.getCreateUpdateOrderVariables(itemId, price))
+        client.documentName(GraphQlDocuments.MUTATION_ORDER_SELL_CREATE_DOCUMENT_NAME)
+                .variables(graphQlVariablesService.getCreateUpdateOrderVariables(itemId, price))
                 .execute();
     }
 
     public void updateSellOrderForUser(AuthorizationDTO authorizationDTO, String tradeId, int price) {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
-        client.documentName(GraphQlClientServiceStatics.MUTATION_ORDER_SELL_UPDATE_DOCUMENT_NAME)
-                .variables(GraphQlClientServiceStatics.getCreateUpdateOrderVariables(tradeId, price))
+        client.documentName(GraphQlDocuments.MUTATION_ORDER_SELL_UPDATE_DOCUMENT_NAME)
+                .variables(graphQlVariablesService.getCreateUpdateOrderVariables(tradeId, price))
                 .execute();
     }
 
     public void cancelOrderForUser(AuthorizationDTO authorizationDTO, String tradeId) {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
-        client.documentName(GraphQlClientServiceStatics.MUTATION_ORDER_CANCEL_DOCUMENT_NAME)
-                .variables(GraphQlClientServiceStatics.getCancelOrderVariables(tradeId))
+        client.documentName(GraphQlDocuments.MUTATION_ORDER_CANCEL_DOCUMENT_NAME)
+                .variables(graphQlVariablesService.getCancelOrderVariables(tradeId))
                 .execute();
     }
 }

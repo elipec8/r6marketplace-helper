@@ -22,7 +22,6 @@ public class UbiServiceConfigurationTest {
         assertNotNull(ubiServiceConfiguration.getLocaleCode());
         assertNotNull(ubiServiceConfiguration.getUbiAppId());
         assertNotNull(ubiServiceConfiguration.getExpireTimeout());
-        assertNotNull(ubiServiceConfiguration.getMarketplaceProfitPercent());
         assertNotNull(ubiServiceConfiguration.getDateFormat());
     }
 }

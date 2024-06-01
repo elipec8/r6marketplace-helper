@@ -75,6 +75,10 @@ public class RedisService {
         redisTemplate.opsForValue().set("gameOwnershipRule", String.valueOf(configTrades.isGameOwnershipRule()));
     }
 
+    public String getPaymentItemId() {
+        return redisTemplate.opsForValue().get("paymentItemId");
+    }
+
     public String getMainUserAuthorizationToken() {
         return getOrCreateMainUserField("mainUserAuthorizationToken");
     }

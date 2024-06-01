@@ -18,6 +18,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -179,6 +180,18 @@ public class RedisServiceTest {
         verify(valueOperations).set("feePercentage", "70");
         verify(valueOperations).set("twoFactorAuthenticationRule", "true");
         verify(valueOperations).set("gameOwnershipRule", "true");
+    }
+
+    @Test
+    public void getPaymentItemId_should_return_value_from_redis() {
+        redisTemplate.opsForValue().set("paymentItemId", "paymentItemId");
+
+        assertEquals("paymentItemId", redisService.getPaymentItemId());
+    }
+
+    @Test
+    public void getPaymentItemId_should_return_null_if_empty() {
+        assertNull(redisService.getPaymentItemId());
     }
 
     @Test
