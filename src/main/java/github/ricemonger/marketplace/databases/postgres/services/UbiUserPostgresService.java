@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +49,7 @@ public class UbiUserPostgresService implements UbiUserDatabaseService {
             UbiUserEntity entity = ubiUserRepository.findById(new UbiUserEntityId(chatId, email)).orElseThrow();
             return mapper.toUbiUser(entity);
         }
-        catch (Exception e) {
+        catch (NoSuchElementException e) {
             throw new UbiUserDoesntExistException("User with chatId " + chatId + " and email " + email + " doesn't exist");
         }
     }

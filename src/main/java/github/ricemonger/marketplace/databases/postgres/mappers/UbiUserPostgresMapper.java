@@ -33,7 +33,7 @@ public class UbiUserPostgresMapper {
 
         entity.setChatId(user.getChatId());
         entity.setEmail(user.getEmail());
-        entity.setPassword(user.getPassword());
+        entity.setEncodedPassword(user.getEncodedPassword());
         entity.setUbiProfileId(user.getUbiProfileId());
         entity.setUbiSessionId(user.getUbiSessionId());
         entity.setUbiSpaceId(user.getUbiSpaceId());
@@ -61,7 +61,7 @@ public class UbiUserPostgresMapper {
 
         ubiUser.setChatId(ubiUserEntity.getChatId());
         ubiUser.setEmail(ubiUserEntity.getEmail());
-        ubiUser.setPassword(ubiUserEntity.getPassword());
+        ubiUser.setEncodedPassword(ubiUserEntity.getEncodedPassword());
         ubiUser.setUbiProfileId(ubiUserEntity.getUbiProfileId());
         ubiUser.setUbiSessionId(ubiUserEntity.getUbiSessionId());
         ubiUser.setUbiSpaceId(ubiUserEntity.getUbiSpaceId());

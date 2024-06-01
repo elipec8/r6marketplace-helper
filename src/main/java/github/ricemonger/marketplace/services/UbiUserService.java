@@ -5,6 +5,8 @@ import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.utils.dtos.UbiUser;
 import github.ricemonger.utils.exceptions.UbiUserAuthorizationClientErrorException;
+import github.ricemonger.utils.exceptions.UbiUserAuthorizationServerErrorException;
+import github.ricemonger.utils.exceptions.UbiUserDoesntExistException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,12 +22,10 @@ public class UbiUserService {
 
     private final UbiUserDatabaseService ubiUserDatabaseService;
 
-    private final AesPasswordEncoder AESPasswordEncoder;
-
     private final AuthorizationService authorizationService;
 
-    public void deleteByLinkedTelegramUserChatIdAndEmail(String chatId, String email) {
-        ubiUserDatabaseService.deleteById(chatId, email);
+    public Collection<String> getOwnedItemsIds(String chatId, String email) throws UbiUserDoesntExistException {
+        return ubiUserDatabaseService.getOwnedItemsIds(chatId, email);
     }
 
     public Collection<UbiUser> findAllByLinkedTelegramUserChatId(String chatId) {
@@ -36,6 +36,18 @@ public class UbiUserService {
         ubiUserDatabaseService.deleteAllByChatId(chatId);
     }
 
+    public void deleteByLinkedTelegramUserChatIdAndEmail(String chatId, String email) {
+        ubiUserDatabaseService.deleteById(chatId, email);
+    }
+
+    public void authorizeAndSaveUser(String chatId, String email, String password) throws
+            UbiUserAuthorizationClientErrorException,
+            UbiUserAuthorizationServerErrorException {
+        AuthorizationDTO userAuthorizationDTO = authorizationService.authorizeAndGetDTO(email, password);
+
+        ubiUserDatabaseService.save(buildUbiUser(chatId, email, password,userAuthorizationDTO));
+    }
+
     public Collection<UbiUser> reauthorizeAllUbiUsersAndGetUnauthorizedList(){
         List<UbiUser> users = new ArrayList<>(ubiUserDatabaseService.findAll());
 
@@ -43,61 +55,28 @@ public class UbiUserService {
 
         for(UbiUser user: users){
             try {
-                reauthorizeUserOrThrow(user);
+                reauthorizeAndSaveUser(user.getChatId(), user.getEmail(), user.getEncodedPassword());
             }
-            catch(UbiUserAuthorizationClientErrorException e){
+            catch(UbiUserAuthorizationClientErrorException | UbiUserAuthorizationServerErrorException e){
                 unauthorizedUsers.add(user);
             }
         }
 
         return unauthorizedUsers;
     }
+    private void reauthorizeAndSaveUser(String chatId, String email, String encodedPassword) throws UbiUserAuthorizationClientErrorException, UbiUserAuthorizationServerErrorException {
+        AuthorizationDTO authorizationDTO = authorizationService.authorizeAndGetDtoForEncodedPassword(email, encodedPassword);
 
-    public AuthorizationDTO getAuthorizationDTOFromDbOrThrow(String chatId, String email) throws UbiUserAuthorizationClientErrorException{
-        UbiUser user = ubiUserDatabaseService.findById(chatId, email);
-
-        return buildAuthorizationDTO(user);
+        ubiUserDatabaseService.save(buildUbiUser(chatId, email, encodedPassword,authorizationDTO));
     }
 
-    public void reauthorizeUserOrThrow(UbiUser user) {
-        AuthorizationDTO authorizationDTO = authorizationService.getUserAuthorizationDTO(user.getEmail(), AESPasswordEncoder.decode(user.getPassword()));
-
-        buildUbiUser(authorizationDTO, user.getEmail(), AESPasswordEncoder.decode(user.getPassword()));
-
-        ubiUserDatabaseService.save(user);
-    }
-
-    public void createAndAuthorizeOrThrowForTelegramUser(String chatId, String email, String password) throws UbiUserAuthorizationClientErrorException {
-        UbiUser user = authorizeAndGetUbiUser(email, password);
+    private UbiUser buildUbiUser(String chatId, String email, String password, AuthorizationDTO authorizationDTO) {
+        UbiUser user = new UbiUser();
 
         user.setChatId(chatId);
+        user.setEmail(email);
+        user.setEncodedPassword(password);
 
-        ubiUserDatabaseService.save(user);
-    }
-
-    private UbiUser authorizeAndGetUbiUser(String email, String password) throws UbiUserAuthorizationClientErrorException {
-        UbiUser user = new UbiUser();
-
-        AuthorizationDTO userAuthorizationDTO = authorizationService.getUserAuthorizationDTO(email, password);
-        buildUbiUser(userAuthorizationDTO, email, password);
-
-        return user;
-    }
-
-    private AuthorizationDTO buildAuthorizationDTO(UbiUser user) {
-        AuthorizationDTO authorizationDTO = new AuthorizationDTO();
-        authorizationDTO.setProfileId(user.getUbiProfileId());
-        authorizationDTO.setSessionId(user.getUbiSessionId());
-        authorizationDTO.setTicket(user.getUbiAuthTicket());
-        authorizationDTO.setSpaceId(user.getUbiSpaceId());
-        authorizationDTO.setRememberMeTicket(user.getUbiRememberMeTicket());
-        authorizationDTO.setRememberDeviceTicket(user.getUbiRememberDeviceTicket());
-        authorizationDTO.setTwoFactorAuthenticationTicket(user.getUbiTwoFactorAuthTicket());
-        return authorizationDTO;
-    }
-
-    private UbiUser buildUbiUser(AuthorizationDTO authorizationDTO, String email, String password) {
-        UbiUser user = new UbiUser();
         user.setUbiProfileId(authorizationDTO.getProfileId());
         user.setUbiSessionId(authorizationDTO.getSessionId());
         user.setUbiAuthTicket(authorizationDTO.getTicket());
@@ -105,13 +84,6 @@ public class UbiUserService {
         user.setUbiRememberMeTicket(authorizationDTO.getRememberMeTicket());
         user.setUbiRememberDeviceTicket(authorizationDTO.getRememberDeviceTicket());
         user.setUbiTwoFactorAuthTicket(authorizationDTO.getTwoFactorAuthenticationTicket());
-
-        user.setEmail(email);
-        user.setPassword(AESPasswordEncoder.encode(password));
         return user;
-    }
-
-    public Collection<String> getOwnedItemsIds(String chatId, String email) {
-        return ubiUserDatabaseService.getOwnedItemsIds(chatId, email);
     }
 }

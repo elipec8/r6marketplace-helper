@@ -10,6 +10,7 @@ import github.ricemonger.telegramBot.executors.InputState;
 import github.ricemonger.utils.dtos.TelegramUser;
 import github.ricemonger.utils.dtos.TelegramUserInput;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.TelegramUserInputDoesntExistException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -40,13 +41,8 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     }
 
     @Override
-    public TelegramUser findUserById(String chatId) {
-        try {
-            return mapper.mapTelegramUser(telegramUserPostgresRepository.findById(chatId).orElseThrow());
-        } catch (NoSuchElementException e) {
-            log.error("User with chatId {} not found", chatId);
-            throw new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found");
-        }
+    public TelegramUser findUserById(String chatId) throws TelegramUserDoesntExistException {
+        return getTelegramUserByIdOrThrow(chatId);
     }
 
     @Override
@@ -55,27 +51,44 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     }
 
     @Override
-    public void saveInput(TelegramUserInput telegramUserInput) {
+    public void saveInput(TelegramUserInput telegramUserInput) throws TelegramUserDoesntExistException {
+        getTelegramUserByIdOrThrow(telegramUserInput.getChatId());
+
         telegramUserInputPostgresRepository.save(mapper.mapTelegramUserInputEntity(telegramUserInput));
     }
 
     @Override
-    public void saveInput(String chatId, InputState inputState, String value) {
+    public void saveInput(String chatId, InputState inputState, String value) throws TelegramUserDoesntExistException {
+        getTelegramUserByIdOrThrow(chatId);
+
         telegramUserInputPostgresRepository.save(mapper.mapTelegramUserInputEntity(new TelegramUserInput(chatId, inputState, value)));
     }
 
     @Override
-    public void deleteAllInputsByChatId(String chatId) {
+    public void deleteAllInputsByChatId(String chatId) throws TelegramUserDoesntExistException{
+        getTelegramUserByIdOrThrow(chatId);
+
         telegramUserInputPostgresRepository.deleteAllByChatId(chatId);
     }
 
     @Override
-    public TelegramUserInput findInputByIdOrEmpty(String chatId, InputState inputState) {
+    public TelegramUserInput findInputById(String chatId, InputState inputState) throws TelegramUserDoesntExistException,TelegramUserInputDoesntExistException {
+        getTelegramUserByIdOrThrow(chatId);
+
         try {
             return mapper.mapTelegramUserInput(telegramUserInputPostgresRepository.findById(new TelegramUserInputEntityId(chatId, inputState)).orElseThrow());
         } catch (NoSuchElementException e) {
             log.error("Input with chatId {} and inputState {} not found", chatId, inputState);
-            return new TelegramUserInput(chatId, inputState, "");
+            throw new TelegramUserInputDoesntExistException("Input with chatId" + chatId + " and inputState " + inputState + " not found");
+        }
+    }
+
+    private TelegramUser getTelegramUserByIdOrThrow(String chatId) {
+        try {
+            return mapper.mapTelegramUser(telegramUserPostgresRepository.findById(chatId).orElseThrow());
+        } catch (NoSuchElementException e) {
+            log.error("User with chatId {} not found", chatId);
+            throw new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found");
         }
     }
 }

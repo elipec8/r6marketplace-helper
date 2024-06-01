@@ -87,7 +87,7 @@ public class BotInnerServiceTest {
     @Test
     public void addCredentialsFromUserInputsShouldHandleToServiceAndAddIfFull() {
         Long chatId = 1L;
-        when(telegramUserService.getUserInputByStateOrNull(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn("email:password");
+        when(telegramUserService.getUserInputByState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn("email:password");
 
         botInnerService.addCredentialsFromUserInputs(chatId);
 
@@ -99,8 +99,8 @@ public class BotInnerServiceTest {
     @Test
     public void addCredentialsFromUserInputsShouldHandleToServiceAndAddIfSeparated() {
         Long chatId = 1L;
-        when(telegramUserService.getUserInputByStateOrNull(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn("email");
-        when(telegramUserService.getUserInputByStateOrNull(chatId, InputState.CREDENTIALS_PASSWORD)).thenReturn("password");
+        when(telegramUserService.getUserInputByState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn("email");
+        when(telegramUserService.getUserInputByState(chatId, InputState.CREDENTIALS_PASSWORD)).thenReturn("password");
 
         botInnerService.addCredentialsFromUserInputs(chatId);
 
@@ -153,14 +153,14 @@ public class BotInnerServiceTest {
 
         botInnerService.getUserInputByState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL);
 
-        verify(telegramUserService).getUserInputByStateOrNull(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL);
+        verify(telegramUserService).getUserInputByState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL);
     }
 
     @Test
     public void getUserInputByStateShouldReturnServiceAnswer() {
         Long chatId = 1L;
 
-        when(telegramUserService.getUserInputByStateOrNull(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn("userInput");
+        when(telegramUserService.getUserInputByState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn("userInput");
 
         assertEquals("userInput", botInnerService.getUserInputByState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL));
     }

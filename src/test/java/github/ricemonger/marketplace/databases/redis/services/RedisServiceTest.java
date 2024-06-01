@@ -43,7 +43,7 @@ public class RedisServiceTest {
         redisTemplate.delete("mainUserRememberMeTicket");
         redisTemplate.delete("expectedItemCount");
 
-        when(authorizationService.getUserAuthorizationDTO(mainUserConfiguration.getEmail(), mainUserConfiguration.getPassword())).thenReturn(new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "twoFactorAuthTicket", "rememberDeviceTicket", "rememberMeTicket"));
+        when(authorizationService.authorizeAndGetDTO(mainUserConfiguration.getEmail(), mainUserConfiguration.getPassword())).thenReturn(new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "twoFactorAuthTicket", "rememberDeviceTicket", "rememberMeTicket"));
     }
 
     @AfterEach
@@ -128,14 +128,14 @@ public class RedisServiceTest {
 
     @Test
     public void rememberMeTicketShouldNotBeCreatedIfNullInDto() {
-        when(authorizationService.getUserAuthorizationDTO(mainUserConfiguration.getEmail(), mainUserConfiguration.getPassword())).thenReturn(new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "twoFactorAuthTicket", "rememberDeviceTicket", null));
+        when(authorizationService.authorizeAndGetDTO(mainUserConfiguration.getEmail(), mainUserConfiguration.getPassword())).thenReturn(new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "twoFactorAuthTicket", "rememberDeviceTicket", null));
 
         ValueOperations mock = mock(ValueOperations.class);
         when(redisTemplate.opsForValue()).thenReturn(mock);
 
         redisService.getMainUserRememberMeTicket();
 
-        AuthorizationDTO dto = authorizationService.getUserAuthorizationDTO(mainUserConfiguration.getEmail(), mainUserConfiguration.getPassword());
+        AuthorizationDTO dto = authorizationService.authorizeAndGetDTO(mainUserConfiguration.getEmail(), mainUserConfiguration.getPassword());
 
         verify(mock).set("mainUserAuthorizationToken", dto.getTicket());
         verify(redisTemplate).expire("mainUserAuthorizationToken", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
@@ -201,7 +201,7 @@ public class RedisServiceTest {
 
     private void shouldCreateMainUserAuthHeaders(ValueOperations valueOperations) {
 
-        AuthorizationDTO dto = authorizationService.getUserAuthorizationDTO(mainUserConfiguration.getEmail(), mainUserConfiguration.getPassword());
+        AuthorizationDTO dto = authorizationService.authorizeAndGetDTO(mainUserConfiguration.getEmail(), mainUserConfiguration.getPassword());
 
         verify(valueOperations).set("mainUserAuthorizationToken", dto.getTicket());
         verify(redisTemplate).expire("mainUserAuthorizationToken", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);

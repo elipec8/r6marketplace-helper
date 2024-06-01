@@ -94,7 +94,7 @@ class UbiUserPostgresMapperTest {
     private boolean ubiUserEntitiesAreEqual(UbiUserEntity entity1, UbiUserEntity entity2){
         return entity1.getChatId().equals(entity2.getChatId()) &&
                entity1.getEmail().equals(entity2.getEmail()) &&
-               entity1.getPassword().equals(entity2.getPassword()) &&
+               entity1.getEncodedPassword().equals(entity2.getEncodedPassword()) &&
                entity1.getUbiProfileId().equals(entity2.getUbiProfileId()) &&
                entity1.getUbiSessionId().equals(entity2.getUbiSessionId()) &&
                entity1.getUbiSpaceId().equals(entity2.getUbiSpaceId()) &&
@@ -107,13 +107,13 @@ class UbiUserPostgresMapperTest {
     private boolean ubiUsersAreEqual(UbiUser user1, UbiUser user2){
         return user1.getChatId().equals(user2.getChatId()) &&
                user1.getEmail().equals(user2.getEmail()) &&
-                user1.getPassword().equals(user2.getPassword()) &&
-                user1.getUbiProfileId().equals(user2.getUbiProfileId()) &&
-                user1.getUbiSessionId().equals(user2.getUbiSessionId()) &&
-                user1.getUbiSpaceId().equals(user2.getUbiSpaceId()) &&
-                user1.getUbiAuthTicket().equals(user2.getUbiAuthTicket()) &&
-                user1.getUbiRememberDeviceTicket().equals(user2.getUbiRememberDeviceTicket()) &&
-                user1.getUbiRememberMeTicket().equals(user2.getUbiRememberMeTicket()) &&
-                user1.getOwnedItemsIds().equals(user2.getOwnedItemsIds());
+               user1.getEncodedPassword().equals(user2.getEncodedPassword()) &&
+               user1.getUbiProfileId().equals(user2.getUbiProfileId()) &&
+               user1.getUbiSessionId().equals(user2.getUbiSessionId()) &&
+               user1.getUbiSpaceId().equals(user2.getUbiSpaceId()) &&
+               user1.getUbiAuthTicket().equals(user2.getUbiAuthTicket()) &&
+               user1.getUbiRememberDeviceTicket().equals(user2.getUbiRememberDeviceTicket()) &&
+               user1.getUbiRememberMeTicket().equals(user2.getUbiRememberMeTicket()) &&
+               user1.getOwnedItemsIds().equals(user2.getOwnedItemsIds());
     }
 }

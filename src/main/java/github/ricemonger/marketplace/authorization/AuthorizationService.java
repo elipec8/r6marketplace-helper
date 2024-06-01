@@ -20,7 +20,13 @@ public class AuthorizationService {
 
     private final UbiServiceConfiguration ubiServiceConfiguration;
 
-    public AuthorizationDTO getUserAuthorizationDTO(String email, String password) throws UbiUserAuthorizationClientErrorException {
+    private final AesPasswordEncoder AESPasswordEncoder;
+
+    public AuthorizationDTO authorizeAndGetDtoForEncodedPassword(String email, String encodedPassword){
+        return authorizeAndGetDTO(email, AESPasswordEncoder.decode(encodedPassword));
+    }
+
+    public AuthorizationDTO authorizeAndGetDTO(String email, String password) throws UbiUserAuthorizationClientErrorException, UbiUserAuthorizationServerErrorException{
         WebClient webClient = WebClient.builder()
                 .baseUrl(ubiServiceConfiguration.getAuthorizationUrl())
                 .defaultHeader("Content-Type", ubiServiceConfiguration.getContentType())

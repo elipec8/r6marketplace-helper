@@ -91,7 +91,7 @@ public class BotInnerService {
     }
 
     public String getUserInputByState(Long chatId, InputState inputState) {
-        return telegramUserService.getUserInputByStateOrNull(chatId, inputState);
+        return telegramUserService.getUserInputByState(chatId, inputState);
     }
 
     public void removeUserAllCredentials(Long chatId) {

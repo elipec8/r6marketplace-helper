@@ -22,5 +22,5 @@ public interface TelegramUserDatabaseService {
 
     void deleteAllInputsByChatId(String chatId);
 
-    TelegramUserInput findInputByIdOrEmpty(String chatId, InputState inputState);
+    TelegramUserInput findInputById(String chatId, InputState inputState);
 }

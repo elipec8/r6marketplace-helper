@@ -9,6 +9,7 @@ import github.ricemonger.telegramBot.executors.InputState;
 import github.ricemonger.utils.dtos.TelegramUser;
 import github.ricemonger.utils.dtos.TelegramUserInput;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.TelegramUserInputDoesntExistException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -99,6 +100,9 @@ class TelegramUserPostgresServiceTest {
         when(mapper.mapTelegramUserInputEntity(any())).thenReturn(null);
 
         TelegramUserInput input = new TelegramUserInput();
+        input.setChatId("1");
+
+        when(telegramUserPostgresRepository.findById("1")).thenReturn(java.util.Optional.of(new TelegramUserEntity()));
 
         telegramUserPostgresService.saveInput(input);
 
@@ -107,28 +111,54 @@ class TelegramUserPostgresServiceTest {
     }
 
     @Test
+    public void saveInput_should_throw_if_user_doesnt_exist() {
+        TelegramUserInput input = new TelegramUserInput("1", InputState.BASE, "");
+
+        when(telegramUserPostgresRepository.findById("1")).thenReturn(java.util.Optional.empty());
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserPostgresService.saveInput(input));
+    }
+
+    @Test
     public void deleteAllInputsByChatId_should_call_repository() {
+        when(telegramUserPostgresRepository.findById("1")).thenReturn(java.util.Optional.of(new TelegramUserEntity()));
+
         telegramUserPostgresService.deleteAllInputsByChatId("1");
 
         verify(telegramUserInputPostgresRepository).deleteAllByChatId("1");
     }
 
     @Test
-    public void findInputByIdOrEmpty_should_map_and_return() {
+    public void deleteAllInputsByChatId_should_throw_if_user_doesnt_exist() {
+        when(telegramUserPostgresRepository.findById("1")).thenReturn(java.util.Optional.empty());
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserPostgresService.deleteAllInputsByChatId("1"));
+    }
+
+    @Test
+    public void findInputById_should_map_and_return() {
         TelegramUserInput input = new TelegramUserInput();
         TelegramUserInputEntity entity = new TelegramUserInputEntity();
         when(telegramUserInputPostgresRepository.findById(any())).thenReturn(Optional.of(entity));
         when(mapper.mapTelegramUserInput(any())).thenReturn(input);
+        when(telegramUserPostgresRepository.findById("1")).thenReturn(java.util.Optional.of(new TelegramUserEntity()));
 
-        assertEquals(input, telegramUserPostgresService.findInputByIdOrEmpty("1", null));
+        assertEquals(input, telegramUserPostgresService.findInputById("1", null));
     }
 
     @Test
-    public void findInputByIdOrEmpty_should_return_empty_if_not_found() {
-        TelegramUserInput user = new TelegramUserInput("1",InputState.BASE,"");
+    public void findInputById_should_throw_if_no_input() {
+        when(telegramUserPostgresRepository.findById("1")).thenReturn(java.util.Optional.of(new TelegramUserEntity()));
 
         when(telegramUserInputPostgresRepository.findById(any())).thenReturn(java.util.Optional.empty());
 
-        assertEquals(user, telegramUserPostgresService.findInputByIdOrEmpty("1", InputState.BASE));
+        assertThrows(TelegramUserInputDoesntExistException.class, () -> telegramUserPostgresService.findInputById("1", InputState.BASE));
+    }
+
+    @Test
+    public void findInputById_should_throw_if_user_doesnt_exist() {
+        when(telegramUserPostgresRepository.findById("1")).thenReturn(java.util.Optional.empty());
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserPostgresService.findInputById("1", InputState.BASE));
     }
 }

@@ -62,7 +62,7 @@ public class RedisService {
     }
 
     private void createMainUserAuthHeaders() {
-        AuthorizationDTO dto = authorizationService.getUserAuthorizationDTO(mainUserConfiguration.getEmail(), mainUserConfiguration.getPassword());
+        AuthorizationDTO dto = authorizationService.authorizeAndGetDTO(mainUserConfiguration.getEmail(), mainUserConfiguration.getPassword());
 
         setFieldAndExpire("mainUserAuthorizationToken", dto.getTicket());
 

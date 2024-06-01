@@ -5,6 +5,7 @@ import github.ricemonger.marketplace.databases.postgres.entities.UbiUserEntityId
 import github.ricemonger.marketplace.databases.postgres.mappers.UbiUserPostgresMapper;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiUserPostgresRepository;
 import github.ricemonger.utils.dtos.UbiUser;
+import github.ricemonger.utils.exceptions.UbiUserDoesntExistException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -68,6 +69,13 @@ class UbiUserPostgresServiceTest {
     }
 
     @Test
+    public void getOwnedItemsIds_should_throw_if_ubi_user_doesnt_exist(){
+        when(ubiUserRepository.findById(new UbiUserEntityId("chatId","email"))).thenReturn(java.util.Optional.empty());
+
+        assertThrows(UbiUserDoesntExistException.class, () -> ubiUserPostgresService.getOwnedItemsIds("chatId", "email"));
+    }
+
+    @Test
     public void findById_should_return_user_from_repository() {
         UbiUserEntity entity = new UbiUserEntity();
         UbiUser ubiUser = new UbiUser();
@@ -78,6 +86,13 @@ class UbiUserPostgresServiceTest {
         UbiUser result = ubiUserPostgresService.findById("chatId", "email");
 
         assertEquals(ubiUser, result);
+    }
+
+    @Test
+    public void findById_should_throw_if_ubi_user_doesnt_exist(){
+        when(ubiUserRepository.findById(new UbiUserEntityId("chatId","email"))).thenReturn(java.util.Optional.empty());
+
+        assertThrows(UbiUserDoesntExistException.class, () -> ubiUserPostgresService.findById("chatId", "email"));
     }
 
     @Test
