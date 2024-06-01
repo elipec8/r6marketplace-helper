@@ -12,7 +12,18 @@ import java.util.List;
 @Component
 public class TelegramUserPostgresMapper {
 
-    public Collection<TelegramUser> mapTelegramUsers(List<TelegramUserEntity> entities) {
+    public TelegramUserEntity mapTelegramUserEntity(TelegramUser telegramUser) {
+        TelegramUserEntity telegramUserEntity = new TelegramUserEntity();
+
+        telegramUserEntity.setChatId(telegramUser.getChatId());
+        telegramUserEntity.setInputState(telegramUser.getInputState());
+        telegramUserEntity.setInputGroup(telegramUser.getInputGroup());
+        telegramUserEntity.setPublicNotificationsEnabledFlag(telegramUser.isPublicNotificationsEnabledFlag());
+
+        return telegramUserEntity;
+    }
+
+    public Collection<TelegramUser> mapTelegramUsers(Collection<TelegramUserEntity> entities) {
         return entities.stream().map(this::mapTelegramUser).toList();
     }
 
@@ -25,17 +36,6 @@ public class TelegramUserPostgresMapper {
         telegramUser.setPublicNotificationsEnabledFlag(entity.isPublicNotificationsEnabledFlag());
 
         return telegramUser;
-    }
-
-    public TelegramUserEntity mapTelegramUserEntity(TelegramUser telegramUser) {
-        TelegramUserEntity telegramUserEntity = new TelegramUserEntity();
-
-        telegramUserEntity.setChatId(telegramUser.getChatId());
-        telegramUserEntity.setInputState(telegramUser.getInputState());
-        telegramUserEntity.setInputGroup(telegramUser.getInputGroup());
-        telegramUserEntity.setPublicNotificationsEnabledFlag(telegramUser.isPublicNotificationsEnabledFlag());
-
-        return telegramUserEntity;
     }
 
     public TelegramUserInputEntity mapTelegramUserInputEntity(TelegramUserInput telegramUserInput) {

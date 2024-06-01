@@ -13,7 +13,7 @@ public class UbiUser {
     private String chatId;
 
     private String email;
-    private String password;
+    private String encodedPassword;
     private String ubiProfileId;
     private String ubiSessionId;
     private String ubiSpaceId;

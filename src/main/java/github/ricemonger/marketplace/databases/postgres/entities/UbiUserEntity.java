@@ -3,9 +3,6 @@ package github.ricemonger.marketplace.databases.postgres.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity(name = "ubi_user")
 @Getter
 @Setter
@@ -19,7 +16,7 @@ public class UbiUserEntity {
 
     @Id
     private String email;
-    private String password;
+    private String encodedPassword;
 
     private String ubiProfileId;
     private String ubiSessionId;
@@ -36,9 +33,9 @@ public class UbiUserEntity {
     @Column(columnDefinition = "TEXT")
     private String ownedItemsIds;
 
-    public UbiUserEntity(String chatId, String email, String password) {
+    public UbiUserEntity(String chatId, String email, String encodedPassword) {
         this.chatId = chatId;
         this.email = email;
-        this.password = password;
+        this.encodedPassword = encodedPassword;
     }
 }

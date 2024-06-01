@@ -22,14 +22,16 @@ public class ItemPostgresMapper {
 
     public ItemEntity mapItemEntity(Item item) {
         StringBuilder tags = new StringBuilder();
-        for (String tag : item.getTags()) {
-            tags.append(tag).append(",");
-        }
-        try {
-            tags.deleteCharAt(tags.length() - 1);
-        }
-        catch (StringIndexOutOfBoundsException e) {
-            log.error("Tags list is empty");
+
+        if(item.getTags() != null) {
+            for (String tag : item.getTags()) {
+                tags.append(tag).append(",");
+            }
+            try {
+                tags.deleteCharAt(tags.length() - 1);
+            } catch (StringIndexOutOfBoundsException e) {
+                log.error("Tags list is empty");
+            }
         }
 
         ItemEntity entity = new ItemEntity();
@@ -49,18 +51,24 @@ public class ItemPostgresMapper {
         return entity;
     }
 
-    public Collection<Item> mapItems(List<ItemEntity> entities) {
+    public Collection<Item> mapItems(Collection<ItemEntity> entities) {
         return entities.stream().map(this::mapItem).toList();
     }
 
     public Item mapItem(ItemEntity entity) {
-        String[] tags = entity.getTags().split(",");
+        List<String> tags;
+        if(entity.getTags() != null){
+            tags = List.of(entity.getTags().split(","));
+        }
+        else{
+            tags = List.of();
+        }
 
         Item item = new Item();
         item.setItemId(entity.getItemId());
         item.setAssetUrl(entity.getAssetUrl());
         item.setName(entity.getName());
-        item.setTags(List.of(tags));
+        item.setTags(tags);
         item.setType(entity.getType());
         item.setMaxBuyPrice(entity.getMaxBuyPrice());
         item.setBuyOrdersCount(entity.getBuyOrdersCount());
@@ -85,7 +93,7 @@ public class ItemPostgresMapper {
         return entity;
     }
 
-    public Collection<ItemSale> mapItemSales(List<ItemSaleEntity> entities) {
+    public Collection<ItemSale> mapItemSales(Collection<ItemSaleEntity> entities) {
         return entities.stream().map(this::mapItemSale).toList();
     }
 
@@ -138,7 +146,7 @@ public class ItemPostgresMapper {
         return entity;
     }
 
-    public Collection<ItemSaleHistory> mapItemSaleHistories(List<ItemSaleHistoryEntity> entities) {
+    public Collection<ItemSaleHistory> mapItemSaleHistories(Collection<ItemSaleHistoryEntity> entities) {
         return entities.stream().map(this::mapItemSaleHistory).toList();
     }
 

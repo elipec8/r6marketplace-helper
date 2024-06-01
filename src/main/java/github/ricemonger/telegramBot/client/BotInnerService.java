@@ -7,6 +7,9 @@ import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.InputGroup;
 import github.ricemonger.telegramBot.executors.InputState;
 import github.ricemonger.utils.dtos.Item;
+import github.ricemonger.utils.exceptions.InvalidTelegramUserInput;
+import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.TelegramUserInputDoesntExistException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,8 +28,6 @@ public class BotInnerService {
 
     private final ItemService itemService;
 
-    private final UbiUserService ubiUserService;
-
     public void askFromInlineKeyboard(UpdateInfo updateInfo, String text, int buttonsInLine, CallbackButton[] buttons) {
         telegramBotClientService.askFromInlineKeyboard(updateInfo, text, buttonsInLine, buttons);
     }
@@ -43,7 +44,7 @@ public class BotInnerService {
         telegramUserService.registerTelegramUser(chatId);
     }
 
-    public void addCredentialsFromUserInputs(Long chatId) {
+    public void addCredentialsFromUserInputs(Long chatId) throws TelegramUserDoesntExistException {
         String fullOrEmail = getUserInputByState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL);
 
         if (fullOrEmail.contains(":")) {
@@ -59,13 +60,11 @@ public class BotInnerService {
 
     }
 
-    public void removeCredentialsByUserInputs(Long chatId) {
+    public void removeCredentialsByUserInputs(Long chatId) throws TelegramUserDoesntExistException {
         telegramUserService.removeCredentialsByUserInputs(chatId);
-
-        clearUserInputs(chatId);
     }
 
-    public void saveUserInputOrThrow(UpdateInfo updateInfo) {
+    public void saveUserInputOrThrow(UpdateInfo updateInfo) throws TelegramUserDoesntExistException {
         String userInput;
 
         if (updateInfo.isHasMessage()) {
@@ -73,48 +72,37 @@ public class BotInnerService {
         } else if (updateInfo.isHasCallBackQuery()) {
             userInput = updateInfo.getCallbackQueryData();
         } else {
-            throw new IllegalStateException("UpdateInfo has no message or callback query");
+            throw new InvalidTelegramUserInput("UpdateInfo has no message or callback query");
         }
         telegramUserService.saveUserInput(updateInfo.getChatId(), updateInfo.getInputState(), userInput);
     }
 
-    public void clearUserInputs(Long chatId) {
+    public void clearUserInputs(Long chatId) throws TelegramUserDoesntExistException {
         telegramUserService.clearUserInputs(chatId);
     }
 
-    public void setUserNextInputState(Long chatId, InputState inputState) {
+    public void setUserNextInputState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException {
         telegramUserService.setUserNextInputState(chatId, inputState);
     }
 
-    public void setUserNextInputGroup(Long chatId, InputGroup inputGroup) {
+    public void setUserNextInputGroup(Long chatId, InputGroup inputGroup) throws TelegramUserDoesntExistException {
         telegramUserService.setUserNextInputGroup(chatId, inputGroup);
     }
 
-    public String getUserInputByState(Long chatId, InputState inputState) {
-        return telegramUserService.getUserInputByStateOrNull(chatId, inputState);
+    public String getUserInputByState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
+        return telegramUserService.getUserInputByState(chatId, inputState);
     }
 
-    public void removeUserAllCredentials(Long chatId) {
+    public void removeUserAllCredentials(Long chatId) throws TelegramUserDoesntExistException {
         telegramUserService.removeAllCredentials(chatId);
     }
 
-    public List<String> getCredentialsEmailsList(Long chatId) {
+    public List<String> getCredentialsEmailsList(Long chatId) throws TelegramUserDoesntExistException {
         return telegramUserService.getCredentialsEmailsList(chatId);
     }
 
     public void sendDefaultSpeculativeItemsAsMessages(Long chatId) {
         List<Item> speculativeItems = new ArrayList<>(itemService.getAllSpeculativeItemsByExpectedProfit(50, 40, 0, 15000));
-        log.debug("Speculative items amount: {}", speculativeItems.size());
-        for (Item item : speculativeItems) {
-            telegramBotClientService.sendText(String.valueOf(chatId), getItemString(item));
-        }
-    }
-
-    public void sendOwnedSpeculativeItemsAsMessages(Long chatId, String email) {
-        List<String> ownedItems = new ArrayList<>(ubiUserService.getOwnedItemsIds(String.valueOf(chatId), email));
-
-        List<? extends Item> speculativeItems = new ArrayList<>(itemService.getOwnedSpeculativeItemsByExpectedProfit(ownedItems, 50, 40, 0, 15000));
-
         log.debug("Speculative items amount: {}", speculativeItems.size());
         for (Item item : speculativeItems) {
             telegramBotClientService.sendText(String.valueOf(chatId), getItemString(item));
@@ -127,7 +115,13 @@ public class BotInnerService {
         String buyOrders = String.valueOf(item.getBuyOrdersCount());
         String minSellPrice = String.valueOf(item.getMinSellPrice());
         String sellOrders = String.valueOf(item.getSellOrdersCount());
-        String lastSoldAt = item.getLastSoldAt().toString();
+        String lastSoldAt;
+        if(item.getLastSoldAt() != null) {
+            lastSoldAt = item.getLastSoldAt().toString();
+        }
+        else{
+            lastSoldAt = "null";
+        }
         String lastSoldPrice = String.valueOf(item.getLastSoldPrice());
         String pictureUrl = item.getAssetUrl();
 

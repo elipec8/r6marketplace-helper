@@ -17,18 +17,6 @@ services:
      - postgres-net
     restart: always
 
- postgres-test:
-   container_name: r6helper-postgres-test
-   image: postgres:16.3
-   ports:
-     - "5433:5432"
-   environment:
-     - POSTGRES_USER=postgres
-     - POSTGRES_PASSWORD=1234
-     - POSTGRES_DB=r6helper
-   networks:
-     - postgres-net
-
  pgadmin:
     container_name: r6helper-pgadmin
     image: dpage/pgadmin4:8.6
