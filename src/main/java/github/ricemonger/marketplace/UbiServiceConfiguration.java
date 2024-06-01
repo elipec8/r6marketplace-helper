@@ -26,8 +26,6 @@ public class UbiServiceConfiguration {
     private String localeCode;
     @Value("${ubi.session.expireTimeout}")
     private Integer expireTimeout;
-    @Value("${ubi.session.marketplaceProfit}")
-    private Float marketplaceProfitPercent;
     @Value("${ubi.session.dateFormat}")
     private String dateFormat;
 }

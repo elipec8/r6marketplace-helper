@@ -8,7 +8,7 @@ import java.util.Collection;
 
 public interface ItemDatabaseService {
 
-    public void saveAllItemsAndItemSales(Collection<Item> items);
+    void saveAllItemsAndItemSales(Collection<Item> items);
 
     void saveAllItemSaleHistoryStats(Collection<ItemSaleHistory> histories);
 
