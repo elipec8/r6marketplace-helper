@@ -21,12 +21,10 @@ public class ScheduledMarketplaceConfigurationFetcher {
 
     @Scheduled(fixedRate = 24 * 60 * 60 * 1000) // every 24h with no delay
     public void fetchMarketplaceConfigurations() {
+        tagService.saveAll(graphQlClientService.fetchAllTags());
+        graphQlClientService.checkItemTypes();
 
-
-
-
-
-
-
+        redisService.setConfigResolvedTransactionPeriod(graphQlClientService.fetchConfigResolvedTransactionPeriod());
+        redisService.setConfigTrades(graphQlClientService.fetchConfigTrades());
     }
 }
