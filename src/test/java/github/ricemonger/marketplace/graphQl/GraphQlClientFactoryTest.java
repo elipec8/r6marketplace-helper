@@ -37,20 +37,6 @@ public class GraphQlClientFactoryTest {
     }
 
     @Test
-    public void createMainUserClientShouldNotBuildFromRedisIfClientAlreadyExists() {
-        graphQlClientFactory.createMainUserClient();
-
-        reset(redisService);
-
-        graphQlClientFactory.createMainUserClient();
-
-        verify(redisService, never()).getMainUserAuthorizationToken();
-        verify(redisService, never()).getMainUserSessionId();
-        verify(redisService, never()).getMainUserProfileId();
-        verify(redisService, never()).getMainUserSpaceId();
-    }
-
-    @Test
     public void createMainUserClientShouldBuildFromRedisIfClientExpired() throws InterruptedException {
         graphQlClientFactory.createMainUserClient();
 

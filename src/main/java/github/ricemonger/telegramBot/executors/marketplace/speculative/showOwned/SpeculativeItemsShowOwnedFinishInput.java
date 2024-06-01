@@ -13,6 +13,6 @@ public class SpeculativeItemsShowOwnedFinishInput extends AbstractBotCommandExec
 
         botInnerService.clearUserInputs(updateInfo.getChatId());
 
-        botInnerService.sendOwnedSpeculativeItemsAsMessages(updateInfo.getChatId(), email);
+        botInnerService.sendDefaultSpeculativeItemsAsMessages(updateInfo.getChatId());
     }
 }

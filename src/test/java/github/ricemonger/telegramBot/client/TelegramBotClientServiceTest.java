@@ -1,6 +1,7 @@
 package github.ricemonger.telegramBot.client;
 
 import github.ricemonger.telegramBot.UpdateInfo;
+import github.ricemonger.utils.exceptions.TelegramApiRuntimeException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

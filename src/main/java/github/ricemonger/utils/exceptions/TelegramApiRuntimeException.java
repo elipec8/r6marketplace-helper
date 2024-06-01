@@ -1,4 +1,4 @@
-package github.ricemonger.telegramBot.client;
+package github.ricemonger.utils.exceptions;
 
 public class TelegramApiRuntimeException extends RuntimeException {
     public TelegramApiRuntimeException(Exception e) {
