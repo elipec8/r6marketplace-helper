@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.redis.services;
 
-import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.marketplace.authorization.AuthorizationService;
+import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.utils.dtos.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.dtos.ConfigTrades;
 import org.junit.jupiter.api.AfterEach;
@@ -96,7 +96,7 @@ public class RedisServiceTest {
 
     @Test
     public void getConfigResolvedTransactionPeriod_should_return_zero_if_empty() {
-        assertEquals(new ConfigResolvedTransactionPeriod(0,0), redisService.getConfigResolvedTransactionPeriod());
+        assertEquals(new ConfigResolvedTransactionPeriod(0, 0), redisService.getConfigResolvedTransactionPeriod());
     }
 
     @Test
@@ -104,7 +104,7 @@ public class RedisServiceTest {
         redisTemplate.opsForValue().set("buyResolvedTransactionPeriod", "");
         redisTemplate.opsForValue().set("sellResolvedTransactionPeriod", "");
 
-        assertEquals(new ConfigResolvedTransactionPeriod(0,0), redisService.getConfigResolvedTransactionPeriod());
+        assertEquals(new ConfigResolvedTransactionPeriod(0, 0), redisService.getConfigResolvedTransactionPeriod());
     }
 
     @Test
@@ -112,7 +112,7 @@ public class RedisServiceTest {
         redisTemplate.opsForValue().set("buyResolvedTransactionPeriod", "10");
         redisTemplate.opsForValue().set("sellResolvedTransactionPeriod", "20");
 
-        assertEquals(new ConfigResolvedTransactionPeriod(10,20), redisService.getConfigResolvedTransactionPeriod());
+        assertEquals(new ConfigResolvedTransactionPeriod(10, 20), redisService.getConfigResolvedTransactionPeriod());
     }
 
     @Test
@@ -120,7 +120,7 @@ public class RedisServiceTest {
         ValueOperations valueOperations = mock(ValueOperations.class);
         when(redisTemplate.opsForValue()).thenReturn(valueOperations);
 
-        redisService.setConfigResolvedTransactionPeriod(new ConfigResolvedTransactionPeriod(10,20));
+        redisService.setConfigResolvedTransactionPeriod(new ConfigResolvedTransactionPeriod(10, 20));
 
         verify(valueOperations).set("buyResolvedTransactionPeriod", "10");
         verify(valueOperations).set("sellResolvedTransactionPeriod", "20");
@@ -128,7 +128,7 @@ public class RedisServiceTest {
 
     @Test
     public void getConfigTrades_should_return_zero_if_empty() {
-        assertEquals(new ConfigTrades(0,0,0,0,0,0,null,0,false,false), redisService.getConfigTrades());
+        assertEquals(new ConfigTrades(0, 0, 0, 0, 0, 0, null, 0, false, false), redisService.getConfigTrades());
     }
 
     @Test
@@ -144,7 +144,7 @@ public class RedisServiceTest {
         redisTemplate.opsForValue().set("twoFactorAuthenticationRule", "");
         redisTemplate.opsForValue().set("gameOwnershipRule", "");
 
-        assertEquals(new ConfigTrades(0,0,0,0,0,0,"",0,false,false), redisService.getConfigTrades());
+        assertEquals(new ConfigTrades(0, 0, 0, 0, 0, 0, "", 0, false, false), redisService.getConfigTrades());
     }
 
     @Test
@@ -160,7 +160,7 @@ public class RedisServiceTest {
         redisTemplate.opsForValue().set("twoFactorAuthenticationRule", "true");
         redisTemplate.opsForValue().set("gameOwnershipRule", "true");
 
-        assertEquals(new ConfigTrades(10,20,30,40,50,60,"paymentItemId",70,true,true), redisService.getConfigTrades());
+        assertEquals(new ConfigTrades(10, 20, 30, 40, 50, 60, "paymentItemId", 70, true, true), redisService.getConfigTrades());
     }
 
     @Test
@@ -168,7 +168,7 @@ public class RedisServiceTest {
         ValueOperations valueOperations = mock(ValueOperations.class);
         when(redisTemplate.opsForValue()).thenReturn(valueOperations);
 
-        redisService.setConfigTrades(new ConfigTrades(10,20,30,40,50,60,"paymentItemId",70,true,true));
+        redisService.setConfigTrades(new ConfigTrades(10, 20, 30, 40, 50, 60, "paymentItemId", 70, true, true));
 
         verify(valueOperations).set("saleExpiresAfterMinutes", "10");
         verify(valueOperations).set("buySlots", "20");
@@ -195,27 +195,11 @@ public class RedisServiceTest {
     }
 
     @Test
-    public void getMainUserAuthorizationToken_should_return_value_from_authorization_service_if_empty() {
-        String ticket = redisService.getMainUserAuthorizationToken();
-
-        assertEquals("ticket", ticket);
-    }
-
-    @Test
     public void getMainUserAuthorizationToken_should_create_all_authorization_fields_if_empty() {
         ValueOperations mock = mock(ValueOperations.class);
         when(redisTemplate.opsForValue()).thenReturn(mock);
 
         redisService.getMainUserAuthorizationToken();
-
-        shouldCreateMainUserAuthHeaders(mock);
-    }
-
-    @Test
-    public void getMainUserProfileId_should_return_value_from_authorization_service_if_empty() {
-        String profileId = redisService.getMainUserProfileId();
-
-        assertEquals("profileId", profileId);
     }
 
     @Test
@@ -224,16 +208,6 @@ public class RedisServiceTest {
         when(redisTemplate.opsForValue()).thenReturn(mock);
 
         redisService.getMainUserProfileId();
-
-        shouldCreateMainUserAuthHeaders(mock);
-    }
-
-
-    @Test
-    public void getMainUserSessionId_should_return_value_from_authorization_service_if_empty() {
-        String sessionId = redisService.getMainUserSessionId();
-
-        assertEquals("sessionId", sessionId);
     }
 
     @Test
@@ -242,15 +216,6 @@ public class RedisServiceTest {
         when(redisTemplate.opsForValue()).thenReturn(mock);
 
         redisService.getMainUserSessionId();
-
-        shouldCreateMainUserAuthHeaders(mock);
-    }
-
-    @Test
-    public void getMainUserRememberMeTicket_should_return_value_from_authorization_service_if_empty() {
-        String rememberMeTicket = redisService.getMainUserRememberMeTicket();
-
-        assertEquals("rememberMeTicket", rememberMeTicket);
     }
 
     @Test
@@ -259,20 +224,53 @@ public class RedisServiceTest {
         when(redisTemplate.opsForValue()).thenReturn(mock);
 
         redisService.getMainUserRememberMeTicket();
-
-        shouldCreateMainUserAuthHeaders(mock);
     }
 
     @Test
-    public void rememberMeTicket_should_not_be_created_if_null_in_dto() {
-        when(authorizationService.authorizeAndGetDTO(mainUserConfiguration.getEmail(), mainUserConfiguration.getPassword())).thenReturn(new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "twoFactorAuthTicket", "rememberDeviceTicket", null));
-
+    public void getMainUserSpaceId_should_create_all_authorization_fields_if_empty() {
         ValueOperations mock = mock(ValueOperations.class);
         when(redisTemplate.opsForValue()).thenReturn(mock);
 
-        redisService.getMainUserRememberMeTicket();
+        redisService.getMainUserSpaceId();
+    }
 
-        AuthorizationDTO dto = authorizationService.authorizeAndGetDTO(mainUserConfiguration.getEmail(), mainUserConfiguration.getPassword());
+    @Test
+    public void setMainUserAuthorization_should_save_values_from_dto() {
+        ValueOperations mock = mock(ValueOperations.class);
+        when(redisTemplate.opsForValue()).thenReturn(mock);
+
+        AuthorizationDTO dto = new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "twoFactorAuthTicket", "rememberDeviceTicket",
+                "rememberMeTicket");
+        when(authorizationService.authorizeAndGetDTO(mainUserConfiguration.getEmail(), mainUserConfiguration.getPassword())).thenReturn(dto);
+
+        redisService.setMainUserAuthorization(dto, mainUserConfiguration.getExpireTimeout());
+
+        verify(mock).set("mainUserAuthorizationToken", dto.getTicket());
+        verify(redisTemplate).expire("mainUserAuthorizationToken", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
+
+        verify(mock).set("mainUserProfileId", dto.getProfileId());
+        verify(redisTemplate).expire("mainUserProfileId", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
+
+        verify(mock).set("mainUserSessionId", dto.getSessionId());
+        verify(redisTemplate).expire("mainUserSessionId", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
+
+        verify(mock).set("mainUserSpaceId", dto.getSpaceId());
+        verify(redisTemplate).expire("mainUserSpaceId", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
+
+        verify(mock).set("mainUserRememberMeTicket", dto.getRememberMeTicket());
+        verify(redisTemplate).expire("mainUserRememberMeTicket", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
+    }
+
+    @Test
+    public void setMainUserAuthorization_should_save_values_from_dto_without_rememberMeTicket() {
+        ValueOperations mock = mock(ValueOperations.class);
+        when(redisTemplate.opsForValue()).thenReturn(mock);
+
+        AuthorizationDTO dto = new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "twoFactorAuthTicket", "rememberDeviceTicket",
+                null);
+        when(authorizationService.authorizeAndGetDTO(mainUserConfiguration.getEmail(), mainUserConfiguration.getPassword())).thenReturn(dto);
+
+        redisService.setMainUserAuthorization(dto, mainUserConfiguration.getExpireTimeout());
 
         verify(mock).set("mainUserAuthorizationToken", dto.getTicket());
         verify(redisTemplate).expire("mainUserAuthorizationToken", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
@@ -288,42 +286,5 @@ public class RedisServiceTest {
 
         verify(mock, never()).set("mainUserRememberMeTicket", dto.getRememberMeTicket());
         verify(redisTemplate, never()).expire("mainUserRememberMeTicket", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
-    }
-
-    @Test
-    public void getMainUserSpaceId_should_return_value_from_authorization_service_if_empty() {
-        String spaceId = redisService.getMainUserSpaceId();
-
-        assertEquals("spaceId", spaceId);
-    }
-
-    @Test
-    public void getMainUserSpaceId_should_create_all_authorization_fields_if_empty() {
-        ValueOperations mock = mock(ValueOperations.class);
-        when(redisTemplate.opsForValue()).thenReturn(mock);
-
-        redisService.getMainUserSpaceId();
-
-        shouldCreateMainUserAuthHeaders(mock);
-    }
-
-    private void shouldCreateMainUserAuthHeaders(ValueOperations valueOperations) {
-
-        AuthorizationDTO dto = authorizationService.authorizeAndGetDTO(mainUserConfiguration.getEmail(), mainUserConfiguration.getPassword());
-
-        verify(valueOperations).set("mainUserAuthorizationToken", dto.getTicket());
-        verify(redisTemplate).expire("mainUserAuthorizationToken", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
-
-        verify(valueOperations).set("mainUserProfileId", dto.getProfileId());
-        verify(redisTemplate).expire("mainUserProfileId", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
-
-        verify(valueOperations).set("mainUserSessionId", dto.getSessionId());
-        verify(redisTemplate).expire("mainUserSessionId", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
-
-        verify(valueOperations).set("mainUserSpaceId", dto.getSpaceId());
-        verify(redisTemplate).expire("mainUserSpaceId", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
-
-        verify(valueOperations).set("mainUserRememberMeTicket", dto.getRememberMeTicket());
-        verify(redisTemplate).expire("mainUserRememberMeTicket", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
     }
 }

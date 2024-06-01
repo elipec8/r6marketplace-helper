@@ -22,7 +22,7 @@ public class AuthorizationService {
 
     private final AesPasswordEncoder AESPasswordEncoder;
 
-    public AuthorizationDTO authorizeAndGetDtoForEncodedPassword(String email, String encodedPassword){
+    public AuthorizationDTO authorizeAndGetDtoForEncodedPassword(String email, String encodedPassword) throws UbiUserAuthorizationClientErrorException, UbiUserAuthorizationServerErrorException{
         return authorizeAndGetDTO(email, AESPasswordEncoder.decode(encodedPassword));
     }
 

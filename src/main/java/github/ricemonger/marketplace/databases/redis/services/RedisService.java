@@ -19,10 +19,6 @@ public class RedisService {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    private final AuthorizationService authorizationService;
-
-    private final MainUserConfiguration mainUserConfiguration;
-
     public int getExpectedItemCount() {
         String value = redisTemplate.opsForValue().get("expectedItemCount");
 
@@ -80,58 +76,44 @@ public class RedisService {
     }
 
     public String getMainUserAuthorizationToken() {
-        return getOrCreateMainUserField("mainUserAuthorizationToken");
+        return redisTemplate.opsForValue().get("mainUserAuthorizationToken");
     }
 
     public String getMainUserProfileId() {
-        return getOrCreateMainUserField("mainUserProfileId");
+        return redisTemplate.opsForValue().get("mainUserProfileId");
     }
 
     public String getMainUserSessionId() {
-        return getOrCreateMainUserField("mainUserSessionId");
+        return redisTemplate.opsForValue().get("mainUserSessionId");
     }
 
     public String getMainUserRememberMeTicket() {
-        return getOrCreateMainUserField("mainUserRememberMeTicket");
+        return redisTemplate.opsForValue().get("mainUserRememberMeTicket");
     }
 
     public String getMainUserSpaceId() {
-        return getOrCreateMainUserField("mainUserSpaceId");
+        return redisTemplate.opsForValue().get("mainUserSpaceId");
     }
 
-    private String getOrCreateMainUserField(String field) {
-        String value = redisTemplate.opsForValue().get(field);
+    public void setMainUserAuthorization(AuthorizationDTO dto, int expireTimeout) {
+        setFieldAndExpire("mainUserAuthorizationToken", dto.getTicket(), expireTimeout);
 
-        if (value == null) {
-            createMainUserAuthHeaders();
+        setFieldAndExpire("mainUserProfileId", dto.getProfileId(), expireTimeout);
 
-            value = redisTemplate.opsForValue().get(field);
-        }
+        setFieldAndExpire("mainUserSessionId", dto.getSessionId(), expireTimeout);
 
-        return value;
-    }
+        setFieldAndExpire("mainUserSpaceId", dto.getSpaceId(), expireTimeout);
 
-    private void createMainUserAuthHeaders() {
-        AuthorizationDTO dto = authorizationService.authorizeAndGetDTO(mainUserConfiguration.getEmail(), mainUserConfiguration.getPassword());
-
-        setFieldAndExpire("mainUserAuthorizationToken", dto.getTicket());
-
-        setFieldAndExpire("mainUserProfileId", dto.getProfileId());
-
-        setFieldAndExpire("mainUserSessionId", dto.getSessionId());
-
-        setFieldAndExpire("mainUserSpaceId", dto.getSpaceId());
-
-        setFieldAndExpire("authorizationUpdatedDate", new Date().toString());
+        setFieldAndExpire("authorizationUpdatedDate", new Date().toString(), expireTimeout);
 
         if (dto.getRememberMeTicket() != null) {
-            setFieldAndExpire("mainUserRememberMeTicket", dto.getRememberMeTicket());
+            setFieldAndExpire("mainUserRememberMeTicket", dto.getRememberMeTicket(), expireTimeout);
         }
     }
 
-    private void setFieldAndExpire(String field, String value) {
+    private void setFieldAndExpire(String field, String value,int expireTimeout) {
         redisTemplate.opsForValue().set(field, value);
-        redisTemplate.expire(field, mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
+        redisTemplate.expire(field, expireTimeout, TimeUnit.SECONDS);
     }
 
     private int getIntField(String field) {
