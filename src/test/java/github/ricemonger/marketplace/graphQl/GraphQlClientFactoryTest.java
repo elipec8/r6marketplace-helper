@@ -33,7 +33,7 @@ public class GraphQlClientFactoryTest {
         verify(redisService).getMainUserAuthorizationToken();
         verify(redisService).getMainUserSessionId();
         verify(redisService).getMainUserProfileId();
-        verify(redisService).getMainUserSpaceId();
+        verify(redisService).getGameSpaceId();
     }
 
     @Test
@@ -49,6 +49,6 @@ public class GraphQlClientFactoryTest {
         verify(redisService).getMainUserAuthorizationToken();
         verify(redisService).getMainUserSessionId();
         verify(redisService).getMainUserProfileId();
-        verify(redisService).getMainUserSpaceId();
+        verify(redisService).getGameSpaceId();
     }
 }

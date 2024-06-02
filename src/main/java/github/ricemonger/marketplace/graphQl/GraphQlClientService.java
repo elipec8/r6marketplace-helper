@@ -66,6 +66,7 @@ public class GraphQlClientService {
         HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
         github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.Marketplace marketplace = client
                 .documentName(GraphQlDocuments.QUERY_MARKETPLACE_CONFIG_DOCUMENT_NAME)
+                .variables(graphQlVariablesService.getFetchConfigVariables())
                 .retrieve("game.marketplace")
                 .toEntity(github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.Marketplace.class)
                 .block();
@@ -77,6 +78,7 @@ public class GraphQlClientService {
         HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
         github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.Marketplace marketplace = client
                 .documentName(GraphQlDocuments.QUERY_MARKETPLACE_CONFIG_DOCUMENT_NAME)
+                .variables(graphQlVariablesService.getFetchConfigVariables())
                 .retrieve("game.marketplace")
                 .toEntity(github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.Marketplace.class)
                 .block();
@@ -86,19 +88,22 @@ public class GraphQlClientService {
 
     public ConfigResolvedTransactionPeriod fetchConfigResolvedTransactionPeriod() {
         HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
-        github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transaction_period.TradeLimitations tradeLimitations = client
+
+        github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transaction_period.TradesLimitations tradesLimitations = client
                 .documentName(GraphQlDocuments.QUERY_RESOLVED_TRANSACTION_PERIOD_CONFIG_DOCUMENT_NAME)
-                .retrieve("game.viewer.meta.tradeLimitations")
-                .toEntity(github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transaction_period.TradeLimitations.class)
+                .variables(graphQlVariablesService.getFetchConfigVariables())
+                .retrieve("game.viewer.meta.tradesLimitations")
+                .toEntity(github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transaction_period.TradesLimitations.class)
                 .block();
 
-        return configQueryResolvedTransactionPeriodMapper.mapConfigResolvedTransactionPeriod(tradeLimitations);
+        return configQueryResolvedTransactionPeriodMapper.mapConfigResolvedTransactionPeriod(tradesLimitations);
     }
 
     public ConfigTrades fetchConfigTrades() {
         HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
         github.ricemonger.marketplace.graphQl.dtos.config_query_trade.TradesConfig tradesConfig = client
                 .documentName(GraphQlDocuments.QUERY_TRADE_CONFIG_DOCUMENT_NAME)
+                .variables(graphQlVariablesService.getFetchConfigVariables())
                 .retrieve("game.tradesConfig")
                 .toEntity(github.ricemonger.marketplace.graphQl.dtos.config_query_trade.TradesConfig.class)
                 .block();
@@ -110,6 +115,7 @@ public class GraphQlClientService {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
         github.ricemonger.marketplace.graphQl.dtos.personal_query_credits_amount.Meta meta = client
                 .documentName(GraphQlDocuments.QUERY_CREDITS_AMOUNT_DOCUMENT_NAME)
+                .variables(graphQlVariablesService.getFetchCreditAmountVariables())
                 .retrieve("game.viewer.meta.secondaryStoreItem.meta")
                 .toEntity(github.ricemonger.marketplace.graphQl.dtos.personal_query_credits_amount.Meta.class)
                 .block();
@@ -125,7 +131,7 @@ public class GraphQlClientService {
 
         trades = client
                 .documentName(GraphQlDocuments.QUERY_CURRENT_ORDERS_DOCUMENT_NAME)
-                .variables(graphQlVariablesService.getFetchItemsVariables(0))
+                .variables(graphQlVariablesService.getFetchOrdersVariables(0))
                 .retrieve("game.viewer.meta.trades")
                 .toEntity(github.ricemonger.marketplace.graphQl.dtos.personal_query_current_orders.Trades.class)
                 .block();
@@ -140,12 +146,12 @@ public class GraphQlClientService {
         github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.Trades trades;
         List<github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.trades.Nodes> nodes = new ArrayList<>();
         int offset = 0;
-        int totalCount = 0;
+        int totalCount;
 
         do {
             trades = client
                     .documentName(GraphQlDocuments.QUERY_FINISHED_ORDERS_DOCUMENT_NAME)
-                    .variables(graphQlVariablesService.getFetchItemsVariables(offset))
+                    .variables(graphQlVariablesService.getFetchOrdersVariables(offset))
                     .retrieve("game.viewer.meta.trades")
                     .toEntity(github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.Trades.class)
                     .block();
@@ -168,6 +174,7 @@ public class GraphQlClientService {
 
         tradeLimitations = client
                 .documentName(GraphQlDocuments.QUERY_LOCKED_ITEMS_DOCUMENT_NAME)
+                .variables(graphQlVariablesService.getFetchLockedItemsVariables())
                 .retrieve("game.viewer.meta.tradeLimitations")
                 .toEntity(github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.TradeLimitations.class)
                 .block();

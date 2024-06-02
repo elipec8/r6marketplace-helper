@@ -76,4 +76,8 @@ public class AuthorizationService {
 
         return "Basic " + token;
     }
+
+    public String getEncodedPassword(String password) {
+        return AESPasswordEncoder.encode(password);
+    }
 }

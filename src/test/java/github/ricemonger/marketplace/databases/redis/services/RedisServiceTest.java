@@ -227,11 +227,11 @@ public class RedisServiceTest {
     }
 
     @Test
-    public void getMainUserSpaceId_should_create_all_authorization_fields_if_empty() {
+    public void getGameSpaceId_should_create_all_authorization_fields_if_empty() {
         ValueOperations mock = mock(ValueOperations.class);
         when(redisTemplate.opsForValue()).thenReturn(mock);
 
-        redisService.getMainUserSpaceId();
+        redisService.getGameSpaceId();
     }
 
     @Test

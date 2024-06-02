@@ -45,7 +45,7 @@ public class UbiUserService {
             UbiUserAuthorizationServerErrorException {
         AuthorizationDTO userAuthorizationDTO = authorizationService.authorizeAndGetDTO(email, password);
 
-        ubiUserDatabaseService.save(buildUbiUser(chatId, email, password,userAuthorizationDTO));
+        ubiUserDatabaseService.save(buildUbiUser(chatId, email, authorizationService.getEncodedPassword(password),userAuthorizationDTO));
     }
 
     public Collection<UbiUser> reauthorizeAllUbiUsersAndGetUnauthorizedList(){

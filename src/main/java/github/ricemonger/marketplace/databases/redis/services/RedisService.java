@@ -1,6 +1,5 @@
 package github.ricemonger.marketplace.databases.redis.services;
 
-import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.utils.dtos.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.dtos.ConfigTrades;
@@ -91,8 +90,8 @@ public class RedisService {
         return redisTemplate.opsForValue().get("mainUserRememberMeTicket");
     }
 
-    public String getMainUserSpaceId() {
-        return redisTemplate.opsForValue().get("mainUserSpaceId");
+    public String getGameSpaceId() {
+        return "0d2ae42d-4c27-4cb7-af6c-2099062302bb";
     }
 
     public void setMainUserAuthorization(AuthorizationDTO dto, int expireTimeout) {
@@ -101,8 +100,6 @@ public class RedisService {
         setFieldAndExpire("mainUserProfileId", dto.getProfileId(), expireTimeout);
 
         setFieldAndExpire("mainUserSessionId", dto.getSessionId(), expireTimeout);
-
-        setFieldAndExpire("mainUserSpaceId", dto.getSpaceId(), expireTimeout);
 
         setFieldAndExpire("authorizationUpdatedDate", new Date().toString(), expireTimeout);
 

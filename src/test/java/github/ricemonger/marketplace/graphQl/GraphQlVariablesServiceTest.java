@@ -26,7 +26,7 @@ public class GraphQlVariablesServiceTest {
         String mainUserSpaceId = "mainUserSpaceId";
         String itemId = "itemId";
 
-        when(redisService.getMainUserSpaceId()).thenReturn(mainUserSpaceId);
+        when(redisService.getGameSpaceId()).thenReturn(mainUserSpaceId);
 
         Map<String, Object> result = graphQlVariablesService.getFetchOneItemVariables(itemId);
 
@@ -39,7 +39,7 @@ public class GraphQlVariablesServiceTest {
         String itemId = "itemId";
         int price = 100;
 
-        when(redisService.getMainUserSpaceId()).thenReturn(mainUserSpaceId);
+        when(redisService.getGameSpaceId()).thenReturn(mainUserSpaceId);
         when(redisService.getPaymentItemId()).thenReturn("paymentItemId");
 
         Map<String, Object> result = graphQlVariablesService.getCreateUpdateOrderVariables(itemId, price);
@@ -53,7 +53,7 @@ public class GraphQlVariablesServiceTest {
         String mainUserSpaceId = "mainUserSpaceId";
         String tradeId = "tradeId";
 
-        when(redisService.getMainUserSpaceId()).thenReturn(mainUserSpaceId);
+        when(redisService.getGameSpaceId()).thenReturn(mainUserSpaceId);
 
         Map<String, Object> result = graphQlVariablesService.getCancelOrderVariables(tradeId);
 
@@ -65,7 +65,7 @@ public class GraphQlVariablesServiceTest {
         String mainUserSpaceId = "mainUserSpaceId";
         int offset = 0;
 
-        when(redisService.getMainUserSpaceId()).thenReturn(mainUserSpaceId);
+        when(redisService.getGameSpaceId()).thenReturn(mainUserSpaceId);
 
         Map<String, Object> result = graphQlVariablesService.getFetchOrdersVariables(offset);
 
@@ -77,7 +77,7 @@ public class GraphQlVariablesServiceTest {
         String mainUserSpaceId = "mainUserSpaceId";
         String paymentItemId = "paymentItemId";
 
-        when(redisService.getMainUserSpaceId()).thenReturn(mainUserSpaceId);
+        when(redisService.getGameSpaceId()).thenReturn(mainUserSpaceId);
         when(redisService.getPaymentItemId()).thenReturn(paymentItemId);
 
         Map<String, Object> result = graphQlVariablesService.getFetchCreditAmountVariables();
@@ -89,7 +89,7 @@ public class GraphQlVariablesServiceTest {
     public void getFetchConfigVariables_should_have_provided_variables() {
         String mainUserSpaceId = "mainUserSpaceId";
 
-        when(redisService.getMainUserSpaceId()).thenReturn(mainUserSpaceId);
+        when(redisService.getGameSpaceId()).thenReturn(mainUserSpaceId);
 
         Map<String, Object> result = graphQlVariablesService.getFetchConfigVariables();
 
@@ -102,7 +102,7 @@ public class GraphQlVariablesServiceTest {
         String paymentItemId = "paymentItemId";
         int offset = 0;
 
-        when(redisService.getMainUserSpaceId()).thenReturn(mainUserSpaceId);
+        when(redisService.getGameSpaceId()).thenReturn(mainUserSpaceId);
         when(redisService.getPaymentItemId()).thenReturn("paymentItemId");
 
         Map<String, Object> result = graphQlVariablesService.getFetchItemsVariables(offset);

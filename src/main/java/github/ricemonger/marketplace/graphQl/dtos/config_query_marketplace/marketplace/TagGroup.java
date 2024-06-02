@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TagGroups {
+public class TagGroup {
     private List<String> values;
 
     private String displayName;

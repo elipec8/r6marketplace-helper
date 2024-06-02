@@ -1,12 +1,10 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
 import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.Marketplace;
-import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.TagGroups;
+import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.TagGroup;
 import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.Tags;
-import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.Types;
-import github.ricemonger.utils.dtos.Tag;
+import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.Type;
 import github.ricemonger.utils.enums.ItemType;
-import github.ricemonger.utils.enums.TagGroup;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -18,27 +16,27 @@ import java.util.List;
 @Component
 public class ConfigQueryMarketplaceMapper {
 
-    public Collection<Tag> mapTags(Marketplace marketplace) {
+    public Collection<github.ricemonger.utils.dtos.Tag> mapTags(Marketplace marketplace) {
         List<Tags> tags = marketplace.getTags();
-        List<TagGroups> tagGroups = marketplace.getTagGroups();
+        List<TagGroup> tagGroups = marketplace.getTagGroups();
 
-        List<Tag> result = new ArrayList<>();
+        List<github.ricemonger.utils.dtos.Tag> result = new ArrayList<>();
 
         for (Tags tag : tags) {
-            Tag resultTag = new Tag();
+            github.ricemonger.utils.dtos.Tag resultTag = new github.ricemonger.utils.dtos.Tag();
             resultTag.setValue(tag.getValue());
             resultTag.setName(tag.getDisplayName());
             result.add(resultTag);
         }
 
-        for (Tag tag : result) {
-            for (TagGroups group : tagGroups) {
+        for (github.ricemonger.utils.dtos.Tag tag : result) {
+            for (TagGroup group : tagGroups) {
                 if (group.getValues().contains(tag.getValue())) {
                     try {
-                        tag.setTagGroup(TagGroup.valueOf(group.getDisplayName().replace(" ", "_")));
+                        tag.setTagGroup(github.ricemonger.utils.enums.TagGroup.valueOf(group.getDisplayName().replace(" ", "_")));
                     } catch (IllegalArgumentException e) {
                         log.error("Tag group not found: " + group.getDisplayName());
-                        tag.setTagGroup(TagGroup.Unknown);
+                        tag.setTagGroup(github.ricemonger.utils.enums.TagGroup.Unknown);
                     }
                 }
             }
@@ -47,9 +45,9 @@ public class ConfigQueryMarketplaceMapper {
     }
 
     public void checkItemTypes(Marketplace marketplace) {
-        List<Types> types = marketplace.getTypes();
+        List<Type> types = marketplace.getTypes();
 
-        for(Types type : types){
+        for(Type type : types){
             try{
                 ItemType.valueOf(type.getValue());
             }

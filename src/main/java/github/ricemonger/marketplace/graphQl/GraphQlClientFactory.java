@@ -34,12 +34,11 @@ public class GraphQlClientFactory {
     }
 
     private WebClient.Builder mainUserWebClientConfigs() {
-
         return anyUserWebClientConfigs()
                 .defaultHeader("Authorization", redisService.getMainUserAuthorizationToken())
                 .defaultHeader("Ubi-SessionId", redisService.getMainUserSessionId())
                 .defaultHeader("Ubi-ProfileId", redisService.getMainUserProfileId())
-                .defaultHeader("Ubi-SpaceId", redisService.getMainUserSpaceId());
+                .defaultHeader("Ubi-SpaceId", redisService.getGameSpaceId());
     }
 
     private WebClient.Builder authorizedUserWebClientConfigs(AuthorizationDTO authorizationDTO) {

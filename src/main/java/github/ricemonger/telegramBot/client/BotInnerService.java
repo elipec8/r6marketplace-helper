@@ -15,7 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -25,6 +27,8 @@ public class BotInnerService {
     private final TelegramBotClientService telegramBotClientService;
 
     private final TelegramUserService telegramUserService;
+
+    private final UbiUserService ubiUserService;
 
     private final ItemService itemService;
 
@@ -106,6 +110,17 @@ public class BotInnerService {
         log.debug("Speculative items amount: {}", speculativeItems.size());
         for (Item item : speculativeItems) {
             telegramBotClientService.sendText(String.valueOf(chatId), getItemString(item));
+        }
+    }
+
+    public void sendDefaultSpeculativeItemsAsMessagesForUser(Long chatId, String email) {
+        Set<String> ownedItemsIds = new HashSet<>(ubiUserService.getOwnedItemsIds(String.valueOf(chatId), email));
+
+        List<Item> speculativeItems = new ArrayList<>(itemService.getAllSpeculativeItemsByExpectedProfit(50, 40, 0, 15000));
+        for (Item item : speculativeItems) {
+            if (ownedItemsIds.contains(item.getName())) {
+                telegramBotClientService.sendText(String.valueOf(chatId), getItemString(item));
+            }
         }
     }
 

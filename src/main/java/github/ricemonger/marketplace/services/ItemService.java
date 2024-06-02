@@ -15,6 +15,8 @@ public class ItemService {
 
     private final ItemDatabaseService itemDatabaseService;
 
+    private final ProfitAndPriorityCalculator profitAndPriorityCalculator;
+
     public void saveAll(Collection<Item> items) {
         itemDatabaseService.saveAllItemsAndItemSales(items);
     }
@@ -87,11 +89,13 @@ public class ItemService {
         itemDatabaseService.saveAllItemSaleHistoryStats(histories);
     }
 
-    public Collection<Item> getAllSpeculativeItemsByExpectedProfit(int i, int i1, int i2, int i3) {
-        return null;
-    }
-
-    public Collection<Item> getOwnedSpeculativeItemsByExpectedProfit(Collection<String> ownedItems, int i, int i1, int i2, int i3) {
-        return null;
+    public Collection<Item> getAllSpeculativeItemsByExpectedProfit(int minProfit, int minProfitPercents, int minBuyPrice, int maxBuyPrice) {
+        return itemDatabaseService.findAllItems().stream()
+                .filter(item -> profitAndPriorityCalculator.calculateItemProfit(item) > minProfit)
+                .filter(item -> profitAndPriorityCalculator.calculateItemProfitPercents(item) > minProfitPercents)
+                .filter(item -> profitAndPriorityCalculator.calculateNextBuyPrice(item) >= minBuyPrice)
+                .filter(item -> profitAndPriorityCalculator.calculateNextBuyPrice(item) <= maxBuyPrice)
+                .sorted((o1, o2) -> (profitAndPriorityCalculator.calculateItemProfit(o2) * profitAndPriorityCalculator.calculateItemProfitPercents(o2) * o2.getSellOrdersCount()) - (profitAndPriorityCalculator.calculateItemProfit(o1) * profitAndPriorityCalculator.calculateItemProfitPercents(o1) * o1.getSellOrdersCount()))
+                .toList();
     }
 }

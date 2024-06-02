@@ -17,14 +17,14 @@ public class GraphQlVariablesService {
 
     public Map<String, Object> getFetchOneItemVariables(String itemId) {
         return Map.of(
-                "spaceId", redisService.getMainUserSpaceId(),
+                "spaceId", redisService.getGameSpaceId(),
                 "itemId", itemId
         );
     }
 
     public Map<String, Object> getCreateUpdateOrderVariables(String itemId, int price) {
         return Map.of(
-                "spaceId", redisService.getMainUserSpaceId(),
+                "spaceId", redisService.getGameSpaceId(),
                 "tradeItems", List.of(
                         Map.of(
                                 "itemId", itemId,
@@ -38,14 +38,14 @@ public class GraphQlVariablesService {
 
     public Map<String, Object> getCancelOrderVariables(String tradeId) {
         return Map.of(
-                "spaceId", redisService.getMainUserSpaceId(),
+                "spaceId", redisService.getGameSpaceId(),
                 "tradeId", tradeId
         );
     }
 
     public Map<String, Object> getFetchOrdersVariables(int offset) {
         return Map.of(
-                "spaceId", redisService.getMainUserSpaceId(),
+                "spaceId", redisService.getGameSpaceId(),
                 "limit", MAX_LIMIT,
                 "offset", offset
         );
@@ -53,20 +53,25 @@ public class GraphQlVariablesService {
 
     public Map<String, Object> getFetchCreditAmountVariables() {
         return Map.of(
-                "spaceId", redisService.getMainUserSpaceId(),
+                "spaceId", redisService.getGameSpaceId(),
                 "itemId", redisService.getPaymentItemId()
         );
     }
 
     public Map<String, Object> getFetchConfigVariables() {
         return Map.of(
-                "spaceId", redisService.getMainUserSpaceId());
+                "spaceId", redisService.getGameSpaceId());
+    }
+
+    public Map<String,Object> getFetchLockedItemsVariables(){
+        return Map.of(
+                "spaceId", redisService.getGameSpaceId());
     }
 
     public Map<String, Object> getFetchItemsVariables(int offset) {
         return Map.of(
                 "withOwnership", false,
-                "spaceId", redisService.getMainUserSpaceId(),
+                "spaceId", redisService.getGameSpaceId(),
                 "limit", MAX_LIMIT,
                 "offset", offset,
                 "sortBy", Map.of(
