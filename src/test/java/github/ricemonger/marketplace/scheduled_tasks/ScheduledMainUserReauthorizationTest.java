@@ -1,8 +1,7 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
 import github.ricemonger.marketplace.authorization.AuthorizationService;
-import github.ricemonger.marketplace.databases.redis.services.MainUserConfiguration;
-import github.ricemonger.marketplace.databases.redis.services.RedisService;
+import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.dtos.AuthorizationDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +17,7 @@ import static org.mockito.Mockito.when;
 class ScheduledMainUserReauthorizationTest {
 
     @MockBean
-    private RedisService redisService;
-
-    @MockBean
-    private MainUserConfiguration mainUserConfiguration;
+    private CommonValuesService commonValuesService;
 
     @MockBean
     private AuthorizationService authorizationService;
@@ -40,9 +36,9 @@ class ScheduledMainUserReauthorizationTest {
         authorizationDTO.setRememberDeviceTicket("rememberDeviceTicket");
         authorizationDTO.setTwoFactorAuthenticationTicket("twoFactorAuthenticationTicket");
 
-        when(mainUserConfiguration.getEmail()).thenReturn("email");
-        when(mainUserConfiguration.getPassword()).thenReturn("password");
-        when(mainUserConfiguration.getExpireTimeout()).thenReturn(1000);
+        when(commonValuesService.getMainUserEmail()).thenReturn("email");
+        when(commonValuesService.getMainUserPassword()).thenReturn("password");
+        when(commonValuesService.getExpireTimeout()).thenReturn(1000);
 
         when(authorizationService.authorizeAndGetDTO("email", "password")).thenReturn(authorizationDTO);
 
@@ -50,6 +46,6 @@ class ScheduledMainUserReauthorizationTest {
 
         verify(authorizationService).authorizeAndGetDTO("email", "password");
 
-        verify(redisService).setMainUserAuthorization(same(authorizationDTO),eq( 1000));
+        verify(commonValuesService).setMainUserAuthorization(same(authorizationDTO));
     }
 }

@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
-import github.ricemonger.marketplace.databases.redis.services.RedisService;
+import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.services.TagService;
 import github.ricemonger.utils.dtos.ConfigResolvedTransactionPeriod;
@@ -14,7 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -23,7 +22,7 @@ import static org.mockito.Mockito.when;
 class ScheduledMarketplaceConfigurationFetcherTest {
 
     @MockBean
-    private RedisService redisService;
+    private CommonValuesService commonValuesService;
 
     @MockBean
     private GraphQlClientService graphQlClientService;
@@ -51,7 +50,7 @@ class ScheduledMarketplaceConfigurationFetcherTest {
         verify(tagService).saveAll(same(tags));
         verify(graphQlClientService).checkItemTypes();
 
-        verify(redisService).setConfigResolvedTransactionPeriod(same(configResolvedTransactionPeriod));
-        verify(redisService).setConfigTrades(same(configTrades));
+        verify(commonValuesService).setConfigResolvedTransactionPeriod(same(configResolvedTransactionPeriod));
+        verify(commonValuesService).setConfigTrades(same(configTrades));
     }
 }

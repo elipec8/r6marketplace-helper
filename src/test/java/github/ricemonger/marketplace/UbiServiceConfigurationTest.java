@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace;
 
+import github.ricemonger.marketplace.services.UbiServiceConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,13 +14,13 @@ public class UbiServiceConfigurationTest {
     private UbiServiceConfiguration ubiServiceConfiguration;
 
     @Test
-    public void ubiServiceConfigurationPropertiesShouldBeAutowired(){
+    public void ubiServiceConfigurationPropertiesShouldBeAutowired() {
         assertNotNull(ubiServiceConfiguration.getGraphqlUrl());
         assertNotNull(ubiServiceConfiguration.getAuthorizationUrl());
         assertNotNull(ubiServiceConfiguration.getContentType());
         assertNotNull(ubiServiceConfiguration.getUserAgent());
-        assertNotNull(ubiServiceConfiguration.getRegionId());
-        assertNotNull(ubiServiceConfiguration.getLocaleCode());
+        assertNotNull(ubiServiceConfiguration.getUbiRegionId());
+        assertNotNull(ubiServiceConfiguration.getUbiLocaleCode());
         assertNotNull(ubiServiceConfiguration.getUbiAppId());
         assertNotNull(ubiServiceConfiguration.getExpireTimeout());
         assertNotNull(ubiServiceConfiguration.getDateFormat());

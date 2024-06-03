@@ -1,10 +1,11 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.UbiServiceConfiguration;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.TradeLimitations;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.tradeLimitations.sell.ResaleLocks;
+import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.dtos.LockedItem;
 import github.ricemonger.utils.dtos.UserTransactionsInfo;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -16,13 +17,10 @@ import java.util.List;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class PersonalQueryLockedItemsMapper {
 
-    private final SimpleDateFormat sdf;
-
-    public PersonalQueryLockedItemsMapper(UbiServiceConfiguration ubiServiceConfiguration) {
-        this.sdf = new SimpleDateFormat(ubiServiceConfiguration.getDateFormat());
-    }
+    private final CommonValuesService commonValuesService;
 
     public Collection<LockedItem> mapLockedItems(TradeLimitations tradeLimitations) {
         if (tradeLimitations.getSell() != null) {
@@ -37,6 +35,7 @@ public class PersonalQueryLockedItemsMapper {
         LockedItem result = new LockedItem();
         result.setItemId(resaleLocks.getItemId());
         try {
+            SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
             result.setExpiresAt(sdf.parse(resaleLocks.getExpiresAt()));
 
         } catch (ParseException e) {

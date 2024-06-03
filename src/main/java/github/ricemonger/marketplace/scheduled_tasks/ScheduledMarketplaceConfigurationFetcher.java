@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
-import github.ricemonger.marketplace.databases.redis.services.RedisService;
+import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.services.TagService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ScheduledMarketplaceConfigurationFetcher {
 
-    private final RedisService redisService;
+    private final CommonValuesService commonValuesService;
 
     private final GraphQlClientService graphQlClientService;
 
@@ -24,7 +24,7 @@ public class ScheduledMarketplaceConfigurationFetcher {
         tagService.saveAll(graphQlClientService.fetchAllTags());
         graphQlClientService.checkItemTypes();
 
-        redisService.setConfigResolvedTransactionPeriod(graphQlClientService.fetchConfigResolvedTransactionPeriod());
-        redisService.setConfigTrades(graphQlClientService.fetchConfigTrades());
+        commonValuesService.setConfigResolvedTransactionPeriod(graphQlClientService.fetchConfigResolvedTransactionPeriod());
+        commonValuesService.setConfigTrades(graphQlClientService.fetchConfigTrades());
     }
 }

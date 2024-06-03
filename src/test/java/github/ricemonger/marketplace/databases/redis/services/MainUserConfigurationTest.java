@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.databases.redis.services;
 
+import github.ricemonger.marketplace.services.MainUserConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

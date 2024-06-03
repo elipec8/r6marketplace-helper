@@ -21,6 +21,7 @@ ubi:
     contentType: application/json
     userAgent: UbiServices_SDK_2020.Release.58_PC64_ansi_static
     appId: ${UBI_APP_ID:80a4a0e8-8797-440f-8f4c-eaba87d0fdda}
+    spaceId: ${UBI_SPACE_ID:0d2ae42d-4c27-4cb7-af6c-2099062302bb}
     regionId: ${UBI_REGION_ID:WW}
     localeCode: ${UBI_LOCALE_CODE:en-US}
     expireTimeout: ${auth.ubi_credentials.expireTimeout}

@@ -1,8 +1,7 @@
 package github.ricemonger.marketplace.graphQl;
 
-import github.ricemonger.marketplace.UbiServiceConfiguration;
+import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.dtos.AuthorizationDTO;
-import github.ricemonger.marketplace.databases.redis.services.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.stereotype.Component;
@@ -13,14 +12,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 @RequiredArgsConstructor
 public class GraphQlClientFactory {
 
-    private final UbiServiceConfiguration ubiServiceConfiguration;
-
-    private final RedisService redisService;
+    private final CommonValuesService commonValuesService;
 
     public HttpGraphQlClient createMainUserClient() {
         WebClient webClient =
                 mainUserWebClientConfigs()
-                        .baseUrl(ubiServiceConfiguration.getGraphqlUrl())
+                        .baseUrl(commonValuesService.getGraphqlUrl())
                         .build();
         return HttpGraphQlClient.builder(webClient).build();
     }
@@ -28,17 +25,17 @@ public class GraphQlClientFactory {
     public HttpGraphQlClient createAuthorizedUserClient(AuthorizationDTO authorizationDTO) {
         WebClient webClient =
                 authorizedUserWebClientConfigs(authorizationDTO)
-                        .baseUrl(ubiServiceConfiguration.getGraphqlUrl())
+                        .baseUrl(commonValuesService.getGraphqlUrl())
                         .build();
         return HttpGraphQlClient.builder(webClient).build();
     }
 
     private WebClient.Builder mainUserWebClientConfigs() {
         return anyUserWebClientConfigs()
-                .defaultHeader("Authorization", redisService.getMainUserAuthorizationToken())
-                .defaultHeader("Ubi-SessionId", redisService.getMainUserSessionId())
-                .defaultHeader("Ubi-ProfileId", redisService.getMainUserProfileId())
-                .defaultHeader("Ubi-SpaceId", redisService.getGameSpaceId());
+                .defaultHeader("Authorization", commonValuesService.getMainUserAuthorizationToken())
+                .defaultHeader("Ubi-SessionId", commonValuesService.getMainUserSessionId())
+                .defaultHeader("Ubi-ProfileId", commonValuesService.getMainUserProfileId())
+                .defaultHeader("Ubi-SpaceId", commonValuesService.getUbiGameSpaceId());
     }
 
     private WebClient.Builder authorizedUserWebClientConfigs(AuthorizationDTO authorizationDTO) {
@@ -58,10 +55,10 @@ public class GraphQlClientFactory {
 
         return WebClient.builder()
                 .exchangeStrategies(strategies)
-                .defaultHeader("Content-Type", ubiServiceConfiguration.getContentType())
-                .defaultHeader("Ubi-AppId", ubiServiceConfiguration.getUbiAppId())
-                .defaultHeader("Ubi-RegionId", ubiServiceConfiguration.getRegionId())
-                .defaultHeader("Ubi-LocaleCode", ubiServiceConfiguration.getLocaleCode())
-                .defaultHeader("User-Agent", ubiServiceConfiguration.getUserAgent());
+                .defaultHeader("Content-Type", commonValuesService.getContentType())
+                .defaultHeader("Ubi-AppId", commonValuesService.getUbiAppId())
+                .defaultHeader("Ubi-RegionId", commonValuesService.getUbiRegionId())
+                .defaultHeader("Ubi-LocaleCode", commonValuesService.getUbiLocaleCode())
+                .defaultHeader("User-Agent", commonValuesService.getUserAgent());
     }
 }

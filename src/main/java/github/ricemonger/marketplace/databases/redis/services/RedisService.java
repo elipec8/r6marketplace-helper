@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.databases.redis.services;
 
+import github.ricemonger.marketplace.services.abstractions.CommonValuesDatabaseService;
 import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.utils.dtos.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.dtos.ConfigTrades;
@@ -14,8 +15,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class RedisService {
-
+public class RedisService implements CommonValuesDatabaseService {
     private final RedisTemplate<String, String> redisTemplate;
 
     public int getExpectedItemCount() {
@@ -88,10 +88,6 @@ public class RedisService {
 
     public String getMainUserRememberMeTicket() {
         return redisTemplate.opsForValue().get("mainUserRememberMeTicket");
-    }
-
-    public String getGameSpaceId() {
-        return "0d2ae42d-4c27-4cb7-af6c-2099062302bb";
     }
 
     public void setMainUserAuthorization(AuthorizationDTO dto, int expireTimeout) {

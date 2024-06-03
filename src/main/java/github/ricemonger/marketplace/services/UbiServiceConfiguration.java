@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace;
+package github.ricemonger.marketplace.services;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 public class UbiServiceConfiguration {
-
     @Value("${ubi.urls.graphql}")
     private String graphqlUrl;
     @Value("${ubi.urls.authorization}")
@@ -20,10 +19,12 @@ public class UbiServiceConfiguration {
     private String userAgent;
     @Value("${ubi.session.appId}")
     private String ubiAppId;
+    @Value("${ubi.session.spaceId}")
+    private String ubiSpaceId;
     @Value("${ubi.session.regionId}")
-    private String regionId;
+    private String ubiRegionId;
     @Value("${ubi.session.localeCode}")
-    private String localeCode;
+    private String UbiLocaleCode;
     @Value("${ubi.session.expireTimeout}")
     private Integer expireTimeout;
     @Value("${ubi.session.dateFormat}")

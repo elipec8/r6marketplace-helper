@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.databases.redis.services;
+package github.ricemonger.marketplace.services;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,13 +9,10 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 @Getter
 public class MainUserConfiguration {
-
     @Value("${auth.ubi_credentials.email}")
     private String email;
     @Value("${auth.ubi_credentials.password}")
     private String password;
     @Value("${auth.ubi_credentials.platform}")
     private String platform;
-    @Value("${auth.ubi_credentials.expireTimeout}")
-    private int expireTimeout;
 }
