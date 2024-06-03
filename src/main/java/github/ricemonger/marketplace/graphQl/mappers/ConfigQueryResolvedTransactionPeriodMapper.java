@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transaction_period.TradeLimitations;
+import github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transaction_period.TradesLimitations;
 import github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transaction_period.tradeLimitations.Buy;
 import github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transaction_period.tradeLimitations.Sell;
 import github.ricemonger.utils.dtos.ConfigResolvedTransactionPeriod;
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class ConfigQueryResolvedTransactionPeriodMapper {
 
-    public ConfigResolvedTransactionPeriod mapConfigResolvedTransactionPeriod(TradeLimitations tradeLimitations) {
+    public ConfigResolvedTransactionPeriod mapConfigResolvedTransactionPeriod(TradesLimitations tradesLimitations) {
         ConfigResolvedTransactionPeriod result = new ConfigResolvedTransactionPeriod();
 
-        Buy buy = tradeLimitations.getBuy();
+        Buy buy = tradesLimitations.getBuy();
 
         if(buy != null){
             result.setBuyResolvedTransactionPeriod(buy.getResolvedTransactionPeriodInMinutes());
@@ -24,7 +24,7 @@ public class ConfigQueryResolvedTransactionPeriodMapper {
             result.setBuyResolvedTransactionPeriod(0);
         }
 
-        Sell sell = tradeLimitations.getSell();
+        Sell sell = tradesLimitations.getSell();
 
         if(sell != null){
             result.setSellResolvedTransactionPeriod(sell.getResolvedTransactionPeriodInMinutes());

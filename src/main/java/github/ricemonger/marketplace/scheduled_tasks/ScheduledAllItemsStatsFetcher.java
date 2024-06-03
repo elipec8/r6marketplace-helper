@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
 
-import github.ricemonger.marketplace.databases.redis.services.RedisService;
+import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.ItemService;
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.telegramBot.BotService;
@@ -22,13 +22,13 @@ public class ScheduledAllItemsStatsFetcher {
 
     private final ItemService itemService;
 
-    private final RedisService redisService;
+    private final CommonValuesService commonValuesService;
 
     private final BotService botService;
 
     @Scheduled(fixedRate = 5 * 60 * 1000, initialDelay = 60 * 1000) // every 5m after 1m of delay
     public void fetchAllItemStats() {
-        int expectedItemCount = redisService.getExpectedItemCount();
+        int expectedItemCount = commonValuesService.getExpectedItemCount();
         Collection<Item> items = graphQlClientService.fetchAllItemStats();
 
         if (items.size() < expectedItemCount) {
@@ -46,7 +46,7 @@ public class ScheduledAllItemsStatsFetcher {
     }
 
     private void onItemsAmountIncrease(int expectedItemCount, int fetchedItemsCount) {
-        redisService.setExpectedItemCount(fetchedItemsCount);
+        commonValuesService.setExpectedItemCount(fetchedItemsCount);
         botService.notifyAllUsersAboutItemAmountIncrease(expectedItemCount, fetchedItemsCount);
     }
 }

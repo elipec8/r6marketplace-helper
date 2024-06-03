@@ -8,6 +8,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProfitAndPriorityCalculator {
 
+    public int calculateItemProfit(Item item) {
+        return getExpectedProfit(item);
+    }
+
+    public int calculateItemProfitPercents(Item item) {
+        return getExpectedProfitPercentage(item);
+    }
+
+    public int calculateNextBuyPrice(Item item) {
+        return getNextFancyBuyPrice(item.getMaxBuyPrice(), item.getMinSellPrice());
+    }
 
     private int getExpectedProfitPercentage(Item item) {
         return (getExpectedProfit(item) * 100) / getNextFancyBuyPrice(item.getMaxBuyPrice(), item.getMinSellPrice());

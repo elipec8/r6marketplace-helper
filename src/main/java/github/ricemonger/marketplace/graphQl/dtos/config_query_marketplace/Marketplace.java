@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 public class Marketplace {
     private List<Tags> tags;
-    private List<TagGroups> tagGroups;
-    private List<Types> types;
+    private List<TagGroup> tagGroups;
+    private List<Type> types;
 }

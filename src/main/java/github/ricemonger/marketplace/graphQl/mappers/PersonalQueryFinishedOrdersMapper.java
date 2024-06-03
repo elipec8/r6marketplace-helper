@@ -1,14 +1,14 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.UbiServiceConfiguration;
-
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.Trades;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.trades.Nodes;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.trades.nodes.PaymentOptions;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.trades.nodes.TradeItems;
+import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.dtos.Trade;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -20,13 +20,10 @@ import java.util.List;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class PersonalQueryFinishedOrdersMapper {
 
-    private final SimpleDateFormat sdf;
-
-    public PersonalQueryFinishedOrdersMapper(UbiServiceConfiguration ubiServiceConfiguration) {
-        this.sdf = new SimpleDateFormat(ubiServiceConfiguration.getDateFormat());
-    }
+    private final CommonValuesService commonValuesService;
 
     public Collection<Trade> mapFinishedOrders(Trades trades) {
         List<Nodes> nodes = trades.getNodes();
@@ -36,6 +33,8 @@ public class PersonalQueryFinishedOrdersMapper {
 
     public Trade mapFinishedOrder(Nodes node) {
         Trade result = new Trade();
+
+        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
 
         result.setTradeId(node.getTradeId());
 
@@ -75,11 +74,10 @@ public class PersonalQueryFinishedOrdersMapper {
             log.error("Invalid tradeItem or itemId: {}", tradeItems);
         }
 
-        if(node.getPayment() != null){
+        if (node.getPayment() != null) {
             result.setSuccessPaymentPrice(node.getPayment().getPrice());
             result.setSuccessPaymentFee(node.getPayment().getTransactionFee());
-        }
-        else{
+        } else {
             result.setSuccessPaymentPrice(0);
             result.setSuccessPaymentFee(0);
             log.error("Invalid payment: {}", node.getPayment());

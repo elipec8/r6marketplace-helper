@@ -1,54 +1,50 @@
 package github.ricemonger.marketplace.graphQl;
 
-import github.ricemonger.marketplace.UbiServiceConfiguration;
-import github.ricemonger.marketplace.databases.redis.services.RedisService;
+import github.ricemonger.marketplace.services.CommonValuesService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 public class GraphQlClientFactoryTest {
 
     @MockBean
-    private RedisService redisService;
-
-    @Autowired
-    private UbiServiceConfiguration ubiServiceConfiguration;
+    private CommonValuesService commonValuesService;
 
     private GraphQlClientFactory graphQlClientFactory;
 
     @BeforeEach
     public void setUp() {
-        graphQlClientFactory = new GraphQlClientFactory(ubiServiceConfiguration, redisService);
+        graphQlClientFactory = new GraphQlClientFactory(commonValuesService);
     }
 
     @Test
     public void getOrCreateAllItemsStatsFetcherClientShouldGetFieldsFromRedisMainUser() {
         graphQlClientFactory.createMainUserClient();
 
-        verify(redisService).getMainUserAuthorizationToken();
-        verify(redisService).getMainUserSessionId();
-        verify(redisService).getMainUserProfileId();
-        verify(redisService).getMainUserSpaceId();
+        verify(commonValuesService).getMainUserAuthorizationToken();
+        verify(commonValuesService).getMainUserSessionId();
+        verify(commonValuesService).getMainUserProfileId();
+        verify(commonValuesService).getUbiGameSpaceId();
     }
 
     @Test
     public void createMainUserClientShouldBuildFromRedisIfClientExpired() throws InterruptedException {
         graphQlClientFactory.createMainUserClient();
 
-        reset(redisService);
+        reset(commonValuesService);
 
-        Thread.sleep(ubiServiceConfiguration.getExpireTimeout() * 1000L + 1);
+        Thread.sleep(commonValuesService.getExpireTimeout() * 1000L + 1);
 
         graphQlClientFactory.createMainUserClient();
 
-        verify(redisService).getMainUserAuthorizationToken();
-        verify(redisService).getMainUserSessionId();
-        verify(redisService).getMainUserProfileId();
-        verify(redisService).getMainUserSpaceId();
+        verify(commonValuesService).getMainUserAuthorizationToken();
+        verify(commonValuesService).getMainUserSessionId();
+        verify(commonValuesService).getMainUserProfileId();
+        verify(commonValuesService).getUbiGameSpaceId();
     }
 }

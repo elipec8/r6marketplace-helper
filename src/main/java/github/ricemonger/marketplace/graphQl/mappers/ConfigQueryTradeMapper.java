@@ -24,7 +24,7 @@ public class ConfigQueryTradeMapper {
 
         BuyLimit buyLimit = tradesConfig.getBuyLimit();
         SellLimit sellLimit = tradesConfig.getSellLimit();
-        TransactionFeesConfig transactionFeesConfig = tradesConfig.getTransactionFeesConfig();
+        TransactionFeesConfig transactionFeesConfig = tradesConfig.getTransactionFeesConfig() == null || tradesConfig.getTransactionFeesConfig().length == 0 ? null : tradesConfig.getTransactionFeesConfig()[0];
 
         if(buyLimit != null){
             result.setBuyLimit(buyLimit.getMaximumCount());

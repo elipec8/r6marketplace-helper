@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
 import github.ricemonger.marketplace.services.ItemService;
-import github.ricemonger.marketplace.databases.redis.services.RedisService;
+import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.telegramBot.BotService;
 import github.ricemonger.utils.dtos.Item;
@@ -30,7 +30,7 @@ public class ScheduledAllItemsStatsFetcherTest {
     private ItemService itemService;
 
     @MockBean
-    private RedisService redisService;
+    private CommonValuesService commonValuesService;
 
     @Autowired
     private ScheduledAllItemsStatsFetcher scheduledAllItemsStatsFetcher;
@@ -53,13 +53,13 @@ public class ScheduledAllItemsStatsFetcherTest {
         items.add(new Item());
 
         when(graphQlClientService.fetchAllItemStats()).thenReturn(items);
-        when(redisService.getExpectedItemCount()).thenReturn(0);
+        when(commonValuesService.getExpectedItemCount()).thenReturn(0);
 
         scheduledAllItemsStatsFetcher.fetchAllItemStats();
 
         verify(itemService).saveAll(same(items));
         verify(itemService).calculateItemsSaleHistoryStats();
-        verify(redisService).setExpectedItemCount(1);
+        verify(commonValuesService).setExpectedItemCount(1);
         verify(botService).notifyAllUsersAboutItemAmountIncrease(0, 1);
     }
 }

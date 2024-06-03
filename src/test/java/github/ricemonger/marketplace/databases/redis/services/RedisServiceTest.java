@@ -24,16 +24,12 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 public class RedisServiceTest {
 
+    private static final int EXPIRE_TIMEOUT = 3;
     @SpyBean
     @Qualifier("redisTemplate")
     private RedisTemplate<String, String> redisTemplate;
-
-    @Autowired
-    private MainUserConfiguration mainUserConfiguration;
-
     @MockBean
     private AuthorizationService authorizationService;
-
     @Autowired
     private RedisService redisService;
 
@@ -41,7 +37,8 @@ public class RedisServiceTest {
     public void setUp() {
         cleanUp();
 
-        when(authorizationService.authorizeAndGetDTO(mainUserConfiguration.getEmail(), mainUserConfiguration.getPassword())).thenReturn(new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "twoFactorAuthTicket", "rememberDeviceTicket", "rememberMeTicket"));
+        when(authorizationService.authorizeAndGetDTO(any(), any())).thenReturn(new AuthorizationDTO("ticket", "profileId"
+                , "spaceId", "sessionId", "twoFactorAuthTicket", "rememberDeviceTicket", "rememberMeTicket"));
     }
 
     @AfterEach
@@ -195,70 +192,27 @@ public class RedisServiceTest {
     }
 
     @Test
-    public void getMainUserAuthorizationToken_should_create_all_authorization_fields_if_empty() {
-        ValueOperations mock = mock(ValueOperations.class);
-        when(redisTemplate.opsForValue()).thenReturn(mock);
-
-        redisService.getMainUserAuthorizationToken();
-    }
-
-    @Test
-    public void getMainUserProfileId_should_create_all_authorization_fields_if_empty() {
-        ValueOperations mock = mock(ValueOperations.class);
-        when(redisTemplate.opsForValue()).thenReturn(mock);
-
-        redisService.getMainUserProfileId();
-    }
-
-    @Test
-    public void getMainUserSessionId_should_create_all_authorization_fields_if_empty() {
-        ValueOperations mock = mock(ValueOperations.class);
-        when(redisTemplate.opsForValue()).thenReturn(mock);
-
-        redisService.getMainUserSessionId();
-    }
-
-    @Test
-    public void getMainUserRememberMeTicket_should_create_all_authorization_fields_if_empty() {
-        ValueOperations mock = mock(ValueOperations.class);
-        when(redisTemplate.opsForValue()).thenReturn(mock);
-
-        redisService.getMainUserRememberMeTicket();
-    }
-
-    @Test
-    public void getMainUserSpaceId_should_create_all_authorization_fields_if_empty() {
-        ValueOperations mock = mock(ValueOperations.class);
-        when(redisTemplate.opsForValue()).thenReturn(mock);
-
-        redisService.getMainUserSpaceId();
-    }
-
-    @Test
     public void setMainUserAuthorization_should_save_values_from_dto() {
         ValueOperations mock = mock(ValueOperations.class);
         when(redisTemplate.opsForValue()).thenReturn(mock);
 
         AuthorizationDTO dto = new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "twoFactorAuthTicket", "rememberDeviceTicket",
                 "rememberMeTicket");
-        when(authorizationService.authorizeAndGetDTO(mainUserConfiguration.getEmail(), mainUserConfiguration.getPassword())).thenReturn(dto);
+        when(authorizationService.authorizeAndGetDTO(any(), any())).thenReturn(dto);
 
-        redisService.setMainUserAuthorization(dto, mainUserConfiguration.getExpireTimeout());
+        redisService.setMainUserAuthorization(dto, EXPIRE_TIMEOUT);
 
         verify(mock).set("mainUserAuthorizationToken", dto.getTicket());
-        verify(redisTemplate).expire("mainUserAuthorizationToken", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
+        verify(redisTemplate).expire("mainUserAuthorizationToken", EXPIRE_TIMEOUT, TimeUnit.SECONDS);
 
         verify(mock).set("mainUserProfileId", dto.getProfileId());
-        verify(redisTemplate).expire("mainUserProfileId", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
+        verify(redisTemplate).expire("mainUserProfileId", EXPIRE_TIMEOUT, TimeUnit.SECONDS);
 
         verify(mock).set("mainUserSessionId", dto.getSessionId());
-        verify(redisTemplate).expire("mainUserSessionId", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
-
-        verify(mock).set("mainUserSpaceId", dto.getSpaceId());
-        verify(redisTemplate).expire("mainUserSpaceId", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
+        verify(redisTemplate).expire("mainUserSessionId", EXPIRE_TIMEOUT, TimeUnit.SECONDS);
 
         verify(mock).set("mainUserRememberMeTicket", dto.getRememberMeTicket());
-        verify(redisTemplate).expire("mainUserRememberMeTicket", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
+        verify(redisTemplate).expire("mainUserRememberMeTicket", EXPIRE_TIMEOUT, TimeUnit.SECONDS);
     }
 
     @Test
@@ -268,23 +222,20 @@ public class RedisServiceTest {
 
         AuthorizationDTO dto = new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "twoFactorAuthTicket", "rememberDeviceTicket",
                 null);
-        when(authorizationService.authorizeAndGetDTO(mainUserConfiguration.getEmail(), mainUserConfiguration.getPassword())).thenReturn(dto);
+        when(authorizationService.authorizeAndGetDTO(any(), any())).thenReturn(dto);
 
-        redisService.setMainUserAuthorization(dto, mainUserConfiguration.getExpireTimeout());
+        redisService.setMainUserAuthorization(dto, EXPIRE_TIMEOUT);
 
         verify(mock).set("mainUserAuthorizationToken", dto.getTicket());
-        verify(redisTemplate).expire("mainUserAuthorizationToken", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
+        verify(redisTemplate).expire("mainUserAuthorizationToken", EXPIRE_TIMEOUT, TimeUnit.SECONDS);
 
         verify(mock).set("mainUserProfileId", dto.getProfileId());
-        verify(redisTemplate).expire("mainUserProfileId", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
+        verify(redisTemplate).expire("mainUserProfileId", EXPIRE_TIMEOUT, TimeUnit.SECONDS);
 
         verify(mock).set("mainUserSessionId", dto.getSessionId());
-        verify(redisTemplate).expire("mainUserSessionId", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
-
-        verify(mock).set("mainUserSpaceId", dto.getSpaceId());
-        verify(redisTemplate).expire("mainUserSpaceId", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
+        verify(redisTemplate).expire("mainUserSessionId", EXPIRE_TIMEOUT, TimeUnit.SECONDS);
 
         verify(mock, never()).set("mainUserRememberMeTicket", dto.getRememberMeTicket());
-        verify(redisTemplate, never()).expire("mainUserRememberMeTicket", mainUserConfiguration.getExpireTimeout(), TimeUnit.SECONDS);
+        verify(redisTemplate, never()).expire("mainUserRememberMeTicket", EXPIRE_TIMEOUT, TimeUnit.SECONDS);
     }
 }

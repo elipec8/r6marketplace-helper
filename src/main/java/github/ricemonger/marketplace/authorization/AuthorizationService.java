@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.authorization;
 
-import github.ricemonger.marketplace.UbiServiceConfiguration;
+import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.utils.exceptions.UbiUserAuthorizationClientErrorException;
 import github.ricemonger.utils.exceptions.UbiUserAuthorizationServerErrorException;
@@ -18,21 +18,21 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class AuthorizationService {
 
-    private final UbiServiceConfiguration ubiServiceConfiguration;
+    private final CommonValuesService commonValuesService;
 
     private final AesPasswordEncoder AESPasswordEncoder;
 
-    public AuthorizationDTO authorizeAndGetDtoForEncodedPassword(String email, String encodedPassword) throws UbiUserAuthorizationClientErrorException, UbiUserAuthorizationServerErrorException{
+    public AuthorizationDTO authorizeAndGetDtoForEncodedPassword(String email, String encodedPassword) throws UbiUserAuthorizationClientErrorException, UbiUserAuthorizationServerErrorException {
         return authorizeAndGetDTO(email, AESPasswordEncoder.decode(encodedPassword));
     }
 
-    public AuthorizationDTO authorizeAndGetDTO(String email, String password) throws UbiUserAuthorizationClientErrorException, UbiUserAuthorizationServerErrorException{
+    public AuthorizationDTO authorizeAndGetDTO(String email, String password) throws UbiUserAuthorizationClientErrorException, UbiUserAuthorizationServerErrorException {
         WebClient webClient = WebClient.builder()
-                .baseUrl(ubiServiceConfiguration.getAuthorizationUrl())
-                .defaultHeader("Content-Type", ubiServiceConfiguration.getContentType())
-                .defaultHeader("User-Agent", ubiServiceConfiguration.getUserAgent())
+                .baseUrl(commonValuesService.getAuthorizationUrl())
+                .defaultHeader("Content-Type", commonValuesService.getContentType())
+                .defaultHeader("User-Agent", commonValuesService.getUserAgent())
                 .defaultHeader("Authorization", getBasicTokenForCredentials(email, password))
-                .defaultHeader("Ubi-Appid", ubiServiceConfiguration.getUbiAppId())
+                .defaultHeader("Ubi-Appid", commonValuesService.getUbiAppId())
                 .build();
 
         AuthorizationDTO dto = new AuthorizationDTO();
@@ -75,5 +75,9 @@ public class AuthorizationService {
         String token = Base64.getEncoder().encodeToString(String.format("%s:%s", email, password).getBytes());
 
         return "Basic " + token;
+    }
+
+    public String getEncodedPassword(String password) {
+        return AESPasswordEncoder.encode(password);
     }
 }

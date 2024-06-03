@@ -17,7 +17,7 @@ public class TradesConfig {
     private BuyLimit buyLimit;
     private SellLimit sellLimit;
     private int resaleLockDurationInMinutes;
-    private TransactionFeesConfig transactionFeesConfig;
+    private TransactionFeesConfig[] transactionFeesConfig;
     private boolean twoFactorAuthenticationRule;
     private boolean gameOwnershipRule;
 }

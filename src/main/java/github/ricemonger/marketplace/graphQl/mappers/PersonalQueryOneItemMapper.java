@@ -1,6 +1,5 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.UbiServiceConfiguration;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.Game;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.MarketableItem;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.marketableItem.MarketData;
@@ -9,11 +8,13 @@ import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.m
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.marketableItem.marketData.SellStats;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.viewer.meta.trades.Nodes;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.viewer.meta.trades.nodes.PaymentOptions;
+import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.dtos.Item;
 import github.ricemonger.utils.dtos.Trade;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -23,13 +24,10 @@ import java.util.Date;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class PersonalQueryOneItemMapper {
 
-    private final SimpleDateFormat sdf;
-
-    public PersonalQueryOneItemMapper(UbiServiceConfiguration ubiServiceConfiguration) {
-        this.sdf = new SimpleDateFormat(ubiServiceConfiguration.getDateFormat());
-    }
+    private final CommonValuesService commonValuesService;
 
     public Item mapItem(Game game) {
 
@@ -73,6 +71,7 @@ public class PersonalQueryOneItemMapper {
 
         if (lastSoldAt != null) {
             try {
+                SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
                 result.setLastSoldAt(sdf.parse(lastSoldAt.getPerformedAt()));
             } catch (ParseException e) {
                 result.setLastSoldAt(new Date(0));
@@ -97,6 +96,8 @@ public class PersonalQueryOneItemMapper {
 
     private Trade mapTrade(Nodes node, String itemId) {
         Trade result = new Trade();
+
+        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
 
         result.setTradeId(node.getTradeId());
         result.setItemId(itemId);
