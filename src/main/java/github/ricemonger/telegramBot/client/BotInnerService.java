@@ -1,12 +1,15 @@
 package github.ricemonger.telegramBot.client;
 
-import github.ricemonger.marketplace.services.TelegramUserService;
-import github.ricemonger.marketplace.services.ItemService;
-import github.ricemonger.marketplace.services.UbiUserService;
+import github.ricemonger.marketplace.services.*;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.InputGroup;
 import github.ricemonger.telegramBot.executors.InputState;
 import github.ricemonger.utils.dtos.Item;
+import github.ricemonger.utils.dtos.ItemFilter;
+import github.ricemonger.utils.dtos.Tag;
+import github.ricemonger.utils.dtos.TelegramUserInput;
+import github.ricemonger.utils.enums.ItemType;
+import github.ricemonger.utils.enums.TagGroup;
 import github.ricemonger.utils.exceptions.InvalidTelegramUserInput;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.TelegramUserInputDoesntExistException;
@@ -14,15 +17,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class BotInnerService {
+
+    private final CommonValuesService commonValuesService;
 
     private final TelegramBotClientService telegramBotClientService;
 
@@ -30,7 +32,13 @@ public class BotInnerService {
 
     private final UbiUserService ubiUserService;
 
-    private final ItemService itemService;
+    private final ItemStatsService itemStatsService;
+
+    private final ItemFilterService itemFilterService;
+
+    private final ItemFilterFromInputsMapper itemFilterFromInputsMapper;
+
+    private final TagService tagService;
 
     public void askFromInlineKeyboard(UpdateInfo updateInfo, String text, int buttonsInLine, CallbackButton[] buttons) {
         telegramBotClientService.askFromInlineKeyboard(updateInfo, text, buttonsInLine, buttons);
@@ -106,22 +114,97 @@ public class BotInnerService {
     }
 
     public void sendDefaultSpeculativeItemsAsMessages(Long chatId) {
-        List<Item> speculativeItems = new ArrayList<>(itemService.getAllSpeculativeItemsByExpectedProfit(50, 40, 0, 15000));
+        List<Item> speculativeItems = new ArrayList<>(itemStatsService.getAllSpeculativeItemsByExpectedProfit(50, 40, 0, 15000));
         log.debug("Speculative items amount: {}", speculativeItems.size());
         for (Item item : speculativeItems) {
             telegramBotClientService.sendText(String.valueOf(chatId), getItemString(item));
         }
     }
 
-    public void sendDefaultSpeculativeItemsAsMessagesForUser(Long chatId, String email) {
+    public void sendDefaultOwnedSpeculativeItemsAsMessagesForUser(Long chatId, String email) {
         Set<String> ownedItemsIds = new HashSet<>(ubiUserService.getOwnedItemsIds(String.valueOf(chatId), email));
 
-        List<Item> speculativeItems = new ArrayList<>(itemService.getAllSpeculativeItemsByExpectedProfit(50, 40, 0, 15000));
+        List<Item> speculativeItems = new ArrayList<>(itemStatsService.getAllSpeculativeItemsByExpectedProfit(50, 40, 0, 15000));
         for (Item item : speculativeItems) {
             if (ownedItemsIds.contains(item.getName())) {
                 telegramBotClientService.sendText(String.valueOf(chatId), getItemString(item));
             }
         }
+    }
+
+    public void sendDefaultNotOwnedSpeculativeItemsAsMessagesForUser(Long chatId, String email) {
+        Set<String> ownedItemsIds = new HashSet<>(ubiUserService.getOwnedItemsIds(String.valueOf(chatId), email));
+
+        List<Item> speculativeItems = new ArrayList<>(itemStatsService.getAllSpeculativeItemsByExpectedProfit(50, 40, 0, 15000));
+        for (Item item : speculativeItems) {
+            if (!ownedItemsIds.contains(item.getName())) {
+                telegramBotClientService.sendText(String.valueOf(chatId), getItemString(item));
+            }
+        }
+    }
+
+    public String getItemTypesString() {
+        return Arrays.stream(ItemType.values()).map(Enum::name).reduce((s, s2) -> s + "," + s2).orElse("");
+    }
+
+    public String getTagsStringByGroup(TagGroup tagGroup) {
+        return tagService.getAllTags().stream()
+                .filter(tag -> tag.getTagGroup().equals(tagGroup))
+                .map(Tag::getName)
+                .reduce((s, s2) -> s + "," + s2)
+                .orElse("");
+    }
+
+    public void saveFilterFromInput(Long chatId) {
+        itemFilterService.saveItemFilter(getItemFilterFromInput(chatId));
+    }
+
+    public String getFilterStringFromInput(Long chatId) {
+        return getItemFilterString(getItemFilterFromInput(chatId));
+    }
+
+    private ItemFilter getItemFilterFromInput(Long chatId) {
+        Collection<TelegramUserInput> inputs = telegramUserService.getAllUserInputs(chatId);
+
+        return itemFilterFromInputsMapper.mapToItemFilter(inputs);
+    }
+
+    private String getItemFilterString(ItemFilter itemFilter){
+        String name = itemFilter.getName();
+        String filterType = itemFilter.getFilterType().name();
+        String isOwned = String.valueOf(itemFilter.getIsOwned());
+        String itemNamePatterns = itemFilter.getItemNamePatternsAsString();
+        String itemTypes = itemFilter.getItemTypesAsString();
+        String rarityTags = itemFilter.getRarityTagsAsString();
+        String seasonTags = itemFilter.getSeasonTagsAsString();
+        String operatorTags = itemFilter.getOperatorTagsAsString();
+        String weaponTags = itemFilter.getWeaponTagsAsString();
+        String eventTags = itemFilter.getEventTagsAsString();
+        String esportsTags = itemFilter.getEsportsTagsAsString();
+        String otherTags = itemFilter.getOtherTagsAsString();
+        String minPrice = String.valueOf(itemFilter.getMinPrice());
+        String maxPrice = String.valueOf(itemFilter.getMaxPrice());
+        String minLastSoldPrice = String.valueOf(itemFilter.getMinLastSoldPrice());
+        String maxLastSoldPrice = String.valueOf(itemFilter.getMaxLastSoldPrice());
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Name: ").append(name).append("\n")
+                .append("Filter type: ").append(filterType).append("\n")
+                .append("Is owned: ").append(isOwned).append("\n")
+                .append("Item name pattern: ").append(itemNamePatterns).append("\n")
+                .append("Item types: ").append(itemTypes).append("\n")
+                .append("Rarity tags: ").append(rarityTags).append("\n")
+                .append("Season tags: ").append(seasonTags).append("\n")
+                .append("Operator tags: ").append(operatorTags).append("\n")
+                .append("Weapon tags: ").append(weaponTags).append("\n")
+                .append("Event tags: ").append(eventTags).append("\n")
+                .append("Esports tags: ").append(esportsTags).append("\n")
+                .append("Other tags: ").append(otherTags).append("\n")
+                .append("Min price: ").append(minPrice).append("\n")
+                .append("Max price: ").append(maxPrice).append("\n")
+                .append("Min last sold price: ").append(minLastSoldPrice).append("\n")
+                .append("Max last sold price: ").append(maxLastSoldPrice).append("\n");
+        return sb.toString();
     }
 
     private String getItemString(Item item) {

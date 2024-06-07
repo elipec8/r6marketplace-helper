@@ -9,7 +9,7 @@ import github.ricemonger.telegramBot.executors.cancel.SilentCancel;
 import github.ricemonger.telegramBot.executors.credentials.add.CredentialsAddFullOrEmailInput;
 import github.ricemonger.telegramBot.executors.credentials.add.CredentialsAddPasswordInput;
 import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRemoveOneEmailInput;
-import github.ricemonger.telegramBot.executors.marketplace.speculative.showOwned.SpeculativeItemsShowOwnedFinishInput;
+import github.ricemonger.telegramBot.executors.marketplace.filters.create.*;
 import github.ricemonger.utils.exceptions.InvalidUserInputGroupException;
 import github.ricemonger.utils.exceptions.InvalidUserInputStateAndGroupConjunctionException;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class InputCommandListener {
 
                 case CREDENTIALS_REMOVE_ONE -> credentialsRemoveOneInputGroup(updateInfo);
 
-                case SPECULATIVE_ITEMS_SHOW_OWNED -> speculativeItemsShowOwnedInputGroup(updateInfo);
+                case FILTERS_CREATE -> filterCreateInputGroup(updateInfo);
 
                 default -> throw new InvalidUserInputGroupException(updateInfo.getInputGroup().name());
             }
@@ -78,12 +78,41 @@ public class InputCommandListener {
         }
     }
 
-    private void speculativeItemsShowOwnedInputGroup(UpdateInfo updateInfo) {
+    private void filterCreateInputGroup(UpdateInfo updateInfo) {
         InputState inputState = updateInfo.getInputState();
 
         switch (inputState) {
+            case FILTER_NAME -> executorsService.execute(FilterCreateStage2AskFilterTypeInput.class, updateInfo);
 
-            case CREDENTIALS_FULL_OR_EMAIL -> executorsService.execute(SpeculativeItemsShowOwnedFinishInput.class, updateInfo);
+            case FILTER_TYPE -> executorsService.execute(FilterCreateStage3AskIsOwnedInput.class, updateInfo);
+
+            case FILTER_IS_OWNED -> executorsService.execute(FilterCreateStage4AskItemNamePatternsInput.class, updateInfo);
+
+            case FILTER_ITEM_NAME_PATTERNS -> executorsService.execute(FilterCreateStage5AskItemTypesInput.class, updateInfo);
+
+            case FILTER_ITEM_TYPES -> executorsService.execute(FilterCreateStage6AskItemTagsRarityInput.class, updateInfo);
+
+            case FILTER_ITEM_TAGS_RARITY -> executorsService.execute(FilterCreateStage7AskItemTagsSeasonsInput.class, updateInfo);
+
+            case FILTER_ITEM_TAGS_SEASONS -> executorsService.execute(FilterCreateStage8AskItemTagsOperatorsInput.class, updateInfo);
+
+            case FILTER_ITEM_TAGS_OPERATORS -> executorsService.execute(FilterCreateStage9AskItemTagsWeaponsInput.class, updateInfo);
+
+            case FILTER_ITEM_TAGS_WEAPONS -> executorsService.execute(FilterCreateStage10AskItemTagsEventsInput.class, updateInfo);
+
+            case FILTER_ITEM_TAGS_EVENTS -> executorsService.execute(FilterCreateStage11AskItemTagsEsportsInput.class, updateInfo);
+
+            case FILTER_ITEM_TAGS_ESPORTS -> executorsService.execute(FilterCreateStage12AskItemTagsOtherInput.class, updateInfo);
+
+            case FILTER_ITEM_TAGS_OTHER -> executorsService.execute(FilterCreateStage13AskMinPriceInput.class, updateInfo);
+
+            case FILTER_MIN_PRICE -> executorsService.execute(FilterCreateStage14AskMaxPriceInput.class, updateInfo);
+
+            case FILTER_MAX_PRICE -> executorsService.execute(FilterCreateStage15AskMinLastSoldPriceInput.class, updateInfo);
+
+            case FILTER_MIN_LAST_SOLD_PRICE -> executorsService.execute(FilterCreateStage16AskMaxLastSoldPriceInput.class, updateInfo);
+
+            case FILTER_MAX_LAST_SOLD_PRICE -> executorsService.execute(FilterCreateStage17FinishInput.class, updateInfo);
 
             default ->
                     throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());

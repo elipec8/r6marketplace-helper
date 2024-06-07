@@ -7,7 +7,9 @@ import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 public class MarketplaceDirect extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        CallbackButton speculativeItemsButton = new CallbackButton("Speculative items", Callbacks.SPECULATIVE_ITEMS);
-        askFromInlineKeyboard("Please choose marketplace operation type:",1, speculativeItemsButton);
+        CallbackButton itemsButton = new CallbackButton("Items", Callbacks.ITEMS);
+        CallbackButton tradesButton = new CallbackButton("Trades", Callbacks.TRADES);
+        CallbackButton filtersButton = new CallbackButton("Filters", Callbacks.FILTERS);
+        askFromInlineKeyboard("Please choose marketplace operation type:",1, itemsButton,tradesButton,filtersButton);
     }
 }

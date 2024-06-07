@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.scheduled_tasks;
 
 
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.marketplace.services.ItemService;
+import github.ricemonger.marketplace.services.ItemStatsService;
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.telegramBot.BotService;
 import github.ricemonger.utils.dtos.Item;
@@ -20,7 +20,7 @@ import java.util.Collection;
 public class ScheduledAllItemsStatsFetcher {
     private final GraphQlClientService graphQlClientService;
 
-    private final ItemService itemService;
+    private final ItemStatsService itemStatsService;
 
     private final CommonValuesService commonValuesService;
 
@@ -41,8 +41,8 @@ public class ScheduledAllItemsStatsFetcher {
             log.info("Fetched {} items' stats", items.size());
         }
 
-        itemService.saveAll(items);
-        itemService.calculateItemsSaleHistoryStats();
+        itemStatsService.saveAll(items);
+        itemStatsService.calculateItemsSaleHistoryStats();
     }
 
     private void onItemsAmountIncrease(int expectedItemCount, int fetchedItemsCount) {

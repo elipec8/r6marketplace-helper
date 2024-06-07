@@ -2,14 +2,14 @@ package github.ricemonger.marketplace.databases.postgres.entities;
 
 import github.ricemonger.telegramBot.executors.InputGroup;
 import github.ricemonger.telegramBot.executors.InputState;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity(name = "telegram_user")
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class TelegramUserEntity {
@@ -20,8 +20,4 @@ public class TelegramUserEntity {
     private InputGroup inputGroup = InputGroup.BASE;
 
     private boolean publicNotificationsEnabledFlag = true;
-
-    public TelegramUserEntity(String chatId) {
-        this.chatId = chatId;
-    }
 }

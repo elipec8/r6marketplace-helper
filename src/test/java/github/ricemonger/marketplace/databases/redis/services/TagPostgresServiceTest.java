@@ -3,6 +3,7 @@ package github.ricemonger.marketplace.databases.redis.services;
 import github.ricemonger.marketplace.databases.postgres.entities.TagEntity;
 import github.ricemonger.marketplace.databases.postgres.mappers.TagPostgresMapper;
 import github.ricemonger.marketplace.databases.postgres.repositories.TagPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.services.TagPostgresService;
 import github.ricemonger.utils.dtos.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -35,7 +35,7 @@ class TagPostgresServiceTest {
         Collection<Tag> tags = new ArrayList<>();
         Collection<TagEntity> entities = new ArrayList<>();
 
-        when(tagPostgresMapper.mapEntities(tags)).thenReturn(entities);
+        when(tagPostgresMapper.mapTagEntities(tags)).thenReturn(entities);
 
         tagPostgresService.saveAll(tags);
 

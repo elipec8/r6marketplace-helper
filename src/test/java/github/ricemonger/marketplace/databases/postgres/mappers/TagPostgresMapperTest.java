@@ -4,7 +4,6 @@ import github.ricemonger.marketplace.databases.postgres.entities.TagEntity;
 import github.ricemonger.utils.dtos.Tag;
 import github.ricemonger.utils.enums.TagGroup;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
@@ -24,7 +23,7 @@ class TagPostgresMapperTest {
     private TagPostgresMapper tagPostgresMapper;
 
     @Test
-    void mapEntities_should_map_all_entities() {
+    void mapEntities_should_map_all_Tag_entities() {
         Collection<Tag> tags = Arrays.asList(
             new Tag("tag1", "value1", TagGroup.Event)
         );
@@ -33,20 +32,20 @@ class TagPostgresMapperTest {
                 new TagEntity("tag1", "value1", TagGroup.Event)
         );
 
-        Collection<TagEntity> result = tagPostgresMapper.mapEntities(tags);
+        Collection<TagEntity> result = tagPostgresMapper.mapTagEntities(tags);
 
         assertTrue(entitiesAreEqual(mapped.iterator().next(), result.iterator().next()));
 
-        verify(tagPostgresMapper, times(1)).mapEntity(same(tags.iterator().next()));
+        verify(tagPostgresMapper, times(1)).mapTagEntity(same(tags.iterator().next()));
     }
 
     @Test
-    void mapEntity_should_map_entity_with_proper_fields() {
+    void mapEntity_should_map_Tag_entity_with_proper_fields() {
 
         Tag tag = new Tag("tag1", "value1", TagGroup.Event);
         TagEntity entity = new TagEntity("tag1", "value1", TagGroup.Event);
 
-        assertTrue(entitiesAreEqual(entity, tagPostgresMapper.mapEntity(tag)));
+        assertTrue(entitiesAreEqual(entity, tagPostgresMapper.mapTagEntity(tag)));
     }
 
     private boolean entitiesAreEqual(TagEntity entity1, TagEntity entity2) {

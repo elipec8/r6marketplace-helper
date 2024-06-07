@@ -33,4 +33,12 @@ public class Item implements SoldItemDetails {
     private int limitMaxPrice;
 
     private List<Trade> trades;
+
+    public String getTagsAsString() {
+        return String.join(",", tags);
+    }
+
+    public void setTagsFromString(String tags) {
+        this.tags = List.of(tags.split("[,|]"));
+    }
 }

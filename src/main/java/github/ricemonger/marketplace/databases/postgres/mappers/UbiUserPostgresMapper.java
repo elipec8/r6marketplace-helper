@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.mappers;
 
-import github.ricemonger.marketplace.databases.postgres.entities.UbiUserEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.TelegramUbiUserEntity;
 import github.ricemonger.utils.dtos.UbiUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -14,8 +14,17 @@ import java.util.List;
 @Component
 public class UbiUserPostgresMapper {
 
-    public UbiUserEntity toUbiUserEntity(UbiUser user) {
-        UbiUserEntity entity = new UbiUserEntity();
+    public Collection<TelegramUbiUserEntity> mapUbiUserEntities(Collection<UbiUser> users) {
+        if(users == null || users.isEmpty()) {
+            return List.of();
+        }
+        else {
+            return users.stream().map(this::mapUbiUserEntity).toList();
+        }
+    }
+
+    public TelegramUbiUserEntity mapUbiUserEntity(UbiUser user) {
+        TelegramUbiUserEntity entity = new TelegramUbiUserEntity();
 
         StringBuilder ownedItemsIds = new StringBuilder();
 
@@ -46,29 +55,34 @@ public class UbiUserPostgresMapper {
         return entity;
     }
 
-    public Collection<UbiUser> toUbiUsers(Collection<UbiUserEntity> entities) {
-        return entities.stream().map(this::toUbiUser).toList();
+    public Collection<UbiUser> mapUbiUsers(Collection<TelegramUbiUserEntity> entities) {
+        if(entities == null || entities.isEmpty()) {
+            return List.of();
+        }
+        else {
+            return entities.stream().map(this::mapUbiUser).toList();
+        }
     }
 
-    public UbiUser toUbiUser(UbiUserEntity ubiUserEntity) {
+    public UbiUser mapUbiUser(TelegramUbiUserEntity telegramUbiUserEntity) {
         UbiUser ubiUser = new UbiUser();
 
         List<String> ownedItemsIds = new ArrayList<>();
-        if(ubiUserEntity.getOwnedItemsIds() != null) {
-            String[] entityOwnedItemsIds = ubiUserEntity.getOwnedItemsIds().split(",");
+        if(telegramUbiUserEntity.getOwnedItemsIds() != null) {
+            String[] entityOwnedItemsIds = telegramUbiUserEntity.getOwnedItemsIds().split(",");
             ownedItemsIds = new ArrayList<>(Arrays.asList(entityOwnedItemsIds));
         }
 
-        ubiUser.setChatId(ubiUserEntity.getChatId());
-        ubiUser.setEmail(ubiUserEntity.getEmail());
-        ubiUser.setEncodedPassword(ubiUserEntity.getEncodedPassword());
-        ubiUser.setUbiProfileId(ubiUserEntity.getUbiProfileId());
-        ubiUser.setUbiSessionId(ubiUserEntity.getUbiSessionId());
-        ubiUser.setUbiSpaceId(ubiUserEntity.getUbiSpaceId());
-        ubiUser.setUbiAuthTicket(ubiUserEntity.getUbiAuthTicket());
-        ubiUser.setUbiTwoFactorAuthTicket(ubiUserEntity.getUbiTwoFactorAuthTicket());
-        ubiUser.setUbiRememberDeviceTicket(ubiUserEntity.getUbiRememberDeviceTicket());
-        ubiUser.setUbiRememberMeTicket(ubiUserEntity.getUbiRememberMeTicket());
+        ubiUser.setChatId(telegramUbiUserEntity.getChatId());
+        ubiUser.setEmail(telegramUbiUserEntity.getEmail());
+        ubiUser.setEncodedPassword(telegramUbiUserEntity.getEncodedPassword());
+        ubiUser.setUbiProfileId(telegramUbiUserEntity.getUbiProfileId());
+        ubiUser.setUbiSessionId(telegramUbiUserEntity.getUbiSessionId());
+        ubiUser.setUbiSpaceId(telegramUbiUserEntity.getUbiSpaceId());
+        ubiUser.setUbiAuthTicket(telegramUbiUserEntity.getUbiAuthTicket());
+        ubiUser.setUbiTwoFactorAuthTicket(telegramUbiUserEntity.getUbiTwoFactorAuthTicket());
+        ubiUser.setUbiRememberDeviceTicket(telegramUbiUserEntity.getUbiRememberDeviceTicket());
+        ubiUser.setUbiRememberMeTicket(telegramUbiUserEntity.getUbiRememberMeTicket());
         ubiUser.setOwnedItemsIds(ownedItemsIds);
 
         return ubiUser;

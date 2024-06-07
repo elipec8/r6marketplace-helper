@@ -51,7 +51,7 @@ class ItemPostgresServiceTest {
         List<ItemSaleEntity> itemSaleEntities = new ArrayList<>();
         when(mapper.mapItemSaleEntities(anyCollection())).thenReturn(itemSaleEntities);
 
-        itemPostgresService.saveAllItemsAndItemSales(List.of(new Item()));
+        itemPostgresService.saveAllItems(List.of(new Item()));
 
         verify(itemPostgresRepository).saveAll(new HashSet<>(itemEntities));
         verify(itemSalePostgresRepository).saveAll(new HashSet<>(itemSaleEntities));
@@ -59,7 +59,7 @@ class ItemPostgresServiceTest {
 
     @Test
     public void saveAllItemsAndItemSales_should_not_throw_if_empty() {
-        Executable executable = () -> itemPostgresService.saveAllItemsAndItemSales(new HashSet<>());
+        Executable executable = () -> itemPostgresService.saveAllItems(new HashSet<>());
 
         assertDoesNotThrow(executable);
     }

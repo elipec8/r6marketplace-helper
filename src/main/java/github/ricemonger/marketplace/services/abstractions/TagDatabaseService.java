@@ -6,4 +6,6 @@ import java.util.Collection;
 
 public interface TagDatabaseService {
     void saveAll(Collection<Tag> tags);
+
+    Collection<Tag> findAll();
 }

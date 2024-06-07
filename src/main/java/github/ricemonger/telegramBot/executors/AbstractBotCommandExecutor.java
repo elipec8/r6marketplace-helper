@@ -22,24 +22,37 @@ public abstract class AbstractBotCommandExecutor {
     protected abstract void executeCommand();
 
     protected final void processFirstInput(InputState nextInputState, InputGroup nextInputGroup, String question) {
+        processFirstInput(nextInputState, nextInputGroup);
+
+        sendText(question);
+    }
+
+    protected final void processFirstInput(InputState nextInputState, InputGroup nextInputGroup) {
         botInnerService.setUserNextInputState(updateInfo.getChatId(), nextInputState);
         botInnerService.setUserNextInputGroup(updateInfo.getChatId(), nextInputGroup);
-
-        sendText(question);
     }
+
     protected final void processMiddleInput(InputState nextInputState, String question) {
-        saveCurrentInputAndSetNextState(nextInputState);
+        processMiddleInput(nextInputState);
 
         sendText(question);
     }
 
-    protected final void processLastInput(UpdateInfo updateInfo, String text) {
-        saveCurrentInputAndSetNextState(InputState.BASE);
-        botInnerService.setUserNextInputGroup(updateInfo.getChatId(), InputGroup.BASE);
+    protected final void processMiddleInput(InputState nextInputState) {
+        saveCurrentInputAndSetNextState(nextInputState);
+    }
+
+    protected final void processLastInput(String text) {
+        processLastInput();
         sendText(text);
     }
 
-    protected final void saveCurrentInputAndSetNextState(InputState nextState) {
+    protected final void processLastInput() {
+        saveCurrentInputAndSetNextState(InputState.BASE);
+        botInnerService.setUserNextInputGroup(updateInfo.getChatId(), InputGroup.BASE);
+    }
+
+    private void saveCurrentInputAndSetNextState(InputState nextState) {
         botInnerService.saveUserInputOrThrow(updateInfo);
         botInnerService.setUserNextInputState(updateInfo.getChatId(), nextState);
     }
@@ -65,12 +78,10 @@ public abstract class AbstractBotCommandExecutor {
         askFromInlineKeyboard(text, 2, yesButton, noButton);
     }
 
-    protected final void askFromInlineKeyboardOrCancel(String text, int buttonsInLine, CallbackButton... buttons) {
-
-        CallbackButton cancelButton = new CallbackButton("Cancel", Callbacks.CANCEL);
-
+    protected final void askFromInlineKeyboardOrSkip(String text, int buttonsInLine, CallbackButton... buttons) {
+        CallbackButton skipButton = new CallbackButton("Skip", Callbacks.EMPTY);
         CallbackButton[] buttonsAndCancelButton = Arrays.copyOf(buttons, buttons.length+1);
-        buttonsAndCancelButton[buttons.length] = cancelButton;
+        buttonsAndCancelButton[buttons.length] = skipButton;
 
         askFromInlineKeyboard(text, buttonsInLine, buttonsAndCancelButton);
     }
@@ -117,5 +128,4 @@ public abstract class AbstractBotCommandExecutor {
     protected interface MyFunctionalInterface {
         void executeCommand();
     }
-    
 }

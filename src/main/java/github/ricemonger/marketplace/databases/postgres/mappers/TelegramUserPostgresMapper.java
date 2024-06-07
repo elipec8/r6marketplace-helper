@@ -1,9 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.mappers;
 
 import github.ricemonger.marketplace.databases.postgres.entities.TelegramUserEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.TelegramUserInputEntity;
 import github.ricemonger.utils.dtos.TelegramUser;
-import github.ricemonger.utils.dtos.TelegramUserInput;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -11,6 +9,14 @@ import java.util.List;
 
 @Component
 public class TelegramUserPostgresMapper {
+
+    public Collection<TelegramUserEntity> mapTelegramUserEntities(Collection<TelegramUser> telegramUsers) {
+        if (telegramUsers == null || telegramUsers.isEmpty()) {
+            return List.of();
+        } else {
+            return telegramUsers.stream().map(this::mapTelegramUserEntity).toList();
+        }
+    }
 
     public TelegramUserEntity mapTelegramUserEntity(TelegramUser telegramUser) {
         TelegramUserEntity telegramUserEntity = new TelegramUserEntity();
@@ -24,7 +30,11 @@ public class TelegramUserPostgresMapper {
     }
 
     public Collection<TelegramUser> mapTelegramUsers(Collection<TelegramUserEntity> entities) {
-        return entities.stream().map(this::mapTelegramUser).toList();
+        if (entities == null || entities.isEmpty()) {
+            return List.of();
+        } else {
+            return entities.stream().map(this::mapTelegramUser).toList();
+        }
     }
 
     public TelegramUser mapTelegramUser(TelegramUserEntity entity) {
@@ -36,25 +46,5 @@ public class TelegramUserPostgresMapper {
         telegramUser.setPublicNotificationsEnabledFlag(entity.isPublicNotificationsEnabledFlag());
 
         return telegramUser;
-    }
-
-    public TelegramUserInputEntity mapTelegramUserInputEntity(TelegramUserInput telegramUserInput) {
-        TelegramUserInputEntity telegramUserInputEntity = new TelegramUserInputEntity();
-
-        telegramUserInputEntity.setChatId(telegramUserInput.getChatId());
-        telegramUserInputEntity.setInputState(telegramUserInput.getInputState());
-        telegramUserInputEntity.setValue(telegramUserInput.getValue());
-
-        return telegramUserInputEntity;
-    }
-
-    public TelegramUserInput mapTelegramUserInput(TelegramUserInputEntity telegramUserInputEntity) {
-        TelegramUserInput telegramUserInput = new TelegramUserInput();
-
-        telegramUserInput.setChatId(telegramUserInputEntity.getChatId());
-        telegramUserInput.setInputState(telegramUserInputEntity.getInputState());
-        telegramUserInput.setValue(telegramUserInputEntity.getValue());
-
-        return telegramUserInput;
     }
 }

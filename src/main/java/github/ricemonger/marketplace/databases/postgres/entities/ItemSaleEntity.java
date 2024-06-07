@@ -8,7 +8,6 @@ import java.util.Date;
 @Entity(name = "item_sale")
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @IdClass(ItemSaleEntityId.class)

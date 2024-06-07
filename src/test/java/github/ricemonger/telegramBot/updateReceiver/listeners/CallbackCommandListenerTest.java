@@ -11,8 +11,8 @@ import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRem
 import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRemoveCallback;
 import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRemoveOneCallback;
 import github.ricemonger.telegramBot.executors.credentials.show.CredentialsShowCallback;
-import github.ricemonger.telegramBot.executors.marketplace.speculative.SpeculativeItemsCallback;
-import github.ricemonger.telegramBot.executors.marketplace.speculative.showAll.SpeculativeItemsShowAllCallback;
+import github.ricemonger.telegramBot.executors.marketplace.items.speculative.SpeculativeItemsCallback;
+import github.ricemonger.telegramBot.executors.marketplace.items.speculative.showAll.SpeculativeItemsShowAllCallback;
 import github.ricemonger.telegramBot.executors.start.startYes.StartYesCallback;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,7 +97,7 @@ class CallbackCommandListenerTest {
     @Test
     public void handleUpdateShouldExecuteMarketplaceDirectOnItsCallback() {
         UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setCallbackQueryData(Callbacks.SPECULATIVE_ITEMS);
+        updateInfo.setCallbackQueryData(Callbacks.ITEMS_SPECULATIVE_ITEMS);
         callbackCommandListener.handleUpdate(updateInfo);
 
         verify(executorsService).execute(SpeculativeItemsCallback.class, updateInfo);
@@ -106,7 +106,7 @@ class CallbackCommandListenerTest {
     @Test
     public void handleUpdateShouldExecuteSpeculativeItemsShowAllOnItsCallback() {
         UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setCallbackQueryData(Callbacks.SPECULATIVE_ITEMS_SHOW_ALL);
+        updateInfo.setCallbackQueryData(Callbacks.ITEMS_SPECULATIVE_ITEMS_SHOW_ALL);
         callbackCommandListener.handleUpdate(updateInfo);
 
         verify(executorsService).execute(SpeculativeItemsShowAllCallback.class, updateInfo);
