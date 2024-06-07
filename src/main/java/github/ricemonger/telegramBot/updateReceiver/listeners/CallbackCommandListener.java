@@ -12,11 +12,10 @@ import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRem
 import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRemoveOneCallback;
 import github.ricemonger.telegramBot.executors.credentials.show.CredentialsShowCallback;
 import github.ricemonger.telegramBot.executors.marketplace.filters.FiltersCallback;
-import github.ricemonger.telegramBot.executors.marketplace.filters.create.FilterCreateFinishCallback;
-import github.ricemonger.telegramBot.executors.marketplace.filters.create.FilterCreateStage1AskNameCallback;
-import github.ricemonger.telegramBot.executors.marketplace.filters.remove.FilterRemoveCallback;
-import github.ricemonger.telegramBot.executors.marketplace.filters.showAll.FiltersShowAllCallback;
-import github.ricemonger.telegramBot.executors.marketplace.filters.update.FilterUpdateCallback;
+import github.ricemonger.telegramBot.executors.marketplace.filters.edit.FilterEditStage18FinishCallback;
+import github.ricemonger.telegramBot.executors.marketplace.filters.edit.FilterEditStage1AskNameCallback;
+import github.ricemonger.telegramBot.executors.marketplace.filters.showOrRemove.FilterRemoveFinishCallback;
+import github.ricemonger.telegramBot.executors.marketplace.filters.showOrRemove.FiltersShowCallback;
 import github.ricemonger.telegramBot.executors.marketplace.items.ItemsCallback;
 import github.ricemonger.telegramBot.executors.marketplace.items.show.ItemsShowCallback;
 import github.ricemonger.telegramBot.executors.marketplace.items.show.settings.ItemsDisplaySettingsCallback;
@@ -59,15 +58,13 @@ public class CallbackCommandListener {
 
             case Callbacks.FILTERS -> executorsService.execute(FiltersCallback.class, updateInfo);
 
-            case Callbacks.FILTER_CREATE -> executorsService.execute(FilterCreateStage1AskNameCallback.class, updateInfo);
+            case Callbacks.FILTER_EDIT -> executorsService.execute(FilterEditStage1AskNameCallback.class, updateInfo);
 
-            case Callbacks.FILTER_CREATE_FINISH -> executorsService.execute(FilterCreateFinishCallback.class, updateInfo);
+            case Callbacks.FILTER_EDIT_FINISH -> executorsService.execute(FilterEditStage18FinishCallback.class, updateInfo);
 
-            case Callbacks.FILTER_UPDATE -> executorsService.execute(FilterUpdateCallback.class, updateInfo);
+            case Callbacks.FILTERS_SHOW -> executorsService.execute(FiltersShowCallback.class, updateInfo);
 
-            case Callbacks.FILTER_REMOVE -> executorsService.execute(FilterRemoveCallback.class, updateInfo);
-
-            case Callbacks.FILTERS_SHOW_ALL -> executorsService.execute(FiltersShowAllCallback.class, updateInfo);
+            case Callbacks.FILTER_REMOVE_FINISH -> executorsService.execute(FilterRemoveFinishCallback.class, updateInfo);
 
             case Callbacks.ITEMS -> executorsService.execute(ItemsCallback.class, updateInfo);
 

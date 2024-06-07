@@ -1,10 +1,10 @@
-package github.ricemonger.telegramBot.executors.marketplace.filters.create;
+package github.ricemonger.telegramBot.executors.marketplace.filters.edit;
 
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 import github.ricemonger.telegramBot.executors.InputState;
 import github.ricemonger.utils.enums.TagGroup;
 
-public class FilterCreateStage8AskItemTagsOperatorsInput extends AbstractBotCommandExecutor {
+public class FilterEditStage8AskItemTagsOperatorsInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
         processMiddleInput(InputState.FILTER_ITEM_TAGS_OPERATORS);

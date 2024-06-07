@@ -1,11 +1,11 @@
-package github.ricemonger.telegramBot.executors.marketplace.filters.create;
+package github.ricemonger.telegramBot.executors.marketplace.filters.edit;
 
 import github.ricemonger.telegramBot.client.CallbackButton;
 import github.ricemonger.telegramBot.client.Callbacks;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 import github.ricemonger.telegramBot.executors.InputState;
 
-public class FilterCreateStage3AskIsOwnedInput extends AbstractBotCommandExecutor {
+public class FilterEditStage3AskIsOwnedInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
         processMiddleInput(InputState.FILTER_IS_OWNED);

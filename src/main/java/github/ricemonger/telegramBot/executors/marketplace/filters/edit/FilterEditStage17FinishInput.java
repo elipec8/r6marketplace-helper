@@ -1,17 +1,17 @@
-package github.ricemonger.telegramBot.executors.marketplace.filters.create;
+package github.ricemonger.telegramBot.executors.marketplace.filters.edit;
 
 import github.ricemonger.telegramBot.client.Callbacks;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 
-public class FilterCreateStage17FinishInput extends AbstractBotCommandExecutor {
+public class FilterEditStage17FinishInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
         processLastInput();
 
-        String filter = botInnerService.getFilterStringFromInput(updateInfo.getChatId());
+        String filter = botInnerService.getFilterStringByUserInput(updateInfo.getChatId());
 
         askYesOrNoFromInlineKeyboard("The filter is:\n" + filter +"\nDo you want to save the filter?",
-                Callbacks.FILTER_CREATE_FINISH,
+                Callbacks.FILTER_EDIT_FINISH,
                 Callbacks.CANCEL);
     }
 }

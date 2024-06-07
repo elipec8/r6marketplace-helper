@@ -1,9 +1,9 @@
-package github.ricemonger.telegramBot.executors.marketplace.filters.create;
+package github.ricemonger.telegramBot.executors.marketplace.filters.edit;
 
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 import github.ricemonger.telegramBot.executors.InputState;
 
-public class FilterCreateStage15AskMinLastSoldPriceInput extends AbstractBotCommandExecutor {
+public class FilterEditStage15AskMinLastSoldPriceInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
         processMiddleInput(InputState.FILTER_MIN_LAST_SOLD_PRICE);

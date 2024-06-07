@@ -4,5 +4,7 @@ public enum InputGroup {
     BASE,
     CREDENTIALS_ADD,
     CREDENTIALS_REMOVE_ONE,
-    FILTERS_CREATE
+    FILTERS_EDIT,
+    FILTERS_SHOW,
+    FILTERS_REMOVE
 }

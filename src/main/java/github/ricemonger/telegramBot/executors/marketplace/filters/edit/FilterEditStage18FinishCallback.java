@@ -1,8 +1,8 @@
-package github.ricemonger.telegramBot.executors.marketplace.filters.create;
+package github.ricemonger.telegramBot.executors.marketplace.filters.edit;
 
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 
-public class FilterCreateFinishCallback extends AbstractBotCommandExecutor {
+public class FilterEditStage18FinishCallback extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
         botInnerService.saveFilterFromInput(updateInfo.getChatId());

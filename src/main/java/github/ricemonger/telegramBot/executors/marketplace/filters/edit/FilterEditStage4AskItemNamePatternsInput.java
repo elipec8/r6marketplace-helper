@@ -1,9 +1,9 @@
-package github.ricemonger.telegramBot.executors.marketplace.filters.create;
+package github.ricemonger.telegramBot.executors.marketplace.filters.edit;
 
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 import github.ricemonger.telegramBot.executors.InputState;
 
-public class FilterCreateStage4AskItemNamePatternsInput extends AbstractBotCommandExecutor {
+public class FilterEditStage4AskItemNamePatternsInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
         processMiddleInput(InputState.FILTER_ITEM_NAME_PATTERNS);

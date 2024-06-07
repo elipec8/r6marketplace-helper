@@ -4,6 +4,7 @@ import github.ricemonger.marketplace.databases.postgres.entities.ItemFilterEntit
 import github.ricemonger.marketplace.databases.postgres.entities.TelegramUserEntity;
 import github.ricemonger.utils.dtos.ItemFilter;
 import github.ricemonger.utils.enums.ItemType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 public class ItemFilterPostgresMapper {
 
@@ -67,9 +69,20 @@ public class ItemFilterPostgresMapper {
         filter.setIsOwned(entity.getIsOwned());
         filter.setItemNamePatterns(mapStringToList(entity.getItemNamePatterns()));
 
-        List<ItemType> itemTypes;
-        if (entity.getItemTypes() != null) {
-            itemTypes = Arrays.stream(entity.getItemTypes().split("[,|]")).map(ItemType::valueOf).toList();
+        List<ItemType> itemTypes = new ArrayList<>();
+        if (entity.getItemTypes() != null && !entity.getItemTypes().isEmpty()) {
+
+            String[] split = entity.getItemTypes().split("[,|]");
+
+            for(String s : split) {
+                try {
+                    itemTypes.add(ItemType.valueOf(s));
+                }
+                catch (IllegalArgumentException e) {
+                    log.error("Unknown item type: " + s);
+                }
+            }
+
         } else {
             itemTypes = new ArrayList<>();
         }

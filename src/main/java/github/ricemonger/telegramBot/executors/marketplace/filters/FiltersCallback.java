@@ -7,9 +7,8 @@ import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 public class FiltersCallback extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        CallbackButton createButton = new CallbackButton("Create", Callbacks.FILTER_CREATE);
-        CallbackButton removeButton = new CallbackButton("Remove", Callbacks.FILTER_REMOVE);
-        CallbackButton showAllButton = new CallbackButton("Show all", Callbacks.FILTERS_SHOW_ALL);
-        askFromInlineKeyboard("Please choose operation?",1, createButton, removeButton, showAllButton);
+        CallbackButton createButton = new CallbackButton("Create/Update", Callbacks.FILTER_EDIT);
+        CallbackButton showAllButton = new CallbackButton("Show/Remove", Callbacks.FILTERS_SHOW);
+        askFromInlineKeyboard("Please choose operation?",2, createButton, showAllButton);
     }
 }

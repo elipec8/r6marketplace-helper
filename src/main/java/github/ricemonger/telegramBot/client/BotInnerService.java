@@ -156,20 +156,44 @@ public class BotInnerService {
     }
 
     public void saveFilterFromInput(Long chatId) {
-        itemFilterService.saveItemFilter(getItemFilterFromInput(chatId));
+        itemFilterService.saveItemFilter(getItemFilterByUserInput(chatId));
     }
 
-    public String getFilterStringFromInput(Long chatId) {
-        return getItemFilterString(getItemFilterFromInput(chatId));
+    public void removeFilterByUserInput(Long chatId) {
+        itemFilterService.removeItemFilterById(String.valueOf(chatId), telegramUserService.getUserInputByState(chatId, InputState.FILTER_NAME));
     }
 
-    private ItemFilter getItemFilterFromInput(Long chatId) {
+    public Collection<String> getFilterNamesForUser(Long chatId) {
+        return itemFilterService.getAllItemFilterNamesForUser(String.valueOf(chatId));
+    }
+
+    public String getFilterStringFromDatabaseByUserCallback(Long chatId) {
+        String name = telegramUserService.getUserInputByState(chatId, InputState.FILTER_NAME);
+
+        name = name.substring(Callbacks.FILTER_CALLBACK_PREFIX.length());
+
+        return getItemFilterString(itemFilterService.getItemFilterById(String.valueOf(chatId), name));
+    }
+
+    public void removeFilterByUserCallback(Long chatId) {
+        String name = telegramUserService.getUserInputByState(chatId, InputState.FILTER_NAME);
+
+        name = name.substring(Callbacks.FILTER_CALLBACK_PREFIX.length());
+
+        itemFilterService.removeItemFilterById(String.valueOf(chatId), name);
+    }
+
+    public String getFilterStringByUserInput(Long chatId) {
+        return getItemFilterString(getItemFilterByUserInput(chatId));
+    }
+
+    private ItemFilter getItemFilterByUserInput(Long chatId) {
         Collection<TelegramUserInput> inputs = telegramUserService.getAllUserInputs(chatId);
 
         return itemFilterFromInputsMapper.mapToItemFilter(inputs);
     }
 
-    private String getItemFilterString(ItemFilter itemFilter){
+    private String getItemFilterString(ItemFilter itemFilter) {
         String name = itemFilter.getName();
         String filterType = itemFilter.getFilterType().name();
         String isOwned = String.valueOf(itemFilter.getIsOwned());
@@ -214,10 +238,9 @@ public class BotInnerService {
         String minSellPrice = String.valueOf(item.getMinSellPrice());
         String sellOrders = String.valueOf(item.getSellOrdersCount());
         String lastSoldAt;
-        if(item.getLastSoldAt() != null) {
+        if (item.getLastSoldAt() != null) {
             lastSoldAt = item.getLastSoldAt().toString();
-        }
-        else{
+        } else {
             lastSoldAt = "null";
         }
         String lastSoldPrice = String.valueOf(item.getLastSoldPrice());

@@ -22,17 +22,19 @@ public class Callbacks {
 
     public static final String CREDENTIALS_REMOVE_ALL_CONFIRMED = "CREDENTIALS_REMOVE_ALL_CONFIRMED";
 
+    public static final String FILTER_CALLBACK_PREFIX = "FILTER_CALLBACK_PREFIX_";
+
     public static final String FILTERS = "FILTERS";
 
-    public static final String FILTER_CREATE = "FILTER_CREATE";
+    public static final String FILTER_EDIT = "FILTER_EDIT";
 
-    public static final String FILTER_CREATE_FINISH = "FILTER_CREATE_FINISH";
-
-    public static final String FILTER_UPDATE = "FILTER_UPDATE";
+    public static final String FILTER_EDIT_FINISH = "FILTER_EDIT_FINISH";
 
     public static final String FILTER_REMOVE = "FILTER_REMOVE";
 
-    public static final String FILTERS_SHOW_ALL = "FILTERS_SHOW_ALL";
+    public static final String FILTER_REMOVE_FINISH = "FILTER_REMOVE_FINISH";
+
+    public static final String FILTERS_SHOW = "FILTERS_SHOW";
 
     public static final String FILTER_TYPE_ALLOW = "FILTER_TYPE_ALLOW";
 

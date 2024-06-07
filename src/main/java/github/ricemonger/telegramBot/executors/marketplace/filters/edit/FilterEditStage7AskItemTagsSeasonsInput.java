@@ -1,11 +1,10 @@
-package github.ricemonger.telegramBot.executors.marketplace.filters.create;
+package github.ricemonger.telegramBot.executors.marketplace.filters.edit;
 
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 import github.ricemonger.telegramBot.executors.InputState;
 import github.ricemonger.utils.enums.TagGroup;
-import org.checkerframework.checker.units.qual.A;
 
-public class FilterCreateStage7AskItemTagsSeasonsInput extends AbstractBotCommandExecutor {
+public class FilterEditStage7AskItemTagsSeasonsInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
         processMiddleInput(InputState.FILTER_ITEM_TAGS_SEASONS);
