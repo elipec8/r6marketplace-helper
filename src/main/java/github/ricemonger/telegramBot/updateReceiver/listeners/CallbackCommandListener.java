@@ -14,13 +14,14 @@ import github.ricemonger.telegramBot.executors.credentials.show.CredentialsShowC
 import github.ricemonger.telegramBot.executors.marketplace.filters.FiltersCallback;
 import github.ricemonger.telegramBot.executors.marketplace.filters.edit.FilterEditStage18FinishCallback;
 import github.ricemonger.telegramBot.executors.marketplace.filters.edit.FilterEditStage1AskNameCallback;
-import github.ricemonger.telegramBot.executors.marketplace.filters.showOrRemove.FilterRemoveFinishCallback;
+import github.ricemonger.telegramBot.executors.marketplace.filters.showOrRemove.FilterRemoveCallback;
 import github.ricemonger.telegramBot.executors.marketplace.filters.showOrRemove.FiltersShowCallback;
 import github.ricemonger.telegramBot.executors.marketplace.items.ItemsCallback;
 import github.ricemonger.telegramBot.executors.marketplace.items.show.ItemsShowCallback;
-import github.ricemonger.telegramBot.executors.marketplace.items.show.settings.ItemsDisplaySettingsCallback;
+import github.ricemonger.telegramBot.executors.marketplace.items.show.settings.ItemsShowSettingsCallback;
 import github.ricemonger.telegramBot.executors.marketplace.items.show.settings.ItemsSearchSettingsCallback;
 import github.ricemonger.telegramBot.executors.marketplace.items.show.showByRequest.ItemsShowByRequestCallback;
+import github.ricemonger.telegramBot.executors.marketplace.items.show.showByRequest.ItemsShowByRequestFinishCallback;
 import github.ricemonger.telegramBot.executors.marketplace.items.show.showBySettings.ItemsShowBySettingsCallback;
 import github.ricemonger.telegramBot.executors.marketplace.trades.TradesCallback;
 import github.ricemonger.telegramBot.executors.marketplace.trades.create.TradesCreateCallback;
@@ -64,7 +65,7 @@ public class CallbackCommandListener {
 
             case Callbacks.FILTERS_SHOW -> executorsService.execute(FiltersShowCallback.class, updateInfo);
 
-            case Callbacks.FILTER_REMOVE_FINISH -> executorsService.execute(FilterRemoveFinishCallback.class, updateInfo);
+            case Callbacks.FILTER_REMOVE_FINISH -> executorsService.execute(FilterRemoveCallback.class, updateInfo);
 
             case Callbacks.ITEMS -> executorsService.execute(ItemsCallback.class, updateInfo);
 
@@ -72,11 +73,13 @@ public class CallbackCommandListener {
 
             case Callbacks.ITEMS_SHOW_BY_REQUEST -> executorsService.execute(ItemsShowByRequestCallback.class, updateInfo);
 
+            case Callbacks.ITEMS_SHOW_BY_REQUEST_FINISH -> executorsService.execute(ItemsShowByRequestFinishCallback.class, updateInfo);
+
             case Callbacks.ITEMS_SHOW_BY_SETTINGS -> executorsService.execute(ItemsShowBySettingsCallback.class, updateInfo);
 
             case Callbacks.ITEMS_SEARCH_SETTINGS -> executorsService.execute(ItemsSearchSettingsCallback.class, updateInfo);
 
-            case Callbacks.ITEMS_DISPLAY_SETTINGS -> executorsService.execute(ItemsDisplaySettingsCallback.class, updateInfo);
+            case Callbacks.ITEMS_DISPLAY_SETTINGS -> executorsService.execute(ItemsShowSettingsCallback.class, updateInfo);
 
             case Callbacks.TRADES -> executorsService.execute(TradesCallback.class, updateInfo);
 

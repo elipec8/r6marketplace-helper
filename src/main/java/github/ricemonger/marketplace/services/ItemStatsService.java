@@ -103,4 +103,8 @@ public class ItemStatsService {
                 .sorted((o1, o2) -> (profitAndPriorityCalculator.calculateItemProfit(o2) * profitAndPriorityCalculator.calculateItemProfitPercents(o2) * o2.getSellOrdersCount()) - (profitAndPriorityCalculator.calculateItemProfit(o1) * profitAndPriorityCalculator.calculateItemProfitPercents(o1) * o1.getSellOrdersCount()))
                 .toList();
     }
+
+    public Collection<Item> getAllItems() {
+        return itemService.findAllItems();
+    }
 }

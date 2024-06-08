@@ -8,6 +8,7 @@ import github.ricemonger.utils.dtos.Item;
 import github.ricemonger.utils.dtos.ItemFilter;
 import github.ricemonger.utils.dtos.Tag;
 import github.ricemonger.utils.dtos.TelegramUserInput;
+import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TagGroup;
 import github.ricemonger.utils.exceptions.InvalidTelegramUserInput;
@@ -62,11 +63,9 @@ public class BotInnerService {
         if (fullOrEmail.contains(":")) {
             String email = fullOrEmail.substring(0, fullOrEmail.indexOf(":"));
             String password = fullOrEmail.substring(fullOrEmail.indexOf(":") + 1);
-            clearUserInputs(chatId);
             telegramUserService.addCredentialsIfValidOrThrowException(chatId, email, password);
         } else {
             String password = getUserInputByState(chatId, InputState.CREDENTIALS_PASSWORD);
-            clearUserInputs(chatId);
             telegramUserService.addCredentialsIfValidOrThrowException(chatId, fullOrEmail, password);
         }
 
@@ -121,6 +120,63 @@ public class BotInnerService {
         }
     }
 
+    public void sendItemsAsMessageByUserInputFilter(Long chatId) {
+        List<Item> items = new ArrayList<>(itemStatsService.getAllItems());
+
+        System.out.println("All Items amount: " + items.size());
+
+        ItemFilter itemFilter = getItemFilterByUserInput(chatId);
+
+        List<String> rarityTags = itemFilter.getRarityTags().stream().map(tagService::getValueByName).toList();
+        List<String> seasonTags = itemFilter.getSeasonTags().stream().map(tagService::getValueByName).toList();
+        List<String> operatorTags = itemFilter.getOperatorTags().stream().map(tagService::getValueByName).toList();
+        List<String> weaponTags = itemFilter.getWeaponTags().stream().map(tagService::getValueByName).toList();
+        List<String> eventTags = itemFilter.getEventTags().stream().map(tagService::getValueByName).toList();
+        List<String> esportsTags = itemFilter.getEsportsTags().stream().map(tagService::getValueByName).toList();
+        List<String> otherTags = itemFilter.getOtherTags().stream().map(tagService::getValueByName).toList();
+
+        List<String> filterTags = new ArrayList<>();
+        filterTags.addAll(rarityTags);
+        filterTags.addAll(seasonTags);
+        filterTags.addAll(operatorTags);
+        filterTags.addAll(weaponTags);
+        filterTags.addAll(eventTags);
+        filterTags.addAll(esportsTags);
+        filterTags.addAll(otherTags);
+
+        System.out.println("Filter tags: " + filterTags);
+        System.out.println(itemFilter);
+
+        List<Item> filtered;
+        if (itemFilter.getFilterType().equals(FilterType.ALLOW)) {
+            filtered = items.stream()
+                    .filter(item -> itemFilter.getItemNamePatterns().stream().anyMatch(s -> item.getName().toLowerCase().contains(s.toLowerCase())))
+                    .filter(item -> itemFilter.getItemTypes().isEmpty() || itemFilter.getItemTypes().contains(item.getType()))
+                    .filter(item -> filterTags.isEmpty() || item.getTags().stream().anyMatch(tag -> filterTags.contains(tagService.getValueByName(tag))))
+                    .filter(item -> itemFilter.getMinPrice() == null || item.getMinSellPrice() >= itemFilter.getMinPrice())
+                    .filter(item -> itemFilter.getMaxPrice() == null || item.getMaxBuyPrice() <= itemFilter.getMaxPrice())
+                    .filter(item -> itemFilter.getMinLastSoldPrice() == null || item.getLastSoldPrice() >= itemFilter.getMinLastSoldPrice())
+                    .filter(item -> itemFilter.getMaxLastSoldPrice() == null || item.getLastSoldPrice() <= itemFilter.getMaxLastSoldPrice())
+                    .toList();
+        } else {
+            filtered = items.stream()
+                    .filter(item -> itemFilter.getItemNamePatterns().stream().noneMatch(s -> item.getName().toLowerCase().contains(s.toLowerCase())))
+                    .filter(item -> !itemFilter.getItemTypes().contains(item.getType()))
+                    .filter(item -> filterTags.isEmpty() || item.getTags().stream().noneMatch(tag -> filterTags.contains(tagService.getValueByName(tag))))
+                    .filter(item -> itemFilter.getMinPrice() == null || item.getMinSellPrice() < itemFilter.getMinPrice())
+                    .filter(item -> itemFilter.getMaxPrice() == null || item.getMaxBuyPrice() > itemFilter.getMaxPrice())
+                    .filter(item -> itemFilter.getMinLastSoldPrice() == null || item.getLastSoldPrice() < itemFilter.getMinLastSoldPrice())
+                    .filter(item -> itemFilter.getMaxLastSoldPrice() == null || item.getLastSoldPrice() > itemFilter.getMaxLastSoldPrice())
+                    .toList();
+        }
+
+        log.debug("Items amount: {}", filtered.size());
+
+        for (Item item : filtered) {
+            telegramBotClientService.sendText(String.valueOf(chatId), getItemString(item));
+        }
+    }
+
     public void sendDefaultOwnedSpeculativeItemsAsMessagesForUser(Long chatId, String email) {
         Set<String> ownedItemsIds = new HashSet<>(ubiUserService.getOwnedItemsIds(String.valueOf(chatId), email));
 
@@ -159,10 +215,6 @@ public class BotInnerService {
         itemFilterService.saveItemFilter(getItemFilterByUserInput(chatId));
     }
 
-    public void removeFilterByUserInput(Long chatId) {
-        itemFilterService.removeItemFilterById(String.valueOf(chatId), telegramUserService.getUserInputByState(chatId, InputState.FILTER_NAME));
-    }
-
     public Collection<String> getFilterNamesForUser(Long chatId) {
         return itemFilterService.getAllItemFilterNamesForUser(String.valueOf(chatId));
     }
@@ -191,6 +243,10 @@ public class BotInnerService {
         Collection<TelegramUserInput> inputs = telegramUserService.getAllUserInputs(chatId);
 
         return itemFilterFromInputsMapper.mapToItemFilter(inputs);
+    }
+
+    public String getItemShowSettingsForUser(Long chatId) {
+
     }
 
     private String getItemFilterString(ItemFilter itemFilter) {

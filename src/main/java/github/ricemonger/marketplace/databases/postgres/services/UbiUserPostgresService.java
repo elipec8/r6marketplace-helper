@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.entities.TelegramUbiUserEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.TelegramUbiUserEntityId;
+import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUbiUserEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUbiUserEntityId;
 import github.ricemonger.marketplace.databases.postgres.mappers.UbiUserPostgresMapper;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiUserPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.UbiUserDatabaseService;
@@ -28,7 +28,7 @@ public class UbiUserPostgresService implements UbiUserDatabaseService {
 
     @Override
     public void deleteById(String chatId, String email) {
-        ubiUserRepository.deleteById(new TelegramUbiUserEntityId(chatId, email));
+        ubiUserRepository.deleteById(new TelegramLinkedUbiUserEntityId(chatId, email));
     }
 
     @Override
@@ -46,7 +46,7 @@ public class UbiUserPostgresService implements UbiUserDatabaseService {
     @Override
     public UbiUser findById(String chatId, String email) throws UbiUserDoesntExistException {
         try {
-            TelegramUbiUserEntity entity = ubiUserRepository.findById(new TelegramUbiUserEntityId(chatId, email)).orElseThrow();
+            TelegramLinkedUbiUserEntity entity = ubiUserRepository.findById(new TelegramLinkedUbiUserEntityId(chatId, email)).orElseThrow();
             return mapper.mapUbiUser(entity);
         }
         catch (NoSuchElementException e) {

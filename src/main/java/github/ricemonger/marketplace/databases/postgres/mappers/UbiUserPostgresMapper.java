@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.mappers;
 
-import github.ricemonger.marketplace.databases.postgres.entities.TelegramUbiUserEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUbiUserEntity;
 import github.ricemonger.utils.dtos.UbiUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import java.util.List;
 @Component
 public class UbiUserPostgresMapper {
 
-    public Collection<TelegramUbiUserEntity> mapUbiUserEntities(Collection<UbiUser> users) {
+    public Collection<TelegramLinkedUbiUserEntity> mapUbiUserEntities(Collection<UbiUser> users) {
         if(users == null || users.isEmpty()) {
             return List.of();
         }
@@ -23,8 +23,8 @@ public class UbiUserPostgresMapper {
         }
     }
 
-    public TelegramUbiUserEntity mapUbiUserEntity(UbiUser user) {
-        TelegramUbiUserEntity entity = new TelegramUbiUserEntity();
+    public TelegramLinkedUbiUserEntity mapUbiUserEntity(UbiUser user) {
+        TelegramLinkedUbiUserEntity entity = new TelegramLinkedUbiUserEntity();
 
         StringBuilder ownedItemsIds = new StringBuilder();
 
@@ -55,7 +55,7 @@ public class UbiUserPostgresMapper {
         return entity;
     }
 
-    public Collection<UbiUser> mapUbiUsers(Collection<TelegramUbiUserEntity> entities) {
+    public Collection<UbiUser> mapUbiUsers(Collection<TelegramLinkedUbiUserEntity> entities) {
         if(entities == null || entities.isEmpty()) {
             return List.of();
         }
@@ -64,25 +64,25 @@ public class UbiUserPostgresMapper {
         }
     }
 
-    public UbiUser mapUbiUser(TelegramUbiUserEntity telegramUbiUserEntity) {
+    public UbiUser mapUbiUser(TelegramLinkedUbiUserEntity telegramLinkedUbiUserEntity) {
         UbiUser ubiUser = new UbiUser();
 
         List<String> ownedItemsIds = new ArrayList<>();
-        if(telegramUbiUserEntity.getOwnedItemsIds() != null) {
-            String[] entityOwnedItemsIds = telegramUbiUserEntity.getOwnedItemsIds().split(",");
+        if(telegramLinkedUbiUserEntity.getOwnedItemsIds() != null) {
+            String[] entityOwnedItemsIds = telegramLinkedUbiUserEntity.getOwnedItemsIds().split(",");
             ownedItemsIds = new ArrayList<>(Arrays.asList(entityOwnedItemsIds));
         }
 
-        ubiUser.setChatId(telegramUbiUserEntity.getChatId());
-        ubiUser.setEmail(telegramUbiUserEntity.getEmail());
-        ubiUser.setEncodedPassword(telegramUbiUserEntity.getEncodedPassword());
-        ubiUser.setUbiProfileId(telegramUbiUserEntity.getUbiProfileId());
-        ubiUser.setUbiSessionId(telegramUbiUserEntity.getUbiSessionId());
-        ubiUser.setUbiSpaceId(telegramUbiUserEntity.getUbiSpaceId());
-        ubiUser.setUbiAuthTicket(telegramUbiUserEntity.getUbiAuthTicket());
-        ubiUser.setUbiTwoFactorAuthTicket(telegramUbiUserEntity.getUbiTwoFactorAuthTicket());
-        ubiUser.setUbiRememberDeviceTicket(telegramUbiUserEntity.getUbiRememberDeviceTicket());
-        ubiUser.setUbiRememberMeTicket(telegramUbiUserEntity.getUbiRememberMeTicket());
+        ubiUser.setChatId(telegramLinkedUbiUserEntity.getChatId());
+        ubiUser.setEmail(telegramLinkedUbiUserEntity.getEmail());
+        ubiUser.setEncodedPassword(telegramLinkedUbiUserEntity.getEncodedPassword());
+        ubiUser.setUbiProfileId(telegramLinkedUbiUserEntity.getUbiProfileId());
+        ubiUser.setUbiSessionId(telegramLinkedUbiUserEntity.getUbiSessionId());
+        ubiUser.setUbiSpaceId(telegramLinkedUbiUserEntity.getUbiSpaceId());
+        ubiUser.setUbiAuthTicket(telegramLinkedUbiUserEntity.getUbiAuthTicket());
+        ubiUser.setUbiTwoFactorAuthTicket(telegramLinkedUbiUserEntity.getUbiTwoFactorAuthTicket());
+        ubiUser.setUbiRememberDeviceTicket(telegramLinkedUbiUserEntity.getUbiRememberDeviceTicket());
+        ubiUser.setUbiRememberMeTicket(telegramLinkedUbiUserEntity.getUbiRememberMeTicket());
         ubiUser.setOwnedItemsIds(ownedItemsIds);
 
         return ubiUser;

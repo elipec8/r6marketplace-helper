@@ -3,15 +3,13 @@ package github.ricemonger.marketplace.databases.postgres.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Entity(name = "ubi_user")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(TelegramUbiUserEntityId.class)
-public class TelegramUbiUserEntity {
+@IdClass(TelegramLinkedUbiUserEntityId.class)
+public class TelegramLinkedUbiUserEntity {
     @Id
     private String chatId;
 

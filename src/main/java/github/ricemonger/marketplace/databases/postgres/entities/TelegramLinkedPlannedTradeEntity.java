@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TelegramTradeEntity {
+public class TelegramLinkedPlannedTradeEntity {
 
     @Id
     private String tradeId;

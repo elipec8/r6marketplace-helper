@@ -23,4 +23,12 @@ public class TagService {
     public Collection<Tag> getAllTags() {
         return tagDatabaseService.findAll();
     }
+
+    public String getValueByName(String name) {
+        return tagDatabaseService.findByName(name).getValue();
+    }
+
+    public String getNameByValue(String value) {
+        return tagDatabaseService.findByValue(value).getName();
+    }
 }

@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.mappers;
 
-import github.ricemonger.marketplace.databases.postgres.entities.TelegramUbiUserEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUbiUserEntity;
 import github.ricemonger.utils.dtos.UbiUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,7 +28,7 @@ class UbiUserPostgresMapperTest {
             "ubiRememberMeToken",
             new ArrayList<>(List.of("1", "2", "3")));
 
-    private final TelegramUbiUserEntity UBI_USER_ENTITY = new TelegramUbiUserEntity(
+    private final TelegramLinkedUbiUserEntity UBI_USER_ENTITY = new TelegramLinkedUbiUserEntity(
             "chatId",
             "email",
             "password",
@@ -83,7 +83,7 @@ class UbiUserPostgresMapperTest {
 
     @Test
     public void mapUbiUser_should_not_throw_if_empty(){
-        assertDoesNotThrow(() -> ubiUserPostgresMapper.mapUbiUser(new TelegramUbiUserEntity()));
+        assertDoesNotThrow(() -> ubiUserPostgresMapper.mapUbiUser(new TelegramLinkedUbiUserEntity()));
     }
 
     @Test
@@ -91,7 +91,7 @@ class UbiUserPostgresMapperTest {
         assertTrue(ubiUsersAreEqual(UBI_USER, ubiUserPostgresMapper.mapUbiUser(UBI_USER_ENTITY)));
     }
 
-    private boolean ubiUserEntitiesAreEqual(TelegramUbiUserEntity entity1, TelegramUbiUserEntity entity2){
+    private boolean ubiUserEntitiesAreEqual(TelegramLinkedUbiUserEntity entity1, TelegramLinkedUbiUserEntity entity2){
         return entity1.getChatId().equals(entity2.getChatId()) &&
                entity1.getEmail().equals(entity2.getEmail()) &&
                entity1.getEncodedPassword().equals(entity2.getEncodedPassword()) &&

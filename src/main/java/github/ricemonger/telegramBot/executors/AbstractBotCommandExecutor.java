@@ -28,6 +28,7 @@ public abstract class AbstractBotCommandExecutor {
     }
 
     protected final void processFirstInput(InputState nextInputState, InputGroup nextInputGroup) {
+        botInnerService.clearUserInputs(updateInfo.getChatId());
         botInnerService.setUserNextInputState(updateInfo.getChatId(), nextInputState);
         botInnerService.setUserNextInputGroup(updateInfo.getChatId(), nextInputGroup);
     }

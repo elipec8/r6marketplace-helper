@@ -5,7 +5,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TelegramUbiUserEntityId {
+public class TelegramLinkedUbiUserEntityId {
     private String chatId;
     private String email;
 }

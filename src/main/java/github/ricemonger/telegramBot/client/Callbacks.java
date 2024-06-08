@@ -30,8 +30,6 @@ public class Callbacks {
 
     public static final String FILTER_EDIT_FINISH = "FILTER_EDIT_FINISH";
 
-    public static final String FILTER_REMOVE = "FILTER_REMOVE";
-
     public static final String FILTER_REMOVE_FINISH = "FILTER_REMOVE_FINISH";
 
     public static final String FILTERS_SHOW = "FILTERS_SHOW";
@@ -50,7 +48,15 @@ public class Callbacks {
 
     public static final String ITEMS_SHOW = "ITEMS_SHOW";
 
+    public static final String ITEM_SHOW_SETTINGS_CHANGE_LIMIT = "ITEM_SHOW_SETTINGS_CHANGE_LIMIT";
+
+    public static final String ITEM_SHOW_SETTINGS_CHANGE_FIELDS = "ITEM_SHOW_SETTINGS_CHANGE_FIELDS";
+
+    public static final String ITEM_SHOW_SETTINGS_CHANGE_FILTERS = "ITEM_SHOW_SETTINGS_CHANGE_FILTERS";
+
     public static final String ITEMS_SHOW_BY_REQUEST = "ITEMS_SHOW_DEFINE_SETTINGS";
+
+    public static final String ITEMS_SHOW_BY_REQUEST_FINISH = "ITEMS_SHOW_BY_REQUEST_FINISH";
 
     public static final String ITEMS_SHOW_BY_SETTINGS = "ITEMS_SHOW_ALL";
 

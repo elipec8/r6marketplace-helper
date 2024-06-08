@@ -6,7 +6,6 @@ public class FilterEditStage18FinishCallback extends AbstractBotCommandExecutor 
     @Override
     protected void executeCommand() {
         botInnerService.saveFilterFromInput(updateInfo.getChatId());
-        botInnerService.clearUserInputs(updateInfo.getChatId());
         sendText("Filter created successfully");
     }
 }
