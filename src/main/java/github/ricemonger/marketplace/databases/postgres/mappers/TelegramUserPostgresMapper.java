@@ -1,6 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.mappers;
 
 import github.ricemonger.marketplace.databases.postgres.entities.TelegramUserEntity;
+import github.ricemonger.utils.dtos.ItemShowSettings;
 import github.ricemonger.utils.dtos.TelegramUser;
 import org.springframework.stereotype.Component;
 

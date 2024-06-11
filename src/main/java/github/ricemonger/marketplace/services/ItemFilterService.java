@@ -27,6 +27,6 @@ public class ItemFilterService {
     }
 
     public Collection<String> getAllItemFilterNamesForUser(String chatId) {
-        return itemFilterDatabaseService.getAllItemFilterNamesForUser(chatId);
+        return itemFilterDatabaseService.findAllItemFilterNamesByChatId(chatId);
     }
 }

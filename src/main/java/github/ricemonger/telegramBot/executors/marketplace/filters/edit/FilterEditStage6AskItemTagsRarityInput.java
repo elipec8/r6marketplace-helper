@@ -8,7 +8,7 @@ public class FilterEditStage6AskItemTagsRarityInput extends AbstractBotCommandEx
     @Override
     protected void executeCommand() {
         processMiddleInput(InputState.FILTER_ITEM_TAGS_RARITY);
-        String tags = botInnerService.getTagsStringByGroup(TagGroup.Rarity);
+        String tags = botInnerService.getAllTagsStringByGroup(TagGroup.Rarity);
         askFromInlineKeyboardOrSkip("Please enter rarities, dived by \",\" or \"|\". Rarities list:\n" + tags,1);
     }
 }

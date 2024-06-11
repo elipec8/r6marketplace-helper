@@ -8,7 +8,7 @@ public class FilterEditStage12AskItemTagsOtherInput extends AbstractBotCommandEx
     @Override
     protected void executeCommand() {
         processMiddleInput(InputState.FILTER_ITEM_TAGS_OTHER);
-        String tags = botInnerService.getTagsStringByGroup(TagGroup.Other);
+        String tags = botInnerService.getAllTagsStringByGroup(TagGroup.Other);
         askFromInlineKeyboardOrSkip("Please enter tags, dived by \",\" or \"|\". Tags' list:\n" + tags,1);
     }
 }

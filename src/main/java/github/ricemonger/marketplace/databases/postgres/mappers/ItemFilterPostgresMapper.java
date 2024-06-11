@@ -4,18 +4,19 @@ import github.ricemonger.marketplace.databases.postgres.entities.ItemFilterEntit
 import github.ricemonger.marketplace.databases.postgres.entities.TelegramUserEntity;
 import github.ricemonger.utils.dtos.ItemFilter;
 import github.ricemonger.utils.enums.ItemType;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class ItemFilterPostgresMapper {
+
+    private final TagPostgresMapper tagPostgresMapper;
 
     public Collection<ItemFilterEntity> mapItemFilterEntities(Collection<ItemFilter> filters) {
         if (filters == null || filters.isEmpty()) {
@@ -37,13 +38,7 @@ public class ItemFilterPostgresMapper {
         entity.setIsOwned(filter.getIsOwned());
         entity.setItemNamePatterns(String.join(",", filter.getItemNamePatterns()));
         entity.setItemTypes(filter.getItemTypes().stream().map(Enum::name).collect(Collectors.joining(",")));
-        entity.setRarityTags(String.join(",", filter.getRarityTags()));
-        entity.setSeasonTags(String.join(",", filter.getSeasonTags()));
-        entity.setOperatorTags(String.join(",", filter.getOperatorTags()));
-        entity.setWeaponTags(String.join(",", filter.getWeaponTags()));
-        entity.setEventTags(String.join(",", filter.getEventTags()));
-        entity.setEsportsTags(String.join(",", filter.getEsportsTags()));
-        entity.setOtherTags(String.join(",", filter.getOtherTags()));
+        entity.setTags(new HashSet<>(tagPostgresMapper.mapTagEntities(filter.getTags())));
         entity.setMinPrice(filter.getMinPrice());
         entity.setMaxPrice(filter.getMaxPrice());
         entity.setMinLastSoldPrice(filter.getMinLastSoldPrice());
@@ -74,11 +69,10 @@ public class ItemFilterPostgresMapper {
 
             String[] split = entity.getItemTypes().split("[,|]");
 
-            for(String s : split) {
+            for (String s : split) {
                 try {
                     itemTypes.add(ItemType.valueOf(s));
-                }
-                catch (IllegalArgumentException e) {
+                } catch (IllegalArgumentException e) {
                     log.error("Unknown item type: " + s);
                 }
             }
@@ -88,13 +82,7 @@ public class ItemFilterPostgresMapper {
         }
         filter.setItemTypes(itemTypes);
 
-        filter.setRarityTags(mapStringToList(entity.getRarityTags()));
-        filter.setSeasonTags(mapStringToList(entity.getSeasonTags()));
-        filter.setOperatorTags(mapStringToList(entity.getOperatorTags()));
-        filter.setWeaponTags(mapStringToList(entity.getWeaponTags()));
-        filter.setEventTags(mapStringToList(entity.getEventTags()));
-        filter.setEsportsTags(mapStringToList(entity.getEsportsTags()));
-        filter.setOtherTags(mapStringToList(entity.getOtherTags()));
+        filter.setTags(new ArrayList<>(tagPostgresMapper.mapTags(entity.getTags())));
         filter.setMinPrice(entity.getMinPrice());
         filter.setMaxPrice(entity.getMaxPrice());
         filter.setMinLastSoldPrice(entity.getMinLastSoldPrice());

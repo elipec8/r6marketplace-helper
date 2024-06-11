@@ -2,7 +2,13 @@ package github.ricemonger.telegramBot.client;
 
 public class Callbacks {
 
-    public static final String EMPTY = "SKIP";
+    public static final String EMPTY = "SKIP_CALLBACK_DATA";
+
+    public static final String INPUT_CALLBACK_PREFIX = "INPUT_CALLBACK_PREFIX_";
+
+    public static final String INPUT_CALLBACK_TRUE  = "INPUT_CALLBACK_TRUE";
+
+    public static final String INPUT_CALLBACK_FALSE = "INPUT_CALLBACK_FALSE";
 
     public static final String CANCEL = "CANCEL";
 
@@ -21,8 +27,6 @@ public class Callbacks {
     public static final String CREDENTIALS_REMOVE_ALL = "CREDENTIALS_REMOVE_ALL";
 
     public static final String CREDENTIALS_REMOVE_ALL_CONFIRMED = "CREDENTIALS_REMOVE_ALL_CONFIRMED";
-
-    public static final String FILTER_CALLBACK_PREFIX = "FILTER_CALLBACK_PREFIX_";
 
     public static final String FILTERS = "FILTERS";
 
@@ -48,21 +52,23 @@ public class Callbacks {
 
     public static final String ITEMS_SHOW = "ITEMS_SHOW";
 
-    public static final String ITEM_SHOW_SETTINGS_CHANGE_LIMIT = "ITEM_SHOW_SETTINGS_CHANGE_LIMIT";
+    public static final String ITEMS_SHOW_SETTINGS = "ITEMS_SHOW_SETTINGS";
 
-    public static final String ITEM_SHOW_SETTINGS_CHANGE_FIELDS = "ITEM_SHOW_SETTINGS_CHANGE_FIELDS";
+    public static final String ITEMS_SHOW_SETTINGS_CHANGE_APPLIED_FILTERS = "ITEMS_SHOW_SETTINGS_CHANGE_APPLIED_FILTERS";
 
-    public static final String ITEM_SHOW_SETTINGS_CHANGE_FILTERS = "ITEM_SHOW_SETTINGS_CHANGE_FILTERS";
+    public static final String ITEMS_SHOW_SETTINGS_CHANGE_FEW_ITEMS_IN_MESSAGE = "ITEMS_SHOW_SETTINGS_CHANGE_FEW_ITEMS_IN_MESSAGE";
 
-    public static final String ITEMS_SHOW_BY_REQUEST = "ITEMS_SHOW_DEFINE_SETTINGS";
+    public static final String ITEMS_SHOW_SETTINGS_CHANGE_FEW_ITEMS_IN_MESSAGE_CALLBACK_YES = "ITEMS_SHOW_SETTINGS_CHANGE_FEW_ITEMS_IN_MESSAGE_CALLBACK_YES";
 
-    public static final String ITEMS_SHOW_BY_REQUEST_FINISH = "ITEMS_SHOW_BY_REQUEST_FINISH";
+    public static final String ITEMS_SHOW_SETTINGS_CHANGE_FEW_ITEMS_IN_MESSAGE_CALLBACK_NO = "ITEMS_SHOW_SETTINGS_CHANGE_FEW_ITEMS_IN_MESSAGE_CALLBACK_NO";
+
+    public static final String ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT = "ITEMS_SHOW_SETTINGS_CHANGE_LIMIT";
+
+    public static final String ITEMS_SHOW_SETTINGS_CHANGE_SHOWN_FIELDS = "ITEMS_SHOW_SETTINGS_CHANGE_FIELDS";
+
+    public static final String ITEM_SHOW_SETTINGS_CHANGE_FILTERS = "ITEMS_SHOW_SETTINGS_CHANGE_FILTERS";
 
     public static final String ITEMS_SHOW_BY_SETTINGS = "ITEMS_SHOW_ALL";
-
-    public static final String ITEMS_SEARCH_SETTINGS = "ITEMS_SEARCH_SETTINGS";
-
-    public static final String ITEMS_DISPLAY_SETTINGS = "ITEMS_DISPLAY_SETTINGS";
     
     public static final String TRADES = "TRADES";
 

@@ -8,7 +8,7 @@ public class FilterEditStage8AskItemTagsOperatorsInput extends AbstractBotComman
     @Override
     protected void executeCommand() {
         processMiddleInput(InputState.FILTER_ITEM_TAGS_OPERATORS);
-        String tags = botInnerService.getTagsStringByGroup(TagGroup.Operator);
+        String tags = botInnerService.getAllTagsStringByGroup(TagGroup.Operator);
         askFromInlineKeyboardOrSkip("Please enter operators, dived by \",\" or \"|\". Operators list:\n" + tags,1);
     }
 }

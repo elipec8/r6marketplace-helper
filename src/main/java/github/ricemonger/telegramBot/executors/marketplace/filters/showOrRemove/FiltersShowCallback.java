@@ -12,14 +12,14 @@ import java.util.List;
 public class FiltersShowCallback extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        processFirstInput(InputState.FILTER_NAME, InputGroup.FILTERS_SHOW);
+        processFirstInput(InputState.FILTER_NAME, InputGroup.FILTERS_SHOW_REMOVE);
 
-        List<String> filterNames = new ArrayList<>(botInnerService.getFilterNamesForUser(updateInfo.getChatId()));
+        List<String> filterNames = new ArrayList<>(botInnerService.getAllFilterNamesForUser(updateInfo.getChatId()));
 
         CallbackButton[] buttons = new CallbackButton[filterNames.size()];
         for (int i = 0; i < filterNames.size(); i++) {
             String name = filterNames.get(i);
-            buttons[i] = new CallbackButton(name, Callbacks.FILTER_CALLBACK_PREFIX + name);
+            buttons[i] = new CallbackButton(name, Callbacks.INPUT_CALLBACK_PREFIX + name);
         }
 
         askFromInlineKeyboard("Please choose filter to show:", 2, buttons);

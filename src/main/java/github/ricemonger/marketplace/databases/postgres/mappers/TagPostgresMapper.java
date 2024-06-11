@@ -28,7 +28,7 @@ public class TagPostgresMapper {
         return entity;
     }
 
-    public Collection<Tag> mapTags(List<TagEntity> entities) {
+    public Collection<Tag> mapTags(Collection<TagEntity> entities) {
         if (entities == null || entities.isEmpty()) {
             return List.of();
         }

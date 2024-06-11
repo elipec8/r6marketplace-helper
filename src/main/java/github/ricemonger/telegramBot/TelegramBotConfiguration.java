@@ -15,4 +15,10 @@ public class TelegramBotConfiguration {
 
     @Value("${TELEGRAM_BOT_USERNAME}")
     private String TELEGRAM_BOT_USERNAME;
+
+    @Value("${telegram.bot.message.height}")
+    private Integer messageHeight;
+
+    @Value("${telegram.bot.message.limit}")
+    private Integer messageLimit;
 }

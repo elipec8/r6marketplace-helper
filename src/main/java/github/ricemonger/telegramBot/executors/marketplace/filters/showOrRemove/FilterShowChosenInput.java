@@ -8,7 +8,7 @@ public class FilterShowChosenInput extends AbstractBotCommandExecutor {
     protected void executeCommand() {
         processLastInput();
 
-        String filterString = botInnerService.getFilterStringFromDatabaseByUserCallback(updateInfo.getChatId());
+        String filterString = botInnerService.getFilterFromDatabaseByUserInputCallback(updateInfo.getChatId()).toString();
 
         askYesOrNoFromInlineKeyboard("The filter is:\n" + filterString +"\nDo you want to remove the filter?",
                 Callbacks.FILTER_REMOVE_FINISH,

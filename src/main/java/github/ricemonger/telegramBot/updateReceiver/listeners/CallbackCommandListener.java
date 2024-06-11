@@ -17,12 +17,14 @@ import github.ricemonger.telegramBot.executors.marketplace.filters.edit.FilterEd
 import github.ricemonger.telegramBot.executors.marketplace.filters.showOrRemove.FilterRemoveCallback;
 import github.ricemonger.telegramBot.executors.marketplace.filters.showOrRemove.FiltersShowCallback;
 import github.ricemonger.telegramBot.executors.marketplace.items.ItemsCallback;
-import github.ricemonger.telegramBot.executors.marketplace.items.show.ItemsShowCallback;
-import github.ricemonger.telegramBot.executors.marketplace.items.show.settings.ItemsShowSettingsCallback;
-import github.ricemonger.telegramBot.executors.marketplace.items.show.settings.ItemsSearchSettingsCallback;
-import github.ricemonger.telegramBot.executors.marketplace.items.show.showByRequest.ItemsShowByRequestCallback;
-import github.ricemonger.telegramBot.executors.marketplace.items.show.showByRequest.ItemsShowByRequestFinishCallback;
-import github.ricemonger.telegramBot.executors.marketplace.items.show.showBySettings.ItemsShowBySettingsCallback;
+import github.ricemonger.telegramBot.executors.marketplace.items.settings.ItemsShowSettingsCallback;
+import github.ricemonger.telegramBot.executors.marketplace.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallback;
+import github.ricemonger.telegramBot.executors.marketplace.items.settings.itemsInMessage.ItemsShowSettingsChangeItemsInMessageCallback;
+import github.ricemonger.telegramBot.executors.marketplace.items.settings.itemsInMessage.ItemsShowSettingsChangeItemsInMessageNoCallback;
+import github.ricemonger.telegramBot.executors.marketplace.items.settings.itemsInMessage.ItemsShowSettingsChangeItemsInMessageYesCallback;
+import github.ricemonger.telegramBot.executors.marketplace.items.settings.messageLimit.ItemsShowSettingsChangeMessageLimitCallback;
+import github.ricemonger.telegramBot.executors.marketplace.items.settings.shownFields.ItemsShowSettingsChangeShownFieldsStage1AskNameFlagCallback;
+import github.ricemonger.telegramBot.executors.marketplace.items.show.ItemsShowStage1AskOffsetCallback;
 import github.ricemonger.telegramBot.executors.marketplace.trades.TradesCallback;
 import github.ricemonger.telegramBot.executors.marketplace.trades.create.TradesCreateCallback;
 import github.ricemonger.telegramBot.executors.marketplace.trades.settings.TradesManagementSettingsCallback;
@@ -69,17 +71,29 @@ public class CallbackCommandListener {
 
             case Callbacks.ITEMS -> executorsService.execute(ItemsCallback.class, updateInfo);
 
-            case Callbacks.ITEMS_SHOW -> executorsService.execute(ItemsShowCallback.class, updateInfo);
+            case Callbacks.ITEMS_SHOW -> executorsService.execute(ItemsShowStage1AskOffsetCallback.class, updateInfo);
 
-            case Callbacks.ITEMS_SHOW_BY_REQUEST -> executorsService.execute(ItemsShowByRequestCallback.class, updateInfo);
+            case Callbacks.ITEMS_SHOW_SETTINGS -> executorsService.execute(ItemsShowSettingsCallback.class, updateInfo);
 
-            case Callbacks.ITEMS_SHOW_BY_REQUEST_FINISH -> executorsService.execute(ItemsShowByRequestFinishCallback.class, updateInfo);
+            case Callbacks.ITEMS_SHOW_SETTINGS_CHANGE_FEW_ITEMS_IN_MESSAGE ->
+                    executorsService.execute(ItemsShowSettingsChangeItemsInMessageCallback.class, updateInfo);
 
-            case Callbacks.ITEMS_SHOW_BY_SETTINGS -> executorsService.execute(ItemsShowBySettingsCallback.class, updateInfo);
+            case Callbacks.ITEMS_SHOW_SETTINGS_CHANGE_FEW_ITEMS_IN_MESSAGE_CALLBACK_YES ->
+                    executorsService.execute(ItemsShowSettingsChangeItemsInMessageYesCallback.class, updateInfo);
 
-            case Callbacks.ITEMS_SEARCH_SETTINGS -> executorsService.execute(ItemsSearchSettingsCallback.class, updateInfo);
+            case Callbacks.ITEMS_SHOW_SETTINGS_CHANGE_FEW_ITEMS_IN_MESSAGE_CALLBACK_NO ->
+                    executorsService.execute(ItemsShowSettingsChangeItemsInMessageNoCallback.class,
+                            updateInfo);
 
-            case Callbacks.ITEMS_DISPLAY_SETTINGS -> executorsService.execute(ItemsShowSettingsCallback.class, updateInfo);
+            case Callbacks.ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT ->
+                    executorsService.execute(ItemsShowSettingsChangeMessageLimitCallback.class, updateInfo);
+
+            case Callbacks.ITEMS_SHOW_SETTINGS_CHANGE_SHOWN_FIELDS ->
+                    executorsService.execute(ItemsShowSettingsChangeShownFieldsStage1AskNameFlagCallback.class,
+                            updateInfo);
+
+            case Callbacks.ITEMS_SHOW_SETTINGS_CHANGE_APPLIED_FILTERS ->
+                    executorsService.execute(ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallback.class, updateInfo);
 
             case Callbacks.TRADES -> executorsService.execute(TradesCallback.class, updateInfo);
 

@@ -41,7 +41,12 @@ public class ItemFilterPostgresService implements ItemFilterDatabaseService {
     }
 
     @Override
-    public Collection<String> getAllItemFilterNamesForUser(String chatId) {
+    public Collection<String> findAllItemFilterNamesByChatId(String chatId) {
         return repository.findAllByChatId(chatId).stream().map(ItemFilterEntity::getName).toList();
+    }
+
+    @Override
+    public Collection<ItemFilter> findAllItemFiltersByIds(String chatId, Collection<String> names) {
+        return mapper.mapItemFilters(repository.findAllById(names.stream().map(name -> new ItemFilterEntityId(chatId, name)).toList()));
     }
 }

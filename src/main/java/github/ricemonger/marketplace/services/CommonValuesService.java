@@ -1,6 +1,7 @@
 package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.abstractions.CommonValuesDatabaseService;
+import github.ricemonger.telegramBot.TelegramBotConfiguration;
 import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.utils.dtos.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.dtos.ConfigTrades;
@@ -18,6 +19,8 @@ public class CommonValuesService {
     private final MainUserConfiguration mainUserConfiguration;
 
     private final UbiServiceConfiguration ubiServiceConfiguration;
+
+    private final TelegramBotConfiguration telegramBotConfiguration;
 
     public int getExpectedItemCount() {
         return commonValuesDatabaseService.getExpectedItemCount();
@@ -118,5 +121,13 @@ public class CommonValuesService {
 
     public String getDateFormat() {
         return ubiServiceConfiguration.getDateFormat();
+    }
+
+    public Integer getMaximumTelegramMessageHeight() {
+        return telegramBotConfiguration.getMessageHeight();
+    }
+
+    public Integer getMaximumTelegramMessageLimit() {
+        return telegramBotConfiguration.getMessageLimit();
     }
 }

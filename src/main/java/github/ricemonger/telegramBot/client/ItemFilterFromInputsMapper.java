@@ -1,8 +1,9 @@
 package github.ricemonger.telegramBot.client;
 
-import github.ricemonger.marketplace.services.CommonValuesService;
+import github.ricemonger.marketplace.services.TagService;
 import github.ricemonger.telegramBot.executors.InputState;
 import github.ricemonger.utils.dtos.ItemFilter;
+import github.ricemonger.utils.dtos.Tag;
 import github.ricemonger.utils.dtos.TelegramUserInput;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.IsOwnedFilter;
@@ -11,7 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -21,7 +24,7 @@ public class ItemFilterFromInputsMapper {
     private final static int MIN_PRICE = 120;
     private final static int MAX_PRICE = 150000;
     private final static String SKIPPED = Callbacks.EMPTY;
-    private final CommonValuesService commonValuesService;
+    private final TagService tagService;
 
     public ItemFilter mapToItemFilter(Collection<TelegramUserInput> inputs) {
         String chatId = new ArrayList<>(inputs).get(0).getChatId();
@@ -41,7 +44,6 @@ public class ItemFilterFromInputsMapper {
         String maxPriceString = getValueByState(inputs, InputState.FILTER_MAX_PRICE);
         String minLastSoldPriceString = getValueByState(inputs, InputState.FILTER_MIN_LAST_SOLD_PRICE);
         String maxLastSoldPriceString = getValueByState(inputs, InputState.FILTER_MAX_LAST_SOLD_PRICE);
-        String boundaryLastSoldDateString = getValueByState(inputs, InputState.FILTER_LAST_SOLD_DATE);
 
         ItemFilter itemFilter = new ItemFilter();
         itemFilter.setChatId(chatId);
@@ -79,47 +81,19 @@ public class ItemFilterFromInputsMapper {
             itemFilter.setItemTypesFromString(itemTypesString);
         }
 
-        if (rarityTagsString.equals(SKIPPED)) {
-            itemFilter.setRarityTagsFromString("");
-        } else {
-            itemFilter.setRarityTagsFromString(rarityTagsString);
-        }
+            itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(rarityTagsString)));
 
-        if (seasonTagsString.equals(SKIPPED)) {
-            itemFilter.setSeasonTagsFromString("");
-        } else {
-            itemFilter.setSeasonTagsFromString(seasonTagsString);
-        }
+            itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(seasonTagsString)));
 
-        if (operatorTagsString.equals(SKIPPED)) {
-            itemFilter.setOperatorTagsFromString("");
-        } else {
-            itemFilter.setOperatorTagsFromString(operatorTagsString);
-        }
+            itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(operatorTagsString)));
 
-        if (weaponTagsString.equals(SKIPPED)) {
-            itemFilter.setWeaponTagsFromString("");
-        } else {
-            itemFilter.setWeaponTagsFromString(weaponTagsString);
-        }
+            itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(weaponTagsString)));
 
-        if (eventTagsString.equals(SKIPPED)) {
-            itemFilter.setEventTagsFromString("");
-        } else {
-            itemFilter.setEventTagsFromString(eventTagsString);
-        }
+            itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(eventTagsString)));
 
-        if (esportsTagsString.equals(SKIPPED)) {
-            itemFilter.setEsportsTagsFromString("");
-        } else {
-            itemFilter.setEsportsTagsFromString(esportsTagsString);
-        }
+            itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(esportsTagsString)));
 
-        if (otherTagsString.equals(SKIPPED)) {
-            itemFilter.setOtherTagsFromString("");
-        } else {
-            itemFilter.setOtherTagsFromString(otherTagsString);
-        }
+            itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(otherTagsString)));
 
         if (minPriceString.equals(SKIPPED)) {
             itemFilter.setMinPrice(MIN_PRICE);
@@ -175,5 +149,18 @@ public class ItemFilterFromInputsMapper {
     private String getValueByState(Collection<TelegramUserInput> inputs, InputState inputState) {
         return inputs.stream().filter(input -> input.getInputState().equals(inputState)).findFirst().orElse(new TelegramUserInput("",
                 InputState.BASE, "")).getValue();
+    }
+
+    private Collection<Tag> getTagsFromNames(Collection<String> tagNames) {
+        return tagService.getTagsByNames(tagNames);
+    }
+
+    private List<String> getTagNamesListFromString(String tags) {
+        if(tags == null || tags.isEmpty() || tags.equals(SKIPPED)) {
+            return new ArrayList<>();
+        }
+        else{
+            return Arrays.stream(tags.split("[,|]")).map(String::trim).toList();
+        }
     }
 }

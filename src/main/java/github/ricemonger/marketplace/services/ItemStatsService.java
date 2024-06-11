@@ -4,6 +4,7 @@ import github.ricemonger.marketplace.services.abstractions.ItemDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleHistoryDatabaseService;
 import github.ricemonger.utils.dtos.*;
+import github.ricemonger.utils.enums.FilterType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -106,5 +107,50 @@ public class ItemStatsService {
 
     public Collection<Item> getAllItems() {
         return itemService.findAllItems();
+    }
+
+    public Collection<Item> getAllItemsByFilters(Collection<ItemFilter> filters) {
+        Collection<Item> items = itemService.findAllItems();
+
+        if (filters == null || filters.isEmpty()) {
+            return items;
+        } else {
+            List<ItemFilter> allowedFilters = filters.stream().filter(filter -> filter.getFilterType().equals(FilterType.ALLOW)).toList();
+            List<ItemFilter> deniedFilters = filters.stream().filter(filter -> filter.getFilterType().equals(FilterType.DENY)).toList();
+
+            Set<Item> result;
+
+            if (allowedFilters.isEmpty()) {
+                result = new HashSet<>(items);
+            } else {
+                result = new HashSet<>();
+                for (ItemFilter filter : allowedFilters) {
+                    result.addAll(filterItems(items, filter));
+                }
+            }
+
+            if (deniedFilters.isEmpty()) {
+                return result;
+            } else {
+                List<Item> deniedItems = new ArrayList<>();
+                for (ItemFilter filter : deniedFilters) {
+                    deniedItems.addAll(filterItems(items, filter));
+                }
+                deniedItems.forEach(result::remove);
+            }
+            return result;
+        }
+    }
+
+    private Collection<Item> filterItems(Collection<Item> items, ItemFilter filter) {
+        return items.stream()
+                .filter(item -> filter.getItemNamePatterns().stream().anyMatch(s -> item.getName().toLowerCase().contains(s.toLowerCase())))
+                .filter(item -> filter.getItemTypes().isEmpty() || filter.getItemTypes().contains(item.getType()))
+                .filter(item -> filter.getTags().isEmpty() || filter.getTags().stream().anyMatch(tag -> item.getTags().contains(tag.getValue())))
+                .filter(item -> filter.getMinPrice() == null || item.getMinSellPrice() >= filter.getMinPrice())
+                .filter(item -> filter.getMaxPrice() == null || item.getMaxBuyPrice() <= filter.getMaxPrice())
+                .filter(item -> filter.getMinLastSoldPrice() == null || item.getLastSoldPrice() >= filter.getMinLastSoldPrice())
+                .filter(item -> filter.getMaxLastSoldPrice() == null || item.getLastSoldPrice() <= filter.getMaxLastSoldPrice())
+                .toList();
     }
 }

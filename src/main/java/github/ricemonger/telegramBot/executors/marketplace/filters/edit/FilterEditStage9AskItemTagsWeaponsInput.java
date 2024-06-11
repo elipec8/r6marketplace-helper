@@ -8,7 +8,7 @@ public class FilterEditStage9AskItemTagsWeaponsInput extends AbstractBotCommandE
     @Override
     protected void executeCommand() {
         processMiddleInput(InputState.FILTER_ITEM_TAGS_WEAPONS);
-        String tags = botInnerService.getTagsStringByGroup(TagGroup.Weapon);
+        String tags = botInnerService.getAllTagsStringByGroup(TagGroup.Weapon);
         askFromInlineKeyboardOrSkip("Please enter weapons, dived by \",\" or \"|\". Weapons list:\n" + tags,1);
     }
 }

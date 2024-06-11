@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,5 +37,10 @@ public class TagPostgresService implements TagDatabaseService {
     @Override
     public Tag findByValue(String value) {
         return mapper.mapTag(repository.findById(value).orElse(new TagEntity()));
+    }
+
+    @Override
+    public Collection<Tag> findAllByNames(Collection<String> tagNames) {
+        return mapper.mapTags(repository.findAllByNames(tagNames));
     }
 }

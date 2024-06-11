@@ -12,4 +12,7 @@ public interface TagDatabaseService {
     Tag findByName(String name);
 
     Tag findByValue(String value);
+
+    Collection<Tag> findAllByNames(Collection<String> tagNames);
+
 }

@@ -2,13 +2,14 @@ package github.ricemonger.marketplace.databases.postgres.entities;
 
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.IsOwnedFilter;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity(name = "item_filter")
 @Getter
@@ -31,19 +32,12 @@ public class ItemFilterEntity {
 
     private String itemTypes;
 
-    private String rarityTags;
-
-    private String seasonTags;
-
-    private String operatorTags;
-
-    private String weaponTags;
-
-    private String eventTags;
-
-    private String esportsTags;
-
-    private String otherTags;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "item_filter_tags",
+            joinColumns = {@JoinColumn(name = "item_filter_chat_id", referencedColumnName="chatId"),
+                    @JoinColumn(name = "item_filter_name", referencedColumnName="name")},
+            inverseJoinColumns = @JoinColumn(name = "tag_name", referencedColumnName="name"))
+    private Set<TagEntity> tags = new HashSet<>();
 
     private Integer minPrice;
 
@@ -52,4 +46,9 @@ public class ItemFilterEntity {
     private Integer minLastSoldPrice;
 
     private Integer maxLastSoldPrice;
+
+    public ItemFilterEntity(String chatId, String name) {
+        this.chatId = chatId;
+        this.name = name;
+    }
 }

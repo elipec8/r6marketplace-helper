@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,5 +31,9 @@ public class TagService {
 
     public String getNameByValue(String value) {
         return tagDatabaseService.findByValue(value).getName();
+    }
+
+    public Collection<Tag> getTagsByNames(Collection<String> tagNames) {
+        return tagDatabaseService.findAllByNames(tagNames);
     }
 }

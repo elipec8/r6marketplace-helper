@@ -8,7 +8,7 @@ public class FilterEditStage10AskItemTagsEventsInput extends AbstractBotCommandE
     @Override
     protected void executeCommand() {
         processMiddleInput(InputState.FILTER_ITEM_TAGS_EVENTS);
-        String tags = botInnerService.getTagsStringByGroup(TagGroup.Event);
+        String tags = botInnerService.getAllTagsStringByGroup(TagGroup.Event);
         askFromInlineKeyboardOrSkip("Please enter events, dived by \",\" or \"|\". Events list:\n" + tags,1);
     }
 }

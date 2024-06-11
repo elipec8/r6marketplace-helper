@@ -11,7 +11,11 @@ import github.ricemonger.telegramBot.executors.credentials.add.CredentialsAddPas
 import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRemoveOneEmailInput;
 import github.ricemonger.telegramBot.executors.marketplace.filters.edit.*;
 import github.ricemonger.telegramBot.executors.marketplace.filters.showOrRemove.FilterShowChosenInput;
-import github.ricemonger.telegramBot.executors.marketplace.items.show.showByRequest.ItemsShowByRequestFinishInput;
+import github.ricemonger.telegramBot.executors.marketplace.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage2AskActionInput;
+import github.ricemonger.telegramBot.executors.marketplace.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage3FinishInput;
+import github.ricemonger.telegramBot.executors.marketplace.items.settings.messageLimit.ItemsShowSettingsChangeMessageLimitFinishInput;
+import github.ricemonger.telegramBot.executors.marketplace.items.settings.shownFields.*;
+import github.ricemonger.telegramBot.executors.marketplace.items.show.ItemsShowStage2FinishInput;
 import github.ricemonger.utils.exceptions.InvalidUserInputGroupException;
 import github.ricemonger.utils.exceptions.InvalidUserInputStateAndGroupConjunctionException;
 import lombok.RequiredArgsConstructor;
@@ -39,9 +43,15 @@ public class InputCommandListener {
 
                 case FILTERS_EDIT -> filterEditInputGroup(updateInfo);
 
-                case FILTERS_SHOW -> filterShowOrRemoveInputGroup(updateInfo);
+                case FILTERS_SHOW_REMOVE -> filterShowOrRemoveInputGroup(updateInfo);
 
-                case ITEM_SHOW_BY_REQUEST -> itemShowByRequestInputGroup(updateInfo);
+                case ITEM_SHOW -> itemShowInputGroup(updateInfo);
+
+                case ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT -> itemShowSettingsChangeMessageLimitInputGroup(updateInfo);
+
+                case ITEMS_SHOW_SETTING_CHANGE_SHOWN_FIELDS -> itemShowSettingsChangeShownFieldsInputGroup(updateInfo);
+
+                case ITEMS_SHOW_SETTING_APPLIED_FILTERS_CHANGE -> itemShowSettingsChangeAppliedFiltersInputGroup(updateInfo);
 
                 default -> throw new InvalidUserInputGroupException(updateInfo.getInputGroup().name());
             }
@@ -137,41 +147,68 @@ public class InputCommandListener {
         }
     }
 
-    private void itemShowByRequestInputGroup(UpdateInfo updateInfo) {
+    private void itemShowInputGroup(UpdateInfo updateInfo) {
+        InputState inputState = updateInfo.getInputState();
+
+        if (Objects.requireNonNull(inputState) == InputState.ITEMS_SHOW_OFFSET) {
+            executorsService.execute(ItemsShowStage2FinishInput.class, updateInfo);
+        } else {
+            throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+        }
+    }
+
+    private void itemShowSettingsChangeMessageLimitInputGroup(UpdateInfo updateInfo) {
+        InputState inputState = updateInfo.getInputState();
+
+        if (Objects.requireNonNull(inputState) == InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT) {
+            executorsService.execute(ItemsShowSettingsChangeMessageLimitFinishInput.class, updateInfo);
+        } else {
+            throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+        }
+    }
+
+    private void itemShowSettingsChangeShownFieldsInputGroup(UpdateInfo updateInfo) {
         InputState inputState = updateInfo.getInputState();
 
         switch (inputState) {
-            case FILTER_NAME -> executorsService.execute(FilterEditStage2AskFilterTypeInput.class, updateInfo);
+            case ITEMS_SHOW_SETTING_SHOWN_FIELDS_NAME ->
+                    executorsService.execute(ItemsShowSettingsChangeShownFieldsStage2AskItemTypeFlagInput.class, updateInfo);
 
-            case FILTER_TYPE -> executorsService.execute(FilterEditStage3AskIsOwnedInput.class, updateInfo);
+            case ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_TYPE ->
+                    executorsService.execute(ItemsShowSettingsChangeShownFieldsStage3AskMaxBuyPriceFlagInput.class,
+                            updateInfo);
 
-            case FILTER_IS_OWNED -> executorsService.execute(FilterEditStage4AskItemNamePatternsInput.class, updateInfo);
+            case ITEMS_SHOW_SETTING_SHOWN_FIELDS_MAX_BUY_PRICE ->
+                    executorsService.execute(ItemsShowSettingsChangeShownFieldsStage4AskBuyOrdersCountFlagInput.class,
+                            updateInfo);
 
-            case FILTER_ITEM_NAME_PATTERNS -> executorsService.execute(FilterEditStage5AskItemTypesInput.class, updateInfo);
+            case ITEMS_SHOW_SETTING_SHOWN_FIELDS_BUY_ORDERS_COUNT ->
+                    executorsService.execute(ItemsShowSettingsChangeShownFieldsStage5AskMinSellPriceFlagInput.class, updateInfo);
 
-            case FILTER_ITEM_TYPES -> executorsService.execute(FilterEditStage6AskItemTagsRarityInput.class, updateInfo);
+            case ITEMS_SHOW_SETTING_SHOWN_FIELDS_MIN_SELL_PRICE ->
+                    executorsService.execute(ItemsShowSettingsChangeShownFieldsStage6AskSellOrdersCountFlagInput.class,
+                            updateInfo);
 
-            case FILTER_ITEM_TAGS_RARITY -> executorsService.execute(FilterEditStage7AskItemTagsSeasonsInput.class, updateInfo);
+            case ITEMS_SHOW_SETTING_SHOWN_FIELDS_SELL_ORDERS_COUNT ->
+                    executorsService.execute(ItemsShowSettingsChangeShownFieldsStage7AskPictureFlagInput.class,
+                            updateInfo);
 
-            case FILTER_ITEM_TAGS_SEASONS -> executorsService.execute(FilterEditStage8AskItemTagsOperatorsInput.class, updateInfo);
+            case ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE ->
+                    executorsService.execute(ItemsShowSettingsChangeShownFieldsStage8FinishInput.class, updateInfo);
 
-            case FILTER_ITEM_TAGS_OPERATORS -> executorsService.execute(FilterEditStage9AskItemTagsWeaponsInput.class, updateInfo);
+            default ->
+                    throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+        }
+    }
 
-            case FILTER_ITEM_TAGS_WEAPONS -> executorsService.execute(FilterEditStage10AskItemTagsEventsInput.class, updateInfo);
+    private void itemShowSettingsChangeAppliedFiltersInputGroup(UpdateInfo updateInfo) {
+        InputState inputState = updateInfo.getInputState();
 
-            case FILTER_ITEM_TAGS_EVENTS -> executorsService.execute(FilterEditStage11AskItemTagsEsportsInput.class, updateInfo);
+        switch (inputState) {
+            case FILTER_NAME -> executorsService.execute(ItemsShowSettingsChangeAppliedFiltersStage2AskActionInput.class, updateInfo);
 
-            case FILTER_ITEM_TAGS_ESPORTS -> executorsService.execute(FilterEditStage12AskItemTagsOtherInput.class, updateInfo);
-
-            case FILTER_ITEM_TAGS_OTHER -> executorsService.execute(FilterEditStage13AskMinPriceInput.class, updateInfo);
-
-            case FILTER_MIN_PRICE -> executorsService.execute(FilterEditStage14AskMaxPriceInput.class, updateInfo);
-
-            case FILTER_MAX_PRICE -> executorsService.execute(FilterEditStage15AskMinLastSoldPriceInput.class, updateInfo);
-
-            case FILTER_MIN_LAST_SOLD_PRICE -> executorsService.execute(FilterEditStage16AskMaxLastSoldPriceInput.class, updateInfo);
-
-            case FILTER_MAX_LAST_SOLD_PRICE -> executorsService.execute(ItemsShowByRequestFinishInput.class, updateInfo);
+            case ITEMS_SHOW_SETTINGS_APPLIED_FILTER_ADD_OR_REMOVE ->
+                    executorsService.execute(ItemsShowSettingsChangeAppliedFiltersStage3FinishInput.class, updateInfo);
 
             default ->
                     throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());

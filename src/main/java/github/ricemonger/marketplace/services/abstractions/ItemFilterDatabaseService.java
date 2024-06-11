@@ -13,5 +13,7 @@ public interface ItemFilterDatabaseService {
 
     void removeItemFilterById(String chatId, String name);
 
-    Collection<String> getAllItemFilterNamesForUser(String chatId);
+    Collection<String> findAllItemFilterNamesByChatId(String chatId);
+
+    Collection<ItemFilter> findAllItemFiltersByIds(String chatId, Collection<String> names);
 }
