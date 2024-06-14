@@ -32,7 +32,7 @@ public class ItemFilterEntity {
 
     private String itemTypes;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "item_filter_tags",
             joinColumns = {@JoinColumn(name = "item_filter_chat_id", referencedColumnName="chatId"),
                     @JoinColumn(name = "item_filter_name", referencedColumnName="name")},
