@@ -1,33 +1,37 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
+import github.ricemonger.marketplace.databases.postgres.entities.ItemFilterEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.TelegramUserEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.TelegramUserInputEntityId;
+import github.ricemonger.marketplace.databases.postgres.mappers.ItemFilterPostgresMapper;
+import github.ricemonger.marketplace.databases.postgres.mappers.ItemShowSettingsMapper;
 import github.ricemonger.marketplace.databases.postgres.mappers.TelegramUserPostgresMapper;
-import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserInputPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserDatabaseService;
-import github.ricemonger.telegramBot.executors.InputState;
+import github.ricemonger.utils.dtos.ItemFilter;
+import github.ricemonger.utils.dtos.ItemShowSettings;
+import github.ricemonger.utils.dtos.ItemShownFieldsSettings;
 import github.ricemonger.utils.dtos.TelegramUser;
-import github.ricemonger.utils.dtos.TelegramUserInput;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
-import github.ricemonger.utils.exceptions.TelegramUserInputDoesntExistException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
 
 @Slf4j
-@Component
+@Service
 @RequiredArgsConstructor
 public class TelegramUserPostgresService implements TelegramUserDatabaseService {
 
     private final TelegramUserPostgresRepository telegramUserPostgresRepository;
 
-    private final TelegramUserInputPostgresRepository telegramUserInputPostgresRepository;
-
     private final TelegramUserPostgresMapper mapper;
+
+    private final ItemShowSettingsMapper itemShowSettingsMapper;
+
+    private final ItemFilterPostgresMapper itemFilterPostgresMapper;
 
     @Override
     public void saveUser(TelegramUser telegramUser) {
@@ -51,41 +55,71 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     }
 
     @Override
-    public void saveInput(TelegramUserInput telegramUserInput) throws TelegramUserDoesntExistException {
-        getTelegramUserByIdOrThrow(telegramUserInput.getChatId());
-
-        telegramUserInputPostgresRepository.save(mapper.mapTelegramUserInputEntity(telegramUserInput));
+    public ItemShowSettings findUserSettingsById(String chatId) {
+        TelegramUserEntity telegramUserEntity = getTelegramUserEntityByIdOrThrow(chatId);
+        return itemShowSettingsMapper.mapItemShowSettings(telegramUserEntity);
     }
 
     @Override
-    public void saveInput(String chatId, InputState inputState, String value) throws TelegramUserDoesntExistException {
-        getTelegramUserByIdOrThrow(chatId);
-
-        telegramUserInputPostgresRepository.save(mapper.mapTelegramUserInputEntity(new TelegramUserInput(chatId, inputState, value)));
+    @Transactional
+    public void setItemShowFewItemsInMessageFlag(String chatId, boolean flag) {
+        TelegramUserEntity telegramUserEntity = getTelegramUserEntityByIdOrThrow(chatId);
+        telegramUserEntity.setItemShowFewInMessageFlag(flag);
+        telegramUserPostgresRepository.save(telegramUserEntity);
     }
 
     @Override
-    public void deleteAllInputsByChatId(String chatId) throws TelegramUserDoesntExistException{
-        getTelegramUserByIdOrThrow(chatId);
-
-        telegramUserInputPostgresRepository.deleteAllByChatId(chatId);
+    @Transactional
+    public void setItemShowMessagesLimit(String chatId, Integer limit) {
+        TelegramUserEntity telegramUserEntity = getTelegramUserEntityByIdOrThrow(chatId);
+        telegramUserEntity.setItemShowMessagesLimit(limit);
+        telegramUserPostgresRepository.save(telegramUserEntity);
     }
 
     @Override
-    public TelegramUserInput findInputById(String chatId, InputState inputState) throws TelegramUserDoesntExistException,TelegramUserInputDoesntExistException {
-        getTelegramUserByIdOrThrow(chatId);
+    @Transactional
+    public void setItemShowSettings(String chatId, ItemShownFieldsSettings settings) {
+        TelegramUserEntity telegramUserEntity = getTelegramUserEntityByIdOrThrow(chatId);
 
-        try {
-            return mapper.mapTelegramUserInput(telegramUserInputPostgresRepository.findById(new TelegramUserInputEntityId(chatId, inputState)).orElseThrow());
-        } catch (NoSuchElementException e) {
-            log.error("Input with chatId {} and inputState {} not found", chatId, inputState);
-            throw new TelegramUserInputDoesntExistException("Input with chatId" + chatId + " and inputState " + inputState + " not found");
+        telegramUserEntity.setShowItemSettings(settings);
+
+        telegramUserPostgresRepository.save(telegramUserEntity);
+    }
+
+    @Override
+    @Transactional
+    public void addItemShowAppliedFilter(String chatId, ItemFilter filter) {
+        TelegramUserEntity telegramUserEntity = getTelegramUserEntityByIdOrThrow(chatId);
+
+        ItemFilterEntity filterEntity = itemFilterPostgresMapper.mapItemFilterEntity(filter);
+
+        telegramUserEntity.getItemShowAppliedFilters().add(filterEntity);
+
+        telegramUserPostgresRepository.save(telegramUserEntity);
+    }
+
+    @Override
+    @Transactional
+    public void removeItemShowAppliedFilter(String chatId, String filterName) {
+        TelegramUserEntity telegramUserEntity = getTelegramUserEntityByIdOrThrow(chatId);
+
+        for (int i = 0; i < telegramUserEntity.getItemShowAppliedFilters().size(); i++) {
+            if (telegramUserEntity.getItemShowAppliedFilters().get(i).getName().equals(filterName)) {
+                telegramUserEntity.getItemShowAppliedFilters().remove(i);
+                break;
+            }
         }
+
+        telegramUserPostgresRepository.save(telegramUserEntity);
     }
 
     private TelegramUser getTelegramUserByIdOrThrow(String chatId) {
+        return mapper.mapTelegramUser(getTelegramUserEntityByIdOrThrow(chatId));
+    }
+
+    private TelegramUserEntity getTelegramUserEntityByIdOrThrow(String chatId) {
         try {
-            return mapper.mapTelegramUser(telegramUserPostgresRepository.findById(chatId).orElseThrow());
+            return telegramUserPostgresRepository.findById(chatId).orElseThrow();
         } catch (NoSuchElementException e) {
             log.error("User with chatId {} not found", chatId);
             throw new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found");

@@ -1,9 +1,11 @@
 package github.ricemonger.marketplace.services.abstractions;
 
 
-import github.ricemonger.telegramBot.executors.InputState;
+import github.ricemonger.marketplace.databases.postgres.entities.ItemFilterEntity;
+import github.ricemonger.utils.dtos.ItemFilter;
+import github.ricemonger.utils.dtos.ItemShowSettings;
+import github.ricemonger.utils.dtos.ItemShownFieldsSettings;
 import github.ricemonger.utils.dtos.TelegramUser;
-import github.ricemonger.utils.dtos.TelegramUserInput;
 
 import java.util.Collection;
 
@@ -16,11 +18,15 @@ public interface TelegramUserDatabaseService {
 
     Collection<TelegramUser> findAllUsers();
 
-    void saveInput(TelegramUserInput telegramUserInput);
+    ItemShowSettings findUserSettingsById(String chatId);
 
-    void saveInput(String chatId, InputState inputState, String value);
+    void setItemShowFewItemsInMessageFlag(String chatId, boolean flag);
 
-    void deleteAllInputsByChatId(String chatId);
+    void setItemShowMessagesLimit(String chatId, Integer limit);
 
-    TelegramUserInput findInputById(String chatId, InputState inputState);
+    void setItemShowSettings(String chatId, ItemShownFieldsSettings settings);
+
+    void addItemShowAppliedFilter(String chatId, ItemFilter filter);
+
+    void removeItemShowAppliedFilter(String chatId, String filterName);
 }

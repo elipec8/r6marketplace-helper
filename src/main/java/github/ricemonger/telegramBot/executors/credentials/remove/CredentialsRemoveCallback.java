@@ -7,7 +7,7 @@ import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 public class CredentialsRemoveCallback extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        askFromInlineKeyboardOrCancel(
+        askFromInlineKeyboard(
                 "Do you want to remove One or All of your credentials?",
                 1,
                 new CallbackButton("One", Callbacks.CREDENTIALS_REMOVE_ONE),

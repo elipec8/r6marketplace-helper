@@ -4,7 +4,7 @@ import github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.Tr
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.tradeLimitations.sell.ResaleLocks;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.dtos.LockedItem;
-import github.ricemonger.utils.dtos.UserTransactionsInfo;
+import github.ricemonger.utils.dtos.UserTransactionsCount;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -46,8 +46,8 @@ public class PersonalQueryLockedItemsMapper {
         return result;
     }
 
-    public UserTransactionsInfo mapUserTransactionsInfo(TradeLimitations tradeLimitations) {
-        UserTransactionsInfo result = new UserTransactionsInfo();
+    public UserTransactionsCount mapUserTransactionsInfo(TradeLimitations tradeLimitations) {
+        UserTransactionsCount result = new UserTransactionsCount();
         if (tradeLimitations.getBuy() != null) {
             result.setBuyResolvedTransactionCount(tradeLimitations.getBuy().getResolvedTransactionCount());
             result.setBuyActiveTransactionCount(tradeLimitations.getBuy().getActiveTransactionCount());

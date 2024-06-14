@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.mappers;
 
-import github.ricemonger.marketplace.databases.postgres.entities.UbiUserEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUbiUserEntity;
 import github.ricemonger.utils.dtos.UbiUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,7 +28,7 @@ class UbiUserPostgresMapperTest {
             "ubiRememberMeToken",
             new ArrayList<>(List.of("1", "2", "3")));
 
-    private final UbiUserEntity UBI_USER_ENTITY = new UbiUserEntity(
+    private final TelegramLinkedUbiUserEntity UBI_USER_ENTITY = new TelegramLinkedUbiUserEntity(
             "chatId",
             "email",
             "password",
@@ -45,53 +45,53 @@ class UbiUserPostgresMapperTest {
     private UbiUserPostgresMapper ubiUserPostgresMapper;
 
     @Test
-    public void toUbiUserEntity_should_throw_if_null(){
-        assertThrows(NullPointerException.class, () -> ubiUserPostgresMapper.toUbiUserEntity(null));
+    public void mapUbiUserEntity_should_throw_if_null(){
+        assertThrows(NullPointerException.class, () -> ubiUserPostgresMapper.mapUbiUserEntity(null));
     }
 
     @Test
-    public void toUbiUserEntity_should_not_throw_if_empty(){
-        assertDoesNotThrow(() -> ubiUserPostgresMapper.toUbiUserEntity(new UbiUser()));
+    public void mapUbiUserEntity_should_not_throw_if_empty(){
+        assertDoesNotThrow(() -> ubiUserPostgresMapper.mapUbiUserEntity(new UbiUser()));
     }
 
     @Test
-    public void toUbiUserEntity_should_map_ubi_user_entity(){
-        assertTrue(ubiUserEntitiesAreEqual(UBI_USER_ENTITY, ubiUserPostgresMapper.toUbiUserEntity(UBI_USER)));
+    public void mapUbiUserEntity_should_map_ubi_users_entity(){
+        assertTrue(ubiUserEntitiesAreEqual(UBI_USER_ENTITY, ubiUserPostgresMapper.mapUbiUserEntity(UBI_USER)));
     }
 
     @Test
-    public void toUbiUsers_should_throw_if_null(){
-        assertThrows(NullPointerException.class, () -> ubiUserPostgresMapper.toUbiUsers(null));
+    public void mapUbiUser_should_throw_if_null(){
+        assertThrows(NullPointerException.class, () -> ubiUserPostgresMapper.mapUbiUser(null));
     }
 
     @Test
-    public void toUbiUsers_should_return_empty_list_if_empty(){
-        assertEquals(List.of(), ubiUserPostgresMapper.toUbiUsers(List.of()));
+    public void mapUbiUser_should_return_empty_list_if_empty(){
+        assertEquals(List.of(), ubiUserPostgresMapper.mapUbiUsers(List.of()));
     }
 
     @Test
-    public void toUbiUsers_should_map_ubi_users_and_call_map_for_each_object(){
-        assertTrue(ubiUsersAreEqual(UBI_USER,new ArrayList<>(ubiUserPostgresMapper.toUbiUsers(List.of(UBI_USER_ENTITY))).get(0)));
+    public void mapUbiUsers_should_map_ubi_user_and_call_map_for_each_object(){
+        assertTrue(ubiUsersAreEqual(UBI_USER,new ArrayList<>(ubiUserPostgresMapper.mapUbiUsers(List.of(UBI_USER_ENTITY))).get(0)));
 
-        verify(ubiUserPostgresMapper).toUbiUser(UBI_USER_ENTITY);
+        verify(ubiUserPostgresMapper).mapUbiUser(UBI_USER_ENTITY);
     }
 
     @Test
-    public void toUbiUser_should_throw_if_null(){
-        assertThrows(NullPointerException.class, () -> ubiUserPostgresMapper.toUbiUser(null));
+    public void mapUbiUser_should_throw_if_null(){
+        assertThrows(NullPointerException.class, () -> ubiUserPostgresMapper.mapUbiUser(null));
     }
 
     @Test
-    public void toUbiUser_should_not_throw_if_empty(){
-        assertDoesNotThrow(() -> ubiUserPostgresMapper.toUbiUser(new UbiUserEntity()));
+    public void mapUbiUser_should_not_throw_if_empty(){
+        assertDoesNotThrow(() -> ubiUserPostgresMapper.mapUbiUser(new TelegramLinkedUbiUserEntity()));
     }
 
     @Test
-    public void toUbiUser_should_map_ubi_user(){
-        assertTrue(ubiUsersAreEqual(UBI_USER, ubiUserPostgresMapper.toUbiUser(UBI_USER_ENTITY)));
+    public void mapUbiUser_should_map_ubi_user(){
+        assertTrue(ubiUsersAreEqual(UBI_USER, ubiUserPostgresMapper.mapUbiUser(UBI_USER_ENTITY)));
     }
 
-    private boolean ubiUserEntitiesAreEqual(UbiUserEntity entity1, UbiUserEntity entity2){
+    private boolean ubiUserEntitiesAreEqual(TelegramLinkedUbiUserEntity entity1, TelegramLinkedUbiUserEntity entity2){
         return entity1.getChatId().equals(entity2.getChatId()) &&
                entity1.getEmail().equals(entity2.getEmail()) &&
                entity1.getEncodedPassword().equals(entity2.getEncodedPassword()) &&

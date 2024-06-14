@@ -10,7 +10,6 @@ import lombok.*;
 @Entity(name = "telegram_user_input")
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @IdClass(TelegramUserInputEntityId.class)

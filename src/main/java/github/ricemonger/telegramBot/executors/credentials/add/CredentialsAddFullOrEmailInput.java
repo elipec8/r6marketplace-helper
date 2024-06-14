@@ -11,7 +11,7 @@ public class CredentialsAddFullOrEmailInput extends AbstractBotCommandExecutor {
 
         if(userInput.contains(":")){
 
-            processLastInput(updateInfo, "Credentials successfully provided.");
+            processLastInput("Credentials successfully provided.");
 
             botInnerService.addCredentialsFromUserInputs(updateInfo.getChatId());
         }

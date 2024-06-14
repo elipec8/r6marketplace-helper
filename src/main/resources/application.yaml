@@ -13,6 +13,11 @@ auth:
       encryption:
         key: ${PASSWORD_ENCRYPTION_KEY} #AES Key
 
+telegram:
+  bot:
+    message:
+      height: 100
+      limit: 50
 ubi:
   urls:
     graphql: https://public-ubiservices.ubi.com/v1/profiles/me/uplay/graphql

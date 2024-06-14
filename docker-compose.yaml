@@ -28,6 +28,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
       PGADMIN_DEFAULT_PASSWORD: 1234
       PGADMIN_CONFIG_SERVER_MODE: 'False'
+    restart: always
 
  redis:
     container_name: r6helper-redis
@@ -49,6 +50,7 @@ services:
      - test-redis-data:/data
    networks:
      - redis-net
+   restart: always
 
  zipkin:
     container_name: r6helper-zipkin

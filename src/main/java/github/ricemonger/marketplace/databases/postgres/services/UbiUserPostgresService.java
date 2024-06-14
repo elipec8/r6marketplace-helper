@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.entities.UbiUserEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.UbiUserEntityId;
+import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUbiUserEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUbiUserEntityId;
 import github.ricemonger.marketplace.databases.postgres.mappers.UbiUserPostgresMapper;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiUserPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.UbiUserDatabaseService;
@@ -23,12 +23,12 @@ public class UbiUserPostgresService implements UbiUserDatabaseService {
 
     @Override
     public void save(UbiUser user) {
-        ubiUserRepository.save(mapper.toUbiUserEntity(user));
+        ubiUserRepository.save(mapper.mapUbiUserEntity(user));
     }
 
     @Override
     public void deleteById(String chatId, String email) {
-        ubiUserRepository.deleteById(new UbiUserEntityId(chatId, email));
+        ubiUserRepository.deleteById(new TelegramLinkedUbiUserEntityId(chatId, email));
     }
 
     @Override
@@ -46,8 +46,8 @@ public class UbiUserPostgresService implements UbiUserDatabaseService {
     @Override
     public UbiUser findById(String chatId, String email) throws UbiUserDoesntExistException {
         try {
-            UbiUserEntity entity = ubiUserRepository.findById(new UbiUserEntityId(chatId, email)).orElseThrow();
-            return mapper.toUbiUser(entity);
+            TelegramLinkedUbiUserEntity entity = ubiUserRepository.findById(new TelegramLinkedUbiUserEntityId(chatId, email)).orElseThrow();
+            return mapper.mapUbiUser(entity);
         }
         catch (NoSuchElementException e) {
             throw new UbiUserDoesntExistException("User with chatId " + chatId + " and email " + email + " doesn't exist");
@@ -56,11 +56,11 @@ public class UbiUserPostgresService implements UbiUserDatabaseService {
 
     @Override
     public Collection<UbiUser> findAllByChatId(String chatId) {
-        return mapper.toUbiUsers(ubiUserRepository.findAllByChatId(chatId));
+        return mapper.mapUbiUsers(ubiUserRepository.findAllByChatId(chatId));
     }
 
     @Override
     public Collection<UbiUser> findAll() {
-        return mapper.toUbiUsers(ubiUserRepository.findAll());
+        return mapper.mapUbiUsers(ubiUserRepository.findAll());
     }
 }

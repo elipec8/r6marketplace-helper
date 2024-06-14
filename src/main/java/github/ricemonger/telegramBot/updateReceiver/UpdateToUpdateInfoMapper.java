@@ -1,6 +1,5 @@
 package github.ricemonger.telegramBot.updateReceiver;
 
-import github.ricemonger.marketplace.databases.postgres.entities.TelegramUserEntity;
 import github.ricemonger.marketplace.services.TelegramUserService;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.InputGroup;

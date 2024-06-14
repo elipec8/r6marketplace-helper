@@ -10,7 +10,6 @@ import java.util.Date;
 @Entity(name = "item_sale_history")
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemSaleHistoryEntity {

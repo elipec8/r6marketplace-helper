@@ -1,14 +1,13 @@
 package github.ricemonger.marketplace.databases.postgres.repositories;
 
-import github.ricemonger.marketplace.databases.postgres.entities.UbiUserEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.UbiUserEntityId;
+import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUbiUserEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUbiUserEntityId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Collection;
 import java.util.List;
 
-public interface UbiUserPostgresRepository extends JpaRepository<UbiUserEntity, UbiUserEntityId> {
+public interface UbiUserPostgresRepository extends JpaRepository<TelegramLinkedUbiUserEntity, TelegramLinkedUbiUserEntityId> {
     void deleteAllByChatId(String chatId);
 
-    List<UbiUserEntity> findAllByChatId(String chatId);
+    List<TelegramLinkedUbiUserEntity> findAllByChatId(String chatId);
 }

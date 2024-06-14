@@ -8,7 +8,7 @@ public class CredentialsDirect extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
         MyFunctionalInterface command = () -> {
-            askFromInlineKeyboardOrCancel(
+            askFromInlineKeyboard(
                     "Please choose the action with credentials:",
                     1,
                     new CallbackButton("Add", Callbacks.CREDENTIALS_ADD),

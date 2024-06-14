@@ -4,7 +4,6 @@ import github.ricemonger.telegramBot.executors.InputState;
 import lombok.*;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class TelegramUserInputEntityId {
