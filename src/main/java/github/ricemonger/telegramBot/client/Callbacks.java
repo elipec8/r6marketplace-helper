@@ -65,10 +65,6 @@ public class Callbacks {
     public static final String ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT = "ITEMS_SHOW_SETTINGS_CHANGE_LIMIT";
 
     public static final String ITEMS_SHOW_SETTINGS_CHANGE_SHOWN_FIELDS = "ITEMS_SHOW_SETTINGS_CHANGE_FIELDS";
-
-    public static final String ITEM_SHOW_SETTINGS_CHANGE_FILTERS = "ITEMS_SHOW_SETTINGS_CHANGE_FILTERS";
-
-    public static final String ITEMS_SHOW_BY_SETTINGS = "ITEMS_SHOW_ALL";
     
     public static final String TRADES = "TRADES";
 

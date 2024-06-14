@@ -2,7 +2,6 @@ package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.abstractions.TelegramUserDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserInputDatabaseService;
-import github.ricemonger.telegramBot.client.Callbacks;
 import github.ricemonger.telegramBot.executors.InputGroup;
 import github.ricemonger.telegramBot.executors.InputState;
 import github.ricemonger.utils.dtos.*;
@@ -158,8 +157,7 @@ public class TelegramUserService {
     }
 
     public void setItemShowSettingsByUserInput(Long chatId, String trueValue, String falseValue) {
-        Boolean nameFlag = Boolean.parseBoolean(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_NAME));
-
+        Boolean nameFlag = parseShowSettingsOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_NAME), trueValue, falseValue);
         Boolean itemTypeFlag = parseShowSettingsOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_TYPE), trueValue, falseValue);
         Boolean maxBuyPriceFlag = parseShowSettingsOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_MAX_BUY_PRICE), trueValue, falseValue);
         Boolean buyOrdersCountFlag = parseShowSettingsOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_BUY_ORDERS_COUNT), trueValue, falseValue);
@@ -187,7 +185,7 @@ public class TelegramUserService {
         userService.removeItemShowAppliedFilter(String.valueOf(chatId), filterName);
     }
 
-    public void addItemShowAppliedFilter(Long chatId, String filterName) {
-        userService.addItemShowAppliedFilter(String.valueOf(chatId), filterName);
+    public void addItemShowAppliedFilter(Long chatId, ItemFilter filter) {
+        userService.addItemShowAppliedFilter(String.valueOf(chatId), filter);
     }
 }

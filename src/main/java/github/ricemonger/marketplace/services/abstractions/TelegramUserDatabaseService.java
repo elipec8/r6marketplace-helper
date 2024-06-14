@@ -1,6 +1,8 @@
 package github.ricemonger.marketplace.services.abstractions;
 
 
+import github.ricemonger.marketplace.databases.postgres.entities.ItemFilterEntity;
+import github.ricemonger.utils.dtos.ItemFilter;
 import github.ricemonger.utils.dtos.ItemShowSettings;
 import github.ricemonger.utils.dtos.ItemShownFieldsSettings;
 import github.ricemonger.utils.dtos.TelegramUser;
@@ -24,7 +26,7 @@ public interface TelegramUserDatabaseService {
 
     void setItemShowSettings(String chatId, ItemShownFieldsSettings settings);
 
-    void addItemShowAppliedFilter(String chatId, String filterName);
+    void addItemShowAppliedFilter(String chatId, ItemFilter filter);
 
     void removeItemShowAppliedFilter(String chatId, String filterName);
 }

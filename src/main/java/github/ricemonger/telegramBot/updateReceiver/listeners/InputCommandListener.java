@@ -171,7 +171,7 @@ public class InputCommandListener {
         InputState inputState = updateInfo.getInputState();
 
         switch (inputState) {
-            case ITEMS_SHOW_SETTING_SHOWN_FIELDS_NAME ->
+            case ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_NAME ->
                     executorsService.execute(ItemsShowSettingsChangeShownFieldsStage2AskItemTypeFlagInput.class, updateInfo);
 
             case ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_TYPE ->

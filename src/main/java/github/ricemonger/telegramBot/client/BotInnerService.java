@@ -196,9 +196,15 @@ public class BotInnerService {
         Integer limit = commonValuesService.getMaximumTelegramMessageLimit();
         try {
             limit = Integer.parseInt(getUserInputByState(chatId, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT));
+            if(limit < 1){
+                limit = 1;
+            }
+            else if( limit > commonValuesService.getMaximumTelegramMessageLimit()){
+                limit = commonValuesService.getMaximumTelegramMessageLimit();
+            }
         } catch (TelegramUserInputDoesntExistException | NumberFormatException e) {
             if (limit == null) {
-                limit = 50;
+                limit = commonValuesService.getMaximumTelegramMessageLimit();
             }
         }
         telegramUserService.setItemShowMessagesLimit(chatId, limit);
@@ -209,7 +215,7 @@ public class BotInnerService {
     }
 
     public void changeAppliedFiltersByUserInput(Long chatId) {
-        String filterName = getUserInputByState(chatId, InputState.FILTER_NAME);
+        String filterName = getInputValueFromCallbackData(chatId, InputState.FILTER_NAME);
         boolean addOrRemove = Callbacks.INPUT_CALLBACK_TRUE.equals(getUserInputByState(chatId,InputState.ITEMS_SHOW_SETTINGS_APPLIED_FILTER_ADD_OR_REMOVE));
 
         List<String> appliedFilters = telegramUserService.getItemShowSettings(chatId).getItemShowAppliedFilters().stream().map(ItemFilter::getName).toList();
@@ -218,7 +224,8 @@ public class BotInnerService {
             telegramUserService.removeItemShowAppliedFilter(chatId, filterName);
         }
         else if (addOrRemove && !appliedFilters.contains(filterName)){
-            telegramUserService.addItemShowAppliedFilter(chatId, filterName);
+            ItemFilter filter = itemFilterService.getItemFilterById(String.valueOf(chatId), filterName);
+            telegramUserService.addItemShowAppliedFilter(chatId, filter);
         }
     }
 }

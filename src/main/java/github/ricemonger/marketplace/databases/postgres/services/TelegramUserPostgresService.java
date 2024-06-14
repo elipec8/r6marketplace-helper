@@ -2,14 +2,17 @@ package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.entities.ItemFilterEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.TelegramUserEntity;
+import github.ricemonger.marketplace.databases.postgres.mappers.ItemFilterPostgresMapper;
 import github.ricemonger.marketplace.databases.postgres.mappers.ItemShowSettingsMapper;
 import github.ricemonger.marketplace.databases.postgres.mappers.TelegramUserPostgresMapper;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserDatabaseService;
+import github.ricemonger.utils.dtos.ItemFilter;
 import github.ricemonger.utils.dtos.ItemShowSettings;
 import github.ricemonger.utils.dtos.ItemShownFieldsSettings;
 import github.ricemonger.utils.dtos.TelegramUser;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,8 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     private final TelegramUserPostgresMapper mapper;
 
     private final ItemShowSettingsMapper itemShowSettingsMapper;
+
+    private final ItemFilterPostgresMapper itemFilterPostgresMapper;
 
     @Override
     public void saveUser(TelegramUser telegramUser) {
@@ -56,6 +61,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     }
 
     @Override
+    @Transactional
     public void setItemShowFewItemsInMessageFlag(String chatId, boolean flag) {
         TelegramUserEntity telegramUserEntity = getTelegramUserEntityByIdOrThrow(chatId);
         telegramUserEntity.setItemShowFewInMessageFlag(flag);
@@ -63,6 +69,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     }
 
     @Override
+    @Transactional
     public void setItemShowMessagesLimit(String chatId, Integer limit) {
         TelegramUserEntity telegramUserEntity = getTelegramUserEntityByIdOrThrow(chatId);
         telegramUserEntity.setItemShowMessagesLimit(limit);
@@ -70,22 +77,29 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     }
 
     @Override
+    @Transactional
     public void setItemShowSettings(String chatId, ItemShownFieldsSettings settings) {
-        getTelegramUserByIdOrThrow(chatId);
-
-        telegramUserPostgresRepository.save(itemShowSettingsMapper.mapTelegramUserEntity(chatId, settings));
-    }
-
-    @Override
-    public void addItemShowAppliedFilter(String chatId, String filterName) {
         TelegramUserEntity telegramUserEntity = getTelegramUserEntityByIdOrThrow(chatId);
 
-        telegramUserEntity.getItemShowAppliedFilters().add(new ItemFilterEntity(chatId, filterName));
+        telegramUserEntity.setShowItemSettings(settings);
 
         telegramUserPostgresRepository.save(telegramUserEntity);
     }
 
     @Override
+    @Transactional
+    public void addItemShowAppliedFilter(String chatId, ItemFilter filter) {
+        TelegramUserEntity telegramUserEntity = getTelegramUserEntityByIdOrThrow(chatId);
+
+        ItemFilterEntity filterEntity = itemFilterPostgresMapper.mapItemFilterEntity(filter);
+
+        telegramUserEntity.getItemShowAppliedFilters().add(filterEntity);
+
+        telegramUserPostgresRepository.save(telegramUserEntity);
+    }
+
+    @Override
+    @Transactional
     public void removeItemShowAppliedFilter(String chatId, String filterName) {
         TelegramUserEntity telegramUserEntity = getTelegramUserEntityByIdOrThrow(chatId);
 

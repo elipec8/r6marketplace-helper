@@ -30,17 +30,4 @@ public class ItemShowSettingsMapper {
 
         return itemShowSettings;
     }
-
-    public TelegramUserEntity mapTelegramUserEntity(String chatId, ItemShownFieldsSettings settings){
-        TelegramUserEntity telegramUserEntity = new TelegramUserEntity();
-        telegramUserEntity.setChatId(chatId);
-        telegramUserEntity.setItemShowNameFlag(settings.isItemShowNameFlag());
-        telegramUserEntity.setItemShowItemTypeFlag(settings.isItemShowItemTypeFlag());
-        telegramUserEntity.setItemShowMaxBuyPrice(settings.isItemShowMaxBuyPrice());
-        telegramUserEntity.setItemShowBuyOrdersCountFlag(settings.isItemShowBuyOrdersCountFlag());
-        telegramUserEntity.setItemShowMinSellPriceFlag(settings.isItemShowMinSellPriceFlag());
-        telegramUserEntity.setItemsShowSellOrdersCountFlag(settings.isItemsShowSellOrdersCountFlag());
-        telegramUserEntity.setItemShowPictureFlag(settings.isItemShowPictureFlag());
-        return telegramUserEntity;
-    }
 }

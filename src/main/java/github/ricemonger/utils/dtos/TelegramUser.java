@@ -19,23 +19,20 @@ public class TelegramUser {
     private InputGroup inputGroup;
     private boolean publicNotificationsEnabledFlag;
 
-    private Integer itemShowMessagesLimit = 50;
-    private boolean itemShowFewInMessageFlag = false;
+    private Integer itemShowMessagesLimit;
+    private boolean itemShowFewInMessageFlag;
 
-    private boolean itemShowNameFlag = true;
-    private boolean itemShowItemTypeFlag = true;
-    private boolean itemShowMaxBuyPrice = true;
-    private boolean itemShowBuyOrdersCountFlag = true;
-    private boolean itemShowMinSellPriceFlag = true;
-    private boolean itemsShowSellOrdersCountFlag = true;
-    private boolean itemShowPictureFlag = true;
+    private boolean itemShowNameFlag;
+    private boolean itemShowItemTypeFlag;
+    private boolean itemShowMaxBuyPrice;
+    private boolean itemShowBuyOrdersCountFlag;
+    private boolean itemShowMinSellPriceFlag;
+    private boolean itemsShowSellOrdersCountFlag;
+    private boolean itemShowPictureFlag;
 
     private List<ItemFilter> itemShowAppliedFilters;
 
     public TelegramUser(Long chatId) {
         this.chatId = String.valueOf(chatId);
-        this.inputState = InputState.BASE;
-        this.inputGroup = InputGroup.BASE;
-        this.publicNotificationsEnabledFlag = true;
     }
 }

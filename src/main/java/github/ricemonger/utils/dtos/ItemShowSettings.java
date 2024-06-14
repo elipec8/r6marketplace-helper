@@ -12,8 +12,8 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemShowSettings {
-    private Integer itemShowMessagesLimit = 50;
-    private boolean itemShowFewInMessageFlag = false;
+    private Integer itemShowMessagesLimit;
+    private boolean itemShowFewInMessageFlag;
 
     private ItemShownFieldsSettings shownFieldsSettings = new ItemShownFieldsSettings();
 
@@ -95,7 +95,7 @@ public class ItemShowSettings {
     public String toString(){
         return "Messages limit: " + itemShowMessagesLimit + "\n" +
                 "Few items in message: " + itemShowFewInMessageFlag + "\n" +
-                "Shown fields: " + shownFieldsSettings.toString() + "\n" +
+                "Shown fields: \n" + shownFieldsSettings.toString() + "\n" +
                 "Applied filters: " + itemShowAppliedFilters.stream().map(ItemFilter::getName).reduce((s, s2) -> s + "," + s2).orElse("");
     }
 }

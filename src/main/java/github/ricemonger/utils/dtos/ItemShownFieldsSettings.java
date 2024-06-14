@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemShownFieldsSettings {
-    private boolean itemShowNameFlag = true;
-    private boolean itemShowItemTypeFlag = true;
-    private boolean itemShowMaxBuyPrice = true;
-    private boolean itemShowBuyOrdersCountFlag = true;
-    private boolean itemShowMinSellPriceFlag = true;
-    private boolean itemsShowSellOrdersCountFlag = true;
-    private boolean itemShowPictureFlag = true;
+    private boolean itemShowNameFlag;
+    private boolean itemShowItemTypeFlag;
+    private boolean itemShowMaxBuyPrice;
+    private boolean itemShowBuyOrdersCountFlag;
+    private boolean itemShowMinSellPriceFlag;
+    private boolean itemsShowSellOrdersCountFlag;
+    private boolean itemShowPictureFlag;
 
     public int getActiveFieldsCount() {
         int count = 1;

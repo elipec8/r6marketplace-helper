@@ -10,6 +10,6 @@ public class ItemsShowSettingsChangeMessageLimitCallback extends AbstractBotComm
         processFirstInput(
                 InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT,
                 InputGroup.ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT,
-                "Enter limit of messages, sent as response to each request");
+                "Enter limit of messages, sent as response to each request(1-50):");
     }
 }
