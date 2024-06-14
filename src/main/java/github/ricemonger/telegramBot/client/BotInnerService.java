@@ -179,6 +179,7 @@ public class BotInnerService {
                     nextMessage.append(items.get(offset + currentCount).toStringBySettings(settings.getShownFieldsSettings())).append("\n");
                     currentCount++;
                 }
+                telegramBotClientService.sendText(String.valueOf(chatId),nextMessage.toString());
             }
         }
     }
