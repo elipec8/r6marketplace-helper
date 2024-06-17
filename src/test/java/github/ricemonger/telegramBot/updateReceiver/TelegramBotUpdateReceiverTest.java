@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 public class TelegramBotUpdateReceiverTest {
 
     @MockBean
-    private UpdateToUpdateInfoMapper updateToUpdateInfoMapper;
+    private UpdateInfoMapper updateInfoMapper;
 
     @MockBean
     private UpdatesToListenersDistributor updatesToListenersDistributor;
@@ -32,12 +32,12 @@ public class TelegramBotUpdateReceiverTest {
     public void consumeShouldCallUpdateToUpdateInfoMapperMap(){
         telegramBotUpdateReceiver.consume(UPDATE);
 
-        verify(updateToUpdateInfoMapper).map(same(UPDATE));
+        verify(updateInfoMapper).map(same(UPDATE));
     }
 
     @Test
     public void consumeShouldHandleMappedUpdateInfoToUpdateDistributor(){
-        when(updateToUpdateInfoMapper.map(UPDATE)).thenReturn(UPDATE_INFO);
+        when(updateInfoMapper.map(UPDATE)).thenReturn(UPDATE_INFO);
         telegramBotUpdateReceiver.consume(UPDATE);
 
         verify(updatesToListenersDistributor).distribute(same(UPDATE_INFO));

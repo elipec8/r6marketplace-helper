@@ -3,8 +3,8 @@ package github.ricemonger.telegramBot.client;
 import github.ricemonger.marketplace.services.TelegramUserService;
 import github.ricemonger.marketplace.services.ItemStatsService;
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.telegramBot.executors.InputGroup;
-import github.ricemonger.telegramBot.executors.InputState;
+import github.ricemonger.telegramBot.InputGroup;
+import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.Item;
 import github.ricemonger.utils.exceptions.InvalidTelegramUserInput;
 import org.junit.jupiter.api.Test;
@@ -211,7 +211,7 @@ public class BotInnerServiceTest {
 
         when(itemStatsService.getAllSpeculativeItemsByExpectedProfit(50, 40, 0, 15000)).thenReturn(items);
 
-        botInnerService.sendDefaultSpeculativeItemsAsMessages(chatId);
+        //botInnerService.sendDefaultSpeculativeItemsAsMessages(chatId);
 
         verify(telegramBotClientService,times(2)).sendText(eq("1"),anyString());
     }

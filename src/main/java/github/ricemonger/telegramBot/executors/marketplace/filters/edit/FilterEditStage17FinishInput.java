@@ -1,6 +1,6 @@
 package github.ricemonger.telegramBot.executors.marketplace.filters.edit;
 
-import github.ricemonger.telegramBot.client.Callbacks;
+import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 
 public class FilterEditStage17FinishInput extends AbstractBotCommandExecutor {

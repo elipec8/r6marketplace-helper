@@ -3,7 +3,10 @@ package github.ricemonger.marketplace.services;
 import github.ricemonger.marketplace.services.abstractions.ItemDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleHistoryDatabaseService;
-import github.ricemonger.utils.dtos.*;
+import github.ricemonger.utils.dtos.Item;
+import github.ricemonger.utils.dtos.ItemFilter;
+import github.ricemonger.utils.dtos.ItemSale;
+import github.ricemonger.utils.dtos.ItemSaleHistory;
 import github.ricemonger.utils.enums.FilterType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -23,14 +26,14 @@ public class ItemStatsService {
     private final ProfitAndPriorityCalculator profitAndPriorityCalculator;
 
     public void saveAll(Collection<Item> items) {
-        itemService.saveAllItems(items);
-        saleService.saveAllItemSales(items);
+        itemService.saveAll(items);
+        saleService.saveAll(items);
     }
 
     public void calculateItemsSaleHistoryStats() {
         List<ItemSaleHistory> histories = new ArrayList<>();
-        Collection<Item> items = itemService.findAllItems();
-        Collection<ItemSale> sales = saleService.findAllItemSales();
+        Collection<Item> items = itemService.findAll();
+        Collection<ItemSale> sales = saleService.findAll();
 
         for (Item item : items) {
 
@@ -92,11 +95,11 @@ public class ItemStatsService {
 
             histories.add(history);
         }
-        historyService.saveAllItemSaleHistoryStats(histories);
+        historyService.saveAll(histories);
     }
 
     public Collection<Item> getAllSpeculativeItemsByExpectedProfit(int minProfit, int minProfitPercents, int minBuyPrice, int maxBuyPrice) {
-        return itemService.findAllItems().stream()
+        return itemService.findAll().stream()
                 .filter(item -> profitAndPriorityCalculator.calculateItemProfit(item) > minProfit)
                 .filter(item -> profitAndPriorityCalculator.calculateItemProfitPercents(item) > minProfitPercents)
                 .filter(item -> profitAndPriorityCalculator.calculateNextBuyPrice(item) >= minBuyPrice)
@@ -105,12 +108,8 @@ public class ItemStatsService {
                 .toList();
     }
 
-    public Collection<Item> getAllItems() {
-        return itemService.findAllItems();
-    }
-
     public Collection<Item> getAllItemsByFilters(Collection<ItemFilter> filters) {
-        Collection<Item> items = itemService.findAllItems();
+        Collection<Item> items = itemService.findAll();
 
         if (filters == null || filters.isEmpty()) {
             return items;

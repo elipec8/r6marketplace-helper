@@ -29,4 +29,8 @@ public class UbiServiceConfiguration {
     private Integer expireTimeout;
     @Value("${ubi.session.dateFormat}")
     private String dateFormat;
+    @Value("${ubi.session.minPrice}")
+    private Integer minPrice;
+    @Value("${ubi.session.maxPrice}")
+    private Integer maxPrice;
 }

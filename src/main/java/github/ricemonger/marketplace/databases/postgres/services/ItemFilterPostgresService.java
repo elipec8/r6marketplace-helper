@@ -2,7 +2,6 @@ package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.entities.ItemFilterEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.ItemFilterEntityId;
-import github.ricemonger.marketplace.databases.postgres.mappers.ItemFilterPostgresMapper;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemFilterPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.ItemFilterDatabaseService;
 import github.ricemonger.utils.dtos.ItemFilter;
@@ -18,35 +17,23 @@ public class ItemFilterPostgresService implements ItemFilterDatabaseService {
 
     private final ItemFilterPostgresRepository repository;
 
-    private final ItemFilterPostgresMapper mapper;
-
     @Override
-    public Collection<ItemFilter> findAllItemFiltersByChatId(String chatId) {
-        return mapper.mapItemFilters(repository.findAllByChatId(chatId));
+    public void save(ItemFilter filter) {
+        repository.save(new ItemFilterEntity(filter));
     }
 
     @Override
-    public void saveItemFilter(ItemFilter filter) {
-        repository.save(mapper.mapItemFilterEntity(filter));
+    public ItemFilter findById(String chatId, String name) throws ItemFilterDoesntExistException {
+        return repository.findById(new ItemFilterEntityId(chatId, name)).orElseThrow(ItemFilterDoesntExistException::new).toItemFilter();
     }
 
     @Override
-    public ItemFilter findItemFilterById(String chatId, String name) throws ItemFilterDoesntExistException {
-        return mapper.mapItemFilter(repository.findById(new ItemFilterEntityId(chatId, name)).orElseThrow(ItemFilterDoesntExistException::new));
-    }
-
-    @Override
-    public void removeItemFilterById(String chatId, String name) {
+    public void deleteById(String chatId, String name) {
         repository.deleteById(new ItemFilterEntityId(chatId, name));
     }
 
     @Override
-    public Collection<String> findAllItemFilterNamesByChatId(String chatId) {
-        return repository.findAllByChatId(chatId).stream().map(ItemFilterEntity::getName).toList();
-    }
-
-    @Override
-    public Collection<ItemFilter> findAllItemFiltersByIds(String chatId, Collection<String> names) {
-        return mapper.mapItemFilters(repository.findAllById(names.stream().map(name -> new ItemFilterEntityId(chatId, name)).toList()));
+    public Collection<ItemFilter> findAllByChatId(String chatId) {
+        return repository.findAllByChatId(chatId).stream().map(ItemFilterEntity::toItemFilter).toList();
     }
 }

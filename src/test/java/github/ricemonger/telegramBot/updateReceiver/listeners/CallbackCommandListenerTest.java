@@ -1,7 +1,7 @@
 package github.ricemonger.telegramBot.updateReceiver.listeners;
 
+import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.telegramBot.client.Callbacks;
 import github.ricemonger.telegramBot.executors.ExecutorsService;
 import github.ricemonger.telegramBot.executors.cancel.Cancel;
 import github.ricemonger.telegramBot.executors.cancel.SilentCancel;
@@ -11,8 +11,6 @@ import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRem
 import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRemoveCallback;
 import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRemoveOneCallback;
 import github.ricemonger.telegramBot.executors.credentials.show.CredentialsShowCallback;
-import github.ricemonger.telegramBot.executors.marketplace.items.speculative.SpeculativeItemsCallback;
-import github.ricemonger.telegramBot.executors.marketplace.items.speculative.showAll.SpeculativeItemsShowAllCallback;
 import github.ricemonger.telegramBot.executors.start.startYes.StartYesCallback;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,24 +90,6 @@ class CallbackCommandListenerTest {
         callbackCommandListener.handleUpdate(updateInfo);
 
         verify(executorsService).execute(CredentialsShowCallback.class, updateInfo);
-    }
-
-    @Test
-    public void handleUpdateShouldExecuteMarketplaceDirectOnItsCallback() {
-        UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setCallbackQueryData(Callbacks.ITEMS_SPECULATIVE_ITEMS);
-        callbackCommandListener.handleUpdate(updateInfo);
-
-        verify(executorsService).execute(SpeculativeItemsCallback.class, updateInfo);
-    }
-
-    @Test
-    public void handleUpdateShouldExecuteSpeculativeItemsShowAllOnItsCallback() {
-        UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setCallbackQueryData(Callbacks.ITEMS_SPECULATIVE_ITEMS_SHOW_ALL);
-        callbackCommandListener.handleUpdate(updateInfo);
-
-        verify(executorsService).execute(SpeculativeItemsShowAllCallback.class, updateInfo);
     }
 
     @Test

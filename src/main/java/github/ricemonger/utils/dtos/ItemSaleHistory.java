@@ -14,18 +14,14 @@ public class ItemSaleHistory {
 
     private int monthAveragePrice;
     private int monthMedianPrice;
-
     private int monthMaxPrice;
     private int monthMinPrice;
-
     private int monthSalesPerDay;
 
     private int dayAveragePrice;
     private int dayMedianPrice;
-
     private int dayMaxPrice;
     private int dayMinPrice;
-
     private int daySales;
 
     private int expectedProfitByCurrentPrices;

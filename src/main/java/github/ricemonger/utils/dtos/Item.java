@@ -34,19 +34,14 @@ public class Item implements SoldItemDetails {
 
     private List<Trade> trades;
 
-    public String getTagsAsString() {
-        return String.join(",", tags);
-    }
-
-    public void setTagsFromString(String tags) {
-        this.tags = List.of(tags.split("[,|]"));
-    }
-
     public boolean equals(Object o) {
         if (o == this) {
             return true;
         }
         if (!(o instanceof Item item)) {
+            return false;
+        }
+        if (item.getItemId() == null || this.getItemId() == null) {
             return false;
         }
         return item.getItemId().equals(this.getItemId());

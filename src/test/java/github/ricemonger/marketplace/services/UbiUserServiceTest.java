@@ -6,7 +6,6 @@ import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.utils.dtos.UbiUser;
 import github.ricemonger.utils.exceptions.UbiUserAuthorizationClientErrorException;
 import github.ricemonger.utils.exceptions.UbiUserAuthorizationServerErrorException;
-import github.ricemonger.utils.exceptions.UbiUserDoesntExistException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +14,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -27,34 +27,13 @@ class UbiUserServiceTest {
     private UbiUserDatabaseService ubiUserDatabaseService;
 
     @MockBean
-    private  AuthorizationService authorizationService;
+    private AuthorizationService authorizationService;
 
     @Autowired
     private UbiUserService ubiUserService;
 
     @Test
-    public void getOwnedItemsIds_should_return_owned_items_ids() {
-        String chatId = "chatId";
-        String email = "email";
-
-        List<String> ids = List.of("id1", "id2");
-
-        when(ubiUserDatabaseService.getOwnedItemsIds(chatId, email)).thenReturn(ids);
-
-        List<String> result = new ArrayList<>(ubiUserService.getOwnedItemsIds(chatId, email));
-
-        assertTrue(ids.containsAll(result) && result.containsAll(ids));
-    }
-
-    @Test
-    public void getOwnedItemsIds_should_throw_if_ubi_user_doesnt_exist(){
-        when(ubiUserDatabaseService.getOwnedItemsIds("chatId", "email")).thenThrow(new UbiUserDoesntExistException());
-
-        assertThrows(UbiUserDoesntExistException.class, () -> ubiUserService.getOwnedItemsIds("chatId", "email"));
-    }
-
-    @Test
-    public void findAllByLinkedTelegramUserChatId_should_return_all_users_by_chat_id(){
+    public void findAllByLinkedTelegramUserChatId_should_return_all_users_by_chat_id() {
         String chatId = "chatId";
 
         List<UbiUser> users = List.of(new UbiUser(), new UbiUser());
@@ -67,7 +46,7 @@ class UbiUserServiceTest {
     }
 
     @Test
-    public void deleteAllByLinkedTelegramUserChatId_should_delete_all_users_by_chat_id(){
+    public void deleteAllByLinkedTelegramUserChatId_should_delete_all_users_by_chat_id() {
         String chatId = "chatId";
 
         ubiUserService.deleteAllByLinkedTelegramUserChatId(chatId);
@@ -76,7 +55,7 @@ class UbiUserServiceTest {
     }
 
     @Test
-    public void deleteByLinkedTelegramUserChatIdAndEmail_should_delete_user_by_chat_id_and_email(){
+    public void deleteByLinkedTelegramUserChatIdAndEmail_should_delete_user_by_chat_id_and_email() {
         String chatId = "chatId";
         String email = "email";
 
@@ -86,7 +65,7 @@ class UbiUserServiceTest {
     }
 
     @Test
-    public void authorizeAndSaveUser_should_authorize_and_save_user(){
+    public void authorizeAndSaveUser_should_authorize_and_save_user() {
         String chatId = "chatId";
         String email = "email";
         String password = "password";
@@ -99,7 +78,7 @@ class UbiUserServiceTest {
     }
 
     @Test
-    public void authorizeAndSaveUser_should_throw_if_authorization_client_error(){
+    public void authorizeAndSaveUser_should_throw_if_authorization_client_error() {
         String chatId = "chatId";
         String email = "email";
         String password = "password";
@@ -110,7 +89,7 @@ class UbiUserServiceTest {
     }
 
     @Test
-    public void authorizeAndSaveUser_should_throw_if_authorization_server_error(){
+    public void authorizeAndSaveUser_should_throw_if_authorization_server_error() {
         String chatId = "chatId";
         String email = "email";
         String password = "password";
@@ -121,7 +100,7 @@ class UbiUserServiceTest {
     }
 
     @Test
-    public void reauthorizeAllUbiUsersAndGetUnauthorizedList_should_reauthorize_all_users_and_return_unauthorized(){
+    public void reauthorizeAllUbiUsersAndGetUnauthorizedList_should_reauthorize_all_users_and_return_unauthorized() {
 
         UbiUser user1 = new UbiUser();
         user1.setEmail("email1");
@@ -136,8 +115,8 @@ class UbiUserServiceTest {
 
         List<UbiUser> unauthorizedUsers = List.of(users.get(0));
 
-        when(authorizationService.authorizeAndGetDtoForEncodedPassword("email1","encodedPassword1")).thenThrow(new UbiUserAuthorizationClientErrorException());
-        when(authorizationService.authorizeAndGetDtoForEncodedPassword("email2","encodedPassword2")).thenReturn(new AuthorizationDTO());
+        when(authorizationService.authorizeAndGetDtoForEncodedPassword("email1", "encodedPassword1")).thenThrow(new UbiUserAuthorizationClientErrorException());
+        when(authorizationService.authorizeAndGetDtoForEncodedPassword("email2", "encodedPassword2")).thenReturn(new AuthorizationDTO());
 
         List<UbiUser> result = new ArrayList<>(ubiUserService.reauthorizeAllUbiUsersAndGetUnauthorizedList());
 

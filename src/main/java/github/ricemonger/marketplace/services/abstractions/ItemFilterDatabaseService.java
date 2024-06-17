@@ -5,15 +5,11 @@ import github.ricemonger.utils.dtos.ItemFilter;
 import java.util.Collection;
 
 public interface ItemFilterDatabaseService {
-    Collection<ItemFilter> findAllItemFiltersByChatId(String chatId);
+    void save(ItemFilter filter);
 
-    void saveItemFilter(ItemFilter filter);
+    void deleteById(String chatId, String name);
 
-    ItemFilter findItemFilterById(String chatId, String name);
+    ItemFilter findById(String chatId, String name);
 
-    void removeItemFilterById(String chatId, String name);
-
-    Collection<String> findAllItemFilterNamesByChatId(String chatId);
-
-    Collection<ItemFilter> findAllItemFiltersByIds(String chatId, Collection<String> names);
+    Collection<ItemFilter> findAllByChatId(String chatId);
 }

@@ -1,7 +1,7 @@
 package github.ricemonger.telegramBot.executors.marketplace.filters.edit;
 
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
-import github.ricemonger.telegramBot.executors.InputState;
+import github.ricemonger.telegramBot.InputState;
 
 public class FilterEditStage14AskMaxPriceInput extends AbstractBotCommandExecutor {
     @Override

@@ -1,18 +1,17 @@
 package github.ricemonger.telegramBot.updateReceiver;
 
 import github.ricemonger.marketplace.services.TelegramUserService;
+import github.ricemonger.telegramBot.InputGroup;
+import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.telegramBot.executors.InputGroup;
-import github.ricemonger.telegramBot.executors.InputState;
 import github.ricemonger.utils.dtos.TelegramUser;
-import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
 @RequiredArgsConstructor
-public class UpdateToUpdateInfoMapper {
+public class UpdateInfoMapper {
 
     private final TelegramUserService telegramUserService;
 
@@ -35,23 +34,23 @@ public class UpdateToUpdateInfoMapper {
         InputState inputState;
         InputGroup inputGroup;
 
-        try{
+        if (telegramUserService.isTelegramUserRegistered(updateInfo.getChatId())) {
             TelegramUser telegramUser = telegramUserService.getTelegramUser(updateInfo.getChatId());
 
             inputState = telegramUser.getInputState();
-            if(inputState == null) {
+            if (inputState == null) {
                 inputState = InputState.BASE;
             }
 
             inputGroup = telegramUser.getInputGroup();
-            if(inputGroup == null) {
+            if (inputGroup == null) {
                 inputGroup = InputGroup.BASE;
             }
-        }
-        catch(TelegramUserDoesntExistException e){
+        } else {
             inputState = InputState.BASE;
             inputGroup = InputGroup.BASE;
         }
+
         updateInfo.setInputState(inputState);
         updateInfo.setInputGroup(inputGroup);
 

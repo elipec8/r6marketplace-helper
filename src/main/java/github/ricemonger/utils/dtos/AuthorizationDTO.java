@@ -8,18 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthorizationDTO {
-
     private String ticket;
-
     private String profileId;
-
     private String spaceId;
-
     private String sessionId;
-
     private String twoFactorAuthenticationTicket;
-
     private String rememberDeviceTicket;
-
     private String rememberMeTicket;
 }

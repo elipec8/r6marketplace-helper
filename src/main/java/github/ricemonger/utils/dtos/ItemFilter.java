@@ -33,11 +33,9 @@ public class ItemFilter {
     private List<Tag> tags = new ArrayList<>();
 
     private Integer minPrice;
-
     private Integer maxPrice;
 
     private Integer minLastSoldPrice;
-
     private Integer maxLastSoldPrice;
 
     public String getItemNamePatternsAsString() {

@@ -2,7 +2,7 @@ package github.ricemonger.telegramBot.executors.start;
 
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 
-import static github.ricemonger.telegramBot.client.Callbacks.*;
+import static github.ricemonger.telegramBot.Callbacks.*;
 
 public class StartDirect extends AbstractBotCommandExecutor {
 

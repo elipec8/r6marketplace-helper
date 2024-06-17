@@ -1,7 +1,9 @@
 package github.ricemonger.telegramBot.client;
 
+import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.TagService;
-import github.ricemonger.telegramBot.executors.InputState;
+import github.ricemonger.telegramBot.Callbacks;
+import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.ItemFilter;
 import github.ricemonger.utils.dtos.Tag;
 import github.ricemonger.utils.dtos.TelegramUserInput;
@@ -21,9 +23,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemFilterFromInputsMapper {
 
-    private final static int MIN_PRICE = 120;
-    private final static int MAX_PRICE = 150000;
     private final static String SKIPPED = Callbacks.EMPTY;
+
+    private final CommonValuesService commonValuesService;
+
     private final TagService tagService;
 
     public ItemFilter mapToItemFilter(Collection<TelegramUserInput> inputs) {
@@ -81,65 +84,65 @@ public class ItemFilterFromInputsMapper {
             itemFilter.setItemTypesFromString(itemTypesString);
         }
 
-            itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(rarityTagsString)));
+        itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(rarityTagsString)));
 
-            itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(seasonTagsString)));
+        itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(seasonTagsString)));
 
-            itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(operatorTagsString)));
+        itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(operatorTagsString)));
 
-            itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(weaponTagsString)));
+        itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(weaponTagsString)));
 
-            itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(eventTagsString)));
+        itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(eventTagsString)));
 
-            itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(esportsTagsString)));
+        itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(esportsTagsString)));
 
-            itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(otherTagsString)));
+        itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(otherTagsString)));
 
         if (minPriceString.equals(SKIPPED)) {
-            itemFilter.setMinPrice(MIN_PRICE);
+            itemFilter.setMinPrice(commonValuesService.getMinimumMarketplacePrice());
         } else {
             try {
                 int price = Integer.parseInt(minPriceString);
-                itemFilter.setMinPrice(Math.max(price, MIN_PRICE));
+                itemFilter.setMinPrice(Math.max(price, commonValuesService.getMinimumMarketplacePrice()));
             } catch (NumberFormatException e) {
                 log.error("Invalid minPrice: " + minPriceString);
-                itemFilter.setMinPrice(MIN_PRICE);
+                itemFilter.setMinPrice(commonValuesService.getMinimumMarketplacePrice());
             }
         }
 
         if (maxPriceString.equals(SKIPPED)) {
-            itemFilter.setMaxPrice(MAX_PRICE);
+            itemFilter.setMaxPrice(commonValuesService.getMaximumMarketplacePrice());
         } else {
             try {
                 int price = Integer.parseInt(maxPriceString);
-                itemFilter.setMaxPrice(Math.min(price, MAX_PRICE));
+                itemFilter.setMaxPrice(Math.min(price, commonValuesService.getMaximumMarketplacePrice()));
             } catch (NumberFormatException e) {
                 log.error("Invalid maxPrice: " + maxPriceString);
-                itemFilter.setMaxPrice(MAX_PRICE);
+                itemFilter.setMaxPrice(commonValuesService.getMaximumMarketplacePrice());
             }
         }
 
         if (minLastSoldPriceString.equals(SKIPPED)) {
-            itemFilter.setMinLastSoldPrice(MIN_PRICE);
+            itemFilter.setMinLastSoldPrice(commonValuesService.getMinimumMarketplacePrice());
         } else {
             try {
                 int price = Integer.parseInt(minLastSoldPriceString);
-                itemFilter.setMinLastSoldPrice(Math.max(price, MIN_PRICE));
+                itemFilter.setMinLastSoldPrice(Math.max(price, commonValuesService.getMinimumMarketplacePrice()));
             } catch (NumberFormatException e) {
                 log.error("Invalid minLastSoldPrice: " + minLastSoldPriceString);
-                itemFilter.setMinLastSoldPrice(MIN_PRICE);
+                itemFilter.setMinLastSoldPrice(commonValuesService.getMinimumMarketplacePrice());
             }
         }
 
         if (maxLastSoldPriceString.equals(SKIPPED)) {
-            itemFilter.setMaxLastSoldPrice(MAX_PRICE);
+            itemFilter.setMaxLastSoldPrice(commonValuesService.getMaximumMarketplacePrice());
         } else {
             try {
                 int price = Integer.parseInt(maxLastSoldPriceString);
-                itemFilter.setMaxLastSoldPrice(Math.min(price, MAX_PRICE));
+                itemFilter.setMaxLastSoldPrice(Math.min(price, commonValuesService.getMaximumMarketplacePrice()));
             } catch (NumberFormatException e) {
                 log.error("Invalid maxLastSoldPrice: " + maxLastSoldPriceString);
-                itemFilter.setMaxLastSoldPrice(MAX_PRICE);
+                itemFilter.setMaxLastSoldPrice(commonValuesService.getMaximumMarketplacePrice());
             }
         }
 
@@ -156,10 +159,9 @@ public class ItemFilterFromInputsMapper {
     }
 
     private List<String> getTagNamesListFromString(String tags) {
-        if(tags == null || tags.isEmpty() || tags.equals(SKIPPED)) {
+        if (tags == null || tags.isEmpty() || tags.equals(SKIPPED)) {
             return new ArrayList<>();
-        }
-        else{
+        } else {
             return Arrays.stream(tags.split("[,|]")).map(String::trim).toList();
         }
     }

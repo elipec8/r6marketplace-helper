@@ -1,8 +1,8 @@
 package github.ricemonger.telegramBot.executors.marketplace.items.settings.appliedFilters;
 
-import github.ricemonger.telegramBot.client.Callbacks;
+import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
-import github.ricemonger.telegramBot.executors.InputState;
+import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.ItemFilter;
 
 import java.util.Collection;

@@ -32,6 +32,8 @@ ubi:
     expireTimeout: ${auth.ubi_credentials.expireTimeout}
     marketplaceProfit: 0.9
     dateFormat: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+    minPrice: 120
+    maxPrice: 150000
 
 server:
   port: 8080

@@ -1,4 +1,4 @@
-package github.ricemonger.telegramBot.client;
+package github.ricemonger.telegramBot;
 
 public class Callbacks {
 
@@ -6,7 +6,7 @@ public class Callbacks {
 
     public static final String INPUT_CALLBACK_PREFIX = "INPUT_CALLBACK_PREFIX_";
 
-    public static final String INPUT_CALLBACK_TRUE  = "INPUT_CALLBACK_TRUE";
+    public static final String INPUT_CALLBACK_TRUE = "INPUT_CALLBACK_TRUE";
 
     public static final String INPUT_CALLBACK_FALSE = "INPUT_CALLBACK_FALSE";
 
@@ -65,7 +65,7 @@ public class Callbacks {
     public static final String ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT = "ITEMS_SHOW_SETTINGS_CHANGE_LIMIT";
 
     public static final String ITEMS_SHOW_SETTINGS_CHANGE_SHOWN_FIELDS = "ITEMS_SHOW_SETTINGS_CHANGE_FIELDS";
-    
+
     public static final String TRADES = "TRADES";
 
     public static final String TRADE_CREATE = "TRADE_CREATE";

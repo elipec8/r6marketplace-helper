@@ -1,4 +1,4 @@
-package github.ricemonger.telegramBot.executors;
+package github.ricemonger.telegramBot;
 
 public enum InputGroup {
     BASE,

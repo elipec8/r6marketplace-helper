@@ -12,13 +12,13 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @RequiredArgsConstructor
 public class TelegramBotUpdateReceiver implements LongPollingSingleThreadUpdateConsumer {
 
-    private final UpdateToUpdateInfoMapper updateToUpdateInfoMapper;
+    private final UpdateInfoMapper updateInfoMapper;
 
     private final UpdatesToListenersDistributor updatesToListenersDistributor;
 
     @Override
     public void consume(Update update) {
-        UpdateInfo updateInfo = updateToUpdateInfoMapper.map(update);
+        UpdateInfo updateInfo = updateInfoMapper.map(update);
 
         updatesToListenersDistributor.distribute(updateInfo);
     }

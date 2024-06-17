@@ -130,4 +130,12 @@ public class CommonValuesService {
     public Integer getMaximumTelegramMessageLimit() {
         return telegramBotConfiguration.getMessageLimit();
     }
+
+    public Integer getMinimumMarketplacePrice() {
+        return ubiServiceConfiguration.getMinPrice();
+    }
+
+    public Integer getMaximumMarketplacePrice() {
+        return ubiServiceConfiguration.getMaxPrice();
+    }
 }

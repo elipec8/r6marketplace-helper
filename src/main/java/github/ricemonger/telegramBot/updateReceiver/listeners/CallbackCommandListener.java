@@ -1,7 +1,7 @@
 package github.ricemonger.telegramBot.updateReceiver.listeners;
 
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.telegramBot.client.Callbacks;
+import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.executors.ExecutorsService;
 import github.ricemonger.telegramBot.executors.cancel.Cancel;
 import github.ricemonger.telegramBot.executors.cancel.SilentCancel;
