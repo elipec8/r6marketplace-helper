@@ -13,15 +13,15 @@ public class TagService {
 
     private final TagDatabaseService tagDatabaseService;
 
-    public void saveAll(Collection<Tag> tags) {
+    public void saveAllTags(Collection<Tag> tags) {
         tagDatabaseService.saveAll(tags);
-    }
-
-    public Collection<Tag> getAllTags() {
-        return tagDatabaseService.findAll();
     }
 
     public Collection<Tag> getTagsByNames(Collection<String> tagNames) {
         return tagDatabaseService.findAllByNames(tagNames);
+    }
+
+    public Collection<Tag> getAllTags() {
+        return tagDatabaseService.findAll();
     }
 }

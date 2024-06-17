@@ -47,7 +47,7 @@ class ScheduledMarketplaceConfigurationFetcherTest {
 
         scheduledMarketplaceConfigurationFetcher.fetchMarketplaceConfigurations();
 
-        verify(tagService).saveAll(same(tags));
+        verify(tagService).saveAllTags(same(tags));
         verify(graphQlClientService).checkItemTypes();
 
         verify(commonValuesService).setConfigResolvedTransactionPeriod(same(configResolvedTransactionPeriod));

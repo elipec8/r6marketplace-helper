@@ -192,12 +192,12 @@ class TelegramUserPostgresServiceTest {
     }
 
     @Test
-    public void userExistsById_should_handle_to_repository(){
+    public void existsById_should_handle_to_repository(){
         when(repository.existsById(any())).thenReturn(true);
-        assertTrue(service.userExistsById("1"));
+        assertTrue(service.existsById("1"));
 
         when(repository.existsById(any())).thenReturn(false);
-        assertFalse(service.userExistsById("1"));
+        assertFalse(service.existsById("1"));
     }
 
     @Test
@@ -207,7 +207,7 @@ class TelegramUserPostgresServiceTest {
     }
 
     @Test
-    public void findUserById_should_return_user(){
+    public void findUserById_should_return_(){
         TelegramUser user = new TelegramUser(1L);
         when(repository.findById(any())).thenReturn(Optional.of(new TelegramUserEntity(user)));
         assertEquals(user, service.findUserById("1"));
@@ -232,7 +232,7 @@ class TelegramUserPostgresServiceTest {
     }
 
     @Test
-    public void findAllUsers_should_handle_to_repository(){
+    public void findAllUsersUsers_should_handle_to_repository(){
         when(repository.findAll()).thenReturn(List.of(new TelegramUserEntity(), new TelegramUserEntity()));
 
         assertEquals(2, service.findAllUsers().size());

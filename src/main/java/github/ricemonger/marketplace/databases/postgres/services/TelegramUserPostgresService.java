@@ -92,7 +92,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     }
 
     @Override
-    public boolean userExistsById(String chatId) {
+    public boolean existsById(String chatId) {
         return telegramUserPostgresRepository.existsById(chatId);
     }
 

@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class UbiUserService {
+public class TelegramLinkedUbiUserService {
 
     private final UbiUserDatabaseService ubiUserDatabaseService;
 

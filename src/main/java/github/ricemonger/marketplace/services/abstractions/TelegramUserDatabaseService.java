@@ -21,7 +21,7 @@ public interface TelegramUserDatabaseService {
 
     void removeItemShowAppliedFilter(String chatId, String filterName);
 
-    boolean userExistsById(String chatId);
+    boolean existsById(String chatId);
 
     TelegramUser findUserById(String chatId);
 

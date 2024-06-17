@@ -17,12 +17,12 @@ public class ItemFilterService {
         itemFilterDatabaseService.save(itemFilter);
     }
 
-    public ItemFilter getItemFilterById(String chatId, String name) {
-        return itemFilterDatabaseService.findById(chatId, name);
-    }
-
     public void deleteItemFilterById(String chatId, String name) {
         itemFilterDatabaseService.deleteById(chatId, name);
+    }
+
+    public ItemFilter getItemFilterById(String chatId, String name) {
+        return itemFilterDatabaseService.findById(chatId, name);
     }
 
     public Collection<String> getAllItemFilterNamesForUser(String chatId) {

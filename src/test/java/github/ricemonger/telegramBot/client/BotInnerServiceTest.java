@@ -200,19 +200,4 @@ public class BotInnerServiceTest {
 
         assertTrue(expected.containsAll(result) && result.containsAll(expected));
     }
-
-    @Test
-    public void sendDefaultSpeculativeItemsAsMessages_should_handle_to_service() {
-        Long chatId = 1L;
-
-        List<Item> items = new ArrayList<>();
-        items.add(new Item());
-        items.add(new Item());
-
-        when(itemStatsService.getAllSpeculativeItemsByExpectedProfit(50, 40, 0, 15000)).thenReturn(items);
-
-        //botInnerService.sendDefaultSpeculativeItemsAsMessages(chatId);
-
-        verify(telegramBotClientService,times(2)).sendText(eq("1"),anyString());
-    }
 }

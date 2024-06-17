@@ -9,10 +9,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class TagServiceTest {
@@ -24,11 +26,35 @@ class TagServiceTest {
     private TagService tagService;
 
     @Test
-    void saveAll_should_handle_to_service() {
+    void saveAll_Tags_should_handle_to_service() {
         Collection<Tag> tags = new ArrayList<>();
 
-        tagService.saveAll(tags);
+        tagService.saveAllTags(tags);
 
         verify(tagDatabaseService).saveAll(same(tags));
+    }
+
+    @Test
+    void getTagsByNames_should_handle_to_service() {
+        Collection<String> tagNames = new ArrayList<>();
+
+        List<Tag> tags = new ArrayList<>();
+
+        when(tagDatabaseService.findAllByNames(tagNames)).thenReturn(tags);
+
+        assertEquals(tags,tagService.getTagsByNames(tagNames));
+
+        verify(tagDatabaseService).findAllByNames(same(tagNames));
+    }
+
+    @Test
+    void getAllTags_should_handle_to_service() {
+        List<Tag> tags = new ArrayList<>();
+
+        when(tagDatabaseService.findAll()).thenReturn(tags);
+
+        assertEquals(tags,tagService.getAllTags());
+
+        verify(tagDatabaseService).findAll();
     }
 }

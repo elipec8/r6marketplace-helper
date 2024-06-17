@@ -123,19 +123,19 @@ public class CommonValuesService {
         return ubiServiceConfiguration.getDateFormat();
     }
 
-    public Integer getMaximumTelegramMessageHeight() {
-        return telegramBotConfiguration.getMessageHeight();
-    }
-
-    public Integer getMaximumTelegramMessageLimit() {
-        return telegramBotConfiguration.getMessageLimit();
-    }
-
     public Integer getMinimumMarketplacePrice() {
         return ubiServiceConfiguration.getMinPrice();
     }
 
     public Integer getMaximumMarketplacePrice() {
         return ubiServiceConfiguration.getMaxPrice();
+    }
+
+    public Integer getMaximumTelegramMessageHeight() {
+        return telegramBotConfiguration.getMessageHeight();
+    }
+
+    public Integer getMaximumTelegramMessageLimit() {
+        return telegramBotConfiguration.getMessageLimit();
     }
 }
