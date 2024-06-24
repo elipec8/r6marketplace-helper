@@ -142,4 +142,8 @@ public class ItemStatsService {
                 .filter(item -> filter.getMaxLastSoldPrice() == null || item.getLastSoldPrice() <= filter.getMaxLastSoldPrice())
                 .toList();
     }
+
+    public Item getItemById(String itemId) {
+        return itemService.findById(itemId);
+    }
 }

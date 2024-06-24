@@ -3,6 +3,7 @@ package github.ricemonger.marketplace.databases.postgres.services;
 import github.ricemonger.marketplace.databases.postgres.entities.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.utils.dtos.Item;
+import github.ricemonger.utils.exceptions.ItemNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -46,6 +47,27 @@ class ItemPostgresServiceTest {
 
             return argItems.containsAll(items) && items.containsAll(argItems);
         }));
+    }
+
+    @Test
+    public void findById_should_handle_to_repository() {
+        Item item = new Item();
+        item.setItemId("1");
+
+        when(repository.findById("1")).thenReturn(java.util.Optional.of(new ItemEntity(item)));
+
+        Item result = service.findById("1");
+
+        verify(repository).findById("1");
+
+        assertEquals(result, item);
+    }
+
+    @Test
+    public void findById_should_throw_if_not_found(){
+        when(repository.findById("1")).thenReturn(java.util.Optional.empty());
+
+        assertThrows(ItemNotFoundException.class, () -> service.findById("1"));
     }
 
     @Test

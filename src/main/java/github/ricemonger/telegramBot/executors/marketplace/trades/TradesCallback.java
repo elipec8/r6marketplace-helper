@@ -7,10 +7,9 @@ import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 public class TradesCallback extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        CallbackButton createTrade = new CallbackButton("Create", Callbacks.TRADE_CREATE);
-        CallbackButton showTrades = new CallbackButton("Show All", Callbacks.TRADES_SHOW_ALL);
-        CallbackButton showSettings = new CallbackButton("Search Settings", Callbacks.TRADES_SEARCH_SETTINGS);
-        CallbackButton managementSettings = new CallbackButton("Management Settings", Callbacks.TRADES_MANAGEMENT_SETTINGS);
-        askFromInlineKeyboard("Please choose operation:",1, createTrade, showTrades, showSettings, managementSettings);
+        CallbackButton createTrade = new CallbackButton("Create/Update", Callbacks.TRADE_CREATE_OR_UPDATE);
+        CallbackButton showTrades = new CallbackButton("Show/Remove", Callbacks.TRADES_SHOW_OR_REMOVE);
+        CallbackButton showSettings = new CallbackButton("Settings", Callbacks.TRADES_SETTINGS);
+        askFromInlineKeyboard("Please choose operation:",1, createTrade, showTrades, showSettings);
     }
 }

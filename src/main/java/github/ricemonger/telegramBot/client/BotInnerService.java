@@ -7,6 +7,7 @@ import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.utils.dtos.*;
 import github.ricemonger.utils.enums.ItemType;
+import github.ricemonger.utils.enums.PlannedTradeType;
 import github.ricemonger.utils.enums.TagGroup;
 import github.ricemonger.utils.exceptions.InvalidTelegramUserInput;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
@@ -35,7 +36,11 @@ public class BotInnerService {
 
     private final ItemFilterService itemFilterService;
 
+    private final PlannedTradeService plannedTradeService;
+
     private final ItemFilterFromInputsMapper itemFilterFromInputsMapper;
+
+    private final PlannedTradeFromInputsMapper plannedTradeFromInputsMapper;
 
     private final TagService tagService;
 
@@ -213,6 +218,24 @@ public class BotInnerService {
             ItemFilter filter = itemFilterService.getItemFilterById(String.valueOf(chatId), filterName);
             telegramUserService.addItemShowAppliedFilter(chatId, filter);
         }
+    }
+
+    public void savePlannedOneItemTradeByUserInput(Long chatId, PlannedTradeType tradeType) {
+        plannedTradeService.savePlannedOneItemTrade(getPlannedOneItemTradeByUserInput(chatId, tradeType));
+    }
+
+    public PlannedOneItemTrade getPlannedOneItemTradeByUserInput(Long chatId, PlannedTradeType tradeType) {
+        Collection<TelegramUserInput> inputs = telegramUserService.getAllUserInputs(chatId);
+
+        return plannedTradeFromInputsMapper.mapToPlannedOneItemTrade(
+                String.valueOf(chatId),
+                inputs,
+                tradeType,
+                getItemByPlannedOneItemTradeEditUserInput(chatId));
+    }
+
+    public Item getItemByPlannedOneItemTradeEditUserInput(Long chatId) {
+        return itemStatsService.getItemById(getUserInputByState(chatId, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID));
     }
 
     private String getInputValueFromCallbackData(Long chatId, InputState inputState) {

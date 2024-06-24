@@ -68,11 +68,31 @@ public class Callbacks {
 
     public static final String TRADES = "TRADES";
 
-    public static final String TRADE_CREATE = "TRADE_CREATE";
+    public static final String TRADE_CREATE_OR_UPDATE = "TRADE_CREATE_OR_UPDATE";
 
-    public static final String TRADES_SHOW_ALL = "TRADES_SHOW_ALL";
+    public static final String TRADES_SHOW_OR_REMOVE = "TRADES_SHOW_OR_REMOVE";
 
-    public static final String TRADES_SEARCH_SETTINGS = "TRADES_SEARCH_SETTINGS";
+    public static final String TRADES_SETTINGS = "TRADES_SETTINGS";
 
-    public static final String TRADES_MANAGEMENT_SETTINGS = "TRADES_MANAGEMENT_SETTINGS";
+    public static final String TRADES_EDIT_ONE_ITEM = "TRADES_EDIT_ONE_ITEM";
+
+    public static final String TRADES_EDIT_ONE_ITEM_TYPE_BUY = "TRADES_EDIT_ONE_ITEM_TYPE_BUY";
+
+    public static final String TRADES_EDIT_ONE_ITEM_TYPE_SELL = "TRADES_EDIT_ONE_ITEM_TYPE_SELL";
+
+    public static final String TRADES_EDIT_ONE_ITEM_TYPE_BUY_AND_SELL = "TRADES_EDIT_ONE_ITEM_TYPE_BUY_AND_SELL";
+
+    public static final String TRADES_EDIT_ONE_ITEM_BUY_FINISH = "TRADES_EDIT_ONE_ITEM_BUY_FINISH";
+
+    public static final String TRADES_EDIT_ONE_ITEM_SELL_FINISH = "TRADES_EDIT_ONE_ITEM_SELL_FINISH";
+
+    public static final String TRADES_EDIT_ONE_ITEM_BUY_AND_SELL_FINISH = "TRADES_EDIT_ONE_ITEM_BUY_AND_SELL_FINISH";
+
+    public static final String TRADES_EDIT_ITEM_FILTER = "TRADES_EDIT_ITEM_FILTER";
+
+    public static final String TRADES_EDIT_ITEM_FILTER_TRADE_TYPE_BUY = "TRADES_EDIT_ITEM_FILTER_TRADE_TYPE_BUY";
+
+    public static final String TRADES_EDIT_ITEM_FILTER_TRADE_TYPE_SELL = "TRADES_EDIT_ITEM_FILTER_TRADE_TYPE_SELL";
+
+    public static final String TRADES_EDIT_ITEM_FILTER_TRADE_TYPE_BUY_AND_SELL = "TRADES_EDIT_ITEM_FILTER_TRADE_TYPE_BUY_AND_SELL";
 }

@@ -1,7 +1,7 @@
 package github.ricemonger.telegramBot.updateReceiver.listeners;
 
-import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.Callbacks;
+import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.ExecutorsService;
 import github.ricemonger.telegramBot.executors.cancel.Cancel;
 import github.ricemonger.telegramBot.executors.cancel.SilentCancel;
@@ -26,10 +26,9 @@ import github.ricemonger.telegramBot.executors.marketplace.items.settings.messag
 import github.ricemonger.telegramBot.executors.marketplace.items.settings.shownFields.ItemsShowSettingsChangeShownFieldsStage1AskNameFlagCallback;
 import github.ricemonger.telegramBot.executors.marketplace.items.show.ItemsShowStage1AskOffsetCallback;
 import github.ricemonger.telegramBot.executors.marketplace.trades.TradesCallback;
-import github.ricemonger.telegramBot.executors.marketplace.trades.create.TradesCreateCallback;
-import github.ricemonger.telegramBot.executors.marketplace.trades.settings.TradesManagementSettingsCallback;
-import github.ricemonger.telegramBot.executors.marketplace.trades.settings.TradesSearchSettingsCallback;
-import github.ricemonger.telegramBot.executors.marketplace.trades.showAll.TradesShowAllCallback;
+import github.ricemonger.telegramBot.executors.marketplace.trades.createUpdate.TradesEditCallback;
+import github.ricemonger.telegramBot.executors.marketplace.trades.settings.TradesSettingsCallback;
+import github.ricemonger.telegramBot.executors.marketplace.trades.showRemove.TradesShowRemoveCallback;
 import github.ricemonger.telegramBot.executors.start.startYes.StartYesCallback;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -97,13 +96,11 @@ public class CallbackCommandListener {
 
             case Callbacks.TRADES -> executorsService.execute(TradesCallback.class, updateInfo);
 
-            case Callbacks.TRADE_CREATE -> executorsService.execute(TradesCreateCallback.class, updateInfo);
+            case Callbacks.TRADE_CREATE_OR_UPDATE -> executorsService.execute(TradesEditCallback.class, updateInfo);
 
-            case Callbacks.TRADES_MANAGEMENT_SETTINGS -> executorsService.execute(TradesManagementSettingsCallback.class, updateInfo);
+            case Callbacks.TRADES_SETTINGS -> executorsService.execute(TradesSettingsCallback.class, updateInfo);
 
-            case Callbacks.TRADES_SEARCH_SETTINGS -> executorsService.execute(TradesSearchSettingsCallback.class, updateInfo);
-
-            case Callbacks.TRADES_SHOW_ALL -> executorsService.execute(TradesShowAllCallback.class, updateInfo);
+            case Callbacks.TRADES_SHOW_OR_REMOVE -> executorsService.execute(TradesShowRemoveCallback.class, updateInfo);
 
             case Callbacks.CANCEL -> executorsService.execute(Cancel.class, updateInfo);
 
