@@ -7,7 +7,7 @@ import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.utils.dtos.*;
 import github.ricemonger.utils.enums.ItemType;
-import github.ricemonger.utils.enums.PlannedTradeType;
+import github.ricemonger.utils.enums.TradeManagerTradeType;
 import github.ricemonger.utils.enums.TagGroup;
 import github.ricemonger.utils.exceptions.InvalidTelegramUserInput;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
@@ -36,11 +36,11 @@ public class BotInnerService {
 
     private final ItemFilterService itemFilterService;
 
-    private final PlannedTradeService plannedTradeService;
+    private final TradeManagerService tradeManagerService;
 
     private final ItemFilterFromInputsMapper itemFilterFromInputsMapper;
 
-    private final PlannedTradeFromInputsMapper plannedTradeFromInputsMapper;
+    private final TradeManagerFromInputsMapper tradeManagerFromInputsMapper;
 
     private final TagService tagService;
 
@@ -220,14 +220,14 @@ public class BotInnerService {
         }
     }
 
-    public void savePlannedOneItemTradeByUserInput(Long chatId, PlannedTradeType tradeType) {
-        plannedTradeService.savePlannedOneItemTrade(getPlannedOneItemTradeByUserInput(chatId, tradeType));
+    public void savePlannedOneItemTradeByUserInput(Long chatId, TradeManagerTradeType tradeType) {
+        tradeManagerService.saveTradeManagerByItemId(getPlannedOneItemTradeByUserInput(chatId, tradeType));
     }
 
-    public PlannedOneItemTrade getPlannedOneItemTradeByUserInput(Long chatId, PlannedTradeType tradeType) {
+    public TradeManagerByItemId getPlannedOneItemTradeByUserInput(Long chatId, TradeManagerTradeType tradeType) {
         Collection<TelegramUserInput> inputs = telegramUserService.getAllUserInputs(chatId);
 
-        return plannedTradeFromInputsMapper.mapToPlannedOneItemTrade(
+        return tradeManagerFromInputsMapper.mapToTradeManagerByItemId(
                 String.valueOf(chatId),
                 inputs,
                 tradeType,

@@ -1,0 +1,8 @@
+package github.ricemonger.marketplace.databases.postgres.repositories;
+
+import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedTradeManagerByItemIdEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedTradeManagerByItemIdEntityId;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface TradeManagerByItemIdPostgresRepository extends JpaRepository<TelegramLinkedTradeManagerByItemIdEntity, TelegramLinkedTradeManagerByItemIdEntityId> {
+}

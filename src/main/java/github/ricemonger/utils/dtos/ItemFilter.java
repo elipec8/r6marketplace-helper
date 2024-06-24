@@ -8,10 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Data
@@ -38,6 +35,37 @@ public class ItemFilter {
     private Integer minLastSoldPrice;
     private Integer maxLastSoldPrice;
 
+    public static Collection<Item> filterItems(Collection<Item> items, Collection<ItemFilter> filters) {
+        if (filters == null || filters.isEmpty()) {
+            return items;
+        } else {
+            List<ItemFilter> allowedFilters = filters.stream().filter(filter -> filter.getFilterType().equals(FilterType.ALLOW)).toList();
+            List<ItemFilter> deniedFilters = filters.stream().filter(filter -> filter.getFilterType().equals(FilterType.DENY)).toList();
+
+            Set<Item> result;
+
+            if (allowedFilters.isEmpty()) {
+                result = new HashSet<>(items);
+            } else {
+                result = new HashSet<>();
+                for (ItemFilter filter : allowedFilters) {
+                    result.addAll(filter.filterItems(items));
+                }
+            }
+
+            if (deniedFilters.isEmpty()) {
+                return result;
+            } else {
+                List<Item> deniedItems = new ArrayList<>();
+                for (ItemFilter filter : deniedFilters) {
+                    deniedItems.addAll(filter.filterItems(items));
+                }
+                deniedItems.forEach(result::remove);
+            }
+            return result;
+        }
+    }
+
     public String getItemNamePatternsAsString() {
         return getListAsString(itemNamePatterns);
     }
@@ -62,11 +90,15 @@ public class ItemFilter {
         }
     }
 
-    private String getListAsString(List<String> tags) {
-        if (tags == null || tags.isEmpty()) {
+    public void addTags(Collection<Tag> tagsFromNames) {
+        this.tags.addAll(tagsFromNames);
+    }
+
+    private String getListAsString(List<String> list) {
+        if (list == null || list.isEmpty()) {
             return "";
         } else {
-            return String.join(",", tags.stream().map(String::trim).toList());
+            return String.join(",", list.stream().map(String::trim).toList());
         }
     }
 
@@ -78,6 +110,18 @@ public class ItemFilter {
 
             return Arrays.stream(split).map(String::trim).toList();
         }
+    }
+
+    public Collection<Item> filterItems(Collection<Item> items) {
+        return items.stream()
+                .filter(item -> this.itemNamePatterns.stream().anyMatch(s -> item.getName().toLowerCase().contains(s.toLowerCase())))
+                .filter(item -> this.itemTypes.isEmpty() || this.itemTypes.contains(item.getType()))
+                .filter(item -> this.tags.isEmpty() || this.tags.stream().anyMatch(tag -> item.getTags().contains(tag.getValue())))
+                .filter(item -> this.minPrice == null || item.getMinSellPrice() >= this.minPrice)
+                .filter(item -> this.maxPrice == null || item.getMaxBuyPrice() <= this.maxPrice)
+                .filter(item -> this.minLastSoldPrice == null || item.getLastSoldPrice() >= this.minLastSoldPrice)
+                .filter(item -> this.maxLastSoldPrice == null || item.getLastSoldPrice() <= this.maxLastSoldPrice)
+                .toList();
     }
 
     public String toString() {
@@ -116,9 +160,5 @@ public class ItemFilter {
                 .append("Min last sold price: ").append(minLastSoldPrice).append("\n")
                 .append("Max last sold price: ").append(maxLastSoldPrice).append("\n");
         return sb.toString();
-    }
-
-    public void addTags(Collection<Tag> tagsFromNames) {
-        this.tags.addAll(tagsFromNames);
     }
 }

@@ -25,10 +25,10 @@ import github.ricemonger.telegramBot.executors.marketplace.items.settings.itemsI
 import github.ricemonger.telegramBot.executors.marketplace.items.settings.messageLimit.ItemsShowSettingsChangeMessageLimitCallback;
 import github.ricemonger.telegramBot.executors.marketplace.items.settings.shownFields.ItemsShowSettingsChangeShownFieldsStage1AskNameFlagCallback;
 import github.ricemonger.telegramBot.executors.marketplace.items.show.ItemsShowStage1AskOffsetCallback;
-import github.ricemonger.telegramBot.executors.marketplace.trades.TradesCallback;
-import github.ricemonger.telegramBot.executors.marketplace.trades.createUpdate.TradesEditCallback;
-import github.ricemonger.telegramBot.executors.marketplace.trades.settings.TradesSettingsCallback;
-import github.ricemonger.telegramBot.executors.marketplace.trades.showRemove.TradesShowRemoveCallback;
+import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.TradesCallback;
+import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.TradesEditCallback;
+import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.settings.TradesSettingsCallback;
+import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.showRemove.TradesShowRemoveCallback;
 import github.ricemonger.telegramBot.executors.start.startYes.StartYesCallback;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
