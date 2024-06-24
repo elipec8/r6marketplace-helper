@@ -25,6 +25,7 @@ import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createU
 import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage3AskStartingPriceInput;
 import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage4AskPriorityInput;
 import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage5AskConfirmationInput;
+import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.showRemove.remove.itemId.TradeManagersByItemIdRemoveStage2AskConfirmationInput;
 import github.ricemonger.utils.exceptions.InvalidUserInputGroupException;
 import github.ricemonger.utils.exceptions.InvalidUserInputStateAndGroupConjunctionException;
 import lombok.RequiredArgsConstructor;
@@ -67,6 +68,8 @@ public class InputCommandListener {
                 case TRADES_EDIT_ONE_ITEM_SELL -> tradesEditOneItemSellInputGroup(updateInfo);
 
                 case TRADES_EDIT_ONE_ITEM_BUY_AND_SELL -> tradesEditOneItemBuyAndSellInputGroup(updateInfo);
+
+                case TRADES_REMOVE_ITEM_ID -> tradesOneItemRemoveInputGroup(updateInfo);
 
                 default -> throw new InvalidUserInputGroupException(updateInfo.getInputGroup().name());
             }
@@ -286,6 +289,17 @@ public class InputCommandListener {
                     executorsService.execute(TradesOneItemBuyAndSellEditStage6AskPriorityInput.class, updateInfo);
 
             case TRADES_EDIT_ONE_ITEM_PRIORITY -> executorsService.execute(TradesOneItemBuyAndSellEditStage7AskConfirmationInput.class, updateInfo);
+
+            default ->
+                    throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+        }
+    }
+
+    private void tradesOneItemRemoveInputGroup(UpdateInfo updateInfo) {
+        InputState inputState = updateInfo.getInputState();
+
+        switch (inputState) {
+            case TRADES_EDIT_ONE_ITEM_ITEM_ID -> executorsService.execute(TradeManagersByItemIdRemoveStage2AskConfirmationInput.class, updateInfo);
 
             default ->
                     throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());

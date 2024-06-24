@@ -20,7 +20,7 @@ public class TradeManagerByItemId {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Planned one item trade: \n");
+        sb.append("Trade Manager for one item: \n");
         sb.append("Trade type: ").append(tradeType).append("\n");
         sb.append("Item id: ").append(itemId).append("\n");
 

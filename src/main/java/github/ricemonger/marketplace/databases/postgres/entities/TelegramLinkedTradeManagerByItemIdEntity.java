@@ -10,12 +10,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "planned_trade")
+@Entity(name = "trade_manager_by_item_id")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(TelegramLinkedTradeManagerByItemIdEntity.class)
+@IdClass(TelegramLinkedTradeManagerByItemIdEntityId.class)
 public class TelegramLinkedTradeManagerByItemIdEntity {
     @Id
     private String chatId;
@@ -44,5 +44,18 @@ public class TelegramLinkedTradeManagerByItemIdEntity {
         this.buyStartingPrice = tradeManager.getBuyStartingPrice();
         this.buyBoundaryPrice = tradeManager.getBuyBoundaryPrice();
         this.priority = tradeManager.getPriority();
+    }
+
+    public TradeManagerByItemId toTradeManagerByItemId() {
+        TradeManagerByItemId tradeManager = new TradeManagerByItemId();
+        tradeManager.setChatId(chatId);
+        tradeManager.setItemId(itemId);
+        tradeManager.setTradeType(tradeType);
+        tradeManager.setSellStartingPrice(sellStartingPrice);
+        tradeManager.setSellBoundaryPrice(sellBoundaryPrice);
+        tradeManager.setBuyStartingPrice(buyStartingPrice);
+        tradeManager.setBuyBoundaryPrice(buyBoundaryPrice);
+        tradeManager.setPriority(priority);
+        return tradeManager;
     }
 }

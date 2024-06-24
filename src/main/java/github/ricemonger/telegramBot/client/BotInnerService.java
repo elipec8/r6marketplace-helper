@@ -7,8 +7,8 @@ import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.utils.dtos.*;
 import github.ricemonger.utils.enums.ItemType;
-import github.ricemonger.utils.enums.TradeManagerTradeType;
 import github.ricemonger.utils.enums.TagGroup;
+import github.ricemonger.utils.enums.TradeManagerTradeType;
 import github.ricemonger.utils.exceptions.InvalidTelegramUserInput;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.TelegramUserInputDoesntExistException;
@@ -241,5 +241,42 @@ public class BotInnerService {
     private String getInputValueFromCallbackData(Long chatId, InputState inputState) {
         String callback = telegramUserService.getUserInputByState(chatId, inputState);
         return callback.substring(Callbacks.INPUT_CALLBACK_PREFIX.length());
+    }
+
+    public Collection<TradeManagerByItemId> getTradeManagersByItemId(Long chatId) {
+        return tradeManagerService.getTradeManagersByItemId(String.valueOf(chatId));
+    }
+
+    public Collection<TradeManagerByItemFilters> getTradeManagersByItemFilters(Long chatId) {
+        return tradeManagerService.getTradeManagersByItemFilters(String.valueOf(chatId));
+    }
+
+    public void sendMultipleObjectsFewInMessage(Collection<?> objects, int objectStringHeight, Long chatId) {
+        int tradeManagersInMessage = commonValuesService.getMaximumTelegramMessageHeight() / objectStringHeight;
+
+        int currentCount = 0;
+        StringBuilder nextMessage = new StringBuilder();
+
+        for (Object object : objects) {
+            nextMessage.append(object.toString()).append("\n");
+            currentCount++;
+            if (currentCount >= tradeManagersInMessage) {
+                telegramBotClientService.sendText(String.valueOf(chatId), nextMessage.toString());
+                currentCount = 0;
+                nextMessage = new StringBuilder();
+            }
+        }
+        if (currentCount > 0) {
+            telegramBotClientService.sendText(String.valueOf(chatId), nextMessage.toString());
+        }
+    }
+
+    public TradeManagerByItemId getTradeManagerByItemIdByUserInput(Long chatId) {
+        return tradeManagerService.getTradeManagerByItemIdById(String.valueOf(chatId), getUserInputByState(chatId,
+                InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID));
+    }
+
+    public void removeTradeManagerByItemIdByUserInput(Long chatId) {
+        tradeManagerService.deleteTradeManagerByItemIdById(String.valueOf(chatId), getUserInputByState(chatId, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID));
     }
 }

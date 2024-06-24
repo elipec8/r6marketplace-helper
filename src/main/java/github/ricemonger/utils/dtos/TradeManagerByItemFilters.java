@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TradeManagerByItemFilter {
+public class TradeManagerByItemFilters {
     private String chatId;
 
     private String name;

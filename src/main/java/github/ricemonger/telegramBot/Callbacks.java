@@ -95,4 +95,13 @@ public class Callbacks {
     public static final String TRADES_EDIT_ITEM_FILTER_TRADE_TYPE_SELL = "TRADES_EDIT_ITEM_FILTER_TRADE_TYPE_SELL";
 
     public static final String TRADES_EDIT_ITEM_FILTER_TRADE_TYPE_BUY_AND_SELL = "TRADES_EDIT_ITEM_FILTER_TRADE_TYPE_BUY_AND_SELL";
+
+    public static final String TRADES_SHOW_BY_ITEM_FILTERS = "TRADES_SHOW_BY_ITEM_FILTERS";
+
+    public static final String TRADES_SHOW_BY_ITEM_ID = "TRADES_SHOW_BY_ITEM_ID";
+
+    public static final String TRADES_REMOVE_BY_ITEM_ID = "TRADES_REMOVE_BY_ITEM_ID";
+
+    public static final String TRADES_REMOVE_BY_ITEM_ID_FINISH = "TRADES_REMOVE_BY_ITEM_ID_FINISH";
+    ;
 }
