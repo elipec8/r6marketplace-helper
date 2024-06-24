@@ -5,14 +5,12 @@ import github.ricemonger.marketplace.services.ItemStatsService;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.utils.dtos.Item;
 import github.ricemonger.utils.exceptions.InvalidTelegramUserInput;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -75,7 +73,7 @@ public class BotInnerServiceTest {
 
         botInnerService.registerUser(chatId);
 
-        verify(telegramUserService).registerTelegramUser(chatId);
+        verify(telegramUserService).registerTelegramUserWithDefaultSettings(chatId);
     }
 
     @Test

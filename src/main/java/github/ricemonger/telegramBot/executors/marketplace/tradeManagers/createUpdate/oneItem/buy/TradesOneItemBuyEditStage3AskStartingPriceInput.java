@@ -9,14 +9,6 @@ public class TradesOneItemBuyEditStage3AskStartingPriceInput extends AbstractBot
     protected void executeCommand() {
         processMiddleInput(InputState.TRADES_EDIT_ONE_ITEM_STARTING_BUY_PRICE);
 
-        try {
-            sendText("Chosen item is:\n" + botInnerService.getItemByPlannedOneItemTradeEditUserInput(updateInfo.getChatId()));
-        } catch (ItemNotFoundException e) {
-            sendText("Item not found. Please enter correct item id.");
-            cancel();
-            return;
-        }
-
         askFromInlineKeyboardOrSkip("Please enter starting price to buy item or skip to make it equal to boundary buy price:", 1);
     }
 }

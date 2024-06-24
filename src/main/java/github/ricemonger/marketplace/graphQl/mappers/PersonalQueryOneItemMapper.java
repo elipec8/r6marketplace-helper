@@ -88,7 +88,7 @@ public class PersonalQueryOneItemMapper {
 
         result.setOwned(marketableItem.getItem().getViewer().getMeta().isOwned());
 
-        result.setTrades(game.getViewer().getMeta().getTrades().getNodes().stream().map((Nodes node) -> mapTrade(node, itemId)).toList());
+        //result.setTrades(game.getViewer().getMeta().getTrades().getNodes().stream().map((Nodes node) -> mapTrade(node, itemId)).toList());
 
 
         return result;

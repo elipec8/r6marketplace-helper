@@ -46,17 +46,17 @@ class TelegramUserServiceTest {
     }
 
     @Test
-    public void registerTelegramUser_should_throw_exception_when_user_already_exists() {
+    public void registerTelegramUser_should_throw_exception_when_user_WithDefaultSettings_already_exists() {
         when(userService.existsById("123")).thenReturn(true);
 
-        assertThrows(TelegramUserAlreadyExistsException.class, () -> telegramUserService.registerTelegramUser(123L));
+        assertThrows(TelegramUserAlreadyExistsException.class, () -> telegramUserService.registerTelegramUserWithDefaultSettings(123L));
     }
 
     @Test
-    public void registerTelegramUser_should_save_user_when_user_doesnt_exist() {
+    public void registerTelegramUser_should_save_user_when_user_WithDefaultSettings_doesnt_exist() {
         when(userService.existsById("123")).thenReturn(false);
 
-        telegramUserService.registerTelegramUser(123L);
+        telegramUserService.registerTelegramUserWithDefaultSettings(123L);
 
         verify(userService).save(new TelegramUser(123L));
     }

@@ -29,11 +29,24 @@ public class TelegramUserService {
         return userService.existsById(String.valueOf(chatId));
     }
 
-    public void registerTelegramUser(Long chatId) throws TelegramUserAlreadyExistsException {
+    public void registerTelegramUserWithDefaultSettings(Long chatId) throws TelegramUserAlreadyExistsException {
         if (userService.existsById(String.valueOf(chatId))) {
             throw new TelegramUserAlreadyExistsException();
         } else {
-            userService.save(new TelegramUser(chatId));
+            TelegramUser telegramUser = new TelegramUser(chatId);
+            telegramUser.setInputState(InputState.BASE);
+            telegramUser.setInputGroup(InputGroup.BASE);
+            telegramUser.setPublicNotificationsEnabledFlag(true);
+            telegramUser.setItemShowMessagesLimit(50);
+            telegramUser.setItemShowFewInMessageFlag(false);
+            telegramUser.setItemShowNameFlag(true);
+            telegramUser.setItemShowItemTypeFlag(true);
+            telegramUser.setItemShowMaxBuyPrice(true);
+            telegramUser.setItemShowBuyOrdersCountFlag(true);
+            telegramUser.setItemShowMinSellPriceFlag(true);
+            telegramUser.setItemsShowSellOrdersCountFlag(true);
+            telegramUser.setItemShowPictureFlag(true);
+            userService.save(telegramUser);
         }
     }
 

@@ -57,7 +57,7 @@ public class BotInnerService {
     }
 
     public void registerUser(Long chatId) {
-        telegramUserService.registerTelegramUser(chatId);
+        telegramUserService.registerTelegramUserWithDefaultSettings(chatId);
     }
 
     public void addCredentialsFromUserInputs(Long chatId) throws TelegramUserDoesntExistException {

@@ -68,7 +68,7 @@ public class Callbacks {
 
     public static final String TRADES = "TRADES";
 
-    public static final String TRADE_CREATE_OR_UPDATE = "TRADE_CREATE_OR_UPDATE";
+    public static final String TRADE_EDIT = "TRADE_CREATE_OR_UPDATE";
 
     public static final String TRADES_SHOW_OR_REMOVE = "TRADES_SHOW_OR_REMOVE";
 

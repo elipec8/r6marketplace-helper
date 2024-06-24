@@ -235,7 +235,7 @@ class CommonValuesServiceTest {
     @Test
     public void getMinimumMarketplacePrice_should_handle_to_service() {
         Integer minPrice = 10;
-        when(ubiServiceConfiguration.getMinPrice()).thenReturn(minPrice);
+        when(ubiServiceConfiguration.getMinLegendaryPrice()).thenReturn(minPrice);
 
         assertEquals(minPrice, commonValuesService.getMinimumMarketplacePrice());
     }
@@ -243,7 +243,7 @@ class CommonValuesServiceTest {
     @Test
     public void getMaximumMarketplacePrice_should_handle_to_service() {
         Integer maxPrice = 10;
-        when(ubiServiceConfiguration.getMaxPrice()).thenReturn(maxPrice);
+        when(ubiServiceConfiguration.getMaxLegendaryPrice()).thenReturn(maxPrice);
 
         assertEquals(maxPrice, commonValuesService.getMaximumMarketplacePrice());
     }

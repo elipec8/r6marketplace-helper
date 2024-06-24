@@ -3,17 +3,19 @@ package github.ricemonger.telegramBot.client;
 import github.ricemonger.marketplace.services.ProfitAndPriorityCalculator;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.Item;
+import github.ricemonger.utils.dtos.TelegramUserInput;
 import github.ricemonger.utils.dtos.TradeManagerByItemId;
 import github.ricemonger.utils.enums.TradeManagerTradeType;
-import github.ricemonger.utils.dtos.TelegramUserInput;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 
 @Component
+@RequiredArgsConstructor
 public class TradeManagerFromInputsMapper {
 
-    public ProfitAndPriorityCalculator profitAndPriorityCalculator;
+    private final ProfitAndPriorityCalculator profitAndPriorityCalculator;
 
     public TradeManagerByItemId mapToTradeManagerByItemId(String chatId, Collection<TelegramUserInput> inputs, TradeManagerTradeType tradeType, Item item) {
         String itemId = getValueByState(inputs, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID);
@@ -29,25 +31,34 @@ public class TradeManagerFromInputsMapper {
         int boundBuyPrice;
         int prior;
 
+        int limitMinPrice = item.getLimitMinPrice();
+        int limitMaxPrice = item.getLimitMaxPrice();
+
         try {
-            boundSellPrice = Integer.parseInt(boundarySellPrice);
+            boundSellPrice = tryToParsePrice(boundarySellPrice, limitMinPrice, limitMaxPrice);
         } catch (NumberFormatException | NullPointerException e) {
             int minSellPrice = item.getMinSellPrice();
-            boundSellPrice = minSellPrice == 120 ? 120 : minSellPrice - 1;
+            boundSellPrice = minSellPrice == item.getLimitMinPrice() ? item.getLimitMinPrice() : minSellPrice - 1;
         }
         try {
-            startSellPrice = Integer.parseInt(startingSellPrice);
+            startSellPrice = tryToParsePrice(startingSellPrice, limitMinPrice, limitMaxPrice);
+            if (startSellPrice < boundSellPrice) {
+                startSellPrice = boundSellPrice;
+            }
         } catch (NumberFormatException | NullPointerException e) {
             startSellPrice = boundSellPrice;
         }
 
         try {
-            boundBuyPrice = Integer.parseInt(boundaryBuyPrice);
+            boundBuyPrice = tryToParsePrice(boundaryBuyPrice, limitMinPrice, limitMaxPrice);
         } catch (NumberFormatException | NullPointerException e) {
             boundBuyPrice = profitAndPriorityCalculator.calculateNextBuyPrice(item);
         }
         try {
-            startBuyPrice = Integer.parseInt(startingBuyPrice);
+            startBuyPrice = tryToParsePrice(startingBuyPrice, limitMinPrice, limitMaxPrice);
+            if (startBuyPrice > boundBuyPrice) {
+                startBuyPrice = boundBuyPrice;
+            }
         } catch (NumberFormatException | NullPointerException e) {
             startBuyPrice = boundBuyPrice;
         }
@@ -69,6 +80,18 @@ public class TradeManagerFromInputsMapper {
         tradeManagerByItemId.setPriority(prior);
 
         return tradeManagerByItemId;
+    }
+
+    private int tryToParsePrice(String value, int minPrice, int maxPrice) {
+        int price = Integer.parseInt(value);
+
+        if (price < minPrice) {
+            price = minPrice;
+        } else if (price > maxPrice) {
+            price = maxPrice;
+        }
+
+        return price;
     }
 
     private String getValueByState(Collection<TelegramUserInput> inputs, InputState inputState) {
