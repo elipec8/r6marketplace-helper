@@ -1,28 +1,21 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.entities.ItemEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.ItemSaleEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.ItemSaleHistoryEntity;
-import github.ricemonger.marketplace.databases.postgres.mappers.ItemPostgresMapper;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.repositories.ItemSaleHistoryPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.repositories.ItemSalePostgresRepository;
 import github.ricemonger.utils.dtos.Item;
-import github.ricemonger.utils.dtos.ItemSale;
-import github.ricemonger.utils.dtos.ItemSaleHistory;
+import github.ricemonger.utils.exceptions.ItemNotFoundException;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
+import org.mockito.ArgumentMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyCollection;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -30,120 +23,68 @@ import static org.mockito.Mockito.when;
 class ItemPostgresServiceTest {
 
     @MockBean
-    private ItemPostgresRepository itemPostgresRepository;
-
-    @MockBean
-    private ItemSalePostgresRepository itemSalePostgresRepository;
-
-    @MockBean
-    private ItemSaleHistoryPostgresRepository itemSaleHistoryPostgresRepository;
-
-    @MockBean
-    private ItemPostgresMapper mapper;
+    private ItemPostgresRepository repository;
 
     @Autowired
-    private ItemPostgresService itemPostgresService;
+    private ItemPostgresService service;
 
     @Test
-    public void saveAllItemsAndItemSales_should_map_and_call_repositories() {
-        List<ItemEntity> itemEntities = new ArrayList<>();
-        when(mapper.mapItemEntities(anyCollection())).thenReturn(itemEntities);
-        List<ItemSaleEntity> itemSaleEntities = new ArrayList<>();
-        when(mapper.mapItemSaleEntities(anyCollection())).thenReturn(itemSaleEntities);
+    public void saveAll_should_handle_to_repository() {
+        Item item1 = new Item();
+        item1.setItemId("1");
+        Item item2 = new Item();
+        item2.setItemId("2");
 
-        itemPostgresService.saveAllItems(List.of(new Item()));
+        List<Item> items = List.of(item1, item2);
 
-        verify(itemPostgresRepository).saveAll(new HashSet<>(itemEntities));
-        verify(itemSalePostgresRepository).saveAll(new HashSet<>(itemSaleEntities));
+        service.saveAll(items);
+
+        verify(repository).saveAll(argThat((ArgumentMatcher<Iterable<? extends ItemEntity>>) argument -> {
+            Collection<ItemEntity> argEntities = new ArrayList<>();
+            argument.forEach(argEntities::add);
+
+            Collection<Item> argItems = argEntities.stream().map(ItemEntity::toItem).toList();
+
+            return argItems.containsAll(items) && items.containsAll(argItems);
+        }));
     }
 
     @Test
-    public void saveAllItemsAndItemSales_should_not_throw_if_empty() {
-        Executable executable = () -> itemPostgresService.saveAllItems(new HashSet<>());
+    public void findById_should_handle_to_repository() {
+        Item item = new Item();
+        item.setItemId("1");
 
-        assertDoesNotThrow(executable);
+        when(repository.findById("1")).thenReturn(java.util.Optional.of(new ItemEntity(item)));
+
+        Item result = service.findById("1");
+
+        verify(repository).findById("1");
+
+        assertEquals(result, item);
     }
 
     @Test
-    public void findAllItems_should_map_and_return() {
-        List<ItemEntity> itemEntities = new ArrayList<>();
-        when(itemPostgresRepository.findAll()).thenReturn(itemEntities);
+    public void findById_should_throw_if_not_found(){
+        when(repository.findById("1")).thenReturn(java.util.Optional.empty());
 
-        List<Item> items = new ArrayList<>();
-        when(mapper.mapItems(itemEntities)).thenReturn(items);
-
-        assertEquals(items, itemPostgresService.findAllItems());
+        assertThrows(ItemNotFoundException.class, () -> service.findById("1"));
     }
 
     @Test
-    public void findAllItems_should_return_empty_list_if_empty() {
-        List<ItemEntity> itemEntities = new ArrayList<>();
-        when(itemPostgresRepository.findAll()).thenReturn(itemEntities);
+    public void findAll_should_handle_to_repository() {
+        Item item1 = new Item();
+        item1.setItemId("1");
+        Item item2 = new Item();
+        item2.setItemId("2");
 
-        List<Item> items = new ArrayList<>();
-        when(mapper.mapItems(itemEntities)).thenReturn(items);
+        List<Item> expected = List.of(item1, item2);
 
-        assertEquals(items, itemPostgresService.findAllItems());
-    }
+        when(repository.findAll()).thenReturn(expected.stream().map(ItemEntity::new).toList());
 
-    @Test
-    public void findAllItemSales_should_map_and_return() {
-        List<ItemSaleEntity> itemSaleEntities = new ArrayList<>();
-        when(itemSalePostgresRepository.findAll()).thenReturn(itemSaleEntities);
+        Collection<Item> result = service.findAll();
 
-        List<ItemSale> itemSales = new ArrayList<>();
-        when(mapper.mapItemSales(itemSaleEntities)).thenReturn(itemSales);
+        verify(repository).findAll();
 
-        assertEquals(itemSales, itemPostgresService.findAllItemSales());
-    }
-
-    @Test
-    public void findAllItemSales_should_return_empty_list_if_empty() {
-        List<ItemSaleEntity> itemSaleEntities = new ArrayList<>();
-        when(itemSalePostgresRepository.findAll()).thenReturn(itemSaleEntities);
-
-        List<ItemSale> itemSales = new ArrayList<>();
-        when(mapper.mapItemSales(itemSaleEntities)).thenReturn(itemSales);
-
-        assertEquals(itemSales, itemPostgresService.findAllItemSales());
-    }
-
-    @Test
-    public void saveAllItemSaleHistoryStats_should_map_and_call_repository() {
-        List<ItemSaleHistoryEntity> itemSaleHistoryEntities = List.of(new ItemSaleHistoryEntity());
-        when(mapper.mapItemSaleHistoryEntities(anyCollection())).thenReturn(itemSaleHistoryEntities);
-
-        itemPostgresService.saveAllItemSaleHistoryStats(List.of(new ItemSaleHistory()));
-
-        verify(itemSaleHistoryPostgresRepository).saveAll(itemSaleHistoryEntities);
-    }
-
-    @Test
-    public void saveAllItemSaleHistoryStats_should_not_throw_if_empty() {
-        Executable executable = () -> itemPostgresService.saveAllItemSaleHistoryStats(new ArrayList<>());
-
-        assertDoesNotThrow(executable);
-    }
-
-    @Test
-    public void findAllItemsByIds_should_map_and_return() {
-        List<ItemEntity> itemEntities = new ArrayList<>();
-        when(itemPostgresRepository.findAllById(anyCollection())).thenReturn(itemEntities);
-
-        List<Item> items = new ArrayList<>();
-        when(mapper.mapItems(itemEntities)).thenReturn(items);
-
-        assertEquals(items, itemPostgresService.findAllItemsByIds(new ArrayList<>()));
-    }
-
-    @Test
-    public void findAllItemsByIds_should_return_empty_list_if_empty_ids() {
-        List<ItemEntity> itemEntities = new ArrayList<>();
-        when(itemPostgresRepository.findAllById(anyCollection())).thenReturn(itemEntities);
-
-        List<Item> items = new ArrayList<>();
-        when(mapper.mapItems(itemEntities)).thenReturn(items);
-
-        assertEquals(items, itemPostgresService.findAllItemsByIds(new ArrayList<>()));
+        assertTrue(result.containsAll(expected) && expected.containsAll(result));
     }
 }

@@ -4,10 +4,12 @@ import github.ricemonger.utils.enums.ItemType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,14 +34,23 @@ public class Item implements SoldItemDetails {
     private int limitMinPrice;
     private int limitMaxPrice;
 
-    private List<Trade> trades;
-
-    public String getTagsAsString() {
-        return String.join(",", tags);
-    }
-
-    public void setTagsFromString(String tags) {
-        this.tags = List.of(tags.split("[,|]"));
+    public ItemRarity getItemRarity(String uncommonTag, String rareTag, String epicTag, String legendaryTag){
+        if(tags.contains(uncommonTag)){
+            return ItemRarity.UNCOMMON;
+        }
+        else if(tags.contains(rareTag)){
+            return ItemRarity.RARE;
+        }
+        else if(tags.contains(epicTag)){
+            return ItemRarity.EPIC;
+        }
+        else if(tags.contains(legendaryTag)){
+            return ItemRarity.LEGENDARY;
+        }
+        else{
+            log.error("Unknown rarity tag for item {}", this);
+            return ItemRarity.UNKNOWN;
+        }
     }
 
     public boolean equals(Object o) {
@@ -47,6 +58,9 @@ public class Item implements SoldItemDetails {
             return true;
         }
         if (!(o instanceof Item item)) {
+            return false;
+        }
+        if (item.getItemId() == null || this.getItemId() == null) {
             return false;
         }
         return item.getItemId().equals(this.getItemId());

@@ -6,7 +6,7 @@ import github.ricemonger.utils.dtos.ItemSale;
 import java.util.Collection;
 
 public interface ItemSaleDatabaseService {
-    Collection<ItemSale> findAllItemSales();
+    void saveAll(Collection<Item> items);
 
-    void saveAllItemSales(Collection<Item> items);
+    Collection<ItemSale> findAll();
 }

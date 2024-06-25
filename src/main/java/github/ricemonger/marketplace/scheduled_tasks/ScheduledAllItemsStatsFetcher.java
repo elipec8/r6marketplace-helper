@@ -41,8 +41,8 @@ public class ScheduledAllItemsStatsFetcher {
             log.info("Fetched {} items' stats", items.size());
         }
 
-        itemStatsService.saveAll(items);
-        itemStatsService.calculateItemsSaleHistoryStats();
+        itemStatsService.saveAllItemsAndSales(items);
+        itemStatsService.calculateAndSaveItemsSaleHistoryStats();
     }
 
     private void onItemsAmountIncrease(int expectedItemCount, int fetchedItemsCount) {

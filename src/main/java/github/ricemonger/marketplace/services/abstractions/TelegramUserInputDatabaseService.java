@@ -1,18 +1,16 @@
 package github.ricemonger.marketplace.services.abstractions;
 
-import github.ricemonger.telegramBot.executors.InputState;
+import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.TelegramUserInput;
 
 import java.util.Collection;
 
 public interface TelegramUserInputDatabaseService {
-    void saveInput(TelegramUserInput telegramUserInput);
+    void save(String chatId, InputState inputState, String value);
 
-    void saveInput(String chatId, InputState inputState, String value);
+    void deleteAllByChatId(String chatId);
 
-    void deleteAllInputsByChatId(String chatId);
+    TelegramUserInput findById(String chatId, InputState inputState);
 
-    TelegramUserInput findInputById(String chatId, InputState inputState);
-
-    Collection<TelegramUserInput> findAllInputsByChatId(String s);
+    Collection<TelegramUserInput> findAllByChatId(String s);
 }

@@ -4,11 +4,13 @@ import github.ricemonger.marketplace.services.abstractions.ItemDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleHistoryDatabaseService;
 import github.ricemonger.utils.dtos.*;
-import github.ricemonger.utils.enums.FilterType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -20,17 +22,50 @@ public class ItemStatsService {
 
     private final ItemSaleHistoryDatabaseService historyService;
 
+    private final TagService tagService;
+
+    private final CommonValuesService commonValuesService;
+
     private final ProfitAndPriorityCalculator profitAndPriorityCalculator;
 
-    public void saveAll(Collection<Item> items) {
-        itemService.saveAllItems(items);
-        saleService.saveAllItemSales(items);
+    public void saveAllItemsAndSales(Collection<Item> items) {
+        setLimitPricesForItems(items);
+        itemService.saveAll(items);
+        saleService.saveAll(items);
     }
 
-    public void calculateItemsSaleHistoryStats() {
+    private void setLimitPricesForItems(Collection<Item> items) {
+        List<Tag> tags = new ArrayList<>(tagService.getTagsByNames(List.of("UNCOMMON", "RARE", "EPIC", "LEGENDARY")));
+        String uncommonTag = tags.stream().filter(tag -> tag.getName().equals("UNCOMMON")).findFirst().get().getValue();
+        String rareTag = tags.stream().filter(tag -> tag.getName().equals("RARE")).findFirst().get().getValue();
+        String epicTag = tags.stream().filter(tag -> tag.getName().equals("EPIC")).findFirst().get().getValue();
+        String legendaryTag = tags.stream().filter(tag -> tag.getName().equals("LEGENDARY")).findFirst().get().getValue();
+
+        for (Item item : items) {
+            ItemRarity rarity = item.getItemRarity(uncommonTag, rareTag, epicTag, legendaryTag);
+            if (rarity == ItemRarity.UNCOMMON) {
+                item.setLimitMinPrice(commonValuesService.getMinimumUncommonPrice());
+                item.setLimitMaxPrice(commonValuesService.getMaximumUncommonPrice());
+            } else if (rarity == ItemRarity.RARE) {
+                item.setLimitMinPrice(commonValuesService.getMinimumRarePrice());
+                item.setLimitMaxPrice(commonValuesService.getMaximumRarePrice());
+            } else if (rarity == ItemRarity.EPIC) {
+                item.setLimitMinPrice(commonValuesService.getMinimumEpicPrice());
+                item.setLimitMaxPrice(commonValuesService.getMaximumEpicPrice());
+            } else if (rarity == ItemRarity.LEGENDARY) {
+                item.setLimitMinPrice(commonValuesService.getMinimumLegendaryPrice());
+                item.setLimitMaxPrice(commonValuesService.getMaximumLegendaryPrice());
+            } else{
+                item.setLimitMinPrice(commonValuesService.getMinimumMarketplacePrice());
+                item.setLimitMaxPrice(commonValuesService.getMaximumMarketplacePrice());
+            }
+        }
+    }
+
+    public void calculateAndSaveItemsSaleHistoryStats() {
         List<ItemSaleHistory> histories = new ArrayList<>();
-        Collection<Item> items = itemService.findAllItems();
-        Collection<ItemSale> sales = saleService.findAllItemSales();
+        Collection<Item> items = itemService.findAll();
+        Collection<ItemSale> sales = saleService.findAll();
 
         for (Item item : items) {
 
@@ -92,65 +127,16 @@ public class ItemStatsService {
 
             histories.add(history);
         }
-        historyService.saveAllItemSaleHistoryStats(histories);
-    }
-
-    public Collection<Item> getAllSpeculativeItemsByExpectedProfit(int minProfit, int minProfitPercents, int minBuyPrice, int maxBuyPrice) {
-        return itemService.findAllItems().stream()
-                .filter(item -> profitAndPriorityCalculator.calculateItemProfit(item) > minProfit)
-                .filter(item -> profitAndPriorityCalculator.calculateItemProfitPercents(item) > minProfitPercents)
-                .filter(item -> profitAndPriorityCalculator.calculateNextBuyPrice(item) >= minBuyPrice)
-                .filter(item -> profitAndPriorityCalculator.calculateNextBuyPrice(item) <= maxBuyPrice)
-                .sorted((o1, o2) -> (profitAndPriorityCalculator.calculateItemProfit(o2) * profitAndPriorityCalculator.calculateItemProfitPercents(o2) * o2.getSellOrdersCount()) - (profitAndPriorityCalculator.calculateItemProfit(o1) * profitAndPriorityCalculator.calculateItemProfitPercents(o1) * o1.getSellOrdersCount()))
-                .toList();
-    }
-
-    public Collection<Item> getAllItems() {
-        return itemService.findAllItems();
+        historyService.saveAll(histories);
     }
 
     public Collection<Item> getAllItemsByFilters(Collection<ItemFilter> filters) {
-        Collection<Item> items = itemService.findAllItems();
+        Collection<Item> items = itemService.findAll();
 
-        if (filters == null || filters.isEmpty()) {
-            return items;
-        } else {
-            List<ItemFilter> allowedFilters = filters.stream().filter(filter -> filter.getFilterType().equals(FilterType.ALLOW)).toList();
-            List<ItemFilter> deniedFilters = filters.stream().filter(filter -> filter.getFilterType().equals(FilterType.DENY)).toList();
-
-            Set<Item> result;
-
-            if (allowedFilters.isEmpty()) {
-                result = new HashSet<>(items);
-            } else {
-                result = new HashSet<>();
-                for (ItemFilter filter : allowedFilters) {
-                    result.addAll(filterItems(items, filter));
-                }
-            }
-
-            if (deniedFilters.isEmpty()) {
-                return result;
-            } else {
-                List<Item> deniedItems = new ArrayList<>();
-                for (ItemFilter filter : deniedFilters) {
-                    deniedItems.addAll(filterItems(items, filter));
-                }
-                deniedItems.forEach(result::remove);
-            }
-            return result;
-        }
+        return ItemFilter.filterItems(items, filters);
     }
 
-    private Collection<Item> filterItems(Collection<Item> items, ItemFilter filter) {
-        return items.stream()
-                .filter(item -> filter.getItemNamePatterns().stream().anyMatch(s -> item.getName().toLowerCase().contains(s.toLowerCase())))
-                .filter(item -> filter.getItemTypes().isEmpty() || filter.getItemTypes().contains(item.getType()))
-                .filter(item -> filter.getTags().isEmpty() || filter.getTags().stream().anyMatch(tag -> item.getTags().contains(tag.getValue())))
-                .filter(item -> filter.getMinPrice() == null || item.getMinSellPrice() >= filter.getMinPrice())
-                .filter(item -> filter.getMaxPrice() == null || item.getMaxBuyPrice() <= filter.getMaxPrice())
-                .filter(item -> filter.getMinLastSoldPrice() == null || item.getLastSoldPrice() >= filter.getMinLastSoldPrice())
-                .filter(item -> filter.getMaxLastSoldPrice() == null || item.getLastSoldPrice() <= filter.getMaxLastSoldPrice())
-                .toList();
+    public Item getItemById(String itemId) {
+        return itemService.findById(itemId);
     }
 }

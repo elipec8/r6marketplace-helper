@@ -7,7 +7,7 @@ public class ItemsShowSettingsChangeAppliedFiltersStage3FinishInput extends Abst
     protected void executeCommand() {
         processLastInput();
 
-        botInnerService.changeAppliedFiltersByUserInput(updateInfo.getChatId());
+        botInnerService.changeItemShowSettingsAppliedFiltersByUserInput(updateInfo.getChatId());
 
         sendText("Filter's status changed successfully.");
     }

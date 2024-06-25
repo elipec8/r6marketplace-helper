@@ -2,7 +2,6 @@ package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUbiUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUbiUserEntityId;
-import github.ricemonger.marketplace.databases.postgres.mappers.UbiUserPostgresMapper;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiUserPostgresRepository;
 import github.ricemonger.utils.dtos.UbiUser;
 import github.ricemonger.utils.exceptions.UbiUserDoesntExistException;
@@ -11,10 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -22,102 +25,87 @@ import static org.mockito.Mockito.when;
 class UbiUserPostgresServiceTest {
 
     @MockBean
-    private UbiUserPostgresRepository ubiUserRepository;
-
-    @MockBean
-    private UbiUserPostgresMapper mapper;
+    private UbiUserPostgresRepository repository;
 
     @Autowired
-    private UbiUserPostgresService ubiUserPostgresService;
+    private UbiUserPostgresService service;
 
     @Test
-    public void save_should_map_and_and_repository() {
+    public void save_should_handle_to_repository(){
         TelegramLinkedUbiUserEntity entity = new TelegramLinkedUbiUserEntity();
-        UbiUser ubiUser = new UbiUser();
+        entity.setChatId("chatId");
 
-        when(mapper.mapUbiUserEntity(any())).thenReturn(entity);
+        UbiUser user = entity.toUbiUser();
 
-        ubiUserPostgresService.save(ubiUser);
+        service.save(user);
 
-        verify(ubiUserRepository).save(entity);
+        verify(repository).save(argThat(argument -> argument.getChatId().equals("chatId")));
     }
 
     @Test
-    public void deleteById_should_call_repository() {
-        ubiUserPostgresService.deleteById("chatId", "email");
+    public void deleteById_should_handle_to_repository(){
+        service.deleteById("chatId", "email");
 
-        verify(ubiUserRepository).deleteById(new TelegramLinkedUbiUserEntityId("chatId", "email"));
+        verify(repository).deleteById(new TelegramLinkedUbiUserEntityId("chatId", "email"));
     }
 
     @Test
-    public void deleteAllByChatId_should_call_repository() {
-        ubiUserPostgresService.deleteAllByChatId("chatId");
+    public void deleteAllByChatId_should_handle_to_repository(){
+        service.deleteAllByChatId("chatId");
 
-        verify(ubiUserRepository).deleteAllByChatId("chatId");
+        verify(repository).deleteAllByChatId("chatId");
     }
 
     @Test
-    public void getOwnedItemsIds_should_return_owned_items_from_repository() {
+    public void findById_should_throw_exception_when_user_doesnt_exist() {
+        when(repository.findById(any())).thenReturn(Optional.empty());
+
+        assertThrows(UbiUserDoesntExistException.class, () -> service.findById("chatId", "email"));
+    }
+
+    @Test
+    public void findById_should_handle_to_repository(){
         TelegramLinkedUbiUserEntity entity = new TelegramLinkedUbiUserEntity();
-        UbiUser ubiUser = new UbiUser();
-        ubiUser.setOwnedItemsIds(List.of("1", "2"));
+        entity.setChatId("chatId");
 
-        when(ubiUserRepository.findById(new TelegramLinkedUbiUserEntityId("chatId","email"))).thenReturn(java.util.Optional.of(entity));
-        when(mapper.mapUbiUser(entity)).thenReturn(ubiUser);
+        when(repository.findById(any())).thenReturn(Optional.of(entity));
 
-        assertEquals(List.of("1", "2"), ubiUserPostgresService.getOwnedItemsIds("chatId", "email"));
+        service.findById("chatId", "email");
+
+        verify(repository).findById(new TelegramLinkedUbiUserEntityId("chatId", "email"));
+
+        assertEquals(entity.toUbiUser(), service.findById("chatId", "email"));
     }
 
     @Test
-    public void getOwnedItemsIds_should_throw_if_ubi_user_doesnt_exist(){
-        when(ubiUserRepository.findById(new TelegramLinkedUbiUserEntityId("chatId","email"))).thenReturn(java.util.Optional.empty());
-
-        assertThrows(UbiUserDoesntExistException.class, () -> ubiUserPostgresService.getOwnedItemsIds("chatId", "email"));
-    }
-
-    @Test
-    public void findById_should_return_user_from_repository() {
+    public void findAllByChatId_should_handle_to_repository(){
+        List<TelegramLinkedUbiUserEntity> entities = new ArrayList<>();
         TelegramLinkedUbiUserEntity entity = new TelegramLinkedUbiUserEntity();
-        UbiUser ubiUser = new UbiUser();
+        entity.setChatId("chatId");
+        entities.add(entity);
 
-        when(ubiUserRepository.findById(new TelegramLinkedUbiUserEntityId("chatId","email"))).thenReturn(java.util.Optional.of(entity));
-        when(mapper.mapUbiUser(entity)).thenReturn(ubiUser);
+        when(repository.findAllByChatId("chatId")).thenReturn(entities);
 
-        UbiUser result = ubiUserPostgresService.findById("chatId", "email");
+        service.findAllByChatId("chatId");
 
-        assertEquals(ubiUser, result);
+        verify(repository).findAllByChatId("chatId");
+
+        assertEquals(service.findAllByChatId("chatId"), List.of(entity.toUbiUser()));
     }
 
     @Test
-    public void findById_should_throw_if_ubi_user_doesnt_exist(){
-        when(ubiUserRepository.findById(new TelegramLinkedUbiUserEntityId("chatId","email"))).thenReturn(java.util.Optional.empty());
-
-        assertThrows(UbiUserDoesntExistException.class, () -> ubiUserPostgresService.findById("chatId", "email"));
-    }
-
-    @Test
-    public void findAllByChatId_should_return_users_from_repository() {
+    public void findAll_should_handle_to_repository(){
+        List<TelegramLinkedUbiUserEntity> entities = new ArrayList<>();
         TelegramLinkedUbiUserEntity entity = new TelegramLinkedUbiUserEntity();
-        UbiUser ubiUser = new UbiUser();
+        entity.setChatId("chatId");
+        entities.add(entity);
 
-        List<TelegramLinkedUbiUserEntity> entities = List.of(entity);
+        when(repository.findAll()).thenReturn(entities);
 
-        when(ubiUserRepository.findAllByChatId("chatId")).thenReturn(List.of(entity));
-        when(mapper.mapUbiUsers(entities)).thenReturn(List.of(ubiUser));
+        service.findAll();
 
-        assertEquals(List.of(ubiUser), ubiUserPostgresService.findAllByChatId("chatId"));
-    }
+        verify(repository).findAll();
 
-    @Test
-    public void findAll_should_return_users_from_repository(){
-        TelegramLinkedUbiUserEntity entity = new TelegramLinkedUbiUserEntity();
-        UbiUser ubiUser = new UbiUser();
-
-        List<TelegramLinkedUbiUserEntity> entities = List.of(entity);
-
-        when(ubiUserRepository.findAll()).thenReturn(List.of(entity));
-        when(mapper.mapUbiUsers(entities)).thenReturn(List.of(ubiUser));
-
-        assertEquals(List.of(ubiUser), ubiUserPostgresService.findAll());
+        assertEquals(service.findAll(), List.of(entity.toUbiUser()));
     }
 }

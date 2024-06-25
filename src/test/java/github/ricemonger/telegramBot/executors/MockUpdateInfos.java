@@ -1,8 +1,8 @@
 package github.ricemonger.telegramBot.executors;
 
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.telegramBot.executors.InputGroup;
-import github.ricemonger.telegramBot.executors.InputState;
+import github.ricemonger.telegramBot.InputGroup;
+import github.ricemonger.telegramBot.InputState;
 
 public class MockUpdateInfos {
 

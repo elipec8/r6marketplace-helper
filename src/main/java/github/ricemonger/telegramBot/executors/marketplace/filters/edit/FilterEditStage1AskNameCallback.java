@@ -1,8 +1,8 @@
 package github.ricemonger.telegramBot.executors.marketplace.filters.edit;
 
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
-import github.ricemonger.telegramBot.executors.InputGroup;
-import github.ricemonger.telegramBot.executors.InputState;
+import github.ricemonger.telegramBot.InputGroup;
+import github.ricemonger.telegramBot.InputState;
 
 public class FilterEditStage1AskNameCallback extends AbstractBotCommandExecutor {
     @Override

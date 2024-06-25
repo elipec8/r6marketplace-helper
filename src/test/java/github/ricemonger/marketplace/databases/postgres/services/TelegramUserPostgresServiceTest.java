@@ -1,164 +1,241 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
+import github.ricemonger.marketplace.databases.postgres.entities.ItemFilterEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.TelegramUserEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.TelegramUserInputEntity;
-import github.ricemonger.marketplace.databases.postgres.mappers.TelegramUserPostgresMapper;
-import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserInputPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
-import github.ricemonger.telegramBot.executors.InputState;
+import github.ricemonger.utils.dtos.ItemFilter;
+import github.ricemonger.utils.dtos.ItemShowSettings;
+import github.ricemonger.utils.dtos.ItemShownFieldsSettings;
 import github.ricemonger.utils.dtos.TelegramUser;
-import github.ricemonger.utils.dtos.TelegramUserInput;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
-import github.ricemonger.utils.exceptions.TelegramUserInputDoesntExistException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class TelegramUserPostgresServiceTest {
-
     @MockBean
-    private TelegramUserPostgresRepository telegramUserPostgresRepository;
-
-    @MockBean
-    private TelegramUserInputPostgresRepository telegramUserInputPostgresRepository;
-
-    @MockBean
-    private TelegramUserPostgresMapper mapper;
+    private TelegramUserPostgresRepository repository;
 
     @Autowired
-    private TelegramUserPostgresService telegramUserPostgresService;
+    private TelegramUserPostgresService service;
 
     @Test
-    public void saveUser_should_map_and_save() {
-        TelegramUserEntity telegramUserEntity = new TelegramUserEntity();
-        when(mapper.mapTelegramUserEntity(any())).thenReturn(telegramUserEntity);
+    public void save_should_handle_to_repository() {
+        TelegramUser user = new TelegramUser(1L);
 
-        TelegramUser user = new TelegramUser();
+        service.save(user);
 
-        telegramUserPostgresService.saveUser(user);
-
-        verify(mapper).mapTelegramUserEntity(user);
-        verify(telegramUserPostgresRepository).save(telegramUserEntity);
+        verify(repository).save(argThat(entity -> entity.getChatId().equals(user.getChatId())));
     }
 
     @Test
-    public void userExistsById_should_return_be_same_to_repository_result() {
-        when(telegramUserPostgresRepository.existsById("1")).thenReturn(true);
-        when(telegramUserPostgresRepository.existsById("2")).thenReturn(false);
+    public void setItemShowFewItemsInMessageFlag_should_throw_if_doesnt_exist() {
+        TelegramUser user = new TelegramUser(1L);
 
-        assertTrue(telegramUserPostgresService.userExistsById("1"));
-        assertFalse(telegramUserPostgresService.userExistsById("2"));
+        when(repository.findById(user.getChatId())).thenReturn(Optional.empty());
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> service.setItemShowFewItemsInMessageFlag(user.getChatId(), true));
     }
 
     @Test
-    public void findUserById_should_map_and_return() {
-        TelegramUserEntity telegramUserEntity = new TelegramUserEntity();
-        when(telegramUserPostgresRepository.findById("1")).thenReturn(java.util.Optional.of(telegramUserEntity));
+    public void setItemShowFewItemsInMessageFlag_should_handle_to_repository_true() {
+        TelegramUser user = new TelegramUser(1L);
 
-        TelegramUser user = new TelegramUser();
-        when(mapper.mapTelegramUser(telegramUserEntity)).thenReturn(user);
+        TelegramUserEntity entity = new TelegramUserEntity(user);
 
-        assertEquals(user, telegramUserPostgresService.findUserById("1"));
+        when(repository.findById(user.getChatId())).thenReturn(Optional.of(entity));
+
+        service.setItemShowFewItemsInMessageFlag(user.getChatId(), true);
+
+        verify(repository).save(argThat(e -> e.getChatId().equals(user.getChatId()) && e.isItemShowFewInMessageFlag()));
     }
 
     @Test
-    public void findUserById_should_throw_if_not_found() {
-        when(telegramUserPostgresRepository.findById("1")).thenReturn(java.util.Optional.empty());
+    public void setItemShowFewItemsInMessageFlag_should_handle_to_repository_false() {
+        TelegramUser user = new TelegramUser(1L);
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserPostgresService.findUserById("1"));
+        TelegramUserEntity entity = new TelegramUserEntity(user);
+
+        when(repository.findById(user.getChatId())).thenReturn(Optional.of(entity));
+
+        service.setItemShowFewItemsInMessageFlag(user.getChatId(), false);
+
+        verify(repository).save(argThat(e -> e.getChatId().equals(user.getChatId()) && !e.isItemShowFewInMessageFlag()));
     }
 
     @Test
-    public void findAllUsers_should_map_and_return() {
-        TelegramUserEntity telegramUserEntity = new TelegramUserEntity();
-        when(telegramUserPostgresRepository.findAll()).thenReturn(java.util.List.of(telegramUserEntity));
+    public void setItemShowMessagesLimit_should_throw_if_doesnt_exist() {
+        TelegramUser user = new TelegramUser(1L);
 
-        TelegramUser user = new TelegramUser();
-        when(mapper.mapTelegramUsers(java.util.List.of(telegramUserEntity))).thenReturn(java.util.List.of(user));
+        when(repository.findById(user.getChatId())).thenReturn(Optional.empty());
 
-        assertEquals(java.util.List.of(user), telegramUserPostgresService.findAllUsers());
+        assertThrows(TelegramUserDoesntExistException.class, () -> service.setItemShowMessagesLimit(user.getChatId(), 1));
     }
 
     @Test
-    public void findAllUsers_should_return_empty_list_if_empty() {
-        when(telegramUserPostgresRepository.findAll()).thenReturn(java.util.List.of());
+    public void setItemShowMessagesLimit_should_handle_to_repository() {
+        TelegramUser user = new TelegramUser(1L);
 
-        assertEquals(java.util.List.of(), telegramUserPostgresService.findAllUsers());
+        TelegramUserEntity entity = new TelegramUserEntity(user);
+
+        when(repository.findById(user.getChatId())).thenReturn(Optional.of(entity));
+
+        service.setItemShowMessagesLimit(user.getChatId(), 1);
+
+        verify(repository).save(argThat(e -> e.getChatId().equals(user.getChatId()) && e.getItemShowMessagesLimit() == 1));
     }
 
     @Test
-    public void saveInput_should_map_and_save() {
-        when(mapper.mapTelegramUserInputEntity(any())).thenReturn(null);
+    public void setItemShowFieldsSettings_should_throw_if_doesnt_exist() {
+        TelegramUser user = new TelegramUser(1L);
 
-        TelegramUserInput input = new TelegramUserInput();
-        input.setChatId("1");
+        when(repository.findById(user.getChatId())).thenReturn(Optional.empty());
 
-        when(telegramUserPostgresRepository.findById("1")).thenReturn(java.util.Optional.of(new TelegramUserEntity()));
-
-        telegramUserPostgresService.saveInput(input);
-
-        verify(mapper).mapTelegramUserInputEntity(input);
-        verify(telegramUserInputPostgresRepository).save(null);
+        assertThrows(TelegramUserDoesntExistException.class, () -> service.setItemShowFieldsSettings(user.getChatId(), null));
     }
 
     @Test
-    public void saveInput_should_throw_if_user_doesnt_exist() {
-        TelegramUserInput input = new TelegramUserInput("1", InputState.BASE, "");
+    public void setItemShowFieldsSettings_should_handle_to_repository() {
+        TelegramUser user = new TelegramUser(1L);
 
-        when(telegramUserPostgresRepository.findById("1")).thenReturn(java.util.Optional.empty());
+        TelegramUserEntity entity = new TelegramUserEntity(user);
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserPostgresService.saveInput(input));
+        when(repository.findById(user.getChatId())).thenReturn(Optional.of(entity));
+
+        ItemShownFieldsSettings settings = new ItemShownFieldsSettings();
+        settings.setItemShowItemTypeFlag(true);
+        settings.setItemShowNameFlag(true);
+        settings.setItemShowMaxBuyPrice(true);
+        settings.setItemShowBuyOrdersCountFlag(true);
+        settings.setItemShowMinSellPriceFlag(true);
+        settings.setItemsShowSellOrdersCountFlag(true);
+        settings.setItemShowPictureFlag(true);
+
+        service.setItemShowFieldsSettings(user.getChatId(), settings);
+
+        verify(repository).save(argThat(e ->
+                e.getChatId().equals(user.getChatId()) &&
+                e.isItemShowItemTypeFlag() == settings.isItemShowItemTypeFlag() &&
+                e.isItemShowNameFlag() == settings.isItemShowNameFlag() &&
+                e.isItemShowMaxBuyPrice() == settings.isItemShowMaxBuyPrice() &&
+                e.isItemShowBuyOrdersCountFlag() == settings.isItemShowBuyOrdersCountFlag() &&
+                e.isItemShowMinSellPriceFlag() == settings.isItemShowMinSellPriceFlag() &&
+                e.isItemsShowSellOrdersCountFlag() == settings.isItemsShowSellOrdersCountFlag() &&
+                e.isItemShowPictureFlag() == settings.isItemShowPictureFlag()
+        ));
     }
 
     @Test
-    public void deleteAllInputsByChatId_should_call_repository() {
-        when(telegramUserPostgresRepository.findById("1")).thenReturn(java.util.Optional.of(new TelegramUserEntity()));
+    public void addItemShowAppliedFilter_should_throw_if_doesnt_exist() {
+        TelegramUser user = new TelegramUser(1L);
 
-        telegramUserPostgresService.deleteAllInputsByChatId("1");
+        when(repository.findById(user.getChatId())).thenReturn(Optional.empty());
 
-        verify(telegramUserInputPostgresRepository).deleteAllByChatId("1");
+        assertThrows(TelegramUserDoesntExistException.class, () -> service.addItemShowAppliedFilter(user.getChatId(), null));
     }
 
     @Test
-    public void deleteAllInputsByChatId_should_throw_if_user_doesnt_exist() {
-        when(telegramUserPostgresRepository.findById("1")).thenReturn(java.util.Optional.empty());
+    public void addItemShowAppliedFilter_should_save_changed_filter() {
+        TelegramUser user = new TelegramUser(1L);
+        TelegramUserEntity entity = new TelegramUserEntity(user);
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserPostgresService.deleteAllInputsByChatId("1"));
+        when(repository.findById(user.getChatId())).thenReturn(Optional.of(entity));
+
+        ItemFilter filter = new ItemFilter();
+        filter.setName("1");
+
+        service.addItemShowAppliedFilter("1", filter);
+
+        verify(repository).save(argThat(e -> e.getChatId().equals(user.getChatId()) && e.getItemShowAppliedFilters().size() == 1 && e.getItemShowAppliedFilters().get(0).getName().equals(
+                "1")));
     }
 
     @Test
-    public void findInputById_should_map_and_return() {
-        TelegramUserInput input = new TelegramUserInput();
-        TelegramUserInputEntity entity = new TelegramUserInputEntity();
-        when(telegramUserInputPostgresRepository.findById(any())).thenReturn(Optional.of(entity));
-        when(mapper.mapTelegramUserInput(any())).thenReturn(input);
-        when(telegramUserPostgresRepository.findById("1")).thenReturn(java.util.Optional.of(new TelegramUserEntity()));
+    public void removeItemShowAppliedFilter_should_throw_if_doesnt_exist() {
+        TelegramUser user = new TelegramUser(1L);
 
-        assertEquals(input, telegramUserPostgresService.findInputById("1", null));
+        when(repository.findById(user.getChatId())).thenReturn(Optional.empty());
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> service.removeItemShowAppliedFilter(user.getChatId(), null));
     }
 
     @Test
-    public void findInputById_should_throw_if_no_input() {
-        when(telegramUserPostgresRepository.findById("1")).thenReturn(java.util.Optional.of(new TelegramUserEntity()));
+    public void removeItemShowAppliedFilter_should_save_changed_filter() {
+        ItemFilter filter = new ItemFilter();
+        filter.setName("1");
 
-        when(telegramUserInputPostgresRepository.findById(any())).thenReturn(java.util.Optional.empty());
+        TelegramUser user = new TelegramUser(1L);
+        TelegramUserEntity entity = new TelegramUserEntity(user);
 
-        assertThrows(TelegramUserInputDoesntExistException.class, () -> telegramUserPostgresService.findInputById("1", InputState.BASE));
+        List<ItemFilterEntity> filters = new ArrayList<>();
+        filters.add(new ItemFilterEntity(filter));
+
+        entity.setItemShowAppliedFilters(filters);
+
+        when(repository.findById(user.getChatId())).thenReturn(Optional.of(entity));
+
+        service.removeItemShowAppliedFilter("1", filter.getName());
+
+        verify(repository).save(argThat(e -> e.getChatId().equals(user.getChatId()) && e.getItemShowAppliedFilters().isEmpty()));
     }
 
     @Test
-    public void findInputById_should_throw_if_user_doesnt_exist() {
-        when(telegramUserPostgresRepository.findById("1")).thenReturn(java.util.Optional.empty());
+    public void existsById_should_handle_to_repository(){
+        when(repository.existsById(any())).thenReturn(true);
+        assertTrue(service.existsById("1"));
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserPostgresService.findInputById("1", InputState.BASE));
+        when(repository.existsById(any())).thenReturn(false);
+        assertFalse(service.existsById("1"));
+    }
+
+    @Test
+    public void findUserById_should_throw_if_doesnt_exist(){
+        when(repository.findById(any())).thenReturn(Optional.empty());
+        assertThrows(TelegramUserDoesntExistException.class, () -> service.findUserById("1"));
+    }
+
+    @Test
+    public void findUserById_should_return_(){
+        TelegramUser user = new TelegramUser(1L);
+        when(repository.findById(any())).thenReturn(Optional.of(new TelegramUserEntity(user)));
+        assertEquals(user, service.findUserById("1"));
+    }
+
+    @Test
+    public void findUserSettingsById_should_throw_if_doesnt_exist(){
+        when(repository.findById(any())).thenReturn(Optional.empty());
+        assertThrows(TelegramUserDoesntExistException.class, () -> service.findUserSettingsById("1"));
+    }
+
+    @Test
+    public void findUserSettingsById_should_return_settings(){
+
+        ItemShowSettings settings = new ItemShowSettings();
+        settings.setItemShowPictureFlag(true);
+
+        TelegramUser user = new TelegramUser(1L);
+        user.setItemShowPictureFlag(true);
+        when(repository.findById(any())).thenReturn(Optional.of(new TelegramUserEntity(user)));
+        assertEquals(settings.isItemShowPictureFlag(), service.findUserSettingsById("1").isItemShowPictureFlag());
+    }
+
+    @Test
+    public void findAllUsersUsers_should_handle_to_repository(){
+        when(repository.findAll()).thenReturn(List.of(new TelegramUserEntity(), new TelegramUserEntity()));
+
+        assertEquals(2, service.findAllUsers().size());
+        verify(repository).findAll();
     }
 }

@@ -1,9 +1,7 @@
 package github.ricemonger.utils.dtos;
 
-import github.ricemonger.marketplace.databases.postgres.entities.ItemFilterEntity;
-import github.ricemonger.telegramBot.executors.InputGroup;
-import github.ricemonger.telegramBot.executors.InputState;
-import jakarta.persistence.OneToMany;
+import github.ricemonger.telegramBot.InputGroup;
+import github.ricemonger.telegramBot.InputState;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,8 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 public class TelegramUser {
     private String chatId;
+
     private InputState inputState;
     private InputGroup inputGroup;
+
     private boolean publicNotificationsEnabledFlag;
 
     private Integer itemShowMessagesLimit;

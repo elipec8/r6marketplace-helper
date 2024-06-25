@@ -11,8 +11,6 @@ public interface UbiUserDatabaseService {
 
     void deleteAllByChatId(String chatId);
 
-    Collection<String> getOwnedItemsIds(String chatId, String email);
-
     UbiUser findById(String chatId, String email);
 
     Collection<UbiUser> findAllByChatId(String chatId);

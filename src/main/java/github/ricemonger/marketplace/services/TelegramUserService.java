@@ -2,8 +2,8 @@ package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.abstractions.TelegramUserDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserInputDatabaseService;
-import github.ricemonger.telegramBot.executors.InputGroup;
-import github.ricemonger.telegramBot.executors.InputState;
+import github.ricemonger.telegramBot.InputGroup;
+import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.*;
 import github.ricemonger.utils.exceptions.*;
 import jakarta.transaction.Transactional;
@@ -23,30 +23,43 @@ public class TelegramUserService {
 
     private final TelegramUserInputDatabaseService inputService;
 
-    private final UbiUserService credentialsService;
+    private final TelegramLinkedUbiUserService credentialsService;
 
     public boolean isTelegramUserRegistered(Long chatId) {
-        return userService.userExistsById(String.valueOf(chatId));
+        return userService.existsById(String.valueOf(chatId));
     }
 
-    public void registerTelegramUser(Long chatId) throws TelegramUserAlreadyExistsException {
-        if (userService.userExistsById(String.valueOf(chatId))) {
+    public void registerTelegramUserWithDefaultSettings(Long chatId) throws TelegramUserAlreadyExistsException {
+        if (userService.existsById(String.valueOf(chatId))) {
             throw new TelegramUserAlreadyExistsException();
         } else {
-            userService.saveUser(new TelegramUser(chatId));
+            TelegramUser telegramUser = new TelegramUser(chatId);
+            telegramUser.setInputState(InputState.BASE);
+            telegramUser.setInputGroup(InputGroup.BASE);
+            telegramUser.setPublicNotificationsEnabledFlag(true);
+            telegramUser.setItemShowMessagesLimit(50);
+            telegramUser.setItemShowFewInMessageFlag(false);
+            telegramUser.setItemShowNameFlag(true);
+            telegramUser.setItemShowItemTypeFlag(true);
+            telegramUser.setItemShowMaxBuyPrice(true);
+            telegramUser.setItemShowBuyOrdersCountFlag(true);
+            telegramUser.setItemShowMinSellPriceFlag(true);
+            telegramUser.setItemsShowSellOrdersCountFlag(true);
+            telegramUser.setItemShowPictureFlag(true);
+            userService.save(telegramUser);
         }
     }
 
     public void setUserNextInputState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException {
         TelegramUser telegramUser = getTelegramUserOrThrow(chatId);
         telegramUser.setInputState(inputState);
-        userService.saveUser(telegramUser);
+        userService.save(telegramUser);
     }
 
     public void setUserNextInputGroup(Long chatId, InputGroup inputGroup) throws TelegramUserDoesntExistException {
         TelegramUser telegramUser = getTelegramUserOrThrow(chatId);
         telegramUser.setInputGroup(inputGroup);
-        userService.saveUser(telegramUser);
+        userService.save(telegramUser);
     }
 
     public InputState getUserInputState(Long chatId) throws TelegramUserDoesntExistException {
@@ -59,25 +72,25 @@ public class TelegramUserService {
         return telegramUser.getInputGroup();
     }
 
+    public void saveUserInput(Long chatId, InputState inputState, String userInput) throws TelegramUserDoesntExistException {
+        getTelegramUserOrThrow(chatId);
+        inputService.save(String.valueOf(chatId), inputState, userInput);
+    }
+
     public String getUserInputByState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         return getInputValueByState(chatId, inputState);
     }
 
-    public void saveUserInput(Long chatId, InputState inputState, String userInput) throws TelegramUserDoesntExistException {
-        getTelegramUserOrThrow(chatId);
-        inputService.saveInput(String.valueOf(chatId), inputState, userInput);
-    }
-
     public Collection<TelegramUserInput> getAllUserInputs(Long chatId) throws TelegramUserDoesntExistException {
         getTelegramUserOrThrow(chatId);
-        return inputService.findAllInputsByChatId(String.valueOf(chatId));
+        return inputService.findAllByChatId(String.valueOf(chatId));
     }
 
     @Transactional
     public void clearUserInputs(Long chatId) throws TelegramUserDoesntExistException {
         getTelegramUserOrThrow(chatId);
 
-        inputService.deleteAllInputsByChatId(String.valueOf(chatId));
+        inputService.deleteAllByChatId(String.valueOf(chatId));
     }
 
     public void addCredentialsIfValidOrThrowException(Long chatId, String email, String password)
@@ -96,7 +109,7 @@ public class TelegramUserService {
 
         credentialsService.deleteByLinkedTelegramUserChatIdAndEmail(String.valueOf(chatId), emailToRemove);
 
-        inputService.deleteAllInputsByChatId(String.valueOf(chatId));
+        inputService.deleteAllByChatId(String.valueOf(chatId));
     }
 
     public void removeAllCredentials(Long chatId) throws TelegramUserDoesntExistException {
@@ -122,48 +135,38 @@ public class TelegramUserService {
                 .toList();
     }
 
+    public TelegramUser getTelegramUser(Long chatId) throws TelegramUserDoesntExistException {
+        return getTelegramUserOrThrow(chatId);
+    }
+
     public ItemShowSettings getItemShowSettings(Long chatId) {
         return userService.findUserSettingsById(String.valueOf(chatId));
     }
 
-    public int getItemOffsetByUserInput(Long chatId) {
+    public int getItemOffsetByUserInput(Long chatId) throws TelegramUserDoesntExistException{
         try {
-            return Integer.parseInt(inputService.findInputById(String.valueOf(chatId), InputState.ITEMS_SHOW_OFFSET).getValue());
+            return Integer.parseInt(inputService.findById(String.valueOf(chatId), InputState.ITEMS_SHOW_OFFSET).getValue());
         } catch (TelegramUserInputDoesntExistException | NumberFormatException e) {
             return 0;
         }
     }
 
-    public TelegramUser getTelegramUser(Long chatId) throws TelegramUserDoesntExistException {
-        return getTelegramUserOrThrow(chatId);
-    }
-
-    private String getInputValueByState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
-        getTelegramUserOrThrow(chatId);
-
-        return inputService.findInputById(String.valueOf(chatId), inputState).getValue();
-    }
-
-    private TelegramUser getTelegramUserOrThrow(Long chatId) throws TelegramUserDoesntExistException {
-        return userService.findUserById(String.valueOf(chatId));
-    }
-
-    public void setItemShowFewItemsInMessageFlag(Long chatId, boolean flag) {
+    public void setItemShowFewItemsInMessageFlag(Long chatId, boolean flag) throws TelegramUserDoesntExistException {
         userService.setItemShowFewItemsInMessageFlag(String.valueOf(chatId), flag);
     }
 
-    public void setItemShowMessagesLimit(Long chatId, Integer limit) {
+    public void setItemShowMessagesLimit(Long chatId, Integer limit) throws TelegramUserDoesntExistException{
         userService.setItemShowMessagesLimit(String.valueOf(chatId), limit);
     }
 
-    public void setItemShowSettingsByUserInput(Long chatId, String trueValue, String falseValue) {
-        Boolean nameFlag = parseShowSettingsOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_NAME), trueValue, falseValue);
-        Boolean itemTypeFlag = parseShowSettingsOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_TYPE), trueValue, falseValue);
-        Boolean maxBuyPriceFlag = parseShowSettingsOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_MAX_BUY_PRICE), trueValue, falseValue);
-        Boolean buyOrdersCountFlag = parseShowSettingsOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_BUY_ORDERS_COUNT), trueValue, falseValue);
-        Boolean minSellPriceFlag = parseShowSettingsOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_MIN_SELL_PRICE), trueValue, falseValue);
-        Boolean sellOrdersCountFlag = parseShowSettingsOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_SELL_ORDERS_COUNT), trueValue, falseValue);
-        Boolean pictureFlag = parseShowSettingsOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE), trueValue, falseValue);
+    public void setItemShowSettingsByUserInput(Long chatId, String trueValue, String falseValue) throws TelegramUserDoesntExistException,TelegramUserInputDoesntExistException {
+        boolean nameFlag = parseBooleanOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_NAME), falseValue);
+        boolean itemTypeFlag = parseBooleanOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_TYPE), falseValue);
+        boolean maxBuyPriceFlag = parseBooleanOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_MAX_BUY_PRICE), falseValue);
+        boolean buyOrdersCountFlag = parseBooleanOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_BUY_ORDERS_COUNT), falseValue);
+        boolean minSellPriceFlag = parseBooleanOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_MIN_SELL_PRICE), falseValue);
+        boolean sellOrdersCountFlag = parseBooleanOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_SELL_ORDERS_COUNT), falseValue);
+        boolean pictureFlag = parseBooleanOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE), falseValue);
 
         ItemShownFieldsSettings settings = new ItemShownFieldsSettings(
                 nameFlag,
@@ -174,18 +177,28 @@ public class TelegramUserService {
                 sellOrdersCountFlag,
                 pictureFlag);
 
-        userService.setItemShowSettings(String.valueOf(chatId), settings);
+        userService.setItemShowFieldsSettings(String.valueOf(chatId), settings);
     }
 
-    private boolean parseShowSettingsOrTrue(String value, String trueValue, String falseValue) {
-        return !falseValue.equalsIgnoreCase(value);
+    public void addItemShowAppliedFilter(Long chatId, ItemFilter filter) {
+        userService.addItemShowAppliedFilter(String.valueOf(chatId), filter);
     }
 
     public void removeItemShowAppliedFilter(Long chatId, String filterName) {
         userService.removeItemShowAppliedFilter(String.valueOf(chatId), filterName);
     }
 
-    public void addItemShowAppliedFilter(Long chatId, ItemFilter filter) {
-        userService.addItemShowAppliedFilter(String.valueOf(chatId), filter);
+    private boolean parseBooleanOrTrue(String value, String falseValue) {
+        return !falseValue.equalsIgnoreCase(value);
+    }
+
+    private String getInputValueByState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
+        getTelegramUserOrThrow(chatId);
+
+        return inputService.findById(String.valueOf(chatId), inputState).getValue();
+    }
+
+    private TelegramUser getTelegramUserOrThrow(Long chatId) throws TelegramUserDoesntExistException {
+        return userService.findUserById(String.valueOf(chatId));
     }
 }

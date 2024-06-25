@@ -1,6 +1,6 @@
 package github.ricemonger.telegramBot.executors.marketplace.items.settings.itemsInMessage;
 
-import github.ricemonger.telegramBot.client.Callbacks;
+import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 
 public class ItemsShowSettingsChangeItemsInMessageCallback extends AbstractBotCommandExecutor {

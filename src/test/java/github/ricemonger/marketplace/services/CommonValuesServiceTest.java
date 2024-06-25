@@ -1,6 +1,7 @@
 package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.abstractions.CommonValuesDatabaseService;
+import github.ricemonger.telegramBot.TelegramBotConfiguration;
 import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.utils.dtos.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.dtos.ConfigTrades;
@@ -24,6 +25,9 @@ class CommonValuesServiceTest {
 
     @MockBean
     private UbiServiceConfiguration ubiServiceConfiguration;
+
+    @MockBean
+    private TelegramBotConfiguration telegramBotConfiguration;
 
     @Autowired
     private CommonValuesService commonValuesService;
@@ -226,5 +230,37 @@ class CommonValuesServiceTest {
         when(ubiServiceConfiguration.getDateFormat()).thenReturn(dateFormat);
 
         assertEquals(dateFormat, commonValuesService.getDateFormat());
+    }
+
+    @Test
+    public void getMinimumMarketplacePrice_should_handle_to_service() {
+        Integer minPrice = 10;
+        when(ubiServiceConfiguration.getMinLegendaryPrice()).thenReturn(minPrice);
+
+        assertEquals(minPrice, commonValuesService.getMinimumMarketplacePrice());
+    }
+
+    @Test
+    public void getMaximumMarketplacePrice_should_handle_to_service() {
+        Integer maxPrice = 10;
+        when(ubiServiceConfiguration.getMaxLegendaryPrice()).thenReturn(maxPrice);
+
+        assertEquals(maxPrice, commonValuesService.getMaximumMarketplacePrice());
+    }
+
+    @Test
+    public void getMaximumTelegramMessageHeight_should_handle_to_service() {
+        Integer messageHeight = 10;
+        when(telegramBotConfiguration.getMessageHeight()).thenReturn(messageHeight);
+
+        assertEquals(messageHeight, commonValuesService.getMaximumTelegramMessageHeight());
+    }
+
+    @Test
+    public void getMaximumTelegramMessageLimit_should_handle_to_service() {
+        Integer messageLimit = 10;
+        when(telegramBotConfiguration.getMessageLimit()).thenReturn(messageLimit);
+
+        assertEquals(messageLimit, commonValuesService.getMaximumTelegramMessageLimit());
     }
 }

@@ -1,9 +1,9 @@
 package github.ricemonger.telegramBot.executors.marketplace.items.settings.shownFields;
 
-import github.ricemonger.telegramBot.client.Callbacks;
+import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
-import github.ricemonger.telegramBot.executors.InputGroup;
-import github.ricemonger.telegramBot.executors.InputState;
+import github.ricemonger.telegramBot.InputGroup;
+import github.ricemonger.telegramBot.InputState;
 
 public class ItemsShowSettingsChangeShownFieldsStage1AskNameFlagCallback extends AbstractBotCommandExecutor {
     @Override

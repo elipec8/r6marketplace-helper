@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
-import github.ricemonger.marketplace.services.UbiUserService;
+import github.ricemonger.marketplace.services.TelegramLinkedUbiUserService;
 import github.ricemonger.telegramBot.client.TelegramBotClientService;
 import github.ricemonger.utils.dtos.UbiUser;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 class ScheduledUbiUsersReauthorizationTest {
 
     @MockBean
-    private UbiUserService ubiUserService;
+    private TelegramLinkedUbiUserService telegramLinkedUbiUserService;
 
     @MockBean
     private TelegramBotClientService telegramBotClientService;
@@ -34,11 +34,11 @@ class ScheduledUbiUsersReauthorizationTest {
         unauthorizedUser.setEmail("email");
         unauthorizedUsers.add(unauthorizedUser);
 
-        when(ubiUserService.reauthorizeAllUbiUsersAndGetUnauthorizedList()).thenReturn(unauthorizedUsers);
+        when(telegramLinkedUbiUserService.reauthorizeAllUbiUsersAndGetUnauthorizedList()).thenReturn(unauthorizedUsers);
 
         scheduledUbiUsersReauthorization.reauthorizeUbiUsersAndNotifyAboutFailures();
 
-        verify(ubiUserService).reauthorizeAllUbiUsersAndGetUnauthorizedList();
+        verify(telegramLinkedUbiUserService).reauthorizeAllUbiUsersAndGetUnauthorizedList();
 
         verify(telegramBotClientService).notifyUserAboutUbiAuthorizationFailure("1", "email");
     }

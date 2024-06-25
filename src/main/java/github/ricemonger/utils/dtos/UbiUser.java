@@ -14,6 +14,7 @@ public class UbiUser {
 
     private String email;
     private String encodedPassword;
+
     private String ubiProfileId;
     private String ubiSessionId;
     private String ubiSpaceId;
