@@ -1,0 +1,36 @@
+package github.ricemonger.marketplace.databases.postgres.entities.user;
+
+import github.ricemonger.utils.enums.TradeManagerTradeType;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Entity(name = "trade_manager_by_item_id")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@IdClass(TradeManagerByItemFiltersEntityId.class)
+public class TradeManagerByItemIdEntity {
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private UserEntity user;
+
+    @Id
+    private String itemId;
+
+    private TradeManagerTradeType tradeType;
+
+    private Integer sellBoundaryPrice;
+    private Integer sellStartingPrice;
+
+    private Integer buyBoundaryPrice;
+    private Integer buyStartingPrice;
+
+    private Integer priority;
+}

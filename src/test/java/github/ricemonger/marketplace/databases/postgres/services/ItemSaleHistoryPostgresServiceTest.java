@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.entities.ItemSaleHistoryEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.item.ItemSaleHistoryEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemSaleHistoryPostgresRepository;
 import github.ricemonger.utils.dtos.ItemSaleHistory;
 import org.junit.jupiter.api.Test;

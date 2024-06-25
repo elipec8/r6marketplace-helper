@@ -13,8 +13,8 @@ public class ItemFilterService {
 
     private final ItemFilterDatabaseService itemFilterDatabaseService;
 
-    public void saveItemFilter(ItemFilter itemFilter) {
-        itemFilterDatabaseService.save(itemFilter);
+    public void saveItemFilter(String chatId, ItemFilter itemFilter) {
+        itemFilterDatabaseService.save(chatId,itemFilter);
     }
 
     public void deleteItemFilterById(String chatId, String name) {
@@ -26,6 +26,6 @@ public class ItemFilterService {
     }
 
     public Collection<String> getAllItemFilterNamesForUser(String chatId) {
-        return itemFilterDatabaseService.findAllByChatId(chatId).stream().map(ItemFilter::getName).toList();
+        return itemFilterDatabaseService.findAllByUserId(chatId).stream().map(ItemFilter::getName).toList();
     }
 }

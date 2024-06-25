@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.entities.ItemFilterEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.TelegramUserEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.user.ItemFilterEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.utils.dtos.ItemFilter;
 import github.ricemonger.utils.dtos.ItemShowSettings;

@@ -3,7 +3,7 @@ package github.ricemonger.marketplace.databases.postgres.services;
 import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUbiUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedUbiUserEntityId;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiUserPostgresRepository;
-import github.ricemonger.utils.dtos.UbiUser;
+import github.ricemonger.utils.dtos.UbiAccount;
 import github.ricemonger.utils.exceptions.UbiUserDoesntExistException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,20 +22,20 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class UbiUserPostgresServiceTest {
+class TelegramUbiAccountPostgresServiceTest {
 
     @MockBean
     private UbiUserPostgresRepository repository;
 
     @Autowired
-    private UbiUserPostgresService service;
+    private TelegramUbiAccountPostgresService service;
 
     @Test
     public void save_should_handle_to_repository(){
         TelegramLinkedUbiUserEntity entity = new TelegramLinkedUbiUserEntity();
         entity.setChatId("chatId");
 
-        UbiUser user = entity.toUbiUser();
+        UbiAccount user = entity.toUbiUser();
 
         service.save(user);
 

@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.databases.postgres.entities;
+package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TelegramLinkedTradeManagerByItemIdEntityId {
-    private String chatId;
+public class ItemResaleLockEntityId {
+    private Long userId;
     private String itemId;
 }

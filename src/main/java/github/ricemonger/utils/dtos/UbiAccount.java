@@ -9,9 +9,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UbiUser {
-    private String chatId;
-
+public class UbiAccount {
     private String email;
     private String encodedPassword;
 

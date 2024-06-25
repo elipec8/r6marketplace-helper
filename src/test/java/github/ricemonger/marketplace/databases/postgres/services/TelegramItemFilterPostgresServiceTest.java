@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.entities.ItemFilterEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.ItemFilterEntityId;
+import github.ricemonger.marketplace.databases.postgres.entities.user.ItemFilterEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.user.ItemFilterEntityId;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemFilterPostgresRepository;
 import github.ricemonger.utils.dtos.ItemFilter;
 import github.ricemonger.utils.exceptions.ItemFilterDoesntExistException;
@@ -21,11 +21,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class ItemFilterPostgresServiceTest {
+class TelegramItemFilterPostgresServiceTest {
     @MockBean
     private ItemFilterPostgresRepository repository;
     @Autowired
-    private ItemFilterPostgresService service;
+    private TelegramItemFilterPostgresService service;
 
     @Test
     public void save_should_handle_to_repository() {
@@ -79,8 +79,8 @@ class ItemFilterPostgresServiceTest {
     }
 
     @Test
-    public void findAllByChatId_should_handle_to_repository() {
-        String chatId = "chatId";
+    public void findAllByUserId_should_handle_to_repository() {
+        Long chatId = "chatId";
 
         List<ItemFilterEntity> entities = new ArrayList<>();
         entities.add(new ItemFilterEntity());
@@ -90,7 +90,7 @@ class ItemFilterPostgresServiceTest {
 
         when(repository.findAllByChatId(chatId)).thenReturn(entities);
 
-        Collection<ItemFilter> result = service.findAllByChatId(chatId);
+        Collection<ItemFilter> result = service.findAllByUserId(chatId);
 
         verify(repository).findAllByChatId(chatId);
 

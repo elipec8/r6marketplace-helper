@@ -295,10 +295,10 @@ class TelegramUserServiceTest {
         TelegramUser telegramUser = new TelegramUser(123L);
         when(userService.findUserById("123")).thenReturn(telegramUser);
 
-        List<UbiUser> list = new ArrayList<>();
-        UbiUser user1 = new UbiUser();
+        List<UbiAccount> list = new ArrayList<>();
+        UbiAccount user1 = new UbiAccount();
         user1.setEmail("email1");
-        UbiUser user2 = new UbiUser();
+        UbiAccount user2 = new UbiAccount();
         user2.setEmail("email2");
         list.add(user1);
         list.add(user2);

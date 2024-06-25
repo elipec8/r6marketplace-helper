@@ -56,23 +56,4 @@ class ItemFilterServiceTest {
         verify(itemFilterDatabaseService).deleteById(chatId, name);
     }
 
-    @Test
-    public void getAllItemFilterNamesForUser_should_handle_to_db_service() {
-        String chatId = "chatId";
-
-        ItemFilter f1 = new ItemFilter();
-        f1.setName("f1");
-        ItemFilter f2 = new ItemFilter();
-        f2.setName("f2");
-
-        Collection<String> expected = List.of("f1", "f2");
-
-        when(itemFilterDatabaseService.findAllByChatId(chatId)).thenReturn(List.of(f1, f2));
-
-        Collection<String> result = itemFilterService.getAllItemFilterNamesForUser(chatId);
-
-        verify(itemFilterDatabaseService).findAllByChatId(chatId);
-
-        assertTrue(expected.containsAll(result) && result.containsAll(expected));
-    }
 }

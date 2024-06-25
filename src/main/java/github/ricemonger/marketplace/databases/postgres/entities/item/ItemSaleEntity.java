@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.databases.postgres.entities;
+package github.ricemonger.marketplace.databases.postgres.entities.item;
 
 import github.ricemonger.utils.dtos.ItemSale;
 import github.ricemonger.utils.dtos.SoldItemDetails;

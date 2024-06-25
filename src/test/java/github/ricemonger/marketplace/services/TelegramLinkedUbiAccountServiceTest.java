@@ -1,9 +1,9 @@
 package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationService;
-import github.ricemonger.marketplace.services.abstractions.UbiUserDatabaseService;
+import github.ricemonger.marketplace.services.abstractions.UbiAccountDatabaseService;
 import github.ricemonger.utils.dtos.AuthorizationDTO;
-import github.ricemonger.utils.dtos.UbiUser;
+import github.ricemonger.utils.dtos.UbiAccount;
 import github.ricemonger.utils.exceptions.UbiUserAuthorizationClientErrorException;
 import github.ricemonger.utils.exceptions.UbiUserAuthorizationServerErrorException;
 import org.junit.jupiter.api.Test;
@@ -21,10 +21,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class TelegramLinkedUbiUserServiceTest {
+class TelegramLinkedUbiAccountServiceTest {
 
     @MockBean
-    private UbiUserDatabaseService ubiUserDatabaseService;
+    private UbiAccountDatabaseService ubiAccountDatabaseService;
 
     @MockBean
     private AuthorizationService authorizationService;
@@ -36,11 +36,11 @@ class TelegramLinkedUbiUserServiceTest {
     public void findAllByLinkedTelegramUserChatId_should_return_all_users_by_chat_id() {
         String chatId = "chatId";
 
-        List<UbiUser> users = List.of(new UbiUser(), new UbiUser());
+        List<UbiAccount> users = List.of(new UbiAccount(), new UbiAccount());
 
-        when(ubiUserDatabaseService.findAllByChatId(chatId)).thenReturn(users);
+        when(ubiAccountDatabaseService.findAllByChatId(chatId)).thenReturn(users);
 
-        List<UbiUser> result = new ArrayList<>(telegramLinkedUbiUserService.findAllByLinkedTelegramUserChatId(chatId));
+        List<UbiAccount> result = new ArrayList<>(telegramLinkedUbiUserService.findAllByLinkedTelegramUserChatId(chatId));
 
         assertTrue(users.containsAll(result) && result.containsAll(users));
     }
@@ -51,7 +51,7 @@ class TelegramLinkedUbiUserServiceTest {
 
         telegramLinkedUbiUserService.deleteAllByLinkedTelegramUserChatId(chatId);
 
-        verify(ubiUserDatabaseService).deleteAllByChatId(chatId);
+        verify(ubiAccountDatabaseService).deleteAllByChatId(chatId);
     }
 
     @Test
@@ -61,7 +61,7 @@ class TelegramLinkedUbiUserServiceTest {
 
         telegramLinkedUbiUserService.deleteByLinkedTelegramUserChatIdAndEmail(chatId, email);
 
-        verify(ubiUserDatabaseService).deleteById(chatId, email);
+        verify(ubiAccountDatabaseService).deleteById(chatId, email);
     }
 
     @Test
@@ -74,7 +74,7 @@ class TelegramLinkedUbiUserServiceTest {
         telegramLinkedUbiUserService.authorizeAndSaveUser(chatId, email, password);
 
         verify(authorizationService).authorizeAndGetDTO(email, password);
-        verify(ubiUserDatabaseService).save(any());
+        verify(ubiAccountDatabaseService).save(any());
     }
 
     @Test
@@ -102,23 +102,23 @@ class TelegramLinkedUbiUserServiceTest {
     @Test
     public void reauthorizeAllUbiUsersAndGetUnauthorizedList_should_reauthorize_all_users_and_return_unauthorized() {
 
-        UbiUser user1 = new UbiUser();
+        UbiAccount user1 = new UbiAccount();
         user1.setEmail("email1");
         user1.setEncodedPassword("encodedPassword1");
-        UbiUser user2 = new UbiUser();
+        UbiAccount user2 = new UbiAccount();
         user2.setEmail("email2");
         user2.setEncodedPassword("encodedPassword2");
 
-        List<UbiUser> users = List.of(user1, user2);
+        List<UbiAccount> users = List.of(user1, user2);
 
-        when(ubiUserDatabaseService.findAll()).thenReturn(users);
+        when(ubiAccountDatabaseService.findAll()).thenReturn(users);
 
-        List<UbiUser> unauthorizedUsers = List.of(users.get(0));
+        List<UbiAccount> unauthorizedUsers = List.of(users.get(0));
 
         when(authorizationService.authorizeAndGetDtoForEncodedPassword("email1", "encodedPassword1")).thenThrow(new UbiUserAuthorizationClientErrorException());
         when(authorizationService.authorizeAndGetDtoForEncodedPassword("email2", "encodedPassword2")).thenReturn(new AuthorizationDTO());
 
-        List<UbiUser> result = new ArrayList<>(telegramLinkedUbiUserService.reauthorizeAllUbiUsersAndGetUnauthorizedList());
+        List<UbiAccount> result = new ArrayList<>(telegramLinkedUbiUserService.reauthorizeAllUbiUsersAndGetUnauthorizedList());
 
         assertTrue(unauthorizedUsers.containsAll(result) && result.containsAll(unauthorizedUsers));
     }

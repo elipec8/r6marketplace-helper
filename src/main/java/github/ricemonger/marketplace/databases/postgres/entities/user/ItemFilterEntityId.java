@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.databases.postgres.entities;
+package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemFilterEntityId {
-    private String chatId;
+    private Long userId;
     private String name;
 }

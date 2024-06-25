@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.entities.TagEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.TagPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.TagDatabaseService;
 import github.ricemonger.utils.dtos.Tag;

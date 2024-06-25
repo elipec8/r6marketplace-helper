@@ -121,10 +121,10 @@ public class TelegramUserService {
     public List<String> getCredentialsEmailsList(Long chatId) throws TelegramUserDoesntExistException {
         getTelegramUserOrThrow(chatId);
 
-        Collection<UbiUser> credentialsList = credentialsService.findAllByLinkedTelegramUserChatId(String.valueOf(chatId));
+        Collection<UbiAccount> credentialsList = credentialsService.findAllByLinkedTelegramUserChatId(String.valueOf(chatId));
 
         return credentialsList.stream()
-                .map(UbiUser::getEmail)
+                .map(UbiAccount::getEmail)
                 .toList();
     }
 

@@ -2,7 +2,8 @@ package github.ricemonger.marketplace.scheduled_tasks;
 
 import github.ricemonger.marketplace.services.TelegramLinkedUbiUserService;
 import github.ricemonger.telegramBot.client.TelegramBotClientService;
-import github.ricemonger.utils.dtos.UbiUser;
+import github.ricemonger.utils.dtos.UbiAccount;
+import github.ricemonger.utils.dtos.UbiAccountWithTelegram;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -20,9 +21,9 @@ public class ScheduledUbiUsersReauthorization {
     @Scheduled(fixedRate = 150 * 60 * 1000, initialDelay = 30 * 1000) // every 2.5h after 2m of delay
 
     public void reauthorizeUbiUsersAndNotifyAboutFailures() {
-        Collection<UbiUser> toNotify = telegramLinkedUbiUserService.reauthorizeAllUbiUsersAndGetUnauthorizedList();
+        Collection<UbiAccountWithTelegram> toNotify = telegramLinkedUbiUserService.reauthorizeAllUbiUsersAndGetUnauthorizedList();
 
-        for (UbiUser user : toNotify) {
+        for (UbiAccountWithTelegram user : toNotify) {
             telegramBotClientService.notifyUserAboutUbiAuthorizationFailure(user.getChatId(), user.getEmail());
         }
     }

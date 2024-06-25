@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.entities.TelegramUserInputEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserInputEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserInputPostgresRepository;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.TelegramUserInput;
@@ -41,7 +41,7 @@ class TelegramUserInputPostgresServiceTest {
     public void deleteAllByChatId_should_handle_to_repository() {
         service.deleteAllByChatId("chatId");
 
-        verify(repository).deleteAllByChatId("chatId");
+        verify(repository).deleteAllByTelegramUserChatId("chatId");
     }
 
     @Test
@@ -66,7 +66,7 @@ class TelegramUserInputPostgresServiceTest {
     @Test
     public void findAllById_should_handle_to_repository() {
         TelegramUserInputEntity entity = new TelegramUserInputEntity("chatId", InputState.BASE, "value");
-        when(repository.findAllByChatId("chatId")).thenReturn(java.util.List.of(entity));
+        when(repository.findAllByTelegramUserChatId("chatId")).thenReturn(java.util.List.of(entity));
 
         assertEquals(java.util.List.of(entity.toTelegramUserInput()), service.findAllByChatId("chatId"));
     }

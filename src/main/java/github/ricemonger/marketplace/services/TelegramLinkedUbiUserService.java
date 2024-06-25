@@ -1,9 +1,10 @@
 package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationService;
-import github.ricemonger.marketplace.services.abstractions.UbiUserDatabaseService;
+import github.ricemonger.marketplace.services.abstractions.UbiAccountDatabaseService;
 import github.ricemonger.utils.dtos.AuthorizationDTO;
-import github.ricemonger.utils.dtos.UbiUser;
+import github.ricemonger.utils.dtos.UbiAccount;
+import github.ricemonger.utils.dtos.UbiAccountWithTelegram;
 import github.ricemonger.utils.exceptions.UbiUserAuthorizationClientErrorException;
 import github.ricemonger.utils.exceptions.UbiUserAuthorizationServerErrorException;
 import lombok.RequiredArgsConstructor;
@@ -19,20 +20,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TelegramLinkedUbiUserService {
 
-    private final UbiUserDatabaseService ubiUserDatabaseService;
+    private final UbiAccountDatabaseService ubiAccountDatabaseService;
 
     private final AuthorizationService authorizationService;
 
-    public Collection<UbiUser> findAllByLinkedTelegramUserChatId(String chatId) {
-        return ubiUserDatabaseService.findAllByChatId(chatId);
+    public Collection<UbiAccount> findAllByLinkedTelegramUserChatId(String chatId) {
+        return ubiAccountDatabaseService.findAllByChatId(chatId);
     }
 
     public void deleteAllByLinkedTelegramUserChatId(String chatId) {
-        ubiUserDatabaseService.deleteAllByChatId(chatId);
+        ubiAccountDatabaseService.deleteAllByChatId(chatId);
     }
 
     public void deleteByLinkedTelegramUserChatIdAndEmail(String chatId, String email) {
-        ubiUserDatabaseService.deleteById(chatId, email);
+        ubiAccountDatabaseService.deleteById(chatId, email);
     }
 
     public void authorizeAndSaveUser(String chatId, String email, String password) throws
@@ -40,15 +41,15 @@ public class TelegramLinkedUbiUserService {
             UbiUserAuthorizationServerErrorException {
         AuthorizationDTO userAuthorizationDTO = authorizationService.authorizeAndGetDTO(email, password);
 
-        ubiUserDatabaseService.save(buildUbiUser(chatId, email, authorizationService.getEncodedPassword(password), userAuthorizationDTO));
+        ubiAccountDatabaseService.save(buildUbiUser(chatId, email, authorizationService.getEncodedPassword(password), userAuthorizationDTO));
     }
 
-    public Collection<UbiUser> reauthorizeAllUbiUsersAndGetUnauthorizedList() {
-        List<UbiUser> users = new ArrayList<>(ubiUserDatabaseService.findAll());
+    public List<UbiAccountWithTelegram> reauthorizeAllUbiUsersAndGetUnauthorizedList() {
+        List<UbiAccount> users = new ArrayList<>(ubiAccountDatabaseService.findAll());
 
-        List<UbiUser> unauthorizedUsers = new ArrayList<>();
+        List<UbiAccount> unauthorizedUsers = new ArrayList<>();
 
-        for (UbiUser user : users) {
+        for (UbiAccount user : users) {
             try {
                 reauthorizeAndSaveUser(user.getChatId(), user.getEmail(), user.getEncodedPassword());
             } catch (UbiUserAuthorizationClientErrorException | UbiUserAuthorizationServerErrorException e) {
@@ -62,11 +63,11 @@ public class TelegramLinkedUbiUserService {
     private void reauthorizeAndSaveUser(String chatId, String email, String encodedPassword) throws UbiUserAuthorizationClientErrorException, UbiUserAuthorizationServerErrorException {
         AuthorizationDTO authorizationDTO = authorizationService.authorizeAndGetDtoForEncodedPassword(email, encodedPassword);
 
-        ubiUserDatabaseService.save(buildUbiUser(chatId, email, encodedPassword, authorizationDTO));
+        ubiAccountDatabaseService.save(buildUbiUser(chatId, email, encodedPassword, authorizationDTO));
     }
 
-    private UbiUser buildUbiUser(String chatId, String email, String password, AuthorizationDTO authorizationDTO) {
-        UbiUser user = new UbiUser();
+    private UbiAccount buildUbiUser(String chatId, String email, String password, AuthorizationDTO authorizationDTO) {
+        UbiAccount user = new UbiAccount();
 
         user.setChatId(chatId);
         user.setEmail(email);

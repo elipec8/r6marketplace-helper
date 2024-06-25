@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.entities.ItemEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.ItemDatabaseService;
 import github.ricemonger.utils.dtos.Item;
@@ -25,7 +25,7 @@ public class ItemPostgresService implements ItemDatabaseService {
     }
 
     @Override
-    public Item findById(String itemId) throws ItemNotFoundException{
+    public Item findById(String itemId) throws ItemNotFoundException {
         return itemPostgresRepository.findById(itemId).map(ItemEntity::toItem).orElseThrow(() -> new ItemNotFoundException("Item with id" + itemId + "doesn't exist"));
     }
 

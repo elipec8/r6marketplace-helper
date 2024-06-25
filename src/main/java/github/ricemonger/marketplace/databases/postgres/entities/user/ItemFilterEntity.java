@@ -1,5 +1,6 @@
-package github.ricemonger.marketplace.databases.postgres.entities;
+package github.ricemonger.marketplace.databases.postgres.entities.user;
 
+import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
 import github.ricemonger.utils.dtos.ItemFilter;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.IsOwnedFilter;
@@ -23,7 +24,9 @@ import java.util.stream.Collectors;
 @IdClass(ItemFilterEntityId.class)
 public class ItemFilterEntity {
     @Id
-    private String chatId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private UserEntity user;
 
     @Id
     private String name;
@@ -49,8 +52,8 @@ public class ItemFilterEntity {
     private Integer minLastSoldPrice;
     private Integer maxLastSoldPrice;
 
-    public ItemFilterEntity(ItemFilter filter) {
-        this.chatId = filter.getChatId();
+    public ItemFilterEntity(UserEntity user, ItemFilter filter) {
+        this.user = user;
         this.name = filter.getName();
         this.filterType = filter.getFilterType();
         this.isOwned = filter.getIsOwned();
@@ -81,7 +84,6 @@ public class ItemFilterEntity {
 
     public ItemFilter toItemFilter() {
         ItemFilter filter = new ItemFilter();
-        filter.setChatId(this.chatId);
         filter.setName(this.name);
         filter.setFilterType(this.filterType);
         filter.setIsOwned(this.isOwned);

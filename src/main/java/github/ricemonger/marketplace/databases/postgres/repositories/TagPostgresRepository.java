@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.repositories;
 
-import github.ricemonger.marketplace.databases.postgres.entities.TagEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

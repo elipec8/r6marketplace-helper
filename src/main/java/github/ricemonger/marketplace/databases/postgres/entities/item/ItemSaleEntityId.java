@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.databases.postgres.entities;
+package github.ricemonger.marketplace.databases.postgres.entities.item;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
