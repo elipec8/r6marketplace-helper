@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 @IdClass(ItemFilterEntityId.class)
 public class ItemFilterEntity {
     @Id
+    @MapsId("user_id")
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
@@ -53,7 +54,11 @@ public class ItemFilterEntity {
     private Integer maxLastSoldPrice;
 
     public ItemFilterEntity(UserEntity user, ItemFilter filter) {
+        this(filter);
         this.user = user;
+    }
+
+    public ItemFilterEntity(ItemFilter filter) {
         this.name = filter.getName();
         this.filterType = filter.getFilterType();
         this.isOwned = filter.getIsOwned();

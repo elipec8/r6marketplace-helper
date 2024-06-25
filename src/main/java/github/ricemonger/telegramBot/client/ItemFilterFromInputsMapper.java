@@ -30,7 +30,6 @@ public class ItemFilterFromInputsMapper {
     private final TagService tagService;
 
     public ItemFilter mapToItemFilter(Collection<TelegramUserInput> inputs) {
-        String chatId = new ArrayList<>(inputs).get(0).getChatId();
         String name = getValueByState(inputs, InputState.FILTER_NAME);
         String filterTypeString = getValueByState(inputs, InputState.FILTER_TYPE);
         String isOwnedString = getValueByState(inputs, InputState.FILTER_IS_OWNED);
@@ -49,7 +48,6 @@ public class ItemFilterFromInputsMapper {
         String maxLastSoldPriceString = getValueByState(inputs, InputState.FILTER_MAX_LAST_SOLD_PRICE);
 
         ItemFilter itemFilter = new ItemFilter();
-        itemFilter.setChatId(chatId);
         itemFilter.setName(name);
 
         if (filterTypeString.equals(Callbacks.FILTER_TYPE_ALLOW)) {

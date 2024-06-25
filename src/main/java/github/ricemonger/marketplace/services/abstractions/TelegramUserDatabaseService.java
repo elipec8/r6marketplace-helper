@@ -9,7 +9,10 @@ import github.ricemonger.utils.dtos.TelegramUser;
 import java.util.Collection;
 
 public interface TelegramUserDatabaseService {
-    void save(TelegramUser telegramUser);
+
+    void createWithDefaultUserSettings(String chatId);
+
+    void update(TelegramUser telegramUser);
 
     void setItemShowFewItemsInMessageFlag(String chatId, boolean flag);
 

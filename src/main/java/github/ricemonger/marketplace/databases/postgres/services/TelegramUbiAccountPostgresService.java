@@ -6,12 +6,14 @@ import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUse
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.UbiAccountDatabaseService;
 import github.ricemonger.utils.dtos.UbiAccount;
+import github.ricemonger.utils.dtos.UbiAccountWithTelegram;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.UbiUserDoesntExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,22 +31,22 @@ public class TelegramUbiAccountPostgresService implements UbiAccountDatabaseServ
     }
 
     @Override
-    public void deleteById(String chatId, String email) {
+    public void deleteByChatId(String chatId) {
         TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
 
         ubiAccountRepository.deleteById(user.getUser());
     }
 
     @Override
-    public UbiAccount findById(String chatId, String email) throws UbiUserDoesntExistException {
+    public UbiAccount findByChatId(String chatId) throws UbiUserDoesntExistException {
         TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
 
-        return ubiAccountRepository.findById(user.getUser()).orElseThrow(() -> new UbiUserDoesntExistException("User with chatId " + chatId + " and " +
-                                                                                                               "email " + email + " doesn't exist")).toUbiAccount();
+        return ubiAccountRepository.findById(user.getUser()).orElseThrow(() -> new UbiUserDoesntExistException("User with chatId " + chatId +
+                                                                                                               " doesn't exist")).toUbiAccount();
     }
 
     @Override
-    public Collection<UbiAccount> findAll() {
-        return ubiAccountRepository.findAll().stream().map(UbiAccountEntity::toUbiAccount).toList();
+    public List<UbiAccountWithTelegram> findAll() {
+        return ubiAccountRepository.findAll().stream().map(UbiAccountEntity::toUbiAccountWithTelegram).toList();
     }
 }

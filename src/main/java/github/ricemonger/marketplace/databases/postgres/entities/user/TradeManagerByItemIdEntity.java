@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
+import github.ricemonger.utils.dtos.TradeManagerByItemId;
 import github.ricemonger.utils.enums.TradeManagerTradeType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,4 +34,27 @@ public class TradeManagerByItemIdEntity {
     private Integer buyStartingPrice;
 
     private Integer priority;
+
+    public TradeManagerByItemIdEntity(UserEntity user, TradeManagerByItemId tradeManager) {
+        this.user = user;
+        this.itemId = tradeManager.getItemId();
+        this.tradeType = tradeManager.getTradeType();
+        this.sellStartingPrice = tradeManager.getSellStartingPrice();
+        this.sellBoundaryPrice = tradeManager.getSellBoundaryPrice();
+        this.buyStartingPrice = tradeManager.getBuyStartingPrice();
+        this.buyBoundaryPrice = tradeManager.getBuyBoundaryPrice();
+        this.priority = tradeManager.getPriority();
+    }
+
+    public TradeManagerByItemId toTradeManagerByItemId() {
+        TradeManagerByItemId tradeManager = new TradeManagerByItemId();
+        tradeManager.setItemId(itemId);
+        tradeManager.setTradeType(tradeType);
+        tradeManager.setSellStartingPrice(sellStartingPrice);
+        tradeManager.setSellBoundaryPrice(sellBoundaryPrice);
+        tradeManager.setBuyStartingPrice(buyStartingPrice);
+        tradeManager.setBuyBoundaryPrice(buyBoundaryPrice);
+        tradeManager.setPriority(priority);
+        return tradeManager;
+    }
 }

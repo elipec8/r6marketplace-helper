@@ -70,7 +70,6 @@ public class TradeManagerFromInputsMapper {
         }
 
         TradeManagerByItemId tradeManagerByItemId = new TradeManagerByItemId();
-        tradeManagerByItemId.setChatId(chatId);
         tradeManagerByItemId.setTradeType(tradeType);
         tradeManagerByItemId.setItemId(itemId);
         tradeManagerByItemId.setSellStartingPrice(startSellPrice);

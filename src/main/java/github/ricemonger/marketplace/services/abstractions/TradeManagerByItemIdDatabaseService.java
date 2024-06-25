@@ -5,7 +5,7 @@ import github.ricemonger.utils.dtos.TradeManagerByItemId;
 import java.util.Collection;
 
 public interface TradeManagerByItemIdDatabaseService {
-    void save(TradeManagerByItemId tradeManager);
+    void save(String chatId, TradeManagerByItemId tradeManager);
 
     void deleteById(String chatId, String itemId);
 

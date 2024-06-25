@@ -17,11 +17,11 @@ public class TradeManagerService {
 
     private final TradeManagerByItemFilterDatabaseService tradeManagerByItemFiltersDatabaseService;
 
-    public void saveTradeManagerByItemId(TradeManagerByItemId tradeManager) {
-        tradeManagerByItemIdDatabaseService.save(tradeManager);
+    public void saveTradeManagerByItemId(String chatId, TradeManagerByItemId tradeManager) {
+        tradeManagerByItemIdDatabaseService.save(chatId, tradeManager);
     }
 
-    public void saveTradeManagerByItemFilter(TradeManagerByItemFilters tradeManager) {
+    public void saveTradeManagerByItemFilter(String chatId,TradeManagerByItemFilters tradeManager) {
         tradeManagerByItemFiltersDatabaseService.save(tradeManager);
     }
 
@@ -33,11 +33,11 @@ public class TradeManagerService {
         return tradeManagerByItemIdDatabaseService.findById(chatId, itemId);
     }
 
-    public Collection<TradeManagerByItemId> getTradeManagersByItemId(String chatId) {
+    public Collection<TradeManagerByItemId> getAllTradeManagersByItemId(String chatId) {
         return tradeManagerByItemIdDatabaseService.findAll(chatId);
     }
 
-    public Collection<TradeManagerByItemFilters> getTradeManagersByItemFilters(String chatId) {
+    public Collection<TradeManagerByItemFilters> getAllTradeManagersByItemFilters(String chatId) {
         return tradeManagerByItemFiltersDatabaseService.findAll(chatId);
     }
 }

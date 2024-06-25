@@ -43,8 +43,8 @@ class TelegramUbiAccountPostgresServiceTest {
     }
 
     @Test
-    public void deleteById_should_handle_to_repository(){
-        service.deleteById("chatId", "email");
+    public void deleteByChatId_should_handle_to_repository(){
+        service.deleteByChatId("chatId", "email");
 
         verify(repository).deleteById(new TelegramLinkedUbiUserEntityId("chatId", "email"));
     }
@@ -57,24 +57,24 @@ class TelegramUbiAccountPostgresServiceTest {
     }
 
     @Test
-    public void findById_should_throw_exception_when_user_doesnt_exist() {
+    public void findByChatId_should_throw_exception_when_user_doesnt_exist() {
         when(repository.findById(any())).thenReturn(Optional.empty());
 
-        assertThrows(UbiUserDoesntExistException.class, () -> service.findById("chatId", "email"));
+        assertThrows(UbiUserDoesntExistException.class, () -> service.findByChatId("chatId", "email"));
     }
 
     @Test
-    public void findById_should_handle_to_repository(){
+    public void findByChatId_should_handle_to_repository(){
         TelegramLinkedUbiUserEntity entity = new TelegramLinkedUbiUserEntity();
         entity.setChatId("chatId");
 
         when(repository.findById(any())).thenReturn(Optional.of(entity));
 
-        service.findById("chatId", "email");
+        service.findByChatId("chatId", "email");
 
         verify(repository).findById(new TelegramLinkedUbiUserEntityId("chatId", "email"));
 
-        assertEquals(entity.toUbiUser(), service.findById("chatId", "email"));
+        assertEquals(entity.toUbiUser(), service.findByChatId("chatId", "email"));
     }
 
     @Test

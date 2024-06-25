@@ -30,7 +30,7 @@ class TelegramLinkedUbiAccountServiceTest {
     private AuthorizationService authorizationService;
 
     @Autowired
-    private TelegramLinkedUbiUserService telegramLinkedUbiUserService;
+    private TelegramUbiAccountService telegramUbiAccountService;
 
     @Test
     public void findAllByLinkedTelegramUserChatId_should_return_all_users_by_chat_id() {
@@ -40,7 +40,7 @@ class TelegramLinkedUbiAccountServiceTest {
 
         when(ubiAccountDatabaseService.findAllByChatId(chatId)).thenReturn(users);
 
-        List<UbiAccount> result = new ArrayList<>(telegramLinkedUbiUserService.findAllByLinkedTelegramUserChatId(chatId));
+        List<UbiAccount> result = new ArrayList<>(telegramUbiAccountService.findByChatId(chatId));
 
         assertTrue(users.containsAll(result) && result.containsAll(users));
     }
@@ -49,7 +49,7 @@ class TelegramLinkedUbiAccountServiceTest {
     public void deleteAllByLinkedTelegramUserChatId_should_delete_all_users_by_chat_id() {
         String chatId = "chatId";
 
-        telegramLinkedUbiUserService.deleteAllByLinkedTelegramUserChatId(chatId);
+        telegramUbiAccountService.deleteByChatId(chatId);
 
         verify(ubiAccountDatabaseService).deleteAllByChatId(chatId);
     }
@@ -59,9 +59,9 @@ class TelegramLinkedUbiAccountServiceTest {
         String chatId = "chatId";
         String email = "email";
 
-        telegramLinkedUbiUserService.deleteByLinkedTelegramUserChatIdAndEmail(chatId, email);
+        telegramUbiAccountService.deleteByChatId(chatId, email);
 
-        verify(ubiAccountDatabaseService).deleteById(chatId, email);
+        verify(ubiAccountDatabaseService).deleteByChatId(chatId, email);
     }
 
     @Test
@@ -71,7 +71,7 @@ class TelegramLinkedUbiAccountServiceTest {
         String password = "password";
         when(authorizationService.authorizeAndGetDTO(email, password)).thenReturn(new AuthorizationDTO());
 
-        telegramLinkedUbiUserService.authorizeAndSaveUser(chatId, email, password);
+        telegramUbiAccountService.authorizeAndSaveUser(chatId, email, password);
 
         verify(authorizationService).authorizeAndGetDTO(email, password);
         verify(ubiAccountDatabaseService).save(any());
@@ -85,7 +85,7 @@ class TelegramLinkedUbiAccountServiceTest {
 
         when(authorizationService.authorizeAndGetDTO(email, password)).thenThrow(new UbiUserAuthorizationClientErrorException());
 
-        assertThrows(UbiUserAuthorizationClientErrorException.class, () -> telegramLinkedUbiUserService.authorizeAndSaveUser(chatId, email, password));
+        assertThrows(UbiUserAuthorizationClientErrorException.class, () -> telegramUbiAccountService.authorizeAndSaveUser(chatId, email, password));
     }
 
     @Test
@@ -96,7 +96,7 @@ class TelegramLinkedUbiAccountServiceTest {
 
         when(authorizationService.authorizeAndGetDTO(email, password)).thenThrow(new UbiUserAuthorizationServerErrorException());
 
-        assertThrows(UbiUserAuthorizationServerErrorException.class, () -> telegramLinkedUbiUserService.authorizeAndSaveUser(chatId, email, password));
+        assertThrows(UbiUserAuthorizationServerErrorException.class, () -> telegramUbiAccountService.authorizeAndSaveUser(chatId, email, password));
     }
 
     @Test
@@ -118,7 +118,7 @@ class TelegramLinkedUbiAccountServiceTest {
         when(authorizationService.authorizeAndGetDtoForEncodedPassword("email1", "encodedPassword1")).thenThrow(new UbiUserAuthorizationClientErrorException());
         when(authorizationService.authorizeAndGetDtoForEncodedPassword("email2", "encodedPassword2")).thenReturn(new AuthorizationDTO());
 
-        List<UbiAccount> result = new ArrayList<>(telegramLinkedUbiUserService.reauthorizeAllUbiUsersAndGetUnauthorizedList());
+        List<UbiAccount> result = new ArrayList<>(telegramUbiAccountService.reauthorizeAllUbiUsersAndGetUnauthorizedList());
 
         assertTrue(unauthorizedUsers.containsAll(result) && result.containsAll(unauthorizedUsers));
     }

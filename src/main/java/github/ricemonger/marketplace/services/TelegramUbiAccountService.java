@@ -12,28 +12,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class TelegramLinkedUbiUserService {
+public class TelegramUbiAccountService {
 
     private final UbiAccountDatabaseService ubiAccountDatabaseService;
 
     private final AuthorizationService authorizationService;
 
-    public Collection<UbiAccount> findAllByLinkedTelegramUserChatId(String chatId) {
-        return ubiAccountDatabaseService.findAllByChatId(chatId);
+    public UbiAccount findByChatId(String chatId) {
+        return ubiAccountDatabaseService.findByChatId(chatId);
     }
 
-    public void deleteAllByLinkedTelegramUserChatId(String chatId) {
-        ubiAccountDatabaseService.deleteAllByChatId(chatId);
-    }
-
-    public void deleteByLinkedTelegramUserChatIdAndEmail(String chatId, String email) {
-        ubiAccountDatabaseService.deleteById(chatId, email);
+    public void deleteByChatId(String chatId) {
+        ubiAccountDatabaseService.deleteByChatId(chatId);
     }
 
     public void authorizeAndSaveUser(String chatId, String email, String password) throws
@@ -41,15 +36,15 @@ public class TelegramLinkedUbiUserService {
             UbiUserAuthorizationServerErrorException {
         AuthorizationDTO userAuthorizationDTO = authorizationService.authorizeAndGetDTO(email, password);
 
-        ubiAccountDatabaseService.save(buildUbiUser(chatId, email, authorizationService.getEncodedPassword(password), userAuthorizationDTO));
+        ubiAccountDatabaseService.save(chatId, buildUbiAccount(email, authorizationService.getEncodedPassword(password), userAuthorizationDTO));
     }
 
     public List<UbiAccountWithTelegram> reauthorizeAllUbiUsersAndGetUnauthorizedList() {
-        List<UbiAccount> users = new ArrayList<>(ubiAccountDatabaseService.findAll());
+        List<UbiAccountWithTelegram> users = new ArrayList<>(ubiAccountDatabaseService.findAll());
 
-        List<UbiAccount> unauthorizedUsers = new ArrayList<>();
+        List<UbiAccountWithTelegram> unauthorizedUsers = new ArrayList<>();
 
-        for (UbiAccount user : users) {
+        for (UbiAccountWithTelegram user : users) {
             try {
                 reauthorizeAndSaveUser(user.getChatId(), user.getEmail(), user.getEncodedPassword());
             } catch (UbiUserAuthorizationClientErrorException | UbiUserAuthorizationServerErrorException e) {
@@ -63,13 +58,11 @@ public class TelegramLinkedUbiUserService {
     private void reauthorizeAndSaveUser(String chatId, String email, String encodedPassword) throws UbiUserAuthorizationClientErrorException, UbiUserAuthorizationServerErrorException {
         AuthorizationDTO authorizationDTO = authorizationService.authorizeAndGetDtoForEncodedPassword(email, encodedPassword);
 
-        ubiAccountDatabaseService.save(buildUbiUser(chatId, email, encodedPassword, authorizationDTO));
+        ubiAccountDatabaseService.save(chatId, buildUbiAccount(email, encodedPassword, authorizationDTO));
     }
 
-    private UbiAccount buildUbiUser(String chatId, String email, String password, AuthorizationDTO authorizationDTO) {
+    private UbiAccount buildUbiAccount(String email, String password, AuthorizationDTO authorizationDTO) {
         UbiAccount user = new UbiAccount();
-
-        user.setChatId(chatId);
         user.setEmail(email);
         user.setEncodedPassword(password);
 

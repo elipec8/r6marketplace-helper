@@ -1,6 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import github.ricemonger.utils.dtos.UbiAccount;
+import github.ricemonger.utils.dtos.UbiAccountWithTelegram;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -94,6 +95,13 @@ public class UbiAccountEntity {
             }
         }
         this.ownedItemsIds = itemsIds.toString();
+    }
+
+    public UbiAccountWithTelegram toUbiAccountWithTelegram(){
+        UbiAccountWithTelegram ubiAccountWithTelegram = new UbiAccountWithTelegram();
+        ubiAccountWithTelegram.setUbiAccount(this.toUbiAccount());
+        ubiAccountWithTelegram.setChatId(this.user.getTelegramUser().getChatId());
+        return ubiAccountWithTelegram;
     }
 
     public UbiAccount toUbiAccount() {
