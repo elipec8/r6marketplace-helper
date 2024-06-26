@@ -8,6 +8,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemFilterEntityId {
-    private Long userId;
+    private UserEntity user;
     private String name;
+
+    public int hashCode(){
+        return user.getId().hashCode() + name.hashCode();
+    }
+
+    public boolean equals(Object o){
+        if(o == this){
+            return true;
+        }
+        if(!(o instanceof ItemFilterEntityId itemFilterEntityId)){
+            return false;
+        }
+        return itemFilterEntityId.user.getId().equals(user.getId()) && itemFilterEntityId.name.equals(name);
+    }
 }

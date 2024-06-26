@@ -10,7 +10,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "user")
+@Entity(name = "helper_user")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -39,8 +39,8 @@ public class UserEntity {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_item_show_applied_item_filter",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-            inverseJoinColumns = @JoinColumn(name = "item_filter_name", referencedColumnName = "name"))
+            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "id")},
+            inverseJoinColumns = @JoinColumn(name = "itemFilterName", referencedColumnName = "name"))
     private List<ItemFilterEntity> itemShowAppliedFilters;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = true)

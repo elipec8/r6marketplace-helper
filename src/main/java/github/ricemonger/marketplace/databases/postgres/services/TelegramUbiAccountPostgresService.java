@@ -25,24 +25,27 @@ public class TelegramUbiAccountPostgresService implements UbiAccountDatabaseServ
 
     @Override
     public void save(String chatId, UbiAccount account) {
-        TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
+        TelegramUserEntity user = userRepository.findById(chatId)
+                .orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
 
         ubiAccountRepository.save(new UbiAccountEntity(user.getUser(), account));
     }
 
     @Override
     public void deleteByChatId(String chatId) {
-        TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
+        TelegramUserEntity user = userRepository.findById(chatId)
+                .orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
 
-        ubiAccountRepository.deleteById(user.getUser());
+        ubiAccountRepository.deleteByUserTelegramUserChatId(user.getChatId());
     }
 
     @Override
     public UbiAccount findByChatId(String chatId) throws UbiUserDoesntExistException {
-        TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
+        TelegramUserEntity user = userRepository.findById(chatId)
+                .orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
 
-        return ubiAccountRepository.findById(user.getUser()).orElseThrow(() -> new UbiUserDoesntExistException("User with chatId " + chatId +
-                                                                                                               " doesn't exist")).toUbiAccount();
+        return ubiAccountRepository.findByUserTelegramUserChatId(user.getChatId())
+                .orElseThrow(() -> new UbiUserDoesntExistException("User with chatId " + chatId + " doesn't exist")).toUbiAccount();
     }
 
     @Override

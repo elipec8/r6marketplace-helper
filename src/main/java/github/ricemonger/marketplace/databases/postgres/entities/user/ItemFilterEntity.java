@@ -24,9 +24,8 @@ import java.util.stream.Collectors;
 @IdClass(ItemFilterEntityId.class)
 public class ItemFilterEntity {
     @Id
-    @MapsId("user_id")
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "userId", referencedColumnName = "id")
     private UserEntity user;
 
     @Id
@@ -42,9 +41,9 @@ public class ItemFilterEntity {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "item_filter_tags",
-            joinColumns = {@JoinColumn(name = "item_filter_chat_id", referencedColumnName = "chatId"),
-                    @JoinColumn(name = "item_filter_name", referencedColumnName = "name")},
-            inverseJoinColumns = @JoinColumn(name = "tag_name", referencedColumnName = "name"))
+            joinColumns = {@JoinColumn(name = "itemFilterUserId", referencedColumnName = "userId"),
+                    @JoinColumn(name = "itemFilterName", referencedColumnName = "name")},
+            inverseJoinColumns = @JoinColumn(name = "tagName", referencedColumnName = "name"))
     private Set<TagEntity> tags = new HashSet<>();
 
     private Integer minPrice;

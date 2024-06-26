@@ -9,6 +9,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TelegramUserInputEntityId {
-    private String chatId;
+    private TelegramUserEntity telegramUser;
     private InputState inputState;
+
+    public int hashCode(){
+        return telegramUser.getChatId().hashCode() + inputState.hashCode();
+    }
+
+    public boolean equals(Object o){
+        if(o == this){
+            return true;
+        }
+        if(!(o instanceof TelegramUserInputEntityId telegramUserInputEntityId)){
+            return false;
+        }
+        return telegramUserInputEntityId.telegramUser.getChatId().equals(telegramUser.getChatId()) && telegramUserInputEntityId.inputState.equals(inputState);
+    }
 }

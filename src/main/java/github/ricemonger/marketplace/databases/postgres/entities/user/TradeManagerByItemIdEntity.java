@@ -15,11 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(TradeManagerByItemFiltersEntityId.class)
+@IdClass(TradeManagerByItemIdEntityId.class)
 public class TradeManagerByItemIdEntity {
     @Id
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "userId", referencedColumnName = "id")
     private UserEntity user;
 
     @Id

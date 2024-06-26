@@ -10,6 +10,7 @@ import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.TelegramUserInput;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.TelegramUserInputDoesntExistException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class TelegramUserInputPostgresService implements TelegramUserInputDataba
     private final TelegramUserPostgresRepository userRepository;
 
     @Override
+    @Transactional
     public void save(String chatId, InputState inputState, String value) {
         TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " not found"));
         TelegramUserInputEntity input = new TelegramUserInputEntity();
@@ -38,12 +40,17 @@ public class TelegramUserInputPostgresService implements TelegramUserInputDataba
 
     @Override
     public void deleteAllByChatId(String chatId) throws TelegramUserDoesntExistException {
-        inputRepository.deleteAllByTelegramUserChatId(chatId);
+        TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " not found"));
+
+        inputRepository.deleteAllByTelegramUserChatId(user.getChatId());
     }
 
     @Override
     public TelegramUserInput findById(String chatId, InputState inputState) throws TelegramUserInputDoesntExistException {
-        return inputRepository.findById(new TelegramUserInputEntityId(chatId, inputState)).orElseThrow(() -> new TelegramUserInputDoesntExistException("Input with chatId" + chatId + " and inputState " + inputState + " not found")).toTelegramUserInput();
+        TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " not found"));
+
+        return inputRepository.findById(new TelegramUserInputEntityId(user, inputState)).orElseThrow(() -> new TelegramUserInputDoesntExistException(
+                "Input with chatId" + chatId + " and inputState " + inputState + " not found")).toTelegramUserInput();
     }
 
     @Override

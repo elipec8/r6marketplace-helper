@@ -4,6 +4,7 @@ import github.ricemonger.marketplace.databases.postgres.entities.user.ItemFilter
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserDatabaseService;
 import github.ricemonger.utils.dtos.ItemFilter;
 import github.ricemonger.utils.dtos.ItemShowSettings;
@@ -26,14 +27,15 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
 
     private final TelegramUserPostgresRepository telegramUserPostgresRepository;
 
+    private final UserPostgresRepository userPostgresRepository;
+
     @Override
     public void createWithDefaultUserSettings(String chatId) {
         TelegramUserEntity entity = new TelegramUserEntity();
-        UserEntity userEntity = new UserEntity();
-        entity.setUser(new UserEntity());
+
+        UserEntity savedEntity = userPostgresRepository.save(new UserEntity());
+        entity.setUser(savedEntity);
         entity.setChatId(chatId);
-
-
 
         if (telegramUserPostgresRepository.existsById(chatId)) {
             throw new TelegramUserAlreadyExistsException("Telegram user with chatId " + chatId + " already exists");
@@ -44,12 +46,9 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
 
     @Override
     public void update(TelegramUser telegramUser) {
-        String chatId = telegramUser.getChatId();
-        if (telegramUserPostgresRepository.existsById(chatId)) {
-            telegramUserPostgresRepository.save(new TelegramUserEntity(telegramUser));
-        } else {
-            throw new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " doesn't exists");
-        }
+        TelegramUserEntity telegramUserEntity = getTelegramUserEntityByIdOrThrow(telegramUser.getChatId());
+        telegramUserEntity.setFields(telegramUser);
+        telegramUserPostgresRepository.save(telegramUserEntity);
     }
 
     @Override

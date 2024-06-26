@@ -34,14 +34,14 @@ public class TradeManagerByItemIdPostgresService implements TradeManagerByItemId
     public void deleteById(String chatId, String itemId) {
         TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
 
-        tradeManagerRepository.deleteById(new TradeManagerByItemIdEntityId(user.getUser().getId(), itemId));
+        tradeManagerRepository.deleteById(new TradeManagerByItemIdEntityId(user.getUser(), itemId));
     }
 
     @Override
     public TradeManagerByItemId findById(String chatId, String itemId) {
         TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
 
-        return tradeManagerRepository.findById(new TradeManagerByItemIdEntityId(user.getUser().getId(), itemId)).map(TradeManagerByItemIdEntity::toTradeManagerByItemId).orElseThrow(() -> new TradeManagerByItemIdNotFoundException(String.format("Trade manager by chatId %s and itemId %s not found", chatId, itemId)));
+        return tradeManagerRepository.findById(new TradeManagerByItemIdEntityId(user.getUser(), itemId)).map(TradeManagerByItemIdEntity::toTradeManagerByItemId).orElseThrow(() -> new TradeManagerByItemIdNotFoundException(String.format("Trade manager by chatId %s and itemId %s not found", chatId, itemId)));
     }
 
     @Override

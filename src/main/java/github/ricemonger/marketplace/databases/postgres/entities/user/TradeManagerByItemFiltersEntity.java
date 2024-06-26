@@ -18,7 +18,7 @@ import java.util.List;
 public class TradeManagerByItemFiltersEntity {
     @Id
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "userId", referencedColumnName = "id")
     private UserEntity user;
 
     @Id
@@ -28,9 +28,9 @@ public class TradeManagerByItemFiltersEntity {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "trade_manager_by_item_filters_applied_filters",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id"),
+            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId"),
                     @JoinColumn(name = "name", referencedColumnName = "name")},
-            inverseJoinColumns = @JoinColumn(name = "trade_id", referencedColumnName = "trade_id"))
+            inverseJoinColumns = @JoinColumn(name = "itemFilterName", referencedColumnName = "name"))
     private List<ItemFilterEntity> appliedFilters;
 
     private Integer maxBuyHours;

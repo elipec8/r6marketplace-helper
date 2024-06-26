@@ -20,15 +20,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UbiAccountEntity {
+
     @Id
+    private String ubiProfileId;
+
     @OneToOne(optional = false)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "userId", referencedColumnName = "id")
     private UserEntity user;
 
     private String email;
     private String encodedPassword;
 
-    private String ubiProfileId;
     private String ubiSessionId;
     private String ubiSpaceId;
     @Column(columnDefinition = "TEXT")
@@ -56,20 +58,20 @@ public class UbiAccountEntity {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "ubi_account_current_buy_trades",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
-            inverseJoinColumns = @JoinColumn(name = "trade_id", referencedColumnName = "trade_id"))
+            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
+            inverseJoinColumns = @JoinColumn(name = "tradeId", referencedColumnName = "tradeId"))
     private List<UbiTradeEntity> currentBuyTrades = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "ubi_account_current_sell_trades",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
-            inverseJoinColumns = @JoinColumn(name = "trade_id", referencedColumnName = "trade_id"))
+            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
+            inverseJoinColumns = @JoinColumn(name = "tradeId", referencedColumnName = "tradeId"))
     private List<UbiTradeEntity> currentSellTrades = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "ubi_account_finished_trades",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
-            inverseJoinColumns = @JoinColumn(name = "trade_id", referencedColumnName = "trade_id"))
+            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
+            inverseJoinColumns = @JoinColumn(name = "tradeId", referencedColumnName = "tradeId"))
     private List<UbiTradeEntity> finishedTrades = new ArrayList<>();
 
     public UbiAccountEntity(UserEntity user, UbiAccount account) {
