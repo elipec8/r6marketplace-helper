@@ -6,7 +6,6 @@ import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.*;
 import github.ricemonger.utils.exceptions.*;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -69,7 +68,6 @@ public class TelegramUserService {
         return inputService.findAllByChatId(String.valueOf(chatId));
     }
 
-    @Transactional
     public void clearUserInputs(Long chatId) throws TelegramUserDoesntExistException {
         getTelegramUserOrThrow(chatId);
 

@@ -31,9 +31,8 @@ public class TelegramUserInputPostgresService implements TelegramUserInputDataba
     @Transactional
     public void save(String chatId, InputState inputState, String value) {
         TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " not found"));
-        TelegramUserInputEntity input = new TelegramUserInputEntity();
-        input.setTelegramUser(user);
-        input.setInputState(inputState);
+        TelegramUserInputEntity input =
+                inputRepository.findById(new TelegramUserInputEntityId(user, inputState)).orElse(new TelegramUserInputEntity(user, inputState));
         input.setValue(value);
         inputRepository.save(input);
     }
@@ -42,7 +41,9 @@ public class TelegramUserInputPostgresService implements TelegramUserInputDataba
     public void deleteAllByChatId(String chatId) throws TelegramUserDoesntExistException {
         TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " not found"));
 
-        inputRepository.deleteAllByTelegramUserChatId(user.getChatId());
+        user.getTelegramUserInputs().clear();
+
+        userRepository.save(user);
     }
 
     @Override

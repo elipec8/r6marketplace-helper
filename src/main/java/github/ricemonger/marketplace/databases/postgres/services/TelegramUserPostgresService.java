@@ -30,6 +30,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     private final UserPostgresRepository userPostgresRepository;
 
     @Override
+    @Transactional
     public void createWithDefaultUserSettings(String chatId) {
         TelegramUserEntity entity = new TelegramUserEntity();
 
@@ -45,6 +46,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     }
 
     @Override
+    @Transactional
     public void update(TelegramUser telegramUser) {
         TelegramUserEntity telegramUserEntity = getTelegramUserEntityByIdOrThrow(telegramUser.getChatId());
         telegramUserEntity.setFields(telegramUser);

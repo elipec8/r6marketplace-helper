@@ -24,6 +24,18 @@ public class UserEntity {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = true)
     private TelegramUserEntity telegramUser;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = true)
+    private UbiAccountEntity ubiAccount;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<ItemFilterEntity> itemFilters = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<TradeManagerByItemFiltersEntity> tradeManagersByItemFilters = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<TradeManagerByItemIdEntity> tradeManagersByItemId = new ArrayList<>();
+
     private Boolean publicNotificationsEnabledFlag = true;
 
     private Integer itemShowMessagesLimit = 50;
@@ -42,16 +54,4 @@ public class UserEntity {
             joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "id")},
             inverseJoinColumns = @JoinColumn(name = "itemFilterName", referencedColumnName = "name"))
     private List<ItemFilterEntity> itemShowAppliedFilters;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = true)
-    private UbiAccountEntity ubiAccount;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<ItemFilterEntity> itemFilters = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<TradeManagerByItemFiltersEntity> tradeManagersByItemFilters = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<TradeManagerByItemIdEntity> tradeManagersByItemId = new ArrayList<>();
 }

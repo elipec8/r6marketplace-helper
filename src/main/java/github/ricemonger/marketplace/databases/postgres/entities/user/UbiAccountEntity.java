@@ -24,7 +24,7 @@ public class UbiAccountEntity {
     @Id
     private String ubiProfileId;
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private UserEntity user;
 

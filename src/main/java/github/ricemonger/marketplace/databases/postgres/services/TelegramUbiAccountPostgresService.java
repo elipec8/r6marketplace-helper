@@ -9,6 +9,7 @@ import github.ricemonger.utils.dtos.UbiAccount;
 import github.ricemonger.utils.dtos.UbiAccountWithTelegram;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.UbiUserDoesntExistException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ public class TelegramUbiAccountPostgresService implements UbiAccountDatabaseServ
     private final TelegramUserPostgresRepository userRepository;
 
     @Override
+    @Transactional
     public void save(String chatId, UbiAccount account) {
         TelegramUserEntity user = userRepository.findById(chatId)
                 .orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
@@ -32,6 +34,7 @@ public class TelegramUbiAccountPostgresService implements UbiAccountDatabaseServ
     }
 
     @Override
+    @Transactional
     public void deleteByChatId(String chatId) {
         TelegramUserEntity user = userRepository.findById(chatId)
                 .orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));

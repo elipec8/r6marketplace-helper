@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +37,19 @@ public class TelegramItemFilterPostgresService implements ItemFilterDatabaseServ
     public void deleteById(String chatId, String name) {
         TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
 
-        filterRepository.deleteById(new ItemFilterEntityId(user.getUser(), name));
+        List<ItemFilterEntity> filters = user.getUser().getItemFilters();
+
+        Iterator<ItemFilterEntity> iterator = filters.iterator();
+
+        while(iterator.hasNext()) {
+            ItemFilterEntity filter = iterator.next();
+            if(filter.getName().equals(name)) {
+                iterator.remove();
+                break;
+            }
+        }
+
+        userRepository.save(user);
     }
 
     @Override
