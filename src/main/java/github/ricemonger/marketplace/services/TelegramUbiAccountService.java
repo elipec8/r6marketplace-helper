@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationService;
-import github.ricemonger.marketplace.services.abstractions.UbiAccountDatabaseService;
+import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountDatabaseService;
 import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.utils.dtos.UbiAccount;
 import github.ricemonger.utils.dtos.UbiAccountWithTelegram;
@@ -19,16 +19,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TelegramUbiAccountService {
 
-    private final UbiAccountDatabaseService ubiAccountDatabaseService;
+    private final TelegramUserUbiAccountDatabaseService telegramUserUbiAccountDatabaseService;
 
     private final AuthorizationService authorizationService;
 
     public UbiAccount findByChatId(String chatId) {
-        return ubiAccountDatabaseService.findByChatId(chatId);
+        return telegramUserUbiAccountDatabaseService.findByChatId(chatId);
     }
 
     public void deleteByChatId(String chatId) {
-        ubiAccountDatabaseService.deleteByChatId(chatId);
+        telegramUserUbiAccountDatabaseService.deleteByChatId(chatId);
     }
 
     public void authorizeAndSaveUser(String chatId, String email, String password) throws
@@ -36,11 +36,11 @@ public class TelegramUbiAccountService {
             UbiUserAuthorizationServerErrorException {
         AuthorizationDTO userAuthorizationDTO = authorizationService.authorizeAndGetDTO(email, password);
 
-        ubiAccountDatabaseService.save(chatId, buildUbiAccount(email, authorizationService.getEncodedPassword(password), userAuthorizationDTO));
+        telegramUserUbiAccountDatabaseService.save(chatId, buildUbiAccount(email, authorizationService.getEncodedPassword(password), userAuthorizationDTO));
     }
 
     public List<UbiAccountWithTelegram> reauthorizeAllUbiUsersAndGetUnauthorizedList() {
-        List<UbiAccountWithTelegram> users = new ArrayList<>(ubiAccountDatabaseService.findAll());
+        List<UbiAccountWithTelegram> users = new ArrayList<>(telegramUserUbiAccountDatabaseService.findAll());
 
         List<UbiAccountWithTelegram> unauthorizedUsers = new ArrayList<>();
 
@@ -58,7 +58,7 @@ public class TelegramUbiAccountService {
     private void reauthorizeAndSaveUser(String chatId, String email, String encodedPassword) throws UbiUserAuthorizationClientErrorException, UbiUserAuthorizationServerErrorException {
         AuthorizationDTO authorizationDTO = authorizationService.authorizeAndGetDtoForEncodedPassword(email, encodedPassword);
 
-        ubiAccountDatabaseService.save(chatId, buildUbiAccount(email, encodedPassword, authorizationDTO));
+        telegramUserUbiAccountDatabaseService.save(chatId, buildUbiAccount(email, encodedPassword, authorizationDTO));
     }
 
     private UbiAccount buildUbiAccount(String email, String password, AuthorizationDTO authorizationDTO) {

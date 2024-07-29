@@ -42,9 +42,9 @@ public class TelegramUserItemFilterPostgresService implements TelegramUserItemFi
 
         Iterator<ItemFilterEntity> iterator = filters.iterator();
 
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             ItemFilterEntity filter = iterator.next();
-            if(filter.getName().equals(name)) {
+            if (filter.getName().equals(name)) {
                 iterator.remove();
                 break;
             }

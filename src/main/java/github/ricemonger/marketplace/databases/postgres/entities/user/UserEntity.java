@@ -21,10 +21,10 @@ public class UserEntity {
     @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
     private Long id;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, optional = true)
     private TelegramUserEntity telegramUser;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, optional = true)
     private UbiAccountEntity ubiAccount;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)

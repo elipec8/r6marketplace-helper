@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationService;
-import github.ricemonger.marketplace.services.abstractions.UbiAccountDatabaseService;
+import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountDatabaseService;
 import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.utils.dtos.UbiAccount;
 import github.ricemonger.utils.exceptions.UbiUserAuthorizationClientErrorException;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 class TelegramLinkedUbiAccountServiceTest {
 
     @MockBean
-    private UbiAccountDatabaseService ubiAccountDatabaseService;
+    private TelegramUserUbiAccountDatabaseService telegramUserUbiAccountDatabaseService;
 
     @MockBean
     private AuthorizationService authorizationService;
@@ -38,7 +38,7 @@ class TelegramLinkedUbiAccountServiceTest {
 
         List<UbiAccount> users = List.of(new UbiAccount(), new UbiAccount());
 
-        when(ubiAccountDatabaseService.findAllByChatId(chatId)).thenReturn(users);
+        when(telegramUserUbiAccountDatabaseService.findAllByChatId(chatId)).thenReturn(users);
 
         List<UbiAccount> result = new ArrayList<>(telegramUbiAccountService.findByChatId(chatId));
 
@@ -51,7 +51,7 @@ class TelegramLinkedUbiAccountServiceTest {
 
         telegramUbiAccountService.deleteByChatId(chatId);
 
-        verify(ubiAccountDatabaseService).deleteAllByChatId(chatId);
+        verify(telegramUserUbiAccountDatabaseService).deleteAllByChatId(chatId);
     }
 
     @Test
@@ -61,7 +61,7 @@ class TelegramLinkedUbiAccountServiceTest {
 
         telegramUbiAccountService.deleteByChatId(chatId, email);
 
-        verify(ubiAccountDatabaseService).deleteByChatId(chatId, email);
+        verify(telegramUserUbiAccountDatabaseService).deleteByChatId(chatId, email);
     }
 
     @Test
@@ -74,7 +74,7 @@ class TelegramLinkedUbiAccountServiceTest {
         telegramUbiAccountService.authorizeAndSaveUser(chatId, email, password);
 
         verify(authorizationService).authorizeAndGetDTO(email, password);
-        verify(ubiAccountDatabaseService).save(any());
+        verify(telegramUserUbiAccountDatabaseService).save(any());
     }
 
     @Test
@@ -111,7 +111,7 @@ class TelegramLinkedUbiAccountServiceTest {
 
         List<UbiAccount> users = List.of(user1, user2);
 
-        when(ubiAccountDatabaseService.findAll()).thenReturn(users);
+        when(telegramUserUbiAccountDatabaseService.findAll()).thenReturn(users);
 
         List<UbiAccount> unauthorizedUsers = List.of(users.get(0));
 

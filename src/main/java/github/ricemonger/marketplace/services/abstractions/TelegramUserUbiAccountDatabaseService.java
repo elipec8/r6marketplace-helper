@@ -3,11 +3,12 @@ package github.ricemonger.marketplace.services.abstractions;
 import github.ricemonger.utils.dtos.UbiAccount;
 import github.ricemonger.utils.dtos.UbiAccountWithTelegram;
 
-import java.util.Collection;
 import java.util.List;
 
-public interface UbiAccountDatabaseService {
+public interface TelegramUserUbiAccountDatabaseService {
     void save(String chatId, UbiAccount user);
+
+    void update(String chatId, UbiAccount account);
 
     void deleteByChatId(String chatId);
 

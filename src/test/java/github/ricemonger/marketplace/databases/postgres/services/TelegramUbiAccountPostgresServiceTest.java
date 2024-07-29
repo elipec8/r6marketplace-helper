@@ -28,10 +28,10 @@ class TelegramUbiAccountPostgresServiceTest {
     private UbiUserPostgresRepository repository;
 
     @Autowired
-    private TelegramUbiAccountPostgresService service;
+    private TelegramUserUbiAccountPostgresService service;
 
     @Test
-    public void save_should_handle_to_repository(){
+    public void create_should_handle_to_repository(){
         TelegramLinkedUbiUserEntity entity = new TelegramLinkedUbiUserEntity();
         entity.setChatId("chatId");
 
