@@ -11,8 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TradeManagerByItemFilters {
-    private String chatId;
-
     private String name;
 
     private TradeManagerTradeType tradeType;

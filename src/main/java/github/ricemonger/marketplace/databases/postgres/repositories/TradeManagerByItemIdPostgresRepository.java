@@ -1,11 +1,11 @@
 package github.ricemonger.marketplace.databases.postgres.repositories;
 
-import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedTradeManagerByItemIdEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.TelegramLinkedTradeManagerByItemIdEntityId;
+import github.ricemonger.marketplace.databases.postgres.entities.user.TradeManagerByItemIdEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.user.TradeManagerByItemIdEntityId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Collection;
+import java.util.List;
 
-public interface TradeManagerByItemIdPostgresRepository extends JpaRepository<TelegramLinkedTradeManagerByItemIdEntity, TelegramLinkedTradeManagerByItemIdEntityId> {
-    Collection<TelegramLinkedTradeManagerByItemIdEntity> findAllByChatId(String chatId);
+public interface TradeManagerByItemIdPostgresRepository extends JpaRepository<TradeManagerByItemIdEntity, TradeManagerByItemIdEntityId> {
+    List<TradeManagerByItemIdEntity> findAllByUserId(Long userId);
 }

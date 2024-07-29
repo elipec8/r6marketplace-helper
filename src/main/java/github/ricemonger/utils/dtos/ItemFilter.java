@@ -15,8 +15,6 @@ import java.util.stream.Stream;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemFilter {
-    private String chatId;
-
     private String name;
 
     private FilterType filterType;

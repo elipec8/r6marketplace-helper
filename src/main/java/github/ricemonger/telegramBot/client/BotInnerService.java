@@ -111,7 +111,7 @@ public class BotInnerService {
     }
 
     public List<String> getCredentialsEmailsList(Long chatId) throws TelegramUserDoesntExistException {
-        return telegramUserService.getCredentialsEmailsList(chatId);
+        return List.of(telegramUserService.getCredentialsEmailsList(chatId).getEmail());
     }
 
     public String getItemTypesString() {
@@ -127,7 +127,7 @@ public class BotInnerService {
     }
 
     public void saveFilterFromInput(Long chatId) {
-        itemFilterService.saveItemFilter(getItemFilterByUserInput(chatId));
+        itemFilterService.saveItemFilter(String.valueOf(chatId),getItemFilterByUserInput(chatId));
     }
 
     public Collection<String> getAllFilterNamesForUser(Long chatId) {
@@ -221,7 +221,7 @@ public class BotInnerService {
     }
 
     public void savePlannedOneItemTradeByUserInput(Long chatId, TradeManagerTradeType tradeType) {
-        tradeManagerService.saveTradeManagerByItemId(getPlannedOneItemTradeByUserInput(chatId, tradeType));
+        tradeManagerService.saveTradeManagerByItemId(String.valueOf(chatId),getPlannedOneItemTradeByUserInput(chatId, tradeType));
     }
 
     public TradeManagerByItemId getPlannedOneItemTradeByUserInput(Long chatId, TradeManagerTradeType tradeType) {
@@ -244,11 +244,11 @@ public class BotInnerService {
     }
 
     public Collection<TradeManagerByItemId> getTradeManagersByItemId(Long chatId) {
-        return tradeManagerService.getTradeManagersByItemId(String.valueOf(chatId));
+        return tradeManagerService.getAllTradeManagersByItemId(String.valueOf(chatId));
     }
 
     public Collection<TradeManagerByItemFilters> getTradeManagersByItemFilters(Long chatId) {
-        return tradeManagerService.getTradeManagersByItemFilters(String.valueOf(chatId));
+        return tradeManagerService.getAllTradeManagersByItemFilters(String.valueOf(chatId));
     }
 
     public void sendMultipleObjectsFewInMessage(Collection<?> objects, int objectStringHeight, Long chatId) {

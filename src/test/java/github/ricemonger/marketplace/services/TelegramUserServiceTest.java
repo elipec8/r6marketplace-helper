@@ -29,7 +29,7 @@ class TelegramUserServiceTest {
     private TelegramUserInputDatabaseService inputService;
 
     @MockBean
-    private TelegramLinkedUbiUserService credentialsService;
+    private TelegramUbiAccountService credentialsService;
 
     @Autowired
     private TelegramUserService telegramUserService;
@@ -58,7 +58,7 @@ class TelegramUserServiceTest {
 
         telegramUserService.registerTelegramUserWithDefaultSettings(123L);
 
-        verify(userService).save(new TelegramUser(123L));
+        verify(userService).update(new TelegramUser(123L));
     }
 
     @Test
@@ -76,7 +76,7 @@ class TelegramUserServiceTest {
 
         telegramUserService.setUserNextInputState(123L, InputState.BASE);
 
-        verify(userService).save(telegramUser);
+        verify(userService).update(telegramUser);
     }
 
     @Test
@@ -94,7 +94,7 @@ class TelegramUserServiceTest {
 
         telegramUserService.setUserNextInputGroup(123L, InputGroup.BASE);
 
-        verify(userService).save(telegramUser);
+        verify(userService).update(telegramUser);
     }
 
     @Test
@@ -250,7 +250,7 @@ class TelegramUserServiceTest {
 
         telegramUserService.removeCredentialsByUserInputs(123L);
 
-        verify(credentialsService).deleteByLinkedTelegramUserChatIdAndEmail("123", "email");
+        verify(credentialsService).deleteByChatId("123", "email");
     }
 
     @Test
@@ -280,7 +280,7 @@ class TelegramUserServiceTest {
 
         telegramUserService.removeAllCredentials(123L);
 
-        verify(credentialsService).deleteAllByLinkedTelegramUserChatId("123");
+        verify(credentialsService).deleteByChatId("123");
     }
 
     @Test
@@ -295,15 +295,15 @@ class TelegramUserServiceTest {
         TelegramUser telegramUser = new TelegramUser(123L);
         when(userService.findUserById("123")).thenReturn(telegramUser);
 
-        List<UbiUser> list = new ArrayList<>();
-        UbiUser user1 = new UbiUser();
+        List<UbiAccount> list = new ArrayList<>();
+        UbiAccount user1 = new UbiAccount();
         user1.setEmail("email1");
-        UbiUser user2 = new UbiUser();
+        UbiAccount user2 = new UbiAccount();
         user2.setEmail("email2");
         list.add(user1);
         list.add(user2);
 
-        when(credentialsService.findAllByLinkedTelegramUserChatId("123")).thenReturn(list);
+        when(credentialsService.findByChatId("123")).thenReturn(list);
 
         List<String> expected = List.of("email1", "email2");
         List<String> result = telegramUserService.getCredentialsEmailsList(123L);
@@ -316,7 +316,7 @@ class TelegramUserServiceTest {
         TelegramUser telegramUser = new TelegramUser(123L);
         when(userService.findUserById("123")).thenReturn(telegramUser);
 
-        when(credentialsService.findAllByLinkedTelegramUserChatId("123")).thenReturn(Collections.emptyList());
+        when(credentialsService.findByChatId("123")).thenReturn(Collections.emptyList());
 
         List<String> result = telegramUserService.getCredentialsEmailsList(123L);
 

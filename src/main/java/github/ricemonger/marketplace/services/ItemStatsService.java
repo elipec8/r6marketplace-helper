@@ -41,23 +41,34 @@ public class ItemStatsService {
         String epicTag = tags.stream().filter(tag -> tag.getName().equals("EPIC")).findFirst().get().getValue();
         String legendaryTag = tags.stream().filter(tag -> tag.getName().equals("LEGENDARY")).findFirst().get().getValue();
 
+        int minUncommon = commonValuesService.getMinimumUncommonPrice();
+        int maxUncommon = commonValuesService.getMaximumUncommonPrice();
+        int minRare = commonValuesService.getMinimumRarePrice();
+        int maxRare = commonValuesService.getMaximumRarePrice();
+        int minEpic = commonValuesService.getMinimumEpicPrice();
+        int maxEpic = commonValuesService.getMaximumEpicPrice();
+        int minLegendary = commonValuesService.getMinimumLegendaryPrice();
+        int maxLegendary = commonValuesService.getMaximumLegendaryPrice();
+        int minMarketplace = commonValuesService.getMinimumMarketplacePrice();
+        int maxMarketplace = commonValuesService.getMaximumMarketplacePrice();
+
         for (Item item : items) {
             ItemRarity rarity = item.getItemRarity(uncommonTag, rareTag, epicTag, legendaryTag);
             if (rarity == ItemRarity.UNCOMMON) {
-                item.setLimitMinPrice(commonValuesService.getMinimumUncommonPrice());
-                item.setLimitMaxPrice(commonValuesService.getMaximumUncommonPrice());
+                item.setLimitMinPrice(minUncommon);
+                item.setLimitMaxPrice(maxUncommon);
             } else if (rarity == ItemRarity.RARE) {
-                item.setLimitMinPrice(commonValuesService.getMinimumRarePrice());
-                item.setLimitMaxPrice(commonValuesService.getMaximumRarePrice());
+                item.setLimitMinPrice(minRare);
+                item.setLimitMaxPrice(maxRare);
             } else if (rarity == ItemRarity.EPIC) {
-                item.setLimitMinPrice(commonValuesService.getMinimumEpicPrice());
-                item.setLimitMaxPrice(commonValuesService.getMaximumEpicPrice());
+                item.setLimitMinPrice(minEpic);
+                item.setLimitMaxPrice(maxEpic);
             } else if (rarity == ItemRarity.LEGENDARY) {
-                item.setLimitMinPrice(commonValuesService.getMinimumLegendaryPrice());
-                item.setLimitMaxPrice(commonValuesService.getMaximumLegendaryPrice());
+                item.setLimitMinPrice(minLegendary);
+                item.setLimitMaxPrice(maxLegendary);
             } else{
-                item.setLimitMinPrice(commonValuesService.getMinimumMarketplacePrice());
-                item.setLimitMaxPrice(commonValuesService.getMaximumMarketplacePrice());
+                item.setLimitMinPrice(minMarketplace);
+                item.setLimitMaxPrice(maxMarketplace);
             }
         }
     }

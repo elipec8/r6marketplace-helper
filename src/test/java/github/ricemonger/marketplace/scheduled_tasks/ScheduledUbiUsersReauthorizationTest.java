@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
-import github.ricemonger.marketplace.services.TelegramLinkedUbiUserService;
+import github.ricemonger.marketplace.services.TelegramUbiAccountService;
 import github.ricemonger.telegramBot.client.TelegramBotClientService;
-import github.ricemonger.utils.dtos.UbiUser;
+import github.ricemonger.utils.dtos.UbiAccount;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 class ScheduledUbiUsersReauthorizationTest {
 
     @MockBean
-    private TelegramLinkedUbiUserService telegramLinkedUbiUserService;
+    private TelegramUbiAccountService telegramUbiAccountService;
 
     @MockBean
     private TelegramBotClientService telegramBotClientService;
@@ -28,17 +28,17 @@ class ScheduledUbiUsersReauthorizationTest {
 
     @Test
     public void reauthorizeUbiUsersAndNotifyAboutFailures_should_reauthorize_and_notify_via_services() {
-        List<UbiUser> unauthorizedUsers = new ArrayList<>();
-        UbiUser unauthorizedUser = new UbiUser();
+        List<UbiAccount> unauthorizedUsers = new ArrayList<>();
+        UbiAccount unauthorizedUser = new UbiAccount();
         unauthorizedUser.setChatId("1");
         unauthorizedUser.setEmail("email");
         unauthorizedUsers.add(unauthorizedUser);
 
-        when(telegramLinkedUbiUserService.reauthorizeAllUbiUsersAndGetUnauthorizedList()).thenReturn(unauthorizedUsers);
+        when(telegramUbiAccountService.reauthorizeAllUbiUsersAndGetUnauthorizedList()).thenReturn(unauthorizedUsers);
 
         scheduledUbiUsersReauthorization.reauthorizeUbiUsersAndNotifyAboutFailures();
 
-        verify(telegramLinkedUbiUserService).reauthorizeAllUbiUsersAndGetUnauthorizedList();
+        verify(telegramUbiAccountService).reauthorizeAllUbiUsersAndGetUnauthorizedList();
 
         verify(telegramBotClientService).notifyUserAboutUbiAuthorizationFailure("1", "email");
     }

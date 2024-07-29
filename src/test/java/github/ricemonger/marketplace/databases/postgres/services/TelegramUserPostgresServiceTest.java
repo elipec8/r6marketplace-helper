@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.entities.ItemFilterEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.TelegramUserEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.user.ItemFilterEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.utils.dtos.ItemFilter;
 import github.ricemonger.utils.dtos.ItemShowSettings;
@@ -32,10 +32,10 @@ class TelegramUserPostgresServiceTest {
     private TelegramUserPostgresService service;
 
     @Test
-    public void save_should_handle_to_repository() {
+    public void update_should_handle_to_repository() {
         TelegramUser user = new TelegramUser(1L);
 
-        service.save(user);
+        service.update(user);
 
         verify(repository).save(argThat(entity -> entity.getChatId().equals(user.getChatId())));
     }
@@ -147,7 +147,7 @@ class TelegramUserPostgresServiceTest {
     }
 
     @Test
-    public void addItemShowAppliedFilter_should_save_changed_filter() {
+    public void addItemShowAppliedFilter_should_update_changed_filter() {
         TelegramUser user = new TelegramUser(1L);
         TelegramUserEntity entity = new TelegramUserEntity(user);
 
@@ -172,7 +172,7 @@ class TelegramUserPostgresServiceTest {
     }
 
     @Test
-    public void removeItemShowAppliedFilter_should_save_changed_filter() {
+    public void removeItemShowAppliedFilter_should_update_changed_filter() {
         ItemFilter filter = new ItemFilter();
         filter.setName("1");
 

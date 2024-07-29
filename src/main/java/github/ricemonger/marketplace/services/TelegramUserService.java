@@ -6,7 +6,6 @@ import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.*;
 import github.ricemonger.utils.exceptions.*;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,43 +22,26 @@ public class TelegramUserService {
 
     private final TelegramUserInputDatabaseService inputService;
 
-    private final TelegramLinkedUbiUserService credentialsService;
+    private final TelegramUbiAccountService credentialsService;
 
     public boolean isTelegramUserRegistered(Long chatId) {
         return userService.existsById(String.valueOf(chatId));
     }
 
     public void registerTelegramUserWithDefaultSettings(Long chatId) throws TelegramUserAlreadyExistsException {
-        if (userService.existsById(String.valueOf(chatId))) {
-            throw new TelegramUserAlreadyExistsException();
-        } else {
-            TelegramUser telegramUser = new TelegramUser(chatId);
-            telegramUser.setInputState(InputState.BASE);
-            telegramUser.setInputGroup(InputGroup.BASE);
-            telegramUser.setPublicNotificationsEnabledFlag(true);
-            telegramUser.setItemShowMessagesLimit(50);
-            telegramUser.setItemShowFewInMessageFlag(false);
-            telegramUser.setItemShowNameFlag(true);
-            telegramUser.setItemShowItemTypeFlag(true);
-            telegramUser.setItemShowMaxBuyPrice(true);
-            telegramUser.setItemShowBuyOrdersCountFlag(true);
-            telegramUser.setItemShowMinSellPriceFlag(true);
-            telegramUser.setItemsShowSellOrdersCountFlag(true);
-            telegramUser.setItemShowPictureFlag(true);
-            userService.save(telegramUser);
-        }
+            userService.createWithDefaultUserSettings(String.valueOf(chatId));
     }
 
     public void setUserNextInputState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException {
         TelegramUser telegramUser = getTelegramUserOrThrow(chatId);
         telegramUser.setInputState(inputState);
-        userService.save(telegramUser);
+        userService.update(telegramUser);
     }
 
     public void setUserNextInputGroup(Long chatId, InputGroup inputGroup) throws TelegramUserDoesntExistException {
         TelegramUser telegramUser = getTelegramUserOrThrow(chatId);
         telegramUser.setInputGroup(inputGroup);
-        userService.save(telegramUser);
+        userService.update(telegramUser);
     }
 
     public InputState getUserInputState(Long chatId) throws TelegramUserDoesntExistException {
@@ -86,7 +68,6 @@ public class TelegramUserService {
         return inputService.findAllByChatId(String.valueOf(chatId));
     }
 
-    @Transactional
     public void clearUserInputs(Long chatId) throws TelegramUserDoesntExistException {
         getTelegramUserOrThrow(chatId);
 
@@ -100,32 +81,26 @@ public class TelegramUserService {
         getTelegramUserOrThrow(chatId);
 
         credentialsService.authorizeAndSaveUser(String.valueOf(chatId), email, password);
+
+        inputService.deleteAllByChatId(String.valueOf(chatId));
     }
 
     public void removeCredentialsByUserInputs(Long chatId) throws TelegramUserDoesntExistException {
         getTelegramUserOrThrow(chatId);
 
-        String emailToRemove = getInputValueByState(chatId, InputState.CREDENTIALS_FULL_OR_EMAIL);
-
-        credentialsService.deleteByLinkedTelegramUserChatIdAndEmail(String.valueOf(chatId), emailToRemove);
-
-        inputService.deleteAllByChatId(String.valueOf(chatId));
+        credentialsService.deleteByChatId(String.valueOf(chatId));
     }
 
     public void removeAllCredentials(Long chatId) throws TelegramUserDoesntExistException {
         getTelegramUserOrThrow(chatId);
 
-        credentialsService.deleteAllByLinkedTelegramUserChatId(String.valueOf(chatId));
+        credentialsService.deleteByChatId(String.valueOf(chatId));
     }
 
-    public List<String> getCredentialsEmailsList(Long chatId) throws TelegramUserDoesntExistException {
+    public UbiAccount getCredentialsEmailsList(Long chatId) throws TelegramUserDoesntExistException {
         getTelegramUserOrThrow(chatId);
 
-        Collection<UbiUser> credentialsList = credentialsService.findAllByLinkedTelegramUserChatId(String.valueOf(chatId));
-
-        return credentialsList.stream()
-                .map(UbiUser::getEmail)
-                .toList();
+        return credentialsService.findByChatId(String.valueOf(chatId));
     }
 
     public List<String> getAllChatIdsForNotifiableUsers() {

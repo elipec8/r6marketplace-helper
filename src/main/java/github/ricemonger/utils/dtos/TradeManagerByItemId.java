@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TradeManagerByItemId {
-    private String chatId;
     private TradeManagerTradeType tradeType;
     private String itemId;
     private Integer sellStartingPrice;
