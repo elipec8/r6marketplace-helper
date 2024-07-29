@@ -81,6 +81,8 @@ public class TelegramUserService {
         getTelegramUserOrThrow(chatId);
 
         credentialsService.authorizeAndSaveUser(String.valueOf(chatId), email, password);
+
+        inputService.deleteAllByChatId(String.valueOf(chatId));
     }
 
     public void removeCredentialsByUserInputs(Long chatId) throws TelegramUserDoesntExistException {

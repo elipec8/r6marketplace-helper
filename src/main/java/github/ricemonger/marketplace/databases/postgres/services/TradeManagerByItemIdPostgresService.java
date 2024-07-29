@@ -25,7 +25,7 @@ public class TradeManagerByItemIdPostgresService implements TradeManagerByItemId
     private final TelegramUserPostgresRepository userRepository;
 
     @Override
-    @Transactional
+    //@Transactional
     public void save(String chatId, TradeManagerByItemId tradeManager) {
         TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
 
@@ -33,7 +33,7 @@ public class TradeManagerByItemIdPostgresService implements TradeManagerByItemId
     }
 
     @Override
-    @Transactional
+   // @Transactional
     public void deleteById(String chatId, String itemId) {
         TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
 

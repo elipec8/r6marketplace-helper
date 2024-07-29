@@ -26,7 +26,7 @@ public class TelegramItemFilterPostgresService implements ItemFilterDatabaseServ
     private final TelegramUserPostgresRepository userRepository;
 
     @Override
-    @Transactional
+   // @Transactional
     public void save(String chatId, ItemFilter filter) {
         TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
 

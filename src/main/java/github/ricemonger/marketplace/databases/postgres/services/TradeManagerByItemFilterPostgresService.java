@@ -12,7 +12,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class TradeManagerByItemFilterPostgresService implements TradeManagerByItemFilterDatabaseService {
     @Override
-    @Transactional
+    //@Transactional
     public void save(TradeManagerByItemFilters tradeManager) {
 
     }

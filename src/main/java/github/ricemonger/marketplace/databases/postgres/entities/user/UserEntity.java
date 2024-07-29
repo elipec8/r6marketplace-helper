@@ -27,13 +27,13 @@ public class UserEntity {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = true)
     private UbiAccountEntity ubiAccount;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ItemFilterEntity> itemFilters = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<TradeManagerByItemFiltersEntity> tradeManagersByItemFilters = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<TradeManagerByItemIdEntity> tradeManagersByItemId = new ArrayList<>();
 
     private Boolean publicNotificationsEnabledFlag = true;
@@ -49,7 +49,7 @@ public class UserEntity {
     private Boolean itemsShowSellOrdersCountFlag = true;
     private Boolean itemShowPictureFlag = true;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(name = "user_item_show_applied_item_filter",
             joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "id")},
             inverseJoinColumns = @JoinColumn(name = "itemFilterName", referencedColumnName = "name"))

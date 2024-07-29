@@ -25,7 +25,7 @@ public class TelegramUbiAccountPostgresService implements UbiAccountDatabaseServ
     private final TelegramUserPostgresRepository userRepository;
 
     @Override
-    @Transactional
+   // @Transactional
     public void save(String chatId, UbiAccount account) {
         TelegramUserEntity user = userRepository.findById(chatId)
                 .orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
@@ -34,7 +34,7 @@ public class TelegramUbiAccountPostgresService implements UbiAccountDatabaseServ
     }
 
     @Override
-    @Transactional
+   // @Transactional
     public void deleteByChatId(String chatId) {
         TelegramUserEntity user = userRepository.findById(chatId)
                 .orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));

@@ -17,7 +17,7 @@ public class ScheduledUbiUsersReauthorization {
 
     private final TelegramBotClientService telegramBotClientService;
 
-    @Scheduled(fixedRate = 150 * 60 * 1000, initialDelay = 30 * 1000) // every 2.5h after 2m of delay
+    @Scheduled(fixedRate = 150 * 60 * 1000, initialDelay = 120 * 1000) // every 2.5h after 2m of delay
 
     public void reauthorizeUbiUsersAndNotifyAboutFailures() {
         Collection<UbiAccountWithTelegram> toNotify = telegramUbiAccountService.reauthorizeAllUbiUsersAndGetUnauthorizedList();

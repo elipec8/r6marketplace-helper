@@ -26,7 +26,7 @@ public class TelegramUserEntity {
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private UserEntity user;
 
-    @OneToMany(mappedBy = "telegramUser", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "telegramUser", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<TelegramUserInputEntity> telegramUserInputs;
 
     private InputState inputState = InputState.BASE;

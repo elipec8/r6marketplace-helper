@@ -53,22 +53,22 @@ public class UbiAccountEntity {
 
     private Integer availableSellSlots;
 
-    @OneToMany(mappedBy = "ubiAccount", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "ubiAccount", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ItemResaleLockEntity> resaleLocks = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(name = "ubi_account_current_buy_trades",
             joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
             inverseJoinColumns = @JoinColumn(name = "tradeId", referencedColumnName = "tradeId"))
     private List<UbiTradeEntity> currentBuyTrades = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(name = "ubi_account_current_sell_trades",
             joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
             inverseJoinColumns = @JoinColumn(name = "tradeId", referencedColumnName = "tradeId"))
     private List<UbiTradeEntity> currentSellTrades = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(name = "ubi_account_finished_trades",
             joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
             inverseJoinColumns = @JoinColumn(name = "tradeId", referencedColumnName = "tradeId"))

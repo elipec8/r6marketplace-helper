@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 @Slf4j
@@ -28,7 +29,7 @@ public class TelegramUserInputPostgresService implements TelegramUserInputDataba
     private final TelegramUserPostgresRepository userRepository;
 
     @Override
-    @Transactional
+    //@Transactional
     public void save(String chatId, InputState inputState, String value) {
         TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " not found"));
         TelegramUserInputEntity input =
@@ -38,12 +39,15 @@ public class TelegramUserInputPostgresService implements TelegramUserInputDataba
     }
 
     @Override
+    @Transactional
     public void deleteAllByChatId(String chatId) throws TelegramUserDoesntExistException {
         TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " not found"));
 
         user.getTelegramUserInputs().clear();
 
         userRepository.save(user);
+
+        inputRepository.deleteAllByTelegramUserChatId(chatId);
     }
 
     @Override
