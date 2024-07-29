@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.services;
 
-import github.ricemonger.marketplace.services.abstractions.ItemFilterDatabaseService;
+import github.ricemonger.marketplace.services.abstractions.TelegramUserItemFilterDatabaseService;
 import github.ricemonger.utils.dtos.ItemFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,21 +11,21 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class ItemFilterService {
 
-    private final ItemFilterDatabaseService itemFilterDatabaseService;
+    private final TelegramUserItemFilterDatabaseService telegramUserItemFilterDatabaseService;
 
     public void saveItemFilter(String chatId, ItemFilter itemFilter) {
-        itemFilterDatabaseService.save(chatId,itemFilter);
+        telegramUserItemFilterDatabaseService.save(chatId,itemFilter);
     }
 
     public void deleteItemFilterById(String chatId, String name) {
-        itemFilterDatabaseService.deleteById(chatId, name);
+        telegramUserItemFilterDatabaseService.deleteById(chatId, name);
     }
 
     public ItemFilter getItemFilterById(String chatId, String name) {
-        return itemFilterDatabaseService.findById(chatId, name);
+        return telegramUserItemFilterDatabaseService.findById(chatId, name);
     }
 
     public Collection<String> getAllItemFilterNamesForUser(String chatId) {
-        return itemFilterDatabaseService.findAllByUserId(chatId).stream().map(ItemFilter::getName).toList();
+        return telegramUserItemFilterDatabaseService.findAllByUserId(chatId).stream().map(ItemFilter::getName).toList();
     }
 }

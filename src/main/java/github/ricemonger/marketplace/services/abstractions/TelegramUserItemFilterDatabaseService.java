@@ -4,7 +4,7 @@ import github.ricemonger.utils.dtos.ItemFilter;
 
 import java.util.Collection;
 
-public interface ItemFilterDatabaseService {
+public interface TelegramUserItemFilterDatabaseService {
     void save(String chatId, ItemFilter filter);
 
     void deleteById(String chatId, String name);

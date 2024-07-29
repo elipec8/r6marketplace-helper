@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @IdClass(ItemFilterEntityId.class)
 public class ItemFilterEntity {
-    @Id
+    @MapsId
     @ManyToOne
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private UserEntity user;
