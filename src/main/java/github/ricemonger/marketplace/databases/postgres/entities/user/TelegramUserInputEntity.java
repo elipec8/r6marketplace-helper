@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @IdClass(TelegramUserInputEntityId.class)
 public class TelegramUserInputEntity {
     @MapsId
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "chatId", referencedColumnName = "chatId")
     private TelegramUserEntity telegramUser;
 

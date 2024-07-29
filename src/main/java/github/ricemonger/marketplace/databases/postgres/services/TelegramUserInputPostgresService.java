@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 @Slf4j
@@ -26,14 +25,14 @@ public class TelegramUserInputPostgresService implements TelegramUserInputDataba
 
     private final TelegramUserInputPostgresRepository inputRepository;
 
-    private final TelegramUserPostgresRepository userRepository;
+    private final TelegramUserPostgresRepository telegramUserPostgresRepository;
 
     @Override
-    //@Transactional
+    @Transactional
     public void save(String chatId, InputState inputState, String value) {
-        TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " not found"));
-        TelegramUserInputEntity input =
-                inputRepository.findById(new TelegramUserInputEntityId(user, inputState)).orElse(new TelegramUserInputEntity(user, inputState));
+        TelegramUserEntity user = getTelegramUserEntityByIdOrThrow(chatId);
+
+        TelegramUserInputEntity input = inputRepository.findById(new TelegramUserInputEntityId(user, inputState)).orElse(new TelegramUserInputEntity(user, inputState));
         input.setValue(value);
         inputRepository.save(input);
     }
@@ -41,18 +40,16 @@ public class TelegramUserInputPostgresService implements TelegramUserInputDataba
     @Override
     @Transactional
     public void deleteAllByChatId(String chatId) throws TelegramUserDoesntExistException {
-        TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " not found"));
+        TelegramUserEntity user = getTelegramUserEntityByIdOrThrow(chatId);
 
         user.getTelegramUserInputs().clear();
 
-        userRepository.save(user);
-
-        inputRepository.deleteAllByTelegramUserChatId(chatId);
+        telegramUserPostgresRepository.save(user);
     }
 
     @Override
     public TelegramUserInput findById(String chatId, InputState inputState) throws TelegramUserInputDoesntExistException {
-        TelegramUserEntity user = userRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " not found"));
+        TelegramUserEntity user = getTelegramUserEntityByIdOrThrow(chatId);
 
         return inputRepository.findById(new TelegramUserInputEntityId(user, inputState)).orElseThrow(() -> new TelegramUserInputDoesntExistException(
                 "Input with chatId" + chatId + " and inputState " + inputState + " not found")).toTelegramUserInput();
@@ -68,5 +65,9 @@ public class TelegramUserInputPostgresService implements TelegramUserInputDataba
                     .map(TelegramUserInputEntity::toTelegramUserInput)
                     .toList();
         }
+    }
+
+    private TelegramUserEntity getTelegramUserEntityByIdOrThrow(String chatId) {
+        return telegramUserPostgresRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found"));
     }
 }
