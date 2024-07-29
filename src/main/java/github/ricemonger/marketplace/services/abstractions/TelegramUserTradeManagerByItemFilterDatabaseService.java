@@ -4,7 +4,7 @@ import github.ricemonger.utils.dtos.TradeManagerByItemFilters;
 
 import java.util.Collection;
 
-public interface TradeManagerByItemFilterDatabaseService {
+public interface TelegramUserTradeManagerByItemFilterDatabaseService {
     void save(TradeManagerByItemFilters tradeManager);
 
     Collection<TradeManagerByItemFilters> findAll(String chatId);

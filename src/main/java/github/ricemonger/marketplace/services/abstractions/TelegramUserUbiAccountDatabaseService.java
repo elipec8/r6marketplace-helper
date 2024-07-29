@@ -8,8 +8,6 @@ import java.util.List;
 public interface TelegramUserUbiAccountDatabaseService {
     void save(String chatId, UbiAccount user);
 
-    void update(String chatId, UbiAccount account);
-
     void deleteByChatId(String chatId);
 
     UbiAccount findByChatId(String chatId);

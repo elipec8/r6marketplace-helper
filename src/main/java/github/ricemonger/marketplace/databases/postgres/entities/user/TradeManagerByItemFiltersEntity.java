@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @IdClass(TradeManagerByItemFiltersEntityId.class)
 public class TradeManagerByItemFiltersEntity {
-    @Id
+    @MapsId
     @ManyToOne
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private UserEntity user;
@@ -26,7 +26,7 @@ public class TradeManagerByItemFiltersEntity {
 
     private TradeManagerTradeType tradeType;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinTable(name = "trade_manager_by_item_filters_applied_filters",
             joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId"),
                     @JoinColumn(name = "name", referencedColumnName = "name")},
