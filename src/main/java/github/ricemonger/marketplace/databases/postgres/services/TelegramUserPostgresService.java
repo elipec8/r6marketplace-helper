@@ -30,7 +30,6 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     private final UserPostgresRepository userPostgresRepository;
 
     @Override
-    //@Transactional
     public void createWithDefaultUserSettings(String chatId) {
         TelegramUserEntity entity = new TelegramUserEntity();
 
@@ -46,7 +45,6 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     }
 
     @Override
-   // @Transactional
     public void update(TelegramUser telegramUser) {
         TelegramUserEntity telegramUserEntity = getTelegramUserEntityByIdOrThrow(telegramUser.getChatId());
         telegramUserEntity.setFields(telegramUser);
@@ -54,7 +52,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     }
 
     @Override
-   // @Transactional
+    @Transactional
     public void setItemShowFewItemsInMessageFlag(String chatId, boolean flag) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUserEntity = getTelegramUserEntityByIdOrThrow(chatId);
         telegramUserEntity.setItemShowFewInMessageFlag(flag);
@@ -62,7 +60,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     }
 
     @Override
-    //@Transactional
+    @Transactional
     public void setItemShowMessagesLimit(String chatId, Integer limit) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUserEntity = getTelegramUserEntityByIdOrThrow(chatId);
         telegramUserEntity.setItemShowMessagesLimit(limit);
@@ -70,7 +68,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     }
 
     @Override
-   // @Transactional
+    @Transactional
     public void setItemShowFieldsSettings(String chatId, ItemShownFieldsSettings settings) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUserEntity = getTelegramUserEntityByIdOrThrow(chatId);
 
@@ -80,7 +78,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     }
 
     @Override
-   // @Transactional
+    @Transactional
     public void addItemShowAppliedFilter(String chatId, ItemFilter filter) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUserEntity = getTelegramUserEntityByIdOrThrow(chatId);
 
@@ -96,7 +94,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     }
 
     @Override
-   // @Transactional
+    @Transactional
     public void removeItemShowAppliedFilter(String chatId, String filterName) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUserEntity = getTelegramUserEntityByIdOrThrow(chatId);
 
