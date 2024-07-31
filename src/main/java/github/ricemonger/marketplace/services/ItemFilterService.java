@@ -26,6 +26,6 @@ public class ItemFilterService {
     }
 
     public Collection<String> getAllItemFilterNamesForUser(String chatId) {
-        return telegramUserItemFilterDatabaseService.findAllByUserId(chatId).stream().map(ItemFilter::getName).toList();
+        return telegramUserItemFilterDatabaseService.findAllByChatId(chatId).stream().map(ItemFilter::getName).toList();
     }
 }

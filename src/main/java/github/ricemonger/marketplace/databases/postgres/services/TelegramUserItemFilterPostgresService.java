@@ -13,7 +13,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,18 +26,18 @@ public class TelegramUserItemFilterPostgresService implements TelegramUserItemFi
 
     @Override
     @Transactional
-    public void save(String chatId, ItemFilter filter) {
-        TelegramUserEntity user = getTelegramUserEntityByIdOrThrow(chatId);
+    public void save(String chatId, ItemFilter filter) throws TelegramUserDoesntExistException {
+        TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
-        itemFilterPostgresRepository.save(new ItemFilterEntity(user.getUser(), filter));
+        itemFilterPostgresRepository.save(new ItemFilterEntity(telegramUser.getUser(), filter));
     }
 
     @Override
     @Transactional
-    public void deleteById(String chatId, String name) {
-        TelegramUserEntity user = getTelegramUserEntityByIdOrThrow(chatId);
+    public void deleteById(String chatId, String name) throws TelegramUserDoesntExistException {
+        TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
-        List<ItemFilterEntity> filters = user.getUser().getItemFilters();
+        List<ItemFilterEntity> filters = telegramUser.getUser().getItemFilters();
 
         Iterator<ItemFilterEntity> iterator = filters.iterator();
 
@@ -50,24 +49,24 @@ public class TelegramUserItemFilterPostgresService implements TelegramUserItemFi
             }
         }
 
-        telegramUserPostgresRepository.save(user);
+        telegramUserPostgresRepository.save(telegramUser);
     }
 
     @Override
-    public ItemFilter findById(String chatId, String name) throws ItemFilterDoesntExistException {
-        TelegramUserEntity user = getTelegramUserEntityByIdOrThrow(chatId);
+    public ItemFilter findById(String chatId, String name) throws TelegramUserDoesntExistException, ItemFilterDoesntExistException {
+        TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
-        return itemFilterPostgresRepository.findById(new ItemFilterEntityId(user.getUser(), name)).orElseThrow(ItemFilterDoesntExistException::new).toItemFilter();
+        return itemFilterPostgresRepository.findById(new ItemFilterEntityId(telegramUser.getUser(), name)).orElseThrow(ItemFilterDoesntExistException::new).toItemFilter();
     }
 
     @Override
-    public Collection<ItemFilter> findAllByUserId(String chatId) {
-        TelegramUserEntity user = telegramUserPostgresRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
+    public List<ItemFilter> findAllByChatId(String chatId) throws TelegramUserDoesntExistException {
+        TelegramUserEntity telegramUser = telegramUserPostgresRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
 
-        return itemFilterPostgresRepository.findAllByUserId(user.getUser().getId()).stream().map(ItemFilterEntity::toItemFilter).toList();
+        return itemFilterPostgresRepository.findAllByUserId(telegramUser.getUser().getId()).stream().map(ItemFilterEntity::toItemFilter).toList();
     }
 
-    private TelegramUserEntity getTelegramUserEntityByIdOrThrow(String chatId) {
+    private TelegramUserEntity getTelegramUserEntityByIdOrThrow(String chatId) throws TelegramUserDoesntExistException {
         return telegramUserPostgresRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found"));
     }
 }

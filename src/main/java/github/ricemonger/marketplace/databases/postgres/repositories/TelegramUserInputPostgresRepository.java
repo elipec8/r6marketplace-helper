@@ -8,7 +8,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Collection;
 
 public interface TelegramUserInputPostgresRepository extends JpaRepository<TelegramUserInputEntity, TelegramUserInputEntityId>{
-    void deleteAllByTelegramUserChatId(String chatId);
-
-    Collection<TelegramUserInputEntity> findAllByTelegramUserChatId(String chatId);
 }

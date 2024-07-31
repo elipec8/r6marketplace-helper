@@ -1,73 +1,252 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
+import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserInputEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserInputPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.TelegramUserInput;
+import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.TelegramUserInputDoesntExistException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class TelegramUserInputPostgresServiceTest {
-    @MockBean
-    private TelegramUserInputPostgresRepository repository;
+    private final static String CHAT_ID = "1";
+    private final static String ANOTHER_CHAT_ID = "2";
 
     @Autowired
-    private TelegramUserInputPostgresService service;
+    private TelegramUserInputPostgresService inputService;
+    @Autowired
+    private TelegramUserInputPostgresRepository inputRepository;
+    @Autowired
+    private TelegramUserPostgresRepository telegramUserRepository;
+    @Autowired
+    private UserPostgresRepository userRepository;
 
-    @Test
-    public void save_should_handle_to_repository() {
-        TelegramUserInput input = new TelegramUserInput("chatId", InputState.BASE, "value");
-        service.save(input.getChatId(), input.getInputState(), input.getValue());
+    @BeforeEach
+    public void setUp() {
+        inputRepository.deleteAll();
+        telegramUserRepository.deleteAll();
+        userRepository.deleteAll();
 
-        verify(repository).save(argThat(argument -> argument.getChatId().equals(input.getChatId()) &&
-                                                    argument.getInputState().equals(input.getInputState()) &&
-                                                    argument.getValue().equals(input.getValue())));
+        userRepository.save(new UserEntity());
+        TelegramUserEntity tgUser = new TelegramUserEntity();
+        tgUser.setChatId(CHAT_ID);
+        tgUser.setUser(userRepository.findAll().get(0));
+        telegramUserRepository.save(tgUser);
     }
 
     @Test
-    public void deleteAllByChatId_should_handle_to_repository() {
-        service.deleteAllByChatId("chatId");
+    public void save_should_create_new_input_if_user_exists_and_input_does_not_exist() {
+        InputState inputState = InputState.ACTIVE_CREDENTIALS;
+        String value = "value";
 
-        verify(repository).deleteAllByTelegramUserChatId("chatId");
+        inputService.save(CHAT_ID, inputState, value);
+
+        assertEquals(1, inputRepository.count());
+
+        TelegramUserInputEntity input = inputRepository.findAll().get(0);
+
+        assertEquals(input.getTelegramUser().getChatId(), CHAT_ID);
+        assertEquals(input.getInputState(), inputState);
+        assertEquals(input.getValue(), value);
     }
 
     @Test
-    public void findById_should_handle_to_repository() {
-        TelegramUserInputEntity entity = new TelegramUserInputEntity("chatId", InputState.BASE, "value");
-        Optional<TelegramUserInputEntity> optional = Optional.of(entity);
+    public void save_should_create_new_input_if_user_exists_and_input_with_same_inputState_and_user_does_not_exist() {
+        InputState inputState = InputState.ACTIVE_CREDENTIALS;
+        InputState inputState2 = InputState.CREDENTIALS_FULL_OR_EMAIL;
+        String value = "value";
 
-        when(repository.findById(any())).thenReturn(optional);
+        inputService.save(CHAT_ID, inputState, value);
+        inputService.save(CHAT_ID, inputState2, value);
 
-        TelegramUserInput result = service.findById("chatId", InputState.BASE);
-
-        assertEquals(result, entity.toTelegramUserInput());
+        assertEquals(2, inputRepository.count());
     }
 
     @Test
-    public void findById_should_throw_when_entity_not_found() {
-        when(repository.findById(any())).thenReturn(Optional.empty());
+    public void save_should_update_existing_input_if_user_exists_and_input_with_same_inputState_and_user_already_exists() {
+        InputState inputState = InputState.ACTIVE_CREDENTIALS;
+        String value = "value";
+        String value2 = "value2";
 
-        assertThrows(TelegramUserInputDoesntExistException.class, () -> service.findById("chatId", InputState.BASE));
+        inputService.save(CHAT_ID, inputState, value);
+        inputService.save(CHAT_ID, inputState, value2);
+
+        assertEquals(1, inputRepository.count());
+
+        TelegramUserInputEntity input = inputRepository.findAll().get(0);
+
+        assertEquals(input.getTelegramUser().getChatId(), CHAT_ID);
+        assertEquals(input.getInputState(), inputState);
+        assertEquals(input.getValue(), value2);
     }
 
     @Test
-    public void findAllById_should_handle_to_repository() {
-        TelegramUserInputEntity entity = new TelegramUserInputEntity("chatId", InputState.BASE, "value");
-        when(repository.findAllByTelegramUserChatId("chatId")).thenReturn(java.util.List.of(entity));
+    public void save_should_throw_if_user_does_not_exist() {
+        InputState inputState = InputState.ACTIVE_CREDENTIALS;
+        String value = "value";
+        Executable executable = () -> inputService.save(ANOTHER_CHAT_ID, inputState, value);
 
-        assertEquals(java.util.List.of(entity.toTelegramUserInput()), service.findAllByChatId("chatId"));
+        assertThrows(TelegramUserDoesntExistException.class, executable);
+    }
+
+    @Test
+    public void deleteAllByChatId_should_delete_all_inputs_for_telegram_user() {
+        inputService.save(CHAT_ID, InputState.CREDENTIALS_FULL_OR_EMAIL, "value");
+        inputService.save(CHAT_ID, InputState.ACTIVE_CREDENTIALS, "value");
+        inputService.save(CHAT_ID, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID, "value");
+
+        inputService.deleteAllByChatId(CHAT_ID);
+
+        assertEquals(0, inputRepository.count());
+    }
+
+    @Test
+    public void deleteAllByChatId_should_ignore_other_user_inputs() {
+        userRepository.save(new UserEntity());
+        TelegramUserEntity tgUser = new TelegramUserEntity();
+        tgUser.setChatId(ANOTHER_CHAT_ID);
+
+        List<UserEntity> users = userRepository.findAll();
+        for (UserEntity user : users) {
+            if (user.getTelegramUser() == null) {
+                tgUser.setUser(user);
+                telegramUserRepository.save(tgUser);
+                break;
+            }
+        }
+
+        inputService.save(CHAT_ID, InputState.CREDENTIALS_FULL_OR_EMAIL, "value");
+        inputService.save(CHAT_ID, InputState.ACTIVE_CREDENTIALS, "value");
+        inputService.save(CHAT_ID, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID, "value");
+
+        inputService.deleteAllByChatId(ANOTHER_CHAT_ID);
+
+        assertEquals(3, inputRepository.count());
+    }
+
+    @Test
+    public void deleteAllByChatId_should_throw_if_user_does_not_exist() {
+        Executable executable = () -> inputService.deleteAllByChatId(ANOTHER_CHAT_ID);
+
+        assertThrows(TelegramUserDoesntExistException.class, executable);
+    }
+
+    @Test
+    public void findById_should_return_right_input_if_it_exists() {
+        userRepository.save(new UserEntity());
+        TelegramUserEntity tgUser = new TelegramUserEntity();
+        tgUser.setChatId(ANOTHER_CHAT_ID);
+
+        List<UserEntity> users = userRepository.findAll();
+        for (UserEntity user : users) {
+            if (user.getTelegramUser() == null) {
+                tgUser.setUser(user);
+                telegramUserRepository.save(tgUser);
+                break;
+            }
+        }
+
+        InputState inputState = InputState.ACTIVE_CREDENTIALS;
+        InputState inputState2 = InputState.CREDENTIALS_FULL_OR_EMAIL;
+        String value = "value";
+        String value2 = "value2";
+        String value3 = "value3";
+        String value4 = "value4";
+
+        inputService.save(CHAT_ID, inputState, value);
+        inputService.save(CHAT_ID, inputState2, value2);
+        inputService.save(ANOTHER_CHAT_ID, inputState, value3);
+        inputService.save(ANOTHER_CHAT_ID, inputState2, value4);
+
+        assertEquals(value, inputService.findById(CHAT_ID, inputState).getValue());
+        assertEquals(value2, inputService.findById(CHAT_ID, inputState2).getValue());
+    }
+
+    @Test
+    public void findById_should_throw_if_user_does_not_exist() {
+        InputState inputState = InputState.ACTIVE_CREDENTIALS;
+        Executable executable = () -> inputService.findById(ANOTHER_CHAT_ID, inputState);
+
+        assertThrows(TelegramUserDoesntExistException.class, executable);
+    }
+
+    @Test
+    public void findById_should_throw_if_input_does_not_exist() {
+        InputState inputState = InputState.ACTIVE_CREDENTIALS;
+        Executable executable = () -> inputService.findById(CHAT_ID, inputState);
+
+        assertThrows(TelegramUserInputDoesntExistException.class, executable);
+    }
+
+    @Test
+    public void findAllByChatId_should_return_all_inputs_for_user() {
+        userRepository.save(new UserEntity());
+        TelegramUserEntity tgUser = new TelegramUserEntity();
+        tgUser.setChatId(ANOTHER_CHAT_ID);
+
+        List<UserEntity> users = userRepository.findAll();
+        for (UserEntity user : users) {
+            if (user.getTelegramUser() == null) {
+                tgUser.setUser(user);
+                telegramUserRepository.save(tgUser);
+                break;
+            }
+        }
+
+        InputState inputState = InputState.ACTIVE_CREDENTIALS;
+        InputState inputState2 = InputState.CREDENTIALS_FULL_OR_EMAIL;
+        String value = "value";
+        String value2 = "value2";
+        String value3 = "value3";
+        String value4 = "value4";
+
+        inputService.save(CHAT_ID, inputState, value);
+        inputService.save(CHAT_ID, inputState2, value2);
+
+        List<TelegramUserInput> expectedFirstUserInputs = new ArrayList<>();
+        expectedFirstUserInputs.add(new TelegramUserInput(CHAT_ID, inputState, value));
+        expectedFirstUserInputs.add(new TelegramUserInput(CHAT_ID, inputState2, value2));
+
+        inputService.save(ANOTHER_CHAT_ID, inputState, value3);
+        inputService.save(ANOTHER_CHAT_ID, inputState2, value4);
+
+        List<TelegramUserInput> expectedSecondUserInputs = new ArrayList<>();
+        expectedSecondUserInputs.add(new TelegramUserInput(ANOTHER_CHAT_ID, inputState, value3));
+        expectedSecondUserInputs.add(new TelegramUserInput(ANOTHER_CHAT_ID, inputState2, value4));
+
+        List<TelegramUserInput> firstUserResult = inputService.findAllByChatId(CHAT_ID);
+        List<TelegramUserInput> secondUserResult = inputService.findAllByChatId(ANOTHER_CHAT_ID);
+
+        assertEquals(2, firstUserResult.size());
+        assertTrue(firstUserResult.containsAll(expectedFirstUserInputs) && expectedFirstUserInputs.containsAll(firstUserResult));
+
+        assertEquals(2, secondUserResult.size());
+        assertTrue(secondUserResult.containsAll(expectedSecondUserInputs) && expectedSecondUserInputs.containsAll(secondUserResult));
+    }
+
+    @Test
+    public void findAllByChatId_should_return_empty_list_if_no_inputs_for_user() {
+        assertEquals(0, inputService.findAllByChatId(CHAT_ID).size());
+    }
+
+    @Test
+    public void findAllByChatId_should_throw_if_user_does_not_exist() {
+        Executable executable = () -> inputService.findAllByChatId(ANOTHER_CHAT_ID);
+
+        assertThrows(TelegramUserDoesntExistException.class, executable);
     }
 }

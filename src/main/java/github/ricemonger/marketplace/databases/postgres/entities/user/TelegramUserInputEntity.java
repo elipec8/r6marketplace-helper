@@ -25,6 +25,7 @@ public class TelegramUserInputEntity {
     @Id
     private InputState inputState;
 
+    @Column(name = "input_value") // "value" column name conflicts with H2
     private String value;
 
     public TelegramUserInputEntity(TelegramUserEntity user, InputState inputState) {

@@ -192,7 +192,7 @@ public class BotInnerServiceTest {
         Long chatId = 1L;
 
         List<String> expected = List.of("email1", "email2");
-        when(telegramUserService.getCredentialsEmailsList(chatId)).thenReturn(expected);
+     //   when(telegramUserService.getCredentialsEmailsList(chatId)).thenReturn(expected);
 
         List<String> result = botInnerService.getCredentialsEmailsList(chatId);
 

@@ -17,57 +17,61 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class TelegramUserInputPostgresService implements TelegramUserInputDatabaseService {
 
-    private final TelegramUserInputPostgresRepository inputRepository;
+    private final TelegramUserInputPostgresRepository telegramUserInputRepository;
 
-    private final TelegramUserPostgresRepository telegramUserPostgresRepository;
+    private final TelegramUserPostgresRepository telegramUserRepository;
 
     @Override
     @Transactional
-    public void save(String chatId, InputState inputState, String value) {
-        TelegramUserEntity user = getTelegramUserEntityByIdOrThrow(chatId);
+    public void save(String chatId, InputState inputState, String value) throws TelegramUserDoesntExistException {
+        TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
-        TelegramUserInputEntity input = inputRepository.findById(new TelegramUserInputEntityId(user, inputState)).orElse(new TelegramUserInputEntity(user, inputState));
+        TelegramUserInputEntity input = telegramUserInputRepository.findById(new TelegramUserInputEntityId(telegramUser, inputState)).orElse(new TelegramUserInputEntity(telegramUser, inputState));
         input.setValue(value);
-        inputRepository.save(input);
+        telegramUserInputRepository.save(input);
     }
 
     @Override
     @Transactional
     public void deleteAllByChatId(String chatId) throws TelegramUserDoesntExistException {
-        TelegramUserEntity user = getTelegramUserEntityByIdOrThrow(chatId);
+        TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
-        user.getTelegramUserInputs().clear();
+        telegramUser.getTelegramUserInputs().clear();
 
-        telegramUserPostgresRepository.save(user);
+        telegramUserRepository.save(telegramUser);
     }
 
     @Override
-    public TelegramUserInput findById(String chatId, InputState inputState) throws TelegramUserInputDoesntExistException {
-        TelegramUserEntity user = getTelegramUserEntityByIdOrThrow(chatId);
+    public TelegramUserInput findById(String chatId, InputState inputState) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
+        TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
-        return inputRepository.findById(new TelegramUserInputEntityId(user, inputState)).orElseThrow(() -> new TelegramUserInputDoesntExistException(
+        return telegramUserInputRepository.findById(new TelegramUserInputEntityId(telegramUser, inputState)).orElseThrow(() -> new TelegramUserInputDoesntExistException(
                 "Input with chatId" + chatId + " and inputState " + inputState + " not found")).toTelegramUserInput();
     }
 
     @Override
-    public Collection<TelegramUserInput> findAllByChatId(String chatId) {
-        Collection<TelegramUserInputEntity> entities = inputRepository.findAllByTelegramUserChatId(chatId);
+    public List<TelegramUserInput> findAllByChatId(String chatId) throws TelegramUserDoesntExistException {
+        TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
+
+        Collection<TelegramUserInputEntity> entities = telegramUser.getTelegramUserInputs();
+
         if (entities == null || entities.isEmpty()) {
             return new ArrayList<>();
         } else {
-            return inputRepository.findAllByTelegramUserChatId(chatId).stream()
+            return entities.stream()
                     .map(TelegramUserInputEntity::toTelegramUserInput)
                     .toList();
         }
     }
 
-    private TelegramUserEntity getTelegramUserEntityByIdOrThrow(String chatId) {
-        return telegramUserPostgresRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found"));
+    private TelegramUserEntity getTelegramUserEntityByIdOrThrow(String chatId) throws TelegramUserDoesntExistException {
+        return telegramUserRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found"));
     }
 }

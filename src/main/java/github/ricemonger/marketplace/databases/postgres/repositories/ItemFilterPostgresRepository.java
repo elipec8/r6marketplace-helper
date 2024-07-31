@@ -5,7 +5,8 @@ import github.ricemonger.marketplace.databases.postgres.entities.user.ItemFilter
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface ItemFilterPostgresRepository extends JpaRepository<ItemFilterEntity, ItemFilterEntityId>{
-    Collection<ItemFilterEntity> findAllByUserId(Long userId);
+    List<ItemFilterEntity> findAllByUserId(Long userId);
 }
