@@ -8,8 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -24,9 +22,9 @@ class ItemFilterServiceTest {
     @Test
     public void saveItemFilter_should_handle_to_db_service() {
         ItemFilter itemFilter = new ItemFilter();
-     //   itemFilterService.saveItemFilter(itemFilter);
+        //   itemFilterService.saveItemFilter(itemFilter);
 
-      //  verify(telegramUserItemFilterDatabaseService).save(same(itemFilter));
+        //  verify(telegramUserItemFilterDatabaseService).save(same(itemFilter));
     }
 
     @Test

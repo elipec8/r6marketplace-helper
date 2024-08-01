@@ -29,14 +29,14 @@ public class TelegramBotUpdateReceiverTest {
     public static final UpdateInfo UPDATE_INFO = new UpdateInfo();
 
     @Test
-    public void consumeShouldCallUpdateToUpdateInfoMapperMap(){
+    public void consumeShouldCallUpdateToUpdateInfoMapperMap() {
         telegramBotUpdateReceiver.consume(UPDATE);
 
         verify(updateInfoMapper).map(same(UPDATE));
     }
 
     @Test
-    public void consumeShouldHandleMappedUpdateInfoToUpdateDistributor(){
+    public void consumeShouldHandleMappedUpdateInfoToUpdateDistributor() {
         when(updateInfoMapper.map(UPDATE)).thenReturn(UPDATE_INFO);
         telegramBotUpdateReceiver.consume(UPDATE);
 

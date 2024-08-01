@@ -1,10 +1,10 @@
 package github.ricemonger.telegramBot.updateReceiver.listeners;
 
-import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.Callbacks;
-import github.ricemonger.telegramBot.executors.ExecutorsService;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
+import github.ricemonger.telegramBot.UpdateInfo;
+import github.ricemonger.telegramBot.executors.ExecutorsService;
 import github.ricemonger.telegramBot.executors.cancel.Cancel;
 import github.ricemonger.telegramBot.executors.cancel.SilentCancel;
 import github.ricemonger.telegramBot.executors.credentials.add.CredentialsAddFullOrEmailInput;
@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest

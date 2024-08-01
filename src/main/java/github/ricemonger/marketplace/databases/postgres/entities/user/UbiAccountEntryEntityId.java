@@ -7,24 +7,24 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TradeManagerByItemIdEntityId {
+public class UbiAccountEntryEntityId {
+    private String ubiProfileId;
     private UserEntity user;
-    private String itemId;
 
     public int hashCode() {
-        return user.getId().hashCode() + itemId.hashCode();
+        return user.getId().hashCode() + ubiProfileId.hashCode();
     }
 
     public boolean equals(Object o) {
         if (o == this) {
             return true;
         }
-        if (!(o instanceof TradeManagerByItemIdEntityId tradeManagerByItemIdEntityId)) {
+        if (!(o instanceof UbiAccountEntryEntityId ubiAccountEntryEntityId)) {
             return false;
         }
-        if (this.hashCode() != tradeManagerByItemIdEntityId.hashCode()) {
+        if (this.hashCode() != ubiAccountEntryEntityId.hashCode()) {
             return false;
         }
-        return tradeManagerByItemIdEntityId.user.getId().equals(user.getId()) && tradeManagerByItemIdEntityId.itemId.equals(itemId);
+        return ubiAccountEntryEntityId.user.getId().equals(user.getId()) && ubiAccountEntryEntityId.ubiProfileId.equals(ubiProfileId);
     }
 }

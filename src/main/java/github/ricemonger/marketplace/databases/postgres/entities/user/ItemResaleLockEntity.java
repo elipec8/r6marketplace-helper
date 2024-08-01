@@ -15,14 +15,12 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(ItemResaleLockEntityId.class)
 public class ItemResaleLockEntity {
     @Id
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "ubiProfileId", referencedColumnName = "ubiProfileId")
-    private UbiAccountEntity ubiAccount;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "resale_lock_sequence")
+    @SequenceGenerator(name = "resale_lock_sequence", sequenceName = "resale_lock_sequence", allocationSize = 1)
+    private Long id;
 
-    @Id
     private String itemId;
 
     private Date expiresAt;

@@ -25,7 +25,7 @@ public class UserEntity {
     private TelegramUserEntity telegramUser;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, optional = true)
-    private UbiAccountEntity ubiAccount;
+    private UbiAccountEntryEntity ubiAccountEntry;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ItemFilterEntity> itemFilters = new ArrayList<>();

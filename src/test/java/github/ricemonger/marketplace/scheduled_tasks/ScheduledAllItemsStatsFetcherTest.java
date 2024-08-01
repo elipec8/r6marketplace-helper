@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
-import github.ricemonger.marketplace.services.ItemStatsService;
-import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
+import github.ricemonger.marketplace.services.CommonValuesService;
+import github.ricemonger.marketplace.services.ItemStatsService;
 import github.ricemonger.telegramBot.BotService;
 import github.ricemonger.utils.dtos.Item;
 import org.junit.jupiter.api.Test;

@@ -15,7 +15,7 @@ class CredentialsRemoveAllConfirmedCallbackTest {
     private BotInnerService botInnerService;
 
     @Test
-    public void initAndExecuteShould(){
+    public void initAndExecuteShould() {
 
         CredentialsRemoveAllConfirmedCallback credentialsRemoveAllConfirmedCallback = new CredentialsRemoveAllConfirmedCallback();
 

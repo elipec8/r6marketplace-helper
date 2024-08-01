@@ -16,7 +16,7 @@ class CredentialsRemoveAllCallbackTest {
     private BotInnerService botInnerService;
 
     @Test
-    public void initAndExecute(){
+    public void initAndExecute() {
 
         CredentialsRemoveAllCallback credentialsRemoveAllCallback = new CredentialsRemoveAllCallback();
 

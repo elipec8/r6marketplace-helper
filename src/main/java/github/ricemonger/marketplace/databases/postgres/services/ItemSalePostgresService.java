@@ -14,15 +14,15 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class ItemSalePostgresService implements ItemSaleDatabaseService {
 
-    private final ItemSalePostgresRepository repository;
+    private final ItemSalePostgresRepository itemSaleRepository;
 
     public void saveAll(Collection<Item> items) {
         if (items != null) {
-            repository.saveAll(items.stream().map(ItemSaleEntity::new).toList());
+            itemSaleRepository.saveAll(items.stream().map(ItemSaleEntity::new).toList());
         }
     }
 
     public Collection<ItemSale> findAll() {
-        return repository.findAll().stream().map(ItemSaleEntity::toItemSale).toList();
+        return itemSaleRepository.findAll().stream().map(ItemSaleEntity::toItemSale).toList();
     }
 }

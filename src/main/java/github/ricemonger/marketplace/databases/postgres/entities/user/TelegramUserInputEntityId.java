@@ -23,6 +23,9 @@ public class TelegramUserInputEntityId {
         if (!(o instanceof TelegramUserInputEntityId telegramUserInputEntityId)) {
             return false;
         }
+        if (this.hashCode() != telegramUserInputEntityId.hashCode()) {
+            return false;
+        }
         return telegramUserInputEntityId.telegramUser.getChatId().equals(telegramUser.getChatId()) && telegramUserInputEntityId.inputState.equals(inputState);
     }
 }

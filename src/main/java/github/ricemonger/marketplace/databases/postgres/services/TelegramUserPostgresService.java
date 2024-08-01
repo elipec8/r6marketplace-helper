@@ -25,19 +25,19 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class TelegramUserPostgresService implements TelegramUserDatabaseService {
 
-    private final TelegramUserPostgresRepository telegramUserPostgresRepository;
+    private final TelegramUserPostgresRepository telegramUserRepository;
 
-    private final UserPostgresRepository userPostgresRepository;
+    private final UserPostgresRepository userRepository;
 
     @Override
     public void create(String chatId) throws TelegramUserAlreadyExistsException {
-        UserEntity user = userPostgresRepository.save(new UserEntity());
+        UserEntity user = userRepository.save(new UserEntity());
         TelegramUserEntity telegramUser = new TelegramUserEntity(chatId, user);
 
-        if (telegramUserPostgresRepository.existsById(chatId)) {
+        if (telegramUserRepository.existsById(chatId)) {
             throw new TelegramUserAlreadyExistsException("Telegram user with chatId " + chatId + " already exists");
         } else {
-            telegramUserPostgresRepository.save(telegramUser);
+            telegramUserRepository.save(telegramUser);
         }
     }
 
@@ -46,7 +46,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     public void update(TelegramUser updatedTelegramUser) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(updatedTelegramUser.getChatId());
         telegramUser.setFields(updatedTelegramUser);
-        telegramUserPostgresRepository.save(telegramUser);
+        telegramUserRepository.save(telegramUser);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     public void setItemShowFewItemsInMessageFlag(String chatId, boolean flag) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
         telegramUser.setItemShowFewInMessageFlag(flag);
-        telegramUserPostgresRepository.save(telegramUser);
+        telegramUserRepository.save(telegramUser);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     public void setItemShowMessagesLimit(String chatId, Integer limit) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUserEntity = getTelegramUserEntityByIdOrThrow(chatId);
         telegramUserEntity.setItemShowMessagesLimit(limit);
-        telegramUserPostgresRepository.save(telegramUserEntity);
+        telegramUserRepository.save(telegramUserEntity);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
 
         telegramUser.setShowItemFieldsSettings(settings);
 
-        telegramUserPostgresRepository.save(telegramUser);
+        telegramUserRepository.save(telegramUser);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
 
         telegramUser.getItemShowAppliedFilters().add(filterEntity);
 
-        telegramUserPostgresRepository.save(telegramUser);
+        telegramUserRepository.save(telegramUser);
     }
 
     @Override
@@ -107,12 +107,12 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
             }
         }
 
-        telegramUserPostgresRepository.save(telegramUser);
+        telegramUserRepository.save(telegramUser);
     }
 
     @Override
     public boolean existsById(String chatId) {
-        return telegramUserPostgresRepository.existsById(chatId);
+        return telegramUserRepository.existsById(chatId);
     }
 
     @Override
@@ -127,10 +127,10 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
 
     @Override
     public Collection<TelegramUser> findAllUsers() {
-        return telegramUserPostgresRepository.findAll().stream().map(TelegramUserEntity::toTelegramUser).toList();
+        return telegramUserRepository.findAll().stream().map(TelegramUserEntity::toTelegramUser).toList();
     }
 
     private TelegramUserEntity getTelegramUserEntityByIdOrThrow(String chatId) {
-        return telegramUserPostgresRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found"));
+        return telegramUserRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found"));
     }
 }

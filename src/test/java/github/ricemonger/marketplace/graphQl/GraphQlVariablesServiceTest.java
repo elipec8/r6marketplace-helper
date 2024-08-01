@@ -109,7 +109,7 @@ public class GraphQlVariablesServiceTest {
 
         assertTrue(mapContainsEntries(result, Map.entry("spaceId", mainUserSpaceId), Map.entry("offset", offset)));
 
-        assertTrue(mapContainsEntries((Map)result.get("sortBy"),Map.entry("paymentItemId", paymentItemId)));
+        assertTrue(mapContainsEntries((Map) result.get("sortBy"), Map.entry("paymentItemId", paymentItemId)));
     }
 
     @SafeVarargs

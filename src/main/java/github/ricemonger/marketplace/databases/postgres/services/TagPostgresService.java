@@ -13,20 +13,20 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class TagPostgresService implements TagDatabaseService {
 
-    private final TagPostgresRepository repository;
+    private final TagPostgresRepository tagRepository;
 
     @Override
     public void saveAll(Collection<Tag> tags) {
-        repository.saveAll(tags.stream().map(TagEntity::new).toList());
+        tagRepository.saveAll(tags.stream().map(TagEntity::new).toList());
     }
 
     @Override
     public Collection<Tag> findAllByNames(Collection<String> tagNames) {
-        return repository.findAllByNames(tagNames).stream().map(TagEntity::toTag).toList();
+        return tagRepository.findAllByNames(tagNames).stream().map(TagEntity::toTag).toList();
     }
 
     @Override
     public Collection<Tag> findAll() {
-        return repository.findAll().stream().map(TagEntity::toTag).toList();
+        return tagRepository.findAll().stream().map(TagEntity::toTag).toList();
     }
 }

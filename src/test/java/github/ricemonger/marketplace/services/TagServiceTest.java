@@ -42,7 +42,7 @@ class TagServiceTest {
 
         when(tagDatabaseService.findAllByNames(tagNames)).thenReturn(tags);
 
-        assertEquals(tags,tagService.getTagsByNames(tagNames));
+        assertEquals(tags, tagService.getTagsByNames(tagNames));
 
         verify(tagDatabaseService).findAllByNames(same(tagNames));
     }
@@ -53,7 +53,7 @@ class TagServiceTest {
 
         when(tagDatabaseService.findAll()).thenReturn(tags);
 
-        assertEquals(tags,tagService.getAllTags());
+        assertEquals(tags, tagService.getAllTags());
 
         verify(tagDatabaseService).findAll();
     }

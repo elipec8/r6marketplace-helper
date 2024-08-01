@@ -16,22 +16,22 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ItemPostgresService implements ItemDatabaseService {
 
-    private final ItemPostgresRepository itemPostgresRepository;
+    private final ItemPostgresRepository itemRepository;
 
     @Override
     public void saveAll(Collection<Item> items) {
         if (items != null && !items.isEmpty()) {
-            itemPostgresRepository.saveAll(items.stream().map(ItemEntity::new).collect(Collectors.toSet()));
+            itemRepository.saveAll(items.stream().map(ItemEntity::new).collect(Collectors.toSet()));
         }
     }
 
     @Override
     public Item findById(String itemId) throws ItemNotFoundException {
-        return itemPostgresRepository.findById(itemId).map(ItemEntity::toItem).orElseThrow(() -> new ItemNotFoundException("Item with id" + itemId + "doesn't exist"));
+        return itemRepository.findById(itemId).map(ItemEntity::toItem).orElseThrow(() -> new ItemNotFoundException("Item with id" + itemId + "doesn't exist"));
     }
 
     @Override
     public List<Item> findAll() {
-        return itemPostgresRepository.findAll().stream().map(ItemEntity::toItem).toList();
+        return itemRepository.findAll().stream().map(ItemEntity::toItem).toList();
     }
 }
