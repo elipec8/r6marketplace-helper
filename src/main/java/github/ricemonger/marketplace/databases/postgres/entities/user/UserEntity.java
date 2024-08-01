@@ -25,7 +25,7 @@ public class UserEntity {
     private TelegramUserEntity telegramUser;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, optional = true)
-    private UbiAccountEntity ubiAccount;
+    private UbiAccountEntryEntity ubiAccountEntry;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ItemFilterEntity> itemFilters = new ArrayList<>();
@@ -37,9 +37,6 @@ public class UserEntity {
     private List<TradeManagerByItemIdEntity> tradeManagersByItemId = new ArrayList<>();
 
     private Boolean publicNotificationsEnabledFlag = true;
-
-    private Integer itemShowMessagesLimit = 50;
-    private Boolean itemShowFewInMessageFlag = false;
 
     private Boolean itemShowNameFlag = true;
     private Boolean itemShowItemTypeFlag = true;
@@ -53,5 +50,5 @@ public class UserEntity {
     @JoinTable(name = "user_item_show_applied_item_filter",
             joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "id")},
             inverseJoinColumns = @JoinColumn(name = "itemFilterName", referencedColumnName = "name"))
-    private List<ItemFilterEntity> itemShowAppliedFilters;
+    private List<ItemFilterEntity> itemShowAppliedFilters = new ArrayList<>();
 }

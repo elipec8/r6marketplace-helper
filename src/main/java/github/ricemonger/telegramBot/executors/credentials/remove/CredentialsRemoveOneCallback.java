@@ -1,8 +1,8 @@
 package github.ricemonger.telegramBot.executors.credentials.remove;
 
-import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
+import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 
 public class CredentialsRemoveOneCallback extends AbstractBotCommandExecutor {
     @Override

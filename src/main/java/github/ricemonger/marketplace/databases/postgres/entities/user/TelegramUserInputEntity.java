@@ -18,13 +18,14 @@ import lombok.extern.slf4j.Slf4j;
 @IdClass(TelegramUserInputEntityId.class)
 public class TelegramUserInputEntity {
     @MapsId
-    @ManyToOne
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "chatId", referencedColumnName = "chatId")
     private TelegramUserEntity telegramUser;
 
     @Id
     private InputState inputState;
 
+    @Column(name = "input_value") // "value" column name conflicts with H2
     private String value;
 
     public TelegramUserInputEntity(TelegramUserEntity user, InputState inputState) {
@@ -34,10 +35,9 @@ public class TelegramUserInputEntity {
 
     public TelegramUserInput toTelegramUserInput() {
         TelegramUserInput telegramUserInput = new TelegramUserInput();
-        if(this.telegramUser != null) {
+        if (this.telegramUser != null) {
             telegramUserInput.setChatId(this.telegramUser.getChatId());
-        }
-        else{
+        } else {
             log.error("telegramUser is null.");
             telegramUserInput.setChatId(null);
         }

@@ -1,7 +1,7 @@
 package github.ricemonger.telegramBot.executors;
 
-import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.UpdateInfo;
+import github.ricemonger.telegramBot.client.BotInnerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

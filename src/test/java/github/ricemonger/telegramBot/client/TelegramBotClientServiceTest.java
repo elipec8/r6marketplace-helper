@@ -15,7 +15,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -30,7 +30,7 @@ class TelegramBotClientServiceTest {
     private TelegramBotClientService telegramBotClientService;
 
     @Test
-    public void askFromInlineKeyboardShouldCreateKeyboardMarkupAndHandleItToClient() throws Exception{
+    public void askFromInlineKeyboardShouldCreateKeyboardMarkupAndHandleItToClient() throws Exception {
         UpdateInfo updateInfo = new UpdateInfo();
         updateInfo.setChatId(1L);
         String text = "text";
@@ -45,6 +45,7 @@ class TelegramBotClientServiceTest {
 
         verify(telegramBotClient).execute(sendMessage);
     }
+
     private InlineKeyboardMarkup createInlineKeyboardMarkup(int buttonsInLine,
                                                             CallbackButton... callbackButtons) {
         List<InlineKeyboardButton> inlineButtonsList = new ArrayList<>();
@@ -69,7 +70,7 @@ class TelegramBotClientServiceTest {
     }
 
     @Test
-    public void askFromInlineKeyboardShouldThrowExceptionWhenClientThrowsException() throws Exception{
+    public void askFromInlineKeyboardShouldThrowExceptionWhenClientThrowsException() throws Exception {
 
         doThrow(new TelegramApiException("message")).when(telegramBotClient).execute(any(SendMessage.class));
 
@@ -78,7 +79,7 @@ class TelegramBotClientServiceTest {
     }
 
     @Test
-    public void sendTextShouldHandleMessageToClient() throws Exception{
+    public void sendTextShouldHandleMessageToClient() throws Exception {
         UpdateInfo updateInfo = new UpdateInfo();
         updateInfo.setChatId(1L);
         String answer = "answer";
@@ -91,7 +92,7 @@ class TelegramBotClientServiceTest {
     }
 
     @Test
-    public void sendTextShouldHandleMessageToClientWithChatIdAsParam() throws Exception{
+    public void sendTextShouldHandleMessageToClientWithChatIdAsParam() throws Exception {
         UpdateInfo updateInfo = new UpdateInfo();
         updateInfo.setChatId(1L);
         String answer = "answer";
@@ -104,7 +105,7 @@ class TelegramBotClientServiceTest {
     }
 
     @Test
-    public void sendTextShouldThrowExceptionWhenClientThrowsException() throws Exception{
+    public void sendTextShouldThrowExceptionWhenClientThrowsException() throws Exception {
         UpdateInfo updateInfo = new UpdateInfo();
         updateInfo.setChatId(1L);
         SendMessage sendMessage = new SendMessage(String.valueOf(updateInfo.getChatId()), "message");
@@ -116,7 +117,7 @@ class TelegramBotClientServiceTest {
     }
 
     @Test
-    public void notifyUserAboutUbiAuthorizationFailureShouldHandleMessageToClient() throws Exception{
+    public void notifyUserAboutUbiAuthorizationFailureShouldHandleMessageToClient() throws Exception {
         String chatId = "chatId";
         String email = "email";
 

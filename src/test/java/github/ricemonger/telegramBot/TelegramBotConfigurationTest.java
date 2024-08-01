@@ -13,7 +13,7 @@ public class TelegramBotConfigurationTest {
     private TelegramBotConfiguration telegramBotConfiguration;
 
     @Test
-    public void telegramBotConfigurationPropertiesShouldBeAutowired(){
+    public void telegramBotConfigurationPropertiesShouldBeAutowired() {
         assertNotNull(telegramBotConfiguration.getTELEGRAM_BOT_TOKEN());
         assertNotNull(telegramBotConfiguration.getTELEGRAM_BOT_USERNAME());
     }

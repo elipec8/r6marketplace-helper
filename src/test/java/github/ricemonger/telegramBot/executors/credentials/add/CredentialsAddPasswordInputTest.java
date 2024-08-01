@@ -1,8 +1,8 @@
 package github.ricemonger.telegramBot.executors.credentials.add;
 
-import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
+import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +17,7 @@ class CredentialsAddPasswordInputTest {
     private BotInnerService botInnerService;
 
     @Test
-    public void initAndExecuteShould(){
+    public void initAndExecuteShould() {
 
         CredentialsAddPasswordInput credentialsAddPasswordInput = new CredentialsAddPasswordInput();
         credentialsAddPasswordInput.initAndExecute(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT, botInnerService);

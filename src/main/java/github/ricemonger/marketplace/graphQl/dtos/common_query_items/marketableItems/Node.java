@@ -2,7 +2,10 @@ package github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketable
 
 import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.Item;
 import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.MarketData;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Objects;
 
@@ -16,27 +19,25 @@ public class Node {
 
     private MarketData marketData;
 
-    public boolean equals(Object o){
-        if(o == this){
+    public boolean equals(Object o) {
+        if (o == this) {
             return true;
         }
-        if(!(o instanceof Node node)){
+        if (!(o instanceof Node node)) {
             return false;
         }
 
-        if(item == null && node.item == null) {
+        if (item == null && node.item == null) {
             return true;
-        }
-        else if(item == null || node.item == null) {
+        } else if (item == null || node.item == null) {
             return false;
-        }
-        else {
+        } else {
             return Objects.equals(item.getItemId(), node.item.getItemId());
         }
     }
 
-    public int hashCode(){
-        if(item == null || item.getItemId() == null){
+    public int hashCode() {
+        if (item == null || item.getItemId() == null) {
             return 0;
         }
         return item.getItemId().hashCode();

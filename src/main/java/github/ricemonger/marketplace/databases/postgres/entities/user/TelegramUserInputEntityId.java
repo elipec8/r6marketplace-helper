@@ -12,15 +12,18 @@ public class TelegramUserInputEntityId {
     private TelegramUserEntity telegramUser;
     private InputState inputState;
 
-    public int hashCode(){
+    public int hashCode() {
         return telegramUser.getChatId().hashCode() + inputState.hashCode();
     }
 
-    public boolean equals(Object o){
-        if(o == this){
+    public boolean equals(Object o) {
+        if (o == this) {
             return true;
         }
-        if(!(o instanceof TelegramUserInputEntityId telegramUserInputEntityId)){
+        if (!(o instanceof TelegramUserInputEntityId telegramUserInputEntityId)) {
+            return false;
+        }
+        if (this.hashCode() != telegramUserInputEntityId.hashCode()) {
             return false;
         }
         return telegramUserInputEntityId.telegramUser.getChatId().equals(telegramUser.getChatId()) && telegramUserInputEntityId.inputState.equals(inputState);

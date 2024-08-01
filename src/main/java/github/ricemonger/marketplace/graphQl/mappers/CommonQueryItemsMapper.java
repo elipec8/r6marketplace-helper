@@ -53,7 +53,6 @@ public class CommonQueryItemsMapper {
         if (buyStats != null) {
             result.setMaxBuyPrice(buyStats.getHighestPrice());
             result.setBuyOrdersCount(buyStats.getActiveCount());
-            ;
         } else {
             result.setMaxBuyPrice(0);
             result.setBuyOrdersCount(0);

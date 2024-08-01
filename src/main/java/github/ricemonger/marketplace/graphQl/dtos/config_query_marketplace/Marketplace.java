@@ -1,6 +1,8 @@
 package github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace;
 
-import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.*;
+import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.TagGroup;
+import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.Tags;
+import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.Type;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

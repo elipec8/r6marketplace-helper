@@ -1,10 +1,10 @@
 package github.ricemonger.telegramBot.client;
 
-import github.ricemonger.marketplace.services.TelegramUserService;
 import github.ricemonger.marketplace.services.ItemStatsService;
-import github.ricemonger.telegramBot.UpdateInfo;
+import github.ricemonger.marketplace.services.TelegramUserService;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
+import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.utils.exceptions.InvalidTelegramUserInput;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class BotInnerServiceTest {
@@ -192,7 +193,7 @@ public class BotInnerServiceTest {
         Long chatId = 1L;
 
         List<String> expected = List.of("email1", "email2");
-        when(telegramUserService.getCredentialsEmailsList(chatId)).thenReturn(expected);
+        //   when(telegramUserService.getCredentialsEmailsList(chatId)).thenReturn(expected);
 
         List<String> result = botInnerService.getCredentialsEmailsList(chatId);
 

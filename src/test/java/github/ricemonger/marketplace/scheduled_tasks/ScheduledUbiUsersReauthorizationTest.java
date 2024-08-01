@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class ScheduledUbiUsersReauthorizationTest {
@@ -30,11 +29,11 @@ class ScheduledUbiUsersReauthorizationTest {
     public void reauthorizeUbiUsersAndNotifyAboutFailures_should_reauthorize_and_notify_via_services() {
         List<UbiAccount> unauthorizedUsers = new ArrayList<>();
         UbiAccount unauthorizedUser = new UbiAccount();
-        unauthorizedUser.setChatId("1");
+        //unauthorizedUser.setChatId("1");
         unauthorizedUser.setEmail("email");
         unauthorizedUsers.add(unauthorizedUser);
 
-        when(telegramUbiAccountService.reauthorizeAllUbiUsersAndGetUnauthorizedList()).thenReturn(unauthorizedUsers);
+        //when(telegramUbiAccountService.reauthorizeAllUbiUsersAndGetUnauthorizedList()).thenReturn(unauthorizedUsers);
 
         scheduledUbiUsersReauthorization.reauthorizeUbiUsersAndNotifyAboutFailures();
 

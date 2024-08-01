@@ -27,6 +27,7 @@ public class TelegramBotClientService {
 
         executeMessageOnBot(sendMessage);
     }
+
     private InlineKeyboardMarkup createInlineKeyboardMarkup(int buttonsInLine,
                                                             CallbackButton... callbackButtons) {
         List<InlineKeyboardButton> inlineButtonsList = new ArrayList<>();
@@ -59,11 +60,11 @@ public class TelegramBotClientService {
         executeMessageOnBot(sendMessage);
     }
 
-    private void executeMessageOnBot(SendMessage sendMessage){
+    private void executeMessageOnBot(SendMessage sendMessage) {
         try {
             telegramBotClient.execute(sendMessage);
         } catch (TelegramApiException e) {
-            throw  new TelegramApiRuntimeException(e);
+            throw new TelegramApiRuntimeException(e);
         }
     }
 

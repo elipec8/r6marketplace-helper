@@ -21,7 +21,7 @@ public class TradeManagerService {
         telegramUserTradeManagerByItemIdDatabaseService.save(chatId, tradeManager);
     }
 
-    public void saveTradeManagerByItemFilter(String chatId,TradeManagerByItemFilters tradeManager) {
+    public void saveTradeManagerByItemFilter(String chatId, TradeManagerByItemFilters tradeManager) {
         tradeManagerByItemFiltersDatabaseService.save(tradeManager);
     }
 
@@ -34,7 +34,7 @@ public class TradeManagerService {
     }
 
     public Collection<TradeManagerByItemId> getAllTradeManagersByItemId(String chatId) {
-        return telegramUserTradeManagerByItemIdDatabaseService.findAll(chatId);
+        return telegramUserTradeManagerByItemIdDatabaseService.findAllByChatId(chatId);
     }
 
     public Collection<TradeManagerByItemFilters> getAllTradeManagersByItemFilters(String chatId) {

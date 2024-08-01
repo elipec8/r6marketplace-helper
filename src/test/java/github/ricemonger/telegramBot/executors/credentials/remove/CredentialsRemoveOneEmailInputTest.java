@@ -1,8 +1,8 @@
 package github.ricemonger.telegramBot.executors.credentials.remove;
 
-import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
+import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +17,7 @@ class CredentialsRemoveOneEmailInputTest {
     private BotInnerService botInnerService;
 
     @Test
-    public void initAndExecuteShould(){
+    public void initAndExecuteShould() {
         CredentialsRemoveOneEmailInput credentialsRemoveOneEmailInput = new CredentialsRemoveOneEmailInput();
 
         credentialsRemoveOneEmailInput.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);

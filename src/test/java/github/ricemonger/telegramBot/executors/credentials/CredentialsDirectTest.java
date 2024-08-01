@@ -24,7 +24,7 @@ class CredentialsDirectTest {
 
         verify(botInnerService).isRegistered(MockUpdateInfos.UPDATE_INFO.getChatId());
         verify(botInnerService).sendText(same(MockUpdateInfos.UPDATE_INFO), anyString());
-        verify(botInnerService,never()).askFromInlineKeyboard(any(), any(), anyInt(),any());
+        verify(botInnerService, never()).askFromInlineKeyboard(any(), any(), anyInt(), any());
     }
 
     @Test
@@ -35,7 +35,7 @@ class CredentialsDirectTest {
         credentialsDirect.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
         verify(botInnerService).isRegistered(MockUpdateInfos.UPDATE_INFO.getChatId());
-        verify(botInnerService).askFromInlineKeyboard(same(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(),any());
+        verify(botInnerService).askFromInlineKeyboard(same(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());
     }
 
 }

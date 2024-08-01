@@ -22,6 +22,9 @@ public class TradeManagerByItemIdEntityId {
         if (!(o instanceof TradeManagerByItemIdEntityId tradeManagerByItemIdEntityId)) {
             return false;
         }
+        if (this.hashCode() != tradeManagerByItemIdEntityId.hashCode()) {
+            return false;
+        }
         return tradeManagerByItemIdEntityId.user.getId().equals(user.getId()) && tradeManagerByItemIdEntityId.itemId.equals(itemId);
     }
 }

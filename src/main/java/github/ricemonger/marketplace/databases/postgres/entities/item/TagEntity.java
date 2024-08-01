@@ -2,6 +2,7 @@ package github.ricemonger.marketplace.databases.postgres.entities.item;
 
 import github.ricemonger.utils.dtos.Tag;
 import github.ricemonger.utils.enums.TagGroup;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TagEntity {
     @Id
+    @Column(name = "tag_value") // "value" column name conflicts with H2
     private String value;
     private String name;
     private TagGroup tagGroup;

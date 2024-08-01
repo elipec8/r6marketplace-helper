@@ -13,11 +13,11 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class ItemSaleHistoryPostgresService implements ItemSaleHistoryDatabaseService {
 
-    private final ItemSaleHistoryPostgresRepository repository;
+    private final ItemSaleHistoryPostgresRepository itemSaleHistoryRepository;
 
     public void saveAll(Collection<ItemSaleHistory> histories) {
         if (histories != null && !histories.isEmpty()) {
-            repository.saveAll(histories.stream().map(ItemSaleHistoryEntity::new).toList());
+            itemSaleHistoryRepository.saveAll(histories.stream().map(ItemSaleHistoryEntity::new).toList());
         }
     }
 }

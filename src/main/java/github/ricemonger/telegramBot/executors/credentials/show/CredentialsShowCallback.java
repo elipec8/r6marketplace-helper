@@ -11,7 +11,7 @@ public class CredentialsShowCallback extends AbstractBotCommandExecutor {
 
         List<String> emails = botInnerService.getCredentialsEmailsList(updateInfo.getChatId());
 
-        for(String email : emails){
+        for (String email : emails) {
             sb.append(email).append("\n");
         }
 

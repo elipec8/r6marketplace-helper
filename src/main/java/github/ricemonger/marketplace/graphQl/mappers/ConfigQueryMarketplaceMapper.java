@@ -47,11 +47,10 @@ public class ConfigQueryMarketplaceMapper {
     public void checkItemTypes(Marketplace marketplace) {
         List<Type> types = marketplace.getTypes();
 
-        for(Type type : types){
-            try{
+        for (Type type : types) {
+            try {
                 ItemType.valueOf(type.getValue());
-            }
-            catch(IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 log.error("Item type not found: " + type.getValue());
             }
         }

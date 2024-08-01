@@ -1,11 +1,11 @@
 package github.ricemonger.telegramBot.executors;
 
+import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.UpdateInfo;
+import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.client.CallbackButton;
-import github.ricemonger.telegramBot.Callbacks;
 
 import java.util.Arrays;
 
@@ -60,7 +60,7 @@ public abstract class AbstractBotCommandExecutor {
         botInnerService.setUserNextInputState(updateInfo.getChatId(), nextState);
     }
 
-    protected final String getUserCurrentInput(){
+    protected final String getUserCurrentInput() {
         String userInput;
 
         if (updateInfo.isHasMessage()) {
@@ -83,7 +83,7 @@ public abstract class AbstractBotCommandExecutor {
 
     protected final void askFromInlineKeyboardOrSkip(String text, int buttonsInLine, CallbackButton... buttons) {
         CallbackButton skipButton = new CallbackButton("Skip", Callbacks.EMPTY);
-        CallbackButton[] buttonsAndCancelButton = Arrays.copyOf(buttons, buttons.length+1);
+        CallbackButton[] buttonsAndCancelButton = Arrays.copyOf(buttons, buttons.length + 1);
         buttonsAndCancelButton[buttons.length] = skipButton;
 
         askFromInlineKeyboard(text, buttonsInLine, buttonsAndCancelButton);
@@ -93,12 +93,12 @@ public abstract class AbstractBotCommandExecutor {
         botInnerService.askFromInlineKeyboard(updateInfo, text, buttonsInLine, buttons);
     }
 
-    protected final void cancel(){
+    protected final void cancel() {
         silentCancel();
         sendText("Operation cancelled.");
     }
 
-    protected final void silentCancel(){
+    protected final void silentCancel() {
         botInnerService.setUserNextInputState(updateInfo.getChatId(), InputState.BASE);
 
         botInnerService.setUserNextInputGroup(updateInfo.getChatId(), InputGroup.BASE);
@@ -124,7 +124,7 @@ public abstract class AbstractBotCommandExecutor {
 
     @Override
     public String toString() {
-        return String.format("%s(updateInfo=%s,botService=%s)", this.getClass().getSimpleName(),updateInfo, botInnerService);
+        return String.format("%s(updateInfo=%s,botService=%s)", this.getClass().getSimpleName(), updateInfo, botInnerService);
     }
 
     @FunctionalInterface

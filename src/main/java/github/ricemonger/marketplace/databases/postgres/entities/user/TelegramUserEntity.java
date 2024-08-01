@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "telegram_user")
@@ -26,11 +27,19 @@ public class TelegramUserEntity {
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private UserEntity user;
 
-    @OneToMany(mappedBy = "telegramUser",orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<TelegramUserInputEntity> telegramUserInputs;
+    @OneToMany(mappedBy = "telegramUser", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<TelegramUserInputEntity> telegramUserInputs = new ArrayList<>();
 
     private InputState inputState = InputState.BASE;
     private InputGroup inputGroup = InputGroup.BASE;
+
+    private Integer itemShowMessagesLimit = 50;
+    private Boolean itemShowFewInMessageFlag = false;
+
+    public TelegramUserEntity(String chatId, UserEntity user) {
+        this.chatId = chatId;
+        this.user = user;
+    }
 
     public TelegramUser toTelegramUser() {
         TelegramUser telegramUser = new TelegramUser();
@@ -38,8 +47,8 @@ public class TelegramUserEntity {
         telegramUser.setInputState(this.inputState);
         telegramUser.setInputGroup(this.inputGroup);
         telegramUser.setPublicNotificationsEnabledFlag(this.user.getPublicNotificationsEnabledFlag());
-        telegramUser.setItemShowMessagesLimit(this.user.getItemShowMessagesLimit());
-        telegramUser.setItemShowFewInMessageFlag(this.user.getItemShowFewInMessageFlag());
+        telegramUser.setItemShowMessagesLimit(this.itemShowMessagesLimit);
+        telegramUser.setItemShowFewInMessageFlag(this.itemShowFewInMessageFlag);
         telegramUser.setItemShowNameFlag(this.user.getItemShowNameFlag());
         telegramUser.setItemShowItemTypeFlag(this.user.getItemShowItemTypeFlag());
         telegramUser.setItemShowMaxBuyPrice(this.user.getItemShowMaxBuyPrice());
@@ -65,8 +74,8 @@ public class TelegramUserEntity {
 
     public ItemShowSettings toItemShowSettings() {
         ItemShowSettings itemShowSettings = new ItemShowSettings();
-        itemShowSettings.setItemShowMessagesLimit(this.user.getItemShowMessagesLimit());
-        itemShowSettings.setItemShowFewInMessageFlag(this.user.getItemShowFewInMessageFlag());
+        itemShowSettings.setItemShowMessagesLimit(this.itemShowMessagesLimit);
+        itemShowSettings.setItemShowFewInMessageFlag(this.itemShowFewInMessageFlag);
         itemShowSettings.setItemShowNameFlag(this.user.getItemShowNameFlag());
         itemShowSettings.setItemShowItemTypeFlag(this.user.getItemShowItemTypeFlag());
         itemShowSettings.setItemShowMaxBuyPrice(this.user.getItemShowMaxBuyPrice());
@@ -76,16 +85,10 @@ public class TelegramUserEntity {
         itemShowSettings.setItemShowPictureFlag(this.user.getItemShowPictureFlag());
         if (this.user.getItemShowAppliedFilters() != null) {
             itemShowSettings.setItemShowAppliedFilters(this.user.getItemShowAppliedFilters().stream().map(ItemFilterEntity::toItemFilter).toList());
+        } else {
+            itemShowSettings.setItemShowAppliedFilters(new ArrayList<>());
         }
         return itemShowSettings;
-    }
-
-    public void setItemShowFewInMessageFlag(boolean flag) {
-        this.user.setItemShowFewInMessageFlag(flag);
-    }
-
-    public void setItemShowMessagesLimit(Integer limit) {
-        this.user.setItemShowMessagesLimit(limit);
     }
 
     public List<ItemFilterEntity> getItemShowAppliedFilters() {
@@ -93,7 +96,12 @@ public class TelegramUserEntity {
     }
 
     public void setItemShowAppliedFilters(List<ItemFilterEntity> filters) {
-        this.user.setItemShowAppliedFilters(filters);
+        if (filters == null) {
+            this.user.getItemShowAppliedFilters().clear();
+        } else {
+            this.user.getItemShowAppliedFilters().clear();
+            this.user.getItemShowAppliedFilters().addAll(filters);
+        }
     }
 
     public void setFields(TelegramUser telegramUser) {
@@ -101,8 +109,8 @@ public class TelegramUserEntity {
         this.inputState = telegramUser.getInputState();
         this.inputGroup = telegramUser.getInputGroup();
         this.user.setPublicNotificationsEnabledFlag(telegramUser.isPublicNotificationsEnabledFlag());
-        this.user.setItemShowMessagesLimit(telegramUser.getItemShowMessagesLimit());
-        this.user.setItemShowFewInMessageFlag(telegramUser.isItemShowFewInMessageFlag());
+        this.itemShowMessagesLimit = telegramUser.getItemShowMessagesLimit();
+        this.itemShowFewInMessageFlag = telegramUser.isItemShowFewInMessageFlag();
         this.user.setItemShowNameFlag(telegramUser.isItemShowNameFlag());
         this.user.setItemShowItemTypeFlag(telegramUser.isItemShowItemTypeFlag());
         this.user.setItemShowMaxBuyPrice(telegramUser.isItemShowMaxBuyPrice());
@@ -111,7 +119,8 @@ public class TelegramUserEntity {
         this.user.setItemsShowSellOrdersCountFlag(telegramUser.isItemsShowSellOrdersCountFlag());
         this.user.setItemShowPictureFlag(telegramUser.isItemShowPictureFlag());
         if (telegramUser.getItemShowAppliedFilters() != null) {
-            this.user.setItemShowAppliedFilters(telegramUser.getItemShowAppliedFilters().stream().map(ItemFilterEntity::new).toList());
+            this.user.getItemShowAppliedFilters().clear();
+            this.user.getItemShowAppliedFilters().addAll(telegramUser.getItemShowAppliedFilters().stream().map(ItemFilterEntity::new).toList());
         }
     }
 }

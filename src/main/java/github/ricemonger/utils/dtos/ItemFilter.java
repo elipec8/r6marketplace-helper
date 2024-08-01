@@ -140,23 +140,22 @@ public class ItemFilter {
         String minLastSoldPrice = String.valueOf(this.getMinLastSoldPrice());
         String maxLastSoldPrice = String.valueOf(this.getMaxLastSoldPrice());
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("Name: ").append(name).append("\n")
-                .append("Filter type: ").append(filterType).append("\n")
-                .append("Is owned: ").append(isOwned).append("\n")
-                .append("Item name pattern: ").append(itemNamePatterns).append("\n")
-                .append("Item types: ").append(itemTypes).append("\n")
-                .append("Rarity tags: ").append(rarityTags).append("\n")
-                .append("Season tags: ").append(seasonTags).append("\n")
-                .append("Operator tags: ").append(operatorTags).append("\n")
-                .append("Weapon tags: ").append(weaponTags).append("\n")
-                .append("Event tags: ").append(eventTags).append("\n")
-                .append("Esports tags: ").append(esportsTags).append("\n")
-                .append("Other tags: ").append(otherTags).append("\n")
-                .append("Min price: ").append(minPrice).append("\n")
-                .append("Max price: ").append(maxPrice).append("\n")
-                .append("Min last sold price: ").append(minLastSoldPrice).append("\n")
-                .append("Max last sold price: ").append(maxLastSoldPrice).append("\n");
-        return sb.toString();
+        String sb = "Name: " + name + "\n" +
+                    "Filter type: " + filterType + "\n" +
+                    "Is owned: " + isOwned + "\n" +
+                    "Item name pattern: " + itemNamePatterns + "\n" +
+                    "Item types: " + itemTypes + "\n" +
+                    "Rarity tags: " + rarityTags + "\n" +
+                    "Season tags: " + seasonTags + "\n" +
+                    "Operator tags: " + operatorTags + "\n" +
+                    "Weapon tags: " + weaponTags + "\n" +
+                    "Event tags: " + eventTags + "\n" +
+                    "Esports tags: " + esportsTags + "\n" +
+                    "Other tags: " + otherTags + "\n" +
+                    "Min price: " + minPrice + "\n" +
+                    "Max price: " + maxPrice + "\n" +
+                    "Min last sold price: " + minLastSoldPrice + "\n" +
+                    "Max last sold price: " + maxLastSoldPrice + "\n";
+        return sb;
     }
 }

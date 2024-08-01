@@ -5,7 +5,7 @@ import github.ricemonger.utils.dtos.UbiAccountWithTelegram;
 
 import java.util.List;
 
-public interface TelegramUserUbiAccountDatabaseService {
+public interface TelegramUserUbiAccountEntryDatabaseService {
     void save(String chatId, UbiAccount user);
 
     void deleteByChatId(String chatId);

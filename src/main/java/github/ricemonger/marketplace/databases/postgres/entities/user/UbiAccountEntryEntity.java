@@ -19,12 +19,14 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UbiAccountEntity {
+@IdClass(UbiAccountEntryEntityId.class)
+public class UbiAccountEntryEntity {
 
     @Id
     private String ubiProfileId;
 
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @MapsId
+    @OneToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private UserEntity user;
 
@@ -53,7 +55,10 @@ public class UbiAccountEntity {
 
     private Integer availableSellSlots;
 
-    @OneToMany(mappedBy = "ubiAccount", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinTable(name = "ubi_account_current_resale_locks",
+            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
+            inverseJoinColumns = @JoinColumn(name = "resaleLockId", referencedColumnName = "id"))
     private List<ItemResaleLockEntity> resaleLocks = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
@@ -74,7 +79,7 @@ public class UbiAccountEntity {
             inverseJoinColumns = @JoinColumn(name = "tradeId", referencedColumnName = "tradeId"))
     private List<UbiTradeEntity> finishedTrades = new ArrayList<>();
 
-    public UbiAccountEntity(UserEntity user, UbiAccount account) {
+    public UbiAccountEntryEntity(UserEntity user, UbiAccount account) {
         this.user = user;
         this.email = account.getEmail();
         this.encodedPassword = account.getEncodedPassword();
@@ -99,7 +104,7 @@ public class UbiAccountEntity {
         this.ownedItemsIds = itemsIds.toString();
     }
 
-    public UbiAccountWithTelegram toUbiAccountWithTelegram(){
+    public UbiAccountWithTelegram toUbiAccountWithTelegram() {
         UbiAccountWithTelegram ubiAccountWithTelegram = new UbiAccountWithTelegram();
         ubiAccountWithTelegram.setUbiAccount(this.toUbiAccount());
         ubiAccountWithTelegram.setChatId(this.user.getTelegramUser().getChatId());

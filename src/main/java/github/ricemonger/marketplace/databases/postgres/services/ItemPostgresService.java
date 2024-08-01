@@ -9,28 +9,29 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ItemPostgresService implements ItemDatabaseService {
 
-    private final ItemPostgresRepository itemPostgresRepository;
+    private final ItemPostgresRepository itemRepository;
 
     @Override
     public void saveAll(Collection<Item> items) {
         if (items != null && !items.isEmpty()) {
-            itemPostgresRepository.saveAll(items.stream().map(ItemEntity::new).collect(Collectors.toSet()));
+            itemRepository.saveAll(items.stream().map(ItemEntity::new).collect(Collectors.toSet()));
         }
     }
 
     @Override
     public Item findById(String itemId) throws ItemNotFoundException {
-        return itemPostgresRepository.findById(itemId).map(ItemEntity::toItem).orElseThrow(() -> new ItemNotFoundException("Item with id" + itemId + "doesn't exist"));
+        return itemRepository.findById(itemId).map(ItemEntity::toItem).orElseThrow(() -> new ItemNotFoundException("Item with id" + itemId + "doesn't exist"));
     }
 
     @Override
-    public Collection<Item> findAll() {
-        return itemPostgresRepository.findAll().stream().map(ItemEntity::toItem).toList();
+    public List<Item> findAll() {
+        return itemRepository.findAll().stream().map(ItemEntity::toItem).toList();
     }
 }

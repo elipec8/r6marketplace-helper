@@ -26,27 +26,24 @@ public class ConfigQueryTradeMapper {
         SellLimit sellLimit = tradesConfig.getSellLimit();
         TransactionFeesConfig transactionFeesConfig = tradesConfig.getTransactionFeesConfig() == null || tradesConfig.getTransactionFeesConfig().length == 0 ? null : tradesConfig.getTransactionFeesConfig()[0];
 
-        if(buyLimit != null){
+        if (buyLimit != null) {
             result.setBuyLimit(buyLimit.getMaximumCount());
-        }
-        else{
+        } else {
             log.error("Buy limit not found");
             result.setBuyLimit(0);
         }
 
-        if(sellLimit != null){
+        if (sellLimit != null) {
             result.setSellLimit(sellLimit.getMaximumCount());
-        }
-        else{
+        } else {
             log.error("Sell limit not found");
             result.setSellLimit(0);
         }
 
-        if(transactionFeesConfig != null){
+        if (transactionFeesConfig != null) {
             result.setPaymentItemId(transactionFeesConfig.getPaymentItemId());
             result.setFeePercentage(transactionFeesConfig.getFeePercentage());
-        }
-        else{
+        } else {
             log.error("Transaction fees config not found");
             result.setPaymentItemId("");
             result.setFeePercentage(0);

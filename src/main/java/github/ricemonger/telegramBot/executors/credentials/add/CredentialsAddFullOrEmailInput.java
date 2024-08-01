@@ -1,7 +1,7 @@
 package github.ricemonger.telegramBot.executors.credentials.add;
 
-import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 import github.ricemonger.telegramBot.InputState;
+import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 
 public class CredentialsAddFullOrEmailInput extends AbstractBotCommandExecutor {
     @Override
@@ -9,13 +9,12 @@ public class CredentialsAddFullOrEmailInput extends AbstractBotCommandExecutor {
 
         String userInput = getUserCurrentInput();
 
-        if(userInput.contains(":")){
+        if (userInput.contains(":")) {
 
             processLastInput("Credentials successfully provided.");
 
             botInnerService.addCredentialsFromUserInputs(updateInfo.getChatId());
-        }
-        else {
+        } else {
             processMiddleInput(InputState.CREDENTIALS_PASSWORD, "Please provide your Ubisoft password:");
         }
     }

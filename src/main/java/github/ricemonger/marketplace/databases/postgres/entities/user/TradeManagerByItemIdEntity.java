@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @IdClass(TradeManagerByItemIdEntityId.class)
 public class TradeManagerByItemIdEntity {
     @MapsId
-    @ManyToOne
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private UserEntity user;
 

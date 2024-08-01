@@ -1,8 +1,8 @@
 package github.ricemonger.telegramBot.executors.credentials.add;
 
-import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
+import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 
 public class CredentialsAddCallback extends AbstractBotCommandExecutor {
 
