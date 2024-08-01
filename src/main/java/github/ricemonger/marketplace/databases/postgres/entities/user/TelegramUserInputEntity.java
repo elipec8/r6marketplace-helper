@@ -35,10 +35,9 @@ public class TelegramUserInputEntity {
 
     public TelegramUserInput toTelegramUserInput() {
         TelegramUserInput telegramUserInput = new TelegramUserInput();
-        if(this.telegramUser != null) {
+        if (this.telegramUser != null) {
             telegramUserInput.setChatId(this.telegramUser.getChatId());
-        }
-        else{
+        } else {
             log.error("telegramUser is null.");
             telegramUserInput.setChatId(null);
         }

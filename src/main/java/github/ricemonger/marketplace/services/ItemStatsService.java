@@ -66,7 +66,7 @@ public class ItemStatsService {
             } else if (rarity == ItemRarity.LEGENDARY) {
                 item.setLimitMinPrice(minLegendary);
                 item.setLimitMaxPrice(maxLegendary);
-            } else{
+            } else {
                 item.setLimitMinPrice(minMarketplace);
                 item.setLimitMaxPrice(maxMarketplace);
             }

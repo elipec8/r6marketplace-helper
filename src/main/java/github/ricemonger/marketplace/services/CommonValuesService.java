@@ -123,27 +123,27 @@ public class CommonValuesService {
         return ubiServiceConfiguration.getDateFormat();
     }
 
-    public Integer getMinimumUncommonPrice(){
+    public Integer getMinimumUncommonPrice() {
         return ubiServiceConfiguration.getMinUncommonPrice();
     }
 
-    public Integer getMaximumUncommonPrice(){
+    public Integer getMaximumUncommonPrice() {
         return ubiServiceConfiguration.getMaxUncommonPrice();
     }
 
-    public Integer getMinimumRarePrice(){
+    public Integer getMinimumRarePrice() {
         return ubiServiceConfiguration.getMinRarePrice();
     }
 
-    public Integer getMaximumRarePrice(){
+    public Integer getMaximumRarePrice() {
         return ubiServiceConfiguration.getMaxRarePrice();
     }
 
-    public Integer getMinimumEpicPrice(){
+    public Integer getMinimumEpicPrice() {
         return ubiServiceConfiguration.getMinEpicPrice();
     }
 
-    public Integer getMaximumEpicPrice(){
+    public Integer getMaximumEpicPrice() {
         return ubiServiceConfiguration.getMaxEpicPrice();
     }
 

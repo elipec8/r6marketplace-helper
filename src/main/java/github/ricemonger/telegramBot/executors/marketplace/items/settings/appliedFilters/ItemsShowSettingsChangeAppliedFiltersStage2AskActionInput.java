@@ -1,8 +1,8 @@
 package github.ricemonger.telegramBot.executors.marketplace.items.settings.appliedFilters;
 
 import github.ricemonger.telegramBot.Callbacks;
-import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 import github.ricemonger.telegramBot.InputState;
+import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 import github.ricemonger.utils.dtos.ItemFilter;
 
 import java.util.Collection;
@@ -17,10 +17,9 @@ public class ItemsShowSettingsChangeAppliedFiltersStage2AskActionInput extends A
         Collection<ItemFilter> appliedFilters = botInnerService.getItemShowSettingsForUser(updateInfo.getChatId()).getItemShowAppliedFilters();
 
         String text;
-        if(appliedFilters.contains(filter)) {
+        if (appliedFilters.contains(filter)) {
             text = "Chosen filter is:\n" + filter + "\nWould you like to remove it?";
-        }
-        else{
+        } else {
             text = "Chosen filter is:\n" + filter + "\nWould you like to add it?";
         }
 

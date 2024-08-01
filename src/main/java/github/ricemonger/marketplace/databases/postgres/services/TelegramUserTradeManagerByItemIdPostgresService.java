@@ -1,7 +1,9 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
 
-import github.ricemonger.marketplace.databases.postgres.entities.user.*;
+import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.user.TradeManagerByItemIdEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.user.TradeManagerByItemIdEntityId;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TradeManagerByItemIdPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserTradeManagerByItemIdDatabaseService;

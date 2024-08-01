@@ -1,76 +1,59 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.entities.item.ItemSaleEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemSalePostgresRepository;
 import github.ricemonger.utils.dtos.Item;
-import github.ricemonger.utils.dtos.ItemSale;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class ItemSalePostgresServiceTest {
-    @MockBean
-    private ItemSalePostgresRepository repository;
+    private final static Date DATE = new Date();
 
     @Autowired
-    private ItemSalePostgresService service;
+    private ItemSalePostgresService itemSaleService;
 
-    @Test
-    public void saveAll_should_handle_to_repository() {
-        Item item1 = new Item();
-        item1.setItemId("1");
-        Item item2 = new Item();
-        item2.setItemId("2");
+    @Autowired
+    private ItemSalePostgresRepository itemSaleRepository;
 
-        Collection<Item> items = List.of(item1, item2);
-
-        ItemSale sale1 = new ItemSale();
-        sale1.setItemId("1");
-        ItemSale sale2 = new ItemSale();
-        sale2.setItemId("2");
-        Collection<ItemSale> itemSales = List.of(sale1, sale2);
-
-        service.saveAll(items);
-
-        verify(repository).saveAll(argThat((ArgumentMatcher<Iterable<? extends ItemSaleEntity>>) argument -> {
-            Collection<ItemSale> saleArg = new ArrayList<>();
-            argument.forEach(entity -> saleArg.add(entity.toItemSale()));
-
-            return saleArg.containsAll(itemSales) && itemSales.containsAll(saleArg);
-        }));
+    @BeforeEach
+    void setUp() {
+        itemSaleRepository.deleteAll();
     }
 
     @Test
-    public void findAll_should_handle_to_repository() {
-        Item item1 = new Item();
-        item1.setItemId("1");
-        Item item2 = new Item();
-        item2.setItemId("2");
+    public void saveAll_should_create_new_sales_if_doesnt_exist() {
+        Item item1 = createSoldItem("1", DATE, 100);
+        Item item2 = createSoldItem("2", DATE, 100);
+        Item item3 = createSoldItem("1", new Date(DATE.getTime() + 1), 100);
 
-        List<Item> expectedItems = List.of(item1, item2);
+        itemSaleService.saveAll(List.of(item1, item2, item3));
 
-        ItemSale sale1 = new ItemSale();
-        sale1.setItemId("1");
-        ItemSale sale2 = new ItemSale();
-        sale2.setItemId("2");
-        Collection<ItemSale> expectedSales = List.of(sale1, sale2);
+        assertEquals(3, itemSaleRepository.count());
+    }
 
-        when(repository.findAll()).thenReturn(expectedItems.stream().map(ItemSaleEntity::new).toList());
+    @Test
+    public void saveAll_should_update_sales_if_already_exist() {
+        Item item1 = createSoldItem("1", DATE, 100);
+        Item item2 = createSoldItem("1", DATE, 200);
 
-        Collection<ItemSale> result = service.findAll();
+        itemSaleService.saveAll(List.of(item1, item2));
 
-        assertTrue(result.containsAll(expectedSales) && expectedSales.containsAll(result));
+        assertEquals(1, itemSaleRepository.count());
+        assertEquals(itemSaleRepository.findAll().get(0).getPrice(), 200);
+    }
+
+    private Item createSoldItem(String id, Date date, int price) {
+        Item item = new Item();
+        item.setItemId(id);
+        item.setLastSoldAt(date);
+        item.setLastSoldPrice(price);
+        return item;
     }
 }

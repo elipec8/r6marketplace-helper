@@ -135,7 +135,8 @@ public class CallbackCommandListener {
 
             case Callbacks.TRADES_REMOVE_BY_ITEM_ID -> executorsService.execute(TradeManagersByItemIdRemoveStage1AskItemIdCallback.class, updateInfo);
 
-            case Callbacks.TRADES_REMOVE_BY_ITEM_ID_FINISH -> executorsService.execute(TradeManagersByItemIdRemoveStage3FinishCallback.class, updateInfo);
+            case Callbacks.TRADES_REMOVE_BY_ITEM_ID_FINISH ->
+                    executorsService.execute(TradeManagersByItemIdRemoveStage3FinishCallback.class, updateInfo);
 
             case Callbacks.CANCEL -> executorsService.execute(Cancel.class, updateInfo);
 

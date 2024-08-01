@@ -1,9 +1,9 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
 
+import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.ItemStatsService;
-import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.telegramBot.BotService;
 import github.ricemonger.utils.dtos.Item;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +36,7 @@ public class ScheduledAllItemsStatsFetcher {
         } else if (items.size() > expectedItemCount) {
             log.info("Fetched {} items' stats, expected {}", items.size(), expectedItemCount);
             onItemsAmountIncrease(expectedItemCount, items.size());
-        }
-        else{
+        } else {
             log.info("Fetched {} items' stats", items.size());
         }
 

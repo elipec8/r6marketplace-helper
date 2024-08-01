@@ -29,7 +29,7 @@ public class TelegramUserService {
     }
 
     public void registerTelegramUserWithDefaultSettings(Long chatId) throws TelegramUserAlreadyExistsException {
-            userService.create(String.valueOf(chatId));
+        userService.create(String.valueOf(chatId));
     }
 
     public void setUserNextInputState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException {
@@ -118,7 +118,7 @@ public class TelegramUserService {
         return userService.findUserSettingsById(String.valueOf(chatId));
     }
 
-    public int getItemOffsetByUserInput(Long chatId) throws TelegramUserDoesntExistException{
+    public int getItemOffsetByUserInput(Long chatId) throws TelegramUserDoesntExistException {
         try {
             return Integer.parseInt(inputService.findById(String.valueOf(chatId), InputState.ITEMS_SHOW_OFFSET).getValue());
         } catch (TelegramUserInputDoesntExistException | NumberFormatException e) {
@@ -130,11 +130,11 @@ public class TelegramUserService {
         userService.setItemShowFewItemsInMessageFlag(String.valueOf(chatId), flag);
     }
 
-    public void setItemShowMessagesLimit(Long chatId, Integer limit) throws TelegramUserDoesntExistException{
+    public void setItemShowMessagesLimit(Long chatId, Integer limit) throws TelegramUserDoesntExistException {
         userService.setItemShowMessagesLimit(String.valueOf(chatId), limit);
     }
 
-    public void setItemShowSettingsByUserInput(Long chatId, String trueValue, String falseValue) throws TelegramUserDoesntExistException,TelegramUserInputDoesntExistException {
+    public void setItemShowSettingsByUserInput(Long chatId, String trueValue, String falseValue) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         boolean nameFlag = parseBooleanOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_NAME), falseValue);
         boolean itemTypeFlag = parseBooleanOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_TYPE), falseValue);
         boolean maxBuyPriceFlag = parseBooleanOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_MAX_BUY_PRICE), falseValue);

@@ -103,5 +103,4 @@ public class Callbacks {
     public static final String TRADES_REMOVE_BY_ITEM_ID = "TRADES_REMOVE_BY_ITEM_ID";
 
     public static final String TRADES_REMOVE_BY_ITEM_ID_FINISH = "TRADES_REMOVE_BY_ITEM_ID_FINISH";
-    ;
 }

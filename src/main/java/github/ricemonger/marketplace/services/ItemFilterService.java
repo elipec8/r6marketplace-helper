@@ -14,7 +14,7 @@ public class ItemFilterService {
     private final TelegramUserItemFilterDatabaseService telegramUserItemFilterDatabaseService;
 
     public void saveItemFilter(String chatId, ItemFilter itemFilter) {
-        telegramUserItemFilterDatabaseService.save(chatId,itemFilter);
+        telegramUserItemFilterDatabaseService.save(chatId, itemFilter);
     }
 
     public void deleteItemFilterById(String chatId, String name) {

@@ -127,7 +127,7 @@ public class BotInnerService {
     }
 
     public void saveFilterFromInput(Long chatId) {
-        itemFilterService.saveItemFilter(String.valueOf(chatId),getItemFilterByUserInput(chatId));
+        itemFilterService.saveItemFilter(String.valueOf(chatId), getItemFilterByUserInput(chatId));
     }
 
     public Collection<String> getAllFilterNamesForUser(Long chatId) {
@@ -221,7 +221,7 @@ public class BotInnerService {
     }
 
     public void savePlannedOneItemTradeByUserInput(Long chatId, TradeManagerTradeType tradeType) {
-        tradeManagerService.saveTradeManagerByItemId(String.valueOf(chatId),getPlannedOneItemTradeByUserInput(chatId, tradeType));
+        tradeManagerService.saveTradeManagerByItemId(String.valueOf(chatId), getPlannedOneItemTradeByUserInput(chatId, tradeType));
     }
 
     public TradeManagerByItemId getPlannedOneItemTradeByUserInput(Long chatId, TradeManagerTradeType tradeType) {

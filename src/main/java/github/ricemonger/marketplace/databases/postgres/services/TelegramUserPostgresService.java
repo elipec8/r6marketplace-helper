@@ -43,7 +43,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
 
     @Override
     @Transactional
-    public void update(TelegramUser updatedTelegramUser) throws TelegramUserDoesntExistException{
+    public void update(TelegramUser updatedTelegramUser) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(updatedTelegramUser.getChatId());
         telegramUser.setFields(updatedTelegramUser);
         telegramUserPostgresRepository.save(telegramUser);
@@ -80,7 +80,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     public void addItemShowAppliedFilter(String chatId, ItemFilter filter) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
-        ItemFilterEntity filterEntity = new ItemFilterEntity(telegramUser.getUser(),filter);
+        ItemFilterEntity filterEntity = new ItemFilterEntity(telegramUser.getUser(), filter);
 
         if (telegramUser.getItemShowAppliedFilters() == null) {
             telegramUser.setItemShowAppliedFilters(new ArrayList<>());

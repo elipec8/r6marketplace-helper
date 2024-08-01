@@ -2,7 +2,6 @@ package github.ricemonger.telegramBot.executors.marketplace.tradeManagers.create
 
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
-import github.ricemonger.utils.exceptions.ItemNotFoundException;
 
 public class TradesOneItemSellEditStage3AskStartingPriceInput extends AbstractBotCommandExecutor {
     @Override

@@ -24,11 +24,9 @@ public class UpdatesToListenersDistributor {
         try {
             if (updateHasNotBaseInputGroup(updateInfo)) {
                 inputCommandListener.handleUpdate(updateInfo);
-            }
-            else if (updateHasMessage(updateInfo)) {
+            } else if (updateHasMessage(updateInfo)) {
                 directCommandListener.handleUpdate(updateInfo);
-            }
-            else if (updateHasCallbackQuery(updateInfo)) {
+            } else if (updateHasCallbackQuery(updateInfo)) {
                 callbackCommandListener.handleUpdate(updateInfo);
             } else {
                 log.error("No listening method chosen for updateInfo-{}", updateInfo);

@@ -26,16 +26,15 @@ public class TradeManagerByItemFilters {
     private Integer priority;
 
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Planned item filter trade: \n");
-        sb.append("Name: ").append(name).append("\n");
-        sb.append("Trade type: ").append(tradeType).append("\n");
-        sb.append("Applied filters: ").append(appliedFilters.stream().reduce((a, b) -> a + ", " + b).orElse("")).append("\n");
-        sb.append("Max buy hours: ").append(maxBuyHours).append("\n");
-        sb.append("Max sell hours: ").append(maxSellHours).append("\n");
-        sb.append("Min profit: ").append(minProfit).append("\n");
-        sb.append("Min profit in percentages: ").append(minProfitPercent).append("\n");
-        sb.append("Priority: ").append(priority).append("\n");
-        return sb.toString();
+        String sb = "Planned item filter trade: \n" +
+                    "Name: " + name + "\n" +
+                    "Trade type: " + tradeType + "\n" +
+                    "Applied filters: " + appliedFilters.stream().reduce((a, b) -> a + ", " + b).orElse("") + "\n" +
+                    "Max buy hours: " + maxBuyHours + "\n" +
+                    "Max sell hours: " + maxSellHours + "\n" +
+                    "Min profit: " + minProfit + "\n" +
+                    "Min profit in percentages: " + minProfitPercent + "\n" +
+                    "Priority: " + priority + "\n";
+        return sb;
     }
 }

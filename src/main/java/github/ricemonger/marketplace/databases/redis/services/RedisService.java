@@ -104,7 +104,7 @@ public class RedisService implements CommonValuesDatabaseService {
         }
     }
 
-    private void setFieldAndExpire(String field, String value,int expireTimeout) {
+    private void setFieldAndExpire(String field, String value, int expireTimeout) {
         redisTemplate.opsForValue().set(field, value);
         redisTemplate.expire(field, expireTimeout, TimeUnit.SECONDS);
     }

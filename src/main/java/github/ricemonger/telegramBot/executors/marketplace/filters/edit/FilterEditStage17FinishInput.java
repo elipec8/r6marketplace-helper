@@ -10,7 +10,7 @@ public class FilterEditStage17FinishInput extends AbstractBotCommandExecutor {
 
         String filter = botInnerService.getItemFilterByUserInput(updateInfo.getChatId()).toString();
 
-        askYesOrNoFromInlineKeyboard("The filter is:\n" + filter +"\nDo you want to save the filter?",
+        askYesOrNoFromInlineKeyboard("The filter is:\n" + filter + "\nDo you want to save the filter?",
                 Callbacks.FILTER_EDIT_FINISH,
                 Callbacks.CANCEL);
     }

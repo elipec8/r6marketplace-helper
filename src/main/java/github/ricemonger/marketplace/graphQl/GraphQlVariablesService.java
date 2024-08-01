@@ -63,7 +63,7 @@ public class GraphQlVariablesService {
                 "spaceId", commonValuesService.getUbiGameSpaceId());
     }
 
-    public Map<String,Object> getFetchLockedItemsVariables(){
+    public Map<String, Object> getFetchLockedItemsVariables() {
         return Map.of(
                 "spaceId", commonValuesService.getUbiGameSpaceId());
     }

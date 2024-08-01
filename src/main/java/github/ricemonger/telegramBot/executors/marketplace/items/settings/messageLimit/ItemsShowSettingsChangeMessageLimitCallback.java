@@ -1,8 +1,8 @@
 package github.ricemonger.telegramBot.executors.marketplace.items.settings.messageLimit;
 
-import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
+import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 
 public class ItemsShowSettingsChangeMessageLimitCallback extends AbstractBotCommandExecutor {
     @Override

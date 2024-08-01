@@ -99,7 +99,7 @@ public class UbiAccountEntity {
         this.ownedItemsIds = itemsIds.toString();
     }
 
-    public UbiAccountWithTelegram toUbiAccountWithTelegram(){
+    public UbiAccountWithTelegram toUbiAccountWithTelegram() {
         UbiAccountWithTelegram ubiAccountWithTelegram = new UbiAccountWithTelegram();
         ubiAccountWithTelegram.setUbiAccount(this.toUbiAccount());
         ubiAccountWithTelegram.setChatId(this.user.getTelegramUser().getChatId());

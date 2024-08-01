@@ -18,7 +18,7 @@ public class BotService {
 
     public void notifyAllUsersAboutItemAmountIncrease(int expectedItemCount, int actualItemCount) {
         String message = "The amount of items on marketplace increased from " + expectedItemCount + " to " + actualItemCount + "\n" +
-                "Probably marketplace was updated and new items were added";
+                         "Probably marketplace was updated and new items were added";
         notifyAllUsers(message);
     }
 

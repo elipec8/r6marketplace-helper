@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface UbiAccountPostgresRepository extends JpaRepository<UbiAccountEntity, String> {
     Optional<UbiAccountEntity> findByUserTelegramUserChatId(String chatId);
+
     void deleteByUserTelegramUserChatId(String chatId);
 }

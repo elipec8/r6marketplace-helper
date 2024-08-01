@@ -3,7 +3,6 @@ package github.ricemonger.marketplace.services.abstractions;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.TelegramUserInput;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface TelegramUserInputDatabaseService {

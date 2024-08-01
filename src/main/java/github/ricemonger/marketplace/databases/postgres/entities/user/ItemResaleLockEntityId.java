@@ -11,15 +11,15 @@ public class ItemResaleLockEntityId {
     private UbiAccountEntity ubiAccount;
     private String itemId;
 
-    public int hashCode(){
+    public int hashCode() {
         return ubiAccount.getUser().getId().hashCode() + itemId.hashCode();
     }
 
-    public boolean equals(Object o){
-        if(o == this){
+    public boolean equals(Object o) {
+        if (o == this) {
             return true;
         }
-        if(!(o instanceof ItemResaleLockEntityId itemResaleLockEntityId)){
+        if (!(o instanceof ItemResaleLockEntityId itemResaleLockEntityId)) {
             return false;
         }
         return itemResaleLockEntityId.ubiAccount.getUser().getId().equals(ubiAccount.getUser().getId()) && itemResaleLockEntityId.itemId.equals(itemId);

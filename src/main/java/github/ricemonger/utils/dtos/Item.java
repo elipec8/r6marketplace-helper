@@ -34,20 +34,16 @@ public class Item implements SoldItemDetails {
     private int limitMinPrice;
     private int limitMaxPrice;
 
-    public ItemRarity getItemRarity(String uncommonTag, String rareTag, String epicTag, String legendaryTag){
-        if(tags.contains(uncommonTag)){
+    public ItemRarity getItemRarity(String uncommonTag, String rareTag, String epicTag, String legendaryTag) {
+        if (tags.contains(uncommonTag)) {
             return ItemRarity.UNCOMMON;
-        }
-        else if(tags.contains(rareTag)){
+        } else if (tags.contains(rareTag)) {
             return ItemRarity.RARE;
-        }
-        else if(tags.contains(epicTag)){
+        } else if (tags.contains(epicTag)) {
             return ItemRarity.EPIC;
-        }
-        else if(tags.contains(legendaryTag)){
+        } else if (tags.contains(legendaryTag)) {
             return ItemRarity.LEGENDARY;
-        }
-        else{
+        } else {
             log.error("Unknown rarity tag for item {}", this);
             return ItemRarity.UNKNOWN;
         }
@@ -86,18 +82,17 @@ public class Item implements SoldItemDetails {
         String lastSoldPrice = String.valueOf(this.getLastSoldPrice());
         String pictureUrl = this.getAssetUrl();
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("Id: ").append(itemId).append("\n")
-                .append("Name: ").append(name).append("\n")
-                .append("Min sell price: ").append(minSellPrice).append("\n")
-                .append("Sell orders: ").append(sellOrders).append("\n")
-                .append("Max buy price: ").append(maxBuyPrice).append("\n")
-                .append("Buy orders: ").append(buyOrders).append("\n")
-                .append("Last sold price: ").append(lastSoldPrice).append("\n")
-                .append("Last sold at: ").append(lastSoldAt).append("\n")
-                .append("Picture: ").append(pictureUrl).append("\n");
+        String sb = "Id: " + itemId + "\n" +
+                    "Name: " + name + "\n" +
+                    "Min sell price: " + minSellPrice + "\n" +
+                    "Sell orders: " + sellOrders + "\n" +
+                    "Max buy price: " + maxBuyPrice + "\n" +
+                    "Buy orders: " + buyOrders + "\n" +
+                    "Last sold price: " + lastSoldPrice + "\n" +
+                    "Last sold at: " + lastSoldAt + "\n" +
+                    "Picture: " + pictureUrl + "\n";
 
-        return sb.toString();
+        return sb;
     }
 
     public String toStringBySettings(ItemShownFieldsSettings shownFieldsSettings) {

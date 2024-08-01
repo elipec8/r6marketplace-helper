@@ -16,20 +16,18 @@ public class ConfigQueryResolvedTransactionPeriodMapper {
 
         Buy buy = tradesLimitations.getBuy();
 
-        if(buy != null){
+        if (buy != null) {
             result.setBuyResolvedTransactionPeriod(buy.getResolvedTransactionPeriodInMinutes());
-        }
-        else{
+        } else {
             log.error("Buy resolved transaction period not found");
             result.setBuyResolvedTransactionPeriod(0);
         }
 
         Sell sell = tradesLimitations.getSell();
 
-        if(sell != null){
+        if (sell != null) {
             result.setSellResolvedTransactionPeriod(sell.getResolvedTransactionPeriodInMinutes());
-        }
-        else{
+        } else {
             log.error("Sell resolved transaction period not found");
             result.setSellResolvedTransactionPeriod(0);
         }

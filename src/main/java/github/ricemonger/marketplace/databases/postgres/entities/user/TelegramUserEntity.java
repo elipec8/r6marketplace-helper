@@ -85,8 +85,7 @@ public class TelegramUserEntity {
         itemShowSettings.setItemShowPictureFlag(this.user.getItemShowPictureFlag());
         if (this.user.getItemShowAppliedFilters() != null) {
             itemShowSettings.setItemShowAppliedFilters(this.user.getItemShowAppliedFilters().stream().map(ItemFilterEntity::toItemFilter).toList());
-        }
-        else{
+        } else {
             itemShowSettings.setItemShowAppliedFilters(new ArrayList<>());
         }
         return itemShowSettings;
@@ -97,10 +96,9 @@ public class TelegramUserEntity {
     }
 
     public void setItemShowAppliedFilters(List<ItemFilterEntity> filters) {
-        if(filters == null){
+        if (filters == null) {
             this.user.getItemShowAppliedFilters().clear();
-        }
-        else{
+        } else {
             this.user.getItemShowAppliedFilters().clear();
             this.user.getItemShowAppliedFilters().addAll(filters);
         }

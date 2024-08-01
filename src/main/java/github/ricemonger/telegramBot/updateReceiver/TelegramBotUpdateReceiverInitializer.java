@@ -17,8 +17,7 @@ public class TelegramBotUpdateReceiverInitializer extends TelegramBotsLongPollin
 
         try {
             registerBot(botToken, telegramBotUpdateReceiver);
-        }
-        catch (TelegramApiException e) {
+        } catch (TelegramApiException e) {
             e.printStackTrace();
         }
     }
