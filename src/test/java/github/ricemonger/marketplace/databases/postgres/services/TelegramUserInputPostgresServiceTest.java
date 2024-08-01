@@ -41,11 +41,12 @@ class TelegramUserInputPostgresServiceTest {
         telegramUserRepository.deleteAll();
         userRepository.deleteAll();
 
-        userRepository.save(new UserEntity());
-        TelegramUserEntity tgUser = new TelegramUserEntity();
-        tgUser.setChatId(CHAT_ID);
-        tgUser.setUser(userRepository.findAll().get(0));
-        telegramUserRepository.save(tgUser);
+        createTelegramUser(CHAT_ID);
+    }
+
+    private TelegramUserEntity createTelegramUser(String chatId) {
+        UserEntity user = userRepository.save(new UserEntity());
+        return telegramUserRepository.save(new TelegramUserEntity(chatId, user));
     }
 
     @Test
@@ -56,6 +57,7 @@ class TelegramUserInputPostgresServiceTest {
         inputService.save(CHAT_ID, inputState, value);
 
         assertEquals(1, inputRepository.count());
+        assertEquals(1, telegramUserRepository.findById(CHAT_ID).get().getTelegramUserInputs().size());
 
         TelegramUserInputEntity input = inputRepository.findAll().get(0);
 
@@ -74,6 +76,7 @@ class TelegramUserInputPostgresServiceTest {
         inputService.save(CHAT_ID, inputState2, value);
 
         assertEquals(2, inputRepository.count());
+        assertEquals(2, telegramUserRepository.findById(CHAT_ID).get().getTelegramUserInputs().size());
     }
 
     @Test
@@ -86,6 +89,7 @@ class TelegramUserInputPostgresServiceTest {
         inputService.save(CHAT_ID, inputState, value2);
 
         assertEquals(1, inputRepository.count());
+        assertEquals(1, telegramUserRepository.findById(CHAT_ID).get().getTelegramUserInputs().size());
 
         TelegramUserInputEntity input = inputRepository.findAll().get(0);
 
@@ -111,23 +115,14 @@ class TelegramUserInputPostgresServiceTest {
 
         inputService.deleteAllByChatId(CHAT_ID);
 
+        assertEquals(1, telegramUserRepository.count());
+        assertEquals(0, telegramUserRepository.findById(CHAT_ID).get().getTelegramUserInputs().size());
         assertEquals(0, inputRepository.count());
     }
 
     @Test
     public void deleteAllByChatId_should_ignore_other_user_inputs() {
-        userRepository.save(new UserEntity());
-        TelegramUserEntity tgUser = new TelegramUserEntity();
-        tgUser.setChatId(ANOTHER_CHAT_ID);
-
-        List<UserEntity> users = userRepository.findAll();
-        for (UserEntity user : users) {
-            if (user.getTelegramUser() == null) {
-                tgUser.setUser(user);
-                telegramUserRepository.save(tgUser);
-                break;
-            }
-        }
+        createTelegramUser(ANOTHER_CHAT_ID);
 
         inputService.save(CHAT_ID, InputState.CREDENTIALS_FULL_OR_EMAIL, "value");
         inputService.save(CHAT_ID, InputState.ACTIVE_CREDENTIALS, "value");
@@ -135,6 +130,8 @@ class TelegramUserInputPostgresServiceTest {
 
         inputService.deleteAllByChatId(ANOTHER_CHAT_ID);
 
+        assertEquals(2, telegramUserRepository.count());
+        assertEquals(3, telegramUserRepository.findById(CHAT_ID).get().getTelegramUserInputs().size());
         assertEquals(3, inputRepository.count());
     }
 
@@ -147,18 +144,7 @@ class TelegramUserInputPostgresServiceTest {
 
     @Test
     public void findById_should_return_right_input_if_it_exists() {
-        userRepository.save(new UserEntity());
-        TelegramUserEntity tgUser = new TelegramUserEntity();
-        tgUser.setChatId(ANOTHER_CHAT_ID);
-
-        List<UserEntity> users = userRepository.findAll();
-        for (UserEntity user : users) {
-            if (user.getTelegramUser() == null) {
-                tgUser.setUser(user);
-                telegramUserRepository.save(tgUser);
-                break;
-            }
-        }
+        createTelegramUser(ANOTHER_CHAT_ID);
 
         InputState inputState = InputState.ACTIVE_CREDENTIALS;
         InputState inputState2 = InputState.CREDENTIALS_FULL_OR_EMAIL;
@@ -194,18 +180,7 @@ class TelegramUserInputPostgresServiceTest {
 
     @Test
     public void findAllByChatId_should_return_all_inputs_for_user() {
-        userRepository.save(new UserEntity());
-        TelegramUserEntity tgUser = new TelegramUserEntity();
-        tgUser.setChatId(ANOTHER_CHAT_ID);
-
-        List<UserEntity> users = userRepository.findAll();
-        for (UserEntity user : users) {
-            if (user.getTelegramUser() == null) {
-                tgUser.setUser(user);
-                telegramUserRepository.save(tgUser);
-                break;
-            }
-        }
+        createTelegramUser(ANOTHER_CHAT_ID);
 
         InputState inputState = InputState.ACTIVE_CREDENTIALS;
         InputState inputState2 = InputState.CREDENTIALS_FULL_OR_EMAIL;

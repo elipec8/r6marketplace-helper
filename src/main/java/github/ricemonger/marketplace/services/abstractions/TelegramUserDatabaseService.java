@@ -10,7 +10,7 @@ import java.util.Collection;
 
 public interface TelegramUserDatabaseService {
 
-    void createWithDefaultUserSettings(String chatId);
+    void create(String chatId);
 
     void update(TelegramUser telegramUser);
 

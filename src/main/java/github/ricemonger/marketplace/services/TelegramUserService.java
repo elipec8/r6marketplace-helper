@@ -29,7 +29,7 @@ public class TelegramUserService {
     }
 
     public void registerTelegramUserWithDefaultSettings(Long chatId) throws TelegramUserAlreadyExistsException {
-            userService.createWithDefaultUserSettings(String.valueOf(chatId));
+            userService.create(String.valueOf(chatId));
     }
 
     public void setUserNextInputState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException {

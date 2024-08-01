@@ -38,9 +38,6 @@ public class UserEntity {
 
     private Boolean publicNotificationsEnabledFlag = true;
 
-    private Integer itemShowMessagesLimit = 50;
-    private Boolean itemShowFewInMessageFlag = false;
-
     private Boolean itemShowNameFlag = true;
     private Boolean itemShowItemTypeFlag = true;
     private Boolean itemShowMaxBuyPrice = true;
@@ -53,5 +50,5 @@ public class UserEntity {
     @JoinTable(name = "user_item_show_applied_item_filter",
             joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "id")},
             inverseJoinColumns = @JoinColumn(name = "itemFilterName", referencedColumnName = "name"))
-    private List<ItemFilterEntity> itemShowAppliedFilters;
+    private List<ItemFilterEntity> itemShowAppliedFilters = new ArrayList<>();
 }

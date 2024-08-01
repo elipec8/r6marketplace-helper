@@ -14,8 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -39,11 +37,12 @@ class TelegramUserItemFilterPostgresServiceTest {
         telegramUserRepository.deleteAll();
         userRepository.deleteAll();
 
-        userRepository.save(new UserEntity());
-        TelegramUserEntity tgUser = new TelegramUserEntity();
-        tgUser.setChatId(CHAT_ID);
-        tgUser.setUser(userRepository.findAll().get(0));
-        telegramUserRepository.save(tgUser);
+        createTelegramUser(CHAT_ID);
+    }
+
+    private TelegramUserEntity createTelegramUser(String chatId) {
+        UserEntity user = userRepository.save(new UserEntity());
+        return telegramUserRepository.save(new TelegramUserEntity(chatId, user));
     }
 
     @Test
@@ -57,6 +56,7 @@ class TelegramUserItemFilterPostgresServiceTest {
         itemFilterService.save(CHAT_ID, itemFilter2);
 
         assertEquals(2, itemFilterRepository.findAll().size());
+        assertEquals(2, telegramUserRepository.findAll().get(0).getUser().getItemFilters().size());
     }
 
     @Test
@@ -70,6 +70,7 @@ class TelegramUserItemFilterPostgresServiceTest {
         itemFilterService.save(CHAT_ID, itemFilter);
 
         assertEquals(1, itemFilterRepository.findAll().size());
+        assertEquals(1, telegramUserRepository.findById(CHAT_ID).get().getUser().getItemFilters().size());
         assertEquals(FilterType.DENY, itemFilterRepository.findAll().get(0).getFilterType());
     }
 
@@ -85,18 +86,7 @@ class TelegramUserItemFilterPostgresServiceTest {
     public void deleteById_should_remove_proper_filter() {
         Long mainUserId = userRepository.findAll().get(0).getId();
 
-        userRepository.save(new UserEntity());
-        TelegramUserEntity tgUser = new TelegramUserEntity();
-        tgUser.setChatId(ANOTHER_CHAT_ID);
-
-        List<UserEntity> users = userRepository.findAll();
-        for (UserEntity user : users) {
-            if (user.getTelegramUser() == null) {
-                tgUser.setUser(user);
-                telegramUserRepository.save(tgUser);
-                break;
-            }
-        }
+        createTelegramUser(ANOTHER_CHAT_ID);
 
         ItemFilter itemFilter1 = new ItemFilter();
         itemFilter1.setName("filter1");
@@ -110,7 +100,9 @@ class TelegramUserItemFilterPostgresServiceTest {
 
         itemFilterService.deleteById(CHAT_ID, "filter1");
 
-        assertEquals(3, itemFilterRepository.findAll().size());
+        assertEquals(telegramUserRepository.count(), 2);
+        assertEquals(3, itemFilterRepository.count());
+        assertEquals(1, telegramUserRepository.findById(CHAT_ID).get().getUser().getItemFilters().size());
         assertEquals("filter2", itemFilterRepository.findAllByUserId(mainUserId).get(0).getName());
     }
 
@@ -121,18 +113,7 @@ class TelegramUserItemFilterPostgresServiceTest {
 
     @Test
     public void findById_should_return_proper_filter() {
-        userRepository.save(new UserEntity());
-        TelegramUserEntity tgUser = new TelegramUserEntity();
-        tgUser.setChatId(ANOTHER_CHAT_ID);
-
-        List<UserEntity> users = userRepository.findAll();
-        for (UserEntity user : users) {
-            if (user.getTelegramUser() == null) {
-                tgUser.setUser(user);
-                telegramUserRepository.save(tgUser);
-                break;
-            }
-        }
+        createTelegramUser(ANOTHER_CHAT_ID);
 
         ItemFilter itemFilter1 = new ItemFilter();
         itemFilter1.setName("filter1");
@@ -167,18 +148,7 @@ class TelegramUserItemFilterPostgresServiceTest {
 
     @Test
     public void findAllByChatId_should_return_all_filters_for_user() {
-        userRepository.save(new UserEntity());
-        TelegramUserEntity tgUser = new TelegramUserEntity();
-        tgUser.setChatId(ANOTHER_CHAT_ID);
-
-        List<UserEntity> users = userRepository.findAll();
-        for (UserEntity user : users) {
-            if (user.getTelegramUser() == null) {
-                tgUser.setUser(user);
-                telegramUserRepository.save(tgUser);
-                break;
-            }
-        }
+        createTelegramUser(ANOTHER_CHAT_ID);
 
         ItemFilter itemFilter1 = new ItemFilter();
         itemFilter1.setName("filter1");
