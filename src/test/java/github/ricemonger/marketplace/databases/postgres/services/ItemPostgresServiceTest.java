@@ -15,10 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class ItemPostgresServiceTest {
-
     @Autowired
     private ItemPostgresService itemService;
-
     @Autowired
     private ItemPostgresRepository itemRepository;
 

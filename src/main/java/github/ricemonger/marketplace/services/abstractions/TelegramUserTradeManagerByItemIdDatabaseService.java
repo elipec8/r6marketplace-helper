@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.services.abstractions;
 
 import github.ricemonger.utils.dtos.TradeManagerByItemId;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface TelegramUserTradeManagerByItemIdDatabaseService {
     void save(String chatId, TradeManagerByItemId tradeManager);
@@ -11,5 +11,5 @@ public interface TelegramUserTradeManagerByItemIdDatabaseService {
 
     TradeManagerByItemId findById(String chatId, String itemId);
 
-    Collection<TradeManagerByItemId> findAll(String chatId);
+    List<TradeManagerByItemId> findAllByChatId(String chatId);
 }

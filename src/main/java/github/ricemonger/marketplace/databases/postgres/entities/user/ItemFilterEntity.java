@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @IdClass(ItemFilterEntityId.class)
 public class ItemFilterEntity {
     @MapsId
-    @ManyToOne
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private UserEntity user;
 

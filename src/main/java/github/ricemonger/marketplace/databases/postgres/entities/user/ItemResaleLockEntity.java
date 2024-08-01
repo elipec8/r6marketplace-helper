@@ -18,7 +18,7 @@ import java.util.Date;
 @IdClass(ItemResaleLockEntityId.class)
 public class ItemResaleLockEntity {
     @Id
-    @ManyToOne
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "ubiProfileId", referencedColumnName = "ubiProfileId")
     private UbiAccountEntity ubiAccount;
 

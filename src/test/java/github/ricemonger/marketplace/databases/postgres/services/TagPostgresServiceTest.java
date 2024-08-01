@@ -15,10 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class TagPostgresServiceTest {
-
     @Autowired
     private TagPostgresService tagService;
-
     @Autowired
     private TagPostgresRepository tagRepository;
 

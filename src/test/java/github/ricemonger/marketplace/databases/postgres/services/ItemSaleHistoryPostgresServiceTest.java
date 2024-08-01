@@ -14,10 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class ItemSaleHistoryPostgresServiceTest {
-
     @Autowired
     private ItemSaleHistoryPostgresService itemSaleHistoryService;
-
     @Autowired
     private ItemSaleHistoryPostgresRepository itemSaleHistoryRepository;
 

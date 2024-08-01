@@ -34,7 +34,7 @@ public class TradeManagerService {
     }
 
     public Collection<TradeManagerByItemId> getAllTradeManagersByItemId(String chatId) {
-        return telegramUserTradeManagerByItemIdDatabaseService.findAll(chatId);
+        return telegramUserTradeManagerByItemIdDatabaseService.findAllByChatId(chatId);
     }
 
     public Collection<TradeManagerByItemFilters> getAllTradeManagersByItemFilters(String chatId) {

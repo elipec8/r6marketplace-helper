@@ -18,7 +18,6 @@ class ItemSalePostgresServiceTest {
 
     @Autowired
     private ItemSalePostgresService itemSaleService;
-
     @Autowired
     private ItemSalePostgresRepository itemSaleRepository;
 
