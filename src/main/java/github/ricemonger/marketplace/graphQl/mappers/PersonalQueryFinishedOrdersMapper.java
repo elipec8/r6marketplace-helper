@@ -3,11 +3,12 @@ package github.ricemonger.marketplace.graphQl.mappers;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.Trades;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.trades.Nodes;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.trades.nodes.PaymentOptions;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.trades.nodes.TradeItems;
+import github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.trades.nodes.PaymentProposal;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.dtos.Trade;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
+import github.ricemonger.utils.exceptions.GraphQlPersonalFinishedOrdersMappingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -25,16 +26,34 @@ public class PersonalQueryFinishedOrdersMapper {
 
     private final CommonValuesService commonValuesService;
 
-    public Collection<Trade> mapFinishedOrders(Trades trades) {
+    public Collection<Trade> mapFinishedOrders(Trades trades) throws GraphQlPersonalFinishedOrdersMappingException {
+        if(trades == null) {
+            throw new GraphQlPersonalFinishedOrdersMappingException("Trades is null");
+        }
         List<Nodes> nodes = trades.getNodes();
 
         return nodes.stream().map(this::mapFinishedOrder).toList();
     }
 
-    public Trade mapFinishedOrder(Nodes node) {
+    public Trade mapFinishedOrder(Nodes node) throws GraphQlPersonalFinishedOrdersMappingException {
+        if (node == null) {
+            throw new GraphQlPersonalFinishedOrdersMappingException("Node is null");
+        }
+
         Trade result = new Trade();
 
         SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
+
+        if (node.getTradeId() == null
+            || node.getState() == null
+            || node.getCategory() == null
+            || node.getExpiresAt() == null
+            || node.getLastModifiedAt() == null
+            || node.getTradeItems() == null || node.getTradeItems().length == 0
+            || node.getTradeItems()[0].getItem() == null
+            || node.getTradeItems()[0].getItem().getItemId() == null) {
+            throw new GraphQlPersonalFinishedOrdersMappingException("One of node fields is null-" + node);
+        }
 
         result.setTradeId(node.getTradeId());
 
@@ -66,36 +85,38 @@ public class PersonalQueryFinishedOrdersMapper {
             log.error("Invalid lastModifiedAt: {}", node.getLastModifiedAt());
         }
 
-        TradeItems tradeItems = node.getTradeItems() == null ? null : node.getTradeItems()[0];
-        if (tradeItems != null && tradeItems.getItem() != null) {
-            result.setItemId(tradeItems.getItem().getItemId());
-        } else {
-            result.setItemId("");
-            log.error("Invalid tradeItem or itemId: {}", tradeItems);
-        }
+        result.setItemId(node.getTradeItems()[0].getItem().getItemId());
 
         if (node.getPayment() != null) {
+            if(node.getPayment().getPrice() == null || node.getPayment().getTransactionFee() == null) {
+                throw new GraphQlPersonalFinishedOrdersMappingException("Payment price or fee is null-" + node);
+            }
             result.setSuccessPaymentPrice(node.getPayment().getPrice());
             result.setSuccessPaymentFee(node.getPayment().getTransactionFee());
         } else {
             result.setSuccessPaymentPrice(0);
             result.setSuccessPaymentFee(0);
-            log.error("Invalid payment: {}", node.getPayment());
         }
 
+        PaymentOptions[] paymentOptions = node.getPaymentOptions();
+        PaymentProposal paymentProposal = node.getPaymentProposal();
 
-        PaymentOptions paymentOptions = node.getPaymentOptions() == null ? null : node.getPaymentOptions()[0];
-
-        if (paymentOptions != null) {
-            result.setProposedPaymentPrice(paymentOptions.getPrice());
-            result.setProposedPaymentFee((int) Math.ceil(paymentOptions.getPrice() / 10.));
-        } else if (node.getPaymentProposal() != null) {
-            result.setProposedPaymentPrice(node.getPaymentProposal().getPrice());
-            result.setProposedPaymentFee(node.getPaymentProposal().getTransactionFee());
+        if (paymentOptions != null && paymentProposal != null) {
+            throw new GraphQlPersonalFinishedOrdersMappingException("Node have both paymentOptions and paymentProposal-" + node);
+        } else if (paymentOptions != null) {
+            if (paymentOptions.length == 0 || paymentOptions[0].getPrice() == null) {
+                throw new GraphQlPersonalFinishedOrdersMappingException("One of paymentOptions fields is null-" + node);
+            }
+            result.setProposedPaymentPrice(paymentOptions[0].getPrice());
+            result.setProposedPaymentFee((int) Math.ceil(paymentOptions[0].getPrice() / 10.));
+        } else if (paymentProposal != null) {
+            if (paymentProposal.getPrice() == null || paymentProposal.getTransactionFee() == null) {
+                throw new GraphQlPersonalFinishedOrdersMappingException("One of paymentProposal fields is null-" + node);
+            }
+            result.setProposedPaymentPrice(paymentProposal.getPrice());
+            result.setProposedPaymentFee(paymentProposal.getTransactionFee());
         } else {
-            result.setProposedPaymentPrice(0);
-            result.setProposedPaymentFee(0);
-            log.error("Invalid paymentOptions or paymentProposal: {}", paymentOptions);
+            throw new GraphQlPersonalFinishedOrdersMappingException("Node doesnt have neither paymentOptions, neither paymentProposal-" + node);
         }
 
         return result;
