@@ -22,16 +22,19 @@ public class PersonalQueryLockedItemsMapper {
 
     private final CommonValuesService commonValuesService;
 
-    public Collection<LockedItem> mapLockedItems(TradeLimitations tradeLimitations) {
+    public Collection<LockedItem> mapLockedItems(TradeLimitations tradeLimitations) throws GraphQlPersonalLockedItemsMappingException {
+        if (tradeLimitations == null) {
+            throw new GraphQlPersonalLockedItemsMappingException("Trade limitations is null");
+        }
+
         if (tradeLimitations.getSell() != null) {
             return tradeLimitations.getSell().getResaleLocks().stream().map(this::mapLockedItem).toList();
         } else {
-            log.error("Sell trade limitations is null, no resale locks to map.");
             return List.of();
         }
     }
 
-    public LockedItem mapLockedItem(ResaleLocks resaleLocks) {
+    public LockedItem mapLockedItem(ResaleLocks resaleLocks) throws GraphQlPersonalLockedItemsMappingException {
         LockedItem result = new LockedItem();
         result.setItemId(resaleLocks.getItemId());
         try {
@@ -46,7 +49,7 @@ public class PersonalQueryLockedItemsMapper {
         return result;
     }
 
-    public UserTransactionsCount mapUserTransactionsInfo(TradeLimitations tradeLimitations) {
+    public UserTransactionsCount mapUserTransactionsInfo(TradeLimitations tradeLimitations) throws GraphQlPersonalLockedItemsMappingException {
         UserTransactionsCount result = new UserTransactionsCount();
         if (tradeLimitations.getBuy() != null) {
             result.setBuyResolvedTransactionCount(tradeLimitations.getBuy().getResolvedTransactionCount());

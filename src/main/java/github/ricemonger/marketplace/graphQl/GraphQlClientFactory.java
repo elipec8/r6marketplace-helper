@@ -17,7 +17,6 @@ public class GraphQlClientFactory {
     public HttpGraphQlClient createMainUserClient() {
         WebClient webClient =
                 mainUserWebClientConfigs()
-                        .baseUrl(commonValuesService.getGraphqlUrl())
                         .build();
         return HttpGraphQlClient.builder(webClient).build();
     }
@@ -25,7 +24,6 @@ public class GraphQlClientFactory {
     public HttpGraphQlClient createAuthorizedUserClient(AuthorizationDTO authorizationDTO) {
         WebClient webClient =
                 authorizedUserWebClientConfigs(authorizationDTO)
-                        .baseUrl(commonValuesService.getGraphqlUrl())
                         .build();
         return HttpGraphQlClient.builder(webClient).build();
     }
@@ -59,6 +57,7 @@ public class GraphQlClientFactory {
                 .defaultHeader("Ubi-AppId", commonValuesService.getUbiAppId())
                 .defaultHeader("Ubi-RegionId", commonValuesService.getUbiRegionId())
                 .defaultHeader("Ubi-LocaleCode", commonValuesService.getUbiLocaleCode())
-                .defaultHeader("User-Agent", commonValuesService.getUserAgent());
+                .defaultHeader("User-Agent", commonValuesService.getUserAgent())
+                .baseUrl(commonValuesService.getGraphqlUrl());
     }
 }

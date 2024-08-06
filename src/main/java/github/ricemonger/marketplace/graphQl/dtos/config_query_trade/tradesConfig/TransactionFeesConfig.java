@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TransactionFeesConfig {
     private String paymentItemId;
-    private int feePercentage;
+    private Integer feePercentage;
 }

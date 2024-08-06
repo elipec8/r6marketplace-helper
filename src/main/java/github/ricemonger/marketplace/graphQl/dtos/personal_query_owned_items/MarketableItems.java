@@ -12,5 +12,5 @@ import java.util.List;
 @AllArgsConstructor
 public class MarketableItems {
     private List<Node> nodes;
-    private int totalCount;
+    private Integer totalCount;
 }

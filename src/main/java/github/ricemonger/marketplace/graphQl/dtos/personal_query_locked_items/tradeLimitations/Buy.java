@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Buy {
-    private int resolvedTransactionCount;
-    private int activeTransactionCount;
+    private Integer resolvedTransactionCount;
+    private Integer activeTransactionCount;
 }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BuyStats {
 
-    private int highestPrice;
+    private Integer highestPrice;
 
-    private int activeCount;
+    private Integer activeCount;
 }

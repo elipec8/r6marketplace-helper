@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Buy {
 
-    private int resolvedTransactionPeriodInMinutes;
+    private Integer resolvedTransactionPeriodInMinutes;
 }

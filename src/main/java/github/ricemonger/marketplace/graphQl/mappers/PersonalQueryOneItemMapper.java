@@ -86,7 +86,7 @@ public class PersonalQueryOneItemMapper {
         result.setLimitMinPrice(marketableItem.getPaymentLimitations().getMinPrice());
         result.setLimitMaxPrice(marketableItem.getPaymentLimitations().getMaxPrice());
 
-        result.setOwned(marketableItem.getItem().getViewer().getMeta().isOwned());
+        result.setOwned(marketableItem.getItem().getViewer().getMeta().getIsOwned());
 
         //result.setTrades(game.getViewer().getMeta().getTrades().getNodes().stream().map((Nodes node) -> mapTrade(node, itemId)).toList());
 

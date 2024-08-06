@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TradesConfig {
-    private int saleExpiresAfterMinutes;
-    private int buySlots;
-    private int sellSlots;
+    private Integer saleExpiresAfterMinutes;
+    private Integer buySlots;
+    private Integer sellSlots;
     private BuyLimit buyLimit;
     private SellLimit sellLimit;
-    private int resaleLockDurationInMinutes;
+    private Integer resaleLockDurationInMinutes;
     private TransactionFeesConfig[] transactionFeesConfig;
-    private boolean twoFactorAuthenticationRule;
-    private boolean gameOwnershipRule;
+    private Boolean twoFactorAuthenticationRule;
+    private Boolean gameOwnershipRule;
 }
