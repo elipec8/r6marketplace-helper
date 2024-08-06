@@ -10,6 +10,7 @@ import github.ricemonger.utils.dtos.Item;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.exceptions.GraphQlCommonItemMappingException;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
@@ -30,7 +31,7 @@ import static org.mockito.Mockito.verify;
 class CommonQueryItemsMapperTest {
     @SpyBean
     private CommonQueryItemsMapper commonQueryItemsMapper;
-    @SpyBean
+    @Autowired
     private CommonValuesService commonValuesService;
 
     @Test
