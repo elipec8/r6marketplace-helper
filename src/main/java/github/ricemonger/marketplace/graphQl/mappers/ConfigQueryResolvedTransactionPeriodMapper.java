@@ -4,6 +4,7 @@ import github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transact
 import github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transaction_period.tradeLimitations.Buy;
 import github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transaction_period.tradeLimitations.Sell;
 import github.ricemonger.utils.dtos.ConfigResolvedTransactionPeriod;
+import github.ricemonger.utils.exceptions.GraphQlConfigResolvedTransactionPeriodMappingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -11,25 +12,28 @@ import org.springframework.stereotype.Component;
 @Component
 public class ConfigQueryResolvedTransactionPeriodMapper {
 
-    public ConfigResolvedTransactionPeriod mapConfigResolvedTransactionPeriod(TradesLimitations tradesLimitations) {
+    public ConfigResolvedTransactionPeriod mapConfigResolvedTransactionPeriod(TradesLimitations tradesLimitations) throws GraphQlConfigResolvedTransactionPeriodMappingException {
+
+        if(tradesLimitations == null){
+            throw new GraphQlConfigResolvedTransactionPeriodMappingException("Trades limitations is null");
+        }
+
         ConfigResolvedTransactionPeriod result = new ConfigResolvedTransactionPeriod();
 
         Buy buy = tradesLimitations.getBuy();
 
-        if (buy != null) {
+        if (buy != null && buy.getResolvedTransactionPeriodInMinutes() != null) {
             result.setBuyResolvedTransactionPeriod(buy.getResolvedTransactionPeriodInMinutes());
         } else {
-            log.error("Buy resolved transaction period not found");
-            result.setBuyResolvedTransactionPeriod(0);
+            throw new GraphQlConfigResolvedTransactionPeriodMappingException("Buy or Buy resolved transaction period is null, buy-" + buy);
         }
 
         Sell sell = tradesLimitations.getSell();
 
-        if (sell != null) {
+        if (sell != null && sell.getResolvedTransactionPeriodInMinutes() != null) {
             result.setSellResolvedTransactionPeriod(sell.getResolvedTransactionPeriodInMinutes());
         } else {
-            log.error("Sell resolved transaction period not found");
-            result.setSellResolvedTransactionPeriod(0);
+            throw new GraphQlConfigResolvedTransactionPeriodMappingException("Sell or Sell resolved transaction period is null, sell-" + sell);
         }
 
         return result;

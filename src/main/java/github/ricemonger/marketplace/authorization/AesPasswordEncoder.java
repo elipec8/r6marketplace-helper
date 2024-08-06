@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.authorization;
 
-import github.ricemonger.utils.exceptions.UbiCredentialsException;
+import github.ricemonger.utils.exceptions.UbiCredentialsInnerException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +28,7 @@ public class AesPasswordEncoder {
             encodedPassword = Base64.getEncoder().encodeToString(encrypted);
             return encodedPassword;
         } catch (GeneralSecurityException e) {
-            throw new UbiCredentialsException(e);
+            throw new UbiCredentialsInnerException(e);
         }
     }
 
@@ -39,7 +39,7 @@ public class AesPasswordEncoder {
             cipher.init(Cipher.DECRYPT_MODE, aesKey);
             return new String(cipher.doFinal(Base64.getDecoder().decode(encodedPassword)));
         } catch (GeneralSecurityException e) {
-            throw new UbiCredentialsException(e);
+            throw new UbiCredentialsInnerException(e);
         }
     }
 }

@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Sell {
 
-    private int resolvedTransactionPeriodInMinutes;
+    private Integer resolvedTransactionPeriodInMinutes;
 }

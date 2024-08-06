@@ -1,30 +1,31 @@
 package github.ricemonger.marketplace.graphQl;
 
 import github.ricemonger.marketplace.services.CommonValuesService;
-import org.junit.jupiter.api.BeforeEach;
+import github.ricemonger.utils.dtos.AuthorizationDTO;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class GraphQlClientFactoryTest {
-
+    @Autowired
+    private GraphQlClientFactory graphQlClientFactory;
     @MockBean
     private CommonValuesService commonValuesService;
 
-    private GraphQlClientFactory graphQlClientFactory;
-
-    @BeforeEach
-    public void setUp() {
-        graphQlClientFactory = new GraphQlClientFactory(commonValuesService);
-    }
-
     @Test
-    public void getOrCreateAllItemsStatsFetcherClientShouldGetFieldsFromRedisMainUser() {
+    public void createMainClient_should_create_client_with_main_user_headers() {
         graphQlClientFactory.createMainUserClient();
+
+        verify(commonValuesService).getContentType();
+        verify(commonValuesService).getUbiAppId();
+        verify(commonValuesService).getUbiRegionId();
+        verify(commonValuesService).getUbiLocaleCode();
+        verify(commonValuesService).getUserAgent();
+        verify(commonValuesService).getGraphqlUrl();
 
         verify(commonValuesService).getMainUserAuthorizationToken();
         verify(commonValuesService).getMainUserSessionId();
@@ -33,18 +34,26 @@ public class GraphQlClientFactoryTest {
     }
 
     @Test
-    public void createMainUserClientShouldBuildFromRedisIfClientExpired() throws InterruptedException {
-        graphQlClientFactory.createMainUserClient();
+    public void createAuthorizedClient_should_create_client_with_authorized_user_headers() {
+        AuthorizationDTO authorizationDTO = mock(AuthorizationDTO.class);
 
-        reset(commonValuesService);
+        graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
-        Thread.sleep(commonValuesService.getExpireTimeout() * 1000L + 1);
+        verify(commonValuesService).getContentType();
+        verify(commonValuesService).getUbiAppId();
+        verify(commonValuesService).getUbiRegionId();
+        verify(commonValuesService).getUbiLocaleCode();
+        verify(commonValuesService).getUserAgent();
+        verify(commonValuesService).getGraphqlUrl();
 
-        graphQlClientFactory.createMainUserClient();
+        verify(commonValuesService, times(0)).getMainUserAuthorizationToken();
+        verify(commonValuesService, times(0)).getMainUserSessionId();
+        verify(commonValuesService, times(0)).getMainUserProfileId();
+        verify(commonValuesService, times(0)).getUbiGameSpaceId();
 
-        verify(commonValuesService).getMainUserAuthorizationToken();
-        verify(commonValuesService).getMainUserSessionId();
-        verify(commonValuesService).getMainUserProfileId();
-        verify(commonValuesService).getUbiGameSpaceId();
+        verify(authorizationDTO).getTicket();
+        verify(authorizationDTO).getSessionId();
+        verify(authorizationDTO).getProfileId();
+        verify(authorizationDTO).getSpaceId();
     }
 }

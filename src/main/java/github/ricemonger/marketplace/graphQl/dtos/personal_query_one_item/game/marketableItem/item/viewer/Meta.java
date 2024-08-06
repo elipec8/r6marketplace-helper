@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Meta {
-    private boolean isOwned;
+    private Boolean isOwned;
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Sell {
-    private int resolvedTransactionCount;
-    private int activeTransactionCount;
+    private Integer resolvedTransactionCount;
+    private Integer activeTransactionCount;
     private List<ResaleLocks> resaleLocks;
 }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LastSoldAt {
 
-    private int price;
+    private Integer price;
 
     private String performedAt;
 }

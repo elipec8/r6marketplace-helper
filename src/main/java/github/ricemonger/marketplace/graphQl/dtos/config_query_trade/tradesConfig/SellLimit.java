@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SellLimit {
-    private int maximumCount;
+    private Integer maximumCount;
 }

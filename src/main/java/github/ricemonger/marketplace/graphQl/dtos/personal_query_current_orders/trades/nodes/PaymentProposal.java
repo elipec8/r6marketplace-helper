@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PaymentProposal {
-    private int price;
-    private int transactionFee;
+    private Integer price;
+    private Integer transactionFee;
 }

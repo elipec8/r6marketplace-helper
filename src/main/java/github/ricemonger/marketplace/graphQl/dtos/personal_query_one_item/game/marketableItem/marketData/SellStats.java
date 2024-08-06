@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SellStats {
 
-    private int lowestPrice;
+    private Integer lowestPrice;
 
-    private int activeCount;
+    private Integer activeCount;
 }
