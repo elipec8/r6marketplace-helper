@@ -181,7 +181,7 @@ public class GraphQlClientService {
         return personalQueryLockedItemsMapper.mapLockedItems(tradeLimitations);
     }
 
-    public Item fetchOneItem(AuthorizationDTO authorizationDTO, String itemId) {
+    public PersonalItem fetchOneItem(AuthorizationDTO authorizationDTO, String itemId) {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
         github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.Game game = client

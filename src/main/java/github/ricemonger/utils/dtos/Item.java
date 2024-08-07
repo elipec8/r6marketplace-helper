@@ -29,8 +29,6 @@ public class Item implements SoldItemDetails {
     private Date lastSoldAt;
     private int lastSoldPrice;
 
-    private boolean isOwned;
-
     private int limitMinPrice;
     private int limitMaxPrice;
 
@@ -47,23 +45,6 @@ public class Item implements SoldItemDetails {
             log.error("Unknown rarity tag for item {}", this);
             return ItemRarity.UNKNOWN;
         }
-    }
-
-    public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        }
-        if (!(o instanceof Item item)) {
-            return false;
-        }
-        if (item.getItemId() == null || this.getItemId() == null) {
-            return false;
-        }
-        return item.getItemId().equals(this.getItemId());
-    }
-
-    public int hashCode() {
-        return this.getItemId().hashCode();
     }
 
     public String toString() {
