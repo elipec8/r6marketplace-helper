@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -24,7 +25,7 @@ class CommonValuesServiceTest {
     private MainUserConfiguration mainUserConfiguration;
     @MockBean
     private UbiServiceConfiguration ubiServiceConfiguration;
-    @MockBean
+    @SpyBean
     private TelegramBotConfiguration telegramBotConfiguration;
 
     @Test
@@ -294,7 +295,10 @@ class CommonValuesServiceTest {
     @Test
     public void getMinimumMarketplacePrice_should_handle_to_service() {
         Integer minPrice = 10;
-        when(ubiServiceConfiguration.getMinLegendaryPrice()).thenReturn(minPrice);
+        when(ubiServiceConfiguration.getMinUncommonPrice()).thenReturn(minPrice+2);
+        when(ubiServiceConfiguration.getMinRarePrice()).thenReturn(minPrice+1);
+        when(ubiServiceConfiguration.getMinEpicPrice()).thenReturn(minPrice);
+        when(ubiServiceConfiguration.getMinLegendaryPrice()).thenReturn(minPrice+3);
 
         assertEquals(minPrice, commonValuesService.getMinimumMarketplacePrice());
     }
