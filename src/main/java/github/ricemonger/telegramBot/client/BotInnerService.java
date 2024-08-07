@@ -34,7 +34,7 @@ public class BotInnerService {
 
     private final ItemStatsService itemStatsService;
 
-    private final ItemFilterService itemFilterService;
+    private final TelegramUserItemFilterService telegramUserItemFilterService;
 
     private final TradeManagerService tradeManagerService;
 
@@ -127,19 +127,19 @@ public class BotInnerService {
     }
 
     public void saveFilterFromInput(Long chatId) {
-        itemFilterService.saveItemFilter(String.valueOf(chatId), getItemFilterByUserInput(chatId));
+        telegramUserItemFilterService.saveItemFilter(String.valueOf(chatId), getItemFilterByUserInput(chatId));
     }
 
     public Collection<String> getAllFilterNamesForUser(Long chatId) {
-        return itemFilterService.getAllItemFilterNamesForUser(String.valueOf(chatId));
+        return telegramUserItemFilterService.getAllItemFilterNamesForUser(String.valueOf(chatId));
     }
 
     public ItemFilter getFilterFromDatabaseByUserInputCallback(Long chatId) {
-        return itemFilterService.getItemFilterById(String.valueOf(chatId), getInputValueFromCallbackData(chatId, InputState.FILTER_NAME));
+        return telegramUserItemFilterService.getItemFilterById(String.valueOf(chatId), getInputValueFromCallbackData(chatId, InputState.FILTER_NAME));
     }
 
     public void removeFilterByUserInputCallback(Long chatId) {
-        itemFilterService.deleteItemFilterById(String.valueOf(chatId), getInputValueFromCallbackData(chatId, InputState.FILTER_NAME));
+        telegramUserItemFilterService.deleteItemFilterById(String.valueOf(chatId), getInputValueFromCallbackData(chatId, InputState.FILTER_NAME));
     }
 
     public ItemFilter getItemFilterByUserInput(Long chatId) {
@@ -215,7 +215,7 @@ public class BotInnerService {
         if (addOrRemove && appliedFilters.contains(filterName)) {
             telegramUserService.removeItemShowAppliedFilter(chatId, filterName);
         } else if (addOrRemove && !appliedFilters.contains(filterName)) {
-            ItemFilter filter = itemFilterService.getItemFilterById(String.valueOf(chatId), filterName);
+            ItemFilter filter = telegramUserItemFilterService.getItemFilterById(String.valueOf(chatId), filterName);
             telegramUserService.addItemShowAppliedFilter(chatId, filter);
         }
     }

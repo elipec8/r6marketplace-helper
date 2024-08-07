@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marke
 import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.Tags;
 import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.Type;
 import github.ricemonger.utils.enums.ItemType;
-import github.ricemonger.utils.exceptions.GraphQlConfigQueryMarketplaceMappingException;
+import github.ricemonger.utils.exceptions.GraphQlConfigMarketplaceMappingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -16,22 +16,22 @@ import java.util.List;
 @Component
 public class ConfigQueryMarketplaceMapper {
 
-    public List<github.ricemonger.utils.dtos.Tag> mapTags(Marketplace marketplace) throws GraphQlConfigQueryMarketplaceMappingException {
+    public List<github.ricemonger.utils.dtos.Tag> mapTags(Marketplace marketplace) throws GraphQlConfigMarketplaceMappingException {
 
         if (marketplace == null) {
-            throw new GraphQlConfigQueryMarketplaceMappingException("Marketplace is null");
+            throw new GraphQlConfigMarketplaceMappingException("Marketplace is null");
         }
 
         List<Tags> tags = marketplace.getTags();
 
         if (tags == null) {
-            throw new GraphQlConfigQueryMarketplaceMappingException("Tags is null");
+            throw new GraphQlConfigMarketplaceMappingException("Tags is null");
         }
 
         List<TagGroup> tagGroups = marketplace.getTagGroups();
 
         if (tagGroups == null) {
-            throw new GraphQlConfigQueryMarketplaceMappingException("TagGroups is null");
+            throw new GraphQlConfigMarketplaceMappingException("TagGroups is null");
         }
 
 
@@ -39,7 +39,7 @@ public class ConfigQueryMarketplaceMapper {
 
         for (Tags tag : tags) {
             if (tag == null || tag.getValue() == null || tag.getDisplayName() == null) {
-                throw new GraphQlConfigQueryMarketplaceMappingException("Tag value or display name is null, in tags-" + tags);
+                throw new GraphQlConfigMarketplaceMappingException("Tag value or display name is null, in tags-" + tags);
             }
             github.ricemonger.utils.dtos.Tag resultTag = new github.ricemonger.utils.dtos.Tag();
             resultTag.setValue(tag.getValue());
@@ -51,7 +51,7 @@ public class ConfigQueryMarketplaceMapper {
         for (github.ricemonger.utils.dtos.Tag tag : result) {
             for (TagGroup group : tagGroups) {
                 if(group == null || group.getDisplayName() == null || group.getValues() == null) {
-                    throw new GraphQlConfigQueryMarketplaceMappingException("Tag group display name or values is null, in tagGroups-" + tagGroups);
+                    throw new GraphQlConfigMarketplaceMappingException("Tag group display name or values is null, in tagGroups-" + tagGroups);
                 }
                 if (group.getValues().contains(tag.getValue())) {
                     try {
@@ -66,15 +66,15 @@ public class ConfigQueryMarketplaceMapper {
         return result;
     }
 
-    public void checkItemTypes(Marketplace marketplace) throws GraphQlConfigQueryMarketplaceMappingException {
+    public void checkItemTypes(Marketplace marketplace) throws GraphQlConfigMarketplaceMappingException {
         if (marketplace == null) {
-            throw new GraphQlConfigQueryMarketplaceMappingException("Marketplace is null");
+            throw new GraphQlConfigMarketplaceMappingException("Marketplace is null");
         }
 
         List<Type> types = marketplace.getTypes();
 
         if (types == null) {
-            throw new GraphQlConfigQueryMarketplaceMappingException("Types is null");
+            throw new GraphQlConfigMarketplaceMappingException("Types is null");
         }
 
         for (Type type : types) {
@@ -83,7 +83,7 @@ public class ConfigQueryMarketplaceMapper {
             } catch (IllegalArgumentException e) {
                 log.error("Item type not found: " + type.getValue());
             } catch (NullPointerException e) {
-                throw new GraphQlConfigQueryMarketplaceMappingException("Item type is null in types-" + types);
+                throw new GraphQlConfigMarketplaceMappingException("Item type is null in types-" + types);
             }
         }
     }

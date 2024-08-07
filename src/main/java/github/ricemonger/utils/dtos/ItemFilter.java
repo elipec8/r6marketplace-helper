@@ -37,8 +37,10 @@ public class ItemFilter {
         if (filters == null || filters.isEmpty()) {
             return items;
         } else {
-            List<ItemFilter> allowedFilters = filters.stream().filter(filter -> filter.getFilterType().equals(FilterType.ALLOW)).toList();
-            List<ItemFilter> deniedFilters = filters.stream().filter(filter -> filter.getFilterType().equals(FilterType.DENY)).toList();
+            List<ItemFilter> allowedFilters =
+                    filters.stream().filter(filter -> filter.getFilterType() != null && filter.getFilterType().equals(FilterType.ALLOW)).toList();
+            List<ItemFilter> deniedFilters =
+                    filters.stream().filter(filter -> filter.getFilterType() != null && filter.getFilterType().equals(FilterType.DENY)).toList();
 
             Set<Item> result;
 

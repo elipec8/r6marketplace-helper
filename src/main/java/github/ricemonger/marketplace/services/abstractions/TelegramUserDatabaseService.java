@@ -7,6 +7,7 @@ import github.ricemonger.utils.dtos.ItemShownFieldsSettings;
 import github.ricemonger.utils.dtos.TelegramUser;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface TelegramUserDatabaseService {
 
@@ -30,5 +31,5 @@ public interface TelegramUserDatabaseService {
 
     ItemShowSettings findUserSettingsById(String chatId);
 
-    Collection<TelegramUser> findAllUsers();
+    List<TelegramUser> findAllUsers();
 }

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -126,7 +127,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     }
 
     @Override
-    public Collection<TelegramUser> findAllUsers() {
+    public List<TelegramUser> findAllUsers() {
         return telegramUserRepository.findAll().stream().map(TelegramUserEntity::toTelegramUser).toList();
     }
 

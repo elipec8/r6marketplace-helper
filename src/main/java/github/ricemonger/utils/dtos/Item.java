@@ -33,7 +33,10 @@ public class Item implements SoldItemDetails {
     private int limitMaxPrice;
 
     public ItemRarity getItemRarity(String uncommonTag, String rareTag, String epicTag, String legendaryTag) {
-        if (tags.contains(uncommonTag)) {
+        if (tags == null) {
+            log.error("Tags are null for item {}", this);
+            return ItemRarity.UNKNOWN;
+        } else if (tags.contains(uncommonTag)) {
             return ItemRarity.UNCOMMON;
         } else if (tags.contains(rareTag)) {
             return ItemRarity.RARE;

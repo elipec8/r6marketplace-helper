@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marke
 import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.Tags;
 import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.Type;
 import github.ricemonger.utils.dtos.Tag;
-import github.ricemonger.utils.exceptions.GraphQlConfigQueryMarketplaceMappingException;
+import github.ricemonger.utils.exceptions.GraphQlConfigMarketplaceMappingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -45,21 +45,21 @@ class ConfigQueryMarketplaceMapperTest {
 
     @Test
     public void mapTags_should_throw_if_null_marketplace() {
-        assertThrows(GraphQlConfigQueryMarketplaceMappingException.class, () -> {
+        assertThrows(GraphQlConfigMarketplaceMappingException.class, () -> {
             configQueryMarketplaceMapper.mapTags(null);
         });
     }
 
     @Test
     public void mapTags_should_throw_if_null_tags() {
-        assertThrows(GraphQlConfigQueryMarketplaceMappingException.class, () -> {
+        assertThrows(GraphQlConfigMarketplaceMappingException.class, () -> {
             configQueryMarketplaceMapper.mapTags(new Marketplace(null, new ArrayList<>(), null));
         });
     }
 
     @Test
     public void mapTags_should_throw_if_null_tagGroups() {
-        assertThrows(GraphQlConfigQueryMarketplaceMappingException.class, () -> {
+        assertThrows(GraphQlConfigMarketplaceMappingException.class, () -> {
             configQueryMarketplaceMapper.mapTags(new Marketplace(new ArrayList<>(), null, null));
         });
     }
@@ -77,7 +77,7 @@ class ConfigQueryMarketplaceMapperTest {
 
         Marketplace marketplace = new Marketplace(tags, tagGroups, null);
         
-        assertThrows(GraphQlConfigQueryMarketplaceMappingException.class, () -> {
+        assertThrows(GraphQlConfigMarketplaceMappingException.class, () -> {
             configQueryMarketplaceMapper.mapTags(marketplace);
         });
     }
@@ -95,7 +95,7 @@ class ConfigQueryMarketplaceMapperTest {
 
         Marketplace marketplace = new Marketplace(tags, tagGroups, null);
 
-        assertThrows(GraphQlConfigQueryMarketplaceMappingException.class, () -> {
+        assertThrows(GraphQlConfigMarketplaceMappingException.class, () -> {
             configQueryMarketplaceMapper.mapTags(marketplace);
         });
     }
@@ -113,7 +113,7 @@ class ConfigQueryMarketplaceMapperTest {
 
         Marketplace marketplace = new Marketplace(tags, tagGroups, null);
 
-        assertThrows(GraphQlConfigQueryMarketplaceMappingException.class, () -> {
+        assertThrows(GraphQlConfigMarketplaceMappingException.class, () -> {
             configQueryMarketplaceMapper.mapTags(marketplace);
         });
     }
@@ -131,7 +131,7 @@ class ConfigQueryMarketplaceMapperTest {
 
         Marketplace marketplace = new Marketplace(tags, tagGroups, null);
 
-        assertThrows(GraphQlConfigQueryMarketplaceMappingException.class, () -> {
+        assertThrows(GraphQlConfigMarketplaceMappingException.class, () -> {
             configQueryMarketplaceMapper.mapTags(marketplace);
         });
     }
@@ -148,7 +148,7 @@ class ConfigQueryMarketplaceMapperTest {
         tagGroups.add(new TagGroup(List.of("value3"), null));
         Marketplace marketplace = new Marketplace(tags, tagGroups, null);
 
-        assertThrows(GraphQlConfigQueryMarketplaceMappingException.class, () -> {
+        assertThrows(GraphQlConfigMarketplaceMappingException.class, () -> {
             configQueryMarketplaceMapper.mapTags(marketplace);
         });
     }
@@ -166,21 +166,21 @@ class ConfigQueryMarketplaceMapperTest {
 
         Marketplace marketplace = new Marketplace(tags, tagGroups, null);
 
-        assertThrows(GraphQlConfigQueryMarketplaceMappingException.class, () -> {
+        assertThrows(GraphQlConfigMarketplaceMappingException.class, () -> {
             configQueryMarketplaceMapper.mapTags(marketplace);
         });
     }
 
     @Test
     public void checkItemTypes_should_throw_if_null_marketplace() {
-        assertThrows(GraphQlConfigQueryMarketplaceMappingException.class, () -> {
+        assertThrows(GraphQlConfigMarketplaceMappingException.class, () -> {
             configQueryMarketplaceMapper.checkItemTypes(null);
         });
     }
 
     @Test
     public void checkItemTypes_should_throw_if_null_types() {
-        assertThrows(GraphQlConfigQueryMarketplaceMappingException.class, () -> {
+        assertThrows(GraphQlConfigMarketplaceMappingException.class, () -> {
             configQueryMarketplaceMapper.checkItemTypes(new Marketplace(null, null, null));
         });
     }
@@ -190,7 +190,7 @@ class ConfigQueryMarketplaceMapperTest {
         List<Type> types = new ArrayList<>();
         types.add(null);
 
-        assertThrows(GraphQlConfigQueryMarketplaceMappingException.class, () -> {
+        assertThrows(GraphQlConfigMarketplaceMappingException.class, () -> {
             configQueryMarketplaceMapper.checkItemTypes(new Marketplace(null, null, types));
         });
     }
@@ -200,7 +200,7 @@ class ConfigQueryMarketplaceMapperTest {
         List<Type> types = new ArrayList<>();
         types.add(new Type(null));
         
-        assertThrows(GraphQlConfigQueryMarketplaceMappingException.class, () -> {
+        assertThrows(GraphQlConfigMarketplaceMappingException.class, () -> {
             configQueryMarketplaceMapper.checkItemTypes(new Marketplace(null, null, types));
         });
     }

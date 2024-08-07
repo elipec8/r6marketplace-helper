@@ -141,13 +141,13 @@ public class ItemStatsService {
         historyService.saveAll(histories);
     }
 
-    public Collection<Item> getAllItemsByFilters(Collection<ItemFilter> filters) {
-        Collection<Item> items = itemService.findAll();
-
-        return ItemFilter.filterItems(items, filters);
-    }
-
     public Item getItemById(String itemId) {
         return itemService.findById(itemId);
+    }
+
+    public Collection<Item> getAllItemsByFilters(Collection<ItemFilter> filters) {
+        List<Item> items = itemService.findAll();
+
+        return ItemFilter.filterItems(items, filters);
     }
 }
