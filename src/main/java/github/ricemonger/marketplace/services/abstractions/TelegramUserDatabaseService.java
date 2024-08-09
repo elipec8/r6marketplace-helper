@@ -5,31 +5,32 @@ import github.ricemonger.utils.dtos.ItemFilter;
 import github.ricemonger.utils.dtos.ItemShowSettings;
 import github.ricemonger.utils.dtos.ItemShownFieldsSettings;
 import github.ricemonger.utils.dtos.TelegramUser;
+import github.ricemonger.utils.exceptions.TelegramUserAlreadyExistsException;
+import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface TelegramUserDatabaseService {
 
-    void create(String chatId);
+    void create(String chatId) throws TelegramUserAlreadyExistsException;
 
-    void update(TelegramUser telegramUser);
+    void update(TelegramUser telegramUser) throws TelegramUserDoesntExistException;
 
-    void setItemShowFewItemsInMessageFlag(String chatId, boolean flag);
+    void setItemShowFewItemsInMessageFlag(String chatId, boolean flag) throws TelegramUserDoesntExistException;
 
-    void setItemShowMessagesLimit(String chatId, Integer limit);
+    void setItemShowMessagesLimit(String chatId, Integer limit) throws TelegramUserDoesntExistException;
 
-    void setItemShowFieldsSettings(String chatId, ItemShownFieldsSettings settings);
+    void setItemShowFieldsSettings(String chatId, ItemShownFieldsSettings settings) throws TelegramUserDoesntExistException;
 
-    void addItemShowAppliedFilter(String chatId, ItemFilter filter);
+    void addItemShowAppliedFilter(String chatId, ItemFilter filter) throws TelegramUserDoesntExistException;
 
-    void removeItemShowAppliedFilter(String chatId, String filterName);
+    void removeItemShowAppliedFilter(String chatId, String filterName) throws TelegramUserDoesntExistException;
 
     boolean existsById(String chatId);
 
-    TelegramUser findUserById(String chatId);
+    TelegramUser findUserById(String chatId) throws TelegramUserDoesntExistException;
 
-    ItemShowSettings findUserSettingsById(String chatId);
+    ItemShowSettings findUserSettingsById(String chatId) throws TelegramUserDoesntExistException;
 
     List<TelegramUser> findAllUsers();
 }

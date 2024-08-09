@@ -3,7 +3,7 @@ package github.ricemonger.marketplace.services;
 import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
 import github.ricemonger.utils.dtos.AuthorizationDTO;
-import github.ricemonger.utils.dtos.UbiAccount;
+import github.ricemonger.utils.dtos.UbiAccountEntry;
 import github.ricemonger.utils.dtos.UbiAccountWithTelegram;
 import github.ricemonger.utils.exceptions.UbiUserAuthorizationClientErrorException;
 import github.ricemonger.utils.exceptions.UbiUserAuthorizationServerErrorException;
@@ -17,13 +17,13 @@ import java.util.List;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class TelegramUbiAccountService {
-
-    private final TelegramUserUbiAccountEntryDatabaseService telegramUserUbiAccountEntryDatabaseService;
+public class TelegramUserUbiAccountEntryService {
 
     private final AuthorizationService authorizationService;
 
-    public UbiAccount findByChatId(String chatId) {
+    private final TelegramUserUbiAccountEntryDatabaseService telegramUserUbiAccountEntryDatabaseService;
+
+    public UbiAccountEntry findByChatId(String chatId) {
         return telegramUserUbiAccountEntryDatabaseService.findByChatId(chatId);
     }
 
@@ -61,8 +61,8 @@ public class TelegramUbiAccountService {
         telegramUserUbiAccountEntryDatabaseService.save(chatId, buildUbiAccount(email, encodedPassword, authorizationDTO));
     }
 
-    private UbiAccount buildUbiAccount(String email, String password, AuthorizationDTO authorizationDTO) {
-        UbiAccount user = new UbiAccount();
+    private UbiAccountEntry buildUbiAccount(String email, String password, AuthorizationDTO authorizationDTO) {
+        UbiAccountEntry user = new UbiAccountEntry();
         user.setEmail(email);
         user.setEncodedPassword(password);
 

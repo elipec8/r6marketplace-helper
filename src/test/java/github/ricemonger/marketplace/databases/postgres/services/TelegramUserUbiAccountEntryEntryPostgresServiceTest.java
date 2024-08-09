@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountEntryPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
-import github.ricemonger.utils.dtos.UbiAccount;
+import github.ricemonger.utils.dtos.UbiAccountEntry;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.UbiAccountEntryDoesntExistException;
 import github.ricemonger.utils.exceptions.UserAlreadyHasUbiAccountEntryException;
@@ -17,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class TelegramUserUbiAccountEntryPostgresServiceTest {
+class TelegramUserUbiAccountEntryEntryPostgresServiceTest {
     private final static String CHAT_ID = "1";
     private final static String ANOTHER_CHAT_ID = "2";
 
@@ -45,7 +45,7 @@ class TelegramUserUbiAccountEntryPostgresServiceTest {
 
     @Test
     public void save_should_create_new_ubi_account_entry_if_doesnt_exist() {
-        UbiAccount account = new UbiAccount();
+        UbiAccountEntry account = new UbiAccountEntry();
         account.setUbiProfileId("1");
 
         telegramUserUbiAccountEntryService.save(CHAT_ID, account);
@@ -61,7 +61,7 @@ class TelegramUserUbiAccountEntryPostgresServiceTest {
 
     @Test
     public void save_should_update_ubi_account_entry_if_already_exists() {
-        UbiAccount account = new UbiAccount();
+        UbiAccountEntry account = new UbiAccountEntry();
         account.setUbiProfileId("1");
 
         telegramUserUbiAccountEntryService.save(CHAT_ID, account);
@@ -78,7 +78,7 @@ class TelegramUserUbiAccountEntryPostgresServiceTest {
 
     @Test
     public void save_should_throw_exception_if_user_already_has_another_ubi_account() {
-        UbiAccount account = new UbiAccount();
+        UbiAccountEntry account = new UbiAccountEntry();
         account.setUbiProfileId("1");
 
         telegramUserUbiAccountEntryService.save(CHAT_ID, account);
@@ -93,7 +93,7 @@ class TelegramUserUbiAccountEntryPostgresServiceTest {
 
     @Test
     public void save_should_throw_exception_if_telegram_user_doesnt_exist() {
-        UbiAccount account = new UbiAccount();
+        UbiAccountEntry account = new UbiAccountEntry();
         account.setUbiProfileId("1");
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserUbiAccountEntryService.save(ANOTHER_CHAT_ID, account));
@@ -101,7 +101,7 @@ class TelegramUserUbiAccountEntryPostgresServiceTest {
 
     @Test
     public void deleteByChatId_should_delete_proper_ubi_account_entry_and_cascade() {
-        UbiAccount account = new UbiAccount();
+        UbiAccountEntry account = new UbiAccountEntry();
         account.setUbiProfileId("1");
 
         telegramUserUbiAccountEntryService.save(CHAT_ID, account);
@@ -127,7 +127,7 @@ class TelegramUserUbiAccountEntryPostgresServiceTest {
 
     @Test
     public void findByChatId_should_return_ubi_account() {
-        UbiAccount account = new UbiAccount();
+        UbiAccountEntry account = new UbiAccountEntry();
         account.setUbiProfileId("1");
         account.setUbiSpaceId("spaceID");
 
@@ -152,7 +152,7 @@ class TelegramUserUbiAccountEntryPostgresServiceTest {
 
     @Test
     public void findAll_should_return_all_ubi_accounts() {
-        UbiAccount account = new UbiAccount();
+        UbiAccountEntry account = new UbiAccountEntry();
         account.setUbiProfileId("1");
         account.setUbiSpaceId("spaceID");
 

@@ -18,120 +18,34 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TelegramUserService {
 
-    private final TelegramUserDatabaseService userService;
+    private final TelegramUserUbiAccountEntryService credentialsService;
 
-    private final TelegramUserInputDatabaseService inputService;
+    private final TelegramUserDatabaseService telegramUserDatabaseService;
 
-    private final TelegramUbiAccountService credentialsService;
+    private final TelegramUserInputDatabaseService inputDatabaseService;
 
-    public boolean isTelegramUserRegistered(Long chatId) {
-        return userService.existsById(String.valueOf(chatId));
+    public void registerTelegramUser(Long chatId) throws TelegramUserAlreadyExistsException {
+        telegramUserDatabaseService.create(String.valueOf(chatId));
     }
 
-    public void registerTelegramUserWithDefaultSettings(Long chatId) throws TelegramUserAlreadyExistsException {
-        userService.create(String.valueOf(chatId));
-    }
-
-    public void setUserNextInputState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException {
+    public void setUserInputState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException {
         TelegramUser telegramUser = getTelegramUserOrThrow(chatId);
         telegramUser.setInputState(inputState);
-        userService.update(telegramUser);
+        telegramUserDatabaseService.update(telegramUser);
     }
 
-    public void setUserNextInputGroup(Long chatId, InputGroup inputGroup) throws TelegramUserDoesntExistException {
+    public void setUserInputGroup(Long chatId, InputGroup inputGroup) throws TelegramUserDoesntExistException {
         TelegramUser telegramUser = getTelegramUserOrThrow(chatId);
         telegramUser.setInputGroup(inputGroup);
-        userService.update(telegramUser);
-    }
-
-    public InputState getUserInputState(Long chatId) throws TelegramUserDoesntExistException {
-        TelegramUser telegramUser = getTelegramUserOrThrow(chatId);
-        return telegramUser.getInputState();
-    }
-
-    public InputGroup getUserInputGroup(Long chatId) throws TelegramUserDoesntExistException {
-        TelegramUser telegramUser = getTelegramUserOrThrow(chatId);
-        return telegramUser.getInputGroup();
-    }
-
-    public void saveUserInput(Long chatId, InputState inputState, String userInput) throws TelegramUserDoesntExistException {
-        getTelegramUserOrThrow(chatId);
-        inputService.save(String.valueOf(chatId), inputState, userInput);
-    }
-
-    public String getUserInputByState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
-        return getInputValueByState(chatId, inputState);
-    }
-
-    public Collection<TelegramUserInput> getAllUserInputs(Long chatId) throws TelegramUserDoesntExistException {
-        getTelegramUserOrThrow(chatId);
-        return inputService.findAllByChatId(String.valueOf(chatId));
-    }
-
-    public void clearUserInputs(Long chatId) throws TelegramUserDoesntExistException {
-        getTelegramUserOrThrow(chatId);
-
-        inputService.deleteAllByChatId(String.valueOf(chatId));
-    }
-
-    public void addCredentialsIfValidOrThrowException(Long chatId, String email, String password)
-            throws TelegramUserDoesntExistException,
-            UbiUserAuthorizationClientErrorException,
-            UbiUserAuthorizationServerErrorException {
-        getTelegramUserOrThrow(chatId);
-
-        credentialsService.authorizeAndSaveUser(String.valueOf(chatId), email, password);
-
-        inputService.deleteAllByChatId(String.valueOf(chatId));
-    }
-
-    public void removeCredentialsByUserInputs(Long chatId) throws TelegramUserDoesntExistException {
-        getTelegramUserOrThrow(chatId);
-
-        credentialsService.deleteByChatId(String.valueOf(chatId));
-    }
-
-    public void removeAllCredentials(Long chatId) throws TelegramUserDoesntExistException {
-        getTelegramUserOrThrow(chatId);
-
-        credentialsService.deleteByChatId(String.valueOf(chatId));
-    }
-
-    public UbiAccount getCredentialsEmailsList(Long chatId) throws TelegramUserDoesntExistException {
-        getTelegramUserOrThrow(chatId);
-
-        return credentialsService.findByChatId(String.valueOf(chatId));
-    }
-
-    public List<String> getAllChatIdsForNotifiableUsers() {
-        return userService.findAllUsers().stream()
-                .filter(TelegramUser::isPublicNotificationsEnabledFlag)
-                .map(TelegramUser::getChatId)
-                .toList();
-    }
-
-    public TelegramUser getTelegramUser(Long chatId) throws TelegramUserDoesntExistException {
-        return getTelegramUserOrThrow(chatId);
-    }
-
-    public ItemShowSettings getItemShowSettings(Long chatId) {
-        return userService.findUserSettingsById(String.valueOf(chatId));
-    }
-
-    public int getItemOffsetByUserInput(Long chatId) throws TelegramUserDoesntExistException {
-        try {
-            return Integer.parseInt(inputService.findById(String.valueOf(chatId), InputState.ITEMS_SHOW_OFFSET).getValue());
-        } catch (TelegramUserInputDoesntExistException | NumberFormatException e) {
-            return 0;
-        }
+        telegramUserDatabaseService.update(telegramUser);
     }
 
     public void setItemShowFewItemsInMessageFlag(Long chatId, boolean flag) throws TelegramUserDoesntExistException {
-        userService.setItemShowFewItemsInMessageFlag(String.valueOf(chatId), flag);
+        telegramUserDatabaseService.setItemShowFewItemsInMessageFlag(String.valueOf(chatId), flag);
     }
 
     public void setItemShowMessagesLimit(Long chatId, Integer limit) throws TelegramUserDoesntExistException {
-        userService.setItemShowMessagesLimit(String.valueOf(chatId), limit);
+        telegramUserDatabaseService.setItemShowMessagesLimit(String.valueOf(chatId), limit);
     }
 
     public void setItemShowSettingsByUserInput(Long chatId, String trueValue, String falseValue) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
@@ -152,15 +66,100 @@ public class TelegramUserService {
                 sellOrdersCountFlag,
                 pictureFlag);
 
-        userService.setItemShowFieldsSettings(String.valueOf(chatId), settings);
+        telegramUserDatabaseService.setItemShowFieldsSettings(String.valueOf(chatId), settings);
     }
 
-    public void addItemShowAppliedFilter(Long chatId, ItemFilter filter) {
-        userService.addItemShowAppliedFilter(String.valueOf(chatId), filter);
+    public void addItemShowAppliedFilter(Long chatId, ItemFilter filter) throws TelegramUserDoesntExistException {
+        telegramUserDatabaseService.addItemShowAppliedFilter(String.valueOf(chatId), filter);
     }
 
-    public void removeItemShowAppliedFilter(Long chatId, String filterName) {
-        userService.removeItemShowAppliedFilter(String.valueOf(chatId), filterName);
+    public void removeItemShowAppliedFilter(Long chatId, String filterName) throws TelegramUserDoesntExistException {
+        telegramUserDatabaseService.removeItemShowAppliedFilter(String.valueOf(chatId), filterName);
+    }
+
+    public void addUserUbiAccountEntryIfValidCredentialsOrThrow(Long chatId, String email, String password)
+            throws TelegramUserDoesntExistException,
+            UbiUserAuthorizationClientErrorException,
+            UbiUserAuthorizationServerErrorException {
+        getTelegramUserOrThrow(chatId);
+
+        inputDatabaseService.deleteAllByChatId(String.valueOf(chatId));
+
+        credentialsService.authorizeAndSaveUser(String.valueOf(chatId), email, password);
+    }
+
+    public void removeUserUbiAccountEntry(Long chatId) throws TelegramUserDoesntExistException {
+        getTelegramUserOrThrow(chatId);
+
+        credentialsService.deleteByChatId(String.valueOf(chatId));
+    }
+
+    public void saveUserInput(Long chatId, InputState inputState, String userInput) throws TelegramUserDoesntExistException {
+        getTelegramUserOrThrow(chatId);
+        inputDatabaseService.save(String.valueOf(chatId), inputState, userInput);
+    }
+
+    public void clearUserInputs(Long chatId) throws TelegramUserDoesntExistException {
+        getTelegramUserOrThrow(chatId);
+
+        inputDatabaseService.deleteAllByChatId(String.valueOf(chatId));
+    }
+
+    public boolean isTelegramUserRegistered(Long chatId) {
+        return telegramUserDatabaseService.existsById(String.valueOf(chatId));
+    }
+
+    public TelegramUser getTelegramUser(Long chatId) throws TelegramUserDoesntExistException {
+        return getTelegramUserOrThrow(chatId);
+    }
+
+    public ItemShowSettings getItemShowSettings(Long chatId) {
+        return telegramUserDatabaseService.findUserSettingsById(String.valueOf(chatId));
+    }
+
+    public InputState getUserInputState(Long chatId) throws TelegramUserDoesntExistException {
+        TelegramUser telegramUser = getTelegramUserOrThrow(chatId);
+        return telegramUser.getInputState();
+    }
+
+    public InputGroup getUserInputGroup(Long chatId) throws TelegramUserDoesntExistException {
+        TelegramUser telegramUser = getTelegramUserOrThrow(chatId);
+        return telegramUser.getInputGroup();
+    }
+
+    public UbiAccountEntry getUserUbiAccountEntry(Long chatId) throws TelegramUserDoesntExistException {
+        getTelegramUserOrThrow(chatId);
+
+        return credentialsService.findByChatId(String.valueOf(chatId));
+    }
+
+    public int getItemOffsetByUserInput(Long chatId) throws TelegramUserDoesntExistException {
+        getTelegramUserOrThrow(chatId);
+
+        TelegramUserInput input = new TelegramUserInput();
+        try {
+            input = inputDatabaseService.findById(String.valueOf(chatId), InputState.ITEMS_SHOW_OFFSET);
+            return Integer.parseInt(input.getValue());
+        } catch (TelegramUserInputDoesntExistException | NumberFormatException e) {
+            log.info("User's-{} input-{} is invalid or doesnt exists, 0 is used instead", chatId, input);
+            return 0;
+        }
+    }
+
+    public String getUserInputByState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
+        return getInputValueByState(chatId, inputState);
+    }
+
+    public List<TelegramUserInput> getAllUserInputs(Long chatId) throws TelegramUserDoesntExistException {
+        getTelegramUserOrThrow(chatId);
+        return inputDatabaseService.findAllByChatId(String.valueOf(chatId));
+    }
+
+    public List<String> getAllChatIdsForNotifiableUsers() {
+        return telegramUserDatabaseService.findAllUsers().stream()
+                .filter(TelegramUser::isPublicNotificationsEnabledFlag)
+                .map(TelegramUser::getChatId)
+                .toList();
     }
 
     private boolean parseBooleanOrTrue(String value, String falseValue) {
@@ -170,10 +169,10 @@ public class TelegramUserService {
     private String getInputValueByState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         getTelegramUserOrThrow(chatId);
 
-        return inputService.findById(String.valueOf(chatId), inputState).getValue();
+        return inputDatabaseService.findById(String.valueOf(chatId), inputState).getValue();
     }
 
     private TelegramUser getTelegramUserOrThrow(Long chatId) throws TelegramUserDoesntExistException {
-        return userService.findUserById(String.valueOf(chatId));
+        return telegramUserDatabaseService.findUserById(String.valueOf(chatId));
     }
 }

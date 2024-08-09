@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -17,11 +18,11 @@ public class TagService {
         tagDatabaseService.saveAll(tags);
     }
 
-    public Collection<Tag> getTagsByNames(Collection<String> tagNames) {
+    public List<Tag> getTagsByNames(Collection<String> tagNames) {
         return tagDatabaseService.findAllByNames(tagNames);
     }
 
-    public Collection<Tag> getAllTags() {
+    public List<Tag> getAllTags() {
         return tagDatabaseService.findAll();
     }
 }

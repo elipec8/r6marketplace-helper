@@ -6,7 +6,10 @@ import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.*;
-import github.ricemonger.utils.exceptions.*;
+import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.TelegramUserInputDoesntExistException;
+import github.ricemonger.utils.exceptions.UbiUserAuthorizationClientErrorException;
+import github.ricemonger.utils.exceptions.UbiUserAuthorizationServerErrorException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,306 +23,399 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class TelegramUserServiceTest {
-
-    @MockBean
-    private TelegramUserDatabaseService userService;
-
-    @MockBean
-    private TelegramUserInputDatabaseService inputService;
-
-    @MockBean
-    private TelegramUbiAccountService credentialsService;
-
     @Autowired
     private TelegramUserService telegramUserService;
+    @MockBean
+    private TelegramUserUbiAccountEntryService telegramUserUbiAccountEntryDatabaseService;
+    @MockBean
+    private TelegramUserDatabaseService telegramUserDatabaseService;
+    @MockBean
+    private TelegramUserInputDatabaseService telegramUserInputDatabaseService;
 
     @Test
-    public void isTelegramUserRegistered_should_Return_result_from_database_service() {
-        when(userService.existsById("123")).thenReturn(true);
-
-        assertTrue(telegramUserService.isTelegramUserRegistered(123L));
-
-        when(userService.existsById("123")).thenReturn(false);
-
-        assertFalse(telegramUserService.isTelegramUserRegistered(123L));
+    public void registerTelegramUser_should_handle_to_service() {
+        telegramUserService.registerTelegramUser(123L);
+        verify(telegramUserDatabaseService).create("123");
     }
 
     @Test
-    public void registerTelegramUser_should_throw_exception_when_user_WithDefaultSettings_already_exists() {
-        when(userService.existsById("123")).thenReturn(true);
+    public void setUserInputState_should_save_state() {
+        when(telegramUserDatabaseService.findUserById("123")).thenReturn(new TelegramUser(123L));
 
-        assertThrows(TelegramUserAlreadyExistsException.class, () -> telegramUserService.registerTelegramUserWithDefaultSettings(123L));
-    }
+        telegramUserService.setUserInputState(123L, InputState.CREDENTIALS_FULL_OR_EMAIL);
 
-    @Test
-    public void registerTelegramUser_should_save_user_when_user_WithDefaultSettings_doesnt_exist() {
-        when(userService.existsById("123")).thenReturn(false);
-
-        telegramUserService.registerTelegramUserWithDefaultSettings(123L);
-
-        verify(userService).update(new TelegramUser(123L));
-    }
-
-    @Test
-    public void setUserNextInputState_should_throw_if_user_doesnt_exist() {
-        when(userService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
-
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setUserNextInputState(123L, InputState.BASE));
-    }
-
-    @Test
-    public void setUserNextInputState_should_save_state() {
         TelegramUser telegramUser = new TelegramUser(123L);
-        telegramUser.setInputState(InputState.BASE);
-        when(userService.findUserById("123")).thenReturn(telegramUser);
+        telegramUser.setInputState(InputState.CREDENTIALS_FULL_OR_EMAIL);
 
-        telegramUserService.setUserNextInputState(123L, InputState.BASE);
-
-        verify(userService).update(telegramUser);
+        verify(telegramUserDatabaseService).update(telegramUser);
     }
 
     @Test
-    public void setUserNextInputGroup_should_throw_if_user_doesnt_exist() {
-        when(userService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
+    public void setUserInputState_should_throw_if_user_doesnt_exist() {
+        when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setUserNextInputGroup(123L, InputGroup.BASE));
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setUserInputState(123L, InputState.BASE));
     }
 
     @Test
-    public void setUserNextInputGroup_should_save_group() {
+    public void setUserInputGroup_should_save_group() {
+        when(telegramUserDatabaseService.findUserById("123")).thenReturn(new TelegramUser(123L));
+
+        telegramUserService.setUserInputGroup(123L, InputGroup.CREDENTIALS_ADD);
+
         TelegramUser telegramUser = new TelegramUser(123L);
-        telegramUser.setInputGroup(InputGroup.BASE);
-        when(userService.findUserById("123")).thenReturn(telegramUser);
+        telegramUser.setInputGroup(InputGroup.CREDENTIALS_ADD);
 
-        telegramUserService.setUserNextInputGroup(123L, InputGroup.BASE);
-
-        verify(userService).update(telegramUser);
+        verify(telegramUserDatabaseService).update(telegramUser);
     }
 
     @Test
-    public void getUserInputState_should_throw_if_user_doesnt_exist() {
-        when(userService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
+    public void setUserInputGroup_should_throw_if_user_doesnt_exist() {
+        when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getUserInputState(123L));
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setUserInputGroup(123L, InputGroup.BASE));
     }
 
     @Test
-    public void getUserInputState_should_return_state() {
-        TelegramUser telegramUser = new TelegramUser(123L);
-        telegramUser.setInputState(InputState.BASE);
-        when(userService.findUserById("123")).thenReturn(telegramUser);
+    public void setItemShowFewItemsInMessageFlag_should_handle_to_service() {
+        telegramUserService.setItemShowFewItemsInMessageFlag(123L, true);
+        verify(telegramUserDatabaseService).setItemShowFewItemsInMessageFlag("123", true);
 
-        assertEquals(InputState.BASE, telegramUserService.getUserInputState(123L));
+        telegramUserService.setItemShowFewItemsInMessageFlag(223L, false);
+        verify(telegramUserDatabaseService).setItemShowFewItemsInMessageFlag("223", false);
     }
 
     @Test
-    public void getUserInputGroup_should_throw_if_user_doesnt_exist() {
-        when(userService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
+    public void setItemShowFewItemsInMessageFlag_should_throw_if_user_doesnt_exist() {
+        doThrow(TelegramUserDoesntExistException.class).when(telegramUserDatabaseService).setItemShowFewItemsInMessageFlag("123", true);
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getUserInputGroup(123L));
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setItemShowFewItemsInMessageFlag(123L, true));
     }
 
     @Test
-    public void getUserInputGroup_should_return_group() {
-        TelegramUser telegramUser = new TelegramUser(123L);
-        telegramUser.setInputGroup(InputGroup.BASE);
-        when(userService.findUserById("123")).thenReturn(telegramUser);
-
-        assertEquals(InputGroup.BASE, telegramUserService.getUserInputGroup(123L));
+    public void setItemShowMessagesLimit_should_handle_to_service() {
+        telegramUserService.setItemShowMessagesLimit(123L, 5);
+        verify(telegramUserDatabaseService).setItemShowMessagesLimit("123", 5);
     }
 
     @Test
-    public void getUserInputByStateOrNull_should_throw_if_user_doesnt_exist() {
-        when(userService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
+    public void setItemShowMessagesLimit_should_throw_if_user_doesnt_exist() {
+        doThrow(TelegramUserDoesntExistException.class).when(telegramUserDatabaseService).setItemShowMessagesLimit("123", 5);
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getUserInputByState(123L, InputState.BASE));
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setItemShowMessagesLimit(123L, 5));
     }
 
     @Test
-    public void getUserInputByStateOrNull_should_throw_if_input_doesnt_exist() {
-        when(inputService.findById("123", InputState.BASE)).thenThrow(TelegramUserInputDoesntExistException.class);
+    public void setItemShowSettingsByUserInput_should_parse_and_handle_to_service() {
+        String chatId = "123";
 
-        assertThrows(TelegramUserInputDoesntExistException.class, () -> telegramUserService.getUserInputByState(123L, InputState.BASE));
+        when(telegramUserInputDatabaseService.findById(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_NAME)).thenReturn(new TelegramUserInput(chatId,
+                InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_NAME, Callbacks.INPUT_CALLBACK_TRUE));
+
+        when(telegramUserInputDatabaseService.findById(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_TYPE)).thenReturn(new TelegramUserInput(chatId,
+                InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_TYPE, Callbacks.INPUT_CALLBACK_TRUE));
+
+        when(telegramUserInputDatabaseService.findById(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_MAX_BUY_PRICE)).thenReturn(new TelegramUserInput(chatId,
+                InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_MAX_BUY_PRICE, Callbacks.INPUT_CALLBACK_TRUE));
+
+        when(telegramUserInputDatabaseService.findById(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_BUY_ORDERS_COUNT)).thenReturn(new TelegramUserInput(chatId,
+                InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_BUY_ORDERS_COUNT, Callbacks.INPUT_CALLBACK_TRUE));
+
+        when(telegramUserInputDatabaseService.findById(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_MIN_SELL_PRICE)).thenReturn(new TelegramUserInput(chatId,
+                InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_MIN_SELL_PRICE, Callbacks.INPUT_CALLBACK_FALSE));
+
+        when(telegramUserInputDatabaseService.findById(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_SELL_ORDERS_COUNT)).thenReturn(new TelegramUserInput(chatId,
+                InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_SELL_ORDERS_COUNT, Callbacks.INPUT_CALLBACK_FALSE));
+
+        when(telegramUserInputDatabaseService.findById(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE)).thenReturn(new TelegramUserInput(chatId,
+                InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE, Callbacks.INPUT_CALLBACK_FALSE));
+
+        ItemShownFieldsSettings settings = new ItemShownFieldsSettings(true, true, true, true, false, false, false);
+
+        telegramUserService.setItemShowSettingsByUserInput(123L, Callbacks.INPUT_CALLBACK_TRUE, Callbacks.INPUT_CALLBACK_FALSE);
+
+        verify(telegramUserDatabaseService).setItemShowFieldsSettings(chatId, settings);
     }
 
     @Test
-    public void getUserInputByStateOrNull_should_return_input() {
-        TelegramUserInput telegramUserInput = new TelegramUserInput("123", InputState.BASE, "input");
-        when(inputService.findById("123", InputState.BASE)).thenReturn(telegramUserInput);
+    public void setItemShowSettingsByUserInput_should_throw_if_user_doesnt_exist() {
+        when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
 
-        assertEquals("input", telegramUserService.getUserInputByState(123L, InputState.BASE));
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setItemShowSettingsByUserInput(123L, Callbacks.INPUT_CALLBACK_TRUE, Callbacks.INPUT_CALLBACK_FALSE));
+    }
+
+    @Test
+    public void addItemShowAppliedFilter_should_handle_to_service() {
+        ItemFilter filter = new ItemFilter();
+        telegramUserService.addItemShowAppliedFilter(123L, filter);
+        verify(telegramUserDatabaseService).addItemShowAppliedFilter(eq("123"), same(filter));
+    }
+
+    @Test
+    public void addItemShowAppliedFilter_should_throw_if_user_doesnt_exist() {
+        doThrow(TelegramUserDoesntExistException.class).when(telegramUserDatabaseService).addItemShowAppliedFilter("123", new ItemFilter());
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.addItemShowAppliedFilter(123L, new ItemFilter()));
+    }
+
+    @Test
+    public void removeItemShowAppliedFilter_should_handle_to_service() {
+        telegramUserService.removeItemShowAppliedFilter(123L, "filterName");
+        verify(telegramUserDatabaseService).removeItemShowAppliedFilter("123", "filterName");
+    }
+
+    @Test
+    public void removeItemShowAppliedFilter_should_throw_if_user_doesnt_exist() {
+        doThrow(TelegramUserDoesntExistException.class).when(telegramUserDatabaseService).removeItemShowAppliedFilter("123", "filterName");
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.removeItemShowAppliedFilter(123L, "filterName"));
+    }
+
+    @Test
+    public void addUserUbiAccountEntryIfValidCredentialsOrThrow_should_create_and_authorize_user_and_clear_user_inputsCredentials() {
+        telegramUserService.addUserUbiAccountEntryIfValidCredentialsOrThrow(123L, "email", "password");
+
+        verify(telegramUserInputDatabaseService).deleteAllByChatId("123");
+
+        verify(telegramUserUbiAccountEntryDatabaseService).authorizeAndSaveUser("123", "email", "password");
+    }
+
+    @Test
+    public void addUserUbiAccountEntryIfValidCredentialsOrThrow_should_throw_if_user_doesnt_existCredentials() {
+        when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.addUserUbiAccountEntryIfValidCredentialsOrThrow(123L, "email", "password"));
+    }
+
+    @Test
+    public void addUserUbiAccountEntryIfValidCredentialsOrThrow_should_throw_if_invalid_user_credentials() {
+        doThrow(UbiUserAuthorizationClientErrorException.class).when(telegramUserUbiAccountEntryDatabaseService).authorizeAndSaveUser("123", "email", "password");
+
+        assertThrows(UbiUserAuthorizationClientErrorException.class, () -> telegramUserService.addUserUbiAccountEntryIfValidCredentialsOrThrow(123L, "email", "password"));
+    }
+
+    @Test
+    public void addUserUbiAccountEntryIfValidCredentialsOrThrow_should_throw_if_ubiAccountEntry_server_errorCredentials() {
+        doThrow(UbiUserAuthorizationServerErrorException.class).when(telegramUserUbiAccountEntryDatabaseService).authorizeAndSaveUser("123", "email", "password");
+
+        assertThrows(UbiUserAuthorizationServerErrorException.class, () -> telegramUserService.addUserUbiAccountEntryIfValidCredentialsOrThrow(123L, "email",
+                "password"));
+    }
+
+    @Test
+    public void removeUserUbiAccountEntry_should_handle_to_service() {
+        telegramUserService.removeUserUbiAccountEntry(123L);
+
+        verify(telegramUserUbiAccountEntryDatabaseService).deleteByChatId("123");
+    }
+
+    @Test
+    public void removeUserUbiAccountEntry_should_throw_if_user_doesnt_exist() {
+        when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.removeUserUbiAccountEntry(123L));
+    }
+
+    @Test
+    public void saveUserInput_should_handle_to_service() {
+        telegramUserService.saveUserInput(123L, InputState.BASE, "input");
+
+        verify(telegramUserInputDatabaseService).save("123", InputState.BASE, "input");
     }
 
     @Test
     public void saveUserInput_should_throw_if_user_doesnt_exist() {
-        when(userService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
+        when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.saveUserInput(123L, InputState.BASE, "input"));
     }
 
     @Test
-    public void saveUserInput_should_save_input() {
-        TelegramUser telegramUser = new TelegramUser(123L);
-        when(userService.findUserById("123")).thenReturn(telegramUser);
+    public void clearUserInputs_should_handle_to_service() {
+        telegramUserService.clearUserInputs(123L);
 
-        telegramUserService.saveUserInput(123L, InputState.BASE, "input");
-
-        verify(inputService).save("123", InputState.BASE, "input");
+        verify(telegramUserInputDatabaseService).deleteAllByChatId("123");
     }
 
     @Test
     public void clearUserInputs_should_throw_if_user_doesnt_exist() {
-        when(userService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
+        when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.clearUserInputs(123L));
     }
 
     @Test
-    public void clearUserInputs_should_delete_all_inputs() {
+    public void isTelegramUserRegistered_should_return_result_from_database_service() {
+        when(telegramUserDatabaseService.existsById("123")).thenReturn(true);
+
+        assertTrue(telegramUserService.isTelegramUserRegistered(123L));
+
+        verify(telegramUserDatabaseService).existsById("123");
+
+        reset(telegramUserDatabaseService);
+
+        when(telegramUserDatabaseService.existsById("123")).thenReturn(false);
+
+        assertFalse(telegramUserService.isTelegramUserRegistered(123L));
+
+        verify(telegramUserDatabaseService).existsById("123");
+    }
+
+    @Test
+    public void getTelegramUser_should_return_user() {
         TelegramUser telegramUser = new TelegramUser(123L);
-        when(userService.findUserById("123")).thenReturn(telegramUser);
+        when(telegramUserDatabaseService.findUserById("123")).thenReturn(telegramUser);
 
-        telegramUserService.clearUserInputs(123L);
+        assertEquals(telegramUser, telegramUserService.getTelegramUser(123L));
 
-        verify(inputService).deleteAllByChatId("123");
+        verify(telegramUserDatabaseService).findUserById("123");
     }
 
     @Test
-    public void addCredentialsIfValidOrThrowException_should_throw_if_user_doesnt_exist() {
-        when(userService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
+    public void getTelegramUser_should_throw_if_user_doesnt_exist() {
+        when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.addCredentialsIfValidOrThrowException(123L, "email", "password"));
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getTelegramUser(123L));
     }
 
     @Test
-    public void addCredentialsIfValidOrThrowException_should_throw_if_invalid_credentials() {
+    public void getItemShowSettings_should_return_settings() {
+        ItemShowSettings settings = new ItemShowSettings();
+        when(telegramUserDatabaseService.findUserSettingsById("123")).thenReturn(settings);
+
+        assertEquals(settings, telegramUserService.getItemShowSettings(123L));
+
+        verify(telegramUserDatabaseService).findUserSettingsById("123");
+    }
+
+    @Test
+    public void getItemShowSettings_should_throw_if_user_doesnt_exist() {
+        when(telegramUserDatabaseService.findUserSettingsById("123")).thenThrow(TelegramUserDoesntExistException.class);
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getItemShowSettings(123L));
+    }
+
+    @Test
+    public void getUserInputState_should_return_state() {
         TelegramUser telegramUser = new TelegramUser(123L);
-        when(userService.findUserById("123")).thenReturn(telegramUser);
+        telegramUser.setInputState(InputState.CREDENTIALS_FULL_OR_EMAIL);
+        when(telegramUserDatabaseService.findUserById("123")).thenReturn(telegramUser);
 
-        doThrow(UbiUserAuthorizationClientErrorException.class).when(credentialsService).authorizeAndSaveUser("123", "email", "password");
+        assertEquals(InputState.CREDENTIALS_FULL_OR_EMAIL, telegramUserService.getUserInputState(123L));
 
-        assertThrows(UbiUserAuthorizationClientErrorException.class, () -> telegramUserService.addCredentialsIfValidOrThrowException(123L, "email", "password"));
+        verify(telegramUserDatabaseService).findUserById("123");
     }
 
     @Test
-    public void addCredentialsIfValidOrThrowException_should_throw_if_server_error() {
+    public void getUserInputState_should_throw_if_user_doesnt_exist() {
+        when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getUserInputState(123L));
+    }
+
+    @Test
+    public void getUserInputGroup_should_return_group() {
         TelegramUser telegramUser = new TelegramUser(123L);
-        when(userService.findUserById("123")).thenReturn(telegramUser);
+        telegramUser.setInputGroup(InputGroup.CREDENTIALS_ADD);
+        when(telegramUserDatabaseService.findUserById("123")).thenReturn(telegramUser);
 
-        doThrow(UbiUserAuthorizationServerErrorException.class).when(credentialsService).authorizeAndSaveUser("123", "email", "password");
+        assertEquals(InputGroup.CREDENTIALS_ADD, telegramUserService.getUserInputGroup(123L));
 
-        assertThrows(UbiUserAuthorizationServerErrorException.class, () -> telegramUserService.addCredentialsIfValidOrThrowException(123L, "email",
-                "password"));
+        verify(telegramUserDatabaseService).findUserById("123");
     }
 
     @Test
-    public void addCredentialsIfValidOrThrowException_should_create_and_authorize_user() {
-        TelegramUser telegramUser = new TelegramUser(123L);
-        when(userService.findUserById("123")).thenReturn(telegramUser);
+    public void getUserInputGroup_should_throw_if_user_doesnt_exist() {
+        when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
 
-        telegramUserService.addCredentialsIfValidOrThrowException(123L, "email", "password");
-
-        verify(credentialsService).authorizeAndSaveUser("123", "email", "password");
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getUserInputGroup(123L));
     }
 
     @Test
-    public void removeCredentialsByUserInputs_should_throw_if_user_doesnt_exist() {
-        when(userService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
+    public void getUserUbiAccountEntry_should_return_user_ubi_account_entry() {
+        when(telegramUserUbiAccountEntryDatabaseService.findByChatId("123")).thenReturn(new UbiAccountEntry());
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.removeCredentialsByUserInputs(123L));
+        assertEquals(new UbiAccountEntry(), telegramUserService.getUserUbiAccountEntry(123L));
+
+        verify(telegramUserUbiAccountEntryDatabaseService).findByChatId("123");
     }
 
     @Test
-    public void removeCredentialsByUserInputs_should_throw_if_input_doesnt_exist() {
-        TelegramUser telegramUser = new TelegramUser(123L);
-        when(userService.findUserById("123")).thenReturn(telegramUser);
+    public void getUserUbiAccountEntry_should_throw_if_user_doesnt_exist() {
+        when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
 
-        when(inputService.findById("123", InputState.CREDENTIALS_FULL_OR_EMAIL)).thenThrow(TelegramUserInputDoesntExistException.class);
-
-        assertThrows(TelegramUserInputDoesntExistException.class, () -> telegramUserService.removeCredentialsByUserInputs(123L));
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getUserUbiAccountEntry(123L));
     }
 
     @Test
-    public void removeCredentialsByUserInputs_should_remove_credentials() {
-        TelegramUser telegramUser = new TelegramUser(123L);
-        when(userService.findUserById("123")).thenReturn(telegramUser);
+    public void getItemOffsetByUserInput_should_return_offset() {
+        when(telegramUserInputDatabaseService.findById("123", InputState.ITEMS_SHOW_OFFSET)).thenReturn(new TelegramUserInput("123", InputState.ITEMS_SHOW_OFFSET, "5"));
 
-        when(inputService.findById("123", InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn(new TelegramUserInput("123",
-                InputState.CREDENTIALS_FULL_OR_EMAIL, "email"));
-
-        telegramUserService.removeCredentialsByUserInputs(123L);
-
-        //    verify(credentialsService).deleteByChatId("123", "email");
+        assertEquals(5, telegramUserService.getItemOffsetByUserInput(123L));
     }
 
     @Test
-    public void removeCredentialsByUserInputs_should_clear_user_inputs() {
-        TelegramUser telegramUser = new TelegramUser(123L);
-        when(userService.findUserById("123")).thenReturn(telegramUser);
+    public void getItemOffsetByUserInput_should_throw_if_user_doesnt_exist() {
+        when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
 
-        when(inputService.findById("123", InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn(new TelegramUserInput("123",
-                InputState.CREDENTIALS_FULL_OR_EMAIL, "email"));
-
-        telegramUserService.removeCredentialsByUserInputs(123L);
-
-        verify(inputService).deleteAllByChatId("123");
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getItemOffsetByUserInput(123L));
     }
 
     @Test
-    public void removeAllCredentials_should_throw_if_user_doesnt_exist() {
-        when(userService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
+    public void getItemOffsetByUserInput_should_0_if_input_doesnt_exist() {
+        when(telegramUserInputDatabaseService.findById("123", InputState.ITEMS_SHOW_OFFSET)).thenThrow(TelegramUserInputDoesntExistException.class);
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.removeAllCredentials(123L));
+        assertEquals(0, telegramUserService.getItemOffsetByUserInput(123L));
     }
 
     @Test
-    public void removeAllCredentials_should_remove_all_credentials() {
-        TelegramUser telegramUser = new TelegramUser(123L);
-        when(userService.findUserById("123")).thenReturn(telegramUser);
+    public void getItemOffsetByUserInput_should_0_if_input_is_invalid() {
+        when(telegramUserInputDatabaseService.findById("123", InputState.ITEMS_SHOW_OFFSET)).thenReturn(new TelegramUserInput("123", InputState.ITEMS_SHOW_OFFSET, "i"));
 
-        telegramUserService.removeAllCredentials(123L);
-
-        verify(credentialsService).deleteByChatId("123");
+        assertEquals(0, telegramUserService.getItemOffsetByUserInput(123L));
     }
 
     @Test
-    public void getCredentialsEmailsList_should_throw_if_user_doesnt_exist() {
-        when(userService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
+    public void getUserInputByState_should_return_input() {
+        TelegramUserInput telegramUserInput = new TelegramUserInput("123", InputState.BASE, "input");
+        when(telegramUserInputDatabaseService.findById("123", InputState.BASE)).thenReturn(telegramUserInput);
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getCredentialsEmailsList(123L));
+        assertEquals("input", telegramUserService.getUserInputByState(123L, InputState.BASE));
+
+        verify(telegramUserInputDatabaseService).findById("123", InputState.BASE);
     }
 
     @Test
-    public void getCredentialsEmailsList_should_return_credentials_list() {
-        TelegramUser telegramUser = new TelegramUser(123L);
-        when(userService.findUserById("123")).thenReturn(telegramUser);
+    public void getUserInputByState_should_throw_if_user_doesnt_exist() {
+        when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
 
-        List<UbiAccount> list = new ArrayList<>();
-        UbiAccount user1 = new UbiAccount();
-        user1.setEmail("email1");
-        UbiAccount user2 = new UbiAccount();
-        user2.setEmail("email2");
-        list.add(user1);
-        list.add(user2);
-
-        // when(credentialsService.findByChatId("123")).thenReturn(list);
-
-        List<String> expected = List.of("email1", "email2");
-        // List<String> result = telegramUserService.getCredentialsEmailsList(123L);
-
-        //   assertTrue(expected.containsAll(result) && result.containsAll(expected));
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getUserInputByState(123L, InputState.BASE));
     }
 
     @Test
-    public void getCredentialsEmailsList_should_return_empty_list_if_no_credentials() {
-        TelegramUser telegramUser = new TelegramUser(123L);
-        when(userService.findUserById("123")).thenReturn(telegramUser);
+    public void getUserInputByState_should_throw_if_input_doesnt_exist() {
+        when(telegramUserInputDatabaseService.findById("123", InputState.BASE)).thenThrow(TelegramUserInputDoesntExistException.class);
 
-        //  when(credentialsService.findByChatId("123")).thenReturn(Collections.emptyList());
+        assertThrows(TelegramUserInputDoesntExistException.class, () -> telegramUserService.getUserInputByState(123L, InputState.BASE));
+    }
 
-        //   List<String> result = telegramUserService.getCredentialsEmailsList(123L);
+    @Test
+    public void getAllUserInputs_should_return_all_user_inputs(){
+        List<TelegramUserInput> inputs = new ArrayList<>();
+        inputs.add(new TelegramUserInput("123",InputState.BASE,"value"));
 
-        //  assertTrue(result.isEmpty());
+        when(telegramUserInputDatabaseService.findAllByChatId("123")).thenReturn(inputs);
+
+        assertEquals(inputs, telegramUserService.getAllUserInputs(123L));
+
+        verify(telegramUserInputDatabaseService).findAllByChatId("123");
+    }
+
+    @Test
+    public void getAllUserInputs_should_throw_if_user_doesnt_exist() {
+        when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getAllUserInputs(123L));
     }
 
     @Test
@@ -331,97 +427,10 @@ class TelegramUserServiceTest {
         TelegramUser user3 = new TelegramUser(3L);
         user3.setPublicNotificationsEnabledFlag(true);
 
-        when(userService.findAllUsers()).thenReturn(List.of(user1, user2, user3));
+        when(telegramUserDatabaseService.findAllUsers()).thenReturn(List.of(user1, user2, user3));
 
         List<String> result = telegramUserService.getAllChatIdsForNotifiableUsers();
 
         assertTrue(List.of("1", "3").containsAll(result) && result.containsAll(List.of("1", "3")));
-    }
-
-    @Test
-    public void getTelegramUser_should_throw_if_user_doesnt_exist() {
-        when(userService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
-
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getTelegramUser(123L));
-    }
-
-    @Test
-    public void getTelegramUser_should_return_user() {
-        TelegramUser telegramUser = new TelegramUser(123L);
-        when(userService.findUserById("123")).thenReturn(telegramUser);
-
-        assertEquals(telegramUser, telegramUserService.getTelegramUser(123L));
-    }
-
-    @Test
-    public void getItemOffsetByUserInput_should_return_offset() {
-        when(inputService.findById("123", InputState.ITEMS_SHOW_OFFSET)).thenReturn(new TelegramUserInput("123", InputState.ITEMS_SHOW_OFFSET, "5"));
-
-        assertEquals(5, telegramUserService.getItemOffsetByUserInput(123L));
-    }
-
-    @Test
-    public void getItemShowSettings_should_return_settings() {
-        ItemShowSettings settings = new ItemShowSettings();
-        when(userService.findUserSettingsById("123")).thenReturn(settings);
-
-        assertEquals(settings, telegramUserService.getItemShowSettings(123L));
-    }
-
-    @Test
-    public void setItemShowFewItemsInMessageFlag_should_handle_to_service() {
-        telegramUserService.setItemShowFewItemsInMessageFlag(123L, true);
-        verify(userService).setItemShowFewItemsInMessageFlag("123", true);
-    }
-
-    @Test
-    public void setItemShowMessagesLimit_should_handle_to_service() {
-        telegramUserService.setItemShowMessagesLimit(123L, 5);
-        verify(userService).setItemShowMessagesLimit("123", 5);
-    }
-
-    @Test
-    public void setItemShowSettingsByUserInput_should_parse_and_call_service() {
-        String chatId = "123";
-
-        when(inputService.findById(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_NAME)).thenReturn(new TelegramUserInput(chatId,
-                InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_NAME, Callbacks.INPUT_CALLBACK_TRUE));
-
-        when(inputService.findById(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_TYPE)).thenReturn(new TelegramUserInput(chatId,
-                InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_TYPE, Callbacks.INPUT_CALLBACK_TRUE));
-
-        when(inputService.findById(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_MAX_BUY_PRICE)).thenReturn(new TelegramUserInput(chatId,
-                InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_MAX_BUY_PRICE, Callbacks.INPUT_CALLBACK_TRUE));
-
-        when(inputService.findById(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_BUY_ORDERS_COUNT)).thenReturn(new TelegramUserInput(chatId,
-                InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_BUY_ORDERS_COUNT, Callbacks.INPUT_CALLBACK_TRUE));
-
-        when(inputService.findById(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_MIN_SELL_PRICE)).thenReturn(new TelegramUserInput(chatId,
-                InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_MIN_SELL_PRICE, Callbacks.INPUT_CALLBACK_FALSE));
-
-        when(inputService.findById(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_SELL_ORDERS_COUNT)).thenReturn(new TelegramUserInput(chatId,
-                InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_SELL_ORDERS_COUNT, Callbacks.INPUT_CALLBACK_FALSE));
-
-        when(inputService.findById(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE)).thenReturn(new TelegramUserInput(chatId,
-                InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE, Callbacks.INPUT_CALLBACK_FALSE));
-
-        ItemShownFieldsSettings settings = new ItemShownFieldsSettings(true, true, true, true, false, false, false);
-
-        telegramUserService.setItemShowSettingsByUserInput(123L, Callbacks.INPUT_CALLBACK_TRUE, Callbacks.INPUT_CALLBACK_FALSE);
-
-        verify(userService).setItemShowFieldsSettings(chatId, settings);
-    }
-
-    @Test
-    public void addItemShowAppliedFilter_should_handle_to_service() {
-        ItemFilter filter = new ItemFilter();
-        telegramUserService.addItemShowAppliedFilter(123L, filter);
-        verify(userService).addItemShowAppliedFilter("123", filter);
-    }
-
-    @Test
-    public void removeItemShowAppliedFilter_should_handle_to_service() {
-        telegramUserService.removeItemShowAppliedFilter(123L, "filterName");
-        verify(userService).removeItemShowAppliedFilter("123", "filterName");
     }
 }

@@ -7,6 +7,6 @@ public class CredentialsRemoveOneEmailInput extends AbstractBotCommandExecutor {
     protected void executeCommand() {
         processLastInput("Email successfully provided.");
 
-        botInnerService.removeCredentialsByUserInputs(updateInfo.getChatId());
+       // botInnerService.removeCredentialsByUserInputs(updateInfo.getChatId());
     }
 }

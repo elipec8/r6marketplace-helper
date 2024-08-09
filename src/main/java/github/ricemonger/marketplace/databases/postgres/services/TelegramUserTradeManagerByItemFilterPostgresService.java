@@ -13,12 +13,12 @@ import java.util.List;
 public class TelegramUserTradeManagerByItemFilterPostgresService implements TelegramUserTradeManagerByItemFilterDatabaseService {
     @Override
     //@Transactional
-    public void save(TradeManagerByItemFilters tradeManager) {
+    public void save(String chatId, TradeManagerByItemFilters tradeManager) {
 
     }
 
     @Override
-    public List<TradeManagerByItemFilters> findAll(String chatId) {
+    public List<TradeManagerByItemFilters> findAllByChatId(String chatId) {
         return null;
     }
 }

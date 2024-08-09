@@ -1,16 +1,18 @@
 package github.ricemonger.marketplace.services.abstractions;
 
-import github.ricemonger.utils.dtos.UbiAccount;
+import github.ricemonger.utils.dtos.UbiAccountEntry;
 import github.ricemonger.utils.dtos.UbiAccountWithTelegram;
+import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.UbiAccountEntryDoesntExistException;
 
 import java.util.List;
 
 public interface TelegramUserUbiAccountEntryDatabaseService {
-    void save(String chatId, UbiAccount user);
+    void save(String chatId, UbiAccountEntry user) throws TelegramUserDoesntExistException;
 
-    void deleteByChatId(String chatId);
+    void deleteByChatId(String chatId) throws TelegramUserDoesntExistException;
 
-    UbiAccount findByChatId(String chatId);
+    UbiAccountEntry findByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException;
 
     List<UbiAccountWithTelegram> findAll();
 }

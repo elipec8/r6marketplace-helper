@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UbiAccount {
+public class UbiAccountEntry {
     private String email;
     private String encodedPassword;
 

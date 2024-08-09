@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
-import github.ricemonger.marketplace.services.TelegramUbiAccountService;
+import github.ricemonger.marketplace.services.TelegramUserUbiAccountEntryService;
 import github.ricemonger.telegramBot.client.TelegramBotClientService;
-import github.ricemonger.utils.dtos.UbiAccount;
+import github.ricemonger.utils.dtos.UbiAccountEntry;
 import github.ricemonger.utils.dtos.UbiAccountWithTelegram;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 class ScheduledUbiUsersReauthorizationTest {
 
     @MockBean
-    private TelegramUbiAccountService telegramUbiAccountService;
+    private TelegramUserUbiAccountEntryService telegramUserUbiAccountEntryService;
 
     @MockBean
     private TelegramBotClientService telegramBotClientService;
@@ -30,12 +30,12 @@ class ScheduledUbiUsersReauthorizationTest {
     @Test
     public void reauthorizeUbiUsersAndNotifyAboutFailures_should_reauthorize_and_notify_via_services() {
         List<UbiAccountWithTelegram> toNotify = new ArrayList<>();
-        toNotify.add(new UbiAccountWithTelegram("chatId", new UbiAccount("email", null, null, null, null, null, null, null, null, null)));
-        when(telegramUbiAccountService.reauthorizeAllUbiUsersAndGetUnauthorizedList()).thenReturn(toNotify);
+        toNotify.add(new UbiAccountWithTelegram("chatId", new UbiAccountEntry("email", null, null, null, null, null, null, null, null, null)));
+        when(telegramUserUbiAccountEntryService.reauthorizeAllUbiUsersAndGetUnauthorizedList()).thenReturn(toNotify);
 
         scheduledUbiUsersReauthorization.reauthorizeUbiUsersAndNotifyAboutFailures();
 
-        verify(telegramUbiAccountService).reauthorizeAllUbiUsersAndGetUnauthorizedList();
+        verify(telegramUserUbiAccountEntryService).reauthorizeAllUbiUsersAndGetUnauthorizedList();
 
         verify(telegramBotClientService).notifyUserAboutUbiAuthorizationFailure("chatId", "email");
     }

@@ -11,33 +11,33 @@ import java.util.Collection;
 
 @Service
 @RequiredArgsConstructor
-public class TradeManagerService {
+public class TelegramUserTradeManagerService {
 
     private final TelegramUserTradeManagerByItemIdDatabaseService telegramUserTradeManagerByItemIdDatabaseService;
 
-    private final TelegramUserTradeManagerByItemFilterDatabaseService tradeManagerByItemFiltersDatabaseService;
+    private final TelegramUserTradeManagerByItemFilterDatabaseService telegramUserTradeManagerByItemFiltersDatabaseService;
 
-    public void saveTradeManagerByItemId(String chatId, TradeManagerByItemId tradeManager) {
+    public void saveUserTradeManagerByItemId(String chatId, TradeManagerByItemId tradeManager) {
         telegramUserTradeManagerByItemIdDatabaseService.save(chatId, tradeManager);
     }
 
-    public void saveTradeManagerByItemFilter(String chatId, TradeManagerByItemFilters tradeManager) {
-        tradeManagerByItemFiltersDatabaseService.save(tradeManager);
+    public void saveUserTradeManagerByItemFilter(String chatId, TradeManagerByItemFilters tradeManager) {
+        telegramUserTradeManagerByItemFiltersDatabaseService.save(chatId, tradeManager);
     }
 
-    public void deleteTradeManagerByItemIdById(String chatId, String itemId) {
+    public void deleteUserTradeManagerByItemIdById(String chatId, String itemId) {
         telegramUserTradeManagerByItemIdDatabaseService.deleteById(chatId, itemId);
     }
 
-    public TradeManagerByItemId getTradeManagerByItemIdById(String chatId, String itemId) {
+    public TradeManagerByItemId getUserTradeManagerByItemIdById(String chatId, String itemId) {
         return telegramUserTradeManagerByItemIdDatabaseService.findById(chatId, itemId);
     }
 
-    public Collection<TradeManagerByItemId> getAllTradeManagersByItemId(String chatId) {
+    public Collection<TradeManagerByItemId> getAllUserTradeManagersByItemId(String chatId) {
         return telegramUserTradeManagerByItemIdDatabaseService.findAllByChatId(chatId);
     }
 
-    public Collection<TradeManagerByItemFilters> getAllTradeManagersByItemFilters(String chatId) {
-        return tradeManagerByItemFiltersDatabaseService.findAll(chatId);
+    public Collection<TradeManagerByItemFilters> getAllUserTradeManagersByItemFilters(String chatId) {
+        return telegramUserTradeManagerByItemFiltersDatabaseService.findAllByChatId(chatId);
     }
 }

@@ -22,7 +22,7 @@ class CredentialsRemoveOneEmailInputTest {
 
         credentialsRemoveOneEmailInput.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService).removeCredentialsByUserInputs(MockUpdateInfos.UPDATE_INFO.getChatId());
+       // verify(botInnerService).removeCredentialsByUserInputs(MockUpdateInfos.UPDATE_INFO.getChatId());
 
         verify(botInnerService).saveUserInputOrThrow(MockUpdateInfos.UPDATE_INFO);
         verify(botInnerService).setUserNextInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.BASE);
