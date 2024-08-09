@@ -8,12 +8,14 @@ import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.m
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.marketableItem.marketData.SellStats;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.viewer.meta.trades.Nodes;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.viewer.meta.trades.nodes.PaymentOptions;
+import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.viewer.meta.trades.nodes.PaymentProposal;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.dtos.Item;
+import github.ricemonger.utils.dtos.PersonalItem;
 import github.ricemonger.utils.dtos.Trade;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
+import github.ricemonger.utils.exceptions.GraphQlPersonalOneItemMappingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -29,14 +31,24 @@ public class PersonalQueryOneItemMapper {
 
     private final CommonValuesService commonValuesService;
 
-    public Item mapItem(Game game) {
+    public PersonalItem mapItem(Game game) throws GraphQlPersonalOneItemMappingException {
+        if (game == null) {
+            throw new GraphQlPersonalOneItemMappingException("Game is null");
+        }
 
         MarketableItem marketableItem = game.getMarketableItem();
-        github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.marketableItem.Item item = marketableItem.getItem();
-        String itemId = item.getItemId();
+        if (marketableItem == null) {
+            throw new GraphQlPersonalOneItemMappingException("MarketableItem is null in Game: " + game);
+        }
 
-        Item result = new Item();
-        result.setItemId(itemId);
+        github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.marketableItem.Item item = marketableItem.getItem();
+
+        if (item == null || item.getItemId() == null || item.getAssetUrl() == null || item.getName() == null || item.getTags() == null || item.getType() == null) {
+            throw new GraphQlPersonalOneItemMappingException("Item or one of it's fields is null in MarketableItem: " + marketableItem);
+        }
+
+        PersonalItem result = new PersonalItem();
+        result.setItemId(item.getItemId());
         result.setAssetUrl(item.getAssetUrl());
         result.setName(item.getName());
         result.setTags(item.getTags());
@@ -49,11 +61,19 @@ public class PersonalQueryOneItemMapper {
         }
 
         MarketData marketData = marketableItem.getMarketData();
-        BuyStats buyStats = marketData.getBuyStats() == null ? null : marketData.getBuyStats()[0];
-        SellStats sellStats = marketData.getSellStats() == null ? null : marketData.getSellStats()[0];
-        LastSoldAt lastSoldAt = marketData.getLastSoldAt() == null ? null : marketData.getLastSoldAt()[0];
+
+        if (marketData == null) {
+            throw new GraphQlPersonalOneItemMappingException("MarketData is null in MarketableItem: " + marketableItem);
+        }
+
+        BuyStats buyStats = marketData.getBuyStats() == null || marketData.getBuyStats().length == 0 ? null : marketData.getBuyStats()[0];
+        SellStats sellStats = marketData.getSellStats() == null || marketData.getSellStats().length == 0 ? null : marketData.getSellStats()[0];
+        LastSoldAt lastSoldAt = marketData.getLastSoldAt() == null || marketData.getLastSoldAt().length == 0 ? null : marketData.getLastSoldAt()[0];
 
         if (buyStats != null) {
+            if (buyStats.getHighestPrice() == null || buyStats.getActiveCount() == null) {
+                throw new GraphQlPersonalOneItemMappingException("BuyStats highest price or active count is null, buyStats-" + buyStats);
+            }
             result.setMaxBuyPrice(buyStats.getHighestPrice());
             result.setBuyOrdersCount(buyStats.getActiveCount());
         } else {
@@ -62,6 +82,9 @@ public class PersonalQueryOneItemMapper {
         }
 
         if (sellStats != null) {
+            if (sellStats.getLowestPrice() == null || sellStats.getActiveCount() == null) {
+                throw new GraphQlPersonalOneItemMappingException("SellStats lowest price or active count is null, sellStats-" + sellStats);
+            }
             result.setMinSellPrice(sellStats.getLowestPrice());
             result.setSellOrdersCount(sellStats.getActiveCount());
         } else {
@@ -70,6 +93,9 @@ public class PersonalQueryOneItemMapper {
         }
 
         if (lastSoldAt != null) {
+            if (lastSoldAt.getPerformedAt() == null || lastSoldAt.getPrice() == null) {
+                throw new GraphQlPersonalOneItemMappingException("LastSoldAt performed at is null, lastSoldAt-" + lastSoldAt);
+            }
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
                 result.setLastSoldAt(sdf.parse(lastSoldAt.getPerformedAt()));
@@ -83,18 +109,30 @@ public class PersonalQueryOneItemMapper {
             result.setLastSoldPrice(0);
         }
 
+        if (marketableItem.getPaymentLimitations() == null || marketableItem.getPaymentLimitations().getMinPrice() == null || marketableItem.getPaymentLimitations().getMaxPrice() == null) {
+            throw new GraphQlPersonalOneItemMappingException("PaymentLimitations or it's field is null in MarketableItem: " + marketableItem);
+        }
         result.setLimitMinPrice(marketableItem.getPaymentLimitations().getMinPrice());
         result.setLimitMaxPrice(marketableItem.getPaymentLimitations().getMaxPrice());
 
+        if (marketableItem.getItem().getViewer() == null || marketableItem.getItem().getViewer().getMeta() == null || marketableItem.getItem().getViewer().getMeta().getIsOwned() == null) {
+            throw new GraphQlPersonalOneItemMappingException("Item's viewer or it's field is null in MarketableItem: " + marketableItem);
+        }
         result.setOwned(marketableItem.getItem().getViewer().getMeta().getIsOwned());
 
-        //result.setTrades(game.getViewer().getMeta().getTrades().getNodes().stream().map((Nodes node) -> mapTrade(node, itemId)).toList());
 
+        if (game.getViewer() == null || game.getViewer().getMeta() == null || game.getViewer().getMeta().getTrades() == null || game.getViewer().getMeta().getTrades().getNodes() == null) {
+            throw new GraphQlPersonalOneItemMappingException("Game's Viewer or it's field is null in Game: " + game);
+        }
+        result.setTrades(game.getViewer().getMeta().getTrades().getNodes().stream().map((Nodes node) -> mapTrade(node, item.getItemId())).toList());
 
         return result;
     }
 
-    private Trade mapTrade(Nodes node, String itemId) {
+    private Trade mapTrade(Nodes node, String itemId) throws GraphQlPersonalOneItemMappingException {
+        if (node == null || node.getTradeId() == null || node.getState() == null || node.getCategory() == null || node.getExpiresAt() == null || node.getLastModifiedAt() == null) {
+            throw new GraphQlPersonalOneItemMappingException("Trade node or one of it's fields is null: " + node);
+        }
         Trade result = new Trade();
 
         SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
@@ -131,27 +169,35 @@ public class PersonalQueryOneItemMapper {
         }
 
         if (node.getPayment() != null) {
+            if (node.getPayment().getPrice() == null || node.getPayment().getTransactionFee() == null) {
+                throw new GraphQlPersonalOneItemMappingException("Payment price or transaction fee is null: " + node.getPayment());
+            }
             result.setSuccessPaymentPrice(node.getPayment().getPrice());
             result.setSuccessPaymentFee(node.getPayment().getTransactionFee());
         } else {
             result.setSuccessPaymentPrice(0);
             result.setSuccessPaymentFee(0);
-            log.error("Invalid payment: {}", node.getPayment());
         }
 
+        PaymentOptions paymentOptions = node.getPaymentOptions() == null || node.getPaymentOptions().length == 0 ? null : node.getPaymentOptions()[0];
+        PaymentProposal paymentProposal = node.getPaymentProposal();
 
-        PaymentOptions paymentOptions = node.getPaymentOptions() == null ? null : node.getPaymentOptions()[0];
-
-        if (paymentOptions != null) {
+        if (paymentOptions == null && paymentProposal == null) {
+            throw new GraphQlPersonalOneItemMappingException("Both PaymentOptions and PaymentProposal are null: " + node);
+        } else if (paymentOptions != null && paymentProposal != null) {
+            throw new GraphQlPersonalOneItemMappingException("Both PaymentOptions and PaymentProposal are not null: " + node);
+        } else if (paymentOptions != null) {
+            if (paymentOptions.getPrice() == null) {
+                throw new GraphQlPersonalOneItemMappingException("PaymentOptions price is null: " + paymentOptions);
+            }
             result.setProposedPaymentPrice(paymentOptions.getPrice());
             result.setProposedPaymentFee((int) Math.ceil(paymentOptions.getPrice() / 10.));
-        } else if (node.getPaymentProposal() != null) {
-            result.setProposedPaymentPrice(node.getPaymentProposal().getPrice());
-            result.setProposedPaymentFee(node.getPaymentProposal().getTransactionFee());
-        } else {
-            result.setProposedPaymentPrice(0);
-            result.setProposedPaymentFee(0);
-            log.error("Invalid paymentOptions or paymentProposal: {}", paymentOptions);
+        } else if (paymentProposal != null) {
+            if (paymentProposal.getPrice() == null || paymentProposal.getTransactionFee() == null) {
+                throw new GraphQlPersonalOneItemMappingException("PaymentProposal price or transaction fee is null: " + paymentProposal);
+            }
+            result.setProposedPaymentPrice(paymentProposal.getPrice());
+            result.setProposedPaymentFee(paymentProposal.getTransactionFee());
         }
 
         return result;

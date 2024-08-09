@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class ItemSalePostgresService implements ItemSaleDatabaseService {
         }
     }
 
-    public Collection<ItemSale> findAll() {
+    public List<ItemSale> findAll() {
         return itemSaleRepository.findAll().stream().map(ItemSaleEntity::toItemSale).toList();
     }
 }

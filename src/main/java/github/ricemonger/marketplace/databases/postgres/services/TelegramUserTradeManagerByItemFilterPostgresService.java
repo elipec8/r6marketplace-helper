@@ -6,18 +6,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class TelegramUserTradeManagerByItemFilterPostgresService implements TelegramUserTradeManagerByItemFilterDatabaseService {
     @Override
     //@Transactional
-    public void save(TradeManagerByItemFilters tradeManager) {
+    public void save(String chatId, TradeManagerByItemFilters tradeManager) {
 
     }
 
     @Override
-    public Collection<TradeManagerByItemFilters> findAll(String chatId) {
+    public List<TradeManagerByItemFilters> findAllByChatId(String chatId) {
         return null;
     }
 }

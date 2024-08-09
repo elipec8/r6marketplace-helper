@@ -1,6 +1,5 @@
-package github.ricemonger.marketplace;
+package github.ricemonger.marketplace.services;
 
-import github.ricemonger.marketplace.services.UbiServiceConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,5 +23,13 @@ public class UbiServiceConfigurationTest {
         assertNotNull(ubiServiceConfiguration.getUbiAppId());
         assertNotNull(ubiServiceConfiguration.getExpireTimeout());
         assertNotNull(ubiServiceConfiguration.getDateFormat());
+        assertNotNull(ubiServiceConfiguration.getMinUncommonPrice());
+        assertNotNull(ubiServiceConfiguration.getMaxUncommonPrice());
+        assertNotNull(ubiServiceConfiguration.getMinRarePrice());
+        assertNotNull(ubiServiceConfiguration.getMaxRarePrice());
+        assertNotNull(ubiServiceConfiguration.getMinEpicPrice());
+        assertNotNull(ubiServiceConfiguration.getMaxEpicPrice());
+        assertNotNull(ubiServiceConfiguration.getMinLegendaryPrice());
+        assertNotNull(ubiServiceConfiguration.getMaxLegendaryPrice());
     }
 }

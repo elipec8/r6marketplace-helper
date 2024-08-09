@@ -21,7 +21,7 @@ class CredentialsRemoveAllConfirmedCallbackTest {
 
         credentialsRemoveAllConfirmedCallback.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService).removeUserAllCredentials(MockUpdateInfos.UPDATE_INFO.getChatId());
+        verify(botInnerService).removeUserCredentials(MockUpdateInfos.UPDATE_INFO.getChatId());
     }
 
 }

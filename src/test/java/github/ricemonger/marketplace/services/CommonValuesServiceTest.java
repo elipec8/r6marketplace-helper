@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -16,21 +17,16 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class CommonValuesServiceTest {
-
-    @MockBean
-    private CommonValuesDatabaseService commonValuesDatabaseService;
-
-    @MockBean
-    private MainUserConfiguration mainUserConfiguration;
-
-    @MockBean
-    private UbiServiceConfiguration ubiServiceConfiguration;
-
-    @MockBean
-    private TelegramBotConfiguration telegramBotConfiguration;
-
     @Autowired
     private CommonValuesService commonValuesService;
+    @MockBean
+    private CommonValuesDatabaseService commonValuesDatabaseService;
+    @MockBean
+    private MainUserConfiguration mainUserConfiguration;
+    @MockBean
+    private UbiServiceConfiguration ubiServiceConfiguration;
+    @SpyBean
+    private TelegramBotConfiguration telegramBotConfiguration;
 
     @Test
     void getExpectedItemCount_should_handle_to_service() {
@@ -233,9 +229,76 @@ class CommonValuesServiceTest {
     }
 
     @Test
-    public void getMinimumMarketplacePrice_should_handle_to_service() {
+    public void getMinimumUncommonPrice_should_handle_to_service() {
+        Integer minPrice = 10;
+        when(ubiServiceConfiguration.getMinUncommonPrice()).thenReturn(minPrice);
+
+        assertEquals(minPrice, commonValuesService.getMinimumUncommonPrice());
+    }
+
+    @Test
+    public void getMaximumUncommonPrice_should_handle_to_service() {
+        Integer maxPrice = 10;
+        when(ubiServiceConfiguration.getMaxUncommonPrice()).thenReturn(maxPrice);
+
+        assertEquals(maxPrice, commonValuesService.getMaximumUncommonPrice());
+    }
+
+    @Test
+    public void getMinimumRarePrice_should_handle_to_service() {
+        Integer minPrice = 10;
+        when(ubiServiceConfiguration.getMinRarePrice()).thenReturn(minPrice);
+
+        assertEquals(minPrice, commonValuesService.getMinimumRarePrice());
+    }
+
+    @Test
+    public void getMaximumRarePrice_should_handle_to_service() {
+        Integer maxPrice = 10;
+        when(ubiServiceConfiguration.getMaxRarePrice()).thenReturn(maxPrice);
+
+        assertEquals(maxPrice, commonValuesService.getMaximumRarePrice());
+    }
+
+    @Test
+    public void getMinimumEpicPrice_should_handle_to_service() {
+        Integer minPrice = 10;
+        when(ubiServiceConfiguration.getMinEpicPrice()).thenReturn(minPrice);
+
+        assertEquals(minPrice, commonValuesService.getMinimumEpicPrice());
+    }
+
+    @Test
+    public void getMaximumEpicPrice_should_handle_to_service() {
+        Integer maxPrice = 10;
+        when(ubiServiceConfiguration.getMaxEpicPrice()).thenReturn(maxPrice);
+
+        assertEquals(maxPrice, commonValuesService.getMaximumEpicPrice());
+    }
+
+    @Test
+    public void getMinimumLegendaryPrice_should_handle_to_service() {
         Integer minPrice = 10;
         when(ubiServiceConfiguration.getMinLegendaryPrice()).thenReturn(minPrice);
+
+        assertEquals(minPrice, commonValuesService.getMinimumLegendaryPrice());
+    }
+
+    @Test
+    public void getMaximumLegendaryPrice_should_handle_to_service() {
+        Integer maxPrice = 10;
+        when(ubiServiceConfiguration.getMaxLegendaryPrice()).thenReturn(maxPrice);
+
+        assertEquals(maxPrice, commonValuesService.getMaximumLegendaryPrice());
+    }
+
+    @Test
+    public void getMinimumMarketplacePrice_should_handle_to_service() {
+        Integer minPrice = 10;
+        when(ubiServiceConfiguration.getMinUncommonPrice()).thenReturn(minPrice+2);
+        when(ubiServiceConfiguration.getMinRarePrice()).thenReturn(minPrice+1);
+        when(ubiServiceConfiguration.getMinEpicPrice()).thenReturn(minPrice);
+        when(ubiServiceConfiguration.getMinLegendaryPrice()).thenReturn(minPrice+3);
 
         assertEquals(minPrice, commonValuesService.getMinimumMarketplacePrice());
     }

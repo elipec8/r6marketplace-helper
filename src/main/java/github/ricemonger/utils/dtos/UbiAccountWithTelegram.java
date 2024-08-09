@@ -12,85 +12,85 @@ import java.util.List;
 public class UbiAccountWithTelegram {
     private String chatId;
 
-    private UbiAccount ubiAccount;
+    private UbiAccountEntry ubiAccountEntry;
 
     public String getEmail() {
-        return ubiAccount.getEmail();
+        return ubiAccountEntry.getEmail();
     }
 
     public void setEmail(String email) {
-        ubiAccount.setEmail(email);
+        ubiAccountEntry.setEmail(email);
     }
 
     public String getEncodedPassword() {
-        return ubiAccount.getEncodedPassword();
+        return ubiAccountEntry.getEncodedPassword();
     }
 
     public void setEncodedPassword(String encodedPassword) {
-        ubiAccount.setEncodedPassword(encodedPassword);
+        ubiAccountEntry.setEncodedPassword(encodedPassword);
     }
 
     public String getUbiProfileId() {
-        return ubiAccount.getUbiProfileId();
+        return ubiAccountEntry.getUbiProfileId();
     }
 
     public void setUbiProfileId(String ubiProfileId) {
-        ubiAccount.setUbiProfileId(ubiProfileId);
+        ubiAccountEntry.setUbiProfileId(ubiProfileId);
     }
 
     public String getUbiSessionId() {
-        return ubiAccount.getUbiSessionId();
+        return ubiAccountEntry.getUbiSessionId();
     }
 
     public void setUbiSessionId(String ubiSessionId) {
-        ubiAccount.setUbiSessionId(ubiSessionId);
+        ubiAccountEntry.setUbiSessionId(ubiSessionId);
     }
 
     public String getUbiSpaceId() {
-        return ubiAccount.getUbiSpaceId();
+        return ubiAccountEntry.getUbiSpaceId();
     }
 
     public void setUbiSpaceId(String ubiSpaceId) {
-        ubiAccount.setUbiSpaceId(ubiSpaceId);
+        ubiAccountEntry.setUbiSpaceId(ubiSpaceId);
     }
 
     public String getUbiAuthTicket() {
-        return ubiAccount.getUbiAuthTicket();
+        return ubiAccountEntry.getUbiAuthTicket();
     }
 
     public void setUbiAuthTicket(String ubiAuthTicket) {
-        ubiAccount.setUbiAuthTicket(ubiAuthTicket);
+        ubiAccountEntry.setUbiAuthTicket(ubiAuthTicket);
     }
 
     public String getUbiTwoFactorAuthTicket() {
-        return ubiAccount.getUbiTwoFactorAuthTicket();
+        return ubiAccountEntry.getUbiTwoFactorAuthTicket();
     }
 
     public void setUbiTwoFactorAuthTicket(String ubiTwoFactorAuthTicket) {
-        ubiAccount.setUbiTwoFactorAuthTicket(ubiTwoFactorAuthTicket);
+        ubiAccountEntry.setUbiTwoFactorAuthTicket(ubiTwoFactorAuthTicket);
     }
 
     public String getUbiRememberDeviceTicket() {
-        return ubiAccount.getUbiRememberDeviceTicket();
+        return ubiAccountEntry.getUbiRememberDeviceTicket();
     }
 
     public void setUbiRememberDeviceTicket(String ubiRememberDeviceTicket) {
-        ubiAccount.setUbiRememberDeviceTicket(ubiRememberDeviceTicket);
+        ubiAccountEntry.setUbiRememberDeviceTicket(ubiRememberDeviceTicket);
     }
 
     public String getUbiRememberMeTicket() {
-        return ubiAccount.getUbiRememberMeTicket();
+        return ubiAccountEntry.getUbiRememberMeTicket();
     }
 
     public void setUbiRememberMeTicket(String ubiRememberMeTicket) {
-        ubiAccount.setUbiRememberMeTicket(ubiRememberMeTicket);
+        ubiAccountEntry.setUbiRememberMeTicket(ubiRememberMeTicket);
     }
 
     public List<String> getOwnedItemsIds() {
-        return ubiAccount.getOwnedItemsIds();
+        return ubiAccountEntry.getOwnedItemsIds();
     }
 
     public void setOwnedItemsIds(List<String> ownedItemsIds) {
-        ubiAccount.setOwnedItemsIds(ownedItemsIds);
+        ubiAccountEntry.setOwnedItemsIds(ownedItemsIds);
     }
 }

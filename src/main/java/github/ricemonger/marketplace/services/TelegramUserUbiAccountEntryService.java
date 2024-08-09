@@ -3,10 +3,9 @@ package github.ricemonger.marketplace.services;
 import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
 import github.ricemonger.utils.dtos.AuthorizationDTO;
-import github.ricemonger.utils.dtos.UbiAccount;
+import github.ricemonger.utils.dtos.UbiAccountEntry;
 import github.ricemonger.utils.dtos.UbiAccountWithTelegram;
-import github.ricemonger.utils.exceptions.UbiUserAuthorizationClientErrorException;
-import github.ricemonger.utils.exceptions.UbiUserAuthorizationServerErrorException;
+import github.ricemonger.utils.exceptions.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -17,26 +16,24 @@ import java.util.List;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class TelegramUbiAccountService {
-
-    private final TelegramUserUbiAccountEntryDatabaseService telegramUserUbiAccountEntryDatabaseService;
+public class TelegramUserUbiAccountEntryService {
 
     private final AuthorizationService authorizationService;
 
-    public UbiAccount findByChatId(String chatId) {
-        return telegramUserUbiAccountEntryDatabaseService.findByChatId(chatId);
-    }
-
-    public void deleteByChatId(String chatId) {
-        telegramUserUbiAccountEntryDatabaseService.deleteByChatId(chatId);
-    }
+    private final TelegramUserUbiAccountEntryDatabaseService telegramUserUbiAccountEntryDatabaseService;
 
     public void authorizeAndSaveUser(String chatId, String email, String password) throws
+            TelegramUserDoesntExistException,
+            UserAlreadyHasAnotherUbiAccountEntryException,
             UbiUserAuthorizationClientErrorException,
             UbiUserAuthorizationServerErrorException {
         AuthorizationDTO userAuthorizationDTO = authorizationService.authorizeAndGetDTO(email, password);
 
         telegramUserUbiAccountEntryDatabaseService.save(chatId, buildUbiAccount(email, authorizationService.getEncodedPassword(password), userAuthorizationDTO));
+    }
+
+    public void deleteByChatId(String chatId) throws TelegramUserDoesntExistException {
+        telegramUserUbiAccountEntryDatabaseService.deleteByChatId(chatId);
     }
 
     public List<UbiAccountWithTelegram> reauthorizeAllUbiUsersAndGetUnauthorizedList() {
@@ -55,16 +52,26 @@ public class TelegramUbiAccountService {
         return unauthorizedUsers;
     }
 
-    private void reauthorizeAndSaveUser(String chatId, String email, String encodedPassword) throws UbiUserAuthorizationClientErrorException, UbiUserAuthorizationServerErrorException {
-        AuthorizationDTO authorizationDTO = authorizationService.authorizeAndGetDtoForEncodedPassword(email, encodedPassword);
-
-        telegramUserUbiAccountEntryDatabaseService.save(chatId, buildUbiAccount(email, encodedPassword, authorizationDTO));
+    public UbiAccountEntry findByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
+        return telegramUserUbiAccountEntryDatabaseService.findByChatId(chatId);
     }
 
-    private UbiAccount buildUbiAccount(String email, String password, AuthorizationDTO authorizationDTO) {
-        UbiAccount user = new UbiAccount();
+    private void reauthorizeAndSaveUser(String chatId, String email, String encodedPassword) throws UbiUserAuthorizationClientErrorException, UbiUserAuthorizationServerErrorException {
+        AuthorizationDTO dto = authorizationService.authorizeAndGetDtoForEncodedPassword(email, encodedPassword);
+
+        try {
+            telegramUserUbiAccountEntryDatabaseService.save(chatId, buildUbiAccount(email, encodedPassword, dto));
+        } catch (TelegramUserDoesntExistException e) {
+            log.error("Telegram user with chatId {} doesn't exist, but reauthorize ubi user was called fir him with authorizationDto-{}", chatId, dto);
+        } catch (UserAlreadyHasAnotherUbiAccountEntryException e) {
+            log.error("User with chatId {} already has another Ubi account, but reauthorize ubi user was called for him with authorizationDto-{}", chatId, dto);
+        }
+    }
+
+    private UbiAccountEntry buildUbiAccount(String email, String encodedPassword, AuthorizationDTO authorizationDTO) {
+        UbiAccountEntry user = new UbiAccountEntry();
         user.setEmail(email);
-        user.setEncodedPassword(password);
+        user.setEncodedPassword(encodedPassword);
 
         user.setUbiProfileId(authorizationDTO.getProfileId());
         user.setUbiSessionId(authorizationDTO.getSessionId());

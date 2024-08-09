@@ -5,11 +5,11 @@ import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccount
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountEntryPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
-import github.ricemonger.utils.dtos.UbiAccount;
+import github.ricemonger.utils.dtos.UbiAccountEntry;
 import github.ricemonger.utils.dtos.UbiAccountWithTelegram;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.UbiAccountEntryDoesntExistException;
-import github.ricemonger.utils.exceptions.UserAlreadyHasUbiAccountEntryException;
+import github.ricemonger.utils.exceptions.UserAlreadyHasAnotherUbiAccountEntryException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,13 +26,13 @@ public class TelegramUserUbiAccountEntryPostgresService implements TelegramUserU
 
     @Override
     @Transactional
-    public void save(String chatId, UbiAccount account) throws TelegramUserDoesntExistException, UserAlreadyHasUbiAccountEntryException {
+    public void save(String chatId, UbiAccountEntry account) throws TelegramUserDoesntExistException, UserAlreadyHasAnotherUbiAccountEntryException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
         UbiAccountEntryEntity ubiAccountEntry = ubiAccountEntryRepository.findByUserTelegramUserChatId(telegramUser.getChatId()).orElse(null);
 
         if (ubiAccountEntry != null && !ubiAccountEntry.getUbiProfileId().equals(account.getUbiProfileId())) {
-            throw new UserAlreadyHasUbiAccountEntryException("User with chatId " + chatId + " already has another Ubi account");
+            throw new UserAlreadyHasAnotherUbiAccountEntryException("User with chatId " + chatId + " already has another Ubi account");
         } else {
             ubiAccountEntryRepository.save(new UbiAccountEntryEntity(telegramUser.getUser(), account));
         }
@@ -48,7 +48,7 @@ public class TelegramUserUbiAccountEntryPostgresService implements TelegramUserU
     }
 
     @Override
-    public UbiAccount findByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
+    public UbiAccountEntry findByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
         return ubiAccountEntryRepository.findByUserTelegramUserChatId(telegramUser.getChatId())

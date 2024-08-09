@@ -34,9 +34,9 @@ public class BotInnerService {
 
     private final ItemStatsService itemStatsService;
 
-    private final ItemFilterService itemFilterService;
+    private final TelegramUserItemFilterService telegramUserItemFilterService;
 
-    private final TradeManagerService tradeManagerService;
+    private final TelegramUserTradeManagerService telegramUserTradeManagerService;
 
     private final ItemFilterFromInputsMapper itemFilterFromInputsMapper;
 
@@ -57,7 +57,7 @@ public class BotInnerService {
     }
 
     public void registerUser(Long chatId) {
-        telegramUserService.registerTelegramUserWithDefaultSettings(chatId);
+        telegramUserService.registerTelegramUser(chatId);
     }
 
     public void addCredentialsFromUserInputs(Long chatId) throws TelegramUserDoesntExistException {
@@ -66,15 +66,11 @@ public class BotInnerService {
         if (fullOrEmail.contains(":")) {
             String email = fullOrEmail.substring(0, fullOrEmail.indexOf(":"));
             String password = fullOrEmail.substring(fullOrEmail.indexOf(":") + 1);
-            telegramUserService.addCredentialsIfValidOrThrowException(chatId, email, password);
+            telegramUserService.addUserUbiAccountEntryIfValidCredentialsOrThrow(chatId, email, password);
         } else {
             String password = getUserInputByState(chatId, InputState.CREDENTIALS_PASSWORD);
-            telegramUserService.addCredentialsIfValidOrThrowException(chatId, fullOrEmail, password);
+            telegramUserService.addUserUbiAccountEntryIfValidCredentialsOrThrow(chatId, fullOrEmail, password);
         }
-    }
-
-    public void removeCredentialsByUserInputs(Long chatId) throws TelegramUserDoesntExistException {
-        telegramUserService.removeCredentialsByUserInputs(chatId);
     }
 
     public void saveUserInputOrThrow(UpdateInfo updateInfo) throws TelegramUserDoesntExistException {
@@ -95,23 +91,23 @@ public class BotInnerService {
     }
 
     public void setUserNextInputState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException {
-        telegramUserService.setUserNextInputState(chatId, inputState);
+        telegramUserService.setUserInputState(chatId, inputState);
     }
 
     public void setUserNextInputGroup(Long chatId, InputGroup inputGroup) throws TelegramUserDoesntExistException {
-        telegramUserService.setUserNextInputGroup(chatId, inputGroup);
+        telegramUserService.setUserInputGroup(chatId, inputGroup);
     }
 
     public String getUserInputByState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         return telegramUserService.getUserInputByState(chatId, inputState);
     }
 
-    public void removeUserAllCredentials(Long chatId) throws TelegramUserDoesntExistException {
-        telegramUserService.removeAllCredentials(chatId);
+    public void removeUserCredentials(Long chatId) throws TelegramUserDoesntExistException {
+        telegramUserService.removeUserUbiAccountEntry(chatId);
     }
 
-    public List<String> getCredentialsEmailsList(Long chatId) throws TelegramUserDoesntExistException {
-        return List.of(telegramUserService.getCredentialsEmailsList(chatId).getEmail());
+    public List<String> getUserCredentialsEmail(Long chatId) throws TelegramUserDoesntExistException {
+        return List.of(telegramUserService.getUserUbiAccountEntry(chatId).getEmail());
     }
 
     public String getItemTypesString() {
@@ -127,19 +123,19 @@ public class BotInnerService {
     }
 
     public void saveFilterFromInput(Long chatId) {
-        itemFilterService.saveItemFilter(String.valueOf(chatId), getItemFilterByUserInput(chatId));
+        telegramUserItemFilterService.saveItemFilter(String.valueOf(chatId), getItemFilterByUserInput(chatId));
     }
 
     public Collection<String> getAllFilterNamesForUser(Long chatId) {
-        return itemFilterService.getAllItemFilterNamesForUser(String.valueOf(chatId));
+        return telegramUserItemFilterService.getAllItemFilterNamesForUser(String.valueOf(chatId));
     }
 
     public ItemFilter getFilterFromDatabaseByUserInputCallback(Long chatId) {
-        return itemFilterService.getItemFilterById(String.valueOf(chatId), getInputValueFromCallbackData(chatId, InputState.FILTER_NAME));
+        return telegramUserItemFilterService.getItemFilterById(String.valueOf(chatId), getInputValueFromCallbackData(chatId, InputState.FILTER_NAME));
     }
 
     public void removeFilterByUserInputCallback(Long chatId) {
-        itemFilterService.deleteItemFilterById(String.valueOf(chatId), getInputValueFromCallbackData(chatId, InputState.FILTER_NAME));
+        telegramUserItemFilterService.deleteItemFilterById(String.valueOf(chatId), getInputValueFromCallbackData(chatId, InputState.FILTER_NAME));
     }
 
     public ItemFilter getItemFilterByUserInput(Long chatId) {
@@ -215,13 +211,13 @@ public class BotInnerService {
         if (addOrRemove && appliedFilters.contains(filterName)) {
             telegramUserService.removeItemShowAppliedFilter(chatId, filterName);
         } else if (addOrRemove && !appliedFilters.contains(filterName)) {
-            ItemFilter filter = itemFilterService.getItemFilterById(String.valueOf(chatId), filterName);
+            ItemFilter filter = telegramUserItemFilterService.getItemFilterById(String.valueOf(chatId), filterName);
             telegramUserService.addItemShowAppliedFilter(chatId, filter);
         }
     }
 
     public void savePlannedOneItemTradeByUserInput(Long chatId, TradeManagerTradeType tradeType) {
-        tradeManagerService.saveTradeManagerByItemId(String.valueOf(chatId), getPlannedOneItemTradeByUserInput(chatId, tradeType));
+        telegramUserTradeManagerService.saveUserTradeManagerByItemId(String.valueOf(chatId), getPlannedOneItemTradeByUserInput(chatId, tradeType));
     }
 
     public TradeManagerByItemId getPlannedOneItemTradeByUserInput(Long chatId, TradeManagerTradeType tradeType) {
@@ -244,11 +240,11 @@ public class BotInnerService {
     }
 
     public Collection<TradeManagerByItemId> getTradeManagersByItemId(Long chatId) {
-        return tradeManagerService.getAllTradeManagersByItemId(String.valueOf(chatId));
+        return telegramUserTradeManagerService.getAllUserTradeManagersByItemId(String.valueOf(chatId));
     }
 
     public Collection<TradeManagerByItemFilters> getTradeManagersByItemFilters(Long chatId) {
-        return tradeManagerService.getAllTradeManagersByItemFilters(String.valueOf(chatId));
+        return telegramUserTradeManagerService.getAllUserTradeManagersByItemFilters(String.valueOf(chatId));
     }
 
     public void sendMultipleObjectsFewInMessage(Collection<?> objects, int objectStringHeight, Long chatId) {
@@ -272,11 +268,11 @@ public class BotInnerService {
     }
 
     public TradeManagerByItemId getTradeManagerByItemIdByUserInput(Long chatId) {
-        return tradeManagerService.getTradeManagerByItemIdById(String.valueOf(chatId), getUserInputByState(chatId,
+        return telegramUserTradeManagerService.getUserTradeManagerByItemIdById(String.valueOf(chatId), getUserInputByState(chatId,
                 InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID));
     }
 
     public void removeTradeManagerByItemIdByUserInput(Long chatId) {
-        tradeManagerService.deleteTradeManagerByItemIdById(String.valueOf(chatId), getUserInputByState(chatId, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID));
+        telegramUserTradeManagerService.deleteUserTradeManagerByItemIdById(String.valueOf(chatId), getUserInputByState(chatId, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID));
     }
 }

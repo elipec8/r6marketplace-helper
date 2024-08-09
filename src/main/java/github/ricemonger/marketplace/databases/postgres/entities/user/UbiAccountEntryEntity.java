@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
-import github.ricemonger.utils.dtos.UbiAccount;
+import github.ricemonger.utils.dtos.UbiAccountEntry;
 import github.ricemonger.utils.dtos.UbiAccountWithTelegram;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -79,7 +79,7 @@ public class UbiAccountEntryEntity {
             inverseJoinColumns = @JoinColumn(name = "tradeId", referencedColumnName = "tradeId"))
     private List<UbiTradeEntity> finishedTrades = new ArrayList<>();
 
-    public UbiAccountEntryEntity(UserEntity user, UbiAccount account) {
+    public UbiAccountEntryEntity(UserEntity user, UbiAccountEntry account) {
         this.user = user;
         this.email = account.getEmail();
         this.encodedPassword = account.getEncodedPassword();
@@ -106,28 +106,28 @@ public class UbiAccountEntryEntity {
 
     public UbiAccountWithTelegram toUbiAccountWithTelegram() {
         UbiAccountWithTelegram ubiAccountWithTelegram = new UbiAccountWithTelegram();
-        ubiAccountWithTelegram.setUbiAccount(this.toUbiAccount());
+        ubiAccountWithTelegram.setUbiAccountEntry(this.toUbiAccount());
         ubiAccountWithTelegram.setChatId(this.user.getTelegramUser().getChatId());
         return ubiAccountWithTelegram;
     }
 
-    public UbiAccount toUbiAccount() {
-        UbiAccount ubiAccount = new UbiAccount();
-        ubiAccount.setEmail(this.email);
-        ubiAccount.setEncodedPassword(this.encodedPassword);
-        ubiAccount.setUbiProfileId(this.ubiProfileId);
-        ubiAccount.setUbiSessionId(this.ubiSessionId);
-        ubiAccount.setUbiSpaceId(this.ubiSpaceId);
-        ubiAccount.setUbiAuthTicket(this.ubiAuthTicket);
-        ubiAccount.setUbiTwoFactorAuthTicket(this.ubiTwoFactorAuthTicket);
-        ubiAccount.setUbiRememberDeviceTicket(this.ubiRememberDeviceTicket);
-        ubiAccount.setUbiRememberMeTicket(this.ubiRememberMeTicket);
+    public UbiAccountEntry toUbiAccount() {
+        UbiAccountEntry ubiAccountEntry = new UbiAccountEntry();
+        ubiAccountEntry.setEmail(this.email);
+        ubiAccountEntry.setEncodedPassword(this.encodedPassword);
+        ubiAccountEntry.setUbiProfileId(this.ubiProfileId);
+        ubiAccountEntry.setUbiSessionId(this.ubiSessionId);
+        ubiAccountEntry.setUbiSpaceId(this.ubiSpaceId);
+        ubiAccountEntry.setUbiAuthTicket(this.ubiAuthTicket);
+        ubiAccountEntry.setUbiTwoFactorAuthTicket(this.ubiTwoFactorAuthTicket);
+        ubiAccountEntry.setUbiRememberDeviceTicket(this.ubiRememberDeviceTicket);
+        ubiAccountEntry.setUbiRememberMeTicket(this.ubiRememberMeTicket);
         List<String> itemIds = new ArrayList<>();
         if (this.getOwnedItemsIds() != null) {
             String[] thisOwnedItemsIds = this.getOwnedItemsIds().split(",");
             itemIds = new ArrayList<>(Arrays.asList(thisOwnedItemsIds));
         }
-        ubiAccount.setOwnedItemsIds(itemIds);
-        return ubiAccount;
+        ubiAccountEntry.setOwnedItemsIds(itemIds);
+        return ubiAccountEntry;
     }
 }

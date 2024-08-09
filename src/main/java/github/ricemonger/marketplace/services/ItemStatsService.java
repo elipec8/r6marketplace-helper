@@ -16,22 +16,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemStatsService {
 
-    private final ItemDatabaseService itemService;
-
-    private final ItemSaleDatabaseService saleService;
-
-    private final ItemSaleHistoryDatabaseService historyService;
-
     private final TagService tagService;
 
     private final CommonValuesService commonValuesService;
 
     private final ProfitAndPriorityCalculator profitAndPriorityCalculator;
 
+    private final ItemDatabaseService itemDatabaseService;
+
+    private final ItemSaleDatabaseService saleDatabaseService;
+
+    private final ItemSaleHistoryDatabaseService historyDatabaseService;
+
     public void saveAllItemsAndSales(Collection<Item> items) {
         setLimitPricesForItems(items);
-        itemService.saveAll(items);
-        saleService.saveAll(items);
+        itemDatabaseService.saveAll(items);
+        saleDatabaseService.saveAll(items);
     }
 
     private void setLimitPricesForItems(Collection<Item> items) {
@@ -75,8 +75,8 @@ public class ItemStatsService {
 
     public void calculateAndSaveItemsSaleHistoryStats() {
         List<ItemSaleHistory> histories = new ArrayList<>();
-        Collection<Item> items = itemService.findAll();
-        Collection<ItemSale> sales = saleService.findAll();
+        Collection<Item> items = itemDatabaseService.findAll();
+        Collection<ItemSale> sales = saleDatabaseService.findAll();
 
         for (Item item : items) {
 
@@ -138,16 +138,16 @@ public class ItemStatsService {
 
             histories.add(history);
         }
-        historyService.saveAll(histories);
-    }
-
-    public Collection<Item> getAllItemsByFilters(Collection<ItemFilter> filters) {
-        Collection<Item> items = itemService.findAll();
-
-        return ItemFilter.filterItems(items, filters);
+        historyDatabaseService.saveAll(histories);
     }
 
     public Item getItemById(String itemId) {
-        return itemService.findById(itemId);
+        return itemDatabaseService.findById(itemId);
+    }
+
+    public Collection<Item> getAllItemsByFilters(Collection<ItemFilter> filters) {
+        List<Item> items = itemDatabaseService.findAll();
+
+        return ItemFilter.filterItems(items, filters);
     }
 }

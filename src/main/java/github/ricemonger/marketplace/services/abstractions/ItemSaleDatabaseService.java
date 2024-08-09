@@ -4,9 +4,10 @@ import github.ricemonger.utils.dtos.Item;
 import github.ricemonger.utils.dtos.ItemSale;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface ItemSaleDatabaseService {
     void saveAll(Collection<Item> items);
 
-    Collection<ItemSale> findAll();
+    List<ItemSale> findAll();
 }
