@@ -9,7 +9,7 @@ import github.ricemonger.marketplace.databases.postgres.repositories.TradeManage
 import github.ricemonger.marketplace.services.abstractions.TelegramUserTradeManagerByItemIdDatabaseService;
 import github.ricemonger.utils.dtos.TradeManagerByItemId;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
-import github.ricemonger.utils.exceptions.TradeManagerByItemIdNotFoundException;
+import github.ricemonger.utils.exceptions.TradeManagerByItemIdDoesntExistException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -54,10 +54,10 @@ public class TelegramUserTradeManagerByItemIdPostgresService implements Telegram
     }
 
     @Override
-    public TradeManagerByItemId findById(String chatId, String itemId) throws TelegramUserDoesntExistException, TradeManagerByItemIdNotFoundException {
+    public TradeManagerByItemId findById(String chatId, String itemId) throws TelegramUserDoesntExistException, TradeManagerByItemIdDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
-        return tradeManagerByItemIdRepository.findById(new TradeManagerByItemIdEntityId(telegramUser.getUser(), itemId)).map(TradeManagerByItemIdEntity::toTradeManagerByItemId).orElseThrow(() -> new TradeManagerByItemIdNotFoundException(String.format("Trade manager by chatId %s and itemId %s not found", chatId, itemId)));
+        return tradeManagerByItemIdRepository.findById(new TradeManagerByItemIdEntityId(telegramUser.getUser(), itemId)).map(TradeManagerByItemIdEntity::toTradeManagerByItemId).orElseThrow(() -> new TradeManagerByItemIdDoesntExistException(String.format("Trade manager by chatId %s and itemId %s not found", chatId, itemId)));
     }
 
     @Override

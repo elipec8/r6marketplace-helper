@@ -8,7 +8,7 @@ import github.ricemonger.marketplace.databases.postgres.repositories.TradeManage
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.utils.dtos.TradeManagerByItemId;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
-import github.ricemonger.utils.exceptions.TradeManagerByItemIdNotFoundException;
+import github.ricemonger.utils.exceptions.TradeManagerByItemIdDoesntExistException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,7 +147,7 @@ class TelegramUserTradeManagerByItemIdPostgresServiceTest {
 
     @Test
     public void findById_should_throw_exception_if_trade_manager_doesnt_exist() {
-        assertThrows(TradeManagerByItemIdNotFoundException.class, () -> telegramUserTradeManagerByItemIdService.findById(CHAT_ID, "1"));
+        assertThrows(TradeManagerByItemIdDoesntExistException.class, () -> telegramUserTradeManagerByItemIdService.findById(CHAT_ID, "1"));
     }
 
     @Test
