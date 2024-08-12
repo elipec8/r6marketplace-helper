@@ -6,10 +6,7 @@ import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.*;
-import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
-import github.ricemonger.utils.exceptions.TelegramUserInputDoesntExistException;
-import github.ricemonger.utils.exceptions.UbiUserAuthorizationClientErrorException;
-import github.ricemonger.utils.exceptions.UbiUserAuthorizationServerErrorException;
+import github.ricemonger.utils.exceptions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -345,6 +342,13 @@ class TelegramUserServiceTest {
         when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getUserUbiAccountEntry(123L));
+    }
+
+    @Test
+    public void getUserUbiAccountEntry_should_throw_if_entry_doesnt_exist() {
+        when(telegramUserDatabaseService.findUserById("123")).thenThrow(UbiAccountEntryDoesntExistException.class);
+
+        assertThrows(UbiAccountEntryDoesntExistException.class, () -> telegramUserService.getUserUbiAccountEntry(123L));
     }
 
     @Test

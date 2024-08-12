@@ -39,8 +39,8 @@ public class BotInnerService {
 
     private final TradeManagerFromInputsMapper tradeManagerFromInputsMapper;
 
-    public void sendText(UpdateInfo updateInfo, String answer) throws TelegramApiRuntimeException {
-        telegramBotClientService.sendText(updateInfo, answer);
+    public void sendText(UpdateInfo updateInfo, String text) throws TelegramApiRuntimeException {
+        telegramBotClientService.sendText(updateInfo, text);
     }
 
     public void askFromInlineKeyboard(UpdateInfo updateInfo, String text, int buttonsInLine, CallbackButton[] buttons) throws TelegramApiRuntimeException {
@@ -74,7 +74,7 @@ public class BotInnerService {
 
         List<Item> items = itemStatsService.getAllItemsByFilters(settings.getItemShowAppliedFilters());
         try {
-            if(offset >= items.size()) {
+            if (offset >= items.size()) {
                 throw new IllegalArgumentException("Offset is bigger or equals than items size");
             }
             items = items.subList(offset, items.size());
@@ -111,7 +111,7 @@ public class BotInnerService {
         }
     }
 
-    private int getItemOffsetOrZeroByUserInput(Long chatId){
+    private int getItemOffsetOrZeroByUserInput(Long chatId) {
         String offsetInput;
         int offset;
         try {
@@ -179,7 +179,7 @@ public class BotInnerService {
         } else if (updateInfo.isHasCallBackQuery()) {
             userInput = updateInfo.getCallbackQueryData();
         } else {
-            throw new InvalidTelegramUserInput("UpdateInfo has no message or callback query");
+            throw new InvalidTelegramUserInputException("UpdateInfo has no message or callback query");
         }
         telegramUserService.saveUserInput(updateInfo.getChatId(), updateInfo.getInputState(), userInput);
     }
@@ -196,25 +196,32 @@ public class BotInnerService {
                 .orElse("");
     }
 
-    public void saveUserItemFilterByUserInput(Long chatId) {
+    public void saveUserItemFilterByUserInput(Long chatId) throws TelegramUserDoesntExistException {
         telegramUserItemFilterService.saveItemFilter(String.valueOf(chatId), generateItemFilterByUserInput(chatId));
     }
 
-    public ItemFilter generateItemFilterByUserInput(Long chatId) {
+    public ItemFilter generateItemFilterByUserInput(Long chatId) throws TelegramUserDoesntExistException {
         Collection<TelegramUserInput> inputs = telegramUserService.getAllUserInputs(chatId);
 
         return itemFilterFromInputsMapper.mapToItemFilter(inputs);
     }
 
-    public List<String> getAllUserItemFiltersNames(Long chatId) {
+    public List<String> getAllUserItemFiltersNames(Long chatId) throws TelegramUserDoesntExistException {
         return telegramUserItemFilterService.getAllUserItemFiltersNames(String.valueOf(chatId));
     }
 
-    public ItemFilter getUserItemFilterByUserInputCallbackFilterName(Long chatId) {
+    public ItemFilter getUserItemFilterByUserInputCallbackFilterName(Long chatId)
+            throws TelegramUserDoesntExistException,
+            TelegramUserInputDoesntExistException,
+            ItemFilterDoesntExistException,
+            MissingCallbackPrefixInUserInputException {
         return telegramUserItemFilterService.getItemFilterById(String.valueOf(chatId), getUserInputValueWithoutCallbackPrefix(chatId, InputState.FILTER_NAME));
     }
 
-    public void removeUserItemFilterByUserInputCallbackFilterName(Long chatId) {
+    public void removeUserItemFilterByUserInputCallbackFilterName(Long chatId)
+            throws TelegramUserDoesntExistException,
+            TelegramUserInputDoesntExistException,
+            MissingCallbackPrefixInUserInputException {
         telegramUserItemFilterService.deleteItemFilterById(String.valueOf(chatId), getUserInputValueWithoutCallbackPrefix(chatId, InputState.FILTER_NAME));
     }
 
@@ -298,8 +305,16 @@ public class BotInnerService {
         return telegramUserService.getUserInputByState(chatId, inputState);
     }
 
-    private String getUserInputValueWithoutCallbackPrefix(Long chatId, InputState inputState) {
+    private String getUserInputValueWithoutCallbackPrefix(Long chatId, InputState inputState)
+            throws TelegramUserDoesntExistException,
+            TelegramUserInputDoesntExistException,
+            MissingCallbackPrefixInUserInputException {
         String callback = telegramUserService.getUserInputByState(chatId, inputState);
-        return callback.substring(Callbacks.INPUT_CALLBACK_PREFIX.length());
+        try {
+            return callback.substring(Callbacks.INPUT_CALLBACK_PREFIX.length());
+        }
+        catch (StringIndexOutOfBoundsException e) {
+            throw new MissingCallbackPrefixInUserInputException("Callback prefix is missing in user input: " + callback);
+        }
     }
 }

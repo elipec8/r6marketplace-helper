@@ -126,7 +126,7 @@ public class TelegramUserService {
         return telegramUser.getInputGroup();
     }
 
-    public UbiAccountEntry getUserUbiAccountEntry(Long chatId) throws TelegramUserDoesntExistException {
+    public UbiAccountEntry getUserUbiAccountEntry(Long chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
         getTelegramUserOrThrow(chatId);
 
         return credentialsService.findByChatId(String.valueOf(chatId));
