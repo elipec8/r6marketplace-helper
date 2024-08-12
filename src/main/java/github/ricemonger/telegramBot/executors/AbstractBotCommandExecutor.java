@@ -31,8 +31,8 @@ public abstract class AbstractBotCommandExecutor {
 
     protected final void processFirstInput(InputState nextInputState, InputGroup nextInputGroup) {
         botInnerService.clearUserInputs(updateInfo.getChatId());
-        botInnerService.setUserNextInputState(updateInfo.getChatId(), nextInputState);
-        botInnerService.setUserNextInputGroup(updateInfo.getChatId(), nextInputGroup);
+        botInnerService.setUserInputState(updateInfo.getChatId(), nextInputState);
+        botInnerService.setUserInputGroup(updateInfo.getChatId(), nextInputGroup);
     }
 
     protected final void processMiddleInput(InputState nextInputState, String question) {
@@ -52,12 +52,12 @@ public abstract class AbstractBotCommandExecutor {
 
     protected final void processLastInput() {
         saveCurrentInputAndSetNextState(InputState.BASE);
-        botInnerService.setUserNextInputGroup(updateInfo.getChatId(), InputGroup.BASE);
+        botInnerService.setUserInputGroup(updateInfo.getChatId(), InputGroup.BASE);
     }
 
     private void saveCurrentInputAndSetNextState(InputState nextState) {
-        botInnerService.saveUserInputOrThrow(updateInfo);
-        botInnerService.setUserNextInputState(updateInfo.getChatId(), nextState);
+        botInnerService.saveUserInput(updateInfo);
+        botInnerService.setUserInputState(updateInfo.getChatId(), nextState);
     }
 
     protected final String getUserCurrentInput() {
@@ -99,15 +99,15 @@ public abstract class AbstractBotCommandExecutor {
     }
 
     protected final void silentCancel() {
-        botInnerService.setUserNextInputState(updateInfo.getChatId(), InputState.BASE);
+        botInnerService.setUserInputState(updateInfo.getChatId(), InputState.BASE);
 
-        botInnerService.setUserNextInputGroup(updateInfo.getChatId(), InputGroup.BASE);
+        botInnerService.setUserInputGroup(updateInfo.getChatId(), InputGroup.BASE);
 
         botInnerService.clearUserInputs(updateInfo.getChatId());
     }
 
     protected final boolean isRegistered() {
-        return botInnerService.isRegistered(updateInfo.getChatId());
+        return botInnerService.isUserRegistered(updateInfo.getChatId());
     }
 
     protected final void sendText(String answer) {

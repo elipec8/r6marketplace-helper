@@ -10,7 +10,7 @@ public class TradesOneItemBuyEditStage2AskBoundaryPriceInput extends AbstractBot
         processMiddleInput(InputState.TRADES_EDIT_ONE_ITEM_BOUNDARY_BUY_PRICE);
 
         try {
-            sendText("Chosen item is:\n" + botInnerService.getItemByPlannedOneItemTradeEditUserInput(updateInfo.getChatId()));
+            sendText("Chosen item is:\n" + botInnerService.getItemByUserInputTradeByItemIdManagerEdit(updateInfo.getChatId()));
         } catch (ItemNotFoundException e) {
             sendText("Item not found. Please enter correct item id.");
             cancel();

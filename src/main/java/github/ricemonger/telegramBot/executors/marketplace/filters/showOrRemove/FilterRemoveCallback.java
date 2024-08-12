@@ -5,7 +5,7 @@ import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 public class FilterRemoveCallback extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        botInnerService.removeFilterByUserInputCallback(updateInfo.getChatId());
+        botInnerService.removeUserItemFilterByUserInputCallbackFilterName(updateInfo.getChatId());
         sendText("Filter successfully removed");
     }
 }

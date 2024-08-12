@@ -18,11 +18,11 @@ class CredentialsDirectTest {
     @Test
     public void initAndExecuteShouldCheckIfUserIsRegisteredAndProposeToRegisterIfNot() {
         CredentialsDirect credentialsDirect = new CredentialsDirect();
-        when(botInnerService.isRegistered(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(false);
+        when(botInnerService.isUserRegistered(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(false);
 
         credentialsDirect.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService).isRegistered(MockUpdateInfos.UPDATE_INFO.getChatId());
+        verify(botInnerService).isUserRegistered(MockUpdateInfos.UPDATE_INFO.getChatId());
         verify(botInnerService).sendText(same(MockUpdateInfos.UPDATE_INFO), anyString());
         verify(botInnerService, never()).askFromInlineKeyboard(any(), any(), anyInt(), any());
     }
@@ -30,11 +30,11 @@ class CredentialsDirectTest {
     @Test
     public void initAndExecuteShouldAskToChooseTheActionIfUserIsRegistered() {
         CredentialsDirect credentialsDirect = new CredentialsDirect();
-        when(botInnerService.isRegistered(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(true);
+        when(botInnerService.isUserRegistered(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(true);
 
         credentialsDirect.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService).isRegistered(MockUpdateInfos.UPDATE_INFO.getChatId());
+        verify(botInnerService).isUserRegistered(MockUpdateInfos.UPDATE_INFO.getChatId());
         verify(botInnerService).askFromInlineKeyboard(same(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());
     }
 

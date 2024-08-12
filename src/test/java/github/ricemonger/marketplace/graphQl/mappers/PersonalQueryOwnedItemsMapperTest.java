@@ -18,7 +18,7 @@ class PersonalQueryOwnedItemsMapperTest {
     PersonalQueryOwnedItemsMapper personalQueryOwnedItemsMapper;
 
     @Test
-    public void mapOwnedItems_should_map_each_item(){
+    public void mapOwnedItems_should_map_each_item() {
         List<Node> nodes = new ArrayList<>();
 
         Node node1 = new Node();
@@ -40,12 +40,12 @@ class PersonalQueryOwnedItemsMapperTest {
     }
 
     @Test
-    public void mapOwnedItems_should_throw_exception_when_nodes_is_null(){
+    public void mapOwnedItems_should_throw_exception_when_nodes_is_null() {
         assertThrows(GraphQlPersonalOwnedItemsMappingException.class, () -> personalQueryOwnedItemsMapper.mapOwnedItems(null));
     }
 
     @Test
-    public void mapOwnedItems_should_throw_exception_when_node_is_null(){
+    public void mapOwnedItems_should_throw_exception_when_node_is_null() {
         List<Node> nodes = new ArrayList<>();
         nodes.add(null);
 
@@ -53,7 +53,7 @@ class PersonalQueryOwnedItemsMapperTest {
     }
 
     @Test
-    public void mapOwnedItems_should_throw_exception_when_item_is_null(){
+    public void mapOwnedItems_should_throw_exception_when_item_is_null() {
         List<Node> nodes = new ArrayList<>();
 
         Node node = new Node();
@@ -64,7 +64,7 @@ class PersonalQueryOwnedItemsMapperTest {
     }
 
     @Test
-    public void mapOwnedItems_should_throw_exception_when_itemId_is_null(){
+    public void mapOwnedItems_should_throw_exception_when_itemId_is_null() {
         List<Node> nodes = new ArrayList<>();
 
         Node node = new Node();

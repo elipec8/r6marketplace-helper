@@ -14,7 +14,7 @@ public class FiltersShowCallback extends AbstractBotCommandExecutor {
     protected void executeCommand() {
         processFirstInput(InputState.FILTER_NAME, InputGroup.FILTERS_SHOW_REMOVE);
 
-        List<String> filterNames = new ArrayList<>(botInnerService.getAllFilterNamesForUser(updateInfo.getChatId()));
+        List<String> filterNames = new ArrayList<>(botInnerService.getAllUserItemFiltersNames(updateInfo.getChatId()));
 
         CallbackButton[] buttons = new CallbackButton[filterNames.size()];
         for (int i = 0; i < filterNames.size(); i++) {

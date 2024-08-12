@@ -22,11 +22,11 @@ class CredentialsRemoveOneEmailInputTest {
 
         credentialsRemoveOneEmailInput.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-       // verify(botInnerService).removeCredentialsByUserInputs(MockUpdateInfos.UPDATE_INFO.getChatId());
+        // verify(botInnerService).removeCredentialsByUserInputs(MockUpdateInfos.UPDATE_INFO.getChatId());
 
-        verify(botInnerService).saveUserInputOrThrow(MockUpdateInfos.UPDATE_INFO);
-        verify(botInnerService).setUserNextInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.BASE);
-        verify(botInnerService).setUserNextInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.BASE);
+        verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO);
+        verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.BASE);
+        verify(botInnerService).setUserInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.BASE);
     }
 
 }

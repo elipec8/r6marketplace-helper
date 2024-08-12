@@ -17,22 +17,22 @@ class StartYesCallbackTest {
     @Test
     public void initAndExecuteShouldCheckIfUserIsRegisteredAndRegisterIfNot() {
         StartYesCallback startYesCallback = new StartYesCallback();
-        when(botInnerService.isRegistered(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(false);
+        when(botInnerService.isUserRegistered(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(false);
 
         startYesCallback.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService).isRegistered(MockUpdateInfos.UPDATE_INFO.getChatId());
+        verify(botInnerService).isUserRegistered(MockUpdateInfos.UPDATE_INFO.getChatId());
         verify(botInnerService).registerUser(MockUpdateInfos.UPDATE_INFO.getChatId());
     }
 
     @Test
     public void initAndExecuteShouldSendTextIfUserIsRegistered() {
         StartYesCallback startYesCallback = new StartYesCallback();
-        when(botInnerService.isRegistered(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(true);
+        when(botInnerService.isUserRegistered(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(true);
 
         startYesCallback.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService).isRegistered(MockUpdateInfos.UPDATE_INFO.getChatId());
+        verify(botInnerService).isUserRegistered(MockUpdateInfos.UPDATE_INFO.getChatId());
         verify(botInnerService, never()).registerUser(any());
         verify(botInnerService).sendText(same(MockUpdateInfos.UPDATE_INFO), anyString());
     }

@@ -5,7 +5,7 @@ import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 public class TradeManagersByItemIdRemoveStage3FinishCallback extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        botInnerService.removeTradeManagerByItemIdByUserInput(updateInfo.getChatId());
+        botInnerService.removeUserTradeByItemIdManagerByUserInput(updateInfo.getChatId());
         sendText("Trade manager successfully removed");
     }
 }

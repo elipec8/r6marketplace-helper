@@ -50,7 +50,7 @@ public class ConfigQueryMarketplaceMapper {
 
         for (github.ricemonger.utils.dtos.Tag tag : result) {
             for (TagGroup group : tagGroups) {
-                if(group == null || group.getDisplayName() == null || group.getValues() == null) {
+                if (group == null || group.getDisplayName() == null || group.getValues() == null) {
                     throw new GraphQlConfigMarketplaceMappingException("Tag group display name or values is null, in tagGroups-" + tagGroups);
                 }
                 if (group.getValues().contains(tag.getValue())) {

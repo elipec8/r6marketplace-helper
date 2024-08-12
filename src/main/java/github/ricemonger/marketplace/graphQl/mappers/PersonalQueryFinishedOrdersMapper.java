@@ -27,7 +27,7 @@ public class PersonalQueryFinishedOrdersMapper {
     private final CommonValuesService commonValuesService;
 
     public Collection<Trade> mapFinishedOrders(Trades trades) throws GraphQlPersonalFinishedOrdersMappingException {
-        if(trades == null) {
+        if (trades == null) {
             throw new GraphQlPersonalFinishedOrdersMappingException("Trades is null");
         }
         List<Nodes> nodes = trades.getNodes();
@@ -88,7 +88,7 @@ public class PersonalQueryFinishedOrdersMapper {
         result.setItemId(node.getTradeItems()[0].getItem().getItemId());
 
         if (node.getPayment() != null) {
-            if(node.getPayment().getPrice() == null || node.getPayment().getTransactionFee() == null) {
+            if (node.getPayment().getPrice() == null || node.getPayment().getTransactionFee() == null) {
                 throw new GraphQlPersonalFinishedOrdersMappingException("Payment price or fee is null-" + node);
             }
             result.setSuccessPaymentPrice(node.getPayment().getPrice());

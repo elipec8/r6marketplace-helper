@@ -8,7 +8,7 @@ public class FilterEditStage11AskItemTagsEsportsInput extends AbstractBotCommand
     @Override
     protected void executeCommand() {
         processMiddleInput(InputState.FILTER_ITEM_TAGS_ESPORTS);
-        String tags = botInnerService.getAllTagsNamesStringByGroup(TagGroup.Esports_Team);
+        String tags = botInnerService.getStringOfAllTagsNamesByTagGroup(TagGroup.Esports_Team);
         askFromInlineKeyboardOrSkip("Please enter esports teams tags, dived by \",\" or \"|\". Teams list:\n" + tags, 1);
     }
 }

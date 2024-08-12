@@ -14,8 +14,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(TradeManagerByItemFiltersEntityId.class)
-public class TradeManagerByItemFiltersEntity {
+@IdClass(TradeByFiltersManagerEntityId.class)
+public class TradeByFiltersManagerEntity {
     @MapsId
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "userId", referencedColumnName = "id")

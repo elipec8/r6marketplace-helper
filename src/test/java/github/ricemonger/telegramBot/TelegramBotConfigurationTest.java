@@ -16,5 +16,7 @@ public class TelegramBotConfigurationTest {
     public void telegramBotConfigurationPropertiesShouldBeAutowired() {
         assertNotNull(telegramBotConfiguration.getTELEGRAM_BOT_TOKEN());
         assertNotNull(telegramBotConfiguration.getTELEGRAM_BOT_USERNAME());
+        assertNotNull(telegramBotConfiguration.getMessageHeight());
+        assertNotNull(telegramBotConfiguration.getMessageLimit());
     }
 }

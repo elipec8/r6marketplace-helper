@@ -12,9 +12,9 @@ public class ItemsShowSettingsChangeAppliedFiltersStage2AskActionInput extends A
     protected void executeCommand() {
         processMiddleInput(InputState.ITEMS_SHOW_SETTINGS_APPLIED_FILTER_ADD_OR_REMOVE);
 
-        ItemFilter filter = botInnerService.getFilterFromDatabaseByUserInputCallback(updateInfo.getChatId());
+        ItemFilter filter = botInnerService.getUserItemFilterByUserInputCallbackFilterName(updateInfo.getChatId());
 
-        Collection<ItemFilter> appliedFilters = botInnerService.getItemShowSettingsForUser(updateInfo.getChatId()).getItemShowAppliedFilters();
+        Collection<ItemFilter> appliedFilters = botInnerService.getUserItemShowSettings(updateInfo.getChatId()).getItemShowAppliedFilters();
 
         String text;
         if (appliedFilters.contains(filter)) {

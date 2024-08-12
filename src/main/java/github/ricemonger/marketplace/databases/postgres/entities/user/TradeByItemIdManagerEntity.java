@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
-import github.ricemonger.utils.dtos.TradeManagerByItemId;
+import github.ricemonger.utils.dtos.TradeByItemIdManager;
 import github.ricemonger.utils.enums.TradeManagerTradeType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,8 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(TradeManagerByItemIdEntityId.class)
-public class TradeManagerByItemIdEntity {
+@IdClass(TradeByItemIdManagerEntityId.class)
+public class TradeByItemIdManagerEntity {
     @MapsId
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "userId", referencedColumnName = "id")
@@ -35,7 +35,7 @@ public class TradeManagerByItemIdEntity {
 
     private Integer priority;
 
-    public TradeManagerByItemIdEntity(UserEntity user, TradeManagerByItemId tradeManager) {
+    public TradeByItemIdManagerEntity(UserEntity user, TradeByItemIdManager tradeManager) {
         this.user = user;
         this.itemId = tradeManager.getItemId();
         this.tradeType = tradeManager.getTradeType();
@@ -46,8 +46,8 @@ public class TradeManagerByItemIdEntity {
         this.priority = tradeManager.getPriority();
     }
 
-    public TradeManagerByItemId toTradeManagerByItemId() {
-        TradeManagerByItemId tradeManager = new TradeManagerByItemId();
+    public TradeByItemIdManager toTradeManagerByItemId() {
+        TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId(itemId);
         tradeManager.setTradeType(tradeType);
         tradeManager.setSellStartingPrice(sellStartingPrice);

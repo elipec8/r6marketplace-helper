@@ -3,7 +3,10 @@ package github.ricemonger.marketplace.services;
 import github.ricemonger.marketplace.services.abstractions.ItemDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleHistoryDatabaseService;
-import github.ricemonger.utils.dtos.*;
+import github.ricemonger.utils.dtos.Item;
+import github.ricemonger.utils.dtos.ItemFilter;
+import github.ricemonger.utils.dtos.ItemSale;
+import github.ricemonger.utils.dtos.Tag;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.TagGroup;
 import org.junit.jupiter.api.Test;
@@ -204,7 +207,7 @@ class ItemStatsServiceTest {
     }
 
     @Test
-    public void getItemById_should_handle_to_service(){
+    public void getItemById_should_handle_to_service() {
         Item item = new Item();
         item.setItemId("1");
         when(itemService.findById("1")).thenReturn(item);
@@ -215,7 +218,7 @@ class ItemStatsServiceTest {
     }
 
     @Test
-    public void getAllItemsByFilter_should_get_all_items_and_call_filter_method_on_them(){
+    public void getAllItemsByFilter_should_get_all_items_and_call_filter_method_on_them() {
         List<Item> items = new ArrayList<>();
         when(itemService.findAll()).thenReturn(items);
 

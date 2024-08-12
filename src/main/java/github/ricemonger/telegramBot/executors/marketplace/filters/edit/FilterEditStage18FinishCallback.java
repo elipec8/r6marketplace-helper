@@ -5,7 +5,7 @@ import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 public class FilterEditStage18FinishCallback extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        botInnerService.saveFilterFromInput(updateInfo.getChatId());
+        botInnerService.saveUserItemFilterByUserInput(updateInfo.getChatId());
         sendText("Filter created successfully");
     }
 }

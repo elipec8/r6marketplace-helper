@@ -8,7 +8,7 @@ public class FilterEditStage7AskItemTagsSeasonsInput extends AbstractBotCommandE
     @Override
     protected void executeCommand() {
         processMiddleInput(InputState.FILTER_ITEM_TAGS_SEASONS);
-        String tags = botInnerService.getAllTagsNamesStringByGroup(TagGroup.Season);
+        String tags = botInnerService.getStringOfAllTagsNamesByTagGroup(TagGroup.Season);
         askFromInlineKeyboardOrSkip("Please enter seasons, dived by \",\" or \"|\". Seasons list:\n" + tags, 1);
     }
 }

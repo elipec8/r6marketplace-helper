@@ -19,7 +19,7 @@ public class TelegramUserItemFilterService {
         telegramUserItemFilterDatabaseService.save(chatId, itemFilter);
     }
 
-    public void deleteItemFilterById(String chatId, String name) throws TelegramUserDoesntExistException  {
+    public void deleteItemFilterById(String chatId, String name) throws TelegramUserDoesntExistException {
         telegramUserItemFilterDatabaseService.deleteById(chatId, name);
     }
 
@@ -27,7 +27,7 @@ public class TelegramUserItemFilterService {
         return telegramUserItemFilterDatabaseService.findById(chatId, name);
     }
 
-    public List<String> getAllItemFilterNamesForUser(String chatId) throws TelegramUserDoesntExistException  {
+    public List<String> getAllUserItemFiltersNames(String chatId) throws TelegramUserDoesntExistException {
         return telegramUserItemFilterDatabaseService.findAllByChatId(chatId).stream().map(ItemFilter::getName).toList();
     }
 }

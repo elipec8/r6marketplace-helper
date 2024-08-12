@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 
 @Slf4j
@@ -48,7 +47,7 @@ public class TelegramUserService {
         telegramUserDatabaseService.setItemShowMessagesLimit(String.valueOf(chatId), limit);
     }
 
-    public void setItemShowSettingsByUserInput(Long chatId, String trueValue, String falseValue) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
+    public void setItemShownFieldsSettingsByUserInput(Long chatId, String trueValue, String falseValue) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         boolean nameFlag = parseBooleanOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_NAME), falseValue);
         boolean itemTypeFlag = parseBooleanOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_TYPE), falseValue);
         boolean maxBuyPriceFlag = parseBooleanOrTrue(getInputValueByState(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_MAX_BUY_PRICE), falseValue);
@@ -113,7 +112,7 @@ public class TelegramUserService {
         return getTelegramUserOrThrow(chatId);
     }
 
-    public ItemShowSettings getItemShowSettings(Long chatId) {
+    public ItemShowSettings getItemShowSettings(Long chatId) throws TelegramUserDoesntExistException {
         return telegramUserDatabaseService.findUserSettingsById(String.valueOf(chatId));
     }
 
@@ -131,19 +130,6 @@ public class TelegramUserService {
         getTelegramUserOrThrow(chatId);
 
         return credentialsService.findByChatId(String.valueOf(chatId));
-    }
-
-    public int getItemOffsetByUserInput(Long chatId) throws TelegramUserDoesntExistException {
-        getTelegramUserOrThrow(chatId);
-
-        TelegramUserInput input = new TelegramUserInput();
-        try {
-            input = inputDatabaseService.findById(String.valueOf(chatId), InputState.ITEMS_SHOW_OFFSET);
-            return Integer.parseInt(input.getValue());
-        } catch (TelegramUserInputDoesntExistException | NumberFormatException e) {
-            log.info("User's-{} input-{} is invalid or doesnt exists, 0 is used instead", chatId, input);
-            return 0;
-        }
     }
 
     public String getUserInputByState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {

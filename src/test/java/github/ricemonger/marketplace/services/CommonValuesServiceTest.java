@@ -295,10 +295,10 @@ class CommonValuesServiceTest {
     @Test
     public void getMinimumMarketplacePrice_should_handle_to_service() {
         Integer minPrice = 10;
-        when(ubiServiceConfiguration.getMinUncommonPrice()).thenReturn(minPrice+2);
-        when(ubiServiceConfiguration.getMinRarePrice()).thenReturn(minPrice+1);
+        when(ubiServiceConfiguration.getMinUncommonPrice()).thenReturn(minPrice + 2);
+        when(ubiServiceConfiguration.getMinRarePrice()).thenReturn(minPrice + 1);
         when(ubiServiceConfiguration.getMinEpicPrice()).thenReturn(minPrice);
-        when(ubiServiceConfiguration.getMinLegendaryPrice()).thenReturn(minPrice+3);
+        when(ubiServiceConfiguration.getMinLegendaryPrice()).thenReturn(minPrice + 3);
 
         assertEquals(minPrice, commonValuesService.getMinimumMarketplacePrice());
     }

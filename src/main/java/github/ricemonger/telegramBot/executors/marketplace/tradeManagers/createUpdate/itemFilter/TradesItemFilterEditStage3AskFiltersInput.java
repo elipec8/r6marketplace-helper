@@ -9,7 +9,7 @@ public class TradesItemFilterEditStage3AskFiltersInput extends AbstractBotComman
         processMiddleInput(InputState.TRADES_EDIT_ITEM_FILTER_FILTERS_NAMES);
 
         sendText("List of available filters:\n"
-                 + botInnerService.getAllFilterNamesForUser(updateInfo.getChatId())
+                 + botInnerService.getAllUserItemFiltersNames(updateInfo.getChatId())
                  + "\nPlease enter names of item filters, you want to apply to the trade, divided by \",\" or \"|\":");
     }
 }

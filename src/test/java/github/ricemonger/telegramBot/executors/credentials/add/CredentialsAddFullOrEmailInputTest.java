@@ -23,11 +23,11 @@ class CredentialsAddFullOrEmailInputTest {
 
         credentialsAddFullOrEmailInput.initAndExecute(MockUpdateInfos.UPDATE_INFO_FULL_INPUT, botInnerService);
 
-        verify(botInnerService).addCredentialsFromUserInputs(MockUpdateInfos.UPDATE_INFO_FULL_INPUT.getChatId());
+        verify(botInnerService).addUserUbiAccountEntryByUserInput(MockUpdateInfos.UPDATE_INFO_FULL_INPUT.getChatId());
 
-        verify(botInnerService).saveUserInputOrThrow(MockUpdateInfos.UPDATE_INFO_FULL_INPUT);
-        verify(botInnerService).setUserNextInputGroup(MockUpdateInfos.UPDATE_INFO_FULL_INPUT.getChatId(), InputGroup.BASE);
-        verify(botInnerService).setUserNextInputState(MockUpdateInfos.UPDATE_INFO_FULL_INPUT.getChatId(), InputState.BASE);
+        verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO_FULL_INPUT);
+        verify(botInnerService).setUserInputGroup(MockUpdateInfos.UPDATE_INFO_FULL_INPUT.getChatId(), InputGroup.BASE);
+        verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO_FULL_INPUT.getChatId(), InputState.BASE);
     }
 
     @Test
@@ -36,10 +36,10 @@ class CredentialsAddFullOrEmailInputTest {
 
         credentialsAddFullOrEmailInput.initAndExecute(MockUpdateInfos.UPDATE_INFO_EMAIL_INPUT, botInnerService);
 
-        verify(botInnerService, never()).addCredentialsFromUserInputs(MockUpdateInfos.UPDATE_INFO_FULL_INPUT.getChatId());
+        verify(botInnerService, never()).addUserUbiAccountEntryByUserInput(MockUpdateInfos.UPDATE_INFO_FULL_INPUT.getChatId());
 
-        verify(botInnerService).saveUserInputOrThrow(MockUpdateInfos.UPDATE_INFO_EMAIL_INPUT);
-        verify(botInnerService).setUserNextInputState(MockUpdateInfos.UPDATE_INFO_EMAIL_INPUT.getChatId(), InputState.CREDENTIALS_PASSWORD);
+        verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO_EMAIL_INPUT);
+        verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO_EMAIL_INPUT.getChatId(), InputState.CREDENTIALS_PASSWORD);
     }
 
 }

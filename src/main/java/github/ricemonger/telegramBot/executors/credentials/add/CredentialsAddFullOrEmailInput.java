@@ -13,7 +13,7 @@ public class CredentialsAddFullOrEmailInput extends AbstractBotCommandExecutor {
 
             processLastInput("Credentials successfully provided.");
 
-            botInnerService.addCredentialsFromUserInputs(updateInfo.getChatId());
+            botInnerService.addUserUbiAccountEntryByUserInput(updateInfo.getChatId());
         } else {
             processMiddleInput(InputState.CREDENTIALS_PASSWORD, "Please provide your Ubisoft password:");
         }

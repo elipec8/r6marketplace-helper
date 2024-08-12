@@ -7,7 +7,7 @@ public class ItemsShowSettingsChangeShownFieldsStage8FinishInput extends Abstrac
     protected void executeCommand() {
         processLastInput();
 
-        botInnerService.setItemShowSettingsShownFieldsByUserInput(updateInfo.getChatId());
+        botInnerService.setUserItemShownFieldsSettingByUserInput(updateInfo.getChatId());
 
         sendText("Settings have been saved.");
     }

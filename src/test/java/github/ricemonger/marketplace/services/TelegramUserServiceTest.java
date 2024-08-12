@@ -106,7 +106,7 @@ class TelegramUserServiceTest {
     }
 
     @Test
-    public void setItemShowSettingsByUserInput_should_parse_and_handle_to_service() {
+    public void setItemShownFieldsSettingsByUserInput_should_parse_and_handle_to_service() {
         String chatId = "123";
 
         when(telegramUserInputDatabaseService.findById(chatId, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_NAME)).thenReturn(new TelegramUserInput(chatId,
@@ -132,16 +132,16 @@ class TelegramUserServiceTest {
 
         ItemShownFieldsSettings settings = new ItemShownFieldsSettings(true, true, true, true, false, false, false);
 
-        telegramUserService.setItemShowSettingsByUserInput(123L, Callbacks.INPUT_CALLBACK_TRUE, Callbacks.INPUT_CALLBACK_FALSE);
+        telegramUserService.setItemShownFieldsSettingsByUserInput(123L, Callbacks.INPUT_CALLBACK_TRUE, Callbacks.INPUT_CALLBACK_FALSE);
 
         verify(telegramUserDatabaseService).setItemShowFieldsSettings(chatId, settings);
     }
 
     @Test
-    public void setItemShowSettingsByUserInput_should_throw_if_user_doesnt_exist() {
+    public void setItemShownFieldsSettingsByUserInput_should_throw_if_user_doesnt_exist() {
         when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setItemShowSettingsByUserInput(123L, Callbacks.INPUT_CALLBACK_TRUE, Callbacks.INPUT_CALLBACK_FALSE));
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setItemShownFieldsSettingsByUserInput(123L, Callbacks.INPUT_CALLBACK_TRUE, Callbacks.INPUT_CALLBACK_FALSE));
     }
 
     @Test
@@ -348,34 +348,6 @@ class TelegramUserServiceTest {
     }
 
     @Test
-    public void getItemOffsetByUserInput_should_return_offset() {
-        when(telegramUserInputDatabaseService.findById("123", InputState.ITEMS_SHOW_OFFSET)).thenReturn(new TelegramUserInput("123", InputState.ITEMS_SHOW_OFFSET, "5"));
-
-        assertEquals(5, telegramUserService.getItemOffsetByUserInput(123L));
-    }
-
-    @Test
-    public void getItemOffsetByUserInput_should_throw_if_user_doesnt_exist() {
-        when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
-
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getItemOffsetByUserInput(123L));
-    }
-
-    @Test
-    public void getItemOffsetByUserInput_should_0_if_input_doesnt_exist() {
-        when(telegramUserInputDatabaseService.findById("123", InputState.ITEMS_SHOW_OFFSET)).thenThrow(TelegramUserInputDoesntExistException.class);
-
-        assertEquals(0, telegramUserService.getItemOffsetByUserInput(123L));
-    }
-
-    @Test
-    public void getItemOffsetByUserInput_should_0_if_input_is_invalid() {
-        when(telegramUserInputDatabaseService.findById("123", InputState.ITEMS_SHOW_OFFSET)).thenReturn(new TelegramUserInput("123", InputState.ITEMS_SHOW_OFFSET, "i"));
-
-        assertEquals(0, telegramUserService.getItemOffsetByUserInput(123L));
-    }
-
-    @Test
     public void getUserInputByState_should_return_input() {
         TelegramUserInput telegramUserInput = new TelegramUserInput("123", InputState.BASE, "input");
         when(telegramUserInputDatabaseService.findById("123", InputState.BASE)).thenReturn(telegramUserInput);
@@ -400,9 +372,9 @@ class TelegramUserServiceTest {
     }
 
     @Test
-    public void getAllUserInputs_should_return_all_user_inputs(){
+    public void getAllUserInputs_should_return_all_user_inputs() {
         List<TelegramUserInput> inputs = new ArrayList<>();
-        inputs.add(new TelegramUserInput("123",InputState.BASE,"value"));
+        inputs.add(new TelegramUserInput("123", InputState.BASE, "value"));
 
         when(telegramUserInputDatabaseService.findAllByChatId("123")).thenReturn(inputs);
 

@@ -24,8 +24,8 @@ class CredentialsRemoveOneCallbackTest {
 
         credentialsRemoveOneCallback.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService).setUserNextInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.CREDENTIALS_FULL_OR_EMAIL);
-        verify(botInnerService).setUserNextInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.CREDENTIALS_REMOVE_ONE);
+        verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.CREDENTIALS_FULL_OR_EMAIL);
+        verify(botInnerService).setUserInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.CREDENTIALS_REMOVE_ONE);
 
         verify(botInnerService).sendText(same(MockUpdateInfos.UPDATE_INFO), anyString());
     }

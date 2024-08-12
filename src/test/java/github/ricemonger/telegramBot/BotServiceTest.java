@@ -17,18 +17,15 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class BotServiceTest {
-
+    @Autowired
+    private BotService botService;
     @MockBean
     private TelegramBotClientService telegramBotClientService;
-
     @MockBean
     private TelegramUserService telegramUserService;
 
-    @Autowired
-    private BotService botService;
-
     @Test
-    void notifyAllUsersAboutItemAmountIncreaseShouldCallTelegramClientServiceWithNotifiableUsersList() {
+    void notifyAllUsersAboutItemAmountIncrease_should_handle_to_services() {
         List<String> chatIds = new ArrayList<>();
         chatIds.add("1");
         chatIds.add("2");

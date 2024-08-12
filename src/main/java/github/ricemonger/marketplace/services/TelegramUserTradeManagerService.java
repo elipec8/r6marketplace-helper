@@ -1,9 +1,9 @@
 package github.ricemonger.marketplace.services;
 
-import github.ricemonger.marketplace.services.abstractions.TelegramUserTradeManagerByItemFilterDatabaseService;
-import github.ricemonger.marketplace.services.abstractions.TelegramUserTradeManagerByItemIdDatabaseService;
-import github.ricemonger.utils.dtos.TradeManagerByItemFilters;
-import github.ricemonger.utils.dtos.TradeManagerByItemId;
+import github.ricemonger.marketplace.services.abstractions.TelegramUserTradeByFiltersManagerDatabaseService;
+import github.ricemonger.marketplace.services.abstractions.TelegramUserTradeByItemIdManagerDatabaseService;
+import github.ricemonger.utils.dtos.TradeByFiltersManager;
+import github.ricemonger.utils.dtos.TradeByItemIdManager;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.TradeManagerByItemIdDoesntExistException;
 import lombok.RequiredArgsConstructor;
@@ -15,31 +15,31 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TelegramUserTradeManagerService {
 
-    private final TelegramUserTradeManagerByItemIdDatabaseService telegramUserTradeManagerByItemIdDatabaseService;
+    private final TelegramUserTradeByItemIdManagerDatabaseService telegramUserTradeByItemIdManagerDatabaseService;
 
-    private final TelegramUserTradeManagerByItemFilterDatabaseService telegramUserTradeManagerByItemFiltersDatabaseService;
+    private final TelegramUserTradeByFiltersManagerDatabaseService telegramUserTradeManagerByItemFiltersDatabaseService;
 
-    public void saveUserTradeManagerByItemId(String chatId, TradeManagerByItemId tradeManager) throws TelegramUserDoesntExistException {
-        telegramUserTradeManagerByItemIdDatabaseService.save(chatId, tradeManager);
+    public void saveUserTradeByItemIdManager(String chatId, TradeByItemIdManager tradeManager) throws TelegramUserDoesntExistException {
+        telegramUserTradeByItemIdManagerDatabaseService.save(chatId, tradeManager);
     }
 
-    public void saveUserTradeManagerByItemFilters(String chatId, TradeManagerByItemFilters tradeManager) throws TelegramUserDoesntExistException {
+    public void saveUserTradeByFiltersManager(String chatId, TradeByFiltersManager tradeManager) throws TelegramUserDoesntExistException {
         telegramUserTradeManagerByItemFiltersDatabaseService.save(chatId, tradeManager);
     }
 
-    public void deleteUserTradeManagerByItemIdById(String chatId, String itemId) throws TelegramUserDoesntExistException {
-        telegramUserTradeManagerByItemIdDatabaseService.deleteById(chatId, itemId);
+    public void deleteUserTradeByItemIdManagerById(String chatId, String itemId) throws TelegramUserDoesntExistException {
+        telegramUserTradeByItemIdManagerDatabaseService.deleteById(chatId, itemId);
     }
 
-    public TradeManagerByItemId getUserTradeManagerByItemIdById(String chatId, String itemId) throws TelegramUserDoesntExistException, TradeManagerByItemIdDoesntExistException {
-        return telegramUserTradeManagerByItemIdDatabaseService.findById(chatId, itemId);
+    public TradeByItemIdManager getUserTradeByItemIdManagerById(String chatId, String itemId) throws TelegramUserDoesntExistException, TradeManagerByItemIdDoesntExistException {
+        return telegramUserTradeByItemIdManagerDatabaseService.findById(chatId, itemId);
     }
 
-    public List<TradeManagerByItemId> getAllUserTradeManagersByItemId(String chatId) throws TelegramUserDoesntExistException {
-        return telegramUserTradeManagerByItemIdDatabaseService.findAllByChatId(chatId);
+    public List<TradeByItemIdManager> getAllUserTradeByItemIdManagers(String chatId) throws TelegramUserDoesntExistException {
+        return telegramUserTradeByItemIdManagerDatabaseService.findAllByChatId(chatId);
     }
 
-    public List<TradeManagerByItemFilters> getAllUserTradeManagersByItemFilters(String chatId) throws TelegramUserDoesntExistException {
+    public List<TradeByFiltersManager> getAllUserTradeByFiltersManagers(String chatId) throws TelegramUserDoesntExistException {
         return telegramUserTradeManagerByItemFiltersDatabaseService.findAllByChatId(chatId);
     }
 }

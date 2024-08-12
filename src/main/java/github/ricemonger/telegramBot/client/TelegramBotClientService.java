@@ -19,7 +19,16 @@ public class TelegramBotClientService {
 
     private final TelegramBotClient telegramBotClient;
 
-    public void askFromInlineKeyboard(UpdateInfo updateInfo, String text, int buttonsInLine, CallbackButton... buttons) {
+    public void sendText(UpdateInfo updateInfo, String message) throws TelegramApiRuntimeException {
+        sendText(String.valueOf(updateInfo.getChatId()), message);
+    }
+
+    public void sendText(String chatId, String message) throws TelegramApiRuntimeException {
+        SendMessage sendMessage = new SendMessage(String.valueOf(chatId), message);
+        executeMessageOnBot(sendMessage);
+    }
+
+    public void askFromInlineKeyboard(UpdateInfo updateInfo, String text, int buttonsInLine, CallbackButton... buttons) throws TelegramApiRuntimeException {
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboardMarkup(buttonsInLine, buttons);
 
         SendMessage sendMessage = new SendMessage(String.valueOf(updateInfo.getChatId()), text);
@@ -51,24 +60,11 @@ public class TelegramBotClientService {
         return new InlineKeyboardMarkup(inlineRowsList);
     }
 
-    public void sendText(UpdateInfo updateInfo, String message) {
-        sendText(String.valueOf(updateInfo.getChatId()), message);
-    }
-
-    public void sendText(String chatId, String message) {
-        SendMessage sendMessage = new SendMessage(String.valueOf(chatId), message);
-        executeMessageOnBot(sendMessage);
-    }
-
-    private void executeMessageOnBot(SendMessage sendMessage) {
+    private void executeMessageOnBot(SendMessage sendMessage) throws TelegramApiRuntimeException {
         try {
             telegramBotClient.execute(sendMessage);
         } catch (TelegramApiException e) {
             throw new TelegramApiRuntimeException(e);
         }
-    }
-
-    public void notifyUserAboutUbiAuthorizationFailure(String chatId, String email) {
-        sendText(chatId, String.format("Your Ubisoft account with email:%s could no be authorized. Please check for errors.", email));
     }
 }
