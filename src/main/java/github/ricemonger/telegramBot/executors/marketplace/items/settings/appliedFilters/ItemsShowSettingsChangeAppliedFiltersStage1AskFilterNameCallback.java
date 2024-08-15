@@ -16,8 +16,8 @@ public class ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallback ex
         processFirstInput(InputState.FILTER_NAME, InputGroup.ITEMS_SHOW_SETTING_APPLIED_FILTERS_CHANGE);
 
         List<String> appliedFilters =
-                botInnerService.getItemShowSettingsForUser(updateInfo.getChatId()).getItemShowAppliedFilters().stream().map(ItemFilter::getName).toList();
-        List<String> allFilters = new ArrayList<>(botInnerService.getAllFilterNamesForUser(updateInfo.getChatId()));
+                botInnerService.getUserItemShowSettings(updateInfo.getChatId()).getItemShowAppliedFilters().stream().map(ItemFilter::getName).toList();
+        List<String> allFilters = new ArrayList<>(botInnerService.getAllUserItemFiltersNames(updateInfo.getChatId()));
 
         CallbackButton[] buttons = new CallbackButton[allFilters.size()];
 

@@ -50,35 +50,6 @@ public class Item implements SoldItemDetails {
         }
     }
 
-    public String toString() {
-        String itemId = this.itemId;
-        String name = this.getName();
-        String maxBuyPrice = String.valueOf(this.getMaxBuyPrice());
-        String buyOrders = String.valueOf(this.getBuyOrdersCount());
-        String minSellPrice = String.valueOf(this.getMinSellPrice());
-        String sellOrders = String.valueOf(this.getSellOrdersCount());
-        String lastSoldAt;
-        if (this.getLastSoldAt() != null) {
-            lastSoldAt = this.getLastSoldAt().toString();
-        } else {
-            lastSoldAt = "null";
-        }
-        String lastSoldPrice = String.valueOf(this.getLastSoldPrice());
-        String pictureUrl = this.getAssetUrl();
-
-        String sb = "Id: " + itemId + "\n" +
-                    "Name: " + name + "\n" +
-                    "Min sell price: " + minSellPrice + "\n" +
-                    "Sell orders: " + sellOrders + "\n" +
-                    "Max buy price: " + maxBuyPrice + "\n" +
-                    "Buy orders: " + buyOrders + "\n" +
-                    "Last sold price: " + lastSoldPrice + "\n" +
-                    "Last sold at: " + lastSoldAt + "\n" +
-                    "Picture: " + pictureUrl + "\n";
-
-        return sb;
-    }
-
     public String toStringBySettings(ItemShownFieldsSettings shownFieldsSettings) {
         StringBuilder sb = new StringBuilder();
 

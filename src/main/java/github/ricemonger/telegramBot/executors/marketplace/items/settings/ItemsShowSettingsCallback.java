@@ -7,7 +7,7 @@ import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 public class ItemsShowSettingsCallback extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        String settings = botInnerService.getItemShowSettingsForUser(updateInfo.getChatId()).toString();
+        String settings = botInnerService.getUserItemShowSettings(updateInfo.getChatId()).toString();
 
         CallbackButton limit = new CallbackButton("Change Message Limit", Callbacks.ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT);
         CallbackButton itemsInMessage = new CallbackButton("Change Amount of items in Message",

@@ -14,14 +14,14 @@ import java.util.List;
 public class PersonalQueryOwnedItemsMapper {
 
     public List<String> mapOwnedItems(Collection<Node> nodes) throws GraphQlPersonalOwnedItemsMappingException {
-        if(nodes == null) {
+        if (nodes == null) {
             throw new GraphQlPersonalOwnedItemsMappingException("Nodes is null");
         }
 
         List<String> result = new ArrayList<>();
 
-        for(Node node: nodes){
-            if(node == null || node.getItem() == null || node.getItem().getItemId() == null){
+        for (Node node : nodes) {
+            if (node == null || node.getItem() == null || node.getItem().getItemId() == null) {
                 throw new GraphQlPersonalOwnedItemsMappingException("Node or item or itemId is null in nodes: " + nodes);
             }
             result.add(node.getItem().getItemId());

@@ -31,10 +31,10 @@ public class UserEntity {
     private List<ItemFilterEntity> itemFilters = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<TradeManagerByItemFiltersEntity> tradeManagersByItemFilters = new ArrayList<>();
+    private List<TradeByFiltersManagerEntity> tradeManagersByItemFilters = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<TradeManagerByItemIdEntity> tradeManagersByItemId = new ArrayList<>();
+    private List<TradeByItemIdManagerEntity> tradeManagersByItemId = new ArrayList<>();
 
     private Boolean publicNotificationsEnabledFlag = true;
 

@@ -4,7 +4,7 @@ import github.ricemonger.marketplace.services.ProfitAndPriorityCalculator;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.Item;
 import github.ricemonger.utils.dtos.TelegramUserInput;
-import github.ricemonger.utils.dtos.TradeManagerByItemId;
+import github.ricemonger.utils.dtos.TradeByItemIdManager;
 import github.ricemonger.utils.enums.TradeManagerTradeType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ public class TradeManagerFromInputsMapper {
 
     private final ProfitAndPriorityCalculator profitAndPriorityCalculator;
 
-    public TradeManagerByItemId mapToTradeManagerByItemId(String chatId, Collection<TelegramUserInput> inputs, TradeManagerTradeType tradeType, Item item) {
+    public TradeByItemIdManager mapToTradeManagerByItemId(String chatId, Collection<TelegramUserInput> inputs, TradeManagerTradeType tradeType, Item item) {
         String itemId = getValueByState(inputs, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID);
         String startingSellPrice = getValueByState(inputs, InputState.TRADES_EDIT_ONE_ITEM_STARTING_SELL_PRICE);
         String boundarySellPrice = getValueByState(inputs, InputState.TRADES_EDIT_ONE_ITEM_BOUNDARY_SELL_PRICE);
@@ -69,16 +69,16 @@ public class TradeManagerFromInputsMapper {
             prior = 1;
         }
 
-        TradeManagerByItemId tradeManagerByItemId = new TradeManagerByItemId();
-        tradeManagerByItemId.setTradeType(tradeType);
-        tradeManagerByItemId.setItemId(itemId);
-        tradeManagerByItemId.setSellStartingPrice(startSellPrice);
-        tradeManagerByItemId.setSellBoundaryPrice(boundSellPrice);
-        tradeManagerByItemId.setBuyStartingPrice(startBuyPrice);
-        tradeManagerByItemId.setBuyBoundaryPrice(boundBuyPrice);
-        tradeManagerByItemId.setPriority(prior);
+        TradeByItemIdManager tradeByItemIdManager = new TradeByItemIdManager();
+        tradeByItemIdManager.setTradeType(tradeType);
+        tradeByItemIdManager.setItemId(itemId);
+        tradeByItemIdManager.setSellStartingPrice(startSellPrice);
+        tradeByItemIdManager.setSellBoundaryPrice(boundSellPrice);
+        tradeByItemIdManager.setBuyStartingPrice(startBuyPrice);
+        tradeByItemIdManager.setBuyBoundaryPrice(boundBuyPrice);
+        tradeByItemIdManager.setPriority(prior);
 
-        return tradeManagerByItemId;
+        return tradeByItemIdManager;
     }
 
     private int tryToParsePrice(String value, int minPrice, int maxPrice) {

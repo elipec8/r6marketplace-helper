@@ -7,8 +7,8 @@ public class ItemsShowSettingsChangeMessageLimitFinishInput extends AbstractBotC
     protected void executeCommand() {
         processLastInput();
 
-        botInnerService.setItemShowSettingsMessageLimitByUserInput(updateInfo.getChatId());
+        botInnerService.setUserItemShowSettingsMessageLimitByUserInput(updateInfo.getChatId());
 
-        sendText("Message limit has been changed to " + botInnerService.getItemShowSettingsForUser(updateInfo.getChatId()).getItemShowMessagesLimit());
+        sendText("Message limit has been changed to " + botInnerService.getUserItemShowSettings(updateInfo.getChatId()).getItemShowMessagesLimit());
     }
 }

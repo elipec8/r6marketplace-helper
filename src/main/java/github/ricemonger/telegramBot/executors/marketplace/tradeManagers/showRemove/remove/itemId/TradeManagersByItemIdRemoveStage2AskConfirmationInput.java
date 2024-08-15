@@ -2,14 +2,14 @@ package github.ricemonger.telegramBot.executors.marketplace.tradeManagers.showRe
 
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
-import github.ricemonger.utils.dtos.TradeManagerByItemId;
+import github.ricemonger.utils.dtos.TradeByItemIdManager;
 
 public class TradeManagersByItemIdRemoveStage2AskConfirmationInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
         processLastInput();
 
-        TradeManagerByItemId toRemove = botInnerService.getTradeManagerByItemIdByUserInput(updateInfo.getChatId());
+        TradeByItemIdManager toRemove = botInnerService.getUserTradeByItemIdManagerByUserInputItemId(updateInfo.getChatId());
 
         askYesOrNoFromInlineKeyboard(
                 "Are you sure you want to remove chosen trade manager:\n" + toRemove,

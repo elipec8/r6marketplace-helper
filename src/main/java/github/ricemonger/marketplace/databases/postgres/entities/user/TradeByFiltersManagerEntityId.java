@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TradeManagerByItemFiltersEntityId {
+public class TradeByFiltersManagerEntityId {
     private UserEntity user;
     private String name;
 
@@ -19,12 +19,12 @@ public class TradeManagerByItemFiltersEntityId {
         if (o == this) {
             return true;
         }
-        if (!(o instanceof TradeManagerByItemFiltersEntityId tradeManagerByItemFiltersEntityId)) {
+        if (!(o instanceof TradeByFiltersManagerEntityId tradeByFiltersManagerEntityId)) {
             return false;
         }
-        if (this.hashCode() != tradeManagerByItemFiltersEntityId.hashCode()) {
+        if (this.hashCode() != tradeByFiltersManagerEntityId.hashCode()) {
             return false;
         }
-        return tradeManagerByItemFiltersEntityId.user.getId().equals(user.getId()) && tradeManagerByItemFiltersEntityId.name.equals(name);
+        return tradeByFiltersManagerEntityId.user.getId().equals(user.getId()) && tradeByFiltersManagerEntityId.name.equals(name);
     }
 }

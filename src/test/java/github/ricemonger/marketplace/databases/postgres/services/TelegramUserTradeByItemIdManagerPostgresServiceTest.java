@@ -1,12 +1,12 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.TradeManagerByItemIdEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByItemIdManagerEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TradeManagerByItemIdPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
-import github.ricemonger.utils.dtos.TradeManagerByItemId;
+import github.ricemonger.utils.dtos.TradeByItemIdManager;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.TradeManagerByItemIdDoesntExistException;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,12 +20,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-class TelegramUserTradeManagerByItemIdPostgresServiceTest {
+class TelegramUserTradeByItemIdManagerPostgresServiceTest {
     private final static String CHAT_ID = "1";
     private final static String ANOTHER_CHAT_ID = "2";
 
     @Autowired
-    private TelegramUserTradeManagerByItemIdPostgresService telegramUserTradeManagerByItemIdService;
+    private TelegramUserTradeByItemIdPostgresServiceManager telegramUserTradeManagerByItemIdService;
     @Autowired
     private TradeManagerByItemIdPostgresRepository tradeManagerByItemIdRepository;
     @Autowired
@@ -48,7 +48,7 @@ class TelegramUserTradeManagerByItemIdPostgresServiceTest {
 
     @Test
     public void save_should_create_new_trade_manager_if_doesnt_exist() {
-        TradeManagerByItemId tradeManager = new TradeManagerByItemId();
+        TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("1");
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
         tradeManager.setItemId("2");
@@ -64,7 +64,7 @@ class TelegramUserTradeManagerByItemIdPostgresServiceTest {
 
     @Test
     public void save_should_update_existing_trade_manager() {
-        TradeManagerByItemId tradeManager = new TradeManagerByItemId();
+        TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("1");
         tradeManager.setBuyStartingPrice(1);
         tradeManager.setBuyBoundaryPrice(2);
@@ -80,7 +80,7 @@ class TelegramUserTradeManagerByItemIdPostgresServiceTest {
         tradeManager.setPriority(10);
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
 
-        TradeManagerByItemIdEntity tradeManagerEntity = tradeManagerByItemIdRepository.findAll().get(0);
+        TradeByItemIdManagerEntity tradeManagerEntity = tradeManagerByItemIdRepository.findAll().get(0);
         assertEquals(6, tradeManagerEntity.getBuyStartingPrice());
         assertEquals(7, tradeManagerEntity.getBuyBoundaryPrice());
         assertEquals(8, tradeManagerEntity.getSellStartingPrice());
@@ -90,7 +90,7 @@ class TelegramUserTradeManagerByItemIdPostgresServiceTest {
 
     @Test
     public void save_should_throw_exception_if_telegram_user_doesnt_exist() {
-        TradeManagerByItemId tradeManager = new TradeManagerByItemId();
+        TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("1");
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserTradeManagerByItemIdService.save(ANOTHER_CHAT_ID, tradeManager));
@@ -98,7 +98,7 @@ class TelegramUserTradeManagerByItemIdPostgresServiceTest {
 
     @Test
     public void deleteById_should_remove_trade_manager() {
-        TradeManagerByItemId tradeManager = new TradeManagerByItemId();
+        TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("1");
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
         tradeManager.setItemId("2");
@@ -121,7 +121,7 @@ class TelegramUserTradeManagerByItemIdPostgresServiceTest {
 
     @Test
     public void findById_should_return_trade_manager() {
-        TradeManagerByItemId tradeManager = new TradeManagerByItemId();
+        TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("1");
         tradeManager.setBuyStartingPrice(1);
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
@@ -135,7 +135,7 @@ class TelegramUserTradeManagerByItemIdPostgresServiceTest {
         tradeManager.setBuyStartingPrice(1);
         telegramUserTradeManagerByItemIdService.save(ANOTHER_CHAT_ID, tradeManager);
 
-        TradeManagerByItemId foundTradeManager = telegramUserTradeManagerByItemIdService.findById(CHAT_ID, "1");
+        TradeByItemIdManager foundTradeManager = telegramUserTradeManagerByItemIdService.findById(CHAT_ID, "1");
 
         assertEquals(1, foundTradeManager.getBuyStartingPrice());
     }
@@ -152,7 +152,7 @@ class TelegramUserTradeManagerByItemIdPostgresServiceTest {
 
     @Test
     public void findAllByChatId_should_return_all_trade_managers_for_user() {
-        TradeManagerByItemId tradeManager = new TradeManagerByItemId();
+        TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("1");
         tradeManager.setBuyStartingPrice(1);
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
@@ -166,7 +166,7 @@ class TelegramUserTradeManagerByItemIdPostgresServiceTest {
         tradeManager.setBuyStartingPrice(1);
         telegramUserTradeManagerByItemIdService.save(ANOTHER_CHAT_ID, tradeManager);
 
-        Collection<TradeManagerByItemId> tradeManagers = telegramUserTradeManagerByItemIdService.findAllByChatId(CHAT_ID);
+        Collection<TradeByItemIdManager> tradeManagers = telegramUserTradeManagerByItemIdService.findAllByChatId(CHAT_ID);
 
         assertEquals(2, tradeManagers.size());
     }

@@ -38,7 +38,7 @@ class ConfigQueryMarketplaceMapperTest {
         expected.add(new Tag("value1", "displayName1", github.ricemonger.utils.enums.TagGroup.Season));
         expected.add(new Tag("value2", "displayName2", github.ricemonger.utils.enums.TagGroup.Season));
         expected.add(new Tag("value3", "displayName3", github.ricemonger.utils.enums.TagGroup.Rarity));
-        List<Tag> result = (List<Tag>) configQueryMarketplaceMapper.mapTags(marketplace);
+        List<Tag> result = configQueryMarketplaceMapper.mapTags(marketplace);
 
         assertTrue(expected.containsAll(result) && result.containsAll(expected));
     }
@@ -76,7 +76,7 @@ class ConfigQueryMarketplaceMapperTest {
         tagGroups.add(new TagGroup(List.of("value3"), "Rarity"));
 
         Marketplace marketplace = new Marketplace(tags, tagGroups, null);
-        
+
         assertThrows(GraphQlConfigMarketplaceMappingException.class, () -> {
             configQueryMarketplaceMapper.mapTags(marketplace);
         });
@@ -186,7 +186,7 @@ class ConfigQueryMarketplaceMapperTest {
     }
 
     @Test
-    public void checkItemTypes_should_throw_if_null_type(){
+    public void checkItemTypes_should_throw_if_null_type() {
         List<Type> types = new ArrayList<>();
         types.add(null);
 
@@ -194,12 +194,12 @@ class ConfigQueryMarketplaceMapperTest {
             configQueryMarketplaceMapper.checkItemTypes(new Marketplace(null, null, types));
         });
     }
-    
+
     @Test
-    public void checkItemTypes_should_throw_if_null_type_value(){
+    public void checkItemTypes_should_throw_if_null_type_value() {
         List<Type> types = new ArrayList<>();
         types.add(new Type(null));
-        
+
         assertThrows(GraphQlConfigMarketplaceMappingException.class, () -> {
             configQueryMarketplaceMapper.checkItemTypes(new Marketplace(null, null, types));
         });

@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TradeManagerByItemFilters {
+public class TradeByFiltersManager {
     private String name;
 
     private TradeManagerTradeType tradeType;

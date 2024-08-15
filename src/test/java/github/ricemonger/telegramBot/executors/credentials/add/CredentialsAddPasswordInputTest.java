@@ -22,11 +22,11 @@ class CredentialsAddPasswordInputTest {
         CredentialsAddPasswordInput credentialsAddPasswordInput = new CredentialsAddPasswordInput();
         credentialsAddPasswordInput.initAndExecute(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT, botInnerService);
 
-        verify(botInnerService).addCredentialsFromUserInputs(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT.getChatId());
+        verify(botInnerService).addUserUbiAccountEntryByUserInput(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT.getChatId());
 
-        verify(botInnerService).saveUserInputOrThrow(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT);
-        verify(botInnerService).setUserNextInputState(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT.getChatId(), InputState.BASE);
-        verify(botInnerService).setUserNextInputGroup(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT.getChatId(), InputGroup.BASE);
+        verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT);
+        verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT.getChatId(), InputState.BASE);
+        verify(botInnerService).setUserInputGroup(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT.getChatId(), InputGroup.BASE);
     }
 
 }

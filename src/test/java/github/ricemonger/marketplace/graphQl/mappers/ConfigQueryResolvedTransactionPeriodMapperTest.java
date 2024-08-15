@@ -9,7 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class ConfigQueryResolvedTransactionPeriodMapperTest {
@@ -17,7 +18,7 @@ class ConfigQueryResolvedTransactionPeriodMapperTest {
     private ConfigQueryResolvedTransactionPeriodMapper configQueryResolvedTransactionPeriodMapper;
 
     @Test
-    public void mapResolvedTransactionPeriod_should_map_with_valid_fields(){
+    public void mapResolvedTransactionPeriod_should_map_with_valid_fields() {
         TradesLimitations tradesLimitations = new TradesLimitations();
         Buy buy = new Buy();
         buy.setResolvedTransactionPeriodInMinutes(10);
@@ -33,14 +34,14 @@ class ConfigQueryResolvedTransactionPeriodMapperTest {
     }
 
     @Test
-    public void mapResolvedTransactionPeriod_should_throw_exception_with_null_tradesLimitations(){
+    public void mapResolvedTransactionPeriod_should_throw_exception_with_null_tradesLimitations() {
         assertThrows(GraphQlConfigResolvedTransactionPeriodMappingException.class, () -> {
             configQueryResolvedTransactionPeriodMapper.mapConfigResolvedTransactionPeriod(null);
         });
     }
 
     @Test
-    public void mapResolvedTransactionPeriod_should_throw_exception_with_null_buy(){
+    public void mapResolvedTransactionPeriod_should_throw_exception_with_null_buy() {
         TradesLimitations tradesLimitations = new TradesLimitations();
         Buy buy = null;
         tradesLimitations.setBuy(buy);
@@ -54,7 +55,7 @@ class ConfigQueryResolvedTransactionPeriodMapperTest {
     }
 
     @Test
-    public void mapResolvedTransactionPeriod_should_throw_exception_with_null_buy_buyResolvedTransactionPeriod(){
+    public void mapResolvedTransactionPeriod_should_throw_exception_with_null_buy_buyResolvedTransactionPeriod() {
         TradesLimitations tradesLimitations = new TradesLimitations();
         Buy buy = new Buy();
         buy.setResolvedTransactionPeriodInMinutes(null);
@@ -69,7 +70,7 @@ class ConfigQueryResolvedTransactionPeriodMapperTest {
     }
 
     @Test
-    public void mapResolvedTransactionPeriod_should_throw_exception_with_null_sell(){
+    public void mapResolvedTransactionPeriod_should_throw_exception_with_null_sell() {
         TradesLimitations tradesLimitations = new TradesLimitations();
         Buy buy = new Buy();
         buy.setResolvedTransactionPeriodInMinutes(10);
@@ -83,7 +84,7 @@ class ConfigQueryResolvedTransactionPeriodMapperTest {
     }
 
     @Test
-    public void mapResolvedTransactionPeriod_should_throw_exception_with_null_sell_sellResolvedTransactionPeriod(){
+    public void mapResolvedTransactionPeriod_should_throw_exception_with_null_sell_sellResolvedTransactionPeriod() {
         TradesLimitations tradesLimitations = new TradesLimitations();
         Buy buy = new Buy();
         buy.setResolvedTransactionPeriodInMinutes(10);

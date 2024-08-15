@@ -8,6 +8,6 @@ public class ItemsShowStage2FinishInput extends AbstractBotCommandExecutor {
     protected void executeCommand() {
         processLastInput();
 
-        botInnerService.showItemsByUserSettingsAndInputtedOffset(updateInfo.getChatId());
+        botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(updateInfo.getChatId());
     }
 }

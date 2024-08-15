@@ -2,16 +2,16 @@ package github.ricemonger.telegramBot.executors.marketplace.tradeManagers.showRe
 
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
-import github.ricemonger.utils.dtos.TradeManagerByItemId;
+import github.ricemonger.utils.dtos.TradeByItemIdManager;
 
 import java.util.Collection;
 
 public class TradeManagersByItemIdShowAllCallback extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        Collection<TradeManagerByItemId> tradeManagers = botInnerService.getTradeManagersByItemId(updateInfo.getChatId());
+        Collection<TradeByItemIdManager> tradeManagers = botInnerService.getAllUserTradeByItemIdManagers(updateInfo.getChatId());
 
-        botInnerService.sendMultipleObjectsFewInMessage(tradeManagers, 8, updateInfo.getChatId());
+        botInnerService.sendMultipleObjectStringsGroupedInMessages(tradeManagers, 8, updateInfo.getChatId());
 
         askYesOrNoFromInlineKeyboard(
                 "Do you want to remove any of these trade managers?",

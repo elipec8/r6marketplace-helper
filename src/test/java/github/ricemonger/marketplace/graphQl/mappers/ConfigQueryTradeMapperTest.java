@@ -18,7 +18,7 @@ class ConfigQueryTradeMapperTest {
     private ConfigQueryTradeMapper configQueryTradeMapper;
 
     @Test
-    public void mapConfigTrades_should_map_with_valid_fields(){
+    public void mapConfigTrades_should_map_with_valid_fields() {
         TradesConfig tradesConfig = createTradesConfig();
 
         ConfigTrades result = configQueryTradeMapper.mapConfigTrades(tradesConfig);
@@ -44,14 +44,14 @@ class ConfigQueryTradeMapperTest {
     }
 
     @Test
-    public void mapConfigTrades_should_throw_exception_when_tradesConfig_is_null(){
+    public void mapConfigTrades_should_throw_exception_when_tradesConfig_is_null() {
         assertThrows(GraphQlConfigTradeMappingException.class, () -> {
             configQueryTradeMapper.mapConfigTrades(null);
         });
     }
 
     @Test
-    public void mapConfigTrades_should_throw_exception_when_tradesConfig_fields_are_null(){
+    public void mapConfigTrades_should_throw_exception_when_tradesConfig_fields_are_null() {
         TradesConfig tradesConfig = new TradesConfig();
         assertThrows(GraphQlConfigTradeMappingException.class, () -> {
             configQueryTradeMapper.mapConfigTrades(tradesConfig);
@@ -59,7 +59,7 @@ class ConfigQueryTradeMapperTest {
     }
 
     @Test
-    public void mapConfigTrades_should_throw_exception_when_transactionFeesConfig_is_empty(){
+    public void mapConfigTrades_should_throw_exception_when_transactionFeesConfig_is_empty() {
         TradesConfig tradesConfig = createTradesConfig();
         tradesConfig.setTransactionFeesConfig(new TransactionFeesConfig[0]);
         assertThrows(GraphQlConfigTradeMappingException.class, () -> {
@@ -68,7 +68,7 @@ class ConfigQueryTradeMapperTest {
     }
 
     @Test
-    public void mapConfigTrades_should_throw_exception_when_transactionFeesConfig_is_null(){
+    public void mapConfigTrades_should_throw_exception_when_transactionFeesConfig_is_null() {
         TradesConfig tradesConfig = createTradesConfig();
         tradesConfig.setTransactionFeesConfig(null);
         assertThrows(GraphQlConfigTradeMappingException.class, () -> {
@@ -77,7 +77,7 @@ class ConfigQueryTradeMapperTest {
     }
 
     @Test
-    public void mapConfigTrades_should_throw_exception_when_transactionFeesConfig_paymentItemId_is_null(){
+    public void mapConfigTrades_should_throw_exception_when_transactionFeesConfig_paymentItemId_is_null() {
         TradesConfig tradesConfig = createTradesConfig();
         tradesConfig.getTransactionFeesConfig()[0].setPaymentItemId(null);
         assertThrows(GraphQlConfigTradeMappingException.class, () -> {
@@ -86,7 +86,7 @@ class ConfigQueryTradeMapperTest {
     }
 
     @Test
-    public void mapConfigTrades_should_throw_exception_when_transactionFeesConfig_feePercentage_is_null(){
+    public void mapConfigTrades_should_throw_exception_when_transactionFeesConfig_feePercentage_is_null() {
         TradesConfig tradesConfig = createTradesConfig();
         tradesConfig.getTransactionFeesConfig()[0].setFeePercentage(null);
         assertThrows(GraphQlConfigTradeMappingException.class, () -> {
@@ -95,7 +95,7 @@ class ConfigQueryTradeMapperTest {
     }
 
     @Test
-    public void mapConfigTrades_should_throw_exception_when_sellLimit_is_null(){
+    public void mapConfigTrades_should_throw_exception_when_sellLimit_is_null() {
         TradesConfig tradesConfig = createTradesConfig();
         tradesConfig.setSellLimit(null);
         assertThrows(GraphQlConfigTradeMappingException.class, () -> {
@@ -104,7 +104,7 @@ class ConfigQueryTradeMapperTest {
     }
 
     @Test
-    public void mapConfigTrades_should_throw_exception_when_sellLimit_maximum_count_is_null(){
+    public void mapConfigTrades_should_throw_exception_when_sellLimit_maximum_count_is_null() {
         TradesConfig tradesConfig = createTradesConfig();
         tradesConfig.getSellLimit().setMaximumCount(null);
         assertThrows(GraphQlConfigTradeMappingException.class, () -> {
@@ -113,7 +113,7 @@ class ConfigQueryTradeMapperTest {
     }
 
     @Test
-    public void mapConfigTrades_should_throw_exception_when_buyLimit_is_null(){
+    public void mapConfigTrades_should_throw_exception_when_buyLimit_is_null() {
         TradesConfig tradesConfig = createTradesConfig();
         tradesConfig.setBuyLimit(null);
         assertThrows(GraphQlConfigTradeMappingException.class, () -> {
@@ -122,7 +122,7 @@ class ConfigQueryTradeMapperTest {
     }
 
     @Test
-    public void mapConfigTrades_should_throw_exception_when_buyLimit_maximum_count_is_null(){
+    public void mapConfigTrades_should_throw_exception_when_buyLimit_maximum_count_is_null() {
         TradesConfig tradesConfig = createTradesConfig();
         tradesConfig.getBuyLimit().setMaximumCount(null);
         assertThrows(GraphQlConfigTradeMappingException.class, () -> {
@@ -131,7 +131,7 @@ class ConfigQueryTradeMapperTest {
     }
 
     @Test
-    public void mapConfigTrades_should_throw_exception_when_gameOwnershipRule_is_null(){
+    public void mapConfigTrades_should_throw_exception_when_gameOwnershipRule_is_null() {
         TradesConfig tradesConfig = createTradesConfig();
         tradesConfig.setGameOwnershipRule(null);
         assertThrows(GraphQlConfigTradeMappingException.class, () -> {
@@ -140,7 +140,7 @@ class ConfigQueryTradeMapperTest {
     }
 
     @Test
-    public void mapConfigTrades_should_throw_exception_when_twoFactorAuthenticationRule_is_null(){
+    public void mapConfigTrades_should_throw_exception_when_twoFactorAuthenticationRule_is_null() {
         TradesConfig tradesConfig = createTradesConfig();
         tradesConfig.setTwoFactorAuthenticationRule(null);
         assertThrows(GraphQlConfigTradeMappingException.class, () -> {
@@ -149,7 +149,7 @@ class ConfigQueryTradeMapperTest {
     }
 
     @Test
-    public void mapConfigTrades_should_throw_exception_when_resaleLockDurationInMinutes_is_null(){
+    public void mapConfigTrades_should_throw_exception_when_resaleLockDurationInMinutes_is_null() {
         TradesConfig tradesConfig = createTradesConfig();
         tradesConfig.setResaleLockDurationInMinutes(null);
         assertThrows(GraphQlConfigTradeMappingException.class, () -> {
@@ -158,7 +158,7 @@ class ConfigQueryTradeMapperTest {
     }
 
     @Test
-    public void mapConfigTrades_should_throw_exception_when_sellSlots_is_null(){
+    public void mapConfigTrades_should_throw_exception_when_sellSlots_is_null() {
         TradesConfig tradesConfig = createTradesConfig();
         tradesConfig.setSellSlots(null);
         assertThrows(GraphQlConfigTradeMappingException.class, () -> {
@@ -167,7 +167,7 @@ class ConfigQueryTradeMapperTest {
     }
 
     @Test
-    public void mapConfigTrades_should_throw_exception_when_buySlots_is_null(){
+    public void mapConfigTrades_should_throw_exception_when_buySlots_is_null() {
         TradesConfig tradesConfig = createTradesConfig();
         tradesConfig.setBuySlots(null);
         assertThrows(GraphQlConfigTradeMappingException.class, () -> {
@@ -176,7 +176,7 @@ class ConfigQueryTradeMapperTest {
     }
 
     @Test
-    public void mapConfigTrades_should_throw_exception_when_saleExpiresAfterMinutes_is_null(){
+    public void mapConfigTrades_should_throw_exception_when_saleExpiresAfterMinutes_is_null() {
         TradesConfig tradesConfig = createTradesConfig();
         tradesConfig.setSaleExpiresAfterMinutes(null);
         assertThrows(GraphQlConfigTradeMappingException.class, () -> {
@@ -184,7 +184,7 @@ class ConfigQueryTradeMapperTest {
         });
     }
 
-    private TradesConfig createTradesConfig(){
+    private TradesConfig createTradesConfig() {
         TradesConfig tradesConfig = new TradesConfig();
         tradesConfig.setSaleExpiresAfterMinutes(1);
         tradesConfig.setBuySlots(2);

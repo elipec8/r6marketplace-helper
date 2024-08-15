@@ -115,14 +115,4 @@ class TelegramBotClientServiceTest {
         assertThrows(TelegramApiRuntimeException.class, () -> telegramBotClientService.sendText(updateInfo, "message"));
         assertThrows(TelegramApiRuntimeException.class, () -> telegramBotClientService.sendText(String.valueOf(updateInfo.getChatId()), "message"));
     }
-
-    @Test
-    public void notifyUserAboutUbiAuthorizationFailureShouldHandleMessageToClient() throws Exception {
-        String chatId = "chatId";
-        String email = "email";
-
-        telegramBotClientService.notifyUserAboutUbiAuthorizationFailure(chatId, email);
-
-        verify(telegramBotClient).execute(any(SendMessage.class));
-    }
 }

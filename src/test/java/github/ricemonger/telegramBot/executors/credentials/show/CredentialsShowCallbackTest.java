@@ -22,11 +22,11 @@ class CredentialsShowCallbackTest {
     @Test
     public void initAndExecuteShouldSendListOfCredentials() {
         CredentialsShowCallback credentialsShowCallback = new CredentialsShowCallback();
-        when(botInnerService.getUserCredentialsEmail(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(List.of("email1", "email2"));
+       // when(botInnerService.getUserUbiAccountEntryEmail(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(List.of("email1", "email2"));
 
         credentialsShowCallback.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService).getUserCredentialsEmail(MockUpdateInfos.UPDATE_INFO.getChatId());
+        verify(botInnerService).getUserUbiAccountEntryEmail(MockUpdateInfos.UPDATE_INFO.getChatId());
         verify(botInnerService).sendText(eq(MockUpdateInfos.UPDATE_INFO), contains("email1"));
         verify(botInnerService).sendText(eq(MockUpdateInfos.UPDATE_INFO), contains("email2"));
     }

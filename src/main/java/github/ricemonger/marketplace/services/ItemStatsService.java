@@ -145,9 +145,9 @@ public class ItemStatsService {
         return itemDatabaseService.findById(itemId);
     }
 
-    public Collection<Item> getAllItemsByFilters(Collection<ItemFilter> filters) {
+    public List<Item> getAllItemsByFilters(Collection<ItemFilter> filters) {
         List<Item> items = itemDatabaseService.findAll();
 
-        return ItemFilter.filterItems(items, filters);
+        return new ArrayList<>(ItemFilter.filterItems(items, filters));
     }
 }

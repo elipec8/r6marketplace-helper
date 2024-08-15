@@ -6,7 +6,7 @@ import github.ricemonger.utils.enums.TradeManagerTradeType;
 public class TradesOneItemBuyAndSellEditStage8FinishCallback extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        botInnerService.savePlannedOneItemTradeByUserInput(updateInfo.getChatId(), TradeManagerTradeType.BUY_AND_SELL);
+        botInnerService.saveUserTradeByItemIdManagerByUserInput(updateInfo.getChatId(), TradeManagerTradeType.BUY_AND_SELL);
 
         sendText("Trade saved successfully.");
     }

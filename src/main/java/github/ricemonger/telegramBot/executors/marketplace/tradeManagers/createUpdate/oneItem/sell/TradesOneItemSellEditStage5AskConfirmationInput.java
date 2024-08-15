@@ -10,7 +10,7 @@ public class TradesOneItemSellEditStage5AskConfirmationInput extends AbstractBot
         processLastInput();
 
         askYesOrNoFromInlineKeyboard(
-                "Do you want to confirm and save the trade?\n" + botInnerService.getPlannedOneItemTradeByUserInput(updateInfo.getChatId(), TradeManagerTradeType.SELL),
+                "Do you want to confirm and save the trade?\n" + botInnerService.generateTradeByItemIdManagerByUserInput(updateInfo.getChatId(), TradeManagerTradeType.SELL),
                 Callbacks.TRADES_EDIT_ONE_ITEM_SELL_FINISH,
                 Callbacks.CANCEL);
     }

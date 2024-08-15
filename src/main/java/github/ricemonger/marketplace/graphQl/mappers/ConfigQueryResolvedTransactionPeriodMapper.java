@@ -14,7 +14,7 @@ public class ConfigQueryResolvedTransactionPeriodMapper {
 
     public ConfigResolvedTransactionPeriod mapConfigResolvedTransactionPeriod(TradesLimitations tradesLimitations) throws GraphQlConfigResolvedTransactionPeriodMappingException {
 
-        if(tradesLimitations == null){
+        if (tradesLimitations == null) {
             throw new GraphQlConfigResolvedTransactionPeriodMappingException("Trades limitations is null");
         }
 
