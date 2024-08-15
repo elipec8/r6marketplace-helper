@@ -25,7 +25,7 @@ class TradeManagerFromInputsMapperTest {
     private ProfitAndPriorityCalculator profitAndPriorityCalculator;
 
     @Test
-    public void mapToTradeManagerByItemId_should_map_inputs_to_manager_with_valid_inputs(){
+    public void mapToTradeManagerByItemId_should_map_inputs_to_manager_with_valid_inputs() {
         String chatId = "chatId";
         List<TelegramUserInput> inputs = new ArrayList<>();
         inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID, "itemId"));
@@ -54,7 +54,7 @@ class TradeManagerFromInputsMapperTest {
     }
 
     @Test
-    public void mapToTradeManagerByItemId_should_map_inputs_to_manager_with_invalid_inputs(){
+    public void mapToTradeManagerByItemId_should_map_inputs_to_manager_with_invalid_inputs() {
         String chatId = "chatId";
         List<TelegramUserInput> inputs = new ArrayList<>();
         inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID, ""));
@@ -83,11 +83,11 @@ class TradeManagerFromInputsMapperTest {
 
         TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeManagerByItemId(inputs, TradeManagerTradeType.SELL, item);
 
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 
     @Test
-    public void mapToTradeManagerByItemId_should_map_inputs_to_manager_with_wrong_conjunctions_of_prices(){
+    public void mapToTradeManagerByItemId_should_map_inputs_to_manager_with_wrong_conjunctions_of_prices() {
         String chatId = "chatId";
         List<TelegramUserInput> inputs = new ArrayList<>();
         inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID, "itemId"));
@@ -116,11 +116,11 @@ class TradeManagerFromInputsMapperTest {
 
         TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeManagerByItemId(inputs, TradeManagerTradeType.BUY_AND_SELL, item);
 
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 
     @Test
-    public void mapToTradeManagerByItemId_should_map_inputs_to_manager_with_out_of_limit_low_prices(){
+    public void mapToTradeManagerByItemId_should_map_inputs_to_manager_with_out_of_limit_low_prices() {
         String chatId = "chatId";
         List<TelegramUserInput> inputs = new ArrayList<>();
         inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID, "itemId"));
@@ -149,11 +149,11 @@ class TradeManagerFromInputsMapperTest {
 
         TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeManagerByItemId(inputs, TradeManagerTradeType.BUY_AND_SELL, item);
 
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 
     @Test
-    public void mapToTradeManagerByItemId_should_map_inputs_to_manager_with_out_of_limit_high_prices(){
+    public void mapToTradeManagerByItemId_should_map_inputs_to_manager_with_out_of_limit_high_prices() {
         String chatId = "chatId";
         List<TelegramUserInput> inputs = new ArrayList<>();
         inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID, "itemId"));
@@ -182,6 +182,6 @@ class TradeManagerFromInputsMapperTest {
 
         TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeManagerByItemId(inputs, TradeManagerTradeType.BUY_AND_SELL, item);
 
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 }

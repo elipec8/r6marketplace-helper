@@ -97,8 +97,7 @@ public class ItemFilterFromInputsMapper {
         int price;
         try {
             price = Integer.parseInt(value);
-        }
-        catch (NumberFormatException | NullPointerException e) {
+        } catch (NumberFormatException | NullPointerException e) {
             return invalidCasePrice;
         }
 

@@ -4,6 +4,8 @@ import github.ricemonger.marketplace.services.TelegramUserService;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.UpdateInfo;
+import github.ricemonger.utils.dtos.TelegramUser;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -12,43 +14,119 @@ import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 @SpringBootTest
 public class UpdateInfoMapperTest {
-
-    public static final Update UPDATE = new Update();
-    public static final UpdateInfo UPDATE_INFO_CREDENTIALS_INPUTS;
-    public static final UpdateInfo UPDATE_INFO_BASE_INPUTS;
-
-    static {
-        Message message = new Message();
-        message.setChat(new Chat(1L, "private"));
-        message.setText("text");
-
-        CallbackQuery callbackQuery = new CallbackQuery();
-        callbackQuery.setData("data");
-        callbackQuery.setMessage(message);
-
-        UPDATE.setUpdateId(1);
-        UPDATE.setMessage(message);
-        UPDATE.setCallbackQuery(callbackQuery);
-
-        UpdateInfo.UpdateInfoBuilder builder =
-                UpdateInfo.builder().
-                        updateId(1).
-                        chatId(1L).
-                        hasMessage(true).
-                        messageText("text").
-                        hasCallBackQuery(true).
-                        callbackQueryData("data");
-
-        UPDATE_INFO_CREDENTIALS_INPUTS = builder.inputState(InputState.CREDENTIALS_PASSWORD).inputGroup(InputGroup.CREDENTIALS_ADD).build();
-
-        UPDATE_INFO_BASE_INPUTS = builder.inputState(InputState.BASE).inputGroup(InputGroup.BASE).build();
-    }
-
-    @MockBean
-    private TelegramUserService telegramUserService;
     @Autowired
     private UpdateInfoMapper updateInfoMapper;
+    @MockBean
+    private TelegramUserService telegramUserService;
 
+    @Test
+    public void mapToUpdateInfo_should_map_update_to_updateInfo_if_has_message_not_registered() {
+        Message message = new Message();
+        message.setChat(new Chat(1L, "private"));
+        message.setText("message_text");
+        Update update = new Update();
+        update.setMessage(message);
+        update.setUpdateId(88);
+
+        when(telegramUserService.isTelegramUserRegistered(1L)).thenReturn(false);
+
+        UpdateInfo expected = new UpdateInfo();
+        expected.setUpdateId(88);
+        expected.setChatId(1L);
+        expected.setHasMessage(true);
+        expected.setMessageText("message_text");
+        expected.setInputState(InputState.BASE);
+        expected.setInputGroup(InputGroup.BASE);
+        expected.setHasCallBackQuery(false);
+        expected.setCallbackQueryData(null);
+
+        UpdateInfo actual = updateInfoMapper.mapToUpdateInfo(update);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void mapToUpdateInfo_should_map_update_to_updateInfo_if_has_callback_registered_no_input_state_and_group() {
+        Message message = new Message();
+        message.setChat(new Chat(1L, "private"));
+        message.setText("message_text");
+
+        CallbackQuery callbackQuery = new CallbackQuery();
+        callbackQuery.setData("callback_data");
+        callbackQuery.setMessage(message);
+
+        Update update = new Update();
+        update.setCallbackQuery(callbackQuery);
+        update.setUpdateId(88);
+
+        TelegramUser telegramUser = new TelegramUser();
+        telegramUser.setChatId("1");
+        telegramUser.setInputState(null);
+        telegramUser.setInputGroup(null);
+
+        when(telegramUserService.isTelegramUserRegistered(1L)).thenReturn(true);
+        when(telegramUserService.getTelegramUser(1L)).thenReturn(telegramUser);
+
+        UpdateInfo expected = new UpdateInfo();
+        expected.setUpdateId(88);
+        expected.setChatId(1L);
+        expected.setHasMessage(false);
+        expected.setMessageText(null);
+        expected.setInputState(InputState.BASE);
+        expected.setInputGroup(InputGroup.BASE);
+        expected.setHasCallBackQuery(true);
+        expected.setCallbackQueryData("callback_data");
+
+        UpdateInfo actual = updateInfoMapper.mapToUpdateInfo(update);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void mapToUpdateInfo_should_map_update_to_updateInfo_if_has_callback_and_message_registered() {
+        Message message = new Message();
+        message.setChat(new Chat(1L, "private"));
+        message.setText("message_text");
+
+        Message callbackMessage = new Message();
+        callbackMessage.setChat(new Chat(2L, "private"));
+        message.setText("callback_message_text");
+
+        CallbackQuery callbackQuery = new CallbackQuery();
+        callbackQuery.setData("callback_data");
+        callbackQuery.setMessage(callbackMessage);
+
+        Update update = new Update();
+        update.setCallbackQuery(callbackQuery);
+        update.setMessage(message);
+        update.setUpdateId(88);
+
+        TelegramUser telegramUser = new TelegramUser();
+        telegramUser.setChatId("1");
+        telegramUser.setInputState(InputState.ITEMS_SHOW_OFFSET);
+        telegramUser.setInputGroup(InputGroup.CREDENTIALS_ADD);
+
+        when(telegramUserService.isTelegramUserRegistered(any())).thenReturn(true);
+        when(telegramUserService.getTelegramUser(any())).thenReturn(telegramUser);
+
+        UpdateInfo expected = new UpdateInfo();
+        expected.setUpdateId(88);
+        expected.setChatId(2L);
+        expected.setHasMessage(true);
+        expected.setMessageText("callback_message_text");
+        expected.setInputState(InputState.ITEMS_SHOW_OFFSET);
+        expected.setInputGroup(InputGroup.CREDENTIALS_ADD);
+        expected.setHasCallBackQuery(true);
+        expected.setCallbackQueryData("callback_data");
+
+        UpdateInfo actual = updateInfoMapper.mapToUpdateInfo(update);
+
+        assertEquals(expected, actual);
+    }
 }

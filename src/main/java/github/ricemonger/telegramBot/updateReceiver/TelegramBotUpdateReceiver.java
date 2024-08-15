@@ -18,7 +18,7 @@ public class TelegramBotUpdateReceiver implements LongPollingSingleThreadUpdateC
 
     @Override
     public void consume(Update update) {
-        UpdateInfo updateInfo = updateInfoMapper.map(update);
+        UpdateInfo updateInfo = updateInfoMapper.mapToUpdateInfo(update);
 
         updatesToListenersDistributor.distribute(updateInfo);
     }

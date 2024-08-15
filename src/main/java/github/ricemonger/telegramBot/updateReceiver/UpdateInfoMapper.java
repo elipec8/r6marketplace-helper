@@ -15,7 +15,7 @@ public class UpdateInfoMapper {
 
     private final TelegramUserService telegramUserService;
 
-    public UpdateInfo map(Update update) {
+    public UpdateInfo mapToUpdateInfo(Update update) {
         UpdateInfo updateInfo = new UpdateInfo();
 
         updateInfo.setUpdateId(update.getUpdateId());
