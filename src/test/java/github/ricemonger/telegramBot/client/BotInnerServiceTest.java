@@ -932,7 +932,7 @@ public class BotInnerServiceTest {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("item_id");
 
-        when(tradeManagerFromInputsMapper.mapToTradeManagerByItemId(any(), any(), eq(TradeManagerTradeType.SELL), any())).thenReturn(tradeManager);
+        when(tradeManagerFromInputsMapper.mapToTradeManagerByItemId(any(), eq(TradeManagerTradeType.SELL), any())).thenReturn(tradeManager);
 
         botInnerService.saveUserTradeByItemIdManagerByUserInput(1L, TradeManagerTradeType.SELL);
 
@@ -947,7 +947,7 @@ public class BotInnerServiceTest {
 
     @Test
     public void saveUserTradeByItemIdManagerByUserInput_should_throw_if_mapper_throws_during_mapping() {
-        doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeManagerByItemId(any(), any(), eq(TradeManagerTradeType.SELL), any());
+        doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeManagerByItemId(any(), eq(TradeManagerTradeType.SELL), any());
         assertThrows(RuntimeException.class, () -> botInnerService.saveUserTradeByItemIdManagerByUserInput(1L, TradeManagerTradeType.SELL));
     }
 
@@ -956,7 +956,7 @@ public class BotInnerServiceTest {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("item_id");
 
-        when(tradeManagerFromInputsMapper.mapToTradeManagerByItemId(any(), any(), eq(TradeManagerTradeType.SELL), any())).thenReturn(tradeManager);
+        when(tradeManagerFromInputsMapper.mapToTradeManagerByItemId(any(), eq(TradeManagerTradeType.SELL), any())).thenReturn(tradeManager);
 
         doThrow(new RuntimeException()).when(telegramUserTradeManagerService).saveUserTradeByItemIdManager(any(), any());
         assertThrows(RuntimeException.class, () -> botInnerService.saveUserTradeByItemIdManagerByUserInput(1L, TradeManagerTradeType.SELL));
@@ -967,7 +967,7 @@ public class BotInnerServiceTest {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("item_id");
 
-        when(tradeManagerFromInputsMapper.mapToTradeManagerByItemId(any(), any(), any(), any())).thenReturn(tradeManager);
+        when(tradeManagerFromInputsMapper.mapToTradeManagerByItemId(any(), any(), any())).thenReturn(tradeManager);
 
         assertEquals(tradeManager, botInnerService.generateTradeByItemIdManagerByUserInput(1L, TradeManagerTradeType.SELL));
     }
@@ -980,7 +980,7 @@ public class BotInnerServiceTest {
 
     @Test
     public void generateTradeByItemIdManagerByUserInput_ItemId_should_throw_if_mapper_throws_during_mapping() {
-        doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeManagerByItemId(any(), any(), any(), any());
+        doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeManagerByItemId(any(), any(), any());
         assertThrows(RuntimeException.class, () -> botInnerService.generateTradeByItemIdManagerByUserInput(1L, TradeManagerTradeType.SELL));
     }
 

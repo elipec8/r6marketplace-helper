@@ -274,7 +274,6 @@ public class BotInnerService {
         Collection<TelegramUserInput> inputs = telegramUserService.getAllUserInputs(chatId);
 
         return tradeManagerFromInputsMapper.mapToTradeManagerByItemId(
-                String.valueOf(chatId),
                 inputs,
                 tradeType,
                 getItemByUserInputTradeByItemIdManagerEdit(chatId));

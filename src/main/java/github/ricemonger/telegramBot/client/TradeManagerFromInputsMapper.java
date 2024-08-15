@@ -17,7 +17,7 @@ public class TradeManagerFromInputsMapper {
 
     private final ProfitAndPriorityCalculator profitAndPriorityCalculator;
 
-    public TradeByItemIdManager mapToTradeManagerByItemId(String chatId, Collection<TelegramUserInput> inputs, TradeManagerTradeType tradeType, Item item) {
+    public TradeByItemIdManager mapToTradeManagerByItemId(Collection<TelegramUserInput> inputs, TradeManagerTradeType tradeType, Item item) {
         String itemId = getValueByState(inputs, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID);
         String startingSellPrice = getValueByState(inputs, InputState.TRADES_EDIT_ONE_ITEM_STARTING_SELL_PRICE);
         String boundarySellPrice = getValueByState(inputs, InputState.TRADES_EDIT_ONE_ITEM_BOUNDARY_SELL_PRICE);
@@ -25,44 +25,16 @@ public class TradeManagerFromInputsMapper {
         String boundaryBuyPrice = getValueByState(inputs, InputState.TRADES_EDIT_ONE_ITEM_BOUNDARY_BUY_PRICE);
         String priority = getValueByState(inputs, InputState.TRADES_EDIT_ONE_ITEM_PRIORITY);
 
-        int startSellPrice;
-        int boundSellPrice;
-        int startBuyPrice;
-        int boundBuyPrice;
-        int prior;
-
         int limitMinPrice = item.getLimitMinPrice();
         int limitMaxPrice = item.getLimitMaxPrice();
+        int minSellPrice = item.getMinSellPrice() <= limitMinPrice ? limitMinPrice : item.getMinSellPrice() - 1;
 
-        try {
-            boundSellPrice = tryToParsePrice(boundarySellPrice, limitMinPrice, limitMaxPrice);
-        } catch (NumberFormatException | NullPointerException e) {
-            int minSellPrice = item.getMinSellPrice();
-            boundSellPrice = minSellPrice == item.getLimitMinPrice() ? item.getLimitMinPrice() : minSellPrice - 1;
-        }
-        try {
-            startSellPrice = tryToParsePrice(startingSellPrice, limitMinPrice, limitMaxPrice);
-            if (startSellPrice < boundSellPrice) {
-                startSellPrice = boundSellPrice;
-            }
-        } catch (NumberFormatException | NullPointerException e) {
-            startSellPrice = boundSellPrice;
-        }
+        int boundSellPrice = parsePrice(boundarySellPrice, limitMinPrice, limitMaxPrice, minSellPrice);
+        int startSellPrice = parsePrice(startingSellPrice, boundSellPrice, limitMaxPrice, boundSellPrice);
+        int boundBuyPrice = parsePrice(boundaryBuyPrice, limitMinPrice, limitMaxPrice, profitAndPriorityCalculator.calculateNextBuyPrice(item));
+        int startBuyPrice = parsePrice(startingBuyPrice, limitMinPrice, boundBuyPrice, boundBuyPrice);
 
-        try {
-            boundBuyPrice = tryToParsePrice(boundaryBuyPrice, limitMinPrice, limitMaxPrice);
-        } catch (NumberFormatException | NullPointerException e) {
-            boundBuyPrice = profitAndPriorityCalculator.calculateNextBuyPrice(item);
-        }
-        try {
-            startBuyPrice = tryToParsePrice(startingBuyPrice, limitMinPrice, limitMaxPrice);
-            if (startBuyPrice > boundBuyPrice) {
-                startBuyPrice = boundBuyPrice;
-            }
-        } catch (NumberFormatException | NullPointerException e) {
-            startBuyPrice = boundBuyPrice;
-        }
-
+        int prior;
         try {
             prior = Integer.parseInt(priority);
         } catch (NumberFormatException | NullPointerException e) {
@@ -81,8 +53,13 @@ public class TradeManagerFromInputsMapper {
         return tradeByItemIdManager;
     }
 
-    private int tryToParsePrice(String value, int minPrice, int maxPrice) {
-        int price = Integer.parseInt(value);
+    private int parsePrice(String value, int minPrice, int maxPrice, int invalidCasePrice) {
+        int price;
+        try {
+            price = Integer.parseInt(value);
+        } catch (NumberFormatException | NullPointerException e) {
+            return invalidCasePrice;
+        }
 
         if (price < minPrice) {
             price = minPrice;

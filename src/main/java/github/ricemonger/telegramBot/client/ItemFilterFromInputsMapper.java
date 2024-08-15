@@ -85,67 +85,33 @@ public class ItemFilterFromInputsMapper {
         itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(esportsTagsString)));
         itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(otherTagsString)));
 
-        try {
-            int price = Integer.parseInt(minPriceString);
-
-            if (price > commonValuesService.getMaximumMarketplacePrice()) {
-                itemFilter.setMinPrice(commonValuesService.getMaximumMarketplacePrice());
-            } else if (price < commonValuesService.getMinimumMarketplacePrice()) {
-                itemFilter.setMinPrice(commonValuesService.getMinimumMarketplacePrice());
-            } else {
-                itemFilter.setMinPrice(price);
-            }
-
-        } catch (NumberFormatException e) {
-            itemFilter.setMinPrice(commonValuesService.getMinimumMarketplacePrice());
-        }
-
-        try {
-            int price = Integer.parseInt(maxPriceString);
-
-            if (price > commonValuesService.getMaximumMarketplacePrice()) {
-                itemFilter.setMaxPrice(commonValuesService.getMaximumMarketplacePrice());
-            } else if (price < commonValuesService.getMinimumMarketplacePrice()) {
-                itemFilter.setMaxPrice(commonValuesService.getMinimumMarketplacePrice());
-            } else {
-                itemFilter.setMaxPrice(price);
-            }
-
-        } catch (NumberFormatException e) {
-            itemFilter.setMaxPrice(commonValuesService.getMaximumMarketplacePrice());
-        }
-
-        try {
-            int price = Integer.parseInt(minLastSoldPriceString);
-
-            if (price > commonValuesService.getMaximumMarketplacePrice()) {
-                itemFilter.setMinLastSoldPrice(commonValuesService.getMaximumMarketplacePrice());
-            } else if (price < commonValuesService.getMinimumMarketplacePrice()) {
-                itemFilter.setMinLastSoldPrice(commonValuesService.getMinimumMarketplacePrice());
-            } else {
-                itemFilter.setMinLastSoldPrice(price);
-            }
-
-        } catch (NumberFormatException e) {
-            itemFilter.setMinLastSoldPrice(commonValuesService.getMinimumMarketplacePrice());
-        }
-
-        try {
-            int price = Integer.parseInt(maxLastSoldPriceString);
-
-            if (price > commonValuesService.getMaximumMarketplacePrice()) {
-                itemFilter.setMaxLastSoldPrice(commonValuesService.getMaximumMarketplacePrice());
-            } else if (price < commonValuesService.getMinimumMarketplacePrice()) {
-                itemFilter.setMaxLastSoldPrice(commonValuesService.getMinimumMarketplacePrice());
-            } else {
-                itemFilter.setMaxLastSoldPrice(price);
-            }
-
-        } catch (NumberFormatException e) {
-            itemFilter.setMaxLastSoldPrice(commonValuesService.getMaximumMarketplacePrice());
-        }
+        itemFilter.setMinPrice(parsePrice(minPriceString, commonValuesService.getMinimumMarketplacePrice()));
+        itemFilter.setMaxPrice(parsePrice(maxPriceString, commonValuesService.getMaximumMarketplacePrice()));
+        itemFilter.setMinLastSoldPrice(parsePrice(minLastSoldPriceString, commonValuesService.getMinimumMarketplacePrice()));
+        itemFilter.setMaxLastSoldPrice(parsePrice(maxLastSoldPriceString, commonValuesService.getMaximumMarketplacePrice()));
 
         return itemFilter;
+    }
+
+    private int parsePrice(String value, int invalidCasePrice) {
+        int price;
+        try {
+            price = Integer.parseInt(value);
+        }
+        catch (NumberFormatException | NullPointerException e) {
+            return invalidCasePrice;
+        }
+
+        int minPrice = commonValuesService.getMinimumMarketplacePrice();
+        int maxPrice = commonValuesService.getMaximumMarketplacePrice();
+
+        if (price < minPrice) {
+            price = minPrice;
+        } else if (price > maxPrice) {
+            price = maxPrice;
+        }
+
+        return price;
     }
 
     private String getValueByState(Collection<TelegramUserInput> inputs, InputState inputState) {
