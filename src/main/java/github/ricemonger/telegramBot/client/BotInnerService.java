@@ -248,17 +248,17 @@ public class BotInnerService {
         telegramUserService.setItemShowMessagesLimit(chatId, limit);
     }
 
-    public void setUserItemShownFieldsSettingByUserInput(Long chatId) {
+    public void setUserItemShownFieldsSettingByUserInput(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         telegramUserService.setItemShownFieldsSettingsByUserInput(chatId, Callbacks.INPUT_CALLBACK_TRUE, Callbacks.INPUT_CALLBACK_FALSE);
     }
 
-    public void updateUserItemShowAppliedFiltersSettingsByUserInput(Long chatId) {
+    public void updateUserItemShowAppliedFiltersSettingsByUserInput(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException, MissingCallbackPrefixInUserInputException {
         String filterName = getUserInputValueWithoutCallbackPrefix(chatId, InputState.FILTER_NAME);
         boolean addOrRemove = Callbacks.INPUT_CALLBACK_TRUE.equals(getUserInputByState(chatId, InputState.ITEMS_SHOW_SETTINGS_APPLIED_FILTER_ADD_OR_REMOVE));
 
         List<String> appliedFilters = telegramUserService.getItemShowSettings(chatId).getItemShowAppliedFilters().stream().map(ItemFilter::getName).toList();
 
-        if (addOrRemove && appliedFilters.contains(filterName)) {
+        if (!addOrRemove && appliedFilters.contains(filterName)) {
             telegramUserService.removeItemShowAppliedFilter(chatId, filterName);
         } else if (addOrRemove && !appliedFilters.contains(filterName)) {
             ItemFilter filter = telegramUserItemFilterService.getItemFilterById(String.valueOf(chatId), filterName);
@@ -266,11 +266,11 @@ public class BotInnerService {
         }
     }
 
-    public void saveUserTradeByItemIdManagerByUserInput(Long chatId, TradeManagerTradeType tradeType) {
-        telegramUserTradeManagerService.saveUserTradeByItemIdManager(String.valueOf(chatId), getUserTradeByItemIdManagerByUserInput(chatId, tradeType));
+    public void saveUserTradeByItemIdManagerByUserInput(Long chatId, TradeManagerTradeType tradeType) throws TelegramUserDoesntExistException {
+        telegramUserTradeManagerService.saveUserTradeByItemIdManager(String.valueOf(chatId), generateTradeByItemIdManagerByUserInput(chatId, tradeType));
     }
 
-    public TradeByItemIdManager getUserTradeByItemIdManagerByUserInput(Long chatId, TradeManagerTradeType tradeType) {
+    public TradeByItemIdManager generateTradeByItemIdManagerByUserInput(Long chatId, TradeManagerTradeType tradeType) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         Collection<TelegramUserInput> inputs = telegramUserService.getAllUserInputs(chatId);
 
         return tradeManagerFromInputsMapper.mapToTradeManagerByItemId(
@@ -280,24 +280,23 @@ public class BotInnerService {
                 getItemByUserInputTradeByItemIdManagerEdit(chatId));
     }
 
-    public Item getItemByUserInputTradeByItemIdManagerEdit(Long chatId) {
+    public Item getItemByUserInputTradeByItemIdManagerEdit(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         return itemStatsService.getItemById(getUserInputByState(chatId, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID));
     }
 
-    public void removeUserTradeByItemIdManagerByUserInput(Long chatId) {
+    public void removeUserTradeByItemIdManagerByUserInput(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         telegramUserTradeManagerService.deleteUserTradeByItemIdManagerById(String.valueOf(chatId), getUserInputByState(chatId, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID));
     }
 
-    public TradeByItemIdManager getUserTradeByItemIdManagerByUserInput(Long chatId) {
-        return telegramUserTradeManagerService.getUserTradeByItemIdManagerById(String.valueOf(chatId), getUserInputByState(chatId,
-                InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID));
+    public TradeByItemIdManager getUserTradeByItemIdManagerByUserInputItemId(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException, TradeManagerByItemIdDoesntExistException {
+        return telegramUserTradeManagerService.getUserTradeByItemIdManagerById(String.valueOf(chatId), getUserInputByState(chatId, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID));
     }
 
-    public List<TradeByItemIdManager> getAllUserTradeByItemIdManagers(Long chatId) {
+    public List<TradeByItemIdManager> getAllUserTradeByItemIdManagers(Long chatId) throws TelegramUserDoesntExistException {
         return telegramUserTradeManagerService.getAllUserTradeByItemIdManagers(String.valueOf(chatId));
     }
 
-    public List<TradeByFiltersManager> getAllUserTradeByFiltersManagers(Long chatId) {
+    public List<TradeByFiltersManager> getAllUserTradeByFiltersManagers(Long chatId) throws TelegramUserDoesntExistException {
         return telegramUserTradeManagerService.getAllUserTradeByFiltersManagers(String.valueOf(chatId));
     }
 
@@ -312,8 +311,7 @@ public class BotInnerService {
         String callback = telegramUserService.getUserInputByState(chatId, inputState);
         try {
             return callback.substring(Callbacks.INPUT_CALLBACK_PREFIX.length());
-        }
-        catch (StringIndexOutOfBoundsException e) {
+        } catch (StringIndexOutOfBoundsException e) {
             throw new MissingCallbackPrefixInUserInputException("Callback prefix is missing in user input: " + callback);
         }
     }

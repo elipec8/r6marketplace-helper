@@ -9,7 +9,7 @@ public class TradeManagersByItemIdRemoveStage2AskConfirmationInput extends Abstr
     protected void executeCommand() {
         processLastInput();
 
-        TradeByItemIdManager toRemove = botInnerService.getUserTradeByItemIdManagerByUserInput(updateInfo.getChatId());
+        TradeByItemIdManager toRemove = botInnerService.getUserTradeByItemIdManagerByUserInputItemId(updateInfo.getChatId());
 
         askYesOrNoFromInlineKeyboard(
                 "Are you sure you want to remove chosen trade manager:\n" + toRemove,

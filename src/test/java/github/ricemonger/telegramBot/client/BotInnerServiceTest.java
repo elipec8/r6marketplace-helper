@@ -8,6 +8,7 @@ import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.utils.dtos.*;
 import github.ricemonger.utils.enums.TagGroup;
+import github.ricemonger.utils.enums.TradeManagerTradeType;
 import github.ricemonger.utils.exceptions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -608,33 +609,18 @@ public class BotInnerServiceTest {
     }
 
     @Test
-    public void getUserItemFilterByUserInputCallbackFilterName_should_throw_if_user_doesnt_exist_during_input_find() {
-        doThrow(new TelegramUserDoesntExistException("")).when(telegramUserService).getUserInputByState(1L, InputState.FILTER_NAME);
+    public void getUserItemFilterByUserInputCallbackFilterName_should_throw_if_service_throws_during_input_find() {
+        doThrow(new RuntimeException()).when(telegramUserService).getUserInputByState(1L, InputState.FILTER_NAME);
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> botInnerService.getUserItemFilterByUserInputCallbackFilterName(1L));
+        assertThrows(RuntimeException.class, () -> botInnerService.getUserItemFilterByUserInputCallbackFilterName(1L));
     }
 
     @Test
-    public void getUserItemFilterByUserInputCallbackFilterName_should_throw_if_user_input_doesnt_exist() {
-        doThrow(new TelegramUserInputDoesntExistException("")).when(telegramUserService).getUserInputByState(1L, InputState.FILTER_NAME);
-
-        assertThrows(TelegramUserInputDoesntExistException.class, () -> botInnerService.getUserItemFilterByUserInputCallbackFilterName(1L));
-    }
-
-    @Test
-    public void getUserItemFilterByUserInputCallbackFilterName_should_throw_if_user_doesnt_exist_during_filter_find() {
+    public void getUserItemFilterByUserInputCallbackFilterName_should_throw_if_service_throws_during_filter_find() {
         when(telegramUserService.getUserInputByState(1L, InputState.FILTER_NAME)).thenReturn(Callbacks.INPUT_CALLBACK_PREFIX + "filter_name");
-        doThrow(new TelegramUserDoesntExistException("")).when(telegramUserItemFilterService).getItemFilterById(any(), any());
+        doThrow(new RuntimeException()).when(telegramUserItemFilterService).getItemFilterById(any(), any());
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> botInnerService.getUserItemFilterByUserInputCallbackFilterName(1L));
-    }
-
-    @Test
-    public void getUserItemFilterByUserInputCallbackFilterName_should_throw_if_filter_doesnt_exist() {
-        when(telegramUserService.getUserInputByState(1L, InputState.FILTER_NAME)).thenReturn(Callbacks.INPUT_CALLBACK_PREFIX + "filter_name");
-        doThrow(new ItemFilterDoesntExistException()).when(telegramUserItemFilterService).getItemFilterById(any(), any());
-
-        assertThrows(ItemFilterDoesntExistException.class, () -> botInnerService.getUserItemFilterByUserInputCallbackFilterName(1L));
+        assertThrows(RuntimeException.class, () -> botInnerService.getUserItemFilterByUserInputCallbackFilterName(1L));
     }
 
     @Test
@@ -654,18 +640,18 @@ public class BotInnerServiceTest {
     }
 
     @Test
-    public void removeUserItemFilterByUserInputCallbackFilterName_should_throw_if_user_doesnt_exist_during_input_find() {
-        doThrow(new TelegramUserDoesntExistException("")).when(telegramUserService).getUserInputByState(1L, InputState.FILTER_NAME);
+    public void removeUserItemFilterByUserInputCallbackFilterName_should_throw_if_service_throws_during_input_find() {
+        doThrow(new RuntimeException()).when(telegramUserService).getUserInputByState(1L, InputState.FILTER_NAME);
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> botInnerService.removeUserItemFilterByUserInputCallbackFilterName(1L));
+        assertThrows(RuntimeException.class, () -> botInnerService.removeUserItemFilterByUserInputCallbackFilterName(1L));
     }
 
     @Test
-    public void removeUserItemFilterByUserInputCallbackFilterName_should_throw_if_user_doesnt_exist_during_remove() {
+    public void removeUserItemFilterByUserInputCallbackFilterName_should_throw_if_service_throws_during_remove() {
         when(telegramUserService.getUserInputByState(1L, InputState.FILTER_NAME)).thenReturn(Callbacks.INPUT_CALLBACK_PREFIX + "filter_name");
-        doThrow(new TelegramUserInputDoesntExistException("")).when(telegramUserItemFilterService).deleteItemFilterById(any(), any());
+        doThrow(new RuntimeException()).when(telegramUserItemFilterService).deleteItemFilterById(any(), any());
 
-        assertThrows(TelegramUserInputDoesntExistException.class, () -> botInnerService.removeUserItemFilterByUserInputCallbackFilterName(1L));
+        assertThrows(RuntimeException.class, () -> botInnerService.removeUserItemFilterByUserInputCallbackFilterName(1L));
     }
 
     @Test
@@ -675,4 +661,447 @@ public class BotInnerServiceTest {
         assertThrows(MissingCallbackPrefixInUserInputException.class, () -> botInnerService.removeUserItemFilterByUserInputCallbackFilterName(1L));
     }
 
+    @Test
+    public void getUserItemShowSettings_should_return_service_result() {
+        ItemShowSettings settings = new ItemShowSettings();
+        settings.setItemShowMessagesLimit(5);
+        when(telegramUserService.getItemShowSettings(1L)).thenReturn(settings);
+        assertEquals(settings, botInnerService.getUserItemShowSettings(1L));
+    }
+
+    @Test
+    public void getUserItemShowSettings_should_throw_if_service_throws() {
+        when(telegramUserService.getItemShowSettings(1L)).thenThrow(new RuntimeException());
+        assertThrows(RuntimeException.class, () -> botInnerService.getUserItemShowSettings(1L));
+    }
+
+    @Test
+    public void setUserItemShowSettingsFewItemsInMessageFlag_should_handle_to_service() {
+        long chatId = 1L;
+        botInnerService.setUserItemShowSettingsFewItemsInMessageFlag(chatId, true);
+        verify(telegramUserService).setItemShowFewItemsInMessageFlag(chatId, true);
+
+        reset(telegramUserService);
+
+        botInnerService.setUserItemShowSettingsFewItemsInMessageFlag(chatId, false);
+        verify(telegramUserService).setItemShowFewItemsInMessageFlag(chatId, false);
+    }
+
+    @Test
+    public void setUserItemShowSettingsFewItemsInMessageFlag_should_throw_if_service_throws() {
+        long chatId = 1L;
+        doThrow(new RuntimeException()).when(telegramUserService).setItemShowFewItemsInMessageFlag(chatId, true);
+        assertThrows(RuntimeException.class, () -> botInnerService.setUserItemShowSettingsFewItemsInMessageFlag(chatId, true));
+    }
+
+    @Test
+    public void setUserItemShowSettingsMessageLimitByUserInput_should_handle_to_service() {
+        int maximumMessageLimit = 10;
+        when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT)).thenReturn("5");
+        when(commonValuesService.getMaximumTelegramMessageLimit()).thenReturn(maximumMessageLimit);
+
+        botInnerService.setUserItemShowSettingsMessageLimitByUserInput(1L);
+        verify(telegramUserService).setItemShowMessagesLimit(1L, 5);
+
+        reset(telegramUserService);
+
+        when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT)).thenReturn("-100");
+        botInnerService.setUserItemShowSettingsMessageLimitByUserInput(1L);
+        verify(telegramUserService).setItemShowMessagesLimit(1L, 1);
+
+        reset(telegramUserService);
+
+        when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT)).thenReturn("invalid");
+        botInnerService.setUserItemShowSettingsMessageLimitByUserInput(1L);
+        verify(telegramUserService).setItemShowMessagesLimit(1L, maximumMessageLimit);
+
+        reset(telegramUserService);
+
+        when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT)).thenReturn("100");
+        botInnerService.setUserItemShowSettingsMessageLimitByUserInput(1L);
+        verify(telegramUserService).setItemShowMessagesLimit(1L, maximumMessageLimit);
+
+        reset(telegramUserService);
+
+        doThrow(new TelegramUserInputDoesntExistException("")).when(telegramUserService).getUserInputByState(1L, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT);
+        botInnerService.setUserItemShowSettingsMessageLimitByUserInput(1L);
+        verify(telegramUserService).setItemShowMessagesLimit(1L, maximumMessageLimit);
+    }
+
+    @Test
+    public void setUserItemShowSettingsMessageLimitByUserInput_should_throw_if_service_throws_during_get_input() {
+        long chatId = 1L;
+        doThrow(new RuntimeException()).when(telegramUserService).getUserInputByState(any(), any());
+        assertThrows(RuntimeException.class, () -> botInnerService.setUserItemShowSettingsMessageLimitByUserInput(chatId));
+    }
+
+    @Test
+    public void setUserItemShowSettingsMessageLimitByUserInput_should_throw_if_service_throws_during_set_limit() {
+        long chatId = 1L;
+        doThrow(new RuntimeException()).when(telegramUserService).setItemShowMessagesLimit(any(), any());
+        assertThrows(RuntimeException.class, () -> botInnerService.setUserItemShowSettingsMessageLimitByUserInput(chatId));
+    }
+
+    @Test
+    public void setUserItemShownFieldsSettingByUserInput_should_handle_to_service() {
+        botInnerService.setUserItemShownFieldsSettingByUserInput(1L);
+
+        verify(telegramUserService).setItemShownFieldsSettingsByUserInput(1L, Callbacks.INPUT_CALLBACK_TRUE, Callbacks.INPUT_CALLBACK_FALSE);
+    }
+
+    @Test
+    public void setUserItemShownFieldsSettingByUserInput_should_throw_if_user_doesnt_exist() {
+        doThrow(new TelegramUserDoesntExistException("")).when(telegramUserService).setItemShownFieldsSettingsByUserInput(1L, Callbacks.INPUT_CALLBACK_TRUE, Callbacks.INPUT_CALLBACK_FALSE);
+        assertThrows(TelegramUserDoesntExistException.class, () -> botInnerService.setUserItemShownFieldsSettingByUserInput(1L));
+    }
+
+    @Test
+    public void setUserItemShownFieldsSettingByUserInput_should_throw_if_input_doesnt_exist() {
+        doThrow(new TelegramUserInputDoesntExistException("")).when(telegramUserService).setItemShownFieldsSettingsByUserInput(
+                1L,
+                Callbacks.INPUT_CALLBACK_TRUE,
+                Callbacks.INPUT_CALLBACK_FALSE);
+        assertThrows(TelegramUserInputDoesntExistException.class, () -> botInnerService.setUserItemShownFieldsSettingByUserInput(1L));
+    }
+
+    @Test
+    public void updateUserItemShowAppliedFiltersSettingsByUserInput_should_add_applied_filter_if_true_value_and_filter_is_not_added_yet() {
+        String filterName = "filter_name";
+        when(telegramUserService.getUserInputByState(1L, InputState.FILTER_NAME)).thenReturn(Callbacks.INPUT_CALLBACK_PREFIX + filterName);
+
+        ItemFilter filter = new ItemFilter();
+        filter.setName(filterName);
+        filter.setMaxPrice(10);
+        when(telegramUserItemFilterService.getItemFilterById("1", filterName)).thenReturn(filter);
+
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        itemShowSettings.setItemShowAppliedFilters(new ArrayList<>());
+        when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
+
+        when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_SETTINGS_APPLIED_FILTER_ADD_OR_REMOVE)).thenReturn(Callbacks.INPUT_CALLBACK_TRUE);
+
+        botInnerService.updateUserItemShowAppliedFiltersSettingsByUserInput(1L);
+
+        verify(telegramUserService).addItemShowAppliedFilter(1L, filter);
+        verify(telegramUserService, times(0)).removeItemShowAppliedFilter(any(), any());
+    }
+
+    @Test
+    public void updateUserItemShowAppliedFiltersSettingsByUserInput_should_NOT_add_applied_filter_if_true_value_but_filter_is_already_added() {
+        String filterName = "filter_name";
+        when(telegramUserService.getUserInputByState(1L, InputState.FILTER_NAME)).thenReturn(Callbacks.INPUT_CALLBACK_PREFIX + filterName);
+
+        ItemFilter filter = new ItemFilter();
+        filter.setName(filterName);
+        filter.setMaxPrice(10);
+        when(telegramUserItemFilterService.getItemFilterById("1", filterName)).thenReturn(filter);
+
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        List<ItemFilter> appliedFilters = new ArrayList<>();
+        appliedFilters.add(filter);
+        itemShowSettings.setItemShowAppliedFilters(appliedFilters);
+        when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
+
+        when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_SETTINGS_APPLIED_FILTER_ADD_OR_REMOVE)).thenReturn(Callbacks.INPUT_CALLBACK_TRUE);
+
+        botInnerService.updateUserItemShowAppliedFiltersSettingsByUserInput(1L);
+
+        verify(telegramUserService, times(0)).addItemShowAppliedFilter(any(), any());
+        verify(telegramUserService, times(0)).removeItemShowAppliedFilter(any(), any());
+    }
+
+    @Test
+    public void updateUserItemShowAppliedFiltersSettingsByUserInput_should_remove_applied_filter_if_false_value_but_filter_is_already_added() {
+        String filterName = "filter_name";
+        when(telegramUserService.getUserInputByState(1L, InputState.FILTER_NAME)).thenReturn(Callbacks.INPUT_CALLBACK_PREFIX + filterName);
+
+        ItemFilter filter = new ItemFilter();
+        filter.setName(filterName);
+        filter.setMaxPrice(10);
+        when(telegramUserItemFilterService.getItemFilterById("1", filterName)).thenReturn(filter);
+
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        List<ItemFilter> appliedFilters = new ArrayList<>();
+        appliedFilters.add(filter);
+        itemShowSettings.setItemShowAppliedFilters(appliedFilters);
+        when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
+
+        when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_SETTINGS_APPLIED_FILTER_ADD_OR_REMOVE)).thenReturn("any_other");
+
+        botInnerService.updateUserItemShowAppliedFiltersSettingsByUserInput(1L);
+
+        verify(telegramUserService, times(0)).addItemShowAppliedFilter(any(), any());
+        verify(telegramUserService).removeItemShowAppliedFilter(1L, filterName);
+    }
+
+    @Test
+    public void updateUserItemShowAppliedFiltersSettingsByUserInput_should_NOT_remove_applied_filter_if_false_value_but_filter_is_not_added_yet() {
+        String filterName = "filter_name";
+        when(telegramUserService.getUserInputByState(1L, InputState.FILTER_NAME)).thenReturn(Callbacks.INPUT_CALLBACK_PREFIX + filterName);
+
+        ItemFilter filter = new ItemFilter();
+        filter.setName(filterName);
+        filter.setMaxPrice(10);
+        when(telegramUserItemFilterService.getItemFilterById("1", filterName)).thenReturn(filter);
+
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        itemShowSettings.setItemShowAppliedFilters(new ArrayList<>());
+        when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
+
+        when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_SETTINGS_APPLIED_FILTER_ADD_OR_REMOVE)).thenReturn("any_value");
+
+        botInnerService.updateUserItemShowAppliedFiltersSettingsByUserInput(1L);
+
+        verify(telegramUserService, times(0)).addItemShowAppliedFilter(any(), any());
+        verify(telegramUserService, times(0)).removeItemShowAppliedFilter(any(), any());
+    }
+
+    @Test
+    public void updateUserItemShowAppliedFiltersSettingsByUserInput_should_throw_if_service_throws_during_add_filter() {
+        String filterName = "filter_name";
+        when(telegramUserService.getUserInputByState(1L, InputState.FILTER_NAME)).thenReturn(Callbacks.INPUT_CALLBACK_PREFIX + filterName);
+
+        ItemFilter filter = new ItemFilter();
+        filter.setName(filterName);
+        filter.setMaxPrice(10);
+        when(telegramUserItemFilterService.getItemFilterById("1", filterName)).thenReturn(filter);
+
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        itemShowSettings.setItemShowAppliedFilters(new ArrayList<>());
+        when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
+
+        when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_SETTINGS_APPLIED_FILTER_ADD_OR_REMOVE)).thenReturn(Callbacks.INPUT_CALLBACK_TRUE);
+
+        doThrow(new RuntimeException()).when(telegramUserService).addItemShowAppliedFilter(any(), any());
+
+        assertThrows(RuntimeException.class, () -> botInnerService.updateUserItemShowAppliedFiltersSettingsByUserInput(1L));
+    }
+
+    @Test
+    public void updateUserItemShowAppliedFiltersSettingsByUserInput_should_throw_if_service_throws_during_remove_filter() {
+        String filterName = "filter_name";
+        when(telegramUserService.getUserInputByState(1L, InputState.FILTER_NAME)).thenReturn(Callbacks.INPUT_CALLBACK_PREFIX + filterName);
+
+        ItemFilter filter = new ItemFilter();
+        filter.setName(filterName);
+        filter.setMaxPrice(10);
+        when(telegramUserItemFilterService.getItemFilterById("1", filterName)).thenReturn(filter);
+
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        List<ItemFilter> appliedFilters = new ArrayList<>();
+        appliedFilters.add(filter);
+        itemShowSettings.setItemShowAppliedFilters(appliedFilters);
+        when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
+
+        when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_SETTINGS_APPLIED_FILTER_ADD_OR_REMOVE)).thenReturn("any_other");
+
+        doThrow(new RuntimeException()).when(telegramUserService).removeItemShowAppliedFilter(any(), any());
+
+        assertThrows(RuntimeException.class, () -> botInnerService.updateUserItemShowAppliedFiltersSettingsByUserInput(1L));
+    }
+
+    @Test
+    public void updateUserItemShowAppliedFiltersSettingsByUserInput_should_throw_if_service_throws_during_input_name_find() {
+        doThrow(new RuntimeException()).when(telegramUserService).getUserInputByState(1L, InputState.FILTER_NAME);
+        assertThrows(RuntimeException.class, () -> botInnerService.updateUserItemShowAppliedFiltersSettingsByUserInput(1L));
+    }
+
+    @Test
+    public void updateUserItemShowAppliedFiltersSettingsByUserInput_should_throw_if_service_throws_during_input_add_or_remove_find() {
+        when(telegramUserService.getUserInputByState(1L, InputState.FILTER_NAME)).thenReturn(Callbacks.INPUT_CALLBACK_PREFIX + "filter_name");
+        doThrow(new RuntimeException()).when(telegramUserService).getUserInputByState(1L, InputState.ITEMS_SHOW_SETTINGS_APPLIED_FILTER_ADD_OR_REMOVE);
+        assertThrows(RuntimeException.class, () -> botInnerService.updateUserItemShowAppliedFiltersSettingsByUserInput(1L));
+    }
+
+
+    @Test
+    public void updateUserItemShowAppliedFiltersSettingsByUserInput_should_throw_if_service_throws_during_filter_find() {
+        when(telegramUserService.getUserInputByState(1L, InputState.FILTER_NAME)).thenReturn(Callbacks.INPUT_CALLBACK_PREFIX + "filter_name");
+        doThrow(new RuntimeException()).when(telegramUserItemFilterService).getItemFilterById("1", "filter_name");
+        assertThrows(RuntimeException.class, () -> botInnerService.updateUserItemShowAppliedFiltersSettingsByUserInput(1L));
+    }
+
+    @Test
+    public void updateUserItemShowAppliedFiltersSettingsByUserInput_should_throw_if_missing_callback_prefix() {
+        when(telegramUserService.getUserInputByState(1L, InputState.FILTER_NAME)).thenReturn("filter_name");
+        assertThrows(MissingCallbackPrefixInUserInputException.class, () -> botInnerService.updateUserItemShowAppliedFiltersSettingsByUserInput(1L));
+    }
+
+    @Test
+    public void saveUserTradeByItemIdManagerByUserInput_should_handle_to_service() {
+        TradeByItemIdManager tradeManager = new TradeByItemIdManager();
+        tradeManager.setItemId("item_id");
+
+        when(tradeManagerFromInputsMapper.mapToTradeManagerByItemId(any(), any(), eq(TradeManagerTradeType.SELL), any())).thenReturn(tradeManager);
+
+        botInnerService.saveUserTradeByItemIdManagerByUserInput(1L, TradeManagerTradeType.SELL);
+
+        verify(telegramUserTradeManagerService).saveUserTradeByItemIdManager("1", tradeManager);
+    }
+
+    @Test
+    public void saveUserTradeByItemIdManagerByUserInput_should_throw_if_service_throws_during_inputs_find() {
+        doThrow(new RuntimeException()).when(telegramUserService).getAllUserInputs(1L);
+        assertThrows(RuntimeException.class, () -> botInnerService.saveUserTradeByItemIdManagerByUserInput(1L, TradeManagerTradeType.SELL));
+    }
+
+    @Test
+    public void saveUserTradeByItemIdManagerByUserInput_should_throw_if_mapper_throws_during_mapping() {
+        doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeManagerByItemId(any(), any(), eq(TradeManagerTradeType.SELL), any());
+        assertThrows(RuntimeException.class, () -> botInnerService.saveUserTradeByItemIdManagerByUserInput(1L, TradeManagerTradeType.SELL));
+    }
+
+    @Test
+    public void saveUserTradeByItemIdManagerByUserInput_should_throw_if_service_throws_during_save_manager() {
+        TradeByItemIdManager tradeManager = new TradeByItemIdManager();
+        tradeManager.setItemId("item_id");
+
+        when(tradeManagerFromInputsMapper.mapToTradeManagerByItemId(any(), any(), eq(TradeManagerTradeType.SELL), any())).thenReturn(tradeManager);
+
+        doThrow(new RuntimeException()).when(telegramUserTradeManagerService).saveUserTradeByItemIdManager(any(), any());
+        assertThrows(RuntimeException.class, () -> botInnerService.saveUserTradeByItemIdManagerByUserInput(1L, TradeManagerTradeType.SELL));
+    }
+
+    @Test
+    public void generateTradeByItemIdManagerByUserInput_ItemId_should_return_service_result() {
+        TradeByItemIdManager tradeManager = new TradeByItemIdManager();
+        tradeManager.setItemId("item_id");
+
+        when(tradeManagerFromInputsMapper.mapToTradeManagerByItemId(any(), any(), any(), any())).thenReturn(tradeManager);
+
+        assertEquals(tradeManager, botInnerService.generateTradeByItemIdManagerByUserInput(1L, TradeManagerTradeType.SELL));
+    }
+
+    @Test
+    public void generateTradeByItemIdManagerByUserInput_ItemId_should_throw_if_service_throws_during_inputs_find() {
+        doThrow(new RuntimeException()).when(telegramUserService).getAllUserInputs(1L);
+        assertThrows(RuntimeException.class, () -> botInnerService.generateTradeByItemIdManagerByUserInput(1L, TradeManagerTradeType.SELL));
+    }
+
+    @Test
+    public void generateTradeByItemIdManagerByUserInput_ItemId_should_throw_if_mapper_throws_during_mapping() {
+        doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeManagerByItemId(any(), any(), any(), any());
+        assertThrows(RuntimeException.class, () -> botInnerService.generateTradeByItemIdManagerByUserInput(1L, TradeManagerTradeType.SELL));
+    }
+
+    @Test
+    public void getItemByUserInputTradeByItemIdManagerEdit_should_return_service_result() {
+        Item item = new Item();
+        item.setName("item_name");
+
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID)).thenReturn("item_id");
+        when(itemStatsService.getItemById("item_id")).thenReturn(item);
+
+        assertEquals(item, botInnerService.getItemByUserInputTradeByItemIdManagerEdit(1L));
+    }
+
+    @Test
+    public void getItemByUserInputTradeByItemIdManagerEdit_should_throw_if_item_service_throws() {
+        doThrow(new RuntimeException()).when(itemStatsService).getItemById(any());
+        assertThrows(RuntimeException.class, () -> botInnerService.getItemByUserInputTradeByItemIdManagerEdit(1L));
+    }
+
+    @Test
+    public void getItemByUserInputTradeByItemIdManagerEdit_should_throw_if_user_service_throws() {
+        doThrow(new RuntimeException()).when(telegramUserService).getUserInputByState(any(), any());
+        assertThrows(RuntimeException.class, () -> botInnerService.getItemByUserInputTradeByItemIdManagerEdit(1L));
+    }
+
+    @Test
+    public void removeUserTradeByItemIdManagerByUserInput_should_handle_to_service() {
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID)).thenReturn("item_id");
+
+        botInnerService.removeUserTradeByItemIdManagerByUserInput(1L);
+
+        verify(telegramUserTradeManagerService).deleteUserTradeByItemIdManagerById("1", "item_id");
+    }
+
+    @Test
+    public void removeUserTradeByItemIdManagerByUserInput_should_throw_if_service_throws_during_input_find() {
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID)).thenThrow(new RuntimeException());
+
+        assertThrows(RuntimeException.class, () -> botInnerService.removeUserTradeByItemIdManagerByUserInput(1L));
+    }
+
+    @Test
+    public void removeUserTradeByItemIdManagerByUserInput_should_throw_if_service_throws_during_remove() {
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID)).thenReturn("item_id");
+        doThrow(new RuntimeException()).when(telegramUserTradeManagerService).deleteUserTradeByItemIdManagerById(any(), any());
+
+        assertThrows(RuntimeException.class, () -> botInnerService.removeUserTradeByItemIdManagerByUserInput(1L));
+    }
+
+    @Test
+    public void getUserTradeByItemIdManagerByUserInputItemId_should_return_service_result() {
+        TradeByItemIdManager tradeManager = new TradeByItemIdManager();
+        tradeManager.setItemId("item_id");
+        tradeManager.setPriority(100);
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID)).thenReturn("item_id");
+        when(telegramUserTradeManagerService.getUserTradeByItemIdManagerById("1", "item_id")).thenReturn(tradeManager);
+
+        assertEquals(tradeManager, botInnerService.getUserTradeByItemIdManagerByUserInputItemId(1L));
+    }
+
+    @Test
+    public void getUserTradeByItemIdManagerByUserInputItemId_should_throw_if_service_throws_during_input_find() {
+        doThrow(new RuntimeException()).when(telegramUserService).getUserInputByState(1L, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID);
+        assertThrows(RuntimeException.class, () -> botInnerService.getUserTradeByItemIdManagerByUserInputItemId(1L));
+    }
+
+    @Test
+    public void getUserTradeByItemIdManagerByUserInputItemId_should_throw_if_service_throws_during_tradeManager_find() {
+        TradeByItemIdManager tradeManager = new TradeByItemIdManager();
+        tradeManager.setItemId("item_id");
+        tradeManager.setPriority(100);
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID)).thenReturn("item_id");
+
+        doThrow(new RuntimeException()).when(telegramUserTradeManagerService).getUserTradeByItemIdManagerById("1", "item_id");
+        assertThrows(RuntimeException.class, () -> botInnerService.getUserTradeByItemIdManagerByUserInputItemId(1L));
+    }
+
+    @Test
+    public void getAllUserTradeByItemIdManagers_should_return_service_result() {
+        List<TradeByItemIdManager> tradeManagers = new ArrayList<>();
+        tradeManagers.add(new TradeByItemIdManager());
+
+        when(telegramUserTradeManagerService.getAllUserTradeByItemIdManagers("1")).thenReturn(tradeManagers);
+
+        assertEquals(tradeManagers, botInnerService.getAllUserTradeByItemIdManagers(1L));
+    }
+
+    @Test
+    public void getAllUserTradeByItemIdManagers_should_throw_if_service_throws() {
+        when(telegramUserTradeManagerService.getAllUserTradeByItemIdManagers("1")).thenThrow(new RuntimeException());
+
+        assertThrows(RuntimeException.class, () -> botInnerService.getAllUserTradeByItemIdManagers(1L));
+    }
+
+    @Test
+    public void getAllUserTradeByFiltersManagers_should_return_service_result() {
+        List<TradeByFiltersManager> tradeManagers = new ArrayList<>();
+        tradeManagers.add(new TradeByFiltersManager());
+
+        when(telegramUserTradeManagerService.getAllUserTradeByFiltersManagers("1")).thenReturn(tradeManagers);
+
+        assertEquals(tradeManagers, botInnerService.getAllUserTradeByFiltersManagers(1L));
+    }
+
+    @Test
+    public void getAllUserTradeByFiltersManagers_should_throw_if_service_throws() {
+        when(telegramUserTradeManagerService.getAllUserTradeByFiltersManagers("1")).thenThrow(new RuntimeException());
+
+        assertThrows(RuntimeException.class, () -> botInnerService.getAllUserTradeByFiltersManagers(1L));
+    }
+
+    @Test
+    public void getUserInputByState_should_return_service_result() {
+        when(telegramUserService.getUserInputByState(1L, InputState.CREDENTIALS_FULL_OR_EMAIL)).thenReturn("input");
+        assertEquals("input", botInnerService.getUserInputByState(1L, InputState.CREDENTIALS_FULL_OR_EMAIL));
+    }
+
+    @Test
+    public void getUserInputByState_should_throw_if_service_throws() {
+        when(telegramUserService.getUserInputByState(1L, InputState.CREDENTIALS_FULL_OR_EMAIL)).thenThrow(new RuntimeException());
+        assertThrows(RuntimeException.class, () -> botInnerService.getUserInputByState(1L, InputState.CREDENTIALS_FULL_OR_EMAIL));
+    }
 }
