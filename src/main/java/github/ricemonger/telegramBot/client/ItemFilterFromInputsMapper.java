@@ -48,14 +48,12 @@ public class ItemFilterFromInputsMapper {
         String maxLastSoldPriceString = getValueByState(inputs, InputState.FILTER_MAX_LAST_SOLD_PRICE);
 
         ItemFilter itemFilter = new ItemFilter();
+
         itemFilter.setName(name);
 
-        if (filterTypeString.equals(Callbacks.FILTER_TYPE_ALLOW)) {
-            itemFilter.setFilterType(FilterType.ALLOW);
-        } else if (filterTypeString.equals(Callbacks.FILTER_TYPE_DENY)) {
+        if (filterTypeString.equals(Callbacks.FILTER_TYPE_DENY)) {
             itemFilter.setFilterType(FilterType.DENY);
         } else {
-            log.error("Invalid filter type: " + filterTypeString);
             itemFilter.setFilterType(FilterType.ALLOW);
         }
 
@@ -63,85 +61,88 @@ public class ItemFilterFromInputsMapper {
             itemFilter.setIsOwned(IsOwnedFilter.OWNED);
         } else if (isOwnedString.equals(Callbacks.FILTER_ITEM_IS_NOT_OWNED)) {
             itemFilter.setIsOwned(IsOwnedFilter.NOT_OWNED);
-        } else if (isOwnedString.equals(Callbacks.FILTER_ITEM_IS_OWNED_ANY) || isOwnedString.equals(SKIPPED)) {
-            itemFilter.setIsOwned(IsOwnedFilter.ANY);
         } else {
-            log.error("Invalid isOwned: " + isOwnedString);
             itemFilter.setIsOwned(IsOwnedFilter.ANY);
         }
 
-        if (itemNamePatternsString.equals(SKIPPED)) {
+        if (itemNamePatternsString.equals(SKIPPED) || itemNamePatternsString.isBlank()) {
             itemFilter.setItemNamePatternsFromString("");
         } else {
             itemFilter.setItemNamePatternsFromString(itemNamePatternsString);
         }
 
-        if (itemTypesString.equals(SKIPPED)) {
+        if (itemTypesString.equals(SKIPPED) || itemTypesString.isBlank()) {
             itemFilter.setItemTypesFromString("");
         } else {
             itemFilter.setItemTypesFromString(itemTypesString);
         }
 
         itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(rarityTagsString)));
-
         itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(seasonTagsString)));
-
         itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(operatorTagsString)));
-
         itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(weaponTagsString)));
-
         itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(eventTagsString)));
-
         itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(esportsTagsString)));
-
         itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(otherTagsString)));
 
-        if (minPriceString.equals(SKIPPED)) {
-            itemFilter.setMinPrice(commonValuesService.getMinimumMarketplacePrice());
-        } else {
-            try {
-                int price = Integer.parseInt(minPriceString);
-                itemFilter.setMinPrice(Math.max(price, commonValuesService.getMinimumMarketplacePrice()));
-            } catch (NumberFormatException e) {
-                log.error("Invalid minPrice: " + minPriceString);
+        try {
+            int price = Integer.parseInt(minPriceString);
+
+            if (price > commonValuesService.getMaximumMarketplacePrice()) {
+                itemFilter.setMinPrice(commonValuesService.getMaximumMarketplacePrice());
+            } else if (price < commonValuesService.getMinimumMarketplacePrice()) {
                 itemFilter.setMinPrice(commonValuesService.getMinimumMarketplacePrice());
+            } else {
+                itemFilter.setMinPrice(price);
             }
+
+        } catch (NumberFormatException e) {
+            itemFilter.setMinPrice(commonValuesService.getMinimumMarketplacePrice());
         }
 
-        if (maxPriceString.equals(SKIPPED)) {
-            itemFilter.setMaxPrice(commonValuesService.getMaximumMarketplacePrice());
-        } else {
-            try {
-                int price = Integer.parseInt(maxPriceString);
-                itemFilter.setMaxPrice(Math.min(price, commonValuesService.getMaximumMarketplacePrice()));
-            } catch (NumberFormatException e) {
-                log.error("Invalid maxPrice: " + maxPriceString);
+        try {
+            int price = Integer.parseInt(maxPriceString);
+
+            if (price > commonValuesService.getMaximumMarketplacePrice()) {
                 itemFilter.setMaxPrice(commonValuesService.getMaximumMarketplacePrice());
+            } else if (price < commonValuesService.getMinimumMarketplacePrice()) {
+                itemFilter.setMaxPrice(commonValuesService.getMinimumMarketplacePrice());
+            } else {
+                itemFilter.setMaxPrice(price);
             }
+
+        } catch (NumberFormatException e) {
+            itemFilter.setMaxPrice(commonValuesService.getMaximumMarketplacePrice());
         }
 
-        if (minLastSoldPriceString.equals(SKIPPED)) {
-            itemFilter.setMinLastSoldPrice(commonValuesService.getMinimumMarketplacePrice());
-        } else {
-            try {
-                int price = Integer.parseInt(minLastSoldPriceString);
-                itemFilter.setMinLastSoldPrice(Math.max(price, commonValuesService.getMinimumMarketplacePrice()));
-            } catch (NumberFormatException e) {
-                log.error("Invalid minLastSoldPrice: " + minLastSoldPriceString);
+        try {
+            int price = Integer.parseInt(minLastSoldPriceString);
+
+            if (price > commonValuesService.getMaximumMarketplacePrice()) {
+                itemFilter.setMinLastSoldPrice(commonValuesService.getMaximumMarketplacePrice());
+            } else if (price < commonValuesService.getMinimumMarketplacePrice()) {
                 itemFilter.setMinLastSoldPrice(commonValuesService.getMinimumMarketplacePrice());
+            } else {
+                itemFilter.setMinLastSoldPrice(price);
             }
+
+        } catch (NumberFormatException e) {
+            itemFilter.setMinLastSoldPrice(commonValuesService.getMinimumMarketplacePrice());
         }
 
-        if (maxLastSoldPriceString.equals(SKIPPED)) {
-            itemFilter.setMaxLastSoldPrice(commonValuesService.getMaximumMarketplacePrice());
-        } else {
-            try {
-                int price = Integer.parseInt(maxLastSoldPriceString);
-                itemFilter.setMaxLastSoldPrice(Math.min(price, commonValuesService.getMaximumMarketplacePrice()));
-            } catch (NumberFormatException e) {
-                log.error("Invalid maxLastSoldPrice: " + maxLastSoldPriceString);
+        try {
+            int price = Integer.parseInt(maxLastSoldPriceString);
+
+            if (price > commonValuesService.getMaximumMarketplacePrice()) {
                 itemFilter.setMaxLastSoldPrice(commonValuesService.getMaximumMarketplacePrice());
+            } else if (price < commonValuesService.getMinimumMarketplacePrice()) {
+                itemFilter.setMaxLastSoldPrice(commonValuesService.getMinimumMarketplacePrice());
+            } else {
+                itemFilter.setMaxLastSoldPrice(price);
             }
+
+        } catch (NumberFormatException e) {
+            itemFilter.setMaxLastSoldPrice(commonValuesService.getMaximumMarketplacePrice());
         }
 
         return itemFilter;
