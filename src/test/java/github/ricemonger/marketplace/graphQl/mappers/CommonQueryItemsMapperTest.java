@@ -142,7 +142,7 @@ class CommonQueryItemsMapperTest {
         Date date = new Date();
 
         Node node = createNode(sdf, date);
-        node.getMarketData().setBuyStats(null);
+        node.getMarketData().setSellStats(null);
 
         Item expectedItem = new Item();
         expectedItem.setItemId("1");
@@ -168,6 +168,7 @@ class CommonQueryItemsMapperTest {
         Date date = new Date();
 
         Node node = createNode(sdf, date);
+        node.getMarketData().setLastSoldAt(null);
 
         Item expectedItem = new Item();
         expectedItem.setItemId("1");
@@ -180,7 +181,7 @@ class CommonQueryItemsMapperTest {
         expectedItem.setMinSellPrice(50);
         expectedItem.setSellOrdersCount(5);
         expectedItem.setLastSoldPrice(0);
-        expectedItem.setLastSoldAt(new Date());
+        expectedItem.setLastSoldAt(new Date(0));
 
         Item resultItem = commonQueryItemsMapper.mapItem(node);
 

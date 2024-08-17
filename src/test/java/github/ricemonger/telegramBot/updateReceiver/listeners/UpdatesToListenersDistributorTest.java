@@ -32,7 +32,7 @@ class UpdatesToListenersDistributorTest {
     private UpdatesToListenersDistributor updatesToListenersDistributor;
 
     @Test
-    public void distributeShouldHandleToInputCommandListenerWhenUpdateHasNotBaseInputGroup() {
+    public void distribute_should_handle_to_InputCommandListener_when_Update_has_not_base_InputGroup() {
         UpdateInfo updateInfo = new UpdateInfo();
         updateInfo.setInputGroup(InputGroup.CREDENTIALS_ADD);
 
@@ -46,7 +46,37 @@ class UpdatesToListenersDistributorTest {
     }
 
     @Test
-    public void distributeShouldHandleToDirectCommandListenerWhenUpdateHasMessage() {
+    public void distribute_should_handle_to_InputCommandListener_when_Update_has_not_base_InputGroup_and_has_message() {
+        UpdateInfo updateInfo = new UpdateInfo();
+        updateInfo.setInputGroup(InputGroup.CREDENTIALS_ADD);
+        updateInfo.setHasMessage(true);
+
+        updatesToListenersDistributor.distribute(updateInfo);
+
+        verify(inputCommandListener).handleUpdate(updateInfo);
+
+        verify(directCommandListener, never()).handleUpdate(any());
+        verify(callbackCommandListener, never()).handleUpdate(any());
+        verify(exceptionCommandListener, never()).handleException(any(), any());
+    }
+
+    @Test
+    public void distribute_should_handle_to_InputCommandListener_when_update_has_not_base_inputGroup_and_has_callbackQuery() {
+        UpdateInfo updateInfo = new UpdateInfo();
+        updateInfo.setInputGroup(InputGroup.CREDENTIALS_ADD);
+        updateInfo.setHasCallBackQuery(true);
+
+        updatesToListenersDistributor.distribute(updateInfo);
+
+        verify(inputCommandListener).handleUpdate(updateInfo);
+
+        verify(directCommandListener, never()).handleUpdate(any());
+        verify(callbackCommandListener, never()).handleUpdate(any());
+        verify(exceptionCommandListener, never()).handleException(any(), any());
+    }
+
+    @Test
+    public void distribute_should_handle_to_DirectCommandListener_when_update_has_message_and_base_inputGroup() {
         UpdateInfo updateInfo = new UpdateInfo();
         updateInfo.setInputGroup(InputGroup.BASE);
         updateInfo.setHasMessage(true);
@@ -61,7 +91,7 @@ class UpdatesToListenersDistributorTest {
     }
 
     @Test
-    public void distributeShouldHandleToCallbackCommandListenerWhenUpdateHasCallbackQuery() {
+    public void distribute_should_handle_to_CallbackCommandListener_when_update_has_callbackQuery_and_base_inputGroup() {
         UpdateInfo updateInfo = new UpdateInfo();
         updateInfo.setInputGroup(InputGroup.BASE);
         updateInfo.setHasCallBackQuery(true);
@@ -76,7 +106,7 @@ class UpdatesToListenersDistributorTest {
     }
 
     @Test
-    public void distributeShouldHandleToExceptionCommandListenerIfListeningMethodCouldNotBeChosen() {
+    public void distribute_should_handle_to_ExceptionCommandListener_if_listening_method_could_not_be_chosen() {
         UpdateInfo updateInfo = new UpdateInfo();
         updateInfo.setInputGroup(InputGroup.BASE);
 
@@ -90,7 +120,7 @@ class UpdatesToListenersDistributorTest {
     }
 
     @Test
-    public void distributeShouldHandleToExceptionCommandListenerIfExceptionIsThrown() {
+    public void distribute_should_handle_to_ExceptionCommandListener_if_exception_was_thrown() {
         UpdateInfo updateInfo = new UpdateInfo();
         updateInfo.setInputGroup(InputGroup.CREDENTIALS_ADD);
         doThrow(InvalidUserInputStateAndGroupConjunctionException.class).when(inputCommandListener).handleUpdate(updateInfo);
