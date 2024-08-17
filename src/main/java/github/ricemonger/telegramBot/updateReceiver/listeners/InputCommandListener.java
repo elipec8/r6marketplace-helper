@@ -6,26 +6,26 @@ import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.ExecutorsService;
 import github.ricemonger.telegramBot.executors.cancel.Cancel;
 import github.ricemonger.telegramBot.executors.cancel.SilentCancel;
-import github.ricemonger.telegramBot.executors.credentials.add.CredentialsAddFullOrEmailInput;
-import github.ricemonger.telegramBot.executors.credentials.add.CredentialsAddPasswordInput;
-import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRemoveOneEmailInput;
-import github.ricemonger.telegramBot.executors.marketplace.filters.edit.*;
-import github.ricemonger.telegramBot.executors.marketplace.filters.showOrRemove.FilterShowChosenInput;
-import github.ricemonger.telegramBot.executors.marketplace.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage2AskActionInput;
-import github.ricemonger.telegramBot.executors.marketplace.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage3FinishInput;
-import github.ricemonger.telegramBot.executors.marketplace.items.settings.messageLimit.ItemsShowSettingsChangeMessageLimitFinishInput;
-import github.ricemonger.telegramBot.executors.marketplace.items.settings.shownFields.*;
-import github.ricemonger.telegramBot.executors.marketplace.items.show.ItemsShowStage2FinishInput;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.oneItem.buy.TradesOneItemBuyEditStage2AskBoundaryPriceInput;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.oneItem.buy.TradesOneItemBuyEditStage3AskStartingPriceInput;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.oneItem.buy.TradesOneItemBuyEditStage4AskPriorityInput;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.oneItem.buy.TradesOneItemBuyEditStage5AskConfirmationInput;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.oneItem.buyAndSell.*;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage2AskBoundaryPriceInput;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage3AskStartingPriceInput;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage4AskPriorityInput;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage5AskConfirmationInput;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.showRemove.remove.itemId.TradeManagersByItemIdRemoveStage2AskConfirmationInput;
+import github.ricemonger.telegramBot.executors.credentials.link.CredentialsAddFullOrEmailInput;
+import github.ricemonger.telegramBot.executors.credentials.link.CredentialsAddPasswordInput;
+import github.ricemonger.telegramBot.executors.credentials.unlink.CredentialsRemoveOneEmailInput;
+import github.ricemonger.telegramBot.executors.itemFilters.edit.*;
+import github.ricemonger.telegramBot.executors.itemFilters.showOrRemove.FilterShowChosenRemoveRequestInput;
+import github.ricemonger.telegramBot.executors.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage2AskActionInput;
+import github.ricemonger.telegramBot.executors.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage3FinishInput;
+import github.ricemonger.telegramBot.executors.items.settings.messageLimit.ItemsShowSettingsChangeMessageLimitFinishInput;
+import github.ricemonger.telegramBot.executors.items.settings.shownFields.*;
+import github.ricemonger.telegramBot.executors.items.show.ItemsShowStage2FinishInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy.TradesOneItemBuyEditStage2AskBoundaryPriceInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy.TradesOneItemBuyEditStage3AskStartingPriceInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy.TradesOneItemBuyEditStage4AskPriorityInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy.TradesOneItemBuyEditStage5AskConfirmationInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buyAndSell.*;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage2AskBoundaryPriceInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage3AskStartingPriceInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage4AskPriorityInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage5AskConfirmationInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemId.TradeManagersByItemIdRemoveStage2AskConfirmationInput;
 import github.ricemonger.utils.exceptions.InvalidUserInputGroupException;
 import github.ricemonger.utils.exceptions.InvalidUserInputStateAndGroupConjunctionException;
 import lombok.RequiredArgsConstructor;
@@ -159,7 +159,7 @@ public class InputCommandListener {
         InputState inputState = updateInfo.getInputState();
 
         if (Objects.requireNonNull(inputState) == InputState.FILTER_NAME) {
-            executorsService.execute(FilterShowChosenInput.class, updateInfo);
+            executorsService.execute(FilterShowChosenRemoveRequestInput.class, updateInfo);
         } else {
             throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
         }

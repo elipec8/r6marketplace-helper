@@ -8,11 +8,11 @@ public class CredentialsDirect extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
         MyFunctionalInterface command = () -> askFromInlineKeyboard(
-                "Please choose the action with credentials:",
+                "Please choose the action with your Ubisoft account:",
                 1,
-                new CallbackButton("Add", Callbacks.CREDENTIALS_ADD),
-                new CallbackButton("Remove", Callbacks.CREDENTIALS_REMOVE),
-                new CallbackButton("Show", Callbacks.CREDENTIALS_SHOW)
+                new CallbackButton("Link Ubisoft Account", Callbacks.CREDENTIALS_ADD),
+                new CallbackButton("Unlink Ubisoft Account", Callbacks.CREDENTIALS_REMOVE),
+                new CallbackButton("Show Linked Account's Email", Callbacks.CREDENTIALS_SHOW)
         );
         executeCommandOrAskToRegister(command);
     }

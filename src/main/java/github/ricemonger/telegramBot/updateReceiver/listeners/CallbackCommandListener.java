@@ -5,41 +5,40 @@ import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.ExecutorsService;
 import github.ricemonger.telegramBot.executors.cancel.Cancel;
 import github.ricemonger.telegramBot.executors.cancel.SilentCancel;
-import github.ricemonger.telegramBot.executors.credentials.add.CredentialsAddCallback;
-import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRemoveAllCallback;
-import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRemoveAllConfirmedCallback;
-import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRemoveCallback;
-import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRemoveOneCallback;
+import github.ricemonger.telegramBot.executors.credentials.link.CredentialsAddCallback;
+import github.ricemonger.telegramBot.executors.credentials.unlink.CredentialsUnlinkRequestCallback;
+import github.ricemonger.telegramBot.executors.credentials.unlink.CredentialsUnlinkConfirmedCallback;
+import github.ricemonger.telegramBot.executors.credentials.unlink.CredentialsRemoveOneCallback;
 import github.ricemonger.telegramBot.executors.credentials.show.CredentialsShowCallback;
-import github.ricemonger.telegramBot.executors.marketplace.filters.FiltersCallback;
-import github.ricemonger.telegramBot.executors.marketplace.filters.edit.FilterEditStage18FinishCallback;
-import github.ricemonger.telegramBot.executors.marketplace.filters.edit.FilterEditStage1AskNameCallback;
-import github.ricemonger.telegramBot.executors.marketplace.filters.showOrRemove.FilterRemoveCallback;
-import github.ricemonger.telegramBot.executors.marketplace.filters.showOrRemove.FiltersShowCallback;
-import github.ricemonger.telegramBot.executors.marketplace.items.ItemsCallback;
-import github.ricemonger.telegramBot.executors.marketplace.items.settings.ItemsShowSettingsCallback;
-import github.ricemonger.telegramBot.executors.marketplace.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallback;
-import github.ricemonger.telegramBot.executors.marketplace.items.settings.itemsInMessage.ItemsShowSettingsChangeItemsInMessageCallback;
-import github.ricemonger.telegramBot.executors.marketplace.items.settings.itemsInMessage.ItemsShowSettingsChangeItemsInMessageNoCallback;
-import github.ricemonger.telegramBot.executors.marketplace.items.settings.itemsInMessage.ItemsShowSettingsChangeItemsInMessageYesCallback;
-import github.ricemonger.telegramBot.executors.marketplace.items.settings.messageLimit.ItemsShowSettingsChangeMessageLimitCallback;
-import github.ricemonger.telegramBot.executors.marketplace.items.settings.shownFields.ItemsShowSettingsChangeShownFieldsStage1AskNameFlagCallback;
-import github.ricemonger.telegramBot.executors.marketplace.items.show.ItemsShowStage1AskOffsetCallback;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.TradesCallback;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.TradesEditCallback;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.oneItem.TradesOneItemEditCallback;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.oneItem.buy.TradesOneItemBuyEditStage1AskItemIdCallback;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.oneItem.buy.TradesOneItemBuyEditStage6FinishCallback;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.oneItem.buyAndSell.TradesOneItemBuyAndSellEditStage1AskItemIdCallback;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.oneItem.buyAndSell.TradesOneItemBuyAndSellEditStage8FinishCallback;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage1AskItemIdCallback;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage6FinishCallback;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.settings.TradesSettingsCallback;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.showRemove.TradeManagersByItemFiltersShowAllCallback;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.showRemove.TradeManagersByItemIdShowAllCallback;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.showRemove.TradeManagersShowCallback;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.showRemove.remove.itemId.TradeManagersByItemIdRemoveStage1AskItemIdCallback;
-import github.ricemonger.telegramBot.executors.marketplace.tradeManagers.showRemove.remove.itemId.TradeManagersByItemIdRemoveStage3FinishCallback;
+import github.ricemonger.telegramBot.executors.itemFilters.ItemFiltersDirect;
+import github.ricemonger.telegramBot.executors.itemFilters.edit.FilterEditStage18FinishCallback;
+import github.ricemonger.telegramBot.executors.itemFilters.edit.FilterEditStage1AskNameCallback;
+import github.ricemonger.telegramBot.executors.itemFilters.showOrRemove.FilterRemoveConfirmedCallback;
+import github.ricemonger.telegramBot.executors.itemFilters.showOrRemove.FiltersShowAllCallback;
+import github.ricemonger.telegramBot.executors.items.ItemsDirect;
+import github.ricemonger.telegramBot.executors.items.settings.ItemsShowSettingsCallback;
+import github.ricemonger.telegramBot.executors.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallback;
+import github.ricemonger.telegramBot.executors.items.settings.itemsInMessage.ItemsShowSettingsChangeItemsInMessageCallback;
+import github.ricemonger.telegramBot.executors.items.settings.itemsInMessage.ItemsShowSettingsChangeItemsInMessageNoCallback;
+import github.ricemonger.telegramBot.executors.items.settings.itemsInMessage.ItemsShowSettingsChangeItemsInMessageYesCallback;
+import github.ricemonger.telegramBot.executors.items.settings.messageLimit.ItemsShowSettingsChangeMessageLimitCallback;
+import github.ricemonger.telegramBot.executors.items.settings.shownFields.ItemsShowSettingsChangeShownFieldsStage1AskNameFlagCallback;
+import github.ricemonger.telegramBot.executors.items.show.ItemsShowStage1AskOffsetCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.TradeManagersDirect;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.TradesEditCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.TradesOneItemEditCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy.TradesOneItemBuyEditStage1AskItemIdCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy.TradesOneItemBuyEditStage6FinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buyAndSell.TradesOneItemBuyAndSellEditStage1AskItemIdCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buyAndSell.TradesOneItemBuyAndSellEditStage8FinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage1AskItemIdCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage6FinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.TradesSettingsCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeManagersByItemFiltersShowAllCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeManagersByItemIdShowAllCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeManagersShowCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemId.TradeManagersByItemIdRemoveStage1AskItemIdCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemId.TradeManagersByItemIdRemoveStage3FinishCallback;
 import github.ricemonger.telegramBot.executors.start.startYes.StartYesCallback;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -59,27 +58,27 @@ public class CallbackCommandListener {
 
             case Callbacks.CREDENTIALS_ADD -> executorsService.execute(CredentialsAddCallback.class, updateInfo);
 
-            case Callbacks.CREDENTIALS_REMOVE -> executorsService.execute(CredentialsRemoveCallback.class, updateInfo);
+            case Callbacks.CREDENTIALS_REMOVE -> executorsService.execute(CredentialsUnlinkRequestCallback.class, updateInfo);
 
-            case Callbacks.CREDENTIALS_REMOVE_ALL -> executorsService.execute(CredentialsRemoveAllCallback.class, updateInfo);
+            case Callbacks.CREDENTIALS_REMOVE_ALL -> executorsService.execute(CredentialsUnlinkRequestCallback.class, updateInfo);
 
-            case Callbacks.CREDENTIALS_REMOVE_ALL_CONFIRMED -> executorsService.execute(CredentialsRemoveAllConfirmedCallback.class, updateInfo);
+            case Callbacks.CREDENTIALS_REMOVE_ALL_CONFIRMED -> executorsService.execute(CredentialsUnlinkConfirmedCallback.class, updateInfo);
 
             case Callbacks.CREDENTIALS_REMOVE_ONE -> executorsService.execute(CredentialsRemoveOneCallback.class, updateInfo);
 
             case Callbacks.CREDENTIALS_SHOW -> executorsService.execute(CredentialsShowCallback.class, updateInfo);
 
-            case Callbacks.FILTERS -> executorsService.execute(FiltersCallback.class, updateInfo);
+            case Callbacks.FILTERS -> executorsService.execute(ItemFiltersDirect.class, updateInfo);
 
             case Callbacks.FILTER_EDIT -> executorsService.execute(FilterEditStage1AskNameCallback.class, updateInfo);
 
             case Callbacks.FILTER_EDIT_FINISH -> executorsService.execute(FilterEditStage18FinishCallback.class, updateInfo);
 
-            case Callbacks.FILTERS_SHOW -> executorsService.execute(FiltersShowCallback.class, updateInfo);
+            case Callbacks.FILTERS_SHOW -> executorsService.execute(FiltersShowAllCallback.class, updateInfo);
 
-            case Callbacks.FILTER_REMOVE_FINISH -> executorsService.execute(FilterRemoveCallback.class, updateInfo);
+            case Callbacks.FILTER_REMOVE_FINISH -> executorsService.execute(FilterRemoveConfirmedCallback.class, updateInfo);
 
-            case Callbacks.ITEMS -> executorsService.execute(ItemsCallback.class, updateInfo);
+            case Callbacks.ITEMS -> executorsService.execute(ItemsDirect.class, updateInfo);
 
             case Callbacks.ITEMS_SHOW -> executorsService.execute(ItemsShowStage1AskOffsetCallback.class, updateInfo);
 
@@ -105,7 +104,7 @@ public class CallbackCommandListener {
             case Callbacks.ITEMS_SHOW_SETTINGS_CHANGE_APPLIED_FILTERS ->
                     executorsService.execute(ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallback.class, updateInfo);
 
-            case Callbacks.TRADES -> executorsService.execute(TradesCallback.class, updateInfo);
+            case Callbacks.TRADES -> executorsService.execute(TradeManagersDirect.class, updateInfo);
 
             case Callbacks.TRADE_EDIT -> executorsService.execute(TradesEditCallback.class, updateInfo);
 

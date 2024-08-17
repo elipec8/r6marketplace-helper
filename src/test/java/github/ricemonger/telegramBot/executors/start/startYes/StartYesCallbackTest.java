@@ -15,7 +15,7 @@ class StartYesCallbackTest {
     private BotInnerService botInnerService;
 
     @Test
-    public void initAndExecuteShouldCheckIfUserIsRegisteredAndRegisterIfNot() {
+    public void initAndExecute_should_check_if_user_is_registered_and_register_and_ask_to_add_credentials_if_not() {
         StartYesCallback startYesCallback = new StartYesCallback();
         when(botInnerService.isUserRegistered(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(false);
 
@@ -23,18 +23,20 @@ class StartYesCallbackTest {
 
         verify(botInnerService).isUserRegistered(MockUpdateInfos.UPDATE_INFO.getChatId());
         verify(botInnerService).registerUser(MockUpdateInfos.UPDATE_INFO.getChatId());
+        verify(botInnerService).askFromInlineKeyboard(same(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());
     }
 
     @Test
-    public void initAndExecuteShouldSendTextIfUserIsRegistered() {
+    public void initAndExecute_should_send_text_if_user_is_registered() {
         StartYesCallback startYesCallback = new StartYesCallback();
         when(botInnerService.isUserRegistered(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(true);
 
         startYesCallback.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
         verify(botInnerService).isUserRegistered(MockUpdateInfos.UPDATE_INFO.getChatId());
-        verify(botInnerService, never()).registerUser(any());
         verify(botInnerService).sendText(same(MockUpdateInfos.UPDATE_INFO), anyString());
+        verify(botInnerService, never()).registerUser(any());
+        verify(botInnerService, never()).askFromInlineKeyboard(same(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());
     }
 
 }

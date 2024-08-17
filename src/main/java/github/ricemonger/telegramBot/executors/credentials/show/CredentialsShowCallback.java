@@ -1,14 +1,15 @@
 package github.ricemonger.telegramBot.executors.credentials.show;
 
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
+import github.ricemonger.utils.exceptions.UbiAccountEntryDoesntExistException;
 
 public class CredentialsShowCallback extends AbstractBotCommandExecutor {
     @Override
-    protected void executeCommand() {
-        String text = "Here is your current ubi account email:\n\n";
+    protected void executeCommand() throws UbiAccountEntryDoesntExistException {
+        String text = "Your current Linked Ubisoft Account's Email:\n";
 
         String email = botInnerService.getUserUbiAccountEntryEmail(updateInfo.getChatId());
 
-        sendText(email == null ? "You haven't set your ubi account yet" : text + "Email: " + email);
+        sendText(text + email);
     }
 }

@@ -11,12 +11,11 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class CredentialsDirectTest {
-
     @MockBean
     private BotInnerService botInnerService;
 
     @Test
-    public void initAndExecuteShouldCheckIfUserIsRegisteredAndProposeToRegisterIfNot() {
+    public void initAndExecute_should_check_if_user_is_registered_and_propose_to_register_if_not() {
         CredentialsDirect credentialsDirect = new CredentialsDirect();
         when(botInnerService.isUserRegistered(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(false);
 
@@ -28,14 +27,14 @@ class CredentialsDirectTest {
     }
 
     @Test
-    public void initAndExecuteShouldAskToChooseTheActionIfUserIsRegistered() {
+    public void initAndExecute_should_ask_to_choose_the_action_if_user_is_registered() {
         CredentialsDirect credentialsDirect = new CredentialsDirect();
         when(botInnerService.isUserRegistered(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(true);
 
         credentialsDirect.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
         verify(botInnerService).isUserRegistered(MockUpdateInfos.UPDATE_INFO.getChatId());
+        verify(botInnerService,never()).sendText(same(MockUpdateInfos.UPDATE_INFO), anyString());
         verify(botInnerService).askFromInlineKeyboard(same(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());
     }
-
 }

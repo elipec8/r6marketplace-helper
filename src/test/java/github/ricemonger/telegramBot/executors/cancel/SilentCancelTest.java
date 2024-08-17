@@ -20,7 +20,7 @@ class SilentCancelTest {
     private BotInnerService botInnerService;
 
     @Test
-    public void initAndExecuteShould() {
+    public void initAndExecute_should_reset_inputs_and_send_nothing() {
         SilentCancel cancel = new SilentCancel();
         cancel.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 

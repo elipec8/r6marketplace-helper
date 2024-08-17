@@ -1,4 +1,4 @@
 package github.ricemonger.utils.exceptions;
 
-public class ListeningMethodCouldNotBeChosenException extends Exception {
+public class ListeningMethodCouldNotBeChosenException extends RuntimeException {
 }

@@ -5,8 +5,12 @@ import github.ricemonger.telegramBot.executors.ExecutorsService;
 import github.ricemonger.telegramBot.executors.cancel.Cancel;
 import github.ricemonger.telegramBot.executors.credentials.CredentialsDirect;
 import github.ricemonger.telegramBot.executors.help.HelpDirect;
-import github.ricemonger.telegramBot.executors.marketplace.MarketplaceDirect;
+import github.ricemonger.telegramBot.executors.itemFilters.ItemFiltersDirect;
+import github.ricemonger.telegramBot.executors.items.ItemsDirect;
 import github.ricemonger.telegramBot.executors.start.StartDirect;
+import github.ricemonger.telegramBot.executors.tradeManagers.TradeManagersDirect;
+import github.ricemonger.telegramBot.executors.trades.TradesDirect;
+import github.ricemonger.utils.exceptions.UnexpectedDirectCommandException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -26,13 +30,19 @@ public class DirectCommandListener {
 
             case "/help" -> executorsService.execute(HelpDirect.class, updateInfo);
 
-            case "/credentials" -> executorsService.execute(CredentialsDirect.class, updateInfo);
+            case "/items" -> executorsService.execute(ItemsDirect.class, updateInfo);
 
-            case "/marketplace" -> executorsService.execute(MarketplaceDirect.class, updateInfo);
+            case "/trades" -> executorsService.execute(TradesDirect.class, updateInfo);
+
+            case "/tradeManagers" -> executorsService.execute(TradeManagersDirect.class, updateInfo);
+
+            case "/itemFilters" -> executorsService.execute(ItemFiltersDirect.class, updateInfo);
+
+            case "/credentials" -> executorsService.execute(CredentialsDirect.class, updateInfo);
 
             case "/cancel" -> executorsService.execute(Cancel.class, updateInfo);
 
-            default -> throw new IllegalStateException("Unexpected message text value: " + text);
+            default -> throw new UnexpectedDirectCommandException("Unexpected message text value: " + text);
         }
     }
 }
