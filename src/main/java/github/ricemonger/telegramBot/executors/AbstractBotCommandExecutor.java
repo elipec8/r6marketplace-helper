@@ -23,10 +23,10 @@ public abstract class AbstractBotCommandExecutor {
 
     protected abstract void executeCommand();
 
-    protected final void processFirstInput(InputState nextInputState, InputGroup nextInputGroup, String question) {
+    protected final void processFirstInput(InputState nextInputState, InputGroup nextInputGroup, String text) {
         processFirstInput(nextInputState, nextInputGroup);
 
-        sendText(question);
+        sendText(text);
     }
 
     protected final void processFirstInput(InputState nextInputState, InputGroup nextInputGroup) {
@@ -35,10 +35,10 @@ public abstract class AbstractBotCommandExecutor {
         botInnerService.setUserInputGroup(updateInfo.getChatId(), nextInputGroup);
     }
 
-    protected final void processMiddleInput(InputState nextInputState, String question) {
+    protected final void processMiddleInput(InputState nextInputState, String text) {
         processMiddleInput(nextInputState);
 
-        sendText(question);
+        sendText(text);
     }
 
     protected final void processMiddleInput(InputState nextInputState) {
@@ -106,20 +106,20 @@ public abstract class AbstractBotCommandExecutor {
         botInnerService.clearUserInputs(updateInfo.getChatId());
     }
 
-    protected final boolean isRegistered() {
-        return botInnerService.isUserRegistered(updateInfo.getChatId());
-    }
-
-    protected final void sendText(String answer) {
-        botInnerService.sendText(updateInfo, answer);
-    }
-
     protected final void executeCommandOrAskToRegister(MyFunctionalInterface command) {
         if (isRegistered()) {
             command.executeCommand();
         } else {
             sendText("You are not registered. Please use /start to register.");
         }
+    }
+
+    protected final boolean isRegistered() {
+        return botInnerService.isUserRegistered(updateInfo.getChatId());
+    }
+
+    protected final void sendText(String answer) {
+        botInnerService.sendText(updateInfo, answer);
     }
 
     @Override
