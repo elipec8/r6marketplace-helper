@@ -19,6 +19,9 @@ public class ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallback ex
                 botInnerService.getUserItemShowSettings(updateInfo.getChatId()).getItemShowAppliedFilters().stream().map(ItemFilter::getName).toList();
         List<String> allFilters = new ArrayList<>(botInnerService.getAllUserItemFiltersNames(updateInfo.getChatId()));
 
+        List<String> notAppliedFilters = new ArrayList<>(allFilters);
+        notAppliedFilters.removeAll(appliedFilters);
+
         CallbackButton[] buttons = new CallbackButton[allFilters.size()];
 
         for (int i = 0; i < buttons.length; i++) {
@@ -26,13 +29,13 @@ public class ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallback ex
         }
 
         String appliedFiltersString = String.join(", ", appliedFilters);
-        String allFiltersString = String.join(", ", allFilters);
+        String notAppliedFiltersString = String.join(", ", notAppliedFilters);
 
         askFromInlineKeyboard(
                 "Current filters:\n"
                 + appliedFiltersString
                 + "\nAvailable filters:\n"
-                + allFiltersString
+                + notAppliedFiltersString
                 + "\nChoose filter to add or remove from current filters.",
                 1,
                 buttons);
