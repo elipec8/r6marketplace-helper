@@ -1,8 +1,10 @@
 package github.ricemonger.telegramBot.executors;
 
+import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.UpdateInfo;
+import github.ricemonger.telegramBot.client.CallbackButton;
 
 public class MockUpdateInfos {
 
@@ -57,4 +59,6 @@ public class MockUpdateInfos {
         UPDATE_INFO_PASSWORD_INPUT.setInputState(InputState.CREDENTIALS_PASSWORD);
         UPDATE_INFO_PASSWORD_INPUT.setInputGroup(InputGroup.CREDENTIALS_ADD);
     }
+
+    public static final CallbackButton[] SKIP_CALLBACK_BUTTON_SINGLE_ARRAY = new CallbackButton[]{new CallbackButton("Skip", Callbacks.EMPTY)};
 }
