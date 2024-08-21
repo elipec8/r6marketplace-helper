@@ -125,9 +125,9 @@ public class ItemFilter {
     }
 
     public String toString() {
-        String name = this.getName();
-        String filterType = this.getFilterType().name();
-        String isOwned = String.valueOf(this.getIsOwned());
+        String name = this.name;
+        String filterType = this.filterType == null ? null : this.filterType.name();
+        String isOwned = String.valueOf(this.isOwned);
         String itemNamePatterns = this.getItemNamePatternsAsString();
         String itemTypes = this.getItemTypesAsString();
         String rarityTags = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Rarity)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
@@ -137,10 +137,10 @@ public class ItemFilter {
         String eventTags = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Event)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
         String esportsTags = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Esports_Team)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
         String otherTags = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Other)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
-        String minPrice = String.valueOf(this.getMinPrice());
-        String maxPrice = String.valueOf(this.getMaxPrice());
-        String minLastSoldPrice = String.valueOf(this.getMinLastSoldPrice());
-        String maxLastSoldPrice = String.valueOf(this.getMaxLastSoldPrice());
+        String minPrice = String.valueOf(this.minPrice);
+        String maxPrice = String.valueOf(this.maxPrice);
+        String minLastSoldPrice = String.valueOf(this.minLastSoldPrice);
+        String maxLastSoldPrice = String.valueOf(this.maxLastSoldPrice);
 
         String sb = "Name: " + name + "\n" +
                     "Filter type: " + filterType + "\n" +

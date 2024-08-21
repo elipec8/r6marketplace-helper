@@ -8,7 +8,6 @@ import github.ricemonger.telegramBot.executors.cancel.Cancel;
 import github.ricemonger.telegramBot.executors.cancel.SilentCancel;
 import github.ricemonger.telegramBot.executors.credentials.link.CredentialsAddFullOrEmailInput;
 import github.ricemonger.telegramBot.executors.credentials.link.CredentialsAddPasswordInput;
-import github.ricemonger.telegramBot.executors.credentials.unlink.CredentialsRemoveOneEmailInput;
 import github.ricemonger.telegramBot.executors.itemFilters.edit.*;
 import github.ricemonger.telegramBot.executors.itemFilters.showOrRemove.FilterShowChosenRemoveRequestInput;
 import github.ricemonger.telegramBot.executors.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage2AskActionInput;
@@ -107,7 +106,7 @@ public class InputCommandListener {
 
         switch (inputState) {
 
-            case CREDENTIALS_FULL_OR_EMAIL -> executorsService.execute(CredentialsRemoveOneEmailInput.class, updateInfo);
+            //case CREDENTIALS_FULL_OR_EMAIL -> executorsService.execute(CredentialsRemoveOneEmailInput.class, updateInfo);
 
             default ->
                     throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());

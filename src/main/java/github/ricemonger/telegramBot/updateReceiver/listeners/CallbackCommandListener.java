@@ -8,7 +8,6 @@ import github.ricemonger.telegramBot.executors.cancel.SilentCancel;
 import github.ricemonger.telegramBot.executors.credentials.link.CredentialsAddCallback;
 import github.ricemonger.telegramBot.executors.credentials.unlink.CredentialsUnlinkRequestCallback;
 import github.ricemonger.telegramBot.executors.credentials.unlink.CredentialsUnlinkConfirmedCallback;
-import github.ricemonger.telegramBot.executors.credentials.unlink.CredentialsRemoveOneCallback;
 import github.ricemonger.telegramBot.executors.credentials.show.CredentialsShowCallback;
 import github.ricemonger.telegramBot.executors.itemFilters.ItemFiltersDirect;
 import github.ricemonger.telegramBot.executors.itemFilters.edit.FilterEditStage18FinishCallback;
@@ -64,7 +63,7 @@ public class CallbackCommandListener {
 
             case Callbacks.CREDENTIALS_REMOVE_ALL_CONFIRMED -> executorsService.execute(CredentialsUnlinkConfirmedCallback.class, updateInfo);
 
-            case Callbacks.CREDENTIALS_REMOVE_ONE -> executorsService.execute(CredentialsRemoveOneCallback.class, updateInfo);
+            //case Callbacks.CREDENTIALS_REMOVE_ONE -> executorsService.execute(CredentialsRemoveOneCallback.class, updateInfo);
 
             case Callbacks.CREDENTIALS_SHOW -> executorsService.execute(CredentialsShowCallback.class, updateInfo);
 
