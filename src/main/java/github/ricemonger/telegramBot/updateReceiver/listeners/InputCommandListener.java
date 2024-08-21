@@ -15,15 +15,15 @@ import github.ricemonger.telegramBot.executors.items.settings.appliedFilters.Ite
 import github.ricemonger.telegramBot.executors.items.settings.messageLimit.ItemsShowSettingsChangeMessageLimitFinishInput;
 import github.ricemonger.telegramBot.executors.items.settings.shownFields.*;
 import github.ricemonger.telegramBot.executors.items.show.ItemsShowStage2FinishInput;
-import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy.TradesOneItemBuyEditStage2AskBoundaryPriceInput;
-import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy.TradesOneItemBuyEditStage3AskStartingPriceInput;
-import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy.TradesOneItemBuyEditStage4AskPriorityInput;
-import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy.TradesOneItemBuyEditStage5AskConfirmationInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy.TradeByItemIdManagerBuyEditStage2AskBoundaryPriceInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy.TradeByItemIdManagerBuyEditStage3AskStartingPriceInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy.TradeByItemIdManagerBuyEditStage4AskPriorityInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy.TradeByItemIdManagerBuyEditStage5AskConfirmationInput;
 import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buyAndSell.*;
-import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage2AskBoundaryPriceInput;
-import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage3AskStartingPriceInput;
-import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage4AskPriorityInput;
-import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage5AskConfirmationInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell.TradeByItemIdManagerSellEditStage2AskBoundaryPriceInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell.TradeByItemIdManagerSellEditStage3AskStartingPriceInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell.TradeByItemIdManagerSellEditStage4AskPriorityInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell.TradeByItemIdManagerSellEditStage5AskConfirmationInput;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemId.TradeManagersByItemIdRemoveStage2AskConfirmationInput;
 import github.ricemonger.utils.exceptions.InvalidUserInputGroupException;
 import github.ricemonger.utils.exceptions.InvalidUserInputStateAndGroupConjunctionException;
@@ -236,14 +236,14 @@ public class InputCommandListener {
         InputState inputState = updateInfo.getInputState();
 
         switch (inputState) {
-            case TRADES_EDIT_ONE_ITEM_ITEM_ID -> executorsService.execute(TradesOneItemBuyEditStage2AskBoundaryPriceInput.class, updateInfo);
+            case TRADES_EDIT_ONE_ITEM_ITEM_ID -> executorsService.execute(TradeByItemIdManagerBuyEditStage2AskBoundaryPriceInput.class, updateInfo);
 
             case TRADES_EDIT_ONE_ITEM_BOUNDARY_BUY_PRICE ->
-                    executorsService.execute(TradesOneItemBuyEditStage3AskStartingPriceInput.class, updateInfo);
+                    executorsService.execute(TradeByItemIdManagerBuyEditStage3AskStartingPriceInput.class, updateInfo);
 
-            case TRADES_EDIT_ONE_ITEM_STARTING_BUY_PRICE -> executorsService.execute(TradesOneItemBuyEditStage4AskPriorityInput.class, updateInfo);
+            case TRADES_EDIT_ONE_ITEM_STARTING_BUY_PRICE -> executorsService.execute(TradeByItemIdManagerBuyEditStage4AskPriorityInput.class, updateInfo);
 
-            case TRADES_EDIT_ONE_ITEM_PRIORITY -> executorsService.execute(TradesOneItemBuyEditStage5AskConfirmationInput.class, updateInfo);
+            case TRADES_EDIT_ONE_ITEM_PRIORITY -> executorsService.execute(TradeByItemIdManagerBuyEditStage5AskConfirmationInput.class, updateInfo);
 
             default ->
                     throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
@@ -254,14 +254,14 @@ public class InputCommandListener {
         InputState inputState = updateInfo.getInputState();
 
         switch (inputState) {
-            case TRADES_EDIT_ONE_ITEM_ITEM_ID -> executorsService.execute(TradesOneItemSellEditStage2AskBoundaryPriceInput.class, updateInfo);
+            case TRADES_EDIT_ONE_ITEM_ITEM_ID -> executorsService.execute(TradeByItemIdManagerSellEditStage2AskBoundaryPriceInput.class, updateInfo);
 
             case TRADES_EDIT_ONE_ITEM_BOUNDARY_SELL_PRICE ->
-                    executorsService.execute(TradesOneItemSellEditStage3AskStartingPriceInput.class, updateInfo);
+                    executorsService.execute(TradeByItemIdManagerSellEditStage3AskStartingPriceInput.class, updateInfo);
 
-            case TRADES_EDIT_ONE_ITEM_STARTING_SELL_PRICE -> executorsService.execute(TradesOneItemSellEditStage4AskPriorityInput.class, updateInfo);
+            case TRADES_EDIT_ONE_ITEM_STARTING_SELL_PRICE -> executorsService.execute(TradeByItemIdManagerSellEditStage4AskPriorityInput.class, updateInfo);
 
-            case TRADES_EDIT_ONE_ITEM_PRIORITY -> executorsService.execute(TradesOneItemSellEditStage5AskConfirmationInput.class, updateInfo);
+            case TRADES_EDIT_ONE_ITEM_PRIORITY -> executorsService.execute(TradeByItemIdManagerSellEditStage5AskConfirmationInput.class, updateInfo);
 
             default ->
                     throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
@@ -273,21 +273,21 @@ public class InputCommandListener {
 
         switch (inputState) {
             case TRADES_EDIT_ONE_ITEM_ITEM_ID ->
-                    executorsService.execute(TradesOneItemBuyAndSellEditStage2AskBoundarySellPriceInput.class, updateInfo);
+                    executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage2AskBoundarySellPriceInput.class, updateInfo);
 
             case TRADES_EDIT_ONE_ITEM_BOUNDARY_SELL_PRICE ->
-                    executorsService.execute(TradesOneItemBuyAndSellEditStage3AskStartingSellPriceInput.class, updateInfo);
+                    executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage3AskStartingSellPriceInput.class, updateInfo);
 
             case TRADES_EDIT_ONE_ITEM_STARTING_SELL_PRICE ->
-                    executorsService.execute(TradesOneItemBuyAndSellEditStage4AskBoundaryBuyPriceInput.class, updateInfo);
+                    executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage4AskBoundaryBuyPriceInput.class, updateInfo);
 
             case TRADES_EDIT_ONE_ITEM_STARTING_BUY_PRICE ->
-                    executorsService.execute(TradesOneItemBuyAndSellEditStage5AskStartingBuyPriceInput.class, updateInfo);
+                    executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage5AskStartingBuyPriceInput.class, updateInfo);
 
             case TRADES_EDIT_ONE_ITEM_BOUNDARY_BUY_PRICE ->
-                    executorsService.execute(TradesOneItemBuyAndSellEditStage6AskPriorityInput.class, updateInfo);
+                    executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage6AskPriorityInput.class, updateInfo);
 
-            case TRADES_EDIT_ONE_ITEM_PRIORITY -> executorsService.execute(TradesOneItemBuyAndSellEditStage7AskConfirmationInput.class, updateInfo);
+            case TRADES_EDIT_ONE_ITEM_PRIORITY -> executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage7AskConfirmationInput.class, updateInfo);
 
             default ->
                     throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());

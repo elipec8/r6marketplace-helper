@@ -276,10 +276,10 @@ public class BotInnerService {
         return tradeManagerFromInputsMapper.mapToTradeManagerByItemId(
                 inputs,
                 tradeType,
-                getItemByUserInputTradeByItemIdManagerEdit(chatId));
+                getItemByUserInputItemId(chatId));
     }
 
-    public Item getItemByUserInputTradeByItemIdManagerEdit(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
+    public Item getItemByUserInputItemId(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         return itemStatsService.getItemById(getUserInputByState(chatId, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID));
     }
 

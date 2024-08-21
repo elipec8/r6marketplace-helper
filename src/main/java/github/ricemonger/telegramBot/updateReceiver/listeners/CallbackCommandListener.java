@@ -25,17 +25,17 @@ import github.ricemonger.telegramBot.executors.items.settings.shownFields.ItemsS
 import github.ricemonger.telegramBot.executors.items.show.ItemsShowStage1AskOffsetCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.TradeManagersDirect;
 import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.TradesEditCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.TradesOneItemEditCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy.TradesOneItemBuyEditStage1AskItemIdCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy.TradesOneItemBuyEditStage6FinishCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buyAndSell.TradesOneItemBuyAndSellEditStage1AskItemIdCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buyAndSell.TradesOneItemBuyAndSellEditStage8FinishCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage1AskItemIdCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell.TradesOneItemSellEditStage6FinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.TradeByItemIdManagerAskTypeEditCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy.TradeByItemIdManagerBuyEditStage1AskItemIdCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy.TradeByItemIdManagerBuyEditStage6FinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buyAndSell.TradeByItemIdManagerBuyAndSellEditStage1AskItemIdCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buyAndSell.TradeByItemIdManagerBuyAndSellEditStage8FinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell.TradeByItemIdManagerSellEditStage1AskItemIdCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell.TradeByItemIdManagerSellEditStage6FinishCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.settings.TradesSettingsCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeManagersByItemFiltersShowAllCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeManagersByItemIdShowAllCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeManagersShowCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeByFiltersManagersShowAllCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeByItemIdManagersShowAllCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeManagersChooseTypeCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemId.TradeManagersByItemIdRemoveStage1AskItemIdCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemId.TradeManagersByItemIdRemoveStage3FinishCallback;
 import github.ricemonger.telegramBot.executors.start.startYes.StartYesCallback;
@@ -107,29 +107,29 @@ public class CallbackCommandListener {
 
             case Callbacks.TRADE_EDIT -> executorsService.execute(TradesEditCallback.class, updateInfo);
 
-            case Callbacks.TRADES_EDIT_ONE_ITEM -> executorsService.execute(TradesOneItemEditCallback.class, updateInfo);
+            case Callbacks.TRADES_EDIT_ONE_ITEM -> executorsService.execute(TradeByItemIdManagerAskTypeEditCallback.class, updateInfo);
 
-            case Callbacks.TRADES_EDIT_ONE_ITEM_TYPE_BUY -> executorsService.execute(TradesOneItemBuyEditStage1AskItemIdCallback.class, updateInfo);
+            case Callbacks.TRADES_EDIT_ONE_ITEM_TYPE_BUY -> executorsService.execute(TradeByItemIdManagerBuyEditStage1AskItemIdCallback.class, updateInfo);
 
-            case Callbacks.TRADES_EDIT_ONE_ITEM_BUY_FINISH -> executorsService.execute(TradesOneItemBuyEditStage6FinishCallback.class, updateInfo);
+            case Callbacks.TRADES_EDIT_ONE_ITEM_BUY_FINISH -> executorsService.execute(TradeByItemIdManagerBuyEditStage6FinishCallback.class, updateInfo);
 
-            case Callbacks.TRADES_EDIT_ONE_ITEM_TYPE_SELL -> executorsService.execute(TradesOneItemSellEditStage1AskItemIdCallback.class, updateInfo);
+            case Callbacks.TRADES_EDIT_ONE_ITEM_TYPE_SELL -> executorsService.execute(TradeByItemIdManagerSellEditStage1AskItemIdCallback.class, updateInfo);
 
-            case Callbacks.TRADES_EDIT_ONE_ITEM_SELL_FINISH -> executorsService.execute(TradesOneItemSellEditStage6FinishCallback.class, updateInfo);
+            case Callbacks.TRADES_EDIT_ONE_ITEM_SELL_FINISH -> executorsService.execute(TradeByItemIdManagerSellEditStage6FinishCallback.class, updateInfo);
 
             case Callbacks.TRADES_EDIT_ONE_ITEM_TYPE_BUY_AND_SELL ->
-                    executorsService.execute(TradesOneItemBuyAndSellEditStage1AskItemIdCallback.class, updateInfo);
+                    executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage1AskItemIdCallback.class, updateInfo);
 
-            case Callbacks.TRADES_EDIT_ONE_ITEM_BUY_AND_SELL_FINISH -> executorsService.execute(TradesOneItemBuyAndSellEditStage8FinishCallback.class,
+            case Callbacks.TRADES_EDIT_ONE_ITEM_BUY_AND_SELL_FINISH -> executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage8FinishCallback.class,
                     updateInfo);
 
             case Callbacks.TRADES_SETTINGS -> executorsService.execute(TradesSettingsCallback.class, updateInfo);
 
-            case Callbacks.TRADES_SHOW_OR_REMOVE -> executorsService.execute(TradeManagersShowCallback.class, updateInfo);
+            case Callbacks.TRADES_SHOW_OR_REMOVE -> executorsService.execute(TradeManagersChooseTypeCallback.class, updateInfo);
 
-            case Callbacks.TRADES_SHOW_BY_ITEM_FILTERS -> executorsService.execute(TradeManagersByItemFiltersShowAllCallback.class, updateInfo);
+            case Callbacks.TRADES_SHOW_BY_ITEM_FILTERS -> executorsService.execute(TradeByFiltersManagersShowAllCallback.class, updateInfo);
 
-            case Callbacks.TRADES_SHOW_BY_ITEM_ID -> executorsService.execute(TradeManagersByItemIdShowAllCallback.class, updateInfo);
+            case Callbacks.TRADES_SHOW_BY_ITEM_ID -> executorsService.execute(TradeByItemIdManagersShowAllCallback.class, updateInfo);
 
             case Callbacks.TRADES_REMOVE_BY_ITEM_ID -> executorsService.execute(TradeManagersByItemIdRemoveStage1AskItemIdCallback.class, updateInfo);
 

@@ -1,4 +1,4 @@
-package github.ricemonger.telegramBot.executors.tradeManagers;
+package github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem;
 
 import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
@@ -10,13 +10,13 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-class TradeManagersDirectTest {
+class TradeByItemIdManagerAskTypeEditCallbackTest {
     @MockBean
     private BotInnerService botInnerService;
 
     @Test
     public void initAndExecute_should_ask_from_keyboard() {
-        TradeManagersDirect commandExecutor = new TradeManagersDirect();
+        TradeByItemIdManagerAskTypeEditCallback commandExecutor = new TradeByItemIdManagerAskTypeEditCallback();
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
         verify(botInnerService).askFromInlineKeyboard(eq(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());

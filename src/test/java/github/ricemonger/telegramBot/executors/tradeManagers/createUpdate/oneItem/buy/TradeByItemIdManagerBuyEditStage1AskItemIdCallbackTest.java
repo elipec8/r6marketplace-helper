@@ -1,4 +1,4 @@
-package github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemId;
+package github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy;
 
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
@@ -13,18 +13,18 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-class TradeManagersByItemIdRemoveStage1AskItemIdCallbackTest {
+class TradeByItemIdManagerBuyEditStage1AskItemIdCallbackTest {
     @MockBean
     private BotInnerService botInnerService;
 
     @Test
     public void initAndExecute_should_process_first_input() {
-        TradeManagersByItemIdRemoveStage1AskItemIdCallback commandExecutor = new TradeManagersByItemIdRemoveStage1AskItemIdCallback();
+        TradeByItemIdManagerBuyEditStage1AskItemIdCallback commandExecutor = new TradeByItemIdManagerBuyEditStage1AskItemIdCallback();
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
         verify(botInnerService).clearUserInputs(MockUpdateInfos.UPDATE_INFO.getChatId());
         verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID);
-        verify(botInnerService).setUserInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.TRADES_REMOVE_ITEM_ID);
+        verify(botInnerService).setUserInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.TRADES_EDIT_ONE_ITEM_BUY);
 
         verify(botInnerService).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());
     }

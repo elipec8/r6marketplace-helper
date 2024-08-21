@@ -1,0 +1,13 @@
+package github.ricemonger.telegramBot.executors.tradeManagers.showRemove;
+
+import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
+import github.ricemonger.utils.dtos.TradeByFiltersManager;
+
+import java.util.Collection;
+
+public class TradeByFiltersManagersShowAllCallback extends AbstractBotCommandExecutor {
+    @Override
+    protected void executeCommand() {
+        Collection<TradeByFiltersManager> tradeManagers = botInnerService.getAllUserTradeByFiltersManagers(updateInfo.getChatId());
+    }
+}

@@ -1,0 +1,22 @@
+package github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell;
+
+import github.ricemonger.telegramBot.InputState;
+import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
+import github.ricemonger.utils.exceptions.ItemNotFoundException;
+
+public class TradeByItemIdManagerSellEditStage2AskBoundaryPriceInput extends AbstractBotCommandExecutor {
+    @Override
+    protected void executeCommand() {
+        processMiddleInput(InputState.TRADES_EDIT_ONE_ITEM_BOUNDARY_SELL_PRICE);
+
+        try {
+            sendText("Chosen item is:\n" + botInnerService.getItemByUserInputItemId(updateInfo.getChatId()));
+        } catch (ItemNotFoundException e) {
+            sendText("Item not found. Please enter correct item id.");
+            cancel();
+            return;
+        }
+
+        sendText("Please enter boundary price to sell item(If value is invalid, (current min sell price - 1) will be used):");
+    }
+}

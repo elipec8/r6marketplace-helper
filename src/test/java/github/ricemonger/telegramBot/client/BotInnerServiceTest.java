@@ -985,26 +985,26 @@ public class BotInnerServiceTest {
     }
 
     @Test
-    public void getItemByUserInputTradeByItemIdManagerEdit_should_return_service_result() {
+    public void getItemByUserInputItemId_should_return_service_result() {
         Item item = new Item();
         item.setName("item_name");
 
         when(telegramUserService.getUserInputByState(1L, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID)).thenReturn("item_id");
         when(itemStatsService.getItemById("item_id")).thenReturn(item);
 
-        assertEquals(item, botInnerService.getItemByUserInputTradeByItemIdManagerEdit(1L));
+        assertEquals(item, botInnerService.getItemByUserInputItemId(1L));
     }
 
     @Test
-    public void getItemByUserInputTradeByItemIdManagerEdit_should_throw_if_item_service_throws() {
+    public void getItemByUserInputTradeByItemIdManagerEdit_should_throw_if_UserInput_item_service_throws() {
         doThrow(new RuntimeException()).when(itemStatsService).getItemById(any());
-        assertThrows(RuntimeException.class, () -> botInnerService.getItemByUserInputTradeByItemIdManagerEdit(1L));
+        assertThrows(RuntimeException.class, () -> botInnerService.getItemByUserInputItemId(1L));
     }
 
     @Test
-    public void getItemByUserInputTradeByItemIdManagerEdit_should_throw_if_user_service_throws() {
+    public void getItemByUserInputTradeByItemIdManagerEdit_should_throw_if_user_service_throwsUserInput() {
         doThrow(new RuntimeException()).when(telegramUserService).getUserInputByState(any(), any());
-        assertThrows(RuntimeException.class, () -> botInnerService.getItemByUserInputTradeByItemIdManagerEdit(1L));
+        assertThrows(RuntimeException.class, () -> botInnerService.getItemByUserInputItemId(1L));
     }
 
     @Test
