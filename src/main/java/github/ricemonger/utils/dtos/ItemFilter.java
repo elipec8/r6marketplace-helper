@@ -66,6 +66,18 @@ public class ItemFilter {
         }
     }
 
+    public Collection<Item> filterItems(Collection<Item> items) {
+        return items.stream()
+                .filter(item -> this.itemNamePatterns == null || this.itemNamePatterns.isEmpty() || this.itemNamePatterns.stream().anyMatch(s -> item.getName().toLowerCase().contains(s.toLowerCase())))
+                .filter(item -> this.itemTypes == null || this.itemTypes.isEmpty() || this.itemTypes.contains(item.getType()))
+                .filter(item -> this.tags == null || this.tags.isEmpty() || this.tags.stream().anyMatch(tag -> item.getTags().contains(tag.getValue())))
+                .filter(item -> this.minPrice == null || item.getMinSellPrice() >= this.minPrice)
+                .filter(item -> this.maxPrice == null || item.getMaxBuyPrice() <= this.maxPrice)
+                .filter(item -> this.minLastSoldPrice == null || item.getLastSoldPrice() >= this.minLastSoldPrice)
+                .filter(item -> this.maxLastSoldPrice == null || item.getLastSoldPrice() <= this.maxLastSoldPrice)
+                .toList();
+    }
+
     public String getItemNamePatternsAsString() {
         return getListAsString(itemNamePatterns);
     }
@@ -78,7 +90,7 @@ public class ItemFilter {
         if (itemTypes == null || itemTypes.isEmpty()) {
             return "";
         } else {
-            return String.join(",", itemTypes.stream().map(ItemType::name).toList());
+            return String.join(", ", itemTypes.stream().map(ItemType::name).toList());
         }
     }
 
@@ -86,42 +98,12 @@ public class ItemFilter {
         if (itemTypes == null || itemTypes.isEmpty()) {
             this.itemTypes = List.of();
         } else {
-            this.itemTypes = Stream.of(itemTypes.split("[,|]")).map(s -> ItemType.valueOf(s.replaceAll("[^a-zA-Z1-9]+", ""))).toList();
+            this.itemTypes = Stream.of(itemTypes.split("[,|]")).map(s -> ItemType.valueOf(s.replaceAll("[^a-zA-Z1-9]+", "").trim())).toList();
         }
     }
 
     public void addTags(Collection<Tag> tagsFromNames) {
         this.tags.addAll(tagsFromNames);
-    }
-
-    private String getListAsString(List<String> list) {
-        if (list == null || list.isEmpty()) {
-            return "";
-        } else {
-            return String.join(",", list.stream().map(String::trim).toList());
-        }
-    }
-
-    private List<String> getListFromString(String string) {
-        if (string == null || string.isEmpty()) {
-            return List.of();
-        } else {
-            String[] split = string.trim().split("[,|]");
-
-            return Arrays.stream(split).map(String::trim).toList();
-        }
-    }
-
-    public Collection<Item> filterItems(Collection<Item> items) {
-        return items.stream()
-                .filter(item -> this.itemNamePatterns.stream().anyMatch(s -> item.getName().toLowerCase().contains(s.toLowerCase())))
-                .filter(item -> this.itemTypes.isEmpty() || this.itemTypes.contains(item.getType()))
-                .filter(item -> this.tags.isEmpty() || this.tags.stream().anyMatch(tag -> item.getTags().contains(tag.getValue())))
-                .filter(item -> this.minPrice == null || item.getMinSellPrice() >= this.minPrice)
-                .filter(item -> this.maxPrice == null || item.getMaxBuyPrice() <= this.maxPrice)
-                .filter(item -> this.minLastSoldPrice == null || item.getLastSoldPrice() >= this.minLastSoldPrice)
-                .filter(item -> this.maxLastSoldPrice == null || item.getLastSoldPrice() <= this.maxLastSoldPrice)
-                .toList();
     }
 
     public String toString() {
@@ -130,13 +112,17 @@ public class ItemFilter {
         String isOwned = String.valueOf(this.isOwned);
         String itemNamePatterns = this.getItemNamePatternsAsString();
         String itemTypes = this.getItemTypesAsString();
-        String rarityTags = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Rarity)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
-        String seasonTags = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Season)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
-        String operatorTags = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Operator)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
-        String weaponTags = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Weapon)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
-        String eventTags = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Event)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
-        String esportsTags = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Esports_Team)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
-        String otherTags = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Other)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
+        List<Tag> tagsList = tags;
+        if (tags == null) {
+            tagsList = new ArrayList<>();
+        }
+        String rarityTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Rarity)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
+        String seasonTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Season)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
+        String operatorTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Operator)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
+        String weaponTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Weapon)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
+        String eventTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Event)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
+        String esportsTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Esports_Team)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
+        String otherTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Other)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
         String minPrice = String.valueOf(this.minPrice);
         String maxPrice = String.valueOf(this.maxPrice);
         String minLastSoldPrice = String.valueOf(this.minLastSoldPrice);
@@ -159,5 +145,23 @@ public class ItemFilter {
                     "Min last sold price: " + minLastSoldPrice + "\n" +
                     "Max last sold price: " + maxLastSoldPrice + "\n";
         return sb;
+    }
+
+    private String getListAsString(List<String> list) {
+        if (list == null || list.isEmpty()) {
+            return "";
+        } else {
+            return String.join(", ", list.stream().map(String::trim).toList());
+        }
+    }
+
+    private List<String> getListFromString(String string) {
+        if (string == null || string.isEmpty()) {
+            return List.of();
+        } else {
+            String[] split = string.trim().split("[,|]");
+
+            return Arrays.stream(split).map(String::trim).toList();
+        }
     }
 }
