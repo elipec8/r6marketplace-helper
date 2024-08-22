@@ -24,15 +24,15 @@ import github.ricemonger.telegramBot.executors.items.settings.messageLimit.Items
 import github.ricemonger.telegramBot.executors.items.settings.shownFields.ItemsShowSettingsChangeShownFieldsStage1AskNameFlagCallback;
 import github.ricemonger.telegramBot.executors.items.show.ItemsShowStage1AskOffsetCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.TradeManagersDirect;
-import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.TradesEditCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.TradeByItemIdManagerAskTypeEditCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.TradeManagersEditAskManagerTypeCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.TradeByItemIdManagerEditAskTradeTypeCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy.TradeByItemIdManagerBuyEditStage1AskItemIdCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buy.TradeByItemIdManagerBuyEditStage6FinishCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buyAndSell.TradeByItemIdManagerBuyAndSellEditStage1AskItemIdCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buyAndSell.TradeByItemIdManagerBuyAndSellEditStage8FinishCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell.TradeByItemIdManagerSellEditStage1AskItemIdCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.sell.TradeByItemIdManagerSellEditStage6FinishCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.settings.TradesSettingsCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.TradeManagersSettingsCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeByFiltersManagersShowAllCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeByItemIdManagersShowAllCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeManagersChooseTypeCallback;
@@ -105,9 +105,9 @@ public class CallbackCommandListener {
 
             case Callbacks.TRADES -> executorsService.execute(TradeManagersDirect.class, updateInfo);
 
-            case Callbacks.TRADE_EDIT -> executorsService.execute(TradesEditCallback.class, updateInfo);
+            case Callbacks.TRADE_EDIT -> executorsService.execute(TradeManagersEditAskManagerTypeCallback.class, updateInfo);
 
-            case Callbacks.TRADES_EDIT_ONE_ITEM -> executorsService.execute(TradeByItemIdManagerAskTypeEditCallback.class, updateInfo);
+            case Callbacks.TRADES_EDIT_ONE_ITEM -> executorsService.execute(TradeByItemIdManagerEditAskTradeTypeCallback.class, updateInfo);
 
             case Callbacks.TRADES_EDIT_ONE_ITEM_TYPE_BUY -> executorsService.execute(TradeByItemIdManagerBuyEditStage1AskItemIdCallback.class, updateInfo);
 
@@ -123,7 +123,7 @@ public class CallbackCommandListener {
             case Callbacks.TRADES_EDIT_ONE_ITEM_BUY_AND_SELL_FINISH -> executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage8FinishCallback.class,
                     updateInfo);
 
-            case Callbacks.TRADES_SETTINGS -> executorsService.execute(TradesSettingsCallback.class, updateInfo);
+            case Callbacks.TRADES_SETTINGS -> executorsService.execute(TradeManagersSettingsCallback.class, updateInfo);
 
             case Callbacks.TRADES_SHOW_OR_REMOVE -> executorsService.execute(TradeManagersChooseTypeCallback.class, updateInfo);
 

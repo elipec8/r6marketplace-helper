@@ -4,7 +4,7 @@ import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.client.CallbackButton;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 
-public class TradesEditCallback extends AbstractBotCommandExecutor {
+public class TradeManagersEditAskManagerTypeCallback extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
         CallbackButton oneItem = new CallbackButton("One Item", Callbacks.TRADES_EDIT_ONE_ITEM);
