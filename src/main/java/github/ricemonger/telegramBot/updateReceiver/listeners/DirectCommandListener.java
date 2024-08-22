@@ -3,7 +3,7 @@ package github.ricemonger.telegramBot.updateReceiver.listeners;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.ExecutorsService;
 import github.ricemonger.telegramBot.executors.cancel.Cancel;
-import github.ricemonger.telegramBot.executors.credentials.CredentialsDirect;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.UbiAccountEntryDirect;
 import github.ricemonger.telegramBot.executors.help.HelpDirect;
 import github.ricemonger.telegramBot.executors.itemFilters.ItemFiltersDirect;
 import github.ricemonger.telegramBot.executors.items.ItemsDirect;
@@ -38,7 +38,7 @@ public class DirectCommandListener {
 
             case "/itemFilters" -> executorsService.execute(ItemFiltersDirect.class, updateInfo);
 
-            case "/credentials" -> executorsService.execute(CredentialsDirect.class, updateInfo);
+            case "/credentials" -> executorsService.execute(UbiAccountEntryDirect.class, updateInfo);
 
             case "/cancel" -> executorsService.execute(Cancel.class, updateInfo);
 

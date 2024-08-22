@@ -26,7 +26,7 @@ class ItemsShowSettingsChangeMessageLimitFinishInputTest {
         ItemsShowSettingsChangeMessageLimitFinishInput commandExecutor = new ItemsShowSettingsChangeMessageLimitFinishInput();
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService).setUserItemShowSettingsMessageLimitByUserInput(MockUpdateInfos.UPDATE_INFO.getChatId());
+        verify(botInnerService).setUserItemShowSettingsMessageLimitOrEdgeValueByUserInput(MockUpdateInfos.UPDATE_INFO.getChatId());
 
         verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO);
         verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.BASE);

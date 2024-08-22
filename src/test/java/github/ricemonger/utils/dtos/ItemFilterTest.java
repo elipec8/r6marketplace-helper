@@ -33,6 +33,7 @@ class ItemFilterTest {
         allItems.add(createItem("test6", ItemType.WeaponSkin, List.of("value1"), 110, 190, 150));
         allItems.add(createItem("test9", ItemType.Charm, List.of("value1", "value2"), 100, 200, 50));
         allItems.add(createItem("test3", ItemType.WeaponSkin, List.of("value1", "value2"), 100, 200, 50));
+        allItems.add(createItem("test7", ItemType.WeaponSkin, List.of("value1"), 110, 190, 150));
 
         ItemFilter allowFilter1 = new ItemFilter();
         allowFilter1.setFilterType(FilterType.ALLOW);

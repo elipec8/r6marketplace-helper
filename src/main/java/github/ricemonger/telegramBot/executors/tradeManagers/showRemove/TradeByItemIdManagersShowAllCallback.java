@@ -15,7 +15,7 @@ public class TradeByItemIdManagersShowAllCallback extends AbstractBotCommandExec
 
         askYesOrNoFromInlineKeyboard(
                 "Do you want to remove any of these trade managers?",
-                Callbacks.TRADES_REMOVE_BY_ITEM_ID,
-                Callbacks.SILENT_CANCEL);
+                Callbacks.TRADE_BY_ITEM_ID_MANAGER_REMOVE,
+                Callbacks.CANCEL_SILENT);
     }
 }

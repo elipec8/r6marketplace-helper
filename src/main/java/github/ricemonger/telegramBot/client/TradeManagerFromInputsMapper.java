@@ -18,12 +18,12 @@ public class TradeManagerFromInputsMapper {
     private final ProfitAndPriorityCalculator profitAndPriorityCalculator;
 
     public TradeByItemIdManager mapToTradeManagerByItemId(Collection<TelegramUserInput> inputs, TradeManagerTradeType tradeType, Item item) {
-        String itemId = getValueByState(inputs, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID);
-        String startingSellPrice = getValueByState(inputs, InputState.TRADES_EDIT_ONE_ITEM_STARTING_SELL_PRICE);
-        String boundarySellPrice = getValueByState(inputs, InputState.TRADES_EDIT_ONE_ITEM_BOUNDARY_SELL_PRICE);
-        String startingBuyPrice = getValueByState(inputs, InputState.TRADES_EDIT_ONE_ITEM_STARTING_BUY_PRICE);
-        String boundaryBuyPrice = getValueByState(inputs, InputState.TRADES_EDIT_ONE_ITEM_BOUNDARY_BUY_PRICE);
-        String priority = getValueByState(inputs, InputState.TRADES_EDIT_ONE_ITEM_PRIORITY);
+        String itemId = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID);
+        String startingSellPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_SELL_PRICE);
+        String boundarySellPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+        String startingBuyPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_BUY_PRICE);
+        String boundaryBuyPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_BUY_PRICE);
+        String priority = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_PRIORITY);
 
         int limitMinPrice = item.getLimitMinPrice();
         int limitMaxPrice = item.getLimitMaxPrice();

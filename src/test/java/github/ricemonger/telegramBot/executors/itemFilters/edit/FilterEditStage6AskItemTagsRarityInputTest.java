@@ -25,7 +25,7 @@ class FilterEditStage6AskItemTagsRarityInputTest {
         verify(botInnerService, times(0)).sendText(any(), anyString());
 
         verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO);
-        verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.FILTER_ITEM_TAGS_RARITY);
+        verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.ITEM_FILTER_ITEM_TAGS_RARITY);
 
         verify(botInnerService).askFromInlineKeyboard(
                 eq(MockUpdateInfos.UPDATE_INFO),

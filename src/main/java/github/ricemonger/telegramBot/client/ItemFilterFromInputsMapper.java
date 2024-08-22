@@ -30,36 +30,36 @@ public class ItemFilterFromInputsMapper {
     private final TagService tagService;
 
     public ItemFilter mapToItemFilter(Collection<TelegramUserInput> inputs) {
-        String name = getValueByState(inputs, InputState.FILTER_NAME);
-        String filterTypeString = getValueByState(inputs, InputState.FILTER_TYPE);
-        String isOwnedString = getValueByState(inputs, InputState.FILTER_IS_OWNED);
-        String itemNamePatternsString = getValueByState(inputs, InputState.FILTER_ITEM_NAME_PATTERNS);
-        String itemTypesString = getValueByState(inputs, InputState.FILTER_ITEM_TYPES);
-        String rarityTagsString = getValueByState(inputs, InputState.FILTER_ITEM_TAGS_RARITY);
-        String seasonTagsString = getValueByState(inputs, InputState.FILTER_ITEM_TAGS_SEASONS);
-        String operatorTagsString = getValueByState(inputs, InputState.FILTER_ITEM_TAGS_OPERATORS);
-        String weaponTagsString = getValueByState(inputs, InputState.FILTER_ITEM_TAGS_WEAPONS);
-        String eventTagsString = getValueByState(inputs, InputState.FILTER_ITEM_TAGS_EVENTS);
-        String esportsTagsString = getValueByState(inputs, InputState.FILTER_ITEM_TAGS_ESPORTS);
-        String otherTagsString = getValueByState(inputs, InputState.FILTER_ITEM_TAGS_OTHER);
-        String minPriceString = getValueByState(inputs, InputState.FILTER_MIN_PRICE);
-        String maxPriceString = getValueByState(inputs, InputState.FILTER_MAX_PRICE);
-        String minLastSoldPriceString = getValueByState(inputs, InputState.FILTER_MIN_LAST_SOLD_PRICE);
-        String maxLastSoldPriceString = getValueByState(inputs, InputState.FILTER_MAX_LAST_SOLD_PRICE);
+        String name = getValueByState(inputs, InputState.ITEM_FILTER_NAME);
+        String filterTypeString = getValueByState(inputs, InputState.ITEM_FILTER_TYPE);
+        String isOwnedString = getValueByState(inputs, InputState.ITEM_FILTER_IS_OWNED);
+        String itemNamePatternsString = getValueByState(inputs, InputState.ITEM_FILTER_ITEM_NAME_PATTERNS);
+        String itemTypesString = getValueByState(inputs, InputState.ITEM_FILTER_ITEM_TYPES);
+        String rarityTagsString = getValueByState(inputs, InputState.ITEM_FILTER_ITEM_TAGS_RARITY);
+        String seasonTagsString = getValueByState(inputs, InputState.ITEM_FILTER_ITEM_TAGS_SEASONS);
+        String operatorTagsString = getValueByState(inputs, InputState.ITEM_FILTER_ITEM_TAGS_OPERATORS);
+        String weaponTagsString = getValueByState(inputs, InputState.ITEM_FILTER_ITEM_TAGS_WEAPONS);
+        String eventTagsString = getValueByState(inputs, InputState.ITEM_FILTER_ITEM_TAGS_EVENTS);
+        String esportsTagsString = getValueByState(inputs, InputState.ITEM_FILTER_ITEM_TAGS_ESPORTS);
+        String otherTagsString = getValueByState(inputs, InputState.ITEM_FILTER_ITEM_TAGS_OTHER);
+        String minPriceString = getValueByState(inputs, InputState.ITEM_FILTER_MIN_PRICE);
+        String maxPriceString = getValueByState(inputs, InputState.ITEM_FILTER_MAX_PRICE);
+        String minLastSoldPriceString = getValueByState(inputs, InputState.ITEM_FILTER_MIN_LAST_SOLD_PRICE);
+        String maxLastSoldPriceString = getValueByState(inputs, InputState.ITEM_FILTER_MAX_LAST_SOLD_PRICE);
 
         ItemFilter itemFilter = new ItemFilter();
 
         itemFilter.setName(name);
 
-        if (filterTypeString.equals(Callbacks.FILTER_TYPE_DENY)) {
+        if (filterTypeString.equals(Callbacks.ITEM_FILTER_TYPE_DENY)) {
             itemFilter.setFilterType(FilterType.DENY);
         } else {
             itemFilter.setFilterType(FilterType.ALLOW);
         }
 
-        if (isOwnedString.equals(Callbacks.FILTER_ITEM_IS_OWNED)) {
+        if (isOwnedString.equals(Callbacks.ITEM_FILTER_ITEM_IS_OWNED)) {
             itemFilter.setIsOwned(IsOwnedFilter.OWNED);
-        } else if (isOwnedString.equals(Callbacks.FILTER_ITEM_IS_NOT_OWNED)) {
+        } else if (isOwnedString.equals(Callbacks.ITEM_FILTER_ITEM_IS_NOT_OWNED)) {
             itemFilter.setIsOwned(IsOwnedFilter.NOT_OWNED);
         } else {
             itemFilter.setIsOwned(IsOwnedFilter.ANY);

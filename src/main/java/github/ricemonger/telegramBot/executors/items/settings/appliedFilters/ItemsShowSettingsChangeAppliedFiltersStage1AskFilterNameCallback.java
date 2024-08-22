@@ -13,7 +13,7 @@ import java.util.List;
 public class ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallback extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        processFirstInput(InputState.FILTER_NAME, InputGroup.ITEMS_SHOW_SETTING_APPLIED_FILTERS_CHANGE);
+        processFirstInput(InputState.ITEM_FILTER_NAME, InputGroup.ITEMS_SHOW_SETTING_CHANGE_APPLIED_FILTERS);
 
         List<String> appliedFilters =
                 botInnerService.getUserItemShowSettings(updateInfo.getChatId()).getItemShowAppliedFilters().stream().map(ItemFilter::getName).toList();

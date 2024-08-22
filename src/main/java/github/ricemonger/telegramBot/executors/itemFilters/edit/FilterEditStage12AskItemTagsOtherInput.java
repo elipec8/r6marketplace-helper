@@ -7,7 +7,7 @@ import github.ricemonger.utils.enums.TagGroup;
 public class FilterEditStage12AskItemTagsOtherInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        processMiddleInput(InputState.FILTER_ITEM_TAGS_OTHER);
+        processMiddleInput(InputState.ITEM_FILTER_ITEM_TAGS_OTHER);
         String tags = botInnerService.getStringOfAllTagsNamesByTagGroup(TagGroup.Other);
         askFromInlineKeyboardOrSkip("Please enter tags, dived by \",\" or \"|\". Tags' list:\n" + tags, 1);
     }

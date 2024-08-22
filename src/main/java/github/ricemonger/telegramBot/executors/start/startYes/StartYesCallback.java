@@ -13,8 +13,8 @@ public class StartYesCallback extends AbstractBotCommandExecutor {
             botInnerService.registerUser(updateInfo.getChatId());
             askYesOrNoFromInlineKeyboard(
                     "You were successfully registered, would you like to add your first Ubisoft Credentials?",
-                    Callbacks.CREDENTIALS_ADD,
-                    Callbacks.SILENT_CANCEL);
+                    Callbacks.UBI_ACCOUNT_ENTRY_LINK,
+                    Callbacks.CANCEL_SILENT);
         }
     }
 }

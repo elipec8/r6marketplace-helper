@@ -110,7 +110,7 @@ public class UpdateInfoMapperTest {
         TelegramUser telegramUser = new TelegramUser();
         telegramUser.setChatId("1");
         telegramUser.setInputState(InputState.ITEMS_SHOW_OFFSET);
-        telegramUser.setInputGroup(InputGroup.CREDENTIALS_ADD);
+        telegramUser.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
 
         when(telegramUserService.isTelegramUserRegistered(any())).thenReturn(true);
         when(telegramUserService.getTelegramUser(any())).thenReturn(telegramUser);
@@ -121,7 +121,7 @@ public class UpdateInfoMapperTest {
         expected.setHasMessage(true);
         expected.setMessageText("callback_message_text");
         expected.setInputState(InputState.ITEMS_SHOW_OFFSET);
-        expected.setInputGroup(InputGroup.CREDENTIALS_ADD);
+        expected.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
         expected.setHasCallBackQuery(true);
         expected.setCallbackQueryData("callback_data");
 

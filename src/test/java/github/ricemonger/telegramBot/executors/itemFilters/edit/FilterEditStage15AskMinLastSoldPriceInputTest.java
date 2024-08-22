@@ -24,7 +24,7 @@ class FilterEditStage15AskMinLastSoldPriceInputTest {
         verify(botInnerService, times(0)).sendText(any(), anyString());
 
         verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO);
-        verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.FILTER_MIN_LAST_SOLD_PRICE);
+        verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.ITEM_FILTER_MIN_LAST_SOLD_PRICE);
 
         verify(botInnerService).askFromInlineKeyboard(
                 eq(MockUpdateInfos.UPDATE_INFO),

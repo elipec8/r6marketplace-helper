@@ -28,12 +28,12 @@ class TradeManagerFromInputsMapperTest {
     public void mapToTradeManagerByItemId_should_map_inputs_to_manager_with_valid_inputs() {
         String chatId = "chatId";
         List<TelegramUserInput> inputs = new ArrayList<>();
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID, "itemId"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_STARTING_SELL_PRICE, "160"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_BOUNDARY_SELL_PRICE, "120"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_STARTING_BUY_PRICE, "120"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_BOUNDARY_BUY_PRICE, "360"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_PRIORITY, "2"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID, "itemId"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_SELL_PRICE, "160"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE, "120"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_BUY_PRICE, "120"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_BUY_PRICE, "360"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_PRIORITY, "2"));
 
         TradeByItemIdManager expected = new TradeByItemIdManager();
         expected.setTradeType(TradeManagerTradeType.BUY);
@@ -57,12 +57,12 @@ class TradeManagerFromInputsMapperTest {
     public void mapToTradeManagerByItemId_should_map_inputs_to_manager_with_invalid_inputs() {
         String chatId = "chatId";
         List<TelegramUserInput> inputs = new ArrayList<>();
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID, ""));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_STARTING_SELL_PRICE, ""));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_BOUNDARY_SELL_PRICE, ""));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_STARTING_BUY_PRICE, ""));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_BOUNDARY_BUY_PRICE, ""));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_PRIORITY, ""));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID, ""));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_SELL_PRICE, ""));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE, ""));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_BUY_PRICE, ""));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_BUY_PRICE, ""));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_PRIORITY, ""));
 
         TradeByItemIdManager expected = new TradeByItemIdManager();
         expected.setTradeType(TradeManagerTradeType.SELL);
@@ -90,12 +90,12 @@ class TradeManagerFromInputsMapperTest {
     public void mapToTradeManagerByItemId_should_map_inputs_to_manager_with_wrong_conjunctions_of_prices() {
         String chatId = "chatId";
         List<TelegramUserInput> inputs = new ArrayList<>();
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID, "itemId"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_STARTING_SELL_PRICE, "150"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_BOUNDARY_SELL_PRICE, "161"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_STARTING_BUY_PRICE, "160"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_BOUNDARY_BUY_PRICE, "152"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_PRIORITY, "1"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID, "itemId"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_SELL_PRICE, "150"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE, "161"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_BUY_PRICE, "160"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_BUY_PRICE, "152"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_PRIORITY, "1"));
 
         TradeByItemIdManager expected = new TradeByItemIdManager();
         expected.setTradeType(TradeManagerTradeType.BUY_AND_SELL);
@@ -123,12 +123,12 @@ class TradeManagerFromInputsMapperTest {
     public void mapToTradeManagerByItemId_should_map_inputs_to_manager_with_out_of_limit_low_prices() {
         String chatId = "chatId";
         List<TelegramUserInput> inputs = new ArrayList<>();
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID, "itemId"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_STARTING_SELL_PRICE, "110"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_BOUNDARY_SELL_PRICE, "110"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_STARTING_BUY_PRICE, "110"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_BOUNDARY_BUY_PRICE, "110"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_PRIORITY, "1"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID, "itemId"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_SELL_PRICE, "110"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE, "110"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_BUY_PRICE, "110"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_BUY_PRICE, "110"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_PRIORITY, "1"));
 
         TradeByItemIdManager expected = new TradeByItemIdManager();
         expected.setTradeType(TradeManagerTradeType.BUY_AND_SELL);
@@ -156,12 +156,12 @@ class TradeManagerFromInputsMapperTest {
     public void mapToTradeManagerByItemId_should_map_inputs_to_manager_with_out_of_limit_high_prices() {
         String chatId = "chatId";
         List<TelegramUserInput> inputs = new ArrayList<>();
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID, "itemId"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_STARTING_SELL_PRICE, "151000"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_BOUNDARY_SELL_PRICE, "151000"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_STARTING_BUY_PRICE, "151000"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_BOUNDARY_BUY_PRICE, "151000"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADES_EDIT_ONE_ITEM_PRIORITY, "1"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID, "itemId"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_SELL_PRICE, "151000"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE, "151000"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_BUY_PRICE, "151000"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_BUY_PRICE, "151000"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_PRIORITY, "1"));
 
         TradeByItemIdManager expected = new TradeByItemIdManager();
         expected.setTradeType(TradeManagerTradeType.BUY_AND_SELL);

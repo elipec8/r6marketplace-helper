@@ -7,7 +7,7 @@ import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 public class FilterEditStage1AskNameCallback extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        processFirstInput(InputState.FILTER_NAME, InputGroup.FILTERS_EDIT, """
+        processFirstInput(InputState.ITEM_FILTER_NAME, InputGroup.ITEM_FILTER_EDIT, """
                 Please enter:
                 New name to crete new filter
                 OR

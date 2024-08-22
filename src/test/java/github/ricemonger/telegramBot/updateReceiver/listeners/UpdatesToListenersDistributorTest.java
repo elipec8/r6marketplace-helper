@@ -34,7 +34,7 @@ class UpdatesToListenersDistributorTest {
     @Test
     public void distribute_should_handle_to_InputCommandListener_when_Update_has_not_base_InputGroup() {
         UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setInputGroup(InputGroup.CREDENTIALS_ADD);
+        updateInfo.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
 
         updatesToListenersDistributor.distribute(updateInfo);
 
@@ -48,7 +48,7 @@ class UpdatesToListenersDistributorTest {
     @Test
     public void distribute_should_handle_to_InputCommandListener_when_Update_has_not_base_InputGroup_and_has_message() {
         UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setInputGroup(InputGroup.CREDENTIALS_ADD);
+        updateInfo.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
         updateInfo.setHasMessage(true);
 
         updatesToListenersDistributor.distribute(updateInfo);
@@ -63,7 +63,7 @@ class UpdatesToListenersDistributorTest {
     @Test
     public void distribute_should_handle_to_InputCommandListener_when_update_has_not_base_inputGroup_and_has_callbackQuery() {
         UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setInputGroup(InputGroup.CREDENTIALS_ADD);
+        updateInfo.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
         updateInfo.setHasCallBackQuery(true);
 
         updatesToListenersDistributor.distribute(updateInfo);
@@ -122,7 +122,7 @@ class UpdatesToListenersDistributorTest {
     @Test
     public void distribute_should_handle_to_ExceptionCommandListener_if_exception_was_thrown() {
         UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setInputGroup(InputGroup.CREDENTIALS_ADD);
+        updateInfo.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
         doThrow(InvalidUserInputStateAndGroupConjunctionException.class).when(inputCommandListener).handleUpdate(updateInfo);
 
         updatesToListenersDistributor.distribute(updateInfo);

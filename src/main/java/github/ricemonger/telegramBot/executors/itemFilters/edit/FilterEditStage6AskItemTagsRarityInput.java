@@ -7,7 +7,7 @@ import github.ricemonger.utils.enums.TagGroup;
 public class FilterEditStage6AskItemTagsRarityInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        processMiddleInput(InputState.FILTER_ITEM_TAGS_RARITY);
+        processMiddleInput(InputState.ITEM_FILTER_ITEM_TAGS_RARITY);
         String tags = botInnerService.getStringOfAllTagsNamesByTagGroup(TagGroup.Rarity);
         askFromInlineKeyboardOrSkip("Please enter rarities, dived by \",\" or \"|\". Rarities list:\n" + tags, 1);
     }

@@ -4,6 +4,7 @@ import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkStage2AskPasswordInput;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -19,8 +20,8 @@ class CredentialsAddPasswordInputTest {
 
     @Test
     public void initAndExecute_should_add_credentials_if_authorized_successfully() {
-        CredentialsAddPasswordInput credentialsAddPasswordInput = new CredentialsAddPasswordInput();
-        credentialsAddPasswordInput.initAndExecute(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT, botInnerService);
+        UbiAccountEntryLinkStage2AskPasswordInput ubiAccountEntryLinkStage2AskPasswordInput = new UbiAccountEntryLinkStage2AskPasswordInput();
+        ubiAccountEntryLinkStage2AskPasswordInput.initAndExecute(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT, botInnerService);
 
         verify(botInnerService).addUserUbiAccountEntryByUserInput(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT.getChatId());
 
@@ -31,9 +32,9 @@ class CredentialsAddPasswordInputTest {
 
     @Test
     public void initAndExecute_should_throw_exception_to_next_method_if_thrown() {
-        CredentialsAddPasswordInput credentialsAddPasswordInput = new CredentialsAddPasswordInput();
+        UbiAccountEntryLinkStage2AskPasswordInput ubiAccountEntryLinkStage2AskPasswordInput = new UbiAccountEntryLinkStage2AskPasswordInput();
         doThrow(new RuntimeException()).when(botInnerService).addUserUbiAccountEntryByUserInput(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT.getChatId());
 
-        assertThrows(RuntimeException.class, () -> credentialsAddPasswordInput.initAndExecute(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT, botInnerService));
+        assertThrows(RuntimeException.class, () -> ubiAccountEntryLinkStage2AskPasswordInput.initAndExecute(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT, botInnerService));
     }
 }

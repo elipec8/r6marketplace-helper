@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -52,10 +51,10 @@ class AbstractBotCommandExecutorTest {
         abstractBotCommandExecutor.updateInfo = updateInfo;
         abstractBotCommandExecutor.botInnerService = botInnerService;
 
-        abstractBotCommandExecutor.processFirstInput(InputState.FILTER_ITEM_NAME_PATTERNS, InputGroup.ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT, "question");
+        abstractBotCommandExecutor.processFirstInput(InputState.ITEM_FILTER_ITEM_NAME_PATTERNS, InputGroup.ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT, "question");
 
         verify(botInnerService).clearUserInputs(updateInfo.getChatId());
-        verify(botInnerService).setUserInputState(updateInfo.getChatId(), InputState.FILTER_ITEM_NAME_PATTERNS);
+        verify(botInnerService).setUserInputState(updateInfo.getChatId(), InputState.ITEM_FILTER_ITEM_NAME_PATTERNS);
         verify(botInnerService).setUserInputGroup(updateInfo.getChatId(), InputGroup.ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT);
         verify(abstractBotCommandExecutor).sendText("question");
     }
@@ -65,10 +64,10 @@ class AbstractBotCommandExecutorTest {
         abstractBotCommandExecutor.updateInfo = updateInfo;
         abstractBotCommandExecutor.botInnerService = botInnerService;
 
-        abstractBotCommandExecutor.processFirstInput(InputState.FILTER_ITEM_NAME_PATTERNS, InputGroup.ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT);
+        abstractBotCommandExecutor.processFirstInput(InputState.ITEM_FILTER_ITEM_NAME_PATTERNS, InputGroup.ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT);
 
         verify(botInnerService).clearUserInputs(updateInfo.getChatId());
-        verify(botInnerService).setUserInputState(updateInfo.getChatId(), InputState.FILTER_ITEM_NAME_PATTERNS);
+        verify(botInnerService).setUserInputState(updateInfo.getChatId(), InputState.ITEM_FILTER_ITEM_NAME_PATTERNS);
         verify(botInnerService).setUserInputGroup(updateInfo.getChatId(), InputGroup.ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT);
     }
 
@@ -77,10 +76,10 @@ class AbstractBotCommandExecutorTest {
         abstractBotCommandExecutor.updateInfo = updateInfo;
         abstractBotCommandExecutor.botInnerService = botInnerService;
 
-        abstractBotCommandExecutor.processMiddleInput(InputState.FILTER_ITEM_NAME_PATTERNS, "question");
+        abstractBotCommandExecutor.processMiddleInput(InputState.ITEM_FILTER_ITEM_NAME_PATTERNS, "question");
 
         verify(botInnerService).saveUserInput(updateInfo);
-        verify(botInnerService).setUserInputState(updateInfo.getChatId(), InputState.FILTER_ITEM_NAME_PATTERNS);
+        verify(botInnerService).setUserInputState(updateInfo.getChatId(), InputState.ITEM_FILTER_ITEM_NAME_PATTERNS);
         verify(abstractBotCommandExecutor).sendText("question");
     }
 
@@ -89,10 +88,10 @@ class AbstractBotCommandExecutorTest {
         abstractBotCommandExecutor.updateInfo = updateInfo;
         abstractBotCommandExecutor.botInnerService = botInnerService;
 
-        abstractBotCommandExecutor.processMiddleInput(InputState.FILTER_ITEM_NAME_PATTERNS);
+        abstractBotCommandExecutor.processMiddleInput(InputState.ITEM_FILTER_ITEM_NAME_PATTERNS);
 
         verify(botInnerService).saveUserInput(updateInfo);
-        verify(botInnerService).setUserInputState(updateInfo.getChatId(), InputState.FILTER_ITEM_NAME_PATTERNS);
+        verify(botInnerService).setUserInputState(updateInfo.getChatId(), InputState.ITEM_FILTER_ITEM_NAME_PATTERNS);
     }
 
     @Test

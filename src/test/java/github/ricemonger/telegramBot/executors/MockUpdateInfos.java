@@ -30,8 +30,8 @@ public class MockUpdateInfos {
         UPDATE_INFO_FULL_INPUT.setMessageText("email:password");
         UPDATE_INFO_FULL_INPUT.setHasCallBackQuery(true);
         UPDATE_INFO_FULL_INPUT.setCallbackQueryData("data");
-        UPDATE_INFO_FULL_INPUT.setInputState(InputState.CREDENTIALS_FULL_OR_EMAIL);
-        UPDATE_INFO_FULL_INPUT.setInputGroup(InputGroup.CREDENTIALS_ADD);
+        UPDATE_INFO_FULL_INPUT.setInputState(InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
+        UPDATE_INFO_FULL_INPUT.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
     }
 
     public static final UpdateInfo UPDATE_INFO_EMAIL_INPUT = new UpdateInfo();
@@ -43,8 +43,8 @@ public class MockUpdateInfos {
         UPDATE_INFO_EMAIL_INPUT.setMessageText("email");
         UPDATE_INFO_EMAIL_INPUT.setHasCallBackQuery(true);
         UPDATE_INFO_EMAIL_INPUT.setCallbackQueryData("data");
-        UPDATE_INFO_EMAIL_INPUT.setInputState(InputState.CREDENTIALS_FULL_OR_EMAIL);
-        UPDATE_INFO_EMAIL_INPUT.setInputGroup(InputGroup.CREDENTIALS_ADD);
+        UPDATE_INFO_EMAIL_INPUT.setInputState(InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
+        UPDATE_INFO_EMAIL_INPUT.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
     }
 
     public static final UpdateInfo UPDATE_INFO_PASSWORD_INPUT = new UpdateInfo();
@@ -56,8 +56,8 @@ public class MockUpdateInfos {
         UPDATE_INFO_PASSWORD_INPUT.setMessageText("password");
         UPDATE_INFO_PASSWORD_INPUT.setHasCallBackQuery(true);
         UPDATE_INFO_PASSWORD_INPUT.setCallbackQueryData("data");
-        UPDATE_INFO_PASSWORD_INPUT.setInputState(InputState.CREDENTIALS_PASSWORD);
-        UPDATE_INFO_PASSWORD_INPUT.setInputGroup(InputGroup.CREDENTIALS_ADD);
+        UPDATE_INFO_PASSWORD_INPUT.setInputState(InputState.UBI_ACCOUNT_ENTRY_PASSWORD);
+        UPDATE_INFO_PASSWORD_INPUT.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
     }
 
     public static final CallbackButton[] SKIP_CALLBACK_BUTTON_SINGLE_ARRAY = new CallbackButton[]{new CallbackButton("Skip", Callbacks.EMPTY)};

@@ -48,22 +48,22 @@ class ItemFilterFromInputsMapperTest {
         String rarities = rarity1.getName() + "," + rarity2.getName();
         List<TelegramUserInput> inputs = new ArrayList<>();
 
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_NAME, "name"));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_TYPE, Callbacks.FILTER_TYPE_DENY));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_IS_OWNED, Callbacks.FILTER_ITEM_IS_OWNED));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_ITEM_NAME_PATTERNS, "pattern1,pattern2"));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_ITEM_TYPES, ItemType.WeaponSkin.name() + "," + ItemType.DroneSkin.name()));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_ITEM_TAGS_RARITY, rarities));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_ITEM_TAGS_SEASONS, Callbacks.EMPTY));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_ITEM_TAGS_OPERATORS, Callbacks.EMPTY));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_ITEM_TAGS_WEAPONS, Callbacks.EMPTY));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_ITEM_TAGS_EVENTS, Callbacks.EMPTY));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_ITEM_TAGS_ESPORTS, Callbacks.EMPTY));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_ITEM_TAGS_OTHER, Callbacks.EMPTY));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_MIN_PRICE, "125"));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_MAX_PRICE, "1250"));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_MIN_LAST_SOLD_PRICE, "126"));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_MAX_LAST_SOLD_PRICE, "1260"));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_NAME, "name"));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_TYPE, Callbacks.ITEM_FILTER_TYPE_DENY));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_IS_OWNED, Callbacks.ITEM_FILTER_ITEM_IS_OWNED));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_NAME_PATTERNS, "pattern1,pattern2"));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_TYPES, ItemType.WeaponSkin.name() + "," + ItemType.DroneSkin.name()));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_TAGS_RARITY, rarities));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_TAGS_SEASONS, Callbacks.EMPTY));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_TAGS_OPERATORS, Callbacks.EMPTY));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_TAGS_WEAPONS, Callbacks.EMPTY));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_TAGS_EVENTS, Callbacks.EMPTY));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_TAGS_ESPORTS, Callbacks.EMPTY));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_TAGS_OTHER, Callbacks.EMPTY));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MIN_PRICE, "125"));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MAX_PRICE, "1250"));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MIN_LAST_SOLD_PRICE, "126"));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MAX_LAST_SOLD_PRICE, "1260"));
 
         ItemFilter expectedFilter = getDefaultFilter(tags);
 
@@ -88,16 +88,16 @@ class ItemFilterFromInputsMapperTest {
         String seasons = season1.getName() + "," + season2.getName();
         List<TelegramUserInput> inputs = new ArrayList<>();
 
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_NAME, "name"));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_TYPE, Callbacks.FILTER_TYPE_ALLOW));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_IS_OWNED, Callbacks.FILTER_ITEM_IS_NOT_OWNED));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_ITEM_NAME_PATTERNS, "pattern1,pattern2"));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_ITEM_TYPES, ItemType.WeaponSkin.name() + "," + ItemType.DroneSkin.name()));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_ITEM_TAGS_SEASONS, seasons));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_MIN_PRICE, "150001"));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_MAX_PRICE, "150001"));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_MIN_LAST_SOLD_PRICE, "150001"));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_MAX_LAST_SOLD_PRICE, "150001"));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_NAME, "name"));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_TYPE, Callbacks.ITEM_FILTER_TYPE_ALLOW));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_IS_OWNED, Callbacks.ITEM_FILTER_ITEM_IS_NOT_OWNED));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_NAME_PATTERNS, "pattern1,pattern2"));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_TYPES, ItemType.WeaponSkin.name() + "," + ItemType.DroneSkin.name()));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_TAGS_SEASONS, seasons));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MIN_PRICE, "150001"));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MAX_PRICE, "150001"));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MIN_LAST_SOLD_PRICE, "150001"));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MAX_LAST_SOLD_PRICE, "150001"));
 
         ItemFilter expectedFilter = getDefaultFilter(tags);
         expectedFilter.setFilterType(FilterType.ALLOW);
@@ -128,13 +128,13 @@ class ItemFilterFromInputsMapperTest {
         String operators = operator1.getName() + "," + operator2.getName();
         List<TelegramUserInput> inputs = new ArrayList<>();
 
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_ITEM_NAME_PATTERNS, "pattern1"));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_ITEM_TYPES, ItemType.WeaponSkin.name() + "," + ItemType.DroneSkin.name()));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_ITEM_TAGS_OPERATORS, operators));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_MIN_PRICE, "119"));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_MAX_PRICE, "119"));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_MIN_LAST_SOLD_PRICE, "119"));
-        inputs.add(new TelegramUserInput(chatId, InputState.FILTER_MAX_LAST_SOLD_PRICE, "119"));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_NAME_PATTERNS, "pattern1"));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_TYPES, ItemType.WeaponSkin.name() + "," + ItemType.DroneSkin.name()));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_TAGS_OPERATORS, operators));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MIN_PRICE, "119"));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MAX_PRICE, "119"));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MIN_LAST_SOLD_PRICE, "119"));
+        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MAX_LAST_SOLD_PRICE, "119"));
 
         ItemFilter expectedFilter = getDefaultFilter(tags);
         expectedFilter.setName("");

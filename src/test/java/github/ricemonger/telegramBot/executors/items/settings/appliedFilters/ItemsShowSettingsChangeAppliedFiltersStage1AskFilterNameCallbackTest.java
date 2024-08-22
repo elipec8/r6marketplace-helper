@@ -28,8 +28,8 @@ class ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallbackTest {
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
         verify(botInnerService).clearUserInputs(eq(MockUpdateInfos.UPDATE_INFO.getChatId()));
-        verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.FILTER_NAME);
-        verify(botInnerService).setUserInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.ITEMS_SHOW_SETTING_APPLIED_FILTERS_CHANGE);
+        verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.ITEM_FILTER_NAME);
+        verify(botInnerService).setUserInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.ITEMS_SHOW_SETTING_CHANGE_APPLIED_FILTERS);
 
         verify(botInnerService).getUserItemShowSettings(eq(MockUpdateInfos.UPDATE_INFO.getChatId()));
         verify(botInnerService).getAllUserItemFiltersNames(eq(MockUpdateInfos.UPDATE_INFO.getChatId()));
