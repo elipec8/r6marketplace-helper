@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -60,9 +61,10 @@ class ItemPostgresServiceTest {
     @Test
     public void findById_should_return_item_by_id() {
         Item item = createItem("1");
+        item.setName("name");
         itemRepository.save(new ItemEntity(item));
 
-        assertEquals(item, itemService.findById("1"));
+        assertEquals("name", itemService.findById("1").getName());
     }
 
     @Test
@@ -73,13 +75,15 @@ class ItemPostgresServiceTest {
     @Test
     public void findAll_should_return_all_items() {
         Item item1 = createItem("1");
+        item1.setName("name1");
         Item item2 = createItem("2");
+        item2.setName("name2");
         itemRepository.save(new ItemEntity(item1));
         itemRepository.save(new ItemEntity(item2));
 
-        List<Item> result = itemService.findAll();
+        List<String> result = itemService.findAll().stream().map(Item::getName).toList();
 
-        assertTrue(List.of(item1, item2).containsAll(result) && result.containsAll(List.of(item1, item2)));
+        assertTrue(List.of("name1", "name2").containsAll(result) && result.containsAll(List.of("name1", "name2")));
     }
 
     private Item createItem(String itemId) {

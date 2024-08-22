@@ -7,11 +7,26 @@ import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.ExecutorsService;
 import github.ricemonger.telegramBot.executors.cancel.Cancel;
 import github.ricemonger.telegramBot.executors.cancel.SilentCancel;
-import github.ricemonger.telegramBot.executors.credentials.add.CredentialsAddFullOrEmailInput;
-import github.ricemonger.telegramBot.executors.credentials.add.CredentialsAddPasswordInput;
-import github.ricemonger.telegramBot.executors.credentials.remove.CredentialsRemoveOneEmailInput;
-import github.ricemonger.utils.exceptions.InvalidUserInputGroupException;
-import github.ricemonger.utils.exceptions.InvalidUserInputStateAndGroupConjunctionException;
+import github.ricemonger.telegramBot.executors.itemFilters.edit.*;
+import github.ricemonger.telegramBot.executors.itemFilters.showOrRemove.FilterShowChosenStage2RemoveRequestInput;
+import github.ricemonger.telegramBot.executors.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage2AskActionInput;
+import github.ricemonger.telegramBot.executors.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage3FinishInput;
+import github.ricemonger.telegramBot.executors.items.settings.messageLimit.ItemsShowSettingsChangeMessageLimitFinishInput;
+import github.ricemonger.telegramBot.executors.items.settings.shownFields.*;
+import github.ricemonger.telegramBot.executors.items.show.ItemsShowStage2FinishInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage2AskBoundaryPriceInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage3AskStartingPriceInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage4AskPriorityInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage5AskConfirmationFinishInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buyAndSell.*;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage2AskBoundaryPriceInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage3AskStartingPriceInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage4AskPriorityInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage5AskConfirmationFinishInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemId.TradeByItemIdManagerRemoveStage2AskConfirmationInput;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkStage1AskFullOrEmailInput;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkStage2AskPasswordInput;
+import github.ricemonger.utils.exceptions.UnexpectedUserInputStateAndGroupConjunctionException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,16 +37,14 @@ import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 class InputCommandListenerTest {
-
+    @Autowired
+    private InputCommandListener inputCommandListener;
     @MockBean
     private ExecutorsService executorsService;
 
-    @Autowired
-    private InputCommandListener inputCommandListener;
-
     @Test
-    public void handleUpdateShouldExecuteCancelOnItsCommand() {
-        UpdateInfo updateInfo = new UpdateInfo();
+    public void handleUpdate_should_cancel_if_has_message() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
         updateInfo.setHasMessage(true);
         updateInfo.setMessageText("/cancel");
 
@@ -41,8 +54,8 @@ class InputCommandListenerTest {
     }
 
     @Test
-    public void handleUpdateShouldExecuteCancelOnItsCallbackQuery() {
-        UpdateInfo updateInfo = new UpdateInfo();
+    public void handleUpdate_should_cancel_if_has_callback_query() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
         updateInfo.setHasCallBackQuery(true);
         updateInfo.setCallbackQueryData(Callbacks.CANCEL);
 
@@ -52,8 +65,8 @@ class InputCommandListenerTest {
     }
 
     @Test
-    public void handleUpdateShouldExecuteSilentCancelOnItsCommand() {
-        UpdateInfo updateInfo = new UpdateInfo();
+    public void handleUpdate_should_silent_cancel_if_has_message() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
         updateInfo.setHasMessage(true);
         updateInfo.setMessageText("/silentCancel");
 
@@ -63,10 +76,10 @@ class InputCommandListenerTest {
     }
 
     @Test
-    public void handleUpdateShouldExecuteSilentCancelOnItsCallbackQuery() {
-        UpdateInfo updateInfo = new UpdateInfo();
+    public void handleUpdate_should_silent_cancel_if_has_callback_query() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
         updateInfo.setHasCallBackQuery(true);
-        updateInfo.setCallbackQueryData(Callbacks.SILENT_CANCEL);
+        updateInfo.setCallbackQueryData(Callbacks.CANCEL_SILENT);
 
         inputCommandListener.handleUpdate(updateInfo);
 
@@ -74,61 +87,457 @@ class InputCommandListenerTest {
     }
 
     @Test
-    public void handleUpdateShouldExecuteCredentialsAddFullOrEmailInputOnItsInputGroup() {
-        UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setInputGroup(InputGroup.CREDENTIALS_ADD);
-        updateInfo.setInputState(InputState.CREDENTIALS_FULL_OR_EMAIL);
-
+    public void handleUpdate_should_item_filter_edit_name() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_NAME);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(CredentialsAddFullOrEmailInput.class, updateInfo);
+        verify(executorsService).execute(FilterEditStage2AskFilterTypeInput.class, updateInfo);
     }
 
     @Test
-    public void handleUpdateShouldExecuteCredentialsAddPasswordInputOnItsInputGroup() {
-        UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setInputGroup(InputGroup.CREDENTIALS_ADD);
-        updateInfo.setInputState(InputState.CREDENTIALS_PASSWORD);
-
+    public void handleUpdate_should_item_filter_edit_type() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_TYPE);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(CredentialsAddPasswordInput.class, updateInfo);
+        verify(executorsService).execute(FilterEditStage3AskIsOwnedInput.class, updateInfo);
     }
 
     @Test
-    public void handleUpdateShouldThrowExceptionOnInvalidInputStateAndGroupConjunctionForCredentialsAddGroup() {
-        UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setInputGroup(InputGroup.CREDENTIALS_ADD);
-        updateInfo.setInputState(InputState.BASE);
-
-        assertThrows(InvalidUserInputStateAndGroupConjunctionException.class, () -> inputCommandListener.handleUpdate(updateInfo));
-    }
-
-    @Test
-    public void handleUpdateShouldExecuteCredentialsRemoveOneInputEmailOnItsInputGroup() {
-        UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setInputGroup(InputGroup.CREDENTIALS_REMOVE_ONE);
-        updateInfo.setInputState(InputState.CREDENTIALS_FULL_OR_EMAIL);
-
+    public void handleUpdate_should_item_filter_edit_is_owned() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_IS_OWNED);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(CredentialsRemoveOneEmailInput.class, updateInfo);
+        verify(executorsService).execute(FilterEditStage4AskItemNamePatternsInput.class, updateInfo);
     }
 
     @Test
-    public void handleUpdateShouldThrowExceptionOnInvalidInputStateAndGroupConjunctionForCredentialsRemoveOneGroup() {
-        UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setInputGroup(InputGroup.CREDENTIALS_REMOVE_ONE);
-        updateInfo.setInputState(InputState.CREDENTIALS_PASSWORD);
+    public void handleUpdate_should_item_filter_edit_item_name_patterns() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_ITEM_NAME_PATTERNS);
+        inputCommandListener.handleUpdate(updateInfo);
 
-        assertThrows(InvalidUserInputStateAndGroupConjunctionException.class, () -> inputCommandListener.handleUpdate(updateInfo));
+        verify(executorsService).execute(FilterEditStage5AskItemTypesInput.class, updateInfo);
     }
 
     @Test
-    public void handleUpdateShouldThrowExceptionOnInvalidInputGroup() {
-        UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setInputGroup(InputGroup.BASE);
+    public void handleUpdate_should_item_filter_edit_item_types() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_ITEM_TYPES);
+        inputCommandListener.handleUpdate(updateInfo);
 
-        assertThrows(InvalidUserInputGroupException.class, () -> inputCommandListener.handleUpdate(updateInfo));
+        verify(executorsService).execute(FilterEditStage6AskItemTagsRarityInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_filter_edit_item_tags_rarity() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_ITEM_TAGS_RARITY);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(FilterEditStage7AskItemTagsSeasonsInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_filter_edit_item_tags_seasons() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_ITEM_TAGS_SEASONS);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(FilterEditStage8AskItemTagsOperatorsInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_filter_edit_item_tags_operators() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_ITEM_TAGS_OPERATORS);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(FilterEditStage9AskItemTagsWeaponsInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_filter_edit_item_tags_weapons() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_ITEM_TAGS_WEAPONS);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(FilterEditStage10AskItemTagsEventsInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_filter_edit_item_tags_events() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_ITEM_TAGS_EVENTS);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(FilterEditStage11AskItemTagsEsportsInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_filter_edit_item_tags_esports() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_ITEM_TAGS_ESPORTS);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(FilterEditStage12AskItemTagsOtherInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_filter_edit_item_tags_other() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_ITEM_TAGS_OTHER);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(FilterEditStage13AskMinPriceInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_filter_edit_min_price() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_MIN_PRICE);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(FilterEditStage14AskMaxPriceInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_filter_edit_max_price() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_MAX_PRICE);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(FilterEditStage15AskMinLastSoldPriceInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_filter_edit_min_last_sold_price() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_MIN_LAST_SOLD_PRICE);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(FilterEditStage16AskMaxLastSoldPriceInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_filter_edit_max_last_sold_price() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_MAX_LAST_SOLD_PRICE);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(FilterEditStage17FinishRequestInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_filter_edit_throw() {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
+            UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+            inputCommandListener.handleUpdate(updateInfo);
+        });
+    }
+
+    @Test
+    public void handleUpdate_should_item_filter_show_or_remove_name() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_SHOW_OR_REMOVE, InputState.ITEM_FILTER_NAME);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(FilterShowChosenStage2RemoveRequestInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_filter_show_or_remove_throw() {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
+            UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_SHOW_OR_REMOVE, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+            inputCommandListener.handleUpdate(updateInfo);
+        });
+    }
+
+    @Test
+    public void handleUpdate_should_item_show_settings_change_applied_filters_filter_name() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTING_CHANGE_APPLIED_FILTERS, InputState.ITEM_FILTER_NAME);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(ItemsShowSettingsChangeAppliedFiltersStage2AskActionInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_show_settings_change_applied_filters_add_or_remove() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTING_CHANGE_APPLIED_FILTERS, InputState.ITEMS_SHOW_SETTINGS_APPLIED_FILTER_ADD_OR_REMOVE);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(ItemsShowSettingsChangeAppliedFiltersStage3FinishInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_show_settings_change_applied_filters_throw() {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
+            UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTING_CHANGE_APPLIED_FILTERS, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+            inputCommandListener.handleUpdate(updateInfo);
+        });
+    }
+
+    @Test
+    public void handleUpdate_should_item_show_settings_change_message_limit_message_limit() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(ItemsShowSettingsChangeMessageLimitFinishInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_show_settings_change_message_limit_throw() {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
+            UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+            inputCommandListener.handleUpdate(updateInfo);
+        });
+    }
+
+    @Test
+    public void handleUpdate_should_item_show_settings_change_shown_fields_item_name() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTING_CHANGE_SHOWN_FIELDS, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_NAME);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(ItemsShowSettingsChangeShownFieldsStage2AskItemTypeFlagInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_show_settings_change_shown_fields_item_type() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTING_CHANGE_SHOWN_FIELDS, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_TYPE);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(ItemsShowSettingsChangeShownFieldsStage3AskMaxBuyPriceFlagInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_show_settings_change_shown_fields_max_buy_price() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTING_CHANGE_SHOWN_FIELDS, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_MAX_BUY_PRICE);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(ItemsShowSettingsChangeShownFieldsStage4AskBuyOrdersCountFlagInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_show_settings_change_shown_fields_buy_orders_count() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTING_CHANGE_SHOWN_FIELDS, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_BUY_ORDERS_COUNT);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(ItemsShowSettingsChangeShownFieldsStage5AskMinSellPriceFlagInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_show_settings_change_shown_fields_min_sell_price() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTING_CHANGE_SHOWN_FIELDS, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_MIN_SELL_PRICE);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(ItemsShowSettingsChangeShownFieldsStage6AskSellOrdersCountFlagInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_show_settings_change_shown_fields_sell_orders_count() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTING_CHANGE_SHOWN_FIELDS, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_SELL_ORDERS_COUNT);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(ItemsShowSettingsChangeShownFieldsStage7AskPictureFlagInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_show_settings_change_shown_fields_picture() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTING_CHANGE_SHOWN_FIELDS, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(ItemsShowSettingsChangeShownFieldsStage8FinishInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_show_settings_change_shown_fields_throw() {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
+            UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTING_CHANGE_SHOWN_FIELDS, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+            inputCommandListener.handleUpdate(updateInfo);
+        });
+    }
+
+    @Test
+    public void handleUpdate_should_item_show_offset() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW, InputState.ITEMS_SHOW_OFFSET);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(ItemsShowStage2FinishInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_item_show_throw() {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
+            UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+            inputCommandListener.handleUpdate(updateInfo);
+        });
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_item_id_manager_type_buy_edit_item_id() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByItemIdManagerBuyEditStage2AskBoundaryPriceInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_item_id_manager_type_buy_edit_boundary_buy_price() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_BUY_PRICE);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByItemIdManagerBuyEditStage3AskStartingPriceInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_item_id_manager_type_buy_edit_starting_buy_price() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_BUY_PRICE);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByItemIdManagerBuyEditStage4AskPriorityInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_item_id_manager_type_buy_edit_priority() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_PRIORITY);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByItemIdManagerBuyEditStage5AskConfirmationFinishInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_item_id_manager_type_buy_edit_throw() {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
+            UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_EDIT, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE);
+            inputCommandListener.handleUpdate(updateInfo);
+        });
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_item_id_manager_type_sell_edit_item_id() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByItemIdManagerSellEditStage2AskBoundaryPriceInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_item_id_manager_type_sell_edit_boundary_sell_price() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByItemIdManagerSellEditStage3AskStartingPriceInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_item_id_manager_type_sell_edit_starting_sell_price() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_SELL_PRICE);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByItemIdManagerSellEditStage4AskPriorityInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_item_id_manager_type_sell_edit_priority() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_PRIORITY);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByItemIdManagerSellEditStage5AskConfirmationFinishInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_item_id_manager_type_sell_edit_throw() {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
+            UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_SELL_EDIT, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE);
+            inputCommandListener.handleUpdate(updateInfo);
+        });
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_item_id_manager_type_buy_and_sell_edit_item_id() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByItemIdManagerBuyAndSellEditStage2AskBoundarySellPriceInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_item_id_manager_type_buy_and_sell_edit_boundary_sell_price() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByItemIdManagerBuyAndSellEditStage3AskStartingSellPriceInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_item_id_manager_type_buy_and_sell_edit_starting_sell_price() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_SELL_PRICE);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByItemIdManagerBuyAndSellEditStage4AskBoundaryBuyPriceInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_item_id_manager_type_buy_and_sell_edit_boundary_buy_price() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_BUY_PRICE);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByItemIdManagerBuyAndSellEditStage5AskStartingBuyPriceInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_item_id_manager_type_buy_and_sell_edit_starting_buy_price() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_BUY_PRICE);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByItemIdManagerBuyAndSellEditStage6AskPriorityInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_item_id_manager_type_buy_and_sell_edit_priority() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_PRIORITY);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByItemIdManagerBuyAndSellEditStage7AskConfirmationFinishInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_item_id_manager_type_buy_and_sell_edit_throw() {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
+            UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE);
+            inputCommandListener.handleUpdate(updateInfo);
+        });
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_item_id_manager_remove_item_id() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_SHOW_OR_REMOVE, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByItemIdManagerRemoveStage2AskConfirmationInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_item_id_manager_remove_throw() {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
+            UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_SHOW_OR_REMOVE, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE);
+            inputCommandListener.handleUpdate(updateInfo);
+        });
+    }
+
+    @Test
+    public void handleUpdate_should_ubi_account_entry_link_full_or_email() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(UbiAccountEntryLinkStage1AskFullOrEmailInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_ubi_account_entry_link_password() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.UBI_ACCOUNT_ENTRY_PASSWORD);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(UbiAccountEntryLinkStage2AskPasswordInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_ubi_account_entry_link_throw() {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
+            UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE);
+            inputCommandListener.handleUpdate(updateInfo);
+        });
+    }
+
+    private UpdateInfo updateInfo(InputGroup inputGroup, InputState inputState) {
+        UpdateInfo updateInfo = new UpdateInfo();
+        updateInfo.setInputGroup(inputGroup);
+        updateInfo.setInputState(inputState);
+        return updateInfo;
     }
 }

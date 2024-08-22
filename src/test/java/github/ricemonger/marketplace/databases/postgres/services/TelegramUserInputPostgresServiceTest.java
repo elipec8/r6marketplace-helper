@@ -51,7 +51,7 @@ class TelegramUserInputPostgresServiceTest {
 
     @Test
     public void save_should_create_new_input_if_user_exists_and_input_does_not_exist() {
-        InputState inputState = InputState.ACTIVE_CREDENTIALS;
+        InputState inputState = InputState.UBI_ACCOUNT_ENTRY_PASSWORD;
         String value = "value";
 
         inputService.save(CHAT_ID, inputState, value);
@@ -68,8 +68,8 @@ class TelegramUserInputPostgresServiceTest {
 
     @Test
     public void save_should_create_new_input_if_user_exists_and_input_with_same_inputState_and_user_does_not_exist() {
-        InputState inputState = InputState.ACTIVE_CREDENTIALS;
-        InputState inputState2 = InputState.CREDENTIALS_FULL_OR_EMAIL;
+        InputState inputState = InputState.UBI_ACCOUNT_ENTRY_PASSWORD;
+        InputState inputState2 = InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL;
         String value = "value";
 
         inputService.save(CHAT_ID, inputState, value);
@@ -81,7 +81,7 @@ class TelegramUserInputPostgresServiceTest {
 
     @Test
     public void save_should_update_existing_input_if_user_exists_and_input_with_same_inputState_and_user_already_exists() {
-        InputState inputState = InputState.ACTIVE_CREDENTIALS;
+        InputState inputState = InputState.UBI_ACCOUNT_ENTRY_PASSWORD;
         String value = "value";
         String value2 = "value2";
 
@@ -100,7 +100,7 @@ class TelegramUserInputPostgresServiceTest {
 
     @Test
     public void save_should_throw_if_user_does_not_exist() {
-        InputState inputState = InputState.ACTIVE_CREDENTIALS;
+        InputState inputState = InputState.UBI_ACCOUNT_ENTRY_PASSWORD;
         String value = "value";
         Executable executable = () -> inputService.save(ANOTHER_CHAT_ID, inputState, value);
 
@@ -109,9 +109,9 @@ class TelegramUserInputPostgresServiceTest {
 
     @Test
     public void deleteAllByChatId_should_delete_all_inputs_for_telegram_user() {
-        inputService.save(CHAT_ID, InputState.CREDENTIALS_FULL_OR_EMAIL, "value");
-        inputService.save(CHAT_ID, InputState.ACTIVE_CREDENTIALS, "value");
-        inputService.save(CHAT_ID, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID, "value");
+        inputService.save(CHAT_ID, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL, "value");
+        inputService.save(CHAT_ID, InputState.UBI_ACCOUNT_ENTRY_PASSWORD, "value");
+        inputService.save(CHAT_ID, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID, "value");
 
         inputService.deleteAllByChatId(CHAT_ID);
 
@@ -124,9 +124,9 @@ class TelegramUserInputPostgresServiceTest {
     public void deleteAllByChatId_should_ignore_other_user_inputs() {
         createTelegramUser(ANOTHER_CHAT_ID);
 
-        inputService.save(CHAT_ID, InputState.CREDENTIALS_FULL_OR_EMAIL, "value");
-        inputService.save(CHAT_ID, InputState.ACTIVE_CREDENTIALS, "value");
-        inputService.save(CHAT_ID, InputState.TRADES_EDIT_ONE_ITEM_ITEM_ID, "value");
+        inputService.save(CHAT_ID, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL, "value");
+        inputService.save(CHAT_ID, InputState.UBI_ACCOUNT_ENTRY_PASSWORD, "value");
+        inputService.save(CHAT_ID, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID, "value");
 
         inputService.deleteAllByChatId(ANOTHER_CHAT_ID);
 
@@ -146,8 +146,8 @@ class TelegramUserInputPostgresServiceTest {
     public void findById_should_return_right_input_if_it_exists() {
         createTelegramUser(ANOTHER_CHAT_ID);
 
-        InputState inputState = InputState.ACTIVE_CREDENTIALS;
-        InputState inputState2 = InputState.CREDENTIALS_FULL_OR_EMAIL;
+        InputState inputState = InputState.UBI_ACCOUNT_ENTRY_PASSWORD;
+        InputState inputState2 = InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL;
         String value = "value";
         String value2 = "value2";
         String value3 = "value3";
@@ -164,7 +164,7 @@ class TelegramUserInputPostgresServiceTest {
 
     @Test
     public void findById_should_throw_if_user_does_not_exist() {
-        InputState inputState = InputState.ACTIVE_CREDENTIALS;
+        InputState inputState = InputState.UBI_ACCOUNT_ENTRY_PASSWORD;
         Executable executable = () -> inputService.findById(ANOTHER_CHAT_ID, inputState);
 
         assertThrows(TelegramUserDoesntExistException.class, executable);
@@ -172,7 +172,7 @@ class TelegramUserInputPostgresServiceTest {
 
     @Test
     public void findById_should_throw_if_input_does_not_exist() {
-        InputState inputState = InputState.ACTIVE_CREDENTIALS;
+        InputState inputState = InputState.UBI_ACCOUNT_ENTRY_PASSWORD;
         Executable executable = () -> inputService.findById(CHAT_ID, inputState);
 
         assertThrows(TelegramUserInputDoesntExistException.class, executable);
@@ -182,8 +182,8 @@ class TelegramUserInputPostgresServiceTest {
     public void findAllByChatId_should_return_all_inputs_for_user() {
         createTelegramUser(ANOTHER_CHAT_ID);
 
-        InputState inputState = InputState.ACTIVE_CREDENTIALS;
-        InputState inputState2 = InputState.CREDENTIALS_FULL_OR_EMAIL;
+        InputState inputState = InputState.UBI_ACCOUNT_ENTRY_PASSWORD;
+        InputState inputState2 = InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL;
         String value = "value";
         String value2 = "value2";
         String value3 = "value3";

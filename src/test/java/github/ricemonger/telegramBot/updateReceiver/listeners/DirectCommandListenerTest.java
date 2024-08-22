@@ -3,87 +3,95 @@ package github.ricemonger.telegramBot.updateReceiver.listeners;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.ExecutorsService;
 import github.ricemonger.telegramBot.executors.cancel.Cancel;
-import github.ricemonger.telegramBot.executors.credentials.CredentialsDirect;
 import github.ricemonger.telegramBot.executors.help.HelpDirect;
-import github.ricemonger.telegramBot.executors.marketplace.MarketplaceDirect;
+import github.ricemonger.telegramBot.executors.itemFilters.ItemFiltersDirect;
+import github.ricemonger.telegramBot.executors.items.ItemsDirect;
 import github.ricemonger.telegramBot.executors.start.StartDirect;
+import github.ricemonger.telegramBot.executors.tradeManagers.TradeManagersDirect;
+import github.ricemonger.telegramBot.executors.trades.TradesDirect;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.UbiAccountEntryDirect;
+import github.ricemonger.utils.exceptions.UnexpectedDirectCommandException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 class DirectCommandListenerTest {
-
+    @Autowired
+    private DirectCommandListener directCommandListener;
     @MockBean
     private ExecutorsService executorsService;
 
-    @Autowired
-    private DirectCommandListener directCommandListener;
-
     @Test
-    public void handleUpdateShouldExecuteStartOnItsCommand() {
-        UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setMessageText("/start");
+    public void handleUpdate_should_start() {
+        directCommandListener.handleUpdate(updateInfo("/start"));
 
-        directCommandListener.handleUpdate(updateInfo);
-
-        verify(executorsService).execute(StartDirect.class, updateInfo);
+        verify(executorsService).execute(StartDirect.class, updateInfo("/start"));
     }
 
     @Test
-    public void handleUpdateShouldExecuteHelpOnItsCommand() {
-        UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setMessageText("/help");
+    public void handleUpdate_should_help() {
+        directCommandListener.handleUpdate(updateInfo("/help"));
 
-        directCommandListener.handleUpdate(updateInfo);
-
-        verify(executorsService).execute(HelpDirect.class, updateInfo);
+        verify(executorsService).execute(HelpDirect.class, updateInfo("/help"));
     }
 
     @Test
-    public void handleUpdateShouldExecuteCredentialsOnItsCommand() {
-        UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setMessageText("/credentials");
+    public void handleUpdate_should_items() {
+        directCommandListener.handleUpdate(updateInfo("/items"));
 
-        directCommandListener.handleUpdate(updateInfo);
-
-        verify(executorsService).execute(CredentialsDirect.class, updateInfo);
+        verify(executorsService).execute(ItemsDirect.class, updateInfo("/items"));
     }
 
     @Test
-    public void handleUpdateShouldExecuteMarketplaceOnItsCommand() {
-        UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setMessageText("/marketplace");
+    public void handleUpdate_should_trades() {
+        directCommandListener.handleUpdate(updateInfo("/trades"));
 
-        directCommandListener.handleUpdate(updateInfo);
-
-        verify(executorsService).execute(MarketplaceDirect.class, updateInfo);
+        verify(executorsService).execute(TradesDirect.class, updateInfo("/trades"));
     }
 
     @Test
-    public void handleUpdateShouldExecuteCancelOnItsCommand() {
-        UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setMessageText("/cancel");
+    public void handleUpdate_should_tradeManagers() {
+        directCommandListener.handleUpdate(updateInfo("/tradeManagers"));
 
-        directCommandListener.handleUpdate(updateInfo);
-
-        verify(executorsService).execute(Cancel.class, updateInfo);
+        verify(executorsService).execute(TradeManagersDirect.class, updateInfo("/tradeManagers"));
     }
 
     @Test
-    public void handleUpdateShouldThrowExceptionOnUnexpectedCommand() {
+    public void handleUpdate_should_itemFilters() {
+        directCommandListener.handleUpdate(updateInfo("/itemFilters"));
+
+        verify(executorsService).execute(ItemFiltersDirect.class, updateInfo("/itemFilters"));
+    }
+
+    @Test
+    public void handleUpdate_should_credentials() {
+        directCommandListener.handleUpdate(updateInfo("/credentials"));
+
+        verify(executorsService).execute(UbiAccountEntryDirect.class, updateInfo("/credentials"));
+    }
+
+    @Test
+    public void handleUpdate_should_cancel() {
+        directCommandListener.handleUpdate(updateInfo("/cancel"));
+
+        verify(executorsService).execute(Cancel.class, updateInfo("/cancel"));
+    }
+
+    @Test
+    public void handleUpdate_should_throw() {
+        assertThrows(UnexpectedDirectCommandException.class, () -> {
+            directCommandListener.handleUpdate(updateInfo("invalid"));
+        });
+    }
+
+    private UpdateInfo updateInfo(String command) {
         UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setMessageText("/unexpected");
-
-        try {
-            directCommandListener.handleUpdate(updateInfo);
-        } catch (IllegalStateException e) {
-            return;
-        }
-
-        throw new IllegalStateException("Expected IllegalStateException");
+        updateInfo.setMessageText(command);
+        return updateInfo;
     }
 }

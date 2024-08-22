@@ -14,32 +14,22 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class TelegramBotUpdateReceiverTest {
-
+    @Autowired
+    private TelegramBotUpdateReceiver telegramBotUpdateReceiver;
     @MockBean
     private UpdateInfoMapper updateInfoMapper;
-
     @MockBean
     private UpdatesToListenersDistributor updatesToListenersDistributor;
 
-    @Autowired
-    private TelegramBotUpdateReceiver telegramBotUpdateReceiver;
-
-    public static final Update UPDATE = new Update();
-
-    public static final UpdateInfo UPDATE_INFO = new UpdateInfo();
-
     @Test
-    public void consumeShouldCallUpdateToUpdateInfoMapperMap() {
-        telegramBotUpdateReceiver.consume(UPDATE);
+    public void consume_should_handle_mapped_update_to_distributor() {
+        Update update = new Update();
+        UpdateInfo updateInfo = new UpdateInfo();
+        when(updateInfoMapper.mapToUpdateInfo(update)).thenReturn(updateInfo);
 
-        verify(updateInfoMapper).map(same(UPDATE));
-    }
+        telegramBotUpdateReceiver.consume(update);
 
-    @Test
-    public void consumeShouldHandleMappedUpdateInfoToUpdateDistributor() {
-        when(updateInfoMapper.map(UPDATE)).thenReturn(UPDATE_INFO);
-        telegramBotUpdateReceiver.consume(UPDATE);
-
-        verify(updatesToListenersDistributor).distribute(same(UPDATE_INFO));
+        verify(updateInfoMapper).mapToUpdateInfo(same(update));
+        verify(updatesToListenersDistributor).distribute(same(updateInfo));
     }
 }

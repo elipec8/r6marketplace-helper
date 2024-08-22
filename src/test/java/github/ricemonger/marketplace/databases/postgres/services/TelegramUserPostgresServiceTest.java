@@ -114,8 +114,8 @@ class TelegramUserPostgresServiceTest {
         TelegramUser updated = new TelegramUser();
         updated.setChatId(CHAT_ID);
 
-        updated.setInputState(InputState.ACTIVE_CREDENTIALS);
-        updated.setInputGroup(InputGroup.CREDENTIALS_ADD);
+        updated.setInputState(InputState.UBI_ACCOUNT_ENTRY_PASSWORD);
+        updated.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
 
         updated.setItemShowMessagesLimit(5);
         updated.setItemShowFewInMessageFlag(true);

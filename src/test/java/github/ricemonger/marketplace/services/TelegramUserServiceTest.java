@@ -39,10 +39,10 @@ class TelegramUserServiceTest {
     public void setUserInputState_should_save_state() {
         when(telegramUserDatabaseService.findUserById("123")).thenReturn(new TelegramUser(123L));
 
-        telegramUserService.setUserInputState(123L, InputState.CREDENTIALS_FULL_OR_EMAIL);
+        telegramUserService.setUserInputState(123L, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
 
         TelegramUser telegramUser = new TelegramUser(123L);
-        telegramUser.setInputState(InputState.CREDENTIALS_FULL_OR_EMAIL);
+        telegramUser.setInputState(InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
 
         verify(telegramUserDatabaseService).update(telegramUser);
     }
@@ -58,10 +58,10 @@ class TelegramUserServiceTest {
     public void setUserInputGroup_should_save_group() {
         when(telegramUserDatabaseService.findUserById("123")).thenReturn(new TelegramUser(123L));
 
-        telegramUserService.setUserInputGroup(123L, InputGroup.CREDENTIALS_ADD);
+        telegramUserService.setUserInputGroup(123L, InputGroup.UBI_ACCOUNT_ENTRY_LINK);
 
         TelegramUser telegramUser = new TelegramUser(123L);
-        telegramUser.setInputGroup(InputGroup.CREDENTIALS_ADD);
+        telegramUser.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
 
         verify(telegramUserDatabaseService).update(telegramUser);
     }
@@ -90,13 +90,13 @@ class TelegramUserServiceTest {
     }
 
     @Test
-    public void setItemShowMessagesLimit_should_handle_to_service() {
+    public void setItemShowMessagesLimit_OrEdgeValue_should_handle_to_service() {
         telegramUserService.setItemShowMessagesLimit(123L, 5);
         verify(telegramUserDatabaseService).setItemShowMessagesLimit("123", 5);
     }
 
     @Test
-    public void setItemShowMessagesLimit_should_throw_if_user_doesnt_exist() {
+    public void setItemShowMessagesLimit_OrEdgeValue_should_throw_if_user_doesnt_exist() {
         doThrow(TelegramUserDoesntExistException.class).when(telegramUserDatabaseService).setItemShowMessagesLimit("123", 5);
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setItemShowMessagesLimit(123L, 5));
@@ -295,10 +295,10 @@ class TelegramUserServiceTest {
     @Test
     public void getUserInputState_should_return_state() {
         TelegramUser telegramUser = new TelegramUser(123L);
-        telegramUser.setInputState(InputState.CREDENTIALS_FULL_OR_EMAIL);
+        telegramUser.setInputState(InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
         when(telegramUserDatabaseService.findUserById("123")).thenReturn(telegramUser);
 
-        assertEquals(InputState.CREDENTIALS_FULL_OR_EMAIL, telegramUserService.getUserInputState(123L));
+        assertEquals(InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL, telegramUserService.getUserInputState(123L));
 
         verify(telegramUserDatabaseService).findUserById("123");
     }
@@ -313,10 +313,10 @@ class TelegramUserServiceTest {
     @Test
     public void getUserInputGroup_should_return_group() {
         TelegramUser telegramUser = new TelegramUser(123L);
-        telegramUser.setInputGroup(InputGroup.CREDENTIALS_ADD);
+        telegramUser.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
         when(telegramUserDatabaseService.findUserById("123")).thenReturn(telegramUser);
 
-        assertEquals(InputGroup.CREDENTIALS_ADD, telegramUserService.getUserInputGroup(123L));
+        assertEquals(InputGroup.UBI_ACCOUNT_ENTRY_LINK, telegramUserService.getUserInputGroup(123L));
 
         verify(telegramUserDatabaseService).findUserById("123");
     }

@@ -19,7 +19,7 @@ class CancelTest {
     private BotInnerService botInnerService;
 
     @Test
-    public void initAndExecuteShould() {
+    public void initAndExecute_should_reset_inputs_and_send_text() {
         Cancel cancel = new Cancel();
         cancel.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
