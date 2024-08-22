@@ -26,7 +26,7 @@ import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.i
 import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkStage1AskFullOrEmailInput;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkStage2AskPasswordInput;
 import github.ricemonger.utils.exceptions.InvalidUserInputGroupException;
-import github.ricemonger.utils.exceptions.InvalidUserInputStateAndGroupConjunctionException;
+import github.ricemonger.utils.exceptions.UnexpectedUserInputStateAndGroupConjunctionException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -122,7 +122,7 @@ public class InputCommandListener {
             case ITEM_FILTER_MAX_LAST_SOLD_PRICE -> executorsService.execute(FilterEditStage17FinishRequestInput.class, updateInfo);
 
             default ->
-                    throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+                    throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
         }
     }
 
@@ -132,7 +132,7 @@ public class InputCommandListener {
         if (Objects.requireNonNull(inputState) == InputState.ITEM_FILTER_NAME) {
             executorsService.execute(FilterShowChosenStage2RemoveRequestInput.class, updateInfo);
         } else {
-            throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+            throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
         }
     }
 
@@ -146,7 +146,7 @@ public class InputCommandListener {
                     executorsService.execute(ItemsShowSettingsChangeAppliedFiltersStage3FinishInput.class, updateInfo);
 
             default ->
-                    throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+                    throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
         }
     }
 
@@ -156,7 +156,7 @@ public class InputCommandListener {
         if (Objects.requireNonNull(inputState) == InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT) {
             executorsService.execute(ItemsShowSettingsChangeMessageLimitFinishInput.class, updateInfo);
         } else {
-            throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+            throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
         }
     }
 
@@ -190,7 +190,7 @@ public class InputCommandListener {
                     executorsService.execute(ItemsShowSettingsChangeShownFieldsStage8FinishInput.class, updateInfo);
 
             default ->
-                    throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+                    throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
         }
     }
 
@@ -200,7 +200,7 @@ public class InputCommandListener {
         if (Objects.requireNonNull(inputState) == InputState.ITEMS_SHOW_OFFSET) {
             executorsService.execute(ItemsShowStage2FinishInput.class, updateInfo);
         } else {
-            throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+            throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
         }
     }
 
@@ -222,7 +222,7 @@ public class InputCommandListener {
                     executorsService.execute(TradeByItemIdManagerBuyEditStage5AskConfirmationFinishInput.class, updateInfo);
 
             default ->
-                    throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+                    throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
         }
     }
 
@@ -243,7 +243,7 @@ public class InputCommandListener {
                     executorsService.execute(TradeByItemIdManagerSellEditStage5AskConfirmationFinishInput.class, updateInfo);
 
             default ->
-                    throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+                    throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
         }
     }
 
@@ -270,7 +270,7 @@ public class InputCommandListener {
                     executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage7AskConfirmationFinishInput.class, updateInfo);
 
             default ->
-                    throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+                    throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
         }
     }
 
@@ -282,7 +282,7 @@ public class InputCommandListener {
                     executorsService.execute(TradeByItemIdManagerRemoveStage2AskConfirmationInput.class, updateInfo);
 
             default ->
-                    throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+                    throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
         }
     }
 
@@ -296,7 +296,7 @@ public class InputCommandListener {
             case UBI_ACCOUNT_ENTRY_PASSWORD -> executorsService.execute(UbiAccountEntryLinkStage2AskPasswordInput.class, updateInfo);
 
             default ->
-                    throw new InvalidUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+                    throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
         }
     }
 }

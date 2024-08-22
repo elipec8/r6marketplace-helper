@@ -26,7 +26,7 @@ import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.T
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemId.TradeByItemIdManagerRemoveStage2AskConfirmationInput;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkStage1AskFullOrEmailInput;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkStage2AskPasswordInput;
-import github.ricemonger.utils.exceptions.InvalidUserInputStateAndGroupConjunctionException;
+import github.ricemonger.utils.exceptions.UnexpectedUserInputStateAndGroupConjunctionException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -216,7 +216,7 @@ class InputCommandListenerTest {
 
     @Test
     public void handleUpdate_should_item_filter_edit_throw() {
-        assertThrows(InvalidUserInputStateAndGroupConjunctionException.class, () -> {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
             UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
             inputCommandListener.handleUpdate(updateInfo);
         });
@@ -232,7 +232,7 @@ class InputCommandListenerTest {
 
     @Test
     public void handleUpdate_should_item_filter_show_or_remove_throw() {
-        assertThrows(InvalidUserInputStateAndGroupConjunctionException.class, () -> {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
             UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_SHOW_OR_REMOVE, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
             inputCommandListener.handleUpdate(updateInfo);
         });
@@ -256,7 +256,7 @@ class InputCommandListenerTest {
 
     @Test
     public void handleUpdate_should_item_show_settings_change_applied_filters_throw() {
-        assertThrows(InvalidUserInputStateAndGroupConjunctionException.class, () -> {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
             UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTING_CHANGE_APPLIED_FILTERS, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
             inputCommandListener.handleUpdate(updateInfo);
         });
@@ -272,7 +272,7 @@ class InputCommandListenerTest {
 
     @Test
     public void handleUpdate_should_item_show_settings_change_message_limit_throw() {
-        assertThrows(InvalidUserInputStateAndGroupConjunctionException.class, () -> {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
             UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
             inputCommandListener.handleUpdate(updateInfo);
         });
@@ -336,7 +336,7 @@ class InputCommandListenerTest {
 
     @Test
     public void handleUpdate_should_item_show_settings_change_shown_fields_throw() {
-        assertThrows(InvalidUserInputStateAndGroupConjunctionException.class, () -> {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
             UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTING_CHANGE_SHOWN_FIELDS, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
             inputCommandListener.handleUpdate(updateInfo);
         });
@@ -352,7 +352,7 @@ class InputCommandListenerTest {
 
     @Test
     public void handleUpdate_should_item_show_throw() {
-        assertThrows(InvalidUserInputStateAndGroupConjunctionException.class, () -> {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
             UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
             inputCommandListener.handleUpdate(updateInfo);
         });
@@ -392,7 +392,7 @@ class InputCommandListenerTest {
 
     @Test
     public void handleUpdate_should_trade_by_item_id_manager_type_buy_edit_throw() {
-        assertThrows(InvalidUserInputStateAndGroupConjunctionException.class, () -> {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
             UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_EDIT, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE);
             inputCommandListener.handleUpdate(updateInfo);
         });
@@ -432,7 +432,7 @@ class InputCommandListenerTest {
 
     @Test
     public void handleUpdate_should_trade_by_item_id_manager_type_sell_edit_throw() {
-        assertThrows(InvalidUserInputStateAndGroupConjunctionException.class, () -> {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
             UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_SELL_EDIT, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE);
             inputCommandListener.handleUpdate(updateInfo);
         });
@@ -488,7 +488,7 @@ class InputCommandListenerTest {
 
     @Test
     public void handleUpdate_should_trade_by_item_id_manager_type_buy_and_sell_edit_throw() {
-        assertThrows(InvalidUserInputStateAndGroupConjunctionException.class, () -> {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
             UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE);
             inputCommandListener.handleUpdate(updateInfo);
         });
@@ -504,7 +504,7 @@ class InputCommandListenerTest {
 
     @Test
     public void handleUpdate_should_trade_by_item_id_manager_remove_throw() {
-        assertThrows(InvalidUserInputStateAndGroupConjunctionException.class, () -> {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
             UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_SHOW_OR_REMOVE, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE);
             inputCommandListener.handleUpdate(updateInfo);
         });
@@ -528,7 +528,7 @@ class InputCommandListenerTest {
 
     @Test
     public void handleUpdate_should_ubi_account_entry_link_throw() {
-        assertThrows(InvalidUserInputStateAndGroupConjunctionException.class, () -> {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
             UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE);
             inputCommandListener.handleUpdate(updateInfo);
         });

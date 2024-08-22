@@ -2,7 +2,7 @@ package github.ricemonger.telegramBot.updateReceiver.listeners;
 
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.utils.exceptions.InvalidUserInputStateAndGroupConjunctionException;
+import github.ricemonger.utils.exceptions.UnexpectedUserInputStateAndGroupConjunctionException;
 import github.ricemonger.utils.exceptions.ListeningMethodCouldNotBeChosenException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,11 +123,11 @@ class UpdatesToListenersDistributorTest {
     public void distribute_should_handle_to_ExceptionCommandListener_if_exception_was_thrown() {
         UpdateInfo updateInfo = new UpdateInfo();
         updateInfo.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
-        doThrow(InvalidUserInputStateAndGroupConjunctionException.class).when(inputCommandListener).handleUpdate(updateInfo);
+        doThrow(UnexpectedUserInputStateAndGroupConjunctionException.class).when(inputCommandListener).handleUpdate(updateInfo);
 
         updatesToListenersDistributor.distribute(updateInfo);
 
-        verify(exceptionCommandListener).handleException(any(InvalidUserInputStateAndGroupConjunctionException.class), same(updateInfo));
+        verify(exceptionCommandListener).handleException(any(UnexpectedUserInputStateAndGroupConjunctionException.class), same(updateInfo));
 
         verify(inputCommandListener).handleUpdate(updateInfo);
 
