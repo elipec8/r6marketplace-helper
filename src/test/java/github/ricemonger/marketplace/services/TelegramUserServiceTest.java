@@ -278,18 +278,75 @@ class TelegramUserServiceTest {
     @Test
     public void getItemShowSettings_should_return_settings() {
         ItemShowSettings settings = new ItemShowSettings();
-        when(telegramUserDatabaseService.findUserSettingsById("123")).thenReturn(settings);
+        when(telegramUserDatabaseService.findUserItemShowSettingsById("123")).thenReturn(settings);
 
         assertEquals(settings, telegramUserService.getItemShowSettings(123L));
 
-        verify(telegramUserDatabaseService).findUserSettingsById("123");
+        verify(telegramUserDatabaseService).findUserItemShowSettingsById("123");
     }
 
     @Test
     public void getItemShowSettings_should_throw_if_user_doesnt_exist() {
-        when(telegramUserDatabaseService.findUserSettingsById("123")).thenThrow(TelegramUserDoesntExistException.class);
+        when(telegramUserDatabaseService.findUserItemShowSettingsById("123")).thenThrow(TelegramUserDoesntExistException.class);
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getItemShowSettings(123L));
+    }
+
+    @Test
+    public void getTradeManagersSettings_should_return_settings() {
+        TradeManagersSettings settings = new TradeManagersSettings();
+        settings.setNewManagersAreActiveFlag(true);
+        settings.setManagingEnabledFlag(false);
+        when(telegramUserDatabaseService.findUserTradeManagersSettingsById("123")).thenReturn(settings);
+
+        assertEquals(settings, telegramUserService.getTradeManagersSettings(123L));
+
+        verify(telegramUserDatabaseService).findUserTradeManagersSettingsById("123");
+    }
+
+    @Test
+    public void getTradeManagersSettings_should_throw_if_user_doesnt_exist() {
+        when(telegramUserDatabaseService.findUserTradeManagersSettingsById("123")).thenThrow(TelegramUserDoesntExistException.class);
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getTradeManagersSettings(123L));
+    }
+
+    @Test
+    public void setTradeManagersSettingsNewManagersAreActiveFlag_should_handle_to_service_true_flag() {
+        telegramUserService.setTradeManagersSettingsNewManagersAreActiveFlag(123L, true);
+        verify(telegramUserDatabaseService).setTradeManagersSettingsNewManagersAreActiveFlag("123", true);
+    }
+
+    @Test
+    public void setTradeManagersSettingsNewManagersAreActiveFlag_should_handle_to_service_false_flag() {
+        telegramUserService.setTradeManagersSettingsNewManagersAreActiveFlag(123L, false);
+        verify(telegramUserDatabaseService).setTradeManagersSettingsNewManagersAreActiveFlag("123", false);
+    }
+
+    @Test
+    public void setTradeManagersSettingsNewManagersAreActiveFlag_should_throw_if_service_throws() {
+        doThrow(TelegramUserDoesntExistException.class).when(telegramUserDatabaseService).setTradeManagersSettingsNewManagersAreActiveFlag("123", true);
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setTradeManagersSettingsNewManagersAreActiveFlag(123L, true));
+    }
+
+    @Test
+    public void setTradeManagersSettingsManagingEnabledFlag_should_handle_to_service_true_flag() {
+        telegramUserService.setTradeManagersSettingsManagingEnabledFlag(123L, true);
+        verify(telegramUserDatabaseService).setTradeManagersSettingsManagingEnabledFlag("123", true);
+    }
+
+    @Test
+    public void setTradeManagersSettingsManagingEnabledFlag_should_handle_to_service_false_flag() {
+        telegramUserService.setTradeManagersSettingsManagingEnabledFlag(123L, false);
+        verify(telegramUserDatabaseService).setTradeManagersSettingsManagingEnabledFlag("123", false);
+    }
+
+    @Test
+    public void setTradeManagersSettingsManagingEnabledFlag_should_throw_if_service_throws() {
+        doThrow(TelegramUserDoesntExistException.class).when(telegramUserDatabaseService).setTradeManagersSettingsManagingEnabledFlag("123", true);
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setTradeManagersSettingsManagingEnabledFlag(123L, true));
     }
 
     @Test

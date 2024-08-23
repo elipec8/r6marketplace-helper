@@ -6,6 +6,14 @@ import github.ricemonger.telegramBot.executors.ExecutorsService;
 import github.ricemonger.telegramBot.executors.cancel.Cancel;
 import github.ricemonger.telegramBot.executors.cancel.SilentCancel;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.itemFilter.TradeByFiltersManagerEditStage8ConfirmedFinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.activeTradeByFiltersManagers.TradeManagersSettingsChangeByFiltersStage1AskNamesCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.activeTradeByItemIdManagers.TradeManagersSettingsChangeByItemIdStage1AskItemIdsCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagAskFlagCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagNoCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagYesCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.newManagersAreActiveFlag.TradeManagersSettingsChangeNewManagersAreActiveFlagAskFlagCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.newManagersAreActiveFlag.TradeManagersSettingsChangeNewManagersAreActiveFlagNoCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.newManagersAreActiveFlag.TradeManagersSettingsChangeNewManagersAreActiveFlagYesCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemFilters.TradeByFiltersManagerRemoveStage1AskNameCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemFilters.TradeByFiltersManagerRemoveStage3ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkCallback;
@@ -134,6 +142,34 @@ public class CallbackCommandListener {
 
 
             case Callbacks.TRADE_MANAGERS_SETTINGS -> executorsService.execute(TradeManagersSettingsCallback.class, updateInfo);
+
+
+            case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_NEW_MANAGERS_ARE_ACTIVE_FLAG -> executorsService.execute(TradeManagersSettingsChangeNewManagersAreActiveFlagAskFlagCallback.class,
+                    updateInfo);
+
+            case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_NEW_MANAGERS_ARE_ACTIVE_FLAG_NO -> executorsService.execute(TradeManagersSettingsChangeNewManagersAreActiveFlagNoCallback.class,
+                    updateInfo);
+
+            case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_NEW_MANAGERS_ARE_ACTIVE_FLAG_YES -> executorsService.execute(TradeManagersSettingsChangeNewManagersAreActiveFlagYesCallback.class,
+                    updateInfo);
+
+
+            case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_MANAGING_ENABLED_FLAG -> executorsService.execute(TradeManagersSettingsChangeManagingEnabledFlagAskFlagCallback.class,
+                    updateInfo);
+
+            case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_MANAGING_ENABLED_FLAG_NO -> executorsService.execute(TradeManagersSettingsChangeManagingEnabledFlagNoCallback.class,
+                    updateInfo);
+
+            case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_MANAGING_ENABLED_FLAG_YES -> executorsService.execute(TradeManagersSettingsChangeManagingEnabledFlagYesCallback.class,
+                    updateInfo);
+
+
+            case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_BY_FILTERS_ACTIVE_MANAGERS -> executorsService.execute(TradeManagersSettingsChangeByFiltersStage1AskNamesCallback.class,
+                    updateInfo);
+
+
+            case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_BY_ITEM_ID_ACTIVE_MANAGERS -> executorsService.execute(TradeManagersSettingsChangeByItemIdStage1AskItemIdsCallback.class,
+                    updateInfo);
 
 
             case Callbacks.TRADE_MANAGERS_SHOW_CHOOSE_TYPE -> executorsService.execute(TradeManagersChooseTypeCallback.class, updateInfo);

@@ -29,6 +29,14 @@ import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buyAnd
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage1AskItemIdCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage6ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.settings.TradeManagersSettingsCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.activeTradeByFiltersManagers.TradeManagersSettingsChangeByFiltersStage1AskNamesCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.activeTradeByItemIdManagers.TradeManagersSettingsChangeByItemIdStage1AskItemIdsCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagAskFlagCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagNoCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagYesCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.newManagersAreActiveFlag.TradeManagersSettingsChangeNewManagersAreActiveFlagAskFlagCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.newManagersAreActiveFlag.TradeManagersSettingsChangeNewManagersAreActiveFlagNoCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.newManagersAreActiveFlag.TradeManagersSettingsChangeNewManagersAreActiveFlagYesCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeByFiltersManagersShowAllCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeByItemIdManagersShowAllCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeManagersChooseTypeCallback;
@@ -236,6 +244,63 @@ class CallbackCommandListenerTest {
         callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS));
 
         verify(executorsService).execute(TradeManagersSettingsCallback.class, updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS));
+    }
+
+    @Test
+    public void handleUpdate_should_trade_managers_settings_change_new_managers_are_active_flag() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_NEW_MANAGERS_ARE_ACTIVE_FLAG));
+
+        verify(executorsService).execute(TradeManagersSettingsChangeNewManagersAreActiveFlagAskFlagCallback.class, updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_NEW_MANAGERS_ARE_ACTIVE_FLAG));
+    }
+
+    @Test
+    public void handleUpdate_should_trade_managers_settings_change_new_managers_are_active_flag_no() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_NEW_MANAGERS_ARE_ACTIVE_FLAG_NO));
+
+        verify(executorsService).execute(TradeManagersSettingsChangeNewManagersAreActiveFlagNoCallback.class, updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_NEW_MANAGERS_ARE_ACTIVE_FLAG_NO));
+    }
+
+    @Test
+    public void handleUpdate_should_trade_managers_settings_change_new_managers_are_active_flag_yes() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_NEW_MANAGERS_ARE_ACTIVE_FLAG_YES));
+
+        verify(executorsService).execute(TradeManagersSettingsChangeNewManagersAreActiveFlagYesCallback.class, updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_NEW_MANAGERS_ARE_ACTIVE_FLAG_YES));
+    }
+
+    @Test
+    public void handleUpdate_should_trade_managers_settings_change_managing_enabled_flag() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_MANAGING_ENABLED_FLAG));
+
+        verify(executorsService).execute(TradeManagersSettingsChangeManagingEnabledFlagAskFlagCallback.class, updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_MANAGING_ENABLED_FLAG));
+    }
+
+    @Test
+    public void handleUpdate_should_trade_managers_settings_change_managing_enabled_flag_no() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_MANAGING_ENABLED_FLAG_NO));
+
+        verify(executorsService).execute(TradeManagersSettingsChangeManagingEnabledFlagNoCallback.class, updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_MANAGING_ENABLED_FLAG_NO));
+    }
+
+    @Test
+    public void handleUpdate_should_trade_managers_settings_change_managing_enabled_flag_yes() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_MANAGING_ENABLED_FLAG_YES));
+
+        verify(executorsService).execute(TradeManagersSettingsChangeManagingEnabledFlagYesCallback.class, updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_MANAGING_ENABLED_FLAG_YES));
+    }
+
+    @Test
+    public void handleUpdate_should_trade_managers_settings_change_by_filters_active_managers() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_BY_FILTERS_ACTIVE_MANAGERS));
+
+        verify(executorsService).execute(TradeManagersSettingsChangeByFiltersStage1AskNamesCallback.class, updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_BY_FILTERS_ACTIVE_MANAGERS));
+
+    }
+
+    @Test
+    public void handleUpdate_should_trade_managers_settings_change_by_item_id_active_managers() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_BY_ITEM_ID_ACTIVE_MANAGERS));
+
+        verify(executorsService).execute(TradeManagersSettingsChangeByItemIdStage1AskItemIdsCallback.class, updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_BY_ITEM_ID_ACTIVE_MANAGERS));
     }
 
     @Test

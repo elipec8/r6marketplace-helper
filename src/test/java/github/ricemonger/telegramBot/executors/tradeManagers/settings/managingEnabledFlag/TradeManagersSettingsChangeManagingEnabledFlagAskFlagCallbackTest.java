@@ -1,4 +1,4 @@
-package github.ricemonger.telegramBot.executors.tradeManagers.settings;
+package github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag;
 
 import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
@@ -10,16 +10,14 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-class TradeManagersSettingsCallbackTest {
+class TradeManagersSettingsChangeManagingEnabledFlagAskFlagCallbackTest {
     @MockBean
     private BotInnerService botInnerService;
 
     @Test
-    public void initAndExecute_should_show_current_settings_and_ask_if_change() {
-        TradeManagersSettingsCallback commandExecutor = new TradeManagersSettingsCallback();
-        commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
-
-        verify(botInnerService).getUserTradeManagersSettings(MockUpdateInfos.UPDATE_INFO.getChatId());
+    public void initAndExecute_should_ask_yes_or_no_from_inline_keyboard() {
+        TradeManagersSettingsChangeManagingEnabledFlagAskFlagCallback callback = new TradeManagersSettingsChangeManagingEnabledFlagAskFlagCallback();
+        callback.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
         verify(botInnerService).askFromInlineKeyboard(eq(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());
     }

@@ -5,6 +5,7 @@ import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.ItemShowSettings;
 import github.ricemonger.utils.dtos.ItemShownFieldsSettings;
 import github.ricemonger.utils.dtos.TelegramUser;
+import github.ricemonger.utils.dtos.TradeManagersSettings;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -59,6 +60,14 @@ public class TelegramUserEntity {
         if (this.user.getItemShowAppliedFilters() != null) {
             telegramUser.setItemShowAppliedFilters(this.user.getItemShowAppliedFilters().stream().map(ItemFilterEntity::toItemFilter).toList());
         }
+        if (this.user.getActiveTradeByItemIdManagers() != null) {
+            telegramUser.setActiveTradeByItemIdManagers(this.user.getActiveTradeByItemIdManagers().stream().map(TradeByItemIdManagerEntity::toTradeByItemIdManager).toList());
+        }
+        if (this.user.getActiveTradeByFiltersManagers() != null) {
+            telegramUser.setActiveTradeByFiltersManagers(this.user.getActiveTradeByFiltersManagers().stream().map(TradeByFiltersManagerEntity::toTradeByFiltersManager).toList());
+        }
+        telegramUser.setNewManagersAreActiveFlag(this.user.getNewManagersAreActiveFlag());
+        telegramUser.setManagingEnabledFlag(this.user.getManagingEnabledFlag());
         return telegramUser;
     }
 
@@ -104,6 +113,31 @@ public class TelegramUserEntity {
         }
     }
 
+    public TradeManagersSettings toTradeManagersSettings() {
+        TradeManagersSettings tradeManagersSettings = new TradeManagersSettings();
+        if (this.user.getActiveTradeByItemIdManagers() != null) {
+            tradeManagersSettings.setActiveTradeByItemIdManagers(this.user.getActiveTradeByItemIdManagers().stream().map(TradeByItemIdManagerEntity::toTradeByItemIdManager).toList());
+        } else {
+            tradeManagersSettings.setActiveTradeByItemIdManagers(new ArrayList<>());
+        }
+        if (this.user.getActiveTradeByFiltersManagers() != null) {
+            tradeManagersSettings.setActiveTradeByFiltersManagers(this.user.getActiveTradeByFiltersManagers().stream().map(TradeByFiltersManagerEntity::toTradeByFiltersManager).toList());
+        } else {
+            tradeManagersSettings.setActiveTradeByFiltersManagers(new ArrayList<>());
+        }
+        tradeManagersSettings.setNewManagersAreActiveFlag(this.user.getNewManagersAreActiveFlag());
+        tradeManagersSettings.setManagingEnabledFlag(this.user.getManagingEnabledFlag());
+        return tradeManagersSettings;
+    }
+
+    public void setNewManagersAreActiveFlag(boolean flag) {
+        this.user.setNewManagersAreActiveFlag(flag);
+    }
+
+    public void setManagingEnabledFlag(boolean flag) {
+        this.user.setManagingEnabledFlag(flag);
+    }
+
     public void setFields(TelegramUser telegramUser) {
         this.chatId = telegramUser.getChatId();
         this.inputState = telegramUser.getInputState();
@@ -122,5 +156,15 @@ public class TelegramUserEntity {
             this.user.getItemShowAppliedFilters().clear();
             this.user.getItemShowAppliedFilters().addAll(telegramUser.getItemShowAppliedFilters().stream().map(ItemFilterEntity::new).toList());
         }
+        if (telegramUser.getActiveTradeByItemIdManagers() != null) {
+            this.user.getActiveTradeByItemIdManagers().clear();
+            this.user.getActiveTradeByItemIdManagers().addAll(telegramUser.getActiveTradeByItemIdManagers().stream().map(manager -> new TradeByItemIdManagerEntity(user, manager)).toList());
+        }
+        if (telegramUser.getActiveTradeByFiltersManagers() != null) {
+            this.user.getActiveTradeByFiltersManagers().clear();
+            this.user.getActiveTradeByFiltersManagers().addAll(telegramUser.getActiveTradeByFiltersManagers().stream().map(manager -> new TradeByFiltersManagerEntity(user, manager)).toList());
+        }
+        this.user.setNewManagersAreActiveFlag(telegramUser.isNewManagersAreActiveFlag());
+        this.user.setManagingEnabledFlag(telegramUser.isManagingEnabledFlag());
     }
 }

@@ -113,7 +113,19 @@ public class TelegramUserService {
     }
 
     public ItemShowSettings getItemShowSettings(Long chatId) throws TelegramUserDoesntExistException {
-        return telegramUserDatabaseService.findUserSettingsById(String.valueOf(chatId));
+        return telegramUserDatabaseService.findUserItemShowSettingsById(String.valueOf(chatId));
+    }
+
+    public TradeManagersSettings getTradeManagersSettings(Long chatId) throws TelegramUserDoesntExistException {
+        return telegramUserDatabaseService.findUserTradeManagersSettingsById(String.valueOf(chatId));
+    }
+
+    public void setTradeManagersSettingsNewManagersAreActiveFlag(Long chatId, boolean flag) throws TelegramUserDoesntExistException {
+        telegramUserDatabaseService.setTradeManagersSettingsNewManagersAreActiveFlag(String.valueOf(chatId), flag);
+    }
+
+    public void setTradeManagersSettingsManagingEnabledFlag(Long chatId, boolean flag) throws TelegramUserDoesntExistException {
+        telegramUserDatabaseService.setTradeManagersSettingsManagingEnabledFlag(String.valueOf(chatId), flag);
     }
 
     public InputState getUserInputState(Long chatId) throws TelegramUserDoesntExistException {

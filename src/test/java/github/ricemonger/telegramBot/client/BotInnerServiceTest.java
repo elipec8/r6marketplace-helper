@@ -1200,6 +1200,58 @@ public class BotInnerServiceTest {
     }
 
     @Test
+    public void getUserTradeManagersSettings_should_return_service_result() {
+        TradeManagersSettings settings = new TradeManagersSettings();
+        settings.setNewManagersAreActiveFlag(true);
+        settings.setManagingEnabledFlag(false);
+        when(telegramUserService.getTradeManagersSettings(1L)).thenReturn(settings);
+        assertEquals(settings, botInnerService.getUserTradeManagersSettings(1L));
+    }
+
+    @Test
+    public void getUserTradeManagersSettings_should_throw_if_service_throws() {
+        when(telegramUserService.getTradeManagersSettings(1L)).thenThrow(RuntimeException.class);
+
+        assertThrows(RuntimeException.class, () -> botInnerService.getUserTradeManagersSettings(1L));
+    }
+
+    @Test
+    public void setUserTradeManagersSettingsNewManagersAreActiveFlag_should_handle_to_service_true_flag() {
+        botInnerService.setUserTradeManagersSettingsNewManagersAreActiveFlag(1L, true);
+        verify(telegramUserService).setTradeManagersSettingsNewManagersAreActiveFlag(1L, true);
+    }
+
+    @Test
+    public void setUserTradeManagersSettingsNewManagersAreActiveFlag_should_handle_to_service_false_flag() {
+        botInnerService.setUserTradeManagersSettingsNewManagersAreActiveFlag(1L, false);
+        verify(telegramUserService).setTradeManagersSettingsNewManagersAreActiveFlag(1L, false);
+    }
+
+    @Test
+    public void setUserTradeManagersSettingsNewManagersAreActiveFlag_should_throw_if_service_throws() {
+        doThrow(new TelegramUserDoesntExistException("")).when(telegramUserService).setTradeManagersSettingsNewManagersAreActiveFlag(1L, true);
+        assertThrows(TelegramUserDoesntExistException.class, () -> botInnerService.setUserTradeManagersSettingsNewManagersAreActiveFlag(1L, true));
+    }
+
+    @Test
+    public void setUserTradeManagersSettingsManagingEnabledFlag_should_handle_to_service_true_flag() {
+        botInnerService.setUserTradeManagersSettingsManagingEnabledFlag(1L, true);
+        verify(telegramUserService).setTradeManagersSettingsManagingEnabledFlag(1L, true);
+    }
+
+    @Test
+    public void setUserTradeManagersSettingsManagingEnabledFlag_should_handle_to_service_false_flag() {
+        botInnerService.setUserTradeManagersSettingsManagingEnabledFlag(1L, false);
+        verify(telegramUserService).setTradeManagersSettingsManagingEnabledFlag(1L, false);
+    }
+
+    @Test
+    public void setUserTradeManagersSettingsManagingEnabledFlag_should_throw_if_service_throws() {
+        doThrow(new TelegramUserDoesntExistException("")).when(telegramUserService).setTradeManagersSettingsManagingEnabledFlag(1L, true);
+        assertThrows(TelegramUserDoesntExistException.class, () -> botInnerService.setUserTradeManagersSettingsManagingEnabledFlag(1L, true));
+    }
+
+    @Test
     public void getUserInputByState_should_return_service_result() {
         when(telegramUserService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL)).thenReturn("input");
         assertEquals("input", botInnerService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL));

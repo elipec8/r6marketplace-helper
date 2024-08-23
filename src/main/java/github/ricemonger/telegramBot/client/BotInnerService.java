@@ -329,6 +329,18 @@ public class BotInnerService {
         return telegramUserTradeManagerService.getAllUserTradeByFiltersManagers(String.valueOf(chatId));
     }
 
+    public TradeManagersSettings getUserTradeManagersSettings(Long chatId) throws TelegramUserDoesntExistException {
+        return telegramUserService.getTradeManagersSettings(chatId);
+    }
+
+    public void setUserTradeManagersSettingsNewManagersAreActiveFlag(Long chatId, boolean flag) throws TelegramUserDoesntExistException {
+        telegramUserService.setTradeManagersSettingsNewManagersAreActiveFlag(chatId, flag);
+    }
+
+    public void setUserTradeManagersSettingsManagingEnabledFlag(Long chatId, boolean flag) throws TelegramUserDoesntExistException {
+        telegramUserService.setTradeManagersSettingsManagingEnabledFlag(chatId, flag);
+    }
+
     public String getUserInputByState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         return telegramUserService.getUserInputByState(chatId, inputState);
     }
