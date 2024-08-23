@@ -13,6 +13,7 @@ import github.ricemonger.telegramBot.executors.items.settings.appliedFilters.Ite
 import github.ricemonger.telegramBot.executors.items.settings.messageLimit.ItemsShowSettingsChangeMessageLimitFinishInput;
 import github.ricemonger.telegramBot.executors.items.settings.shownFields.*;
 import github.ricemonger.telegramBot.executors.items.show.ItemsShowStage2FinishInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.itemFilter.*;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage2AskBoundaryPriceInput;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage3AskStartingPriceInput;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage4AskPriorityInput;
@@ -57,6 +58,8 @@ public class InputCommandListener {
                 case ITEMS_SHOW_SETTING_CHANGE_SHOWN_FIELDS -> itemShowSettingsChangeShownFieldsInputGroup(updateInfo);
 
                 case ITEMS_SHOW -> itemShowInputGroup(updateInfo);
+
+                case TRADE_BY_FILTERS_MANAGER_EDIT -> tradeByFiltersManagerEditInputGroup(updateInfo);
 
                 case TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_EDIT -> tradeByItemIdManagerTypeBuyEditInputGroup(updateInfo);
 
@@ -201,6 +204,32 @@ public class InputCommandListener {
             executorsService.execute(ItemsShowStage2FinishInput.class, updateInfo);
         } else {
             throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+        }
+    }
+
+    private void tradeByFiltersManagerEditInputGroup(UpdateInfo updateInfo) {
+        InputState inputState = updateInfo.getInputState();
+
+        switch (inputState) {
+            case TRADE_BY_FILTERS_MANAGER_EDIT_NAME -> executorsService.execute(TradeByFiltersManagerEditStage2AskTypeInput.class, updateInfo);
+
+            case TRADE_BY_FILTERS_MANAGER_EDIT_TRADE_TYPE ->
+                    executorsService.execute(TradeByFiltersManagerEditStage3AskFiltersInput.class, updateInfo);
+
+            case TRADE_BY_FILTERS_MANAGER_EDIT_FILTERS_NAMES ->
+                    executorsService.execute(TradeByFiltersManagerEditStage4AskMinBuySellProfitInput.class, updateInfo);
+
+            case TRADE_BY_FILTERS_MANAGER_EDIT_MIN_BUY_SELL_PROFIT ->
+                    executorsService.execute(TradeByFiltersManagerEditStage5AskMinProfitPercentInput.class, updateInfo);
+
+            case TRADE_BY_FILTERS_MANAGER_EDIT_MIN_PROFIT_PERCENT ->
+                    executorsService.execute(TradeByFiltersManagerEditStage6AskPriorityInput.class, updateInfo);
+
+            case TRADE_BY_FILTERS_MANAGER_EDIT_PRIORITY ->
+                    executorsService.execute(TradeByFiltersManagerEditStage7AskConfirmationFinishInput.class, updateInfo);
+
+            default ->
+                    throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
         }
     }
 

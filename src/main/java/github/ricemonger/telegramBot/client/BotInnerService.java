@@ -266,17 +266,38 @@ public class BotInnerService {
         }
     }
 
-    public void saveUserTradeByItemIdManagerByUserInput(Long chatId, TradeManagerTradeType tradeType) throws TelegramUserDoesntExistException {
+    public void saveUserTradeByItemIdManagerByUserInput(Long chatId, TradeManagerTradeType tradeType) throws TelegramUserDoesntExistException,
+            TelegramUserInputDoesntExistException {
         telegramUserTradeManagerService.saveUserTradeByItemIdManager(String.valueOf(chatId), generateTradeByItemIdManagerByUserInput(chatId, tradeType));
+    }
+
+    public void saveUserTradeByFiltersManagerByUserInput(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
+        telegramUserTradeManagerService.saveUserTradeByFiltersManager(String.valueOf(chatId), generateTradeByFiltersManagerByUserInput(chatId));
     }
 
     public TradeByItemIdManager generateTradeByItemIdManagerByUserInput(Long chatId, TradeManagerTradeType tradeType) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         Collection<TelegramUserInput> inputs = telegramUserService.getAllUserInputs(chatId);
 
-        return tradeManagerFromInputsMapper.mapToTradeManagerByItemId(
+        return tradeManagerFromInputsMapper.mapToTradeByItemIdManager(
                 inputs,
                 tradeType,
                 getItemByUserInputItemId(chatId));
+    }
+
+    public TradeByFiltersManager generateTradeByFiltersManagerByUserInput(Long chatId) throws TelegramUserDoesntExistException,
+            TelegramUserInputDoesntExistException {
+        Collection<TelegramUserInput> inputs = telegramUserService.getAllUserInputs(chatId);
+
+        String appliedFiltersNamesString = inputs.stream().filter(input -> input.getInputState().equals(InputState.TRADE_BY_FILTERS_MANAGER_EDIT_FILTERS_NAMES))
+                .map(TelegramUserInput::getValue)
+                .findFirst()
+                .orElse("");
+
+        List<ItemFilter> appliedFilters = telegramUserItemFilterService.getAllUserItemFilters(String.valueOf(chatId)).stream()
+                .filter(itemFilter -> appliedFiltersNamesString.contains(itemFilter.getName()))
+                .toList();
+
+        return tradeManagerFromInputsMapper.mapToTradeByFiltersManager(inputs, commonValuesService.getMaximumMarketplacePrice(), appliedFilters);
     }
 
     public Item getItemByUserInputItemId(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {

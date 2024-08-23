@@ -1,15 +1,19 @@
 package github.ricemonger.telegramBot.client;
 
+import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.ProfitAndPriorityCalculator;
+import github.ricemonger.marketplace.services.TelegramUserItemFilterService;
+import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.utils.dtos.Item;
-import github.ricemonger.utils.dtos.TelegramUserInput;
-import github.ricemonger.utils.dtos.TradeByItemIdManager;
+import github.ricemonger.utils.dtos.*;
 import github.ricemonger.utils.enums.TradeManagerTradeType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -17,7 +21,7 @@ public class TradeManagerFromInputsMapper {
 
     private final ProfitAndPriorityCalculator profitAndPriorityCalculator;
 
-    public TradeByItemIdManager mapToTradeManagerByItemId(Collection<TelegramUserInput> inputs, TradeManagerTradeType tradeType, Item item) {
+    public TradeByItemIdManager mapToTradeByItemIdManager(Collection<TelegramUserInput> inputs, TradeManagerTradeType tradeType, Item item) {
         String itemId = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID);
         String startingSellPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_SELL_PRICE);
         String boundarySellPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
@@ -29,10 +33,10 @@ public class TradeManagerFromInputsMapper {
         int limitMaxPrice = item.getLimitMaxPrice();
         int minSellPrice = item.getMinSellPrice() <= limitMinPrice ? limitMinPrice : item.getMinSellPrice() - 1;
 
-        int boundSellPrice = parsePrice(boundarySellPrice, limitMinPrice, limitMaxPrice, minSellPrice);
-        int startSellPrice = parsePrice(startingSellPrice, boundSellPrice, limitMaxPrice, boundSellPrice);
-        int boundBuyPrice = parsePrice(boundaryBuyPrice, limitMinPrice, limitMaxPrice, profitAndPriorityCalculator.calculateNextBuyPrice(item));
-        int startBuyPrice = parsePrice(startingBuyPrice, limitMinPrice, boundBuyPrice, boundBuyPrice);
+        int boundSellPrice = parseIntValue(boundarySellPrice, limitMinPrice, limitMaxPrice, minSellPrice);
+        int startSellPrice = parseIntValue(startingSellPrice, boundSellPrice, limitMaxPrice, boundSellPrice);
+        int boundBuyPrice = parseIntValue(boundaryBuyPrice, limitMinPrice, limitMaxPrice, profitAndPriorityCalculator.calculateNextBuyPrice(item));
+        int startBuyPrice = parseIntValue(startingBuyPrice, limitMinPrice, boundBuyPrice, boundBuyPrice);
 
         int prior;
         try {
@@ -53,21 +57,56 @@ public class TradeManagerFromInputsMapper {
         return tradeByItemIdManager;
     }
 
-    private int parsePrice(String value, int minPrice, int maxPrice, int invalidCasePrice) {
-        int price;
-        try {
-            price = Integer.parseInt(value);
-        } catch (NumberFormatException | NullPointerException e) {
-            return invalidCasePrice;
+    public TradeByFiltersManager mapToTradeByFiltersManager(Collection<TelegramUserInput> inputs, int maxMarketplacePrice, List<ItemFilter> itemFilters) {
+        String name = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_NAME);
+        String tradeType = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_TRADE_TYPE);
+        String minBuySellProfit = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_MIN_BUY_SELL_PROFIT);
+        String minProfitPercent = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_MIN_PROFIT_PERCENT);
+        String priority = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_PRIORITY);
+
+        TradeByFiltersManager tradeByFiltersManager = new TradeByFiltersManager();
+        tradeByFiltersManager.setName(name);
+
+        if (tradeType.equals(Callbacks.TRADE_BY_FILTERS_MANAGER_TYPE_BUY_EDIT)) {
+            tradeByFiltersManager.setTradeType(TradeManagerTradeType.BUY);
+        } else if (tradeType.equals(Callbacks.TRADE_BY_FILTERS_MANAGER_TYPE_SELL_EDIT)) {
+            tradeByFiltersManager.setTradeType(TradeManagerTradeType.SELL);
+        } else {
+            tradeByFiltersManager.setTradeType(TradeManagerTradeType.BUY_AND_SELL);
         }
 
-        if (price < minPrice) {
-            price = minPrice;
-        } else if (price > maxPrice) {
-            price = maxPrice;
+        tradeByFiltersManager.setAppliedFilters(itemFilters);
+        tradeByFiltersManager.setMinBuySellProfit(parseIntValue(minBuySellProfit, -1 * maxMarketplacePrice,
+                maxMarketplacePrice, 50));
+        tradeByFiltersManager.setMinProfitPercent(parseIntValue(minProfitPercent, Integer.MIN_VALUE, Integer.MAX_VALUE, 20));
+        tradeByFiltersManager.setPriority(parseIntValue(priority, 1, Integer.MAX_VALUE, 1));
+
+        return tradeByFiltersManager;
+    }
+
+    private int parseIntValue(String string, int minValue, int maxValue, int invalidCaseValue) {
+        int price;
+        try {
+            price = Integer.parseInt(string);
+        } catch (NumberFormatException | NullPointerException e) {
+            return invalidCaseValue;
+        }
+
+        if (price < minValue) {
+            price = minValue;
+        } else if (price > maxValue) {
+            price = maxValue;
         }
 
         return price;
+    }
+
+    private List<String> getAppliedFiltersNamesFromString(String appliedFilters) {
+        if (appliedFilters == null || appliedFilters.isEmpty() || appliedFilters.equals(Callbacks.EMPTY)) {
+            return new ArrayList<>();
+        } else {
+            return Arrays.stream(appliedFilters.split("[,|]")).map(String::trim).toList();
+        }
     }
 
     private String getValueByState(Collection<TelegramUserInput> inputs, InputState inputState) {

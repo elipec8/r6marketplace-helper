@@ -4,7 +4,7 @@ import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUs
 import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByItemIdManagerEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.repositories.TradeManagerByItemIdPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.TradeByItemIdManagerPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.utils.dtos.TradeByItemIdManager;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
@@ -25,9 +25,9 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
     private final static String ANOTHER_CHAT_ID = "2";
 
     @Autowired
-    private TelegramUserTradeByItemIdPostgresServiceManager telegramUserTradeManagerByItemIdService;
+    private TelegramUserTradeByItemIdManagerPostgresService telegramUserTradeManagerByItemIdService;
     @Autowired
-    private TradeManagerByItemIdPostgresRepository tradeManagerByItemIdRepository;
+    private TradeByItemIdManagerPostgresRepository tradeManagerByItemIdRepository;
     @Autowired
     private TelegramUserPostgresRepository telegramUserRepository;
     @Autowired

@@ -20,6 +20,7 @@ import github.ricemonger.telegramBot.executors.items.show.ItemsShowStage1AskOffs
 import github.ricemonger.telegramBot.executors.start.startYes.StartYesCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.TradeManagersEditAskManagerTypeCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.itemFilter.TradeByFiltersManagerEditStage1AskNameCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.itemFilter.TradeByFiltersManagerEditStage8ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.TradeByItemIdManagerEditAskTradeTypeCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage1AskItemIdCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage6ConfirmedFinishCallback;
@@ -170,6 +171,13 @@ class CallbackCommandListenerTest {
         callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_BY_FILTERS_MANAGER_EDIT));
 
         verify(executorsService).execute(TradeByFiltersManagerEditStage1AskNameCallback.class, updateInfo(Callbacks.TRADE_BY_FILTERS_MANAGER_EDIT));
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_filters_manager_edit_finish_confirmed() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_BY_FILTERS_MANAGER_EDIT_FINISH_CONFIRMED));
+
+        verify(executorsService).execute(TradeByFiltersManagerEditStage8ConfirmedFinishCallback.class, updateInfo(Callbacks.TRADE_BY_FILTERS_MANAGER_EDIT_FINISH_CONFIRMED));
     }
 
     @Test

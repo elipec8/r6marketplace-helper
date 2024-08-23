@@ -14,6 +14,7 @@ import github.ricemonger.telegramBot.executors.items.settings.appliedFilters.Ite
 import github.ricemonger.telegramBot.executors.items.settings.messageLimit.ItemsShowSettingsChangeMessageLimitFinishInput;
 import github.ricemonger.telegramBot.executors.items.settings.shownFields.*;
 import github.ricemonger.telegramBot.executors.items.show.ItemsShowStage2FinishInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.itemFilter.*;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage2AskBoundaryPriceInput;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage3AskStartingPriceInput;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage4AskPriorityInput;
@@ -354,6 +355,62 @@ class InputCommandListenerTest {
     public void handleUpdate_should_item_show_throw() {
         assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
             UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+            inputCommandListener.handleUpdate(updateInfo);
+        });
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_filters_manager_edit_name() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_FILTERS_MANAGER_EDIT, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_NAME);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByFiltersManagerEditStage2AskTypeInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_filters_manager_edit_trade_type() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_FILTERS_MANAGER_EDIT, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_TRADE_TYPE);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByFiltersManagerEditStage3AskFiltersInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_filters_manager_edit_filters_names() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_FILTERS_MANAGER_EDIT, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_FILTERS_NAMES);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByFiltersManagerEditStage4AskMinBuySellProfitInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_filters_manager_edit_min_buy_sell_profit() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_FILTERS_MANAGER_EDIT, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_MIN_BUY_SELL_PROFIT);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByFiltersManagerEditStage5AskMinProfitPercentInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_filters_manager_edit_min_profit_percent() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_FILTERS_MANAGER_EDIT, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_MIN_PROFIT_PERCENT);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByFiltersManagerEditStage6AskPriorityInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_filters_manager_edit_priority() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_FILTERS_MANAGER_EDIT, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_PRIORITY);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByFiltersManagerEditStage7AskConfirmationFinishInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_filters_manager_edit_throw() {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
+            UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_FILTERS_MANAGER_EDIT, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE);
             inputCommandListener.handleUpdate(updateInfo);
         });
     }

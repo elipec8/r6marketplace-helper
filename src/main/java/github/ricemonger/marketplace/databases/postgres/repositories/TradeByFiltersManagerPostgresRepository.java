@@ -4,5 +4,5 @@ import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByFil
 import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByFiltersManagerEntityId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TradeManagerByItemFiltersPostgresRepository extends JpaRepository<TradeByFiltersManagerEntity, TradeByFiltersManagerEntityId> {
+public interface TradeByFiltersManagerPostgresRepository extends JpaRepository<TradeByFiltersManagerEntity, TradeByFiltersManagerEntityId> {
 }

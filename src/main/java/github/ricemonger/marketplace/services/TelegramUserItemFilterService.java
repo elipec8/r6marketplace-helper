@@ -27,6 +27,10 @@ public class TelegramUserItemFilterService {
         return telegramUserItemFilterDatabaseService.findById(chatId, name);
     }
 
+    public List<ItemFilter> getAllUserItemFilters(String chatId) throws TelegramUserDoesntExistException {
+        return telegramUserItemFilterDatabaseService.findAllByChatId(chatId);
+    }
+
     public List<String> getAllUserItemFiltersNames(String chatId) throws TelegramUserDoesntExistException {
         return telegramUserItemFilterDatabaseService.findAllByChatId(chatId).stream().map(ItemFilter::getName).toList();
     }

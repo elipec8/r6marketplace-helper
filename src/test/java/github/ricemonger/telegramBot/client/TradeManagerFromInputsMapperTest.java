@@ -1,10 +1,10 @@
 package github.ricemonger.telegramBot.client;
 
+import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.ProfitAndPriorityCalculator;
+import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.utils.dtos.Item;
-import github.ricemonger.utils.dtos.TelegramUserInput;
-import github.ricemonger.utils.dtos.TradeByItemIdManager;
+import github.ricemonger.utils.dtos.*;
 import github.ricemonger.utils.enums.TradeManagerTradeType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ class TradeManagerFromInputsMapperTest {
     private ProfitAndPriorityCalculator profitAndPriorityCalculator;
 
     @Test
-    public void mapToTradeManagerByItemId_should_map_inputs_to_manager_with_valid_inputs() {
+    public void mapToTradeByItemIdManager_should_map_inputs_to_manager_with_valid_inputs() {
         String chatId = "chatId";
         List<TelegramUserInput> inputs = new ArrayList<>();
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID, "itemId"));
@@ -50,11 +50,11 @@ class TradeManagerFromInputsMapperTest {
         item.setLimitMinPrice(120);
         item.setLimitMaxPrice(150_000);
 
-        assertEquals(expected, tradeManagerFromInputsMapper.mapToTradeManagerByItemId(inputs, TradeManagerTradeType.BUY, item));
+        assertEquals(expected, tradeManagerFromInputsMapper.mapToTradeByItemIdManager(inputs, TradeManagerTradeType.BUY, item));
     }
 
     @Test
-    public void mapToTradeManagerByItemId_should_map_inputs_to_manager_with_invalid_inputs() {
+    public void mapToTradeByItemIdManager_should_map_inputs_to_manager_with_invalid_inputs() {
         String chatId = "chatId";
         List<TelegramUserInput> inputs = new ArrayList<>();
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID, ""));
@@ -81,13 +81,13 @@ class TradeManagerFromInputsMapperTest {
 
         when(profitAndPriorityCalculator.calculateNextBuyPrice(item)).thenReturn(120);
 
-        TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeManagerByItemId(inputs, TradeManagerTradeType.SELL, item);
+        TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeByItemIdManager(inputs, TradeManagerTradeType.SELL, item);
 
         assertEquals(expected, actual);
     }
 
     @Test
-    public void mapToTradeManagerByItemId_should_map_inputs_to_manager_with_wrong_conjunctions_of_prices() {
+    public void mapToTradeByItemIdManager_should_map_inputs_to_manager_with_wrong_conjunctions_of_prices() {
         String chatId = "chatId";
         List<TelegramUserInput> inputs = new ArrayList<>();
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID, "itemId"));
@@ -114,13 +114,13 @@ class TradeManagerFromInputsMapperTest {
 
         when(profitAndPriorityCalculator.calculateNextBuyPrice(item)).thenReturn(120);
 
-        TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeManagerByItemId(inputs, TradeManagerTradeType.BUY_AND_SELL, item);
+        TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeByItemIdManager(inputs, TradeManagerTradeType.BUY_AND_SELL, item);
 
         assertEquals(expected, actual);
     }
 
     @Test
-    public void mapToTradeManagerByItemId_should_map_inputs_to_manager_with_out_of_limit_low_prices() {
+    public void mapToTradeByItemIdManager_should_map_inputs_to_manager_with_out_of_limit_low_prices() {
         String chatId = "chatId";
         List<TelegramUserInput> inputs = new ArrayList<>();
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID, "itemId"));
@@ -147,13 +147,13 @@ class TradeManagerFromInputsMapperTest {
 
         when(profitAndPriorityCalculator.calculateNextBuyPrice(item)).thenReturn(120);
 
-        TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeManagerByItemId(inputs, TradeManagerTradeType.BUY_AND_SELL, item);
+        TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeByItemIdManager(inputs, TradeManagerTradeType.BUY_AND_SELL, item);
 
         assertEquals(expected, actual);
     }
 
     @Test
-    public void mapToTradeManagerByItemId_should_map_inputs_to_manager_with_out_of_limit_high_prices() {
+    public void mapToTradeByItemIdManager_should_map_inputs_to_manager_with_out_of_limit_high_prices() {
         String chatId = "chatId";
         List<TelegramUserInput> inputs = new ArrayList<>();
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID, "itemId"));
@@ -180,8 +180,96 @@ class TradeManagerFromInputsMapperTest {
 
         when(profitAndPriorityCalculator.calculateNextBuyPrice(item)).thenReturn(120);
 
-        TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeManagerByItemId(inputs, TradeManagerTradeType.BUY_AND_SELL, item);
+        TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeByItemIdManager(inputs, TradeManagerTradeType.BUY_AND_SELL, item);
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void mapToTradeByFiltersManager_should_map_inputs_to_manager_with_valid_inputs() {
+        String chatId = "chatId";
+        List<TelegramUserInput> inputs = new ArrayList<>();
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_NAME, "name"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_TRADE_TYPE, Callbacks.TRADE_BY_FILTERS_MANAGER_TYPE_BUY_EDIT));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_MIN_BUY_SELL_PROFIT, "100"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_MIN_PROFIT_PERCENT, "30"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_PRIORITY, "2"));
+
+        TradeByFiltersManager expected = new TradeByFiltersManager();
+        expected.setName("name");
+        expected.setTradeType(TradeManagerTradeType.BUY);
+        expected.setAppliedFilters(List.of(new ItemFilter()));
+        expected.setMinBuySellProfit(100);
+        expected.setMinProfitPercent(30);
+        expected.setPriority(2);
+
+        assertEquals(expected, tradeManagerFromInputsMapper.mapToTradeByFiltersManager(inputs, 150_000, List.of(new ItemFilter())));
+    }
+
+    @Test
+    public void mapToTradeByFiltersManager_should_map_inputs_to_manager_with_invalid_inputs() {
+        String chatId = "chatId";
+        List<TelegramUserInput> inputs = new ArrayList<>();
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_NAME, ""));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_TRADE_TYPE, ""));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_FILTERS_NAMES, ""));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_MIN_BUY_SELL_PROFIT, ""));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_MIN_PROFIT_PERCENT, ""));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_PRIORITY, ""));
+
+        TradeByFiltersManager expected = new TradeByFiltersManager();
+        expected.setName("");
+        expected.setTradeType(TradeManagerTradeType.BUY_AND_SELL);
+        expected.setAppliedFilters(List.of());
+        expected.setMinBuySellProfit(50);
+        expected.setMinProfitPercent(20);
+        expected.setPriority(1);
+
+        assertEquals(expected, tradeManagerFromInputsMapper.mapToTradeByFiltersManager(inputs, 150_000, List.of()));
+    }
+
+    @Test
+    public void mapToTradeByFiltersManager_should_map_inputs_to_manager_with_minimum_values() {
+        String chatId = "chatId";
+        List<TelegramUserInput> inputs = new ArrayList<>();
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_NAME, null));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_TRADE_TYPE, Callbacks.TRADE_BY_FILTERS_MANAGER_TYPE_SELL_EDIT));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_FILTERS_NAMES, null));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_MIN_BUY_SELL_PROFIT, "-150001"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_MIN_PROFIT_PERCENT, "-2147483647"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_PRIORITY, "-2147483647"));
+
+        TradeByFiltersManager expected = new TradeByFiltersManager();
+        expected.setName(null);
+        expected.setTradeType(TradeManagerTradeType.SELL);
+        expected.setAppliedFilters(List.of());
+        expected.setMinBuySellProfit(-150_000);
+        expected.setMinProfitPercent(-2147483647);
+        expected.setPriority(1);
+
+        assertEquals(expected, tradeManagerFromInputsMapper.mapToTradeByFiltersManager(inputs, 150_000, List.of()));
+    }
+
+    @Test
+    public void mapToTradeByFiltersManager_should_map_inputs_to_manager_with_maximum_values() {
+        String chatId = "chatId";
+        List<TelegramUserInput> inputs = new ArrayList<>();
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_NAME, "name"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_TRADE_TYPE,
+                Callbacks.TRADE_BY_FILTERS_MANAGER_TYPE_BUY_AND_SELL_EDIT));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_FILTERS_NAMES, null));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_MIN_BUY_SELL_PROFIT, "150001"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_MIN_PROFIT_PERCENT, "2147483647"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_PRIORITY, "2147483647"));
+
+        TradeByFiltersManager expected = new TradeByFiltersManager();
+        expected.setName("name");
+        expected.setTradeType(TradeManagerTradeType.BUY_AND_SELL);
+        expected.setAppliedFilters(List.of());
+        expected.setMinBuySellProfit(150_000);
+        expected.setMinProfitPercent(Integer.MAX_VALUE);
+        expected.setPriority(Integer.MAX_VALUE);
+
+        assertEquals(expected, tradeManagerFromInputsMapper.mapToTradeByFiltersManager(inputs, 150_000, List.of()));
     }
 }

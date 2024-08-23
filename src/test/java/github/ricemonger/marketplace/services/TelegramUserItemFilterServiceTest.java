@@ -56,6 +56,18 @@ class TelegramUserItemFilterServiceTest {
     }
 
     @Test
+    public void getAllUser_ItemFilters_should_handle_to_db_service() {
+        String chatId = "chatId";
+        ItemFilter itemFilter = new ItemFilter();
+
+        when(telegramUserItemFilterDatabaseService.findAllByChatId(chatId)).thenReturn(List.of(itemFilter));
+
+        assertEquals(List.of(itemFilter), telegramUserItemFilterService.getAllUserItemFilters(chatId));
+
+        verify(telegramUserItemFilterDatabaseService).findAllByChatId(same(chatId));
+    }
+
+    @Test
     public void getAllUser_ItemFiltersNames_should_handle_to_db_service() {
         String chatId = "chatId";
         ItemFilter itemFilter = new ItemFilter();

@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUs
 import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByItemIdManagerEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByItemIdManagerEntityId;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.repositories.TradeManagerByItemIdPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.TradeByItemIdManagerPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserTradeByItemIdManagerDatabaseService;
 import github.ricemonger.utils.dtos.TradeByItemIdManager;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
@@ -19,9 +19,9 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TelegramUserTradeByItemIdPostgresServiceManager implements TelegramUserTradeByItemIdManagerDatabaseService {
+public class TelegramUserTradeByItemIdManagerPostgresService implements TelegramUserTradeByItemIdManagerDatabaseService {
 
-    private final TradeManagerByItemIdPostgresRepository tradeManagerByItemIdRepository;
+    private final TradeByItemIdManagerPostgresRepository tradeManagerByItemIdRepository;
 
     private final TelegramUserPostgresRepository telegramUserRepository;
 

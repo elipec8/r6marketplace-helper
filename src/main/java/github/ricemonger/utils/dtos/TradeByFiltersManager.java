@@ -15,26 +15,25 @@ public class TradeByFiltersManager {
 
     private TradeManagerTradeType tradeType;
 
-    private List<String> appliedFilters;
+    private List<ItemFilter> appliedFilters;
 
-    private Integer maxBuyHours;
-    private Integer maxSellHours;
-
-    private Integer minProfit;
+    private Integer minBuySellProfit;
     private Integer minProfitPercent;
 
     private Integer priority;
 
     public String toString() {
-        String sb = "Planned item filter trade: \n" +
+        String sb = "Trade By Item Filter Manager: \n" +
                     "Name: " + name + "\n" +
-                    "Trade type: " + tradeType + "\n" +
-                    "Applied filters: " + appliedFilters.stream().reduce((a, b) -> a + ", " + b).orElse("") + "\n" +
-                    "Max buy hours: " + maxBuyHours + "\n" +
-                    "Max sell hours: " + maxSellHours + "\n" +
-                    "Min profit: " + minProfit + "\n" +
-                    "Min profit in percentages: " + minProfitPercent + "\n" +
-                    "Priority: " + priority + "\n";
+                    "Trade type: " + tradeType + "\n";
+        if (appliedFilters != null) {
+            sb = sb + "Applied filters' names: " + appliedFilters.stream().map(ItemFilter::getName).reduce((a, b) -> a + ", " + b).orElse("") + "\n";
+        } else {
+            sb = sb + "Applied filters: null\n";
+        }
+        sb = sb + "Min profit: " + minBuySellProfit + "\n" +
+             "Min profit percent: " + minProfitPercent + "\n" +
+             "Priority: " + priority + "\n";
         return sb;
     }
 }
