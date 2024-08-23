@@ -6,6 +6,8 @@ import github.ricemonger.telegramBot.executors.ExecutorsService;
 import github.ricemonger.telegramBot.executors.cancel.Cancel;
 import github.ricemonger.telegramBot.executors.cancel.SilentCancel;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.itemFilter.TradeByFiltersManagerEditStage8ConfirmedFinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemFilters.TradeByFiltersManagerRemoveStage1AskNameCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemFilters.TradeByFiltersManagerRemoveStage3ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.show.UbiAccountEntryShowCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.unlink.UbiAccountEntryUnlinkConfirmedFinishCallback;
@@ -139,6 +141,11 @@ public class CallbackCommandListener {
             case Callbacks.TRADE_BY_FILTERS_MANAGERS_SHOW_ALL -> executorsService.execute(TradeByFiltersManagersShowAllCallback.class, updateInfo);
 
             case Callbacks.TRADE_BY_ITEM_ID_MANAGERS_SHOW_ALL -> executorsService.execute(TradeByItemIdManagersShowAllCallback.class, updateInfo);
+
+
+            case Callbacks.TRADE_BY_FILTERS_MANAGER_REMOVE -> executorsService.execute(TradeByFiltersManagerRemoveStage1AskNameCallback.class, updateInfo);
+
+            case Callbacks.TRADE_BY_FILTERS_MANAGER_REMOVE_FINISH_CONFIRMED -> executorsService.execute(TradeByFiltersManagerRemoveStage3ConfirmedFinishCallback.class, updateInfo);
 
 
             case Callbacks.TRADE_BY_ITEM_ID_MANAGER_REMOVE -> executorsService.execute(TradeByItemIdManagerRemoveStage1AskItemIdCallback.class, updateInfo);

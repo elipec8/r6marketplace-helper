@@ -24,7 +24,8 @@ import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.T
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage3AskStartingPriceInput;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage4AskPriorityInput;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage5AskConfirmationFinishInput;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemId.TradeByItemIdManagerRemoveStage2AskConfirmationInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemFilters.TradeByFiltersManagerRemoveStage2AskConfirmationFinishInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemId.TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkStage1AskFullOrEmailInput;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkStage2AskPasswordInput;
 import github.ricemonger.utils.exceptions.UnexpectedUserInputStateAndGroupConjunctionException;
@@ -361,7 +362,7 @@ class InputCommandListenerTest {
 
     @Test
     public void handleUpdate_should_trade_by_filters_manager_edit_name() {
-        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_FILTERS_MANAGER_EDIT, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_NAME);
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_FILTERS_MANAGER_EDIT, InputState.TRADE_BY_FILTERS_MANAGER_NAME);
         inputCommandListener.handleUpdate(updateInfo);
 
         verify(executorsService).execute(TradeByFiltersManagerEditStage2AskTypeInput.class, updateInfo);
@@ -552,11 +553,27 @@ class InputCommandListenerTest {
     }
 
     @Test
+    public void handleUpdate_should_trade_by_filters_manager_remove_name() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_FILTERS_MANAGER_SHOW_OR_REMOVE, InputState.TRADE_BY_FILTERS_MANAGER_NAME);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeByFiltersManagerRemoveStage2AskConfirmationFinishInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_filters_manager_remove_throw() {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
+            UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_FILTERS_MANAGER_SHOW_OR_REMOVE, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE);
+            inputCommandListener.handleUpdate(updateInfo);
+        });
+    }
+
+    @Test
     public void handleUpdate_should_trade_by_item_id_manager_remove_item_id() {
         UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_SHOW_OR_REMOVE, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(TradeByItemIdManagerRemoveStage2AskConfirmationInput.class, updateInfo);
+        verify(executorsService).execute(TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput.class, updateInfo);
     }
 
     @Test

@@ -8,6 +8,7 @@ import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgre
 import github.ricemonger.utils.dtos.TradeByFiltersManager;
 import github.ricemonger.utils.enums.TradeManagerTradeType;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.TradeByItemIdManagerDoesntExistException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +82,7 @@ class TelegramUserTradeByFiltersManagerPostgresServiceTest {
         telegramUserTradeByFiltersManagerService.save(ANOTHER_CHAT_ID, tradeManager);
 
         assertEquals(1, telegramUserRepository.findById(CHAT_ID).get().getUser().getTradeByFiltersManagers().size());
-        assertEquals(2,tradeByFiltersManagerRepository.findAll().size());
+        assertEquals(2, tradeByFiltersManagerRepository.findAll().size());
 
         assertEquals(tradeManager, telegramUserRepository.findById(CHAT_ID).get().getUser().getTradeByFiltersManagers().get(0).toTradeByFiltersManager());
     }
@@ -90,6 +91,62 @@ class TelegramUserTradeByFiltersManagerPostgresServiceTest {
     public void save_should_throw_if_telegram_user_doesnt_exist() {
         TradeByFiltersManager tradeManager = new TradeByFiltersManager();
 
-        assertThrows(TelegramUserDoesntExistException.class, () ->{telegramUserTradeByFiltersManagerService.save(ANOTHER_CHAT_ID, tradeManager);});
+        assertThrows(TelegramUserDoesntExistException.class, () -> {
+            telegramUserTradeByFiltersManagerService.save(ANOTHER_CHAT_ID, tradeManager);
+        });
+    }
+
+    @Test
+    public void deleteById_should_remove_trade_manager() {
+        TradeByFiltersManager tradeManager = new TradeByFiltersManager();
+        tradeManager.setName("1");
+        telegramUserTradeByFiltersManagerService.save(CHAT_ID, tradeManager);
+        tradeManager.setName("2");
+        telegramUserTradeByFiltersManagerService.save(CHAT_ID, tradeManager);
+
+        createTelegramUser(ANOTHER_CHAT_ID);
+        telegramUserTradeByFiltersManagerService.save(ANOTHER_CHAT_ID, tradeManager);
+
+        telegramUserTradeByFiltersManagerService.deleteById(CHAT_ID, "2");
+
+        assertEquals(1, telegramUserRepository.findById(CHAT_ID).get().getUser().getTradeByFiltersManagers().size());
+        assertEquals(1, telegramUserRepository.findById(ANOTHER_CHAT_ID).get().getUser().getTradeByFiltersManagers().size());
+        assertEquals(2, tradeByFiltersManagerRepository.findAll().size());
+    }
+
+    @Test
+    public void deleteById_should_throw_exception_if_telegram_user_doesnt_exist() {
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserTradeByFiltersManagerService.deleteById(ANOTHER_CHAT_ID, "1"));
+    }
+
+    @Test
+    public void findById_should_return_trade_manager() {
+        TradeByFiltersManager tradeManager = new TradeByFiltersManager();
+        tradeManager.setName("1");
+        tradeManager.setMinProfitPercent(1);
+        telegramUserTradeByFiltersManagerService.save(CHAT_ID, tradeManager);
+
+        tradeManager.setName("2");
+        tradeManager.setMinProfitPercent(99);
+        telegramUserTradeByFiltersManagerService.save(CHAT_ID, tradeManager);
+
+        createTelegramUser(ANOTHER_CHAT_ID);
+        tradeManager.setName("1");
+        tradeManager.setMinProfitPercent(10);
+        telegramUserTradeByFiltersManagerService.save(ANOTHER_CHAT_ID, tradeManager);
+
+        TradeByFiltersManager foundTradeManager = telegramUserTradeByFiltersManagerService.findById(CHAT_ID, "1");
+
+        assertEquals(1, foundTradeManager.getMinProfitPercent());
+    }
+
+    @Test
+    public void findById_should_throw_exception_if_telegram_user_doesnt_exist() {
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserTradeByFiltersManagerService.findById(ANOTHER_CHAT_ID, "1"));
+    }
+
+    @Test
+    public void findById_should_throw_exception_if_trade_manager_doesnt_exist() {
+        assertThrows(TradeByItemIdManagerDoesntExistException.class, () -> telegramUserTradeByFiltersManagerService.findById(CHAT_ID, "1"));
     }
 }

@@ -4,16 +4,16 @@ import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 import github.ricemonger.utils.dtos.TradeByItemIdManager;
 
-public class TradeByItemIdManagerRemoveStage2AskConfirmationInput extends AbstractBotCommandExecutor {
+public class TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
         processLastInput();
 
-        TradeByItemIdManager toRemove = botInnerService.getUserTradeByItemIdManagerByUserInputItemId(updateInfo.getChatId());
+        TradeByItemIdManager tradeManager = botInnerService.getUserTradeByItemIdManagerByUserInputItemId(updateInfo.getChatId());
 
         askYesOrNoFromInlineKeyboard(
-                "Are you sure you want to remove chosen trade manager:\n" + toRemove,
+                "Do you want to remove chosen trade manager?:\n\n" + tradeManager,
                 Callbacks.TRADE_BY_ITEM_ID_MANAGER_REMOVE_FINISH_CONFIRMED,
-                Callbacks.CANCEL);
+                Callbacks.CANCEL_SILENT);
     }
 }

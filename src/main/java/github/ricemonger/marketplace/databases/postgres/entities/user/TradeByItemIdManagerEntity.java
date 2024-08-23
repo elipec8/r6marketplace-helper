@@ -46,7 +46,7 @@ public class TradeByItemIdManagerEntity {
         this.priority = tradeManager.getPriority();
     }
 
-    public TradeByItemIdManager toTradeManagerByItemId() {
+    public TradeByItemIdManager toTradeByItemIdManager() {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId(itemId);
         tradeManager.setTradeType(tradeType);

@@ -32,6 +32,8 @@ import github.ricemonger.telegramBot.executors.tradeManagers.settings.TradeManag
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeByFiltersManagersShowAllCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeByItemIdManagersShowAllCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeManagersChooseTypeCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemFilters.TradeByFiltersManagerRemoveStage1AskNameCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemFilters.TradeByFiltersManagerRemoveStage3ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemId.TradeByItemIdManagerRemoveStage1AskItemIdCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemId.TradeByItemIdManagerRemoveStage3ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkCallback;
@@ -255,6 +257,20 @@ class CallbackCommandListenerTest {
         callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_BY_ITEM_ID_MANAGERS_SHOW_ALL));
 
         verify(executorsService).execute(TradeByItemIdManagersShowAllCallback.class, updateInfo(Callbacks.TRADE_BY_ITEM_ID_MANAGERS_SHOW_ALL));
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_filters_manager_remove() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_BY_FILTERS_MANAGER_REMOVE));
+
+        verify(executorsService).execute(TradeByFiltersManagerRemoveStage1AskNameCallback.class, updateInfo(Callbacks.TRADE_BY_FILTERS_MANAGER_REMOVE));
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_filters_manager_remove_finish_confirmed() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_BY_FILTERS_MANAGER_REMOVE_FINISH_CONFIRMED));
+
+        verify(executorsService).execute(TradeByFiltersManagerRemoveStage3ConfirmedFinishCallback.class, updateInfo(Callbacks.TRADE_BY_FILTERS_MANAGER_REMOVE_FINISH_CONFIRMED));
     }
 
     @Test

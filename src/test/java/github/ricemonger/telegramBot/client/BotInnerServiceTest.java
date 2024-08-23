@@ -966,7 +966,7 @@ public class BotInnerServiceTest {
     public void saveUserTradeByFiltersManagerByUserInput_should_handle_to_service() {
         TradeByFiltersManager tradeManager = new TradeByFiltersManager();
 
-        when(tradeManagerFromInputsMapper.mapToTradeByFiltersManager(any(),anyInt(),any())).thenReturn(tradeManager);
+        when(tradeManagerFromInputsMapper.mapToTradeByFiltersManager(any(), anyInt(), any())).thenReturn(tradeManager);
 
         botInnerService.saveUserTradeByFiltersManagerByUserInput(1L);
 
@@ -981,7 +981,7 @@ public class BotInnerServiceTest {
 
     @Test
     public void saveUserTradeByFiltersManagerByUserInput_should_throw_if_mapper_throws_during_mapping() {
-        doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeByFiltersManager(any(),anyInt(),any());
+        doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeByFiltersManager(any(), anyInt(), any());
         assertThrows(RuntimeException.class, () -> botInnerService.saveUserTradeByFiltersManagerByUserInput(1L));
     }
 
@@ -989,7 +989,7 @@ public class BotInnerServiceTest {
     public void saveUserTradeByFiltersManagerByUserInput_should_throw_if_service_throws_during_save_manager() {
         TradeByFiltersManager tradeManager = new TradeByFiltersManager();
 
-        when(tradeManagerFromInputsMapper.mapToTradeByFiltersManager(any(),anyInt(),any())).thenReturn(tradeManager);
+        when(tradeManagerFromInputsMapper.mapToTradeByFiltersManager(any(), anyInt(), any())).thenReturn(tradeManager);
 
         doThrow(new RuntimeException()).when(telegramUserTradeManagerService).saveUserTradeByFiltersManager(any(), any());
         assertThrows(RuntimeException.class, () -> botInnerService.saveUserTradeByFiltersManagerByUserInput(1L));
@@ -1021,7 +1021,7 @@ public class BotInnerServiceTest {
     public void generateTradeByFiltersManagerByUserInput_ItemId_should_return_service_result() {
         TradeByFiltersManager tradeManager = new TradeByFiltersManager();
         tradeManager.setAppliedFilters(new ArrayList<>());
-        when(tradeManagerFromInputsMapper.mapToTradeByFiltersManager(any(),anyInt(),any())).thenReturn(tradeManager);
+        when(tradeManagerFromInputsMapper.mapToTradeByFiltersManager(any(), anyInt(), any())).thenReturn(tradeManager);
 
         assertEquals(tradeManager, botInnerService.generateTradeByFiltersManagerByUserInput(1L));
     }
@@ -1034,7 +1034,7 @@ public class BotInnerServiceTest {
 
     @Test
     public void generateTradeByFiltersManagerByUserInput_ItemId_should_throw_if_mapper_throws_during_mapping() {
-        doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeByFiltersManager(any(),anyInt(),any());
+        doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeByFiltersManager(any(), anyInt(), any());
         assertThrows(RuntimeException.class, () -> botInnerService.generateTradeByFiltersManagerByUserInput(1L));
     }
 
@@ -1086,6 +1086,30 @@ public class BotInnerServiceTest {
     }
 
     @Test
+    public void removeUserTradeByFiltersManagerByUserInput_should_handle_to_service() {
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_FILTERS_MANAGER_NAME)).thenReturn("name");
+
+        botInnerService.removeUserTradeByFiltersManagerByUserInput(1L);
+
+        verify(telegramUserTradeManagerService).deleteUserTradeByFiltersManagerById("1", "name");
+    }
+
+    @Test
+    public void removeUserTradeByFiltersManagerByUserInput_should_throw_if_service_throws_during_input_find() {
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_FILTERS_MANAGER_NAME)).thenThrow(new RuntimeException());
+
+        assertThrows(RuntimeException.class, () -> botInnerService.removeUserTradeByFiltersManagerByUserInput(1L));
+    }
+
+    @Test
+    public void removeUserTradeByFiltersManagerByUserInput_should_throw_if_service_throws_during_remove() {
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_FILTERS_MANAGER_NAME)).thenReturn("name");
+        doThrow(new RuntimeException()).when(telegramUserTradeManagerService).deleteUserTradeByFiltersManagerById(any(), any());
+
+        assertThrows(RuntimeException.class, () -> botInnerService.removeUserTradeByFiltersManagerByUserInput(1L));
+    }
+
+    @Test
     public void getUserTradeByItemIdManagerByUserInputItemId_should_return_service_result() {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("item_id");
@@ -1111,6 +1135,34 @@ public class BotInnerServiceTest {
 
         doThrow(new RuntimeException()).when(telegramUserTradeManagerService).getUserTradeByItemIdManagerById("1", "item_id");
         assertThrows(RuntimeException.class, () -> botInnerService.getUserTradeByItemIdManagerByUserInputItemId(1L));
+    }
+
+    @Test
+    public void getUserTradeByFiltersManagerByUserInputItemId_should_return_service_result() {
+        TradeByFiltersManager tradeManager = new TradeByFiltersManager();
+        tradeManager.setName("name");
+        tradeManager.setPriority(100);
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_FILTERS_MANAGER_NAME)).thenReturn("name");
+        when(telegramUserTradeManagerService.getUserTradeByFiltersManagerById("1", "name")).thenReturn(tradeManager);
+
+        assertEquals(tradeManager, botInnerService.getUserTradeByFiltersManagerByUserInputName(1L));
+    }
+
+    @Test
+    public void getUserTradeByFiltersManagerByUserInputItemId_should_throw_if_service_throws_during_input_find() {
+        doThrow(new RuntimeException()).when(telegramUserService).getUserInputByState(1L, InputState.TRADE_BY_FILTERS_MANAGER_NAME);
+        assertThrows(RuntimeException.class, () -> botInnerService.getUserTradeByFiltersManagerByUserInputName(1L));
+    }
+
+    @Test
+    public void getUserTradeByFiltersManagerByUserInputItemId_should_throw_if_service_throws_during_tradeManager_find() {
+        TradeByFiltersManager tradeManager = new TradeByFiltersManager();
+        tradeManager.setName("name");
+        tradeManager.setPriority(100);
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_FILTERS_MANAGER_NAME)).thenReturn("name");
+
+        doThrow(new RuntimeException()).when(telegramUserTradeManagerService).getUserTradeByFiltersManagerById("1", "name");
+        assertThrows(RuntimeException.class, () -> botInnerService.getUserTradeByFiltersManagerByUserInputName(1L));
     }
 
     @Test

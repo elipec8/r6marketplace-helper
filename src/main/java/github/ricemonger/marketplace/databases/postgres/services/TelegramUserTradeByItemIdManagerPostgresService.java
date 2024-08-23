@@ -9,7 +9,7 @@ import github.ricemonger.marketplace.databases.postgres.repositories.TradeByItem
 import github.ricemonger.marketplace.services.abstractions.TelegramUserTradeByItemIdManagerDatabaseService;
 import github.ricemonger.utils.dtos.TradeByItemIdManager;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
-import github.ricemonger.utils.exceptions.TradeManagerByItemIdDoesntExistException;
+import github.ricemonger.utils.exceptions.TradeByItemIdManagerDoesntExistException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TelegramUserTradeByItemIdManagerPostgresService implements TelegramUserTradeByItemIdManagerDatabaseService {
 
-    private final TradeByItemIdManagerPostgresRepository tradeManagerByItemIdRepository;
+    private final TradeByItemIdManagerPostgresRepository tradeByItemIdManagerRepository;
 
     private final TelegramUserPostgresRepository telegramUserRepository;
 
@@ -30,7 +30,7 @@ public class TelegramUserTradeByItemIdManagerPostgresService implements Telegram
     public void save(String chatId, TradeByItemIdManager tradeManager) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
-        tradeManagerByItemIdRepository.save(new TradeByItemIdManagerEntity(telegramUser.getUser(), tradeManager));
+        tradeByItemIdManagerRepository.save(new TradeByItemIdManagerEntity(telegramUser.getUser(), tradeManager));
     }
 
     @Override
@@ -38,7 +38,7 @@ public class TelegramUserTradeByItemIdManagerPostgresService implements Telegram
     public void deleteById(String chatId, String itemId) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
-        List<TradeByItemIdManagerEntity> managers = telegramUser.getUser().getTradeManagersByItemId();
+        List<TradeByItemIdManagerEntity> managers = telegramUser.getUser().getTradeByItemIdManagers();
 
         Iterator<TradeByItemIdManagerEntity> iterator = managers.iterator();
 
@@ -54,17 +54,17 @@ public class TelegramUserTradeByItemIdManagerPostgresService implements Telegram
     }
 
     @Override
-    public TradeByItemIdManager findById(String chatId, String itemId) throws TelegramUserDoesntExistException, TradeManagerByItemIdDoesntExistException {
+    public TradeByItemIdManager findById(String chatId, String itemId) throws TelegramUserDoesntExistException, TradeByItemIdManagerDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
-        return tradeManagerByItemIdRepository.findById(new TradeByItemIdManagerEntityId(telegramUser.getUser(), itemId)).map(TradeByItemIdManagerEntity::toTradeManagerByItemId).orElseThrow(() -> new TradeManagerByItemIdDoesntExistException(String.format("Trade manager by chatId %s and itemId %s not found", chatId, itemId)));
+        return tradeByItemIdManagerRepository.findById(new TradeByItemIdManagerEntityId(telegramUser.getUser(), itemId)).map(TradeByItemIdManagerEntity::toTradeByItemIdManager).orElseThrow(() -> new TradeByItemIdManagerDoesntExistException(String.format("Trade manager by chatId %s and itemId %s not found", chatId, itemId)));
     }
 
     @Override
     public List<TradeByItemIdManager> findAllByChatId(String chatId) throws TelegramUserDoesntExistException {
         TelegramUserEntity user = telegramUserRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
 
-        return tradeManagerByItemIdRepository.findAllByUserId(user.getUser().getId()).stream().map(TradeByItemIdManagerEntity::toTradeManagerByItemId).toList();
+        return tradeByItemIdManagerRepository.findAllByUserId(user.getUser().getId()).stream().map(TradeByItemIdManagerEntity::toTradeByItemIdManager).toList();
     }
 
     private TelegramUserEntity getTelegramUserEntityByIdOrThrow(String chatId) {

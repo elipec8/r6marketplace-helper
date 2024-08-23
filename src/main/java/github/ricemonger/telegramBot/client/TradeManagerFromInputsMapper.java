@@ -1,8 +1,6 @@
 package github.ricemonger.telegramBot.client;
 
-import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.ProfitAndPriorityCalculator;
-import github.ricemonger.marketplace.services.TelegramUserItemFilterService;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.*;
@@ -58,7 +56,7 @@ public class TradeManagerFromInputsMapper {
     }
 
     public TradeByFiltersManager mapToTradeByFiltersManager(Collection<TelegramUserInput> inputs, int maxMarketplacePrice, List<ItemFilter> itemFilters) {
-        String name = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_NAME);
+        String name = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_NAME);
         String tradeType = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_TRADE_TYPE);
         String minBuySellProfit = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_MIN_BUY_SELL_PROFIT);
         String minProfitPercent = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_MIN_PROFIT_PERCENT);

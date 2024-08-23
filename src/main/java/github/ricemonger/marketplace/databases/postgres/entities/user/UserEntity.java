@@ -34,7 +34,7 @@ public class UserEntity {
     private List<TradeByFiltersManagerEntity> tradeByFiltersManagers = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<TradeByItemIdManagerEntity> tradeManagersByItemId = new ArrayList<>();
+    private List<TradeByItemIdManagerEntity> tradeByItemIdManagers = new ArrayList<>();
 
     private Boolean publicNotificationsEnabledFlag = true;
 

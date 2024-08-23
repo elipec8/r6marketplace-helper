@@ -8,7 +8,7 @@ import github.ricemonger.marketplace.databases.postgres.repositories.TradeByItem
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.utils.dtos.TradeByItemIdManager;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
-import github.ricemonger.utils.exceptions.TradeManagerByItemIdDoesntExistException;
+import github.ricemonger.utils.exceptions.TradeByItemIdManagerDoesntExistException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +57,8 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
         createTelegramUser(ANOTHER_CHAT_ID);
         telegramUserTradeManagerByItemIdService.save(ANOTHER_CHAT_ID, tradeManager);
 
-        assertEquals(2, telegramUserRepository.findById(CHAT_ID).get().getUser().getTradeManagersByItemId().size());
-        assertEquals(1, telegramUserRepository.findById(ANOTHER_CHAT_ID).get().getUser().getTradeManagersByItemId().size());
+        assertEquals(2, telegramUserRepository.findById(CHAT_ID).get().getUser().getTradeByItemIdManagers().size());
+        assertEquals(1, telegramUserRepository.findById(ANOTHER_CHAT_ID).get().getUser().getTradeByItemIdManagers().size());
         assertEquals(3, tradeManagerByItemIdRepository.findAll().size());
     }
 
@@ -109,8 +109,8 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
 
         telegramUserTradeManagerByItemIdService.deleteById(CHAT_ID, "2");
 
-        assertEquals(1, telegramUserRepository.findById(CHAT_ID).get().getUser().getTradeManagersByItemId().size());
-        assertEquals(1, telegramUserRepository.findById(ANOTHER_CHAT_ID).get().getUser().getTradeManagersByItemId().size());
+        assertEquals(1, telegramUserRepository.findById(CHAT_ID).get().getUser().getTradeByItemIdManagers().size());
+        assertEquals(1, telegramUserRepository.findById(ANOTHER_CHAT_ID).get().getUser().getTradeByItemIdManagers().size());
         assertEquals(2, tradeManagerByItemIdRepository.findAll().size());
     }
 
@@ -147,7 +147,7 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
 
     @Test
     public void findById_should_throw_exception_if_trade_manager_doesnt_exist() {
-        assertThrows(TradeManagerByItemIdDoesntExistException.class, () -> telegramUserTradeManagerByItemIdService.findById(CHAT_ID, "1"));
+        assertThrows(TradeByItemIdManagerDoesntExistException.class, () -> telegramUserTradeManagerByItemIdService.findById(CHAT_ID, "1"));
     }
 
     @Test
