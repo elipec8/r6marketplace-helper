@@ -6,9 +6,9 @@ import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUse
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountEntryPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.utils.dtos.UbiAccountEntry;
-import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
-import github.ricemonger.utils.exceptions.UbiAccountEntryDoesntExistException;
-import github.ricemonger.utils.exceptions.UserAlreadyHasAnotherUbiAccountEntryException;
+import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
+import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,7 +88,7 @@ class TelegramUserUbiAccountEntryEntryPostgresServiceTest {
 
         account.setUbiProfileId("2");
 
-        assertThrows(UserAlreadyHasAnotherUbiAccountEntryException.class, () -> telegramUserUbiAccountEntryService.save(CHAT_ID, account));
+        assertThrows(UbiAccountEntryAlreadyExistsException.class, () -> telegramUserUbiAccountEntryService.save(CHAT_ID, account));
     }
 
     @Test

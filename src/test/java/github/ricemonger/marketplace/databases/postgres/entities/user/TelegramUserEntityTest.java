@@ -28,7 +28,6 @@ class TelegramUserEntityTest {
         userEntity.setItemsShowSellOrdersCountFlag(true);
         userEntity.setItemShowPictureFlag(true);
         userEntity.setItemShowAppliedFilters(List.of(itemFilterEntity));
-        userEntity.setActiveTradeByItemIdManagers(List.of(tradeByItemIdManagerEntity));
 
 
         TelegramUserEntity entity = new TelegramUserEntity();

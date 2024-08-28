@@ -16,6 +16,6 @@ public class TradeByFiltersManagersShowAllCallback extends AbstractBotCommandExe
         askYesOrNoFromInlineKeyboard(
                 "Do you want to remove or activate/deactivate any of these trade managers?",
                 Callbacks.TRADE_BY_FILTERS_MANAGER_REMOVE_OR_ENABLED_CHANGE,
-                Callbacks.CANCEL_SILENT);
+                Callbacks.CANCEL);
     }
 }

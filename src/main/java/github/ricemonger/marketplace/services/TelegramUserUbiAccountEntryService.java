@@ -5,7 +5,11 @@ import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccoun
 import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.utils.dtos.UbiAccountEntry;
 import github.ricemonger.utils.dtos.UbiAccountWithTelegram;
-import github.ricemonger.utils.exceptions.*;
+import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
+import github.ricemonger.utils.exceptions.client.UbiUserAuthorizationClientErrorException;
+import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
+import github.ricemonger.utils.exceptions.server.UbiUserAuthorizationServerErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -24,7 +28,7 @@ public class TelegramUserUbiAccountEntryService {
 
     public void authorizeAndSaveUser(String chatId, String email, String password) throws
             TelegramUserDoesntExistException,
-            UserAlreadyHasAnotherUbiAccountEntryException,
+            UbiAccountEntryAlreadyExistsException,
             UbiUserAuthorizationClientErrorException,
             UbiUserAuthorizationServerErrorException {
         AuthorizationDTO userAuthorizationDTO = authorizationService.authorizeAndGetDTO(email, password);
@@ -63,7 +67,7 @@ public class TelegramUserUbiAccountEntryService {
             telegramUserUbiAccountEntryDatabaseService.save(chatId, buildUbiAccount(email, encodedPassword, dto));
         } catch (TelegramUserDoesntExistException e) {
             log.error("Telegram user with chatId {} doesn't exist, but reauthorize ubi user was called fir him with authorizationDto-{}", chatId, dto);
-        } catch (UserAlreadyHasAnotherUbiAccountEntryException e) {
+        } catch (UbiAccountEntryAlreadyExistsException e) {
             log.error("User with chatId {} already has another Ubi account, but reauthorize ubi user was called for him with authorizationDto-{}", chatId, dto);
         }
     }

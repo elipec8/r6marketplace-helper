@@ -7,8 +7,8 @@ import github.ricemonger.marketplace.databases.postgres.repositories.ItemFilterP
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserItemFilterDatabaseService;
 import github.ricemonger.utils.dtos.ItemFilter;
-import github.ricemonger.utils.exceptions.ItemFilterDoesntExistException;
-import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.client.ItemFilterDoesntExistException;
+import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

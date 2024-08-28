@@ -6,5 +6,6 @@ public class UbiAccountEntryUnlinkConfirmedFinishCallback extends AbstractBotCom
     @Override
     protected void executeCommand() {
         botInnerService.removeUserUbiAccountEntry(updateInfo.getChatId());
+        sendText("Ubisoft Account successfully unlinked");
     }
 }

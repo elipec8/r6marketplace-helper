@@ -1,7 +1,7 @@
 package github.ricemonger.telegramBot.client;
 
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.utils.exceptions.TelegramApiRuntimeException;
+import github.ricemonger.utils.exceptions.server.TelegramApiRuntimeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;

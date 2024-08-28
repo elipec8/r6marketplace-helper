@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marke
 import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.Tags;
 import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.Type;
 import github.ricemonger.utils.enums.ItemType;
-import github.ricemonger.utils.exceptions.GraphQlConfigMarketplaceMappingException;
+import github.ricemonger.utils.exceptions.server.GraphQlConfigMarketplaceMappingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

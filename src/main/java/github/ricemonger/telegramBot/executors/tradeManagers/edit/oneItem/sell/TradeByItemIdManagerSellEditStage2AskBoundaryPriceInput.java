@@ -2,7 +2,7 @@ package github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell;
 
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
-import github.ricemonger.utils.exceptions.ItemNotFoundException;
+import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 
 public class TradeByItemIdManagerSellEditStage2AskBoundaryPriceInput extends AbstractBotCommandExecutor {
     @Override
@@ -11,7 +11,7 @@ public class TradeByItemIdManagerSellEditStage2AskBoundaryPriceInput extends Abs
 
         try {
             sendText("Chosen item is:\n" + botInnerService.getItemByUserInputItemId(updateInfo.getChatId()));
-        } catch (ItemNotFoundException e) {
+        } catch (ItemDoesntExistException e) {
             sendText("Item not found. Please enter correct item id.");
             cancel();
             return;

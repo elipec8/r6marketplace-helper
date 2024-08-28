@@ -60,12 +60,6 @@ public class TelegramUserEntity {
         if (this.user.getItemShowAppliedFilters() != null) {
             telegramUser.setItemShowAppliedFilters(this.user.getItemShowAppliedFilters().stream().map(ItemFilterEntity::toItemFilter).toList());
         }
-        if (this.user.getActiveTradeByItemIdManagers() != null) {
-            telegramUser.setActiveTradeByItemIdManagers(this.user.getActiveTradeByItemIdManagers().stream().map(TradeByItemIdManagerEntity::toTradeByItemIdManager).toList());
-        }
-        if (this.user.getActiveTradeByFiltersManagers() != null) {
-            telegramUser.setActiveTradeByFiltersManagers(this.user.getActiveTradeByFiltersManagers().stream().map(TradeByFiltersManagerEntity::toTradeByFiltersManager).toList());
-        }
         telegramUser.setNewManagersAreActiveFlag(this.user.getNewManagersAreActiveFlag());
         telegramUser.setManagingEnabledFlag(this.user.getManagingEnabledFlag());
         return telegramUser;
@@ -145,14 +139,6 @@ public class TelegramUserEntity {
         if (telegramUser.getItemShowAppliedFilters() != null) {
             this.user.getItemShowAppliedFilters().clear();
             this.user.getItemShowAppliedFilters().addAll(telegramUser.getItemShowAppliedFilters().stream().map(ItemFilterEntity::new).toList());
-        }
-        if (telegramUser.getActiveTradeByItemIdManagers() != null) {
-            this.user.getActiveTradeByItemIdManagers().clear();
-            this.user.getActiveTradeByItemIdManagers().addAll(telegramUser.getActiveTradeByItemIdManagers().stream().map(manager -> new TradeByItemIdManagerEntity(user, manager)).toList());
-        }
-        if (telegramUser.getActiveTradeByFiltersManagers() != null) {
-            this.user.getActiveTradeByFiltersManagers().clear();
-            this.user.getActiveTradeByFiltersManagers().addAll(telegramUser.getActiveTradeByFiltersManagers().stream().map(manager -> new TradeByFiltersManagerEntity(user, manager)).toList());
         }
         this.user.setNewManagersAreActiveFlag(telegramUser.isNewManagersAreActiveFlag());
         this.user.setManagingEnabledFlag(telegramUser.isManagingEnabledFlag());

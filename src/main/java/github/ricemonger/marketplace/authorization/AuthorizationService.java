@@ -2,8 +2,8 @@ package github.ricemonger.marketplace.authorization;
 
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.dtos.AuthorizationDTO;
-import github.ricemonger.utils.exceptions.UbiUserAuthorizationClientErrorException;
-import github.ricemonger.utils.exceptions.UbiUserAuthorizationServerErrorException;
+import github.ricemonger.utils.exceptions.client.UbiUserAuthorizationClientErrorException;
+import github.ricemonger.utils.exceptions.server.UbiUserAuthorizationServerErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;

@@ -7,8 +7,8 @@ import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUse
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.utils.dtos.ItemFilter;
 import github.ricemonger.utils.enums.FilterType;
-import github.ricemonger.utils.exceptions.ItemFilterDoesntExistException;
-import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.client.ItemFilterDoesntExistException;
+import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

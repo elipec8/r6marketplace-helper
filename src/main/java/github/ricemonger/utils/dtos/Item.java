@@ -1,5 +1,6 @@
 package github.ricemonger.utils.dtos;
 
+import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
 import lombok.AllArgsConstructor;
 import lombok.Data;

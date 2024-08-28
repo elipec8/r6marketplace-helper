@@ -2,8 +2,8 @@ package github.ricemonger.telegramBot.updateReceiver.listeners;
 
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.utils.exceptions.ListeningMethodCouldNotBeChosenException;
-import github.ricemonger.utils.exceptions.UnexpectedUserInputStateAndGroupConjunctionException;
+import github.ricemonger.utils.exceptions.server.ListeningMethodCouldNotBeChosenException;
+import github.ricemonger.utils.exceptions.server.UnexpectedUserInputStateAndGroupConjunctionException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

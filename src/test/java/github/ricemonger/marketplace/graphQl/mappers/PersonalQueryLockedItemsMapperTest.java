@@ -7,7 +7,7 @@ import github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.tr
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.dtos.LockedItem;
 import github.ricemonger.utils.dtos.UserTransactionsCount;
-import github.ricemonger.utils.exceptions.GraphQlPersonalLockedItemsMappingException;
+import github.ricemonger.utils.exceptions.server.GraphQlPersonalLockedItemsMappingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -48,7 +48,7 @@ import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccount
 import github.ricemonger.telegramBot.executors.ubi_account_entry.show.UbiAccountEntryShowCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.unlink.UbiAccountEntryUnlinkConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.unlink.UbiAccountEntryUnlinkRequestCallback;
-import github.ricemonger.utils.exceptions.UnexpectedCallbackCommandException;
+import github.ricemonger.utils.exceptions.server.UnexpectedCallbackCommandException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -2,8 +2,8 @@ package github.ricemonger.marketplace.services.abstractions;
 
 
 import github.ricemonger.utils.dtos.*;
-import github.ricemonger.utils.exceptions.TelegramUserAlreadyExistsException;
-import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.client.TelegramUserAlreadyExistsException;
+import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 
 import java.util.List;
 

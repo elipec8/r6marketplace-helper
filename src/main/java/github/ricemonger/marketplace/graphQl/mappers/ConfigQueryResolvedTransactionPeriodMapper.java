@@ -4,7 +4,7 @@ import github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transact
 import github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transaction_period.tradeLimitations.Buy;
 import github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transaction_period.tradeLimitations.Sell;
 import github.ricemonger.utils.dtos.ConfigResolvedTransactionPeriod;
-import github.ricemonger.utils.exceptions.GraphQlConfigResolvedTransactionPeriodMappingException;
+import github.ricemonger.utils.exceptions.server.GraphQlConfigResolvedTransactionPeriodMappingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
