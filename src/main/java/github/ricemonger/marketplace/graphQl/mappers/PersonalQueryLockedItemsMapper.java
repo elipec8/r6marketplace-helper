@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.tr
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.dtos.LockedItem;
 import github.ricemonger.utils.dtos.UserTransactionsCount;
-import github.ricemonger.utils.exceptions.GraphQlPersonalLockedItemsMappingException;
+import github.ricemonger.utils.exceptions.server.GraphQlPersonalLockedItemsMappingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

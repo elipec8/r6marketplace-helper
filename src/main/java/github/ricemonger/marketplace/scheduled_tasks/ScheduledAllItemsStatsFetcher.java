@@ -28,7 +28,12 @@ public class ScheduledAllItemsStatsFetcher {
 
     @Scheduled(fixedRate = 5 * 60 * 1000, initialDelay = 60 * 1000) // every 5m after 1m of delay
     public void fetchAllItemStats() {
-        int expectedItemCount = commonValuesService.getExpectedItemCount();
+        int expectedItemCount = 0;
+        try {
+            expectedItemCount = commonValuesService.getExpectedItemCount();
+        } catch (NullPointerException ignore) {
+        }
+
         Collection<Item> items = graphQlClientService.fetchAllItemStats();
 
         if (items.size() < expectedItemCount) {

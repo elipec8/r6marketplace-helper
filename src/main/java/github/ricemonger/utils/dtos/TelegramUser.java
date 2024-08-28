@@ -32,8 +32,6 @@ public class TelegramUser {
 
     private List<ItemFilter> itemShowAppliedFilters;
 
-    List<TradeByItemIdManager> activeTradeByItemIdManagers;
-    List<TradeByFiltersManager> activeTradeByFiltersManagers;
     private boolean newManagersAreActiveFlag;
     private boolean managingEnabledFlag;
 

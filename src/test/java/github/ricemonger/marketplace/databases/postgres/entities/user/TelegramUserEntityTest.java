@@ -3,8 +3,6 @@ package github.ricemonger.marketplace.databases.postgres.entities.user;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.TelegramUser;
-import github.ricemonger.utils.dtos.TradeManagersSettings;
-import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -30,7 +28,6 @@ class TelegramUserEntityTest {
         userEntity.setItemsShowSellOrdersCountFlag(true);
         userEntity.setItemShowPictureFlag(true);
         userEntity.setItemShowAppliedFilters(List.of(itemFilterEntity));
-        userEntity.setActiveTradeByItemIdManagers(List.of(tradeByItemIdManagerEntity));
 
 
         TelegramUserEntity entity = new TelegramUserEntity();

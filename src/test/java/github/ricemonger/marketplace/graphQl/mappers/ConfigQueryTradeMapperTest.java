@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.graphQl.dtos.config_query_trade.tradesConfi
 import github.ricemonger.marketplace.graphQl.dtos.config_query_trade.tradesConfig.SellLimit;
 import github.ricemonger.marketplace.graphQl.dtos.config_query_trade.tradesConfig.TransactionFeesConfig;
 import github.ricemonger.utils.dtos.ConfigTrades;
-import github.ricemonger.utils.exceptions.GraphQlConfigTradeMappingException;
+import github.ricemonger.utils.exceptions.server.GraphQlConfigTradeMappingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

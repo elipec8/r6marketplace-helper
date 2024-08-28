@@ -21,7 +21,7 @@ import github.ricemonger.utils.dtos.Trade;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
-import github.ricemonger.utils.exceptions.GraphQlPersonalOneItemMappingException;
+import github.ricemonger.utils.exceptions.server.GraphQlPersonalOneItemMappingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

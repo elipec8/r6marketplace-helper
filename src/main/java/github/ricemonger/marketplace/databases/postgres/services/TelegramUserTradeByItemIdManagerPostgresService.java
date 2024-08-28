@@ -8,8 +8,8 @@ import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUse
 import github.ricemonger.marketplace.databases.postgres.repositories.TradeByItemIdManagerPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserTradeByItemIdManagerDatabaseService;
 import github.ricemonger.utils.dtos.TradeByItemIdManager;
-import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
-import github.ricemonger.utils.exceptions.TradeByItemIdManagerDoesntExistException;
+import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.client.TradeByItemIdManagerDoesntExistException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,7 +39,7 @@ public class TelegramUserTradeByItemIdManagerPostgresService implements Telegram
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
         TradeByItemIdManagerEntity manager = tradeByItemIdManagerRepository.findById
-                (new TradeByItemIdManagerEntityId(telegramUser.getUser(), itemId))
+                        (new TradeByItemIdManagerEntityId(telegramUser.getUser(), itemId))
                 .orElseThrow(() -> new TradeByItemIdManagerDoesntExistException(String.format("Trade manager by chatId %s and itemId %s not found", chatId, itemId)));
 
         manager.setEnabled(!manager.isEnabled());

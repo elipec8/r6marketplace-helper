@@ -4,9 +4,9 @@ import github.ricemonger.marketplace.services.abstractions.TelegramUserTradeByFi
 import github.ricemonger.marketplace.services.abstractions.TelegramUserTradeByItemIdManagerDatabaseService;
 import github.ricemonger.utils.dtos.TradeByFiltersManager;
 import github.ricemonger.utils.dtos.TradeByItemIdManager;
-import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
-import github.ricemonger.utils.exceptions.TradeByFiltersManagerDoesntExistException;
-import github.ricemonger.utils.exceptions.TradeByItemIdManagerDoesntExistException;
+import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.client.TradeByFiltersManagerDoesntExistException;
+import github.ricemonger.utils.exceptions.client.TradeByItemIdManagerDoesntExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

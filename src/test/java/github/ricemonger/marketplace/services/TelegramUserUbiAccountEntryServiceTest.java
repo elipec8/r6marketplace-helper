@@ -5,7 +5,11 @@ import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccoun
 import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.utils.dtos.UbiAccountEntry;
 import github.ricemonger.utils.dtos.UbiAccountWithTelegram;
-import github.ricemonger.utils.exceptions.*;
+import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
+import github.ricemonger.utils.exceptions.client.UbiUserAuthorizationClientErrorException;
+import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
+import github.ricemonger.utils.exceptions.server.UbiUserAuthorizationServerErrorException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -54,10 +58,10 @@ class TelegramUserUbiAccountEntryServiceTest {
 
     @Test
     public void authorizeAndSaveUser_should_throw_if_user_already_have_another_ubi_account_entry() {
-        doThrow(UserAlreadyHasAnotherUbiAccountEntryException.class).when(telegramUserUbiAccountEntryDatabaseService).save(any(), any());
+        doThrow(UbiAccountEntryAlreadyExistsException.class).when(telegramUserUbiAccountEntryDatabaseService).save(any(), any());
         when(authorizationService.authorizeAndGetDTO(any(), any())).thenReturn(new AuthorizationDTO());
 
-        assertThrows(UserAlreadyHasAnotherUbiAccountEntryException.class, () -> telegramUserUbiAccountEntryService.authorizeAndSaveUser("chatId", "email", "password"));
+        assertThrows(UbiAccountEntryAlreadyExistsException.class, () -> telegramUserUbiAccountEntryService.authorizeAndSaveUser("chatId", "email", "password"));
     }
 
     @Test
@@ -115,7 +119,7 @@ class TelegramUserUbiAccountEntryServiceTest {
 
         when(authorizationService.authorizeAndGetDtoForEncodedPassword(authorizedEntry.getEmail(), authorizedEntry.getEncodedPassword())).thenReturn(new AuthorizationDTO());
         doThrow(TelegramUserDoesntExistException.class).when(telegramUserUbiAccountEntryDatabaseService).save(eq("6"), eq(authorizedEntry));
-        doThrow(UserAlreadyHasAnotherUbiAccountEntryException.class).when(telegramUserUbiAccountEntryDatabaseService).save(eq("7"), eq(authorizedEntry));
+        doThrow(UbiAccountEntryAlreadyExistsException.class).when(telegramUserUbiAccountEntryDatabaseService).save(eq("7"), eq(authorizedEntry));
 
         List<UbiAccountWithTelegram> unAuthUsers = new ArrayList<>();
         unAuthUsers.add(new UbiAccountWithTelegram("4", clientErrorEntry));

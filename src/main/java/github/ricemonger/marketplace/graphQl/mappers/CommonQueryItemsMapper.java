@@ -8,7 +8,7 @@ import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableI
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.dtos.Item;
 import github.ricemonger.utils.enums.ItemType;
-import github.ricemonger.utils.exceptions.GraphQlCommonItemMappingException;
+import github.ricemonger.utils.exceptions.server.GraphQlCommonItemMappingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

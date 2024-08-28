@@ -4,6 +4,7 @@ import github.ricemonger.marketplace.services.abstractions.ItemDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleHistoryDatabaseService;
 import github.ricemonger.utils.dtos.*;
+import github.ricemonger.utils.enums.ItemRarity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

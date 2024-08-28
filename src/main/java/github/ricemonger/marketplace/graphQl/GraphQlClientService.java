@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.graphQl;
 
 import github.ricemonger.marketplace.graphQl.mappers.*;
 import github.ricemonger.utils.dtos.*;
-import github.ricemonger.utils.exceptions.*;
+import github.ricemonger.utils.exceptions.server.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.stereotype.Component;

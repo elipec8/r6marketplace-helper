@@ -22,7 +22,7 @@ class ItemFiltersDirectTest {
         itemFiltersDirect.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
         verify(botInnerService).askFromInlineKeyboard(same(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());
-        verify(botInnerService,never()).sendText(same(MockUpdateInfos.UPDATE_INFO), anyString());
+        verify(botInnerService, never()).sendText(same(MockUpdateInfos.UPDATE_INFO), anyString());
     }
 
     @Test
@@ -32,7 +32,7 @@ class ItemFiltersDirectTest {
 
         itemFiltersDirect.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService,never()).askFromInlineKeyboard(same(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());
+        verify(botInnerService, never()).askFromInlineKeyboard(same(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());
         verify(botInnerService).sendText(same(MockUpdateInfos.UPDATE_INFO), anyString());
     }
 }

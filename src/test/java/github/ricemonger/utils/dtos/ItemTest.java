@@ -1,5 +1,6 @@
 package github.ricemonger.utils.dtos;
 
+import github.ricemonger.utils.enums.ItemRarity;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

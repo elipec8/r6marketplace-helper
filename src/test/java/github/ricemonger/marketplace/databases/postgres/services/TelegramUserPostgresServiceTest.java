@@ -11,8 +11,8 @@ import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.ItemFilter;
 import github.ricemonger.utils.dtos.ItemShownFieldsSettings;
 import github.ricemonger.utils.dtos.TelegramUser;
-import github.ricemonger.utils.exceptions.TelegramUserAlreadyExistsException;
-import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.client.TelegramUserAlreadyExistsException;
+import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,8 +75,6 @@ class TelegramUserPostgresServiceTest {
         expected.setItemsShowSellOrdersCountFlag(true);
         expected.setItemShowPictureFlag(true);
         expected.setItemShowAppliedFilters(new ArrayList<>());
-        expected.setActiveTradeByItemIdManagers(new ArrayList<>());
-        expected.setActiveTradeByFiltersManagers(new ArrayList<>());
         expected.setManagingEnabledFlag(true);
         expected.setNewManagersAreActiveFlag(true);
 
@@ -133,8 +131,6 @@ class TelegramUserPostgresServiceTest {
         updated.setItemsShowSellOrdersCountFlag(false);
         updated.setItemShowPictureFlag(false);
         updated.setItemShowAppliedFilters(new ArrayList<>());
-        updated.setActiveTradeByItemIdManagers(new ArrayList<>());
-        updated.setActiveTradeByFiltersManagers(new ArrayList<>());
         updated.setManagingEnabledFlag(false);
         updated.setNewManagersAreActiveFlag(false);
 

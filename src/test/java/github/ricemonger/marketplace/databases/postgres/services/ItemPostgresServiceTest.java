@@ -3,13 +3,12 @@ package github.ricemonger.marketplace.databases.postgres.services;
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.utils.dtos.Item;
-import github.ricemonger.utils.exceptions.ItemNotFoundException;
+import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -69,7 +68,7 @@ class ItemPostgresServiceTest {
 
     @Test
     public void findById_should_throw_exception_if_item_doesnt_exist() {
-        assertThrows(ItemNotFoundException.class, () -> itemService.findById("1"));
+        assertThrows(ItemDoesntExistException.class, () -> itemService.findById("1"));
     }
 
     @Test

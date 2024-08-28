@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_owned_items.marketableItems.Node;
-import github.ricemonger.utils.exceptions.GraphQlPersonalOwnedItemsMappingException;
+import github.ricemonger.utils.exceptions.server.GraphQlPersonalOwnedItemsMappingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

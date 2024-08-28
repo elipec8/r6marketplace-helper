@@ -5,7 +5,12 @@ import github.ricemonger.marketplace.services.abstractions.TelegramUserInputData
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.*;
-import github.ricemonger.utils.exceptions.*;
+import github.ricemonger.utils.exceptions.client.TelegramUserAlreadyExistsException;
+import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
+import github.ricemonger.utils.exceptions.client.UbiUserAuthorizationClientErrorException;
+import github.ricemonger.utils.exceptions.server.TelegramUserInputDoesntExistException;
+import github.ricemonger.utils.exceptions.server.UbiUserAuthorizationServerErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

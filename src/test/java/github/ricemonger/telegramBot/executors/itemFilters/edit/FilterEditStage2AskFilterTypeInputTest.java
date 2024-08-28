@@ -21,7 +21,7 @@ class FilterEditStage2AskFilterTypeInputTest {
         FilterEditStage2AskFilterTypeInput filterEditStage2AskFilterTypeInput = new FilterEditStage2AskFilterTypeInput();
         filterEditStage2AskFilterTypeInput.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService,times(0)).sendText(any(), anyString());
+        verify(botInnerService, times(0)).sendText(any(), anyString());
 
         verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO);
         verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.ITEM_FILTER_TYPE);

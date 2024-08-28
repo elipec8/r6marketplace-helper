@@ -2,7 +2,7 @@ package github.ricemonger.telegramBot.updateReceiver.listeners;
 
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.utils.exceptions.ListeningMethodCouldNotBeChosenException;
+import github.ricemonger.utils.exceptions.server.ListeningMethodCouldNotBeChosenException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

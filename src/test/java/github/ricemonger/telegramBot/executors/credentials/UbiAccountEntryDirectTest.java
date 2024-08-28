@@ -35,7 +35,7 @@ class UbiAccountEntryDirectTest {
         ubiAccountEntryDirect.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
         verify(botInnerService).isUserRegistered(MockUpdateInfos.UPDATE_INFO.getChatId());
-        verify(botInnerService,never()).sendText(same(MockUpdateInfos.UPDATE_INFO), anyString());
+        verify(botInnerService, never()).sendText(same(MockUpdateInfos.UPDATE_INFO), anyString());
         verify(botInnerService).askFromInlineKeyboard(same(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());
     }
 }

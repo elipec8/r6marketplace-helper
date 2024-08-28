@@ -4,7 +4,7 @@ import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.ItemDatabaseService;
 import github.ricemonger.utils.dtos.Item;
-import github.ricemonger.utils.exceptions.ItemNotFoundException;
+import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +26,8 @@ public class ItemPostgresService implements ItemDatabaseService {
     }
 
     @Override
-    public Item findById(String itemId) throws ItemNotFoundException {
-        return itemRepository.findById(itemId).map(ItemEntity::toItem).orElseThrow(() -> new ItemNotFoundException("Item with id" + itemId + "doesn't exist"));
+    public Item findById(String itemId) throws ItemDoesntExistException {
+        return itemRepository.findById(itemId).map(ItemEntity::toItem).orElseThrow(() -> new ItemDoesntExistException("Item with id" + itemId + "doesn't exist"));
     }
 
     @Override

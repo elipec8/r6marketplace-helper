@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.services.abstractions;
 
 import github.ricemonger.utils.dtos.ItemFilter;
-import github.ricemonger.utils.exceptions.ItemFilterDoesntExistException;
-import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.client.ItemFilterDoesntExistException;
+import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 
 import java.util.List;
 

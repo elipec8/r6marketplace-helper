@@ -8,7 +8,7 @@ import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.dtos.Trade;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
-import github.ricemonger.utils.exceptions.GraphQlPersonalFinishedOrdersMappingException;
+import github.ricemonger.utils.exceptions.server.GraphQlPersonalFinishedOrdersMappingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

@@ -5,21 +5,6 @@ import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.ExecutorsService;
 import github.ricemonger.telegramBot.executors.cancel.Cancel;
 import github.ricemonger.telegramBot.executors.cancel.SilentCancel;
-import github.ricemonger.telegramBot.executors.tradeManagers.edit.itemFilter.TradeByFiltersManagerEditStage8ConfirmedFinishCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagAskFlagCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagNoCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagYesCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.settings.newManagersAreActiveFlag.TradeManagersSettingsChangeNewManagersAreActiveFlagAskFlagCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.settings.newManagersAreActiveFlag.TradeManagersSettingsChangeNewManagersAreActiveFlagNoCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.settings.newManagersAreActiveFlag.TradeManagersSettingsChangeNewManagersAreActiveFlagYesCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemFilters.TradeByFiltersManagerRemoveOrChangeEnabledStage1AskNameCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemFilters.TradeByFiltersManagerChangeEnabledStage3ConfirmedFinishCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemFilters.TradeByFiltersManagerRemoveStage3ConfirmedFinishCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemId.TradeByItemIdManagerChangeEnabledStage3ConfirmedFinishCallback;
-import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkCallback;
-import github.ricemonger.telegramBot.executors.ubi_account_entry.show.UbiAccountEntryShowCallback;
-import github.ricemonger.telegramBot.executors.ubi_account_entry.unlink.UbiAccountEntryUnlinkConfirmedFinishCallback;
-import github.ricemonger.telegramBot.executors.ubi_account_entry.unlink.UbiAccountEntryUnlinkRequestCallback;
 import github.ricemonger.telegramBot.executors.itemFilters.edit.FilterEditStage18FinishConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.itemFilters.edit.FilterEditStage1AskNameCallback;
 import github.ricemonger.telegramBot.executors.itemFilters.showOrRemove.FilterRemoveStage3ConfirmedFinishCallback;
@@ -35,6 +20,7 @@ import github.ricemonger.telegramBot.executors.items.show.ItemsShowStage1AskOffs
 import github.ricemonger.telegramBot.executors.start.startYes.StartYesCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.TradeManagersEditAskManagerTypeCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.itemFilter.TradeByFiltersManagerEditStage1AskNameCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.itemFilter.TradeByFiltersManagerEditStage8ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.TradeByItemIdManagerEditAskTradeTypeCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage1AskItemIdCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage6ConfirmedFinishCallback;
@@ -43,12 +29,26 @@ import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buyAnd
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage1AskItemIdCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage6ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.settings.TradeManagersSettingsCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeByFiltersManagersShowAllCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeByItemIdManagersShowAllCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeManagersChooseTypeCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveOrChangeEnabledStage1AskItemIdCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveStage3ConfirmedFinishCallback;
-import github.ricemonger.utils.exceptions.UnexpectedCallbackCommandException;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagAskFlagCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagNoCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagYesCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.newManagersAreActiveFlag.TradeManagersSettingsChangeNewManagersAreActiveFlagAskFlagCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.newManagersAreActiveFlag.TradeManagersSettingsChangeNewManagersAreActiveFlagNoCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.settings.newManagersAreActiveFlag.TradeManagersSettingsChangeNewManagersAreActiveFlagYesCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.TradeByFiltersManagersShowAllCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.TradeByItemIdManagersShowAllCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.TradeManagersChooseTypeCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemFilters.TradeByFiltersManagerChangeEnabledStage3ConfirmedFinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemFilters.TradeByFiltersManagerRemoveOrChangeEnabledStage1AskNameCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemFilters.TradeByFiltersManagerRemoveStage3ConfirmedFinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemId.TradeByItemIdManagerChangeEnabledStage3ConfirmedFinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveOrChangeEnabledStage1AskItemIdCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveStage3ConfirmedFinishCallback;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkCallback;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.show.UbiAccountEntryShowCallback;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.unlink.UbiAccountEntryUnlinkConfirmedFinishCallback;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.unlink.UbiAccountEntryUnlinkRequestCallback;
+import github.ricemonger.utils.exceptions.server.UnexpectedCallbackCommandException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -71,11 +71,13 @@ public class CallbackCommandListener {
 
             case Callbacks.ITEM_FILTER_EDIT -> executorsService.execute(FilterEditStage1AskNameCallback.class, updateInfo);
 
-            case Callbacks.ITEM_FILTER_EDIT_FINISH_CONFIRMED -> executorsService.execute(FilterEditStage18FinishConfirmedFinishCallback.class, updateInfo);
+            case Callbacks.ITEM_FILTER_EDIT_FINISH_CONFIRMED ->
+                    executorsService.execute(FilterEditStage18FinishConfirmedFinishCallback.class, updateInfo);
 
             case Callbacks.ITEM_FILTERS_SHOW_ALL -> executorsService.execute(FiltersShowAllNamesStage1AskNameCallback.class, updateInfo);
 
-            case Callbacks.ITEM_FILTER_REMOVE_FINISH_CONFIRMED -> executorsService.execute(FilterRemoveStage3ConfirmedFinishCallback.class, updateInfo);
+            case Callbacks.ITEM_FILTER_REMOVE_FINISH_CONFIRMED ->
+                    executorsService.execute(FilterRemoveStage3ConfirmedFinishCallback.class, updateInfo);
 
 //--------------------------------------------------------------------------------------------------
 
@@ -113,7 +115,8 @@ public class CallbackCommandListener {
             case Callbacks.TRADE_MANAGERS_EDIT -> executorsService.execute(TradeManagersEditAskManagerTypeCallback.class, updateInfo);
 
 
-            case Callbacks.TRADE_BY_FILTERS_MANAGER_EDIT -> executorsService.execute(TradeByFiltersManagerEditStage1AskNameCallback.class, updateInfo);
+            case Callbacks.TRADE_BY_FILTERS_MANAGER_EDIT ->
+                    executorsService.execute(TradeByFiltersManagerEditStage1AskNameCallback.class, updateInfo);
 
             case Callbacks.TRADE_BY_FILTERS_MANAGER_EDIT_FINISH_CONFIRMED ->
                     executorsService.execute(TradeByFiltersManagerEditStage8ConfirmedFinishCallback.class, updateInfo);
@@ -144,19 +147,24 @@ public class CallbackCommandListener {
             case Callbacks.TRADE_MANAGERS_SETTINGS -> executorsService.execute(TradeManagersSettingsCallback.class, updateInfo);
 
 
-            case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_NEW_MANAGERS_ARE_ACTIVE_FLAG -> executorsService.execute(TradeManagersSettingsChangeNewManagersAreActiveFlagAskFlagCallback.class, updateInfo);
+            case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_NEW_MANAGERS_ARE_ACTIVE_FLAG ->
+                    executorsService.execute(TradeManagersSettingsChangeNewManagersAreActiveFlagAskFlagCallback.class, updateInfo);
 
-            case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_NEW_MANAGERS_ARE_ACTIVE_FLAG_NO -> executorsService.execute(TradeManagersSettingsChangeNewManagersAreActiveFlagNoCallback.class, updateInfo);
+            case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_NEW_MANAGERS_ARE_ACTIVE_FLAG_NO ->
+                    executorsService.execute(TradeManagersSettingsChangeNewManagersAreActiveFlagNoCallback.class, updateInfo);
 
-            case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_NEW_MANAGERS_ARE_ACTIVE_FLAG_YES -> executorsService.execute(TradeManagersSettingsChangeNewManagersAreActiveFlagYesCallback.class, updateInfo);
+            case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_NEW_MANAGERS_ARE_ACTIVE_FLAG_YES ->
+                    executorsService.execute(TradeManagersSettingsChangeNewManagersAreActiveFlagYesCallback.class, updateInfo);
 
 
-            case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_MANAGING_ENABLED_FLAG -> executorsService.execute(TradeManagersSettingsChangeManagingEnabledFlagAskFlagCallback.class, updateInfo);
+            case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_MANAGING_ENABLED_FLAG ->
+                    executorsService.execute(TradeManagersSettingsChangeManagingEnabledFlagAskFlagCallback.class, updateInfo);
 
-            case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_MANAGING_ENABLED_FLAG_NO -> executorsService.execute(TradeManagersSettingsChangeManagingEnabledFlagNoCallback.class, updateInfo);
+            case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_MANAGING_ENABLED_FLAG_NO ->
+                    executorsService.execute(TradeManagersSettingsChangeManagingEnabledFlagNoCallback.class, updateInfo);
 
-            case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_MANAGING_ENABLED_FLAG_YES -> executorsService.execute(TradeManagersSettingsChangeManagingEnabledFlagYesCallback.class, updateInfo);
-
+            case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_MANAGING_ENABLED_FLAG_YES ->
+                    executorsService.execute(TradeManagersSettingsChangeManagingEnabledFlagYesCallback.class, updateInfo);
 
 
             case Callbacks.TRADE_MANAGERS_SHOW_CHOOSE_TYPE -> executorsService.execute(TradeManagersChooseTypeCallback.class, updateInfo);
@@ -166,18 +174,24 @@ public class CallbackCommandListener {
             case Callbacks.TRADE_BY_ITEM_ID_MANAGERS_SHOW_ALL -> executorsService.execute(TradeByItemIdManagersShowAllCallback.class, updateInfo);
 
 
-            case Callbacks.TRADE_BY_FILTERS_MANAGER_REMOVE_OR_ENABLED_CHANGE -> executorsService.execute(TradeByFiltersManagerRemoveOrChangeEnabledStage1AskNameCallback.class, updateInfo);
+            case Callbacks.TRADE_BY_FILTERS_MANAGER_REMOVE_OR_ENABLED_CHANGE ->
+                    executorsService.execute(TradeByFiltersManagerRemoveOrChangeEnabledStage1AskNameCallback.class, updateInfo);
 
-            case Callbacks.TRADE_BY_FILTERS_MANAGER_CHANGE_ENABLED_FINISH_CONFIRMED -> executorsService.execute(TradeByFiltersManagerChangeEnabledStage3ConfirmedFinishCallback.class, updateInfo);
+            case Callbacks.TRADE_BY_FILTERS_MANAGER_CHANGE_ENABLED_FINISH_CONFIRMED ->
+                    executorsService.execute(TradeByFiltersManagerChangeEnabledStage3ConfirmedFinishCallback.class, updateInfo);
 
-            case Callbacks.TRADE_BY_FILTERS_MANAGER_REMOVE_FINISH_CONFIRMED -> executorsService.execute(TradeByFiltersManagerRemoveStage3ConfirmedFinishCallback.class, updateInfo);
+            case Callbacks.TRADE_BY_FILTERS_MANAGER_REMOVE_FINISH_CONFIRMED ->
+                    executorsService.execute(TradeByFiltersManagerRemoveStage3ConfirmedFinishCallback.class, updateInfo);
 
 
-            case Callbacks.TRADE_BY_ITEM_ID_MANAGER_REMOVE_OR_ENABLED_CHANGE -> executorsService.execute(TradeByItemIdManagerRemoveOrChangeEnabledStage1AskItemIdCallback.class, updateInfo);
+            case Callbacks.TRADE_BY_ITEM_ID_MANAGER_REMOVE_OR_ENABLED_CHANGE ->
+                    executorsService.execute(TradeByItemIdManagerRemoveOrChangeEnabledStage1AskItemIdCallback.class, updateInfo);
 
-            case Callbacks.TRADE_BY_ITEM_ID_MANAGER_CHANGE_ENABLED_FINISH_CONFIRMED -> executorsService.execute(TradeByItemIdManagerChangeEnabledStage3ConfirmedFinishCallback.class, updateInfo);
+            case Callbacks.TRADE_BY_ITEM_ID_MANAGER_CHANGE_ENABLED_FINISH_CONFIRMED ->
+                    executorsService.execute(TradeByItemIdManagerChangeEnabledStage3ConfirmedFinishCallback.class, updateInfo);
 
-            case Callbacks.TRADE_BY_ITEM_ID_MANAGER_REMOVE_FINISH_CONFIRMED -> executorsService.execute(TradeByItemIdManagerRemoveStage3ConfirmedFinishCallback.class, updateInfo);
+            case Callbacks.TRADE_BY_ITEM_ID_MANAGER_REMOVE_FINISH_CONFIRMED ->
+                    executorsService.execute(TradeByItemIdManagerRemoveStage3ConfirmedFinishCallback.class, updateInfo);
 
 //--------------------------------------------------------------------------------------------------
 
@@ -187,7 +201,8 @@ public class CallbackCommandListener {
 
             case Callbacks.UBI_ACCOUNT_ENTRY_UNLINK_REQUEST -> executorsService.execute(UbiAccountEntryUnlinkRequestCallback.class, updateInfo);
 
-            case Callbacks.UBI_ACCOUNT_ENTRY_UNLINK_FINISH_CONFIRMED -> executorsService.execute(UbiAccountEntryUnlinkConfirmedFinishCallback.class, updateInfo);
+            case Callbacks.UBI_ACCOUNT_ENTRY_UNLINK_FINISH_CONFIRMED ->
+                    executorsService.execute(UbiAccountEntryUnlinkConfirmedFinishCallback.class, updateInfo);
 
             default -> throw new UnexpectedCallbackCommandException("Unexpected callback data: " + data);
         }

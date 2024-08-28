@@ -54,16 +54,4 @@ public class UserEntity {
 
     private Boolean newManagersAreActiveFlag = true;
     private Boolean managingEnabledFlag = true;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_active_trade_by_item_id_managers",
-            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "id")},
-            inverseJoinColumns = @JoinColumn(name = "managerItemId", referencedColumnName = "itemId"))
-    private List<TradeByItemIdManagerEntity> activeTradeByItemIdManagers = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_active_trade_by_filters_managers",
-            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "id")},
-            inverseJoinColumns = @JoinColumn(name = "managerName", referencedColumnName = "name"))
-    private List<TradeByFiltersManagerEntity> activeTradeByFiltersManagers = new ArrayList<>();
 }

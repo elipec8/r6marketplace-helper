@@ -32,6 +32,6 @@ class FilterEditStage17FinishRequestInputTest {
         verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.BASE);
         verify(botInnerService).setUserInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.BASE);
 
-        verify(botInnerService).askFromInlineKeyboard(eq(MockUpdateInfos.UPDATE_INFO),anyString(),anyInt(),any());
+        verify(botInnerService).askFromInlineKeyboard(eq(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());
     }
 }

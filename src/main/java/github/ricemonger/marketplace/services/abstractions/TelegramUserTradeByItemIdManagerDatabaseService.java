@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.services.abstractions;
 
 import github.ricemonger.utils.dtos.TradeByItemIdManager;
-import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
-import github.ricemonger.utils.exceptions.TradeByItemIdManagerDoesntExistException;
+import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.client.TradeByItemIdManagerDoesntExistException;
 
 import java.util.List;
 
