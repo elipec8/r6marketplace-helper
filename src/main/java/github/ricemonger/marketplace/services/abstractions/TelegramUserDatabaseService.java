@@ -1,10 +1,7 @@
 package github.ricemonger.marketplace.services.abstractions;
 
 
-import github.ricemonger.utils.dtos.ItemFilter;
-import github.ricemonger.utils.dtos.ItemShowSettings;
-import github.ricemonger.utils.dtos.ItemShownFieldsSettings;
-import github.ricemonger.utils.dtos.TelegramUser;
+import github.ricemonger.utils.dtos.*;
 import github.ricemonger.utils.exceptions.TelegramUserAlreadyExistsException;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
 
@@ -26,11 +23,17 @@ public interface TelegramUserDatabaseService {
 
     void removeItemShowAppliedFilter(String chatId, String filterName) throws TelegramUserDoesntExistException;
 
+    void setTradeManagersSettingsNewManagersAreActiveFlag(String chatId, boolean flag) throws TelegramUserDoesntExistException;
+
+    void setTradeManagersSettingsManagingEnabledFlag(String chatId, boolean flag) throws TelegramUserDoesntExistException;
+
     boolean existsById(String chatId);
 
     TelegramUser findUserById(String chatId) throws TelegramUserDoesntExistException;
 
-    ItemShowSettings findUserSettingsById(String chatId) throws TelegramUserDoesntExistException;
+    ItemShowSettings findUserItemShowSettingsById(String chatId) throws TelegramUserDoesntExistException;
+
+    TradeManagersSettings findUserTradeManagersSettingsById(String chatId) throws TelegramUserDoesntExistException;
 
     List<TelegramUser> findAllUsers();
 }

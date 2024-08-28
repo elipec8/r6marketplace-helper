@@ -111,7 +111,7 @@ class TelegramUserInputPostgresServiceTest {
     public void deleteAllByChatId_should_delete_all_inputs_for_telegram_user() {
         inputService.save(CHAT_ID, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL, "value");
         inputService.save(CHAT_ID, InputState.UBI_ACCOUNT_ENTRY_PASSWORD, "value");
-        inputService.save(CHAT_ID, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID, "value");
+        inputService.save(CHAT_ID, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID, "value");
 
         inputService.deleteAllByChatId(CHAT_ID);
 
@@ -126,7 +126,7 @@ class TelegramUserInputPostgresServiceTest {
 
         inputService.save(CHAT_ID, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL, "value");
         inputService.save(CHAT_ID, InputState.UBI_ACCOUNT_ENTRY_PASSWORD, "value");
-        inputService.save(CHAT_ID, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID, "value");
+        inputService.save(CHAT_ID, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID, "value");
 
         inputService.deleteAllByChatId(ANOTHER_CHAT_ID);
 

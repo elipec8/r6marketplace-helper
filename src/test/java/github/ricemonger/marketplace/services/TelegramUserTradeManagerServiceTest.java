@@ -5,7 +5,6 @@ import github.ricemonger.marketplace.services.abstractions.TelegramUserTradeByIt
 import github.ricemonger.utils.dtos.TradeByFiltersManager;
 import github.ricemonger.utils.dtos.TradeByItemIdManager;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
-import github.ricemonger.utils.exceptions.TradeManagerByItemIdDoesntExistException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +26,7 @@ class TelegramUserTradeManagerServiceTest {
     @MockBean
     private TelegramUserTradeByItemIdManagerDatabaseService telegramUserTradeByItemIdManagerDatabaseService;
     @MockBean
-    private TelegramUserTradeByFiltersManagerDatabaseService telegramUserTradeManagerByItemFiltersDatabaseService;
+    private TelegramUserTradeByFiltersManagerDatabaseService telegramUserTradeByFiltersManagerDatabaseService;
 
     @Test
     public void saveUserTradeByItemId_Manager_should_handle_to_service() {
@@ -39,7 +38,7 @@ class TelegramUserTradeManagerServiceTest {
     }
 
     @Test
-    public void saveUserTradeManagerByItemId_should_throw_if_user_doesnt_existManager() {
+    public void saveUserTradeManagerByItemId_should_throw_if_user_doesnt_exist() {
         doThrow(TelegramUserDoesntExistException.class).when(telegramUserTradeByItemIdManagerDatabaseService).save(any(), any());
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserTradeManagerService.saveUserTradeByItemIdManager("123",
@@ -52,15 +51,43 @@ class TelegramUserTradeManagerServiceTest {
 
         telegramUserTradeManagerService.saveUserTradeByFiltersManager("1", tradeByFiltersManager);
 
-        verify(telegramUserTradeManagerByItemFiltersDatabaseService).save(eq("1"), same(tradeByFiltersManager));
+        verify(telegramUserTradeByFiltersManagerDatabaseService).save(eq("1"), same(tradeByFiltersManager));
     }
 
     @Test
-    public void saveUserTradeManagerByItemFilters_should_throw_if_user_doesnt_existManager() {
-        doThrow(TelegramUserDoesntExistException.class).when(telegramUserTradeManagerByItemFiltersDatabaseService).save(any(), any());
+    public void saveUserTradeManagerByItemFilters_should_throw_if_user_doesnt_exist() {
+        doThrow(TelegramUserDoesntExistException.class).when(telegramUserTradeByFiltersManagerDatabaseService).save(any(), any());
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserTradeManagerService.saveUserTradeByFiltersManager("123",
                 new TradeByFiltersManager()));
+    }
+
+    @Test
+    public void invertUserTradeByFiltersManagerEnabledFlagById_should_handle_to_service() {
+        telegramUserTradeManagerService.invertUserTradeByFiltersManagerEnabledFlagById("1", "1");
+
+        verify(telegramUserTradeByFiltersManagerDatabaseService).invertEnabledFlagById(eq("1"), eq("1"));
+    }
+
+    @Test
+    public void invertUserTradeByFiltersManagerEnabledFlagById_should_throw_if_user_doesnt_exist() {
+        doThrow(RuntimeException.class).when(telegramUserTradeByFiltersManagerDatabaseService).invertEnabledFlagById(any(), any());
+
+        assertThrows(RuntimeException.class, () -> telegramUserTradeManagerService.invertUserTradeByFiltersManagerEnabledFlagById("123", "name"));
+    }
+
+    @Test
+    public void invertUserTradeByItemIdManagerEnabledFlagById_should_handle_to_service() {
+        telegramUserTradeManagerService.invertUserTradeByItemIdManagerEnabledFlagById("1", "1");
+
+        verify(telegramUserTradeByItemIdManagerDatabaseService).invertEnabledFlagById(eq("1"), eq("1"));
+    }
+
+    @Test
+    public void invertUserTradeByItemIdManagerEnabledFlagById_should_throw_if_user_doesnt_exist() {
+        doThrow(RuntimeException.class).when(telegramUserTradeByItemIdManagerDatabaseService).invertEnabledFlagById(any(), any());
+
+        assertThrows(RuntimeException.class, () -> telegramUserTradeManagerService.invertUserTradeByItemIdManagerEnabledFlagById("123", "itemId"));
     }
 
     @Test
@@ -71,7 +98,7 @@ class TelegramUserTradeManagerServiceTest {
     }
 
     @Test
-    public void deleteUserTradeManagerByItemIdById_should_throw_if_user_doesnt_existManager() {
+    public void deleteUserTradeManagerByItemIdById_should_throw_if_user_doesnt_exist() {
         doThrow(TelegramUserDoesntExistException.class).when(telegramUserTradeByItemIdManagerDatabaseService).deleteById(any(), any());
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserTradeManagerService.deleteUserTradeByItemIdManagerById("123",
@@ -79,7 +106,22 @@ class TelegramUserTradeManagerServiceTest {
     }
 
     @Test
-    public void getUserTradeManagerByItemIdById_should_return_trade__Manager_by_id() {
+    public void deleteUserTradeByFiltersManagerById_should_handle_to_service() {
+        telegramUserTradeManagerService.deleteUserTradeByFiltersManagerById("1", "1");
+
+        verify(telegramUserTradeByFiltersManagerDatabaseService).deleteById(eq("1"), eq("1"));
+    }
+
+    @Test
+    public void deleteUserTradeManagerByFiltersById_should_throw_if_user_doesnt_exist() {
+        doThrow(TelegramUserDoesntExistException.class).when(telegramUserTradeByFiltersManagerDatabaseService).deleteById(any(), any());
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserTradeManagerService.deleteUserTradeByFiltersManagerById("123",
+                "name"));
+    }
+
+    @Test
+    public void getUserTradeByItemIdManagerById_should_return_trade_manager_by_id() {
         String chatId = "chatId";
         String itemId = "itemId";
         TradeByItemIdManager tradeByItemIdManager = new TradeByItemIdManager();
@@ -92,21 +134,34 @@ class TelegramUserTradeManagerServiceTest {
     }
 
     @Test
-    public void getUserTradeManagerByItemIdById_should_throw_if_user_doesnt_existManager() {
-        when(telegramUserTradeByItemIdManagerDatabaseService.findById(any(), any())).thenThrow(TelegramUserDoesntExistException.class);
+    public void getUserTradeByItemIdManagerId_should_throw_if_service_throws() {
+        when(telegramUserTradeByItemIdManagerDatabaseService.findById(any(), any())).thenThrow(RuntimeException.class);
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserTradeManagerService.getUserTradeByItemIdManagerById("chatId", "itemId"));
+        assertThrows(RuntimeException.class, () -> telegramUserTradeManagerService.getUserTradeByItemIdManagerById("chatId", "itemId"));
     }
 
     @Test
-    public void getUserTradeManagerByItemIdById_should_throw_if_trade__doesnt_existManager() {
-        when(telegramUserTradeByItemIdManagerDatabaseService.findById(any(), any())).thenThrow(TradeManagerByItemIdDoesntExistException.class);
+    public void getUserTradeByFiltersManagerById_should_return_trade_manager_by_id() {
+        String chatId = "chatId";
+        String name = "name";
+        TradeByFiltersManager tradeByFiltersManager = new TradeByFiltersManager();
+        tradeByFiltersManager.setName("name");
+        when(telegramUserTradeByFiltersManagerDatabaseService.findById(chatId, name)).thenReturn(tradeByFiltersManager);
 
-        assertThrows(TradeManagerByItemIdDoesntExistException.class, () -> telegramUserTradeManagerService.getUserTradeByItemIdManagerById("chatId", "itemId"));
+        assertEquals(tradeByFiltersManager, telegramUserTradeManagerService.getUserTradeByFiltersManagerById(chatId, name));
+
+        verify(telegramUserTradeByFiltersManagerDatabaseService).findById(chatId, name);
     }
 
     @Test
-    public void getAllUserTradeManagersByItemId_should_return_all_user_trade__item_idManagers() {
+    public void getUserTradeByFiltersManagerById_should_throw_if_service_throws() {
+        when(telegramUserTradeByFiltersManagerDatabaseService.findById(any(), any())).thenThrow(RuntimeException.class);
+
+        assertThrows(RuntimeException.class, () -> telegramUserTradeManagerService.getUserTradeByFiltersManagerById("chatId", "name"));
+    }
+
+    @Test
+    public void getAllUserTradeManagersByItemId_should_return_all_user_trade__item_id() {
         List<TradeByItemIdManager> tradeManagers = new ArrayList<>();
 
         when(telegramUserTradeByItemIdManagerDatabaseService.findAllByChatId(any())).thenReturn(tradeManagers);
@@ -124,19 +179,19 @@ class TelegramUserTradeManagerServiceTest {
     }
 
     @Test
-    public void getAllUserTradeManagersByItemFilters_should_return_all_user_trade___filtersManagers() {
+    public void getAllUserTradeManagersByItemFilters_should_return_all_user_trade___filters() {
         List<TradeByFiltersManager> tradeManagers = new ArrayList<>();
 
-        when(telegramUserTradeManagerByItemFiltersDatabaseService.findAllByChatId(any())).thenReturn(tradeManagers);
+        when(telegramUserTradeByFiltersManagerDatabaseService.findAllByChatId(any())).thenReturn(tradeManagers);
 
         assertEquals(tradeManagers, telegramUserTradeManagerService.getAllUserTradeByFiltersManagers("chatId"));
 
-        verify(telegramUserTradeManagerByItemFiltersDatabaseService).findAllByChatId("chatId");
+        verify(telegramUserTradeByFiltersManagerDatabaseService).findAllByChatId("chatId");
     }
 
     @Test
-    public void getAllUserTradeManagersByItemFilters_should_throw_if_user_doesnt_existManagers() {
-        when(telegramUserTradeManagerByItemFiltersDatabaseService.findAllByChatId(any())).thenThrow(TelegramUserDoesntExistException.class);
+    public void getAllUserTradeManagersByItemFilters_should_throw_if_user_doesnt_exist() {
+        when(telegramUserTradeByFiltersManagerDatabaseService.findAllByChatId(any())).thenThrow(TelegramUserDoesntExistException.class);
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserTradeManagerService.getAllUserTradeByFiltersManagers("chatId"));
     }

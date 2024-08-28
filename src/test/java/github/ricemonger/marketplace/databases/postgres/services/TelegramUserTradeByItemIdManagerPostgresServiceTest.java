@@ -4,11 +4,11 @@ import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUs
 import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByItemIdManagerEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.repositories.TradeManagerByItemIdPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.TradeByItemIdManagerPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.utils.dtos.TradeByItemIdManager;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
-import github.ricemonger.utils.exceptions.TradeManagerByItemIdDoesntExistException;
+import github.ricemonger.utils.exceptions.TradeByItemIdManagerDoesntExistException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +25,9 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
     private final static String ANOTHER_CHAT_ID = "2";
 
     @Autowired
-    private TelegramUserTradeByItemIdPostgresServiceManager telegramUserTradeManagerByItemIdService;
+    private TelegramUserTradeByItemIdManagerPostgresService telegramUserTradeManagerByItemIdService;
     @Autowired
-    private TradeManagerByItemIdPostgresRepository tradeManagerByItemIdRepository;
+    private TradeByItemIdManagerPostgresRepository tradeManagerByItemIdRepository;
     @Autowired
     private TelegramUserPostgresRepository telegramUserRepository;
     @Autowired
@@ -57,8 +57,8 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
         createTelegramUser(ANOTHER_CHAT_ID);
         telegramUserTradeManagerByItemIdService.save(ANOTHER_CHAT_ID, tradeManager);
 
-        assertEquals(2, telegramUserRepository.findById(CHAT_ID).get().getUser().getTradeManagersByItemId().size());
-        assertEquals(1, telegramUserRepository.findById(ANOTHER_CHAT_ID).get().getUser().getTradeManagersByItemId().size());
+        assertEquals(2, telegramUserRepository.findById(CHAT_ID).get().getUser().getTradeByItemIdManagers().size());
+        assertEquals(1, telegramUserRepository.findById(ANOTHER_CHAT_ID).get().getUser().getTradeByItemIdManagers().size());
         assertEquals(3, tradeManagerByItemIdRepository.findAll().size());
     }
 
@@ -97,6 +97,40 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
     }
 
     @Test
+    public void invertEnabledFlagById_should_invert_enabled_flag() {
+        TradeByItemIdManager tradeManager = new TradeByItemIdManager();
+        tradeManager.setItemId("1");
+        tradeManager.setEnabled(true);
+        telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
+
+        tradeManager.setItemId("2");
+        telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
+
+        createTelegramUser(ANOTHER_CHAT_ID);
+        telegramUserTradeManagerByItemIdService.save(ANOTHER_CHAT_ID, tradeManager);
+
+        telegramUserTradeManagerByItemIdService.invertEnabledFlagById(CHAT_ID, "1");
+
+        assertEquals(false, telegramUserTradeManagerByItemIdService.findById(CHAT_ID, "1").isEnabled());
+        assertEquals(true, telegramUserTradeManagerByItemIdService.findById(CHAT_ID, "2").isEnabled());
+        assertEquals(2,
+                telegramUserRepository.findById(CHAT_ID).get().getUser().getTradeByItemIdManagers().size());
+        assertEquals(2, telegramUserRepository.findAll().size());
+        assertEquals(2, telegramUserTradeManagerByItemIdService.findAllByChatId(CHAT_ID).size());
+        assertEquals(3, tradeManagerByItemIdRepository.findAll().size());
+    }
+
+    @Test
+    public void invertEnabledFlagById_should_throw_exception_if_telegram_user_doesnt_exist() {
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserTradeManagerByItemIdService.invertEnabledFlagById(ANOTHER_CHAT_ID, "1"));
+    }
+
+    @Test
+    public void invertEnabledFlagById_should_throw_exception_if_trade_manager_doesnt_exist() {
+        assertThrows(TradeByItemIdManagerDoesntExistException.class, () -> telegramUserTradeManagerByItemIdService.invertEnabledFlagById(CHAT_ID, "1"));
+    }
+
+    @Test
     public void deleteById_should_remove_trade_manager() {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("1");
@@ -109,8 +143,8 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
 
         telegramUserTradeManagerByItemIdService.deleteById(CHAT_ID, "2");
 
-        assertEquals(1, telegramUserRepository.findById(CHAT_ID).get().getUser().getTradeManagersByItemId().size());
-        assertEquals(1, telegramUserRepository.findById(ANOTHER_CHAT_ID).get().getUser().getTradeManagersByItemId().size());
+        assertEquals(1, telegramUserRepository.findById(CHAT_ID).get().getUser().getTradeByItemIdManagers().size());
+        assertEquals(1, telegramUserRepository.findById(ANOTHER_CHAT_ID).get().getUser().getTradeByItemIdManagers().size());
         assertEquals(2, tradeManagerByItemIdRepository.findAll().size());
     }
 
@@ -147,7 +181,7 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
 
     @Test
     public void findById_should_throw_exception_if_trade_manager_doesnt_exist() {
-        assertThrows(TradeManagerByItemIdDoesntExistException.class, () -> telegramUserTradeManagerByItemIdService.findById(CHAT_ID, "1"));
+        assertThrows(TradeByItemIdManagerDoesntExistException.class, () -> telegramUserTradeManagerByItemIdService.findById(CHAT_ID, "1"));
     }
 
     @Test

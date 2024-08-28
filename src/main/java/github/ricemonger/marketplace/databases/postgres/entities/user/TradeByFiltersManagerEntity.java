@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
+import github.ricemonger.utils.dtos.TradeByFiltersManager;
 import github.ricemonger.utils.enums.TradeManagerTradeType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,8 @@ public class TradeByFiltersManagerEntity {
     @Id
     private String name;
 
+    private boolean enabled;
+
     private TradeManagerTradeType tradeType;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -33,11 +36,35 @@ public class TradeByFiltersManagerEntity {
             inverseJoinColumns = @JoinColumn(name = "itemFilterName", referencedColumnName = "name"))
     private List<ItemFilterEntity> appliedFilters;
 
-    private Integer maxBuyHours;
-    private Integer maxSellHours;
-
-    private Integer minProfit;
+    private Integer minBuySellProfit;
     private Integer minProfitPercent;
 
     private Integer priority;
+
+    public TradeByFiltersManagerEntity(UserEntity user, TradeByFiltersManager tradeManager) {
+        this.user = user;
+        this.enabled = tradeManager.isEnabled();
+        this.name = tradeManager.getName();
+        this.tradeType = tradeManager.getTradeType();
+        if(tradeManager.getAppliedFilters() != null) {
+            this.appliedFilters = tradeManager.getAppliedFilters().stream().map(filter -> new ItemFilterEntity(user, filter)).toList();
+        }
+        this.minBuySellProfit = tradeManager.getMinBuySellProfit();
+        this.minProfitPercent = tradeManager.getMinProfitPercent();
+        this.priority = tradeManager.getPriority();
+    }
+
+    public TradeByFiltersManager toTradeByFiltersManager() {
+        TradeByFiltersManager tradeManager = new TradeByFiltersManager();
+        tradeManager.setName(this.name);
+        tradeManager.setEnabled(this.enabled);
+        tradeManager.setTradeType(this.tradeType);
+        if(this.appliedFilters != null) {
+            tradeManager.setAppliedFilters(this.appliedFilters.stream().map(ItemFilterEntity::toItemFilter).toList());
+        }
+        tradeManager.setMinBuySellProfit(this.minBuySellProfit);
+        tradeManager.setMinProfitPercent(this.minProfitPercent);
+        tradeManager.setPriority(this.priority);
+        return tradeManager;
+    }
 }

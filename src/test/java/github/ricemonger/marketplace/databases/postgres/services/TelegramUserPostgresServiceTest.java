@@ -75,6 +75,10 @@ class TelegramUserPostgresServiceTest {
         expected.setItemsShowSellOrdersCountFlag(true);
         expected.setItemShowPictureFlag(true);
         expected.setItemShowAppliedFilters(new ArrayList<>());
+        expected.setActiveTradeByItemIdManagers(new ArrayList<>());
+        expected.setActiveTradeByFiltersManagers(new ArrayList<>());
+        expected.setManagingEnabledFlag(true);
+        expected.setNewManagersAreActiveFlag(true);
 
         assertEquals(telegramUser.toTelegramUser(), expected);
     }
@@ -129,6 +133,10 @@ class TelegramUserPostgresServiceTest {
         updated.setItemsShowSellOrdersCountFlag(false);
         updated.setItemShowPictureFlag(false);
         updated.setItemShowAppliedFilters(new ArrayList<>());
+        updated.setActiveTradeByItemIdManagers(new ArrayList<>());
+        updated.setActiveTradeByFiltersManagers(new ArrayList<>());
+        updated.setManagingEnabledFlag(false);
+        updated.setNewManagersAreActiveFlag(false);
 
         telegramUserService.update(updated);
 
@@ -265,6 +273,38 @@ class TelegramUserPostgresServiceTest {
     }
 
     @Test
+    public void setTradeManagersSettingsNewManagersAreActiveFlag_should_update_flag() {
+        createTelegramUser(CHAT_ID);
+
+        telegramUserService.setTradeManagersSettingsNewManagersAreActiveFlag(CHAT_ID, false);
+        assertEquals(false, telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isNewManagersAreActiveFlag());
+
+        telegramUserService.setTradeManagersSettingsNewManagersAreActiveFlag(CHAT_ID, true);
+        assertEquals(true, telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isNewManagersAreActiveFlag());
+    }
+
+    @Test
+    public void setTradeManagersSettingsNewManagersAreActiveFlag_should_throw_if_telegram_user_doesnt_exist() {
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setTradeManagersSettingsNewManagersAreActiveFlag(CHAT_ID, false));
+    }
+
+    @Test
+    public void setTradeManagersSettingsManagingEnabledFlag_should_update_flag() {
+        createTelegramUser(CHAT_ID);
+
+        telegramUserService.setTradeManagersSettingsManagingEnabledFlag(CHAT_ID, false);
+        assertEquals(false, telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isManagingEnabledFlag());
+
+        telegramUserService.setTradeManagersSettingsManagingEnabledFlag(CHAT_ID, true);
+        assertEquals(true, telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isManagingEnabledFlag());
+    }
+
+    @Test
+    public void setTradeManagersSettingsManagingEnabledFlag_should_throw_if_telegram_user_doesnt_exist() {
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setTradeManagersSettingsManagingEnabledFlag(CHAT_ID, false));
+    }
+
+    @Test
     public void existsById_should_return_true_if_telegram_user_exists() {
         createTelegramUser(CHAT_ID);
 
@@ -289,15 +329,27 @@ class TelegramUserPostgresServiceTest {
     }
 
     @Test
-    public void findUserSettingsById_should_return_item_show_settings() {
+    public void findUserItemShowSettingsById_should_return_item_show_ItemShow_settings() {
         createTelegramUser(CHAT_ID);
 
-        assertEquals(telegramUserRepository.findById(CHAT_ID).get().toItemShowSettings(), telegramUserService.findUserSettingsById(CHAT_ID));
+        assertEquals(telegramUserRepository.findById(CHAT_ID).get().toItemShowSettings(), telegramUserService.findUserItemShowSettingsById(CHAT_ID));
     }
 
     @Test
-    public void findUserSettingsById_should_throw_if_telegram_user_doesnt_exist() {
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.findUserSettingsById(CHAT_ID));
+    public void findUserItemShowSettingsById_should_throw_if_telegram_user_ItemShow_doesnt_exist() {
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.findUserItemShowSettingsById(CHAT_ID));
+    }
+
+    @Test
+    public void findUserTradeManagersSettingsById_should_return_user_trade_managers_settings() {
+        createTelegramUser(CHAT_ID);
+
+        assertEquals(telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings(), telegramUserService.findUserTradeManagersSettingsById(CHAT_ID));
+    }
+
+    @Test
+    public void findUserTradeManagersSettingsById_should_throw_if_telegram_user_ItemShow_doesnt_exist() {
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.findUserTradeManagersSettingsById(CHAT_ID));
     }
 
     @Test

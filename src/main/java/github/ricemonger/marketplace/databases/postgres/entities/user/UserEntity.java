@@ -31,10 +31,10 @@ public class UserEntity {
     private List<ItemFilterEntity> itemFilters = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<TradeByFiltersManagerEntity> tradeManagersByItemFilters = new ArrayList<>();
+    private List<TradeByFiltersManagerEntity> tradeByFiltersManagers = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<TradeByItemIdManagerEntity> tradeManagersByItemId = new ArrayList<>();
+    private List<TradeByItemIdManagerEntity> tradeByItemIdManagers = new ArrayList<>();
 
     private Boolean publicNotificationsEnabledFlag = true;
 
@@ -51,4 +51,19 @@ public class UserEntity {
             joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "id")},
             inverseJoinColumns = @JoinColumn(name = "itemFilterName", referencedColumnName = "name"))
     private List<ItemFilterEntity> itemShowAppliedFilters = new ArrayList<>();
+
+    private Boolean newManagersAreActiveFlag = true;
+    private Boolean managingEnabledFlag = true;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_active_trade_by_item_id_managers",
+            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "id")},
+            inverseJoinColumns = @JoinColumn(name = "managerItemId", referencedColumnName = "itemId"))
+    private List<TradeByItemIdManagerEntity> activeTradeByItemIdManagers = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_active_trade_by_filters_managers",
+            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "id")},
+            inverseJoinColumns = @JoinColumn(name = "managerName", referencedColumnName = "name"))
+    private List<TradeByFiltersManagerEntity> activeTradeByFiltersManagers = new ArrayList<>();
 }

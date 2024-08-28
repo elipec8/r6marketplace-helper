@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,22 +43,15 @@ public class ItemEntity {
     private int limitMaxPrice;
 
     public ItemEntity(Item item) {
-        StringBuilder tags = new StringBuilder();
-        if (item.getTags() != null) {
-            for (String tag : item.getTags()) {
-                tags.append(tag).append(",");
-            }
-            try {
-                tags.deleteCharAt(tags.length() - 1);
-            } catch (StringIndexOutOfBoundsException e) {
-                log.error("Tags list is empty");
-            }
+        String tags = "";
+        if (item.getTags() != null && !item.getTags().isEmpty()) {
+            tags = (String.join(",", item.getTags()));
         }
         this.itemId = item.getItemId();
         this.assetUrl = item.getAssetUrl();
         this.name = item.getName();
-        this.tags = tags.toString();
         this.type = item.getType();
+        this.tags = tags;
         this.maxBuyPrice = item.getMaxBuyPrice();
         this.buyOrdersCount = item.getBuyOrdersCount();
         this.minSellPrice = item.getMinSellPrice();
@@ -69,12 +63,11 @@ public class ItemEntity {
     }
 
     public Item toItem() {
-        List<String> tags;
-        if (this.getTags() != null) {
-            tags = List.of(this.getTags().split(","));
-        } else {
-            tags = List.of();
+        List<String> tags = new ArrayList<>();
+        if (this.tags != null && !this.tags.isEmpty()) {
+            tags = List.of(this.tags.split(","));
         }
+
         Item item = new Item();
         item.setItemId(this.itemId);
         item.setAssetUrl(this.assetUrl);

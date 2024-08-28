@@ -6,10 +6,7 @@ import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserDatabaseService;
-import github.ricemonger.utils.dtos.ItemFilter;
-import github.ricemonger.utils.dtos.ItemShowSettings;
-import github.ricemonger.utils.dtos.ItemShownFieldsSettings;
-import github.ricemonger.utils.dtos.TelegramUser;
+import github.ricemonger.utils.dtos.*;
 import github.ricemonger.utils.exceptions.TelegramUserAlreadyExistsException;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
 import jakarta.transaction.Transactional;
@@ -111,6 +108,26 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     }
 
     @Override
+    @Transactional
+    public void setTradeManagersSettingsNewManagersAreActiveFlag(String chatId, boolean flag) throws TelegramUserDoesntExistException {
+        TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
+
+        telegramUser.setNewManagersAreActiveFlag(flag);
+
+        telegramUserRepository.save(telegramUser);
+    }
+
+    @Override
+    @Transactional
+    public void setTradeManagersSettingsManagingEnabledFlag(String chatId, boolean flag) throws TelegramUserDoesntExistException {
+        TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
+
+        telegramUser.setManagingEnabledFlag(flag);
+
+        telegramUserRepository.save(telegramUser);
+    }
+
+    @Override
     public boolean existsById(String chatId) {
         return telegramUserRepository.existsById(chatId);
     }
@@ -121,8 +138,13 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     }
 
     @Override
-    public ItemShowSettings findUserSettingsById(String chatId) {
+    public ItemShowSettings findUserItemShowSettingsById(String chatId) throws TelegramUserDoesntExistException {
         return getTelegramUserEntityByIdOrThrow(chatId).toItemShowSettings();
+    }
+
+    @Override
+    public TradeManagersSettings findUserTradeManagersSettingsById(String chatId) throws TelegramUserDoesntExistException {
+        return getTelegramUserEntityByIdOrThrow(chatId).toTradeManagersSettings();
     }
 
     @Override

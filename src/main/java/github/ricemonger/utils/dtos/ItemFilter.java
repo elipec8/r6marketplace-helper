@@ -27,8 +27,8 @@ public class ItemFilter {
 
     private List<Tag> tags = new ArrayList<>();
 
-    private Integer minPrice;
-    private Integer maxPrice;
+    private Integer minSellPrice;
+    private Integer maxBuyPrice;
 
     private Integer minLastSoldPrice;
     private Integer maxLastSoldPrice;
@@ -71,8 +71,8 @@ public class ItemFilter {
                 .filter(item -> this.itemNamePatterns == null || this.itemNamePatterns.isEmpty() || this.itemNamePatterns.stream().anyMatch(s -> item.getName().toLowerCase().contains(s.toLowerCase())))
                 .filter(item -> this.itemTypes == null || this.itemTypes.isEmpty() || this.itemTypes.contains(item.getType()))
                 .filter(item -> this.tags == null || this.tags.isEmpty() || this.tags.stream().anyMatch(tag -> item.getTags().contains(tag.getValue())))
-                .filter(item -> this.minPrice == null || item.getMinSellPrice() >= this.minPrice)
-                .filter(item -> this.maxPrice == null || item.getMaxBuyPrice() <= this.maxPrice)
+                .filter(item -> this.minSellPrice == null || item.getMinSellPrice() >= this.minSellPrice)
+                .filter(item -> this.maxBuyPrice == null || item.getMaxBuyPrice() <= this.maxBuyPrice)
                 .filter(item -> this.minLastSoldPrice == null || item.getLastSoldPrice() >= this.minLastSoldPrice)
                 .filter(item -> this.maxLastSoldPrice == null || item.getLastSoldPrice() <= this.maxLastSoldPrice)
                 .toList();
@@ -123,8 +123,8 @@ public class ItemFilter {
         String eventTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Event)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
         String esportsTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Esports_Team)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
         String otherTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Other)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
-        String minPrice = String.valueOf(this.minPrice);
-        String maxPrice = String.valueOf(this.maxPrice);
+        String minPrice = String.valueOf(this.minSellPrice);
+        String maxPrice = String.valueOf(this.maxBuyPrice);
         String minLastSoldPrice = String.valueOf(this.minLastSoldPrice);
         String maxLastSoldPrice = String.valueOf(this.maxLastSoldPrice);
 

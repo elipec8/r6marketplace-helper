@@ -266,29 +266,73 @@ public class BotInnerService {
         }
     }
 
-    public void saveUserTradeByItemIdManagerByUserInput(Long chatId, TradeManagerTradeType tradeType) throws TelegramUserDoesntExistException {
+    public void saveUserTradeByItemIdManagerByUserInput(Long chatId, TradeManagerTradeType tradeType) throws TelegramUserDoesntExistException,
+            TelegramUserInputDoesntExistException {
         telegramUserTradeManagerService.saveUserTradeByItemIdManager(String.valueOf(chatId), generateTradeByItemIdManagerByUserInput(chatId, tradeType));
+    }
+
+    public void saveUserTradeByFiltersManagerByUserInput(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
+        telegramUserTradeManagerService.saveUserTradeByFiltersManager(String.valueOf(chatId), generateTradeByFiltersManagerByUserInput(chatId));
     }
 
     public TradeByItemIdManager generateTradeByItemIdManagerByUserInput(Long chatId, TradeManagerTradeType tradeType) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         Collection<TelegramUserInput> inputs = telegramUserService.getAllUserInputs(chatId);
 
-        return tradeManagerFromInputsMapper.mapToTradeManagerByItemId(
+        return tradeManagerFromInputsMapper.mapToTradeByItemIdManager(
                 inputs,
                 tradeType,
-                getItemByUserInputItemId(chatId));
+                getItemByUserInputItemId(chatId),
+                telegramUserService.getTradeManagersSettings(chatId).isNewManagersAreActiveFlag());
+    }
+
+    public TradeByFiltersManager generateTradeByFiltersManagerByUserInput(Long chatId) throws TelegramUserDoesntExistException,
+            TelegramUserInputDoesntExistException {
+        Collection<TelegramUserInput> inputs = telegramUserService.getAllUserInputs(chatId);
+
+        String appliedFiltersNamesString = inputs.stream().filter(input -> input.getInputState().equals(InputState.TRADE_BY_FILTERS_MANAGER_FILTERS_NAMES))
+                .map(TelegramUserInput::getValue)
+                .findFirst()
+                .orElse("");
+
+        List<ItemFilter> appliedFilters = telegramUserItemFilterService.getAllUserItemFilters(String.valueOf(chatId)).stream()
+                .filter(itemFilter -> appliedFiltersNamesString.contains(itemFilter.getName()))
+                .toList();
+
+        return tradeManagerFromInputsMapper.mapToTradeByFiltersManager(inputs,
+                commonValuesService.getMaximumMarketplacePrice(),
+                appliedFilters,
+                telegramUserService.getTradeManagersSettings(chatId).isNewManagersAreActiveFlag());
     }
 
     public Item getItemByUserInputItemId(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
-        return itemStatsService.getItemById(getUserInputByState(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID));
+        return itemStatsService.getItemById(getUserInputByState(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID));
+    }
+
+    public void invertUserTradeByFiltersManagerEnabledByUserInput(Long chatId) throws TelegramUserDoesntExistException,
+            TelegramUserInputDoesntExistException, TradeByFiltersManagerDoesntExistException {
+        telegramUserTradeManagerService.invertUserTradeByFiltersManagerEnabledFlagById(String.valueOf(chatId), getUserInputByState(chatId, InputState.TRADE_BY_FILTERS_MANAGER_NAME));
+    }
+
+    public void invertUserTradeByItemIdManagerEnabledByUserInput(Long chatId) throws TelegramUserDoesntExistException,
+            TelegramUserInputDoesntExistException, TradeByItemIdManagerDoesntExistException {
+        telegramUserTradeManagerService.invertUserTradeByItemIdManagerEnabledFlagById(String.valueOf(chatId), getUserInputByState(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID));
     }
 
     public void removeUserTradeByItemIdManagerByUserInput(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
-        telegramUserTradeManagerService.deleteUserTradeByItemIdManagerById(String.valueOf(chatId), getUserInputByState(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID));
+        telegramUserTradeManagerService.deleteUserTradeByItemIdManagerById(String.valueOf(chatId), getUserInputByState(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID));
     }
 
-    public TradeByItemIdManager getUserTradeByItemIdManagerByUserInputItemId(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException, TradeManagerByItemIdDoesntExistException {
-        return telegramUserTradeManagerService.getUserTradeByItemIdManagerById(String.valueOf(chatId), getUserInputByState(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID));
+    public void removeUserTradeByFiltersManagerByUserInput(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
+        telegramUserTradeManagerService.deleteUserTradeByFiltersManagerById(String.valueOf(chatId), getUserInputByState(chatId, InputState.TRADE_BY_FILTERS_MANAGER_NAME));
+    }
+
+    public TradeByItemIdManager getUserTradeByItemIdManagerByUserInputItemId(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException, TradeByItemIdManagerDoesntExistException {
+        return telegramUserTradeManagerService.getUserTradeByItemIdManagerById(String.valueOf(chatId), getUserInputByState(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID));
+    }
+
+    public TradeByFiltersManager getUserTradeByFiltersManagerByUserInputName(Long chatId) throws TelegramUserDoesntExistException,
+            TelegramUserInputDoesntExistException, TradeByFiltersManagerDoesntExistException {
+        return telegramUserTradeManagerService.getUserTradeByFiltersManagerById(String.valueOf(chatId), getUserInputByState(chatId, InputState.TRADE_BY_FILTERS_MANAGER_NAME));
     }
 
     public List<TradeByItemIdManager> getAllUserTradeByItemIdManagers(Long chatId) throws TelegramUserDoesntExistException {
@@ -297,6 +341,18 @@ public class BotInnerService {
 
     public List<TradeByFiltersManager> getAllUserTradeByFiltersManagers(Long chatId) throws TelegramUserDoesntExistException {
         return telegramUserTradeManagerService.getAllUserTradeByFiltersManagers(String.valueOf(chatId));
+    }
+
+    public TradeManagersSettings getUserTradeManagersSettings(Long chatId) throws TelegramUserDoesntExistException {
+        return telegramUserService.getTradeManagersSettings(chatId);
+    }
+
+    public void setUserTradeManagersSettingsNewManagersAreActiveFlag(Long chatId, boolean flag) throws TelegramUserDoesntExistException {
+        telegramUserService.setTradeManagersSettingsNewManagersAreActiveFlag(chatId, flag);
+    }
+
+    public void setUserTradeManagersSettingsManagingEnabledFlag(Long chatId, boolean flag) throws TelegramUserDoesntExistException {
+        telegramUserService.setTradeManagersSettingsManagingEnabledFlag(chatId, flag);
     }
 
     public String getUserInputByState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
