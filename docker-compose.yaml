@@ -2,26 +2,26 @@ version: '2.4'
 
 services:
 
- postgres:
+  postgres:
     container_name: r6helper-postgres
     image: postgres:16.3
     ports:
-     - "5432:5432"
+      - "5432:5432"
     environment:
-     - POSTGRES_USER=postgres
-     - POSTGRES_PASSWORD=1234
-     - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=postgres
     volumes:
-     - postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     networks:
-     - postgres-net
+      - postgres-net
     restart: always
 
- pgadmin:
+  pgadmin:
     container_name: r6helper-pgadmin
     image: dpage/pgadmin4:8.6
     ports:
-     - "5050:80"
+      - "5050:80"
     networks:
       - postgres-net
     environment:
@@ -30,43 +30,43 @@ services:
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     restart: always
 
- redis:
+  redis:
     container_name: r6helper-redis
     image: redis:7.2.4-bookworm
     ports:
-     - "6379:6379"
+      - "6379:6379"
     volumes:
       - redis-data:/data
     networks:
-     - redis-net
+      - redis-net
     restart: always
 
- redis-test:
-   container_name: r6helper-redis-test
-   image: redis:7.2.4-bookworm
-   ports:
-     - "6380:6379"
-   volumes:
-     - test-redis-data:/data
-   networks:
-     - redis-net
-   restart: always
+  redis-test:
+    container_name: r6helper-redis-test
+    image: redis:7.2.4-bookworm
+    ports:
+      - "6380:6379"
+    volumes:
+      - test-redis-data:/data
+    networks:
+      - redis-net
+    restart: always
 
- zipkin:
+  zipkin:
     container_name: r6helper-zipkin
     image: openzipkin/zipkin:3.1.0
     ports:
-     - "9411:9411"
+      - "9411:9411"
     networks:
-     - zipkin-net
+      - zipkin-net
     restart: always
 
 networks:
-    postgres-net:
-    zipkin-net:
-    redis-net:
+  postgres-net:
+  zipkin-net:
+  redis-net:
 
 volumes:
- postgres-data:
- redis-data:
- test-redis-data:
+  postgres-data:
+  redis-data:
+  test-redis-data:

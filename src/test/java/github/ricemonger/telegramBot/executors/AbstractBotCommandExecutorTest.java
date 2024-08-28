@@ -26,7 +26,7 @@ class AbstractBotCommandExecutorTest {
     void setUp() {
         updateInfo = spy(new UpdateInfo());
         updateInfo.setChatId(999L);
-        AbstractBotCommandExecutor executor =new AbstractBotCommandExecutor() {
+        AbstractBotCommandExecutor executor = new AbstractBotCommandExecutor() {
             @Override
             protected void executeCommand() {
             }

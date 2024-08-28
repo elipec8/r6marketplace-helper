@@ -1,4 +1,4 @@
-package github.ricemonger.telegramBot.executors.tradeManagers.showRemove;
+package github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled;
 
 import github.ricemonger.telegramBot.client.BotInnerService;
 import org.junit.jupiter.api.Test;

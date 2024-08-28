@@ -14,12 +14,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class ItemFilterTest {
 
     @Test
-    public void static_filterItems_should_properly_filter_items_by_multiple_filters(){
+    public void static_filterItems_should_properly_filter_items_by_multiple_filters() {
         Collection<Item> expected = new ArrayList<>();
         expected.add(createItem("test11", ItemType.WeaponSkin, List.of("value1"), 110, 190, 150));
-        expected.add(createItem("test2", ItemType.WeaponSkin, List.of("value1","value3"), 110, 190, 100));
-        expected.add(createItem("test3", ItemType.WeaponSkin, List.of("value1","value3"), 110, 190, 100));
-        expected.add(createItem("test33", ItemType.WeaponSkin, List.of("value1","value3"), 110, 190, 100));
+        expected.add(createItem("test2", ItemType.WeaponSkin, List.of("value1", "value3"), 110, 190, 100));
+        expected.add(createItem("test3", ItemType.WeaponSkin, List.of("value1", "value3"), 110, 190, 100));
+        expected.add(createItem("test33", ItemType.WeaponSkin, List.of("value1", "value3"), 110, 190, 100));
 
         Collection<Item> allItems = new ArrayList<>(expected);
         allItems.add(createItem("test1", ItemType.Charm, List.of("value1", "value2"), 100, 200, 50));
@@ -95,9 +95,9 @@ class ItemFilterTest {
         denyFilter3.setMinLastSoldPrice(0);
         denyFilter3.setMaxLastSoldPrice(9999);
 
-        Collection<Item> result = ItemFilter.filterItems(allItems,List.of(allowFilter1,allowFilter2,denyFilter1,denyFilter2));
+        Collection<Item> result = ItemFilter.filterItems(allItems, List.of(allowFilter1, allowFilter2, denyFilter1, denyFilter2));
 
-        for(Item item: result){
+        for (Item item : result) {
             System.out.println(item);
         }
 
@@ -109,7 +109,7 @@ class ItemFilterTest {
         Collection<Item> expected = new ArrayList<>();
         expected.add(createItem("test1", ItemType.Charm, List.of("value1", "value2"), 100, 200, 50));
         expected.add(createItem("test1111", ItemType.WeaponSkin, List.of("value1"), 110, 190, 150));
-        expected.add(createItem("test2", ItemType.WeaponSkin, List.of("value1","value3"), 110, 190, 100));
+        expected.add(createItem("test2", ItemType.WeaponSkin, List.of("value1", "value3"), 110, 190, 100));
 
         Collection<Item> allItems = new ArrayList<>(expected);
         allItems.add(createItem("test3", ItemType.WeaponSkin, List.of("value1", "value2"), 100, 200, 50));

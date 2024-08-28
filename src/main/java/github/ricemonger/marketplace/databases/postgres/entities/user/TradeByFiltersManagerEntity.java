@@ -46,7 +46,7 @@ public class TradeByFiltersManagerEntity {
         this.enabled = tradeManager.isEnabled();
         this.name = tradeManager.getName();
         this.tradeType = tradeManager.getTradeType();
-        if(tradeManager.getAppliedFilters() != null) {
+        if (tradeManager.getAppliedFilters() != null) {
             this.appliedFilters = tradeManager.getAppliedFilters().stream().map(filter -> new ItemFilterEntity(user, filter)).toList();
         }
         this.minBuySellProfit = tradeManager.getMinBuySellProfit();
@@ -59,7 +59,7 @@ public class TradeByFiltersManagerEntity {
         tradeManager.setName(this.name);
         tradeManager.setEnabled(this.enabled);
         tradeManager.setTradeType(this.tradeType);
-        if(this.appliedFilters != null) {
+        if (this.appliedFilters != null) {
             tradeManager.setAppliedFilters(this.appliedFilters.stream().map(ItemFilterEntity::toItemFilter).toList());
         }
         tradeManager.setMinBuySellProfit(this.minBuySellProfit);

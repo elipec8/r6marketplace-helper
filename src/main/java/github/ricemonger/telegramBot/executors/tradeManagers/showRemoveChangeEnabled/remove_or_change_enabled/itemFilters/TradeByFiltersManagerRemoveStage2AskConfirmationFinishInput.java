@@ -1,21 +1,21 @@
-package github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemId;
+package github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemFilters;
 
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.client.CallbackButton;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
-import github.ricemonger.utils.dtos.TradeByItemIdManager;
+import github.ricemonger.utils.dtos.TradeByFiltersManager;
 
-public class TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput extends AbstractBotCommandExecutor {
+public class TradeByFiltersManagerRemoveStage2AskConfirmationFinishInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
         processLastInput();
 
-        TradeByItemIdManager tradeManager = botInnerService.getUserTradeByItemIdManagerByUserInputItemId(updateInfo.getChatId());
+        TradeByFiltersManager tradeManager = botInnerService.getUserTradeByFiltersManagerByUserInputName(updateInfo.getChatId());
 
         String activateText = tradeManager.isEnabled() ? "Deactivate" : "Activate";
 
-        CallbackButton removeButton = new CallbackButton("Remove", Callbacks.TRADE_BY_ITEM_ID_MANAGER_REMOVE_FINISH_CONFIRMED);
-        CallbackButton changeButton = new CallbackButton(activateText, Callbacks.TRADE_BY_ITEM_ID_MANAGER_CHANGE_ENABLED_FINISH_CONFIRMED);
+        CallbackButton removeButton = new CallbackButton("Remove", Callbacks.TRADE_BY_FILTERS_MANAGER_REMOVE_FINISH_CONFIRMED);
+        CallbackButton changeButton = new CallbackButton(activateText, Callbacks.TRADE_BY_FILTERS_MANAGER_CHANGE_ENABLED_FINISH_CONFIRMED);
         CallbackButton cancelButton = new CallbackButton("Cancel", Callbacks.CANCEL_SILENT);
 
         askFromInlineKeyboard(
@@ -24,5 +24,6 @@ public class TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput extends 
                 removeButton,
                 changeButton,
                 cancelButton);
+
     }
 }

@@ -26,7 +26,7 @@ class ItemsShowSettingsChangeShownFieldsStage8FinishInputTest {
         verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.BASE);
         verify(botInnerService).setUserInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.BASE);
 
-        verify(botInnerService,times(0)).askFromInlineKeyboard(eq(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());
+        verify(botInnerService, times(0)).askFromInlineKeyboard(eq(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());
 
         verify(botInnerService).setUserItemShownFieldsSettingByUserInput(MockUpdateInfos.UPDATE_INFO.getChatId());
 

@@ -1,4 +1,4 @@
-package github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemFilters;
+package github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemFilters;
 
 import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
@@ -11,16 +11,16 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-class TradeByFiltersManagerRemoveStage3ConfirmedFinishCallbackTest {
+class TradeByFiltersManagerChangeEnabledStage3ConfirmedFinishCallbackTest {
     @MockBean
     private BotInnerService botInnerService;
 
     @Test
-    public void intAndExecute_should_removeTradeByFiltersManager() {
-        TradeByFiltersManagerRemoveStage3ConfirmedFinishCallback commandExecutor = new TradeByFiltersManagerRemoveStage3ConfirmedFinishCallback();
+    public void initAndExecute_should_invertUserTradeByFiltersManagerEnabledByUserInput_and_notify_user() {
+        TradeByFiltersManagerChangeEnabledStage3ConfirmedFinishCallback commandExecutor = new TradeByFiltersManagerChangeEnabledStage3ConfirmedFinishCallback();
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService).removeUserTradeByFiltersManagerByUserInput(MockUpdateInfos.UPDATE_INFO.getChatId());
+        verify(botInnerService).invertUserTradeByFiltersManagerEnabledByUserInput(MockUpdateInfos.UPDATE_INFO.getChatId());
 
         verify(botInnerService).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());
     }

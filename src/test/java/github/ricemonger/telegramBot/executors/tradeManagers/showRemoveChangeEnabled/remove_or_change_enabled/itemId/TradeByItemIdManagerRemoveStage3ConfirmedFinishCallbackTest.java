@@ -1,4 +1,4 @@
-package github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemId;
+package github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemId;
 
 import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;

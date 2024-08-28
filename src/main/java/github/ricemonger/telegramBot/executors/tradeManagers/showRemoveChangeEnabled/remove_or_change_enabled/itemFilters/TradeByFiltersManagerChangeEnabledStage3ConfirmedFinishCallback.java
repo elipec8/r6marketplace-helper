@@ -1,4 +1,4 @@
-package github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemFilters;
+package github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemFilters;
 
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 

@@ -23,8 +23,8 @@ import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.T
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage3AskStartingPriceInput;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage4AskPriorityInput;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage5AskConfirmationFinishInput;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemFilters.TradeByFiltersManagerRemoveStage2AskConfirmationFinishInput;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemFilters.TradeByFiltersManagerRemoveStage2AskConfirmationFinishInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkStage1AskFullOrEmailInput;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkStage2AskPasswordInput;
 import github.ricemonger.utils.exceptions.InvalidUserInputGroupException;
@@ -216,8 +216,7 @@ public class InputCommandListener {
         switch (inputState) {
             case TRADE_BY_FILTERS_MANAGER_NAME -> executorsService.execute(TradeByFiltersManagerEditStage2AskTypeInput.class, updateInfo);
 
-            case TRADE_BY_FILTERS_MANAGER_TRADE_TYPE ->
-                    executorsService.execute(TradeByFiltersManagerEditStage3AskFiltersInput.class, updateInfo);
+            case TRADE_BY_FILTERS_MANAGER_TRADE_TYPE -> executorsService.execute(TradeByFiltersManagerEditStage3AskFiltersInput.class, updateInfo);
 
             case TRADE_BY_FILTERS_MANAGER_FILTERS_NAMES ->
                     executorsService.execute(TradeByFiltersManagerEditStage4AskMinBuySellProfitInput.class, updateInfo);
