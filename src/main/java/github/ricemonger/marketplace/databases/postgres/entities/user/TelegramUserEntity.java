@@ -115,16 +115,6 @@ public class TelegramUserEntity {
 
     public TradeManagersSettings toTradeManagersSettings() {
         TradeManagersSettings tradeManagersSettings = new TradeManagersSettings();
-        if (this.user.getActiveTradeByItemIdManagers() != null) {
-            tradeManagersSettings.setActiveTradeByItemIdManagers(this.user.getActiveTradeByItemIdManagers().stream().map(TradeByItemIdManagerEntity::toTradeByItemIdManager).toList());
-        } else {
-            tradeManagersSettings.setActiveTradeByItemIdManagers(new ArrayList<>());
-        }
-        if (this.user.getActiveTradeByFiltersManagers() != null) {
-            tradeManagersSettings.setActiveTradeByFiltersManagers(this.user.getActiveTradeByFiltersManagers().stream().map(TradeByFiltersManagerEntity::toTradeByFiltersManager).toList());
-        } else {
-            tradeManagersSettings.setActiveTradeByFiltersManagers(new ArrayList<>());
-        }
         tradeManagersSettings.setNewManagersAreActiveFlag(this.user.getNewManagersAreActiveFlag());
         tradeManagersSettings.setManagingEnabledFlag(this.user.getManagingEnabledFlag());
         return tradeManagersSettings;

@@ -40,8 +40,8 @@ class ItemFilterTest {
         allowFilter1.setItemNamePatterns(List.of("test1", "test2"));
         allowFilter1.setItemTypes(List.of(ItemType.Charm, ItemType.WeaponSkin));
         allowFilter1.setTags(List.of(new Tag("value1", "name1", TagGroup.Rarity), new Tag("value2", "name2", TagGroup.Season)));
-        allowFilter1.setMinPrice(100);
-        allowFilter1.setMaxPrice(200);
+        allowFilter1.setMinSellPrice(100);
+        allowFilter1.setMaxBuyPrice(200);
         allowFilter1.setMinLastSoldPrice(50);
         allowFilter1.setMaxLastSoldPrice(150);
 
@@ -50,8 +50,8 @@ class ItemFilterTest {
         allowFilter2.setItemNamePatterns(List.of("test3", "test4"));
         allowFilter2.setItemTypes(List.of());
         allowFilter2.setTags(List.of(new Tag("value3", "name3", TagGroup.Rarity), new Tag("value4", "name4", TagGroup.Season)));
-        allowFilter2.setMinPrice(0);
-        allowFilter2.setMaxPrice(999);
+        allowFilter2.setMinSellPrice(0);
+        allowFilter2.setMaxBuyPrice(999);
         allowFilter2.setMinLastSoldPrice(0);
         allowFilter2.setMaxLastSoldPrice(999);
 
@@ -60,8 +60,8 @@ class ItemFilterTest {
         allowFilter3.setItemNamePatterns(List.of("test9"));
         allowFilter3.setItemTypes(List.of(ItemType.Charm, ItemType.WeaponSkin));
         allowFilter3.setTags(List.of(new Tag("value1", "name1", TagGroup.Rarity), new Tag("value2", "name2", TagGroup.Season)));
-        allowFilter3.setMinPrice(100);
-        allowFilter3.setMaxPrice(200);
+        allowFilter3.setMinSellPrice(100);
+        allowFilter3.setMaxBuyPrice(200);
         allowFilter3.setMinLastSoldPrice(50);
         allowFilter3.setMaxLastSoldPrice(150);
 
@@ -70,8 +70,8 @@ class ItemFilterTest {
         denyFilter1.setItemNamePatterns(List.of("test1", "test2"));
         denyFilter1.setItemTypes(List.of(ItemType.Charm));
         denyFilter1.setTags(List.of(new Tag("value1", "name1", TagGroup.Rarity), new Tag("value2", "name2", TagGroup.Season)));
-        denyFilter1.setMinPrice(100);
-        denyFilter1.setMaxPrice(200);
+        denyFilter1.setMinSellPrice(100);
+        denyFilter1.setMaxBuyPrice(200);
         denyFilter1.setMinLastSoldPrice(50);
         denyFilter1.setMaxLastSoldPrice(150);
 
@@ -80,8 +80,8 @@ class ItemFilterTest {
         denyFilter2.setItemNamePatterns(List.of("test5", "test6"));
         denyFilter2.setItemTypes(List.of(ItemType.Charm, ItemType.WeaponSkin));
         denyFilter2.setTags(List.of(new Tag("value1", "name1", TagGroup.Rarity), new Tag("value2", "name2", TagGroup.Season)));
-        denyFilter2.setMinPrice(100);
-        denyFilter2.setMaxPrice(200);
+        denyFilter2.setMinSellPrice(100);
+        denyFilter2.setMaxBuyPrice(200);
         denyFilter2.setMinLastSoldPrice(50);
         denyFilter2.setMaxLastSoldPrice(150);
 
@@ -90,8 +90,8 @@ class ItemFilterTest {
         denyFilter3.setItemNamePatterns(List.of("test9"));
         denyFilter3.setItemTypes(null);
         denyFilter3.setTags(null);
-        denyFilter3.setMinPrice(0);
-        denyFilter3.setMaxPrice(9999);
+        denyFilter3.setMinSellPrice(0);
+        denyFilter3.setMaxBuyPrice(9999);
         denyFilter3.setMinLastSoldPrice(0);
         denyFilter3.setMaxLastSoldPrice(9999);
 
@@ -124,8 +124,8 @@ class ItemFilterTest {
         filter.setItemNamePatterns(List.of("test1", "test2"));
         filter.setItemTypes(List.of(ItemType.Charm, ItemType.WeaponSkin));
         filter.setTags(List.of(new Tag("value1", "name1", TagGroup.Rarity), new Tag("value2", "name2", TagGroup.Season)));
-        filter.setMinPrice(100);
-        filter.setMaxPrice(200);
+        filter.setMinSellPrice(100);
+        filter.setMaxBuyPrice(200);
         filter.setMinLastSoldPrice(50);
         filter.setMaxLastSoldPrice(150);
 
@@ -254,8 +254,8 @@ class ItemFilterTest {
         filter.setItemNamePatterns(null);
         filter.setItemTypes(null);
         filter.setTags(null);
-        filter.setMinPrice(null);
-        filter.setMaxPrice(null);
+        filter.setMinSellPrice(null);
+        filter.setMaxBuyPrice(null);
         filter.setMinLastSoldPrice(null);
         filter.setMaxLastSoldPrice(null);
         filter.setIsOwned(null);

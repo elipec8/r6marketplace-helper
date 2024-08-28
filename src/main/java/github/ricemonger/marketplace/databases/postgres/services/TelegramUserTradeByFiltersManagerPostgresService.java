@@ -35,6 +35,21 @@ public class TelegramUserTradeByFiltersManagerPostgresService implements Telegra
 
     @Override
     @Transactional
+    public void invertEnabledFlagById(String chatId, String name) throws TelegramUserDoesntExistException, TradeByFiltersManagerDoesntExistException {
+        TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
+
+        TradeByFiltersManagerEntity manager = tradeByFiltersManagerRepository.findById
+                        (new TradeByFiltersManagerEntityId(telegramUser.getUser(), name))
+                .orElseThrow(() -> new TradeByFiltersManagerDoesntExistException(String.format("Trade manager by chatId %s and itemId %s not found",
+                        chatId, name)));
+
+        manager.setEnabled(!manager.isEnabled());
+
+        tradeByFiltersManagerRepository.save(manager);
+    }
+
+    @Override
+    @Transactional
     public void deleteById(String chatId, String name) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
@@ -61,11 +76,11 @@ public class TelegramUserTradeByFiltersManagerPostgresService implements Telegra
     }
 
     @Override
-    public List<TradeByFiltersManager> findAllByChatId(String chatId) {
-        return null;
+    public List<TradeByFiltersManager> findAllByChatId(String chatId) throws TelegramUserDoesntExistException {
+        return getTelegramUserEntityByIdOrThrow(chatId).getUser().getTradeByFiltersManagers().stream().map(TradeByFiltersManagerEntity::toTradeByFiltersManager).toList();
     }
 
-    private TelegramUserEntity getTelegramUserEntityByIdOrThrow(String chatId) {
+    private TelegramUserEntity getTelegramUserEntityByIdOrThrow(String chatId) throws TelegramUserDoesntExistException {
         return telegramUserRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found"));
     }
 }

@@ -97,6 +97,40 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
     }
 
     @Test
+    public void invertEnabledFlagById_should_invert_enabled_flag() {
+        TradeByItemIdManager tradeManager = new TradeByItemIdManager();
+        tradeManager.setItemId("1");
+        tradeManager.setEnabled(true);
+        telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
+
+        tradeManager.setItemId("2");
+        telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
+
+        createTelegramUser(ANOTHER_CHAT_ID);
+        telegramUserTradeManagerByItemIdService.save(ANOTHER_CHAT_ID, tradeManager);
+
+        telegramUserTradeManagerByItemIdService.invertEnabledFlagById(CHAT_ID, "1");
+
+        assertEquals(false, telegramUserTradeManagerByItemIdService.findById(CHAT_ID, "1").isEnabled());
+        assertEquals(true, telegramUserTradeManagerByItemIdService.findById(CHAT_ID, "2").isEnabled());
+        assertEquals(2,
+                telegramUserRepository.findById(CHAT_ID).get().getUser().getTradeByItemIdManagers().size());
+        assertEquals(2, telegramUserRepository.findAll().size());
+        assertEquals(2, telegramUserTradeManagerByItemIdService.findAllByChatId(CHAT_ID).size());
+        assertEquals(3, tradeManagerByItemIdRepository.findAll().size());
+    }
+
+    @Test
+    public void invertEnabledFlagById_should_throw_exception_if_telegram_user_doesnt_exist() {
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserTradeManagerByItemIdService.invertEnabledFlagById(ANOTHER_CHAT_ID, "1"));
+    }
+
+    @Test
+    public void invertEnabledFlagById_should_throw_exception_if_trade_manager_doesnt_exist() {
+        assertThrows(TradeByItemIdManagerDoesntExistException.class, () -> telegramUserTradeManagerByItemIdService.invertEnabledFlagById(CHAT_ID, "1"));
+    }
+
+    @Test
     public void deleteById_should_remove_trade_manager() {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("1");

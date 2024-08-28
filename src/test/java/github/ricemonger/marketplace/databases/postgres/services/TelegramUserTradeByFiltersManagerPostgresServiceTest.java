@@ -8,6 +8,7 @@ import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgre
 import github.ricemonger.utils.dtos.TradeByFiltersManager;
 import github.ricemonger.utils.enums.TradeManagerTradeType;
 import github.ricemonger.utils.exceptions.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.TradeByFiltersManagerDoesntExistException;
 import github.ricemonger.utils.exceptions.TradeByItemIdManagerDoesntExistException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -97,6 +98,39 @@ class TelegramUserTradeByFiltersManagerPostgresServiceTest {
     }
 
     @Test
+    public void invertEnabledFlagById_should_invert_enabled_flag() {
+        TradeByFiltersManager tradeManager = new TradeByFiltersManager();
+        tradeManager.setName("1");
+        tradeManager.setEnabled(true);
+        telegramUserTradeByFiltersManagerService.save(CHAT_ID, tradeManager);
+        tradeManager.setName("2");
+        telegramUserTradeByFiltersManagerService.save(CHAT_ID, tradeManager);
+
+        createTelegramUser(ANOTHER_CHAT_ID);
+        telegramUserTradeByFiltersManagerService.save(ANOTHER_CHAT_ID, tradeManager);
+
+        telegramUserTradeByFiltersManagerService.invertEnabledFlagById(CHAT_ID, "1");
+
+        assertEquals(false, telegramUserTradeByFiltersManagerService.findById(CHAT_ID, "1").isEnabled());
+        assertEquals(true, telegramUserTradeByFiltersManagerService.findById(CHAT_ID, "2").isEnabled());
+        assertEquals(2,
+                telegramUserRepository.findById(CHAT_ID).get().getUser().getTradeByFiltersManagers().size());
+        assertEquals(2, telegramUserRepository.findAll().size());
+        assertEquals(2, telegramUserTradeByFiltersManagerService.findAllByChatId(CHAT_ID).size());
+        assertEquals(3, tradeByFiltersManagerRepository.findAll().size());
+    }
+
+    @Test
+    public void invertEnabledFlagById_should_throw_exception_if_telegram_user_doesnt_exist() {
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserTradeByFiltersManagerService.invertEnabledFlagById(ANOTHER_CHAT_ID, "1"));
+    }
+
+    @Test
+    public void invertEnabledFlagById_should_throw_exception_if_trade_manager_doesnt_exist() {
+        assertThrows(TradeByFiltersManagerDoesntExistException.class, () -> telegramUserTradeByFiltersManagerService.invertEnabledFlagById(CHAT_ID, "1"));
+    }
+
+    @Test
     public void deleteById_should_remove_trade_manager() {
         TradeByFiltersManager tradeManager = new TradeByFiltersManager();
         tradeManager.setName("1");
@@ -148,5 +182,35 @@ class TelegramUserTradeByFiltersManagerPostgresServiceTest {
     @Test
     public void findById_should_throw_exception_if_trade_manager_doesnt_exist() {
         assertThrows(TradeByItemIdManagerDoesntExistException.class, () -> telegramUserTradeByFiltersManagerService.findById(CHAT_ID, "1"));
+    }
+
+    @Test
+    public void findAllByChatId_should_return_repository_result() {
+        TradeByFiltersManager tradeManager = new TradeByFiltersManager();
+        tradeManager.setName("1");
+        telegramUserTradeByFiltersManagerService.save(CHAT_ID, tradeManager);
+
+        tradeManager.setName("2");
+        telegramUserTradeByFiltersManagerService.save(CHAT_ID, tradeManager);
+
+        createTelegramUser(ANOTHER_CHAT_ID);
+        tradeManager.setName("1");
+        telegramUserTradeByFiltersManagerService.save(ANOTHER_CHAT_ID, tradeManager);
+
+        List<TradeByFiltersManager> tradeManagers = telegramUserTradeByFiltersManagerService.findAllByChatId(CHAT_ID);
+
+        assertEquals(2, tradeManagers.size());
+    }
+
+    @Test
+    public void findAllByChatId_should_throw_exception_if_telegram_user_doesnt_exist() {
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserTradeByFiltersManagerService.findAllByChatId(ANOTHER_CHAT_ID));
+    }
+
+    @Test
+    public void findAllByChatId_should_return_empty_list_if_no_trade_managers() {
+        List<TradeByFiltersManager> tradeManagers = telegramUserTradeByFiltersManagerService.findAllByChatId(CHAT_ID);
+
+        assertEquals(0, tradeManagers.size());
     }
 }

@@ -8,8 +8,6 @@ import github.ricemonger.utils.enums.TradeManagerTradeType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,13 +17,16 @@ public class TradeManagerFromInputsMapper {
 
     private final ProfitAndPriorityCalculator profitAndPriorityCalculator;
 
-    public TradeByItemIdManager mapToTradeByItemIdManager(Collection<TelegramUserInput> inputs, TradeManagerTradeType tradeType, Item item) {
-        String itemId = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID);
-        String startingSellPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_SELL_PRICE);
+    public TradeByItemIdManager mapToTradeByItemIdManager(Collection<TelegramUserInput> inputs,
+                                                          TradeManagerTradeType tradeType,
+                                                          Item item,
+                                                          boolean enabledFlag) {
+        String itemId = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID);
+        String startingSellPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_STARTING_SELL_PRICE);
         String boundarySellPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
-        String startingBuyPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_BUY_PRICE);
-        String boundaryBuyPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_BUY_PRICE);
-        String priority = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_PRIORITY);
+        String startingBuyPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_STARTING_BUY_PRICE);
+        String boundaryBuyPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_BUY_PRICE);
+        String priority = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_PRIORITY);
 
         int limitMinPrice = item.getLimitMinPrice();
         int limitMaxPrice = item.getLimitMaxPrice();
@@ -46,6 +47,7 @@ public class TradeManagerFromInputsMapper {
         TradeByItemIdManager tradeByItemIdManager = new TradeByItemIdManager();
         tradeByItemIdManager.setTradeType(tradeType);
         tradeByItemIdManager.setItemId(itemId);
+        tradeByItemIdManager.setEnabled(enabledFlag);
         tradeByItemIdManager.setSellStartingPrice(startSellPrice);
         tradeByItemIdManager.setSellBoundaryPrice(boundSellPrice);
         tradeByItemIdManager.setBuyStartingPrice(startBuyPrice);
@@ -55,15 +57,19 @@ public class TradeManagerFromInputsMapper {
         return tradeByItemIdManager;
     }
 
-    public TradeByFiltersManager mapToTradeByFiltersManager(Collection<TelegramUserInput> inputs, int maxMarketplacePrice, List<ItemFilter> itemFilters) {
+    public TradeByFiltersManager mapToTradeByFiltersManager(Collection<TelegramUserInput> inputs,
+                                                            int maxMarketplacePrice,
+                                                            List<ItemFilter> itemFilters,
+                                                            boolean enabledFlag) {
         String name = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_NAME);
-        String tradeType = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_TRADE_TYPE);
-        String minBuySellProfit = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_MIN_BUY_SELL_PROFIT);
-        String minProfitPercent = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_MIN_PROFIT_PERCENT);
-        String priority = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_EDIT_PRIORITY);
+        String tradeType = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_TRADE_TYPE);
+        String minBuySellProfit = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_MIN_BUY_SELL_PROFIT);
+        String minProfitPercent = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_MIN_PROFIT_PERCENT);
+        String priority = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_PRIORITY);
 
         TradeByFiltersManager tradeByFiltersManager = new TradeByFiltersManager();
         tradeByFiltersManager.setName(name);
+        tradeByFiltersManager.setEnabled(enabledFlag);
 
         if (tradeType.equals(Callbacks.TRADE_BY_FILTERS_MANAGER_TYPE_BUY_EDIT)) {
             tradeByFiltersManager.setTradeType(TradeManagerTradeType.BUY);
@@ -97,14 +103,6 @@ public class TradeManagerFromInputsMapper {
         }
 
         return price;
-    }
-
-    private List<String> getAppliedFiltersNamesFromString(String appliedFilters) {
-        if (appliedFilters == null || appliedFilters.isEmpty() || appliedFilters.equals(Callbacks.EMPTY)) {
-            return new ArrayList<>();
-        } else {
-            return Arrays.stream(appliedFilters.split("[,|]")).map(String::trim).toList();
-        }
     }
 
     private String getValueByState(Collection<TelegramUserInput> inputs, InputState inputState) {

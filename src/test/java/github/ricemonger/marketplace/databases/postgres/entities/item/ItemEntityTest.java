@@ -101,7 +101,7 @@ class ItemEntityTest {
         expected.setItemId(null);
         expected.setAssetUrl(null);
         expected.setName(null);
-        expected.setTags(null);
+        expected.setTags("");
         expected.setType(null);
         expected.setMaxBuyPrice(0);
         expected.setBuyOrdersCount(0);
@@ -205,7 +205,7 @@ class ItemEntityTest {
         expected.setItemId(null);
         expected.setAssetUrl(null);
         expected.setName(null);
-        expected.setTags(null);
+        expected.setTags(List.of());
         expected.setType(null);
         expected.setMaxBuyPrice(0);
         expected.setBuyOrdersCount(0);

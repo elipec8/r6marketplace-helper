@@ -6,7 +6,7 @@ import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 public class TradeByFiltersManagerEditStage5AskMinProfitPercentInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        processMiddleInput(InputState.TRADE_BY_FILTERS_MANAGER_EDIT_MIN_PROFIT_PERCENT);
+        processMiddleInput(InputState.TRADE_BY_FILTERS_MANAGER_MIN_PROFIT_PERCENT);
 
         askFromInlineKeyboardOrSkip("Please enter minimum profit percent to get from following one another Buy and Sell operations." +
                                     "It is calculated as (S*0.9-B)/B, where S - expected sell price, B - expected buy price," +

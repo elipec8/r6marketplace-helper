@@ -597,11 +597,11 @@ public class BotInnerServiceTest {
         when(telegramUserService.getUserInputByState(1L, InputState.ITEM_FILTER_NAME)).thenReturn(Callbacks.INPUT_CALLBACK_PREFIX + "filter_name");
 
         ItemFilter filter = new ItemFilter();
-        filter.setMaxPrice(1555);
+        filter.setMaxBuyPrice(1555);
 
         when(telegramUserItemFilterService.getItemFilterById("1", "filter_name")).thenReturn(filter);
 
-        assertEquals(filter.getMaxPrice(), botInnerService.getUserItemFilterByUserInputCallbackFilterName(1L).getMaxPrice());
+        assertEquals(filter.getMaxBuyPrice(), botInnerService.getUserItemFilterByUserInputCallbackFilterName(1L).getMaxBuyPrice());
 
         verify(telegramUserService).getUserInputByState(1L, InputState.ITEM_FILTER_NAME);
 
@@ -771,7 +771,7 @@ public class BotInnerServiceTest {
 
         ItemFilter filter = new ItemFilter();
         filter.setName(filterName);
-        filter.setMaxPrice(10);
+        filter.setMaxBuyPrice(10);
         when(telegramUserItemFilterService.getItemFilterById("1", filterName)).thenReturn(filter);
 
         ItemShowSettings itemShowSettings = new ItemShowSettings();
@@ -793,7 +793,7 @@ public class BotInnerServiceTest {
 
         ItemFilter filter = new ItemFilter();
         filter.setName(filterName);
-        filter.setMaxPrice(10);
+        filter.setMaxBuyPrice(10);
         when(telegramUserItemFilterService.getItemFilterById("1", filterName)).thenReturn(filter);
 
         ItemShowSettings itemShowSettings = new ItemShowSettings();
@@ -817,7 +817,7 @@ public class BotInnerServiceTest {
 
         ItemFilter filter = new ItemFilter();
         filter.setName(filterName);
-        filter.setMaxPrice(10);
+        filter.setMaxBuyPrice(10);
         when(telegramUserItemFilterService.getItemFilterById("1", filterName)).thenReturn(filter);
 
         ItemShowSettings itemShowSettings = new ItemShowSettings();
@@ -841,7 +841,7 @@ public class BotInnerServiceTest {
 
         ItemFilter filter = new ItemFilter();
         filter.setName(filterName);
-        filter.setMaxPrice(10);
+        filter.setMaxBuyPrice(10);
         when(telegramUserItemFilterService.getItemFilterById("1", filterName)).thenReturn(filter);
 
         ItemShowSettings itemShowSettings = new ItemShowSettings();
@@ -863,7 +863,7 @@ public class BotInnerServiceTest {
 
         ItemFilter filter = new ItemFilter();
         filter.setName(filterName);
-        filter.setMaxPrice(10);
+        filter.setMaxBuyPrice(10);
         when(telegramUserItemFilterService.getItemFilterById("1", filterName)).thenReturn(filter);
 
         ItemShowSettings itemShowSettings = new ItemShowSettings();
@@ -884,7 +884,7 @@ public class BotInnerServiceTest {
 
         ItemFilter filter = new ItemFilter();
         filter.setName(filterName);
-        filter.setMaxPrice(10);
+        filter.setMaxBuyPrice(10);
         when(telegramUserItemFilterService.getItemFilterById("1", filterName)).thenReturn(filter);
 
         ItemShowSettings itemShowSettings = new ItemShowSettings();
@@ -931,8 +931,11 @@ public class BotInnerServiceTest {
     public void saveUserTradeByItemIdManagerByUserInput_should_handle_to_service() {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("item_id");
+        TradeManagersSettings settings = new TradeManagersSettings(true, true);
 
-        when(tradeManagerFromInputsMapper.mapToTradeByItemIdManager(any(), eq(TradeManagerTradeType.SELL), any())).thenReturn(tradeManager);
+        when(telegramUserService.getTradeManagersSettings(1L)).thenReturn(settings);
+
+        when(tradeManagerFromInputsMapper.mapToTradeByItemIdManager(any(), eq(TradeManagerTradeType.SELL), any(), eq(true))).thenReturn(tradeManager);
 
         botInnerService.saveUserTradeByItemIdManagerByUserInput(1L, TradeManagerTradeType.SELL);
 
@@ -947,7 +950,8 @@ public class BotInnerServiceTest {
 
     @Test
     public void saveUserTradeByItemIdManagerByUserInput_should_throw_if_mapper_throws_during_mapping() {
-        doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeByItemIdManager(any(), eq(TradeManagerTradeType.SELL), any());
+        doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeByItemIdManager(any(), eq(TradeManagerTradeType.SELL), any(),
+                anyBoolean());
         assertThrows(RuntimeException.class, () -> botInnerService.saveUserTradeByItemIdManagerByUserInput(1L, TradeManagerTradeType.SELL));
     }
 
@@ -956,7 +960,11 @@ public class BotInnerServiceTest {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("item_id");
 
-        when(tradeManagerFromInputsMapper.mapToTradeByItemIdManager(any(), eq(TradeManagerTradeType.SELL), any())).thenReturn(tradeManager);
+        TradeManagersSettings settings = new TradeManagersSettings(true, true);
+
+        when(telegramUserService.getTradeManagersSettings(1L)).thenReturn(settings);
+
+        when(tradeManagerFromInputsMapper.mapToTradeByItemIdManager(any(), eq(TradeManagerTradeType.SELL), any(), eq(true))).thenReturn(tradeManager);
 
         doThrow(new RuntimeException()).when(telegramUserTradeManagerService).saveUserTradeByItemIdManager(any(), any());
         assertThrows(RuntimeException.class, () -> botInnerService.saveUserTradeByItemIdManagerByUserInput(1L, TradeManagerTradeType.SELL));
@@ -966,7 +974,11 @@ public class BotInnerServiceTest {
     public void saveUserTradeByFiltersManagerByUserInput_should_handle_to_service() {
         TradeByFiltersManager tradeManager = new TradeByFiltersManager();
 
-        when(tradeManagerFromInputsMapper.mapToTradeByFiltersManager(any(), anyInt(), any())).thenReturn(tradeManager);
+        TradeManagersSettings settings = new TradeManagersSettings(true, true);
+
+        when(telegramUserService.getTradeManagersSettings(1L)).thenReturn(settings);
+
+        when(tradeManagerFromInputsMapper.mapToTradeByFiltersManager(any(), anyInt(), any(), eq(true))).thenReturn(tradeManager);
 
         botInnerService.saveUserTradeByFiltersManagerByUserInput(1L);
 
@@ -981,7 +993,7 @@ public class BotInnerServiceTest {
 
     @Test
     public void saveUserTradeByFiltersManagerByUserInput_should_throw_if_mapper_throws_during_mapping() {
-        doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeByFiltersManager(any(), anyInt(), any());
+        doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeByFiltersManager(any(), anyInt(), any(), anyBoolean());
         assertThrows(RuntimeException.class, () -> botInnerService.saveUserTradeByFiltersManagerByUserInput(1L));
     }
 
@@ -989,7 +1001,11 @@ public class BotInnerServiceTest {
     public void saveUserTradeByFiltersManagerByUserInput_should_throw_if_service_throws_during_save_manager() {
         TradeByFiltersManager tradeManager = new TradeByFiltersManager();
 
-        when(tradeManagerFromInputsMapper.mapToTradeByFiltersManager(any(), anyInt(), any())).thenReturn(tradeManager);
+        TradeManagersSettings settings = new TradeManagersSettings(true, true);
+
+        when(telegramUserService.getTradeManagersSettings(1L)).thenReturn(settings);
+
+        when(tradeManagerFromInputsMapper.mapToTradeByFiltersManager(any(), anyInt(), any(), eq(true))).thenReturn(tradeManager);
 
         doThrow(new RuntimeException()).when(telegramUserTradeManagerService).saveUserTradeByFiltersManager(any(), any());
         assertThrows(RuntimeException.class, () -> botInnerService.saveUserTradeByFiltersManagerByUserInput(1L));
@@ -1000,7 +1016,11 @@ public class BotInnerServiceTest {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("item_id");
 
-        when(tradeManagerFromInputsMapper.mapToTradeByItemIdManager(any(), any(), any())).thenReturn(tradeManager);
+        TradeManagersSettings settings = new TradeManagersSettings(true, true);
+
+        when(telegramUserService.getTradeManagersSettings(1L)).thenReturn(settings);
+
+        when(tradeManagerFromInputsMapper.mapToTradeByItemIdManager(any(), any(), any(), eq(true))).thenReturn(tradeManager);
 
         assertEquals(tradeManager, botInnerService.generateTradeByItemIdManagerByUserInput(1L, TradeManagerTradeType.SELL));
     }
@@ -1013,7 +1033,7 @@ public class BotInnerServiceTest {
 
     @Test
     public void generateTradeByItemIdManagerByUserInput_ItemId_should_throw_if_mapper_throws_during_mapping() {
-        doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeByItemIdManager(any(), any(), any());
+        doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeByItemIdManager(any(), any(), any(), anyBoolean());
         assertThrows(RuntimeException.class, () -> botInnerService.generateTradeByItemIdManagerByUserInput(1L, TradeManagerTradeType.SELL));
     }
 
@@ -1021,7 +1041,12 @@ public class BotInnerServiceTest {
     public void generateTradeByFiltersManagerByUserInput_ItemId_should_return_service_result() {
         TradeByFiltersManager tradeManager = new TradeByFiltersManager();
         tradeManager.setAppliedFilters(new ArrayList<>());
-        when(tradeManagerFromInputsMapper.mapToTradeByFiltersManager(any(), anyInt(), any())).thenReturn(tradeManager);
+
+        TradeManagersSettings settings = new TradeManagersSettings(true, true);
+
+        when(telegramUserService.getTradeManagersSettings(1L)).thenReturn(settings);
+
+        when(tradeManagerFromInputsMapper.mapToTradeByFiltersManager(any(), anyInt(), any(), eq(true))).thenReturn(tradeManager);
 
         assertEquals(tradeManager, botInnerService.generateTradeByFiltersManagerByUserInput(1L));
     }
@@ -1034,7 +1059,7 @@ public class BotInnerServiceTest {
 
     @Test
     public void generateTradeByFiltersManagerByUserInput_ItemId_should_throw_if_mapper_throws_during_mapping() {
-        doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeByFiltersManager(any(), anyInt(), any());
+        doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeByFiltersManager(any(), anyInt(), any(), anyBoolean());
         assertThrows(RuntimeException.class, () -> botInnerService.generateTradeByFiltersManagerByUserInput(1L));
     }
 
@@ -1043,7 +1068,7 @@ public class BotInnerServiceTest {
         Item item = new Item();
         item.setName("item_name");
 
-        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID)).thenReturn("item_id");
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID)).thenReturn("item_id");
         when(itemStatsService.getItemById("item_id")).thenReturn(item);
 
         assertEquals(item, botInnerService.getItemByUserInputItemId(1L));
@@ -1062,8 +1087,50 @@ public class BotInnerServiceTest {
     }
 
     @Test
+    public void invertUserTradeByFiltersManagerEnabledByUserInput_should_handle_to_service() {
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_FILTERS_MANAGER_NAME)).thenReturn("name");
+
+        botInnerService.invertUserTradeByFiltersManagerEnabledByUserInput(1L);
+
+        verify(telegramUserTradeManagerService).invertUserTradeByFiltersManagerEnabledFlagById("1", "name");
+    }
+
+    @Test
+    public void invertUserTradeByFiltersManagerEnabledByUserInput_should_throw_if_service_throws_during_input_find() {
+        doThrow(new RuntimeException()).when(telegramUserService).getUserInputByState(1L, InputState.TRADE_BY_FILTERS_MANAGER_NAME);
+        assertThrows(RuntimeException.class, () -> botInnerService.invertUserTradeByFiltersManagerEnabledByUserInput(1L));
+    }
+
+    @Test
+    public void invertUserTradeByFiltersManagerEnabledByUserInput_should_throw_if_service_throws_during_inverse_operation() {
+        doThrow(new RuntimeException()).when(telegramUserTradeManagerService).invertUserTradeByFiltersManagerEnabledFlagById(any(), any());
+        assertThrows(RuntimeException.class, () -> botInnerService.invertUserTradeByFiltersManagerEnabledByUserInput(1L));
+    }
+
+    @Test
+    public void invertUserTradeByItemIdManagerEnabledByUserInput_should_handle_to_service() {
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID)).thenReturn("item_id");
+
+        botInnerService.invertUserTradeByItemIdManagerEnabledByUserInput(1L);
+
+        verify(telegramUserTradeManagerService).invertUserTradeByItemIdManagerEnabledFlagById("1", "item_id");
+    }
+
+    @Test
+    public void invertUserTradeByItemIdManagerEnabledByUserInput_should_throw_if_service_throws_during_input_find() {
+        doThrow(new RuntimeException()).when(telegramUserService).getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID);
+        assertThrows(RuntimeException.class, () -> botInnerService.invertUserTradeByItemIdManagerEnabledByUserInput(1L));
+    }
+
+    @Test
+    public void invertUserTradeByItemIdManagerEnabledByUserInput_should_throw_if_service_throws_during_inverse_operation() {
+        doThrow(new RuntimeException()).when(telegramUserTradeManagerService).invertUserTradeByItemIdManagerEnabledFlagById(any(), any());
+        assertThrows(RuntimeException.class, () -> botInnerService.invertUserTradeByItemIdManagerEnabledByUserInput(1L));
+    }
+
+    @Test
     public void removeUserTradeByItemIdManagerByUserInput_should_handle_to_service() {
-        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID)).thenReturn("item_id");
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID)).thenReturn("item_id");
 
         botInnerService.removeUserTradeByItemIdManagerByUserInput(1L);
 
@@ -1072,14 +1139,14 @@ public class BotInnerServiceTest {
 
     @Test
     public void removeUserTradeByItemIdManagerByUserInput_should_throw_if_service_throws_during_input_find() {
-        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID)).thenThrow(new RuntimeException());
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID)).thenThrow(new RuntimeException());
 
         assertThrows(RuntimeException.class, () -> botInnerService.removeUserTradeByItemIdManagerByUserInput(1L));
     }
 
     @Test
     public void removeUserTradeByItemIdManagerByUserInput_should_throw_if_service_throws_during_remove() {
-        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID)).thenReturn("item_id");
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID)).thenReturn("item_id");
         doThrow(new RuntimeException()).when(telegramUserTradeManagerService).deleteUserTradeByItemIdManagerById(any(), any());
 
         assertThrows(RuntimeException.class, () -> botInnerService.removeUserTradeByItemIdManagerByUserInput(1L));
@@ -1114,7 +1181,7 @@ public class BotInnerServiceTest {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("item_id");
         tradeManager.setPriority(100);
-        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID)).thenReturn("item_id");
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID)).thenReturn("item_id");
         when(telegramUserTradeManagerService.getUserTradeByItemIdManagerById("1", "item_id")).thenReturn(tradeManager);
 
         assertEquals(tradeManager, botInnerService.getUserTradeByItemIdManagerByUserInputItemId(1L));
@@ -1122,7 +1189,7 @@ public class BotInnerServiceTest {
 
     @Test
     public void getUserTradeByItemIdManagerByUserInputItemId_should_throw_if_service_throws_during_input_find() {
-        doThrow(new RuntimeException()).when(telegramUserService).getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID);
+        doThrow(new RuntimeException()).when(telegramUserService).getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID);
         assertThrows(RuntimeException.class, () -> botInnerService.getUserTradeByItemIdManagerByUserInputItemId(1L));
     }
 
@@ -1131,7 +1198,7 @@ public class BotInnerServiceTest {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("item_id");
         tradeManager.setPriority(100);
-        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID)).thenReturn("item_id");
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID)).thenReturn("item_id");
 
         doThrow(new RuntimeException()).when(telegramUserTradeManagerService).getUserTradeByItemIdManagerById("1", "item_id");
         assertThrows(RuntimeException.class, () -> botInnerService.getUserTradeByItemIdManagerByUserInputItemId(1L));

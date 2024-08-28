@@ -85,8 +85,8 @@ public class ItemFilterFromInputsMapper {
         itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(esportsTagsString)));
         itemFilter.addTags(getTagsFromNames(getTagNamesListFromString(otherTagsString)));
 
-        itemFilter.setMinPrice(parsePrice(minPriceString, commonValuesService.getMinimumMarketplacePrice()));
-        itemFilter.setMaxPrice(parsePrice(maxPriceString, commonValuesService.getMaximumMarketplacePrice()));
+        itemFilter.setMinSellPrice(parsePrice(minPriceString, commonValuesService.getMinimumMarketplacePrice()));
+        itemFilter.setMaxBuyPrice(parsePrice(maxPriceString, commonValuesService.getMaximumMarketplacePrice()));
         itemFilter.setMinLastSoldPrice(parsePrice(minLastSoldPriceString, commonValuesService.getMinimumMarketplacePrice()));
         itemFilter.setMaxLastSoldPrice(parsePrice(maxLastSoldPriceString, commonValuesService.getMaximumMarketplacePrice()));
 

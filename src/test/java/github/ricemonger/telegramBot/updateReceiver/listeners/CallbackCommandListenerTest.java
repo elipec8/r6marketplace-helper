@@ -29,8 +29,6 @@ import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buyAnd
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage1AskItemIdCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage6ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.settings.TradeManagersSettingsCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.settings.activeTradeByFiltersManagers.TradeManagersSettingsChangeByFiltersStage1AskNamesCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.settings.activeTradeByItemIdManagers.TradeManagersSettingsChangeByItemIdStage1AskItemIdsCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagAskFlagCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagNoCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagYesCallback;
@@ -40,10 +38,12 @@ import github.ricemonger.telegramBot.executors.tradeManagers.settings.newManager
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeByFiltersManagersShowAllCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeByItemIdManagersShowAllCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.TradeManagersChooseTypeCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemFilters.TradeByFiltersManagerRemoveStage1AskNameCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemFilters.TradeByFiltersManagerRemoveStage3ConfirmedFinishCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemId.TradeByItemIdManagerRemoveStage1AskItemIdCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemId.TradeByItemIdManagerRemoveStage3ConfirmedFinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemFilters.TradeByFiltersManagerChangeEnabledStage3ConfirmedFinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemFilters.TradeByFiltersManagerRemoveOrChangeEnabledStage1AskNameCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemFilters.TradeByFiltersManagerRemoveStage3ConfirmedFinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemId.TradeByItemIdManagerChangeEnabledStage3ConfirmedFinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveOrChangeEnabledStage1AskItemIdCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveStage3ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.show.UbiAccountEntryShowCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.unlink.UbiAccountEntryUnlinkConfirmedFinishCallback;
@@ -289,21 +289,6 @@ class CallbackCommandListenerTest {
     }
 
     @Test
-    public void handleUpdate_should_trade_managers_settings_change_by_filters_active_managers() {
-        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_BY_FILTERS_ACTIVE_MANAGERS));
-
-        verify(executorsService).execute(TradeManagersSettingsChangeByFiltersStage1AskNamesCallback.class, updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_BY_FILTERS_ACTIVE_MANAGERS));
-
-    }
-
-    @Test
-    public void handleUpdate_should_trade_managers_settings_change_by_item_id_active_managers() {
-        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_BY_ITEM_ID_ACTIVE_MANAGERS));
-
-        verify(executorsService).execute(TradeManagersSettingsChangeByItemIdStage1AskItemIdsCallback.class, updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_BY_ITEM_ID_ACTIVE_MANAGERS));
-    }
-
-    @Test
     public void handleUpdate_should_trade_managers_show_choose_type() {
         callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_MANAGERS_SHOW_CHOOSE_TYPE));
 
@@ -325,10 +310,18 @@ class CallbackCommandListenerTest {
     }
 
     @Test
-    public void handleUpdate_should_trade_by_filters_manager_remove() {
-        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_BY_FILTERS_MANAGER_REMOVE));
+    public void handleUpdate_should_trade_by_filters_manager_remove_or_change_enabled() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_BY_FILTERS_MANAGER_REMOVE_OR_ENABLED_CHANGE));
 
-        verify(executorsService).execute(TradeByFiltersManagerRemoveStage1AskNameCallback.class, updateInfo(Callbacks.TRADE_BY_FILTERS_MANAGER_REMOVE));
+        verify(executorsService).execute(TradeByFiltersManagerRemoveOrChangeEnabledStage1AskNameCallback.class, updateInfo(Callbacks.TRADE_BY_FILTERS_MANAGER_REMOVE_OR_ENABLED_CHANGE));
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_filters_manager_change_enabled_finish_confirmed() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_BY_FILTERS_MANAGER_CHANGE_ENABLED_FINISH_CONFIRMED));
+
+        verify(executorsService).execute(TradeByFiltersManagerChangeEnabledStage3ConfirmedFinishCallback.class,
+                updateInfo(Callbacks.TRADE_BY_FILTERS_MANAGER_CHANGE_ENABLED_FINISH_CONFIRMED));
     }
 
     @Test
@@ -339,10 +332,18 @@ class CallbackCommandListenerTest {
     }
 
     @Test
-    public void handleUpdate_should_trade_by_item_id_manager_remove() {
-        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_BY_ITEM_ID_MANAGER_REMOVE));
+    public void handleUpdate_should_trade_by_item_id_manager_remove_or_change_enabled() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_BY_ITEM_ID_MANAGER_REMOVE_OR_ENABLED_CHANGE));
 
-        verify(executorsService).execute(TradeByItemIdManagerRemoveStage1AskItemIdCallback.class, updateInfo(Callbacks.TRADE_BY_ITEM_ID_MANAGER_REMOVE));
+        verify(executorsService).execute(TradeByItemIdManagerRemoveOrChangeEnabledStage1AskItemIdCallback.class, updateInfo(Callbacks.TRADE_BY_ITEM_ID_MANAGER_REMOVE_OR_ENABLED_CHANGE));
+    }
+
+    @Test
+    public void handleUpdate_should_trade_by_item_id_manager_change_enabled_finish_confirmed() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_BY_ITEM_ID_MANAGER_CHANGE_ENABLED_FINISH_CONFIRMED));
+
+        verify(executorsService).execute(TradeByItemIdManagerChangeEnabledStage3ConfirmedFinishCallback.class,
+                updateInfo(Callbacks.TRADE_BY_ITEM_ID_MANAGER_CHANGE_ENABLED_FINISH_CONFIRMED));
     }
 
     @Test

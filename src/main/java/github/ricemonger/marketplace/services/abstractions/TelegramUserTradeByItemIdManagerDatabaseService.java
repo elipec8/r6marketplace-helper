@@ -9,6 +9,8 @@ import java.util.List;
 public interface TelegramUserTradeByItemIdManagerDatabaseService {
     void save(String chatId, TradeByItemIdManager tradeManager) throws TelegramUserDoesntExistException;
 
+    void invertEnabledFlagById(String chatId, String itemId) throws TelegramUserDoesntExistException, TradeByItemIdManagerDoesntExistException;
+
     void deleteById(String chatId, String itemId) throws TelegramUserDoesntExistException;
 
     TradeByItemIdManager findById(String chatId, String itemId) throws TelegramUserDoesntExistException, TradeByItemIdManagerDoesntExistException;

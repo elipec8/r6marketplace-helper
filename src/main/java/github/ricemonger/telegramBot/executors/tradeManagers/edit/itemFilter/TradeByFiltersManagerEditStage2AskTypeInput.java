@@ -8,7 +8,7 @@ import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 public class TradeByFiltersManagerEditStage2AskTypeInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        processMiddleInput(InputState.TRADE_BY_FILTERS_MANAGER_EDIT_TRADE_TYPE);
+        processMiddleInput(InputState.TRADE_BY_FILTERS_MANAGER_TRADE_TYPE);
         CallbackButton buy = new CallbackButton("Buy", Callbacks.TRADE_BY_FILTERS_MANAGER_TYPE_BUY_EDIT);
         CallbackButton sell = new CallbackButton("Sell", Callbacks.TRADE_BY_FILTERS_MANAGER_TYPE_SELL_EDIT);
         CallbackButton buyAndSell = new CallbackButton("Buy and sell", Callbacks.TRADE_BY_FILTERS_MANAGER_TYPE_BUY_AND_SELL_EDIT);

@@ -102,8 +102,8 @@ class ItemFilterFromInputsMapperTest {
         ItemFilter expectedFilter = getDefaultFilter(tags);
         expectedFilter.setFilterType(FilterType.ALLOW);
         expectedFilter.setIsOwned(IsOwnedFilter.NOT_OWNED);
-        expectedFilter.setMinPrice(150_000);
-        expectedFilter.setMaxPrice(150_000);
+        expectedFilter.setMinSellPrice(150_000);
+        expectedFilter.setMaxBuyPrice(150_000);
         expectedFilter.setMinLastSoldPrice(150_000);
         expectedFilter.setMaxLastSoldPrice(150_000);
 
@@ -141,8 +141,8 @@ class ItemFilterFromInputsMapperTest {
         expectedFilter.setFilterType(FilterType.ALLOW);
         expectedFilter.setIsOwned(IsOwnedFilter.ANY);
         expectedFilter.setItemNamePatternsFromString("pattern1");
-        expectedFilter.setMinPrice(120);
-        expectedFilter.setMaxPrice(120);
+        expectedFilter.setMinSellPrice(120);
+        expectedFilter.setMaxBuyPrice(120);
         expectedFilter.setMinLastSoldPrice(120);
         expectedFilter.setMaxLastSoldPrice(120);
 
@@ -159,8 +159,8 @@ class ItemFilterFromInputsMapperTest {
         itemFilter.setItemNamePatternsFromString("pattern1,pattern2");
         itemFilter.setItemTypesFromString(ItemType.WeaponSkin.name() + "," + ItemType.DroneSkin.name());
         itemFilter.addTags(tags);
-        itemFilter.setMinPrice(125);
-        itemFilter.setMaxPrice(1250);
+        itemFilter.setMinSellPrice(125);
+        itemFilter.setMaxBuyPrice(1250);
         itemFilter.setMinLastSoldPrice(126);
         itemFilter.setMaxLastSoldPrice(1260);
 

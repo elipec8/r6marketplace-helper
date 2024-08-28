@@ -28,6 +28,14 @@ public class TelegramUserTradeManagerService {
         telegramUserTradeByFiltersManagerDatabaseService.save(chatId, tradeManager);
     }
 
+    public void invertUserTradeByFiltersManagerEnabledFlagById(String chatId, String name) throws TelegramUserDoesntExistException, TradeByFiltersManagerDoesntExistException {
+        telegramUserTradeByFiltersManagerDatabaseService.invertEnabledFlagById(chatId, name);
+    }
+
+    public void invertUserTradeByItemIdManagerEnabledFlagById(String chatId, String itemId) throws TelegramUserDoesntExistException, TradeByItemIdManagerDoesntExistException {
+        telegramUserTradeByItemIdManagerDatabaseService.invertEnabledFlagById(chatId, itemId);
+    }
+
     public void deleteUserTradeByItemIdManagerById(String chatId, String itemId) throws TelegramUserDoesntExistException {
         telegramUserTradeByItemIdManagerDatabaseService.deleteById(chatId, itemId);
     }

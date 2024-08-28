@@ -25,6 +25,8 @@ public class TradeByItemIdManagerEntity {
     @Id
     private String itemId;
 
+    private boolean enabled;
+
     private TradeManagerTradeType tradeType;
 
     private Integer sellBoundaryPrice;
@@ -38,6 +40,7 @@ public class TradeByItemIdManagerEntity {
     public TradeByItemIdManagerEntity(UserEntity user, TradeByItemIdManager tradeManager) {
         this.user = user;
         this.itemId = tradeManager.getItemId();
+        this.enabled = tradeManager.isEnabled();
         this.tradeType = tradeManager.getTradeType();
         this.sellStartingPrice = tradeManager.getSellStartingPrice();
         this.sellBoundaryPrice = tradeManager.getSellBoundaryPrice();
@@ -49,6 +52,7 @@ public class TradeByItemIdManagerEntity {
     public TradeByItemIdManager toTradeByItemIdManager() {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId(itemId);
+        tradeManager.setEnabled(enabled);
         tradeManager.setTradeType(tradeType);
         tradeManager.setSellStartingPrice(sellStartingPrice);
         tradeManager.setSellBoundaryPrice(sellBoundaryPrice);

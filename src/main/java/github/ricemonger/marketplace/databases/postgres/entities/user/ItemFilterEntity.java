@@ -2,6 +2,7 @@ package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
 import github.ricemonger.utils.dtos.ItemFilter;
+import github.ricemonger.utils.dtos.Tag;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.IsOwnedFilter;
 import github.ricemonger.utils.enums.ItemType;
@@ -46,8 +47,8 @@ public class ItemFilterEntity {
             inverseJoinColumns = @JoinColumn(name = "tagName", referencedColumnName = "name"))
     private Set<TagEntity> tags = new HashSet<>();
 
-    private Integer minPrice;
-    private Integer maxPrice;
+    private Integer minSellPrice;
+    private Integer maxBuyPrice;
 
     private Integer minLastSoldPrice;
     private Integer maxLastSoldPrice;
@@ -62,26 +63,26 @@ public class ItemFilterEntity {
         this.filterType = filter.getFilterType();
         this.isOwned = filter.getIsOwned();
 
-        if (filter.getItemNamePatterns() == null) {
+        if (filter.getItemNamePatterns() == null || filter.getItemNamePatterns().isEmpty()) {
             this.itemNamePatterns = "";
         } else {
             this.itemNamePatterns = String.join(",", filter.getItemNamePatterns());
         }
 
-        if (filter.getItemTypes() == null) {
+        if (filter.getItemTypes() == null || filter.getItemTypes().isEmpty()) {
             this.itemTypes = "";
         } else {
             this.itemTypes = filter.getItemTypes().stream().map(Enum::name).collect(Collectors.joining(","));
         }
 
-        if (filter.getTags() == null) {
-            this.tags = new HashSet<>();
+        if (filter.getTags() == null || filter.getTags().isEmpty()) {
+            this.tags = Set.of();
         } else {
             this.tags = filter.getTags().stream().map(TagEntity::new).collect(Collectors.toSet());
         }
 
-        this.minPrice = filter.getMinPrice();
-        this.maxPrice = filter.getMaxPrice();
+        this.minSellPrice = filter.getMinSellPrice();
+        this.maxBuyPrice = filter.getMaxBuyPrice();
         this.minLastSoldPrice = filter.getMinLastSoldPrice();
         this.maxLastSoldPrice = filter.getMaxLastSoldPrice();
     }
@@ -93,7 +94,7 @@ public class ItemFilterEntity {
         filter.setIsOwned(this.isOwned);
 
         List<String> namePatterns = new ArrayList<>();
-        if (this.itemNamePatterns != null) {
+        if (this.itemNamePatterns != null && !this.itemNamePatterns.isEmpty()) {
             namePatterns = Arrays.stream(this.itemNamePatterns.split("[,|]")).map(String::trim).toList();
         }
         filter.setItemNamePatterns(namePatterns);
@@ -111,9 +112,14 @@ public class ItemFilterEntity {
         }
         filter.setItemTypes(itemTypes);
 
-        filter.setTags(this.tags.stream().map(TagEntity::toTag).toList());
-        filter.setMinPrice(this.minPrice);
-        filter.setMaxPrice(this.maxPrice);
+        List<Tag> tagList = new ArrayList<>();
+        if (this.tags != null && !this.tags.isEmpty()) {
+            tagList = this.tags.stream().map(TagEntity::toTag).toList();
+        }
+        filter.setTags(tagList);
+
+        filter.setMinSellPrice(this.minSellPrice);
+        filter.setMaxBuyPrice(this.maxBuyPrice);
         filter.setMinLastSoldPrice(this.minLastSoldPrice);
         filter.setMaxLastSoldPrice(this.maxLastSoldPrice);
         return filter;

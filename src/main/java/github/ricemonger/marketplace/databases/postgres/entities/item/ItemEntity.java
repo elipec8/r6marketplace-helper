@@ -43,8 +43,8 @@ public class ItemEntity {
     private int limitMaxPrice;
 
     public ItemEntity(Item item) {
-        String tags = null;
-        if (item.getTags() != null) {
+        String tags = "";
+        if (item.getTags() != null && !item.getTags().isEmpty()) {
             tags = (String.join(",", item.getTags()));
         }
         this.itemId = item.getItemId();
@@ -63,12 +63,9 @@ public class ItemEntity {
     }
 
     public Item toItem() {
-        List<String> tags = null;
+        List<String> tags = new ArrayList<>();
         if (this.tags != null && !this.tags.isEmpty()) {
             tags = List.of(this.tags.split(","));
-        }
-        else if (this.tags != null) {
-            tags = new ArrayList<>();
         }
 
         Item item = new Item();

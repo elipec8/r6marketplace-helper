@@ -6,7 +6,7 @@ import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 public class TradeByFiltersManagerEditStage3AskFiltersInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        processMiddleInput(InputState.TRADE_BY_FILTERS_MANAGER_EDIT_FILTERS_NAMES);
+        processMiddleInput(InputState.TRADE_BY_FILTERS_MANAGER_FILTERS_NAMES);
 
         sendText("List of available filters:\n"
                  + botInnerService.getAllUserItemFiltersNames(updateInfo.getChatId())

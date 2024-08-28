@@ -35,6 +35,20 @@ public class TelegramUserTradeByItemIdManagerPostgresService implements Telegram
 
     @Override
     @Transactional
+    public void invertEnabledFlagById(String chatId, String itemId) throws TelegramUserDoesntExistException, TradeByItemIdManagerDoesntExistException {
+        TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
+
+        TradeByItemIdManagerEntity manager = tradeByItemIdManagerRepository.findById
+                (new TradeByItemIdManagerEntityId(telegramUser.getUser(), itemId))
+                .orElseThrow(() -> new TradeByItemIdManagerDoesntExistException(String.format("Trade manager by chatId %s and itemId %s not found", chatId, itemId)));
+
+        manager.setEnabled(!manager.isEnabled());
+
+        tradeByItemIdManagerRepository.save(manager);
+    }
+
+    @Override
+    @Transactional
     public void deleteById(String chatId, String itemId) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 

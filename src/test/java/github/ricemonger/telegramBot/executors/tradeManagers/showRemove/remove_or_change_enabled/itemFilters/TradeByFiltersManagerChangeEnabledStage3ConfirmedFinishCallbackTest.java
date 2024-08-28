@@ -1,4 +1,4 @@
-package github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag;
+package github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemFilters;
 
 import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
@@ -11,16 +11,16 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-class TradeManagersSettingsChangeManagingEnabledFlagYesCallbackTest {
+class TradeByFiltersManagerChangeEnabledStage3ConfirmedFinishCallbackTest {
     @MockBean
     private BotInnerService botInnerService;
 
     @Test
-    public void initAndExecute_should_set_true_flag() {
-        TradeManagersSettingsChangeManagingEnabledFlagYesCallback commandExecutor = new TradeManagersSettingsChangeManagingEnabledFlagYesCallback();
+    public void initAndExecute_should_invertUserTradeByFiltersManagerEnabledByUserInput_and_notify_user() {
+        TradeByFiltersManagerChangeEnabledStage3ConfirmedFinishCallback commandExecutor = new TradeByFiltersManagerChangeEnabledStage3ConfirmedFinishCallback();
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService).setUserTradeManagersSettingsManagingEnabledFlag(MockUpdateInfos.UPDATE_INFO.getChatId(), true);
+        verify(botInnerService).invertUserTradeByFiltersManagerEnabledByUserInput(MockUpdateInfos.UPDATE_INFO.getChatId());
 
         verify(botInnerService).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());
     }

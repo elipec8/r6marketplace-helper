@@ -23,8 +23,8 @@ import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.T
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage3AskStartingPriceInput;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage4AskPriorityInput;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage5AskConfirmationFinishInput;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemFilters.TradeByFiltersManagerRemoveStage2AskConfirmationFinishInput;
-import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemId.TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemFilters.TradeByFiltersManagerRemoveStage2AskConfirmationFinishInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkStage1AskFullOrEmailInput;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkStage2AskPasswordInput;
 import github.ricemonger.utils.exceptions.InvalidUserInputGroupException;
@@ -216,19 +216,19 @@ public class InputCommandListener {
         switch (inputState) {
             case TRADE_BY_FILTERS_MANAGER_NAME -> executorsService.execute(TradeByFiltersManagerEditStage2AskTypeInput.class, updateInfo);
 
-            case TRADE_BY_FILTERS_MANAGER_EDIT_TRADE_TYPE ->
+            case TRADE_BY_FILTERS_MANAGER_TRADE_TYPE ->
                     executorsService.execute(TradeByFiltersManagerEditStage3AskFiltersInput.class, updateInfo);
 
-            case TRADE_BY_FILTERS_MANAGER_EDIT_FILTERS_NAMES ->
+            case TRADE_BY_FILTERS_MANAGER_FILTERS_NAMES ->
                     executorsService.execute(TradeByFiltersManagerEditStage4AskMinBuySellProfitInput.class, updateInfo);
 
-            case TRADE_BY_FILTERS_MANAGER_EDIT_MIN_BUY_SELL_PROFIT ->
+            case TRADE_BY_FILTERS_MANAGER_MIN_BUY_SELL_PROFIT ->
                     executorsService.execute(TradeByFiltersManagerEditStage5AskMinProfitPercentInput.class, updateInfo);
 
-            case TRADE_BY_FILTERS_MANAGER_EDIT_MIN_PROFIT_PERCENT ->
+            case TRADE_BY_FILTERS_MANAGER_MIN_PROFIT_PERCENT ->
                     executorsService.execute(TradeByFiltersManagerEditStage6AskPriorityInput.class, updateInfo);
 
-            case TRADE_BY_FILTERS_MANAGER_EDIT_PRIORITY ->
+            case TRADE_BY_FILTERS_MANAGER_PRIORITY ->
                     executorsService.execute(TradeByFiltersManagerEditStage7AskConfirmationFinishInput.class, updateInfo);
 
             default ->
@@ -241,16 +241,16 @@ public class InputCommandListener {
         InputState inputState = updateInfo.getInputState();
 
         switch (inputState) {
-            case TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID ->
+            case TRADE_BY_ITEM_ID_MANAGER_ITEM_ID ->
                     executorsService.execute(TradeByItemIdManagerBuyEditStage2AskBoundaryPriceInput.class, updateInfo);
 
-            case TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_BUY_PRICE ->
+            case TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_BUY_PRICE ->
                     executorsService.execute(TradeByItemIdManagerBuyEditStage3AskStartingPriceInput.class, updateInfo);
 
-            case TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_BUY_PRICE ->
+            case TRADE_BY_ITEM_ID_MANAGER_STARTING_BUY_PRICE ->
                     executorsService.execute(TradeByItemIdManagerBuyEditStage4AskPriorityInput.class, updateInfo);
 
-            case TRADE_BY_ITEM_ID_MANAGER_EDIT_PRIORITY ->
+            case TRADE_BY_ITEM_ID_MANAGER_PRIORITY ->
                     executorsService.execute(TradeByItemIdManagerBuyEditStage5AskConfirmationFinishInput.class, updateInfo);
 
             default ->
@@ -262,16 +262,16 @@ public class InputCommandListener {
         InputState inputState = updateInfo.getInputState();
 
         switch (inputState) {
-            case TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID ->
+            case TRADE_BY_ITEM_ID_MANAGER_ITEM_ID ->
                     executorsService.execute(TradeByItemIdManagerSellEditStage2AskBoundaryPriceInput.class, updateInfo);
 
             case TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE ->
                     executorsService.execute(TradeByItemIdManagerSellEditStage3AskStartingPriceInput.class, updateInfo);
 
-            case TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_SELL_PRICE ->
+            case TRADE_BY_ITEM_ID_MANAGER_STARTING_SELL_PRICE ->
                     executorsService.execute(TradeByItemIdManagerSellEditStage4AskPriorityInput.class, updateInfo);
 
-            case TRADE_BY_ITEM_ID_MANAGER_EDIT_PRIORITY ->
+            case TRADE_BY_ITEM_ID_MANAGER_PRIORITY ->
                     executorsService.execute(TradeByItemIdManagerSellEditStage5AskConfirmationFinishInput.class, updateInfo);
 
             default ->
@@ -283,22 +283,22 @@ public class InputCommandListener {
         InputState inputState = updateInfo.getInputState();
 
         switch (inputState) {
-            case TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID ->
+            case TRADE_BY_ITEM_ID_MANAGER_ITEM_ID ->
                     executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage2AskBoundarySellPriceInput.class, updateInfo);
 
             case TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE ->
                     executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage3AskStartingSellPriceInput.class, updateInfo);
 
-            case TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_SELL_PRICE ->
+            case TRADE_BY_ITEM_ID_MANAGER_STARTING_SELL_PRICE ->
                     executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage4AskBoundaryBuyPriceInput.class, updateInfo);
 
-            case TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_BUY_PRICE ->
+            case TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_BUY_PRICE ->
                     executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage5AskStartingBuyPriceInput.class, updateInfo);
 
-            case TRADE_BY_ITEM_ID_MANAGER_EDIT_STARTING_BUY_PRICE ->
+            case TRADE_BY_ITEM_ID_MANAGER_STARTING_BUY_PRICE ->
                     executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage6AskPriorityInput.class, updateInfo);
 
-            case TRADE_BY_ITEM_ID_MANAGER_EDIT_PRIORITY ->
+            case TRADE_BY_ITEM_ID_MANAGER_PRIORITY ->
                     executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage7AskConfirmationFinishInput.class, updateInfo);
 
             default ->
@@ -322,7 +322,7 @@ public class InputCommandListener {
         InputState inputState = updateInfo.getInputState();
 
         switch (inputState) {
-            case TRADE_BY_ITEM_ID_MANAGER_EDIT_ITEM_ID ->
+            case TRADE_BY_ITEM_ID_MANAGER_ITEM_ID ->
                     executorsService.execute(TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput.class, updateInfo);
 
             default ->

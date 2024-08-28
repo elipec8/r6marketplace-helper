@@ -6,7 +6,7 @@ import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 public class TradeByFiltersManagerEditStage6AskPriorityInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        processMiddleInput(InputState.TRADE_BY_FILTERS_MANAGER_EDIT_PRIORITY);
+        processMiddleInput(InputState.TRADE_BY_FILTERS_MANAGER_PRIORITY);
 
         askFromInlineKeyboardOrSkip("Please enter priority of trade manager." +
                                     "It's used only to determine this manager's trades priority relatively to other managers' trades." +

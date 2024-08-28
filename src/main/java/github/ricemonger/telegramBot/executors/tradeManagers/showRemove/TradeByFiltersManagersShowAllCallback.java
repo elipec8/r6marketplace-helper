@@ -11,11 +11,11 @@ public class TradeByFiltersManagersShowAllCallback extends AbstractBotCommandExe
     protected void executeCommand() {
         Collection<TradeByFiltersManager> tradeManagers = botInnerService.getAllUserTradeByFiltersManagers(updateInfo.getChatId());
 
-        botInnerService.sendMultipleObjectStringsGroupedInMessages(tradeManagers, 8, updateInfo.getChatId());
+        botInnerService.sendMultipleObjectStringsGroupedInMessages(tradeManagers, 9, updateInfo.getChatId());
 
         askYesOrNoFromInlineKeyboard(
-                "Do you want to remove any of these trade managers?",
-                Callbacks.TRADE_BY_FILTERS_MANAGER_REMOVE,
+                "Do you want to remove or activate/deactivate any of these trade managers?",
+                Callbacks.TRADE_BY_FILTERS_MANAGER_REMOVE_OR_ENABLED_CHANGE,
                 Callbacks.CANCEL_SILENT);
     }
 }

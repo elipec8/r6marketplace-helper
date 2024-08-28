@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class TradeByItemIdManager {
     private TradeManagerTradeType tradeType;
     private String itemId;
+    private boolean enabled;
     private Integer sellStartingPrice;
     private Integer sellBoundaryPrice;
     private Integer buyStartingPrice;
@@ -22,6 +23,7 @@ public class TradeByItemIdManager {
         sb.append("Trade Manager for one item: \n");
         sb.append("Trade type: ").append(tradeType).append("\n");
         sb.append("Item id: ").append(itemId).append("\n");
+        sb.append("Enabled: ").append(enabled).append("\n");
 
         if (tradeType == TradeManagerTradeType.SELL) {
             sb.append("Starting price: ").append(sellStartingPrice).append("\n");

@@ -12,19 +12,17 @@ import java.util.List;
 @AllArgsConstructor
 public class TradeByFiltersManager {
     private String name;
-
+    private boolean enabled;
     private TradeManagerTradeType tradeType;
-
     private List<ItemFilter> appliedFilters;
-
     private Integer minBuySellProfit;
     private Integer minProfitPercent;
-
     private Integer priority;
 
     public String toString() {
         String sb = "Trade By Item Filter Manager: \n" +
                     "Name: " + name + "\n" +
+                    "Enabled: " + enabled + "\n" +
                     "Trade type: " + tradeType + "\n";
         if (appliedFilters != null) {
             sb = sb + "Applied filters' names: " + appliedFilters.stream().map(ItemFilter::getName).reduce((a, b) -> a + ", " + b).orElse("") + "\n";

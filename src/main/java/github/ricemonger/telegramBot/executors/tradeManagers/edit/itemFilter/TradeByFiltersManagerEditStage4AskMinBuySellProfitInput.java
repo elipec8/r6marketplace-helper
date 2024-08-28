@@ -6,7 +6,7 @@ import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 public class TradeByFiltersManagerEditStage4AskMinBuySellProfitInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        processMiddleInput(InputState.TRADE_BY_FILTERS_MANAGER_EDIT_MIN_BUY_SELL_PROFIT);
+        processMiddleInput(InputState.TRADE_BY_FILTERS_MANAGER_MIN_BUY_SELL_PROFIT);
 
         askFromInlineKeyboardOrSkip("Please enter minimum profit to get from following one another Buy and Sell operations." +
                                     "It is calculated as (S*0.9-B), where S - expected sell price, B - expected buy price," +

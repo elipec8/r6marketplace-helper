@@ -1,10 +1,10 @@
-package github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove.itemFilters;
+package github.ricemonger.telegramBot.executors.tradeManagers.showRemove.remove_or_change_enabled.itemFilters;
 
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 
-public class TradeByFiltersManagerRemoveStage1AskNameCallback extends AbstractBotCommandExecutor {
+public class TradeByFiltersManagerRemoveOrChangeEnabledStage1AskNameCallback extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
         processFirstInput(

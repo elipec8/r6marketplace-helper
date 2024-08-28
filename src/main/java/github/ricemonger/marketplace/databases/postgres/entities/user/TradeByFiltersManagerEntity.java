@@ -25,6 +25,8 @@ public class TradeByFiltersManagerEntity {
     @Id
     private String name;
 
+    private boolean enabled;
+
     private TradeManagerTradeType tradeType;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -41,6 +43,7 @@ public class TradeByFiltersManagerEntity {
 
     public TradeByFiltersManagerEntity(UserEntity user, TradeByFiltersManager tradeManager) {
         this.user = user;
+        this.enabled = tradeManager.isEnabled();
         this.name = tradeManager.getName();
         this.tradeType = tradeManager.getTradeType();
         if(tradeManager.getAppliedFilters() != null) {
@@ -54,6 +57,7 @@ public class TradeByFiltersManagerEntity {
     public TradeByFiltersManager toTradeByFiltersManager() {
         TradeByFiltersManager tradeManager = new TradeByFiltersManager();
         tradeManager.setName(this.name);
+        tradeManager.setEnabled(this.enabled);
         tradeManager.setTradeType(this.tradeType);
         if(this.appliedFilters != null) {
             tradeManager.setAppliedFilters(this.appliedFilters.stream().map(ItemFilterEntity::toItemFilter).toList());
