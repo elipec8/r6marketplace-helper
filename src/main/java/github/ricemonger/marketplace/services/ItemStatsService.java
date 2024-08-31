@@ -151,4 +151,8 @@ public class ItemStatsService {
 
         return new ArrayList<>(ItemFilter.filterItems(items, filters));
     }
+
+    public void saveAllItemsUbiStats(List<ItemSaleUbiStats> ubiStats) {
+
+    }
 }

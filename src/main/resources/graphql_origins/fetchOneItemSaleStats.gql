@@ -1,0 +1,19 @@
+query GetItemPriceHistory($spaceId: String!, $itemId: String!, $paymentItemId: String!) {
+    game(spaceId: $spaceId) {
+        id
+        marketableItem(itemId: $itemId) {
+            id
+            priceHistory(paymentItemId: $paymentItemId) {
+                id
+                date
+                lowestPrice
+                averagePrice
+                highestPrice
+                itemsCount
+                __typename
+            }
+            __typename
+        }
+        __typename
+    }
+}

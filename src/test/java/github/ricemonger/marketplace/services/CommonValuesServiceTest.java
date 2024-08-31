@@ -229,6 +229,14 @@ class CommonValuesServiceTest {
     }
 
     @Test
+    void getItemSaleStatsDateFormat_should_handle_to_service() {
+        String dateFormat = "dateFormat";
+        when(ubiServiceConfiguration.getItemSaleStatsDateFormat()).thenReturn(dateFormat);
+
+        assertEquals(dateFormat, commonValuesService.getItemSaleStatsDateFormat());
+    }
+
+    @Test
     public void getMinimumUncommonPrice_should_handle_to_service() {
         Integer minPrice = 10;
         when(ubiServiceConfiguration.getMinUncommonPrice()).thenReturn(minPrice);

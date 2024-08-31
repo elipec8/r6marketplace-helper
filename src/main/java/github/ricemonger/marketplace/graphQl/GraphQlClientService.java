@@ -21,6 +21,8 @@ public class GraphQlClientService {
 
     private final CommonQueryItemsMapper commonQueryItemsMapper;
 
+    private final CommonQueryItemsSaleStatsMapper commonQueryItemsSaleStatsMapper;
+
     private final ConfigQueryMarketplaceMapper configQueryMarketplaceMapper;
 
     private final ConfigQueryResolvedTransactionPeriodMapper configQueryResolvedTransactionPeriodMapper;
@@ -64,6 +66,33 @@ public class GraphQlClientService {
         while (marketableItems.getTotalCount() == GraphQlVariablesService.MAX_LIMIT);
 
         return commonQueryItemsMapper.mapItems(nodes);
+    }
+
+    public List<ItemSaleUbiStats> fetchAllItemsUbiStats() throws GraphQlCommonItemsSaleStatsMappingException{
+        HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
+        github.ricemonger.marketplace.graphQl.dtos.common_query_items_sale_stats.MarketableItems marketableItems;
+        List<github.ricemonger.marketplace.graphQl.dtos.common_query_items_sale_stats.marketableItems.Node> nodes = new ArrayList<>();
+        int offset = 0;
+
+        do{
+            marketableItems = client
+                    .documentName(GraphQlDocuments.QUERY_ITEMS_SALE_STATS_DOCUMENT_NAME)
+                    .variables(graphQlVariablesService.getFetchItemsVariables(offset))
+                    .retrieve("game.marketableItems")
+                    .toEntity(github.ricemonger.marketplace.graphQl.dtos.common_query_items_sale_stats.MarketableItems.class)
+                    .block();
+
+            if (marketableItems == null || marketableItems.getNodes() == null || marketableItems.getTotalCount() == null) {
+                throw new GraphQlCommonItemsSaleStatsMappingException("MarketableItems or it's field is null");
+            }
+
+            nodes.addAll(marketableItems.getNodes());
+
+            offset += GraphQlVariablesService.MAX_LIMIT;
+        }
+        while (marketableItems.getTotalCount() == GraphQlVariablesService.MAX_LIMIT);
+
+        return commonQueryItemsSaleStatsMapper.mapItemsSaleStats(nodes);
     }
 
     public Collection<Tag> fetchAllTags() throws GraphQlConfigMarketplaceMappingException {
