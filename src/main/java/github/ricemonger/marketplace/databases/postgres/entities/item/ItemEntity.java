@@ -2,9 +2,7 @@ package github.ricemonger.marketplace.databases.postgres.entities.item;
 
 import github.ricemonger.utils.dtos.Item;
 import github.ricemonger.utils.enums.ItemType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,6 +39,13 @@ public class ItemEntity {
 
     private int limitMinPrice;
     private int limitMaxPrice;
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ItemDaySalesUbiStatsEntity> daySalesUbiStats;
+
+    public ItemEntity(String itemId){
+        this.itemId = itemId;
+    }
 
     public ItemEntity(Item item) {
         String tags = "";

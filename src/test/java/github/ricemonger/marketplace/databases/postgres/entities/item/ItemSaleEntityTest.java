@@ -19,7 +19,7 @@ class ItemSaleEntityTest {
         sale.setLastSoldPrice(2);
 
         ItemSaleEntity expected = new ItemSaleEntity();
-        expected.setItemId("1");
+        expected.setItem(new ItemEntity("1"));
         expected.setSoldAt(new Date(0));
         expected.setPrice(2);
 
@@ -35,7 +35,7 @@ class ItemSaleEntityTest {
         sale.setLastSoldAt(null);
 
         ItemSaleEntity expected = new ItemSaleEntity();
-        expected.setItemId(null);
+        expected.setItem(new ItemEntity());
         expected.setSoldAt(null);
         expected.setPrice(0);
 
@@ -47,7 +47,7 @@ class ItemSaleEntityTest {
     @Test
     public void toItemSale_should_properly_map_with_valid_fields() {
         ItemSaleEntity entity = new ItemSaleEntity();
-        entity.setItemId("1");
+        entity.setItem(new ItemEntity("1"));
         entity.setSoldAt(new Date(0));
         entity.setPrice(2);
 
@@ -64,7 +64,7 @@ class ItemSaleEntityTest {
     @Test
     public void toItemSale_should_properly_map_with_null_fields() {
         ItemSaleEntity entity = new ItemSaleEntity();
-        entity.setItemId(null);
+        entity.setItem(null);
         entity.setSoldAt(null);
 
         ItemSale expected = new ItemSale();
@@ -78,7 +78,8 @@ class ItemSaleEntityTest {
     }
 
     private boolean entitiesAreEqual(ItemSaleEntity entity1, ItemSaleEntity entity2) {
-        return Objects.equals(entity1.getItemId(), entity2.getItemId()) &&
+        return (entity1.getItem() == entity2.getItem() || (entity1.getItem() != null &&
+                                                           Objects.equals(entity1.getItem().getItemId(), entity2.getItem().getItemId()))) &&
                Objects.equals(entity1.getSoldAt(), entity2.getSoldAt()) &&
                entity1.getPrice() == entity2.getPrice();
     }
