@@ -8,7 +8,7 @@ import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseServi
 import github.ricemonger.utils.dtos.Item;
 import github.ricemonger.utils.dtos.ItemSale;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

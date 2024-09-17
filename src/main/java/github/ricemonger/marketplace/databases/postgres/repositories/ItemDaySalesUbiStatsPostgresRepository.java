@@ -9,3 +9,5 @@ import java.util.List;
 public interface ItemDaySalesUbiStatsPostgresRepository extends JpaRepository<ItemDaySalesUbiStatsEntity, ItemDaySalesUbiStatsEntityId> {
     List<ItemDaySalesUbiStatsEntity> findAllByItemItemId(String itemId);
 }
+
+
