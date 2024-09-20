@@ -22,9 +22,6 @@ public class TradeByItemIdManagerEntityId {
         if (!(o instanceof TradeByItemIdManagerEntityId tradeByItemIdManagerEntityId)) {
             return false;
         }
-        if (this.hashCode() != tradeByItemIdManagerEntityId.hashCode()) {
-            return false;
-        }
         return tradeByItemIdManagerEntityId.user.getId().equals(user.getId()) && tradeByItemIdManagerEntityId.itemId.equals(itemId);
     }
 }

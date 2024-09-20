@@ -4,7 +4,7 @@ package github.ricemonger.marketplace.scheduled_tasks;
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.ItemStatsService;
-import github.ricemonger.telegramBot.BotService;
+import github.ricemonger.telegramBot.TelegramBotService;
 import github.ricemonger.utils.dtos.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ public class ScheduledAllItemsStatsFetcher {
 
     private final CommonValuesService commonValuesService;
 
-    private final BotService botService;
+    private final TelegramBotService telegramBotService;
 
     @Scheduled(fixedRate = 5 * 60 * 1000, initialDelay = 60 * 1000) // every 5m after 1m of delay
     public void fetchAllItemStats() {
@@ -32,6 +32,7 @@ public class ScheduledAllItemsStatsFetcher {
         try {
             expectedItemCount = commonValuesService.getExpectedItemCount();
         } catch (NullPointerException ignore) {
+            log.info("Expected item count is not set");
         }
 
         Collection<Item> items = graphQlClientService.fetchAllItemStats();
@@ -51,6 +52,6 @@ public class ScheduledAllItemsStatsFetcher {
 
     private void onItemsAmountIncrease(int expectedItemCount, int fetchedItemsCount) {
         commonValuesService.setExpectedItemCount(fetchedItemsCount);
-        botService.notifyAllUsersAboutItemAmountIncrease(expectedItemCount, fetchedItemsCount);
+        telegramBotService.notifyAllUsersAboutItemAmountIncrease(expectedItemCount, fetchedItemsCount);
     }
 }

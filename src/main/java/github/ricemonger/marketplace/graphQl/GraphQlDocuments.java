@@ -4,6 +4,8 @@ package github.ricemonger.marketplace.graphQl;
 public class GraphQlDocuments {
     public final static String QUERY_ITEMS_STATS_DOCUMENT_NAME = "common_query_items";
 
+    public final static String QUERY_ITEMS_SALE_STATS_DOCUMENT_NAME = "common_query_items_sale_stats";
+
     public final static String QUERY_MARKETPLACE_CONFIG_DOCUMENT_NAME = "config_query_marketplace";
 
     public final static String QUERY_RESOLVED_TRANSACTION_PERIOD_CONFIG_DOCUMENT_NAME = "config_query_resolved_transaction_period";

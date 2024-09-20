@@ -65,19 +65,19 @@ public class UbiAccountEntryEntity {
     @JoinTable(name = "ubi_account_current_buy_trades",
             joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
             inverseJoinColumns = @JoinColumn(name = "tradeId", referencedColumnName = "tradeId"))
-    private List<UbiTradeEntity> currentBuyTrades = new ArrayList<>();
+    private List<UbiAccountEntryTradeEntity> currentBuyTrades = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(name = "ubi_account_current_sell_trades",
             joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
             inverseJoinColumns = @JoinColumn(name = "tradeId", referencedColumnName = "tradeId"))
-    private List<UbiTradeEntity> currentSellTrades = new ArrayList<>();
+    private List<UbiAccountEntryTradeEntity> currentSellTrades = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(name = "ubi_account_finished_trades",
             joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
             inverseJoinColumns = @JoinColumn(name = "tradeId", referencedColumnName = "tradeId"))
-    private List<UbiTradeEntity> finishedTrades = new ArrayList<>();
+    private List<UbiAccountEntryTradeEntity> finishedTrades = new ArrayList<>();
 
     public UbiAccountEntryEntity(UserEntity user, UbiAccountEntry account) {
         this.user = user;

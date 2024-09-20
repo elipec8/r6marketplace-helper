@@ -123,6 +123,10 @@ public class CommonValuesService {
         return ubiServiceConfiguration.getDateFormat();
     }
 
+    public String getItemSaleStatsDateFormat(){
+        return ubiServiceConfiguration.getItemSaleStatsDateFormat();
+    }
+
     public Integer getMinimumUncommonPrice() {
         return ubiServiceConfiguration.getMinUncommonPrice();
     }

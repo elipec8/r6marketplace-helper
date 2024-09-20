@@ -16,9 +16,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class BotServiceTest {
+class TelegramBotServiceTest {
     @Autowired
-    private BotService botService;
+    private TelegramBotService telegramBotService;
     @MockBean
     private TelegramBotClientService telegramBotClientService;
     @MockBean
@@ -31,7 +31,7 @@ class BotServiceTest {
         chatIds.add("2");
         when(telegramUserService.getAllChatIdsForNotifiableUsers()).thenReturn(chatIds);
 
-        botService.notifyAllUsersAboutItemAmountIncrease(1, 2);
+        telegramBotService.notifyAllUsersAboutItemAmountIncrease(1, 2);
 
         verify(telegramUserService).getAllChatIdsForNotifiableUsers();
 

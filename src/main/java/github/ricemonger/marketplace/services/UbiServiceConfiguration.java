@@ -29,6 +29,8 @@ public class UbiServiceConfiguration {
     private Integer expireTimeout;
     @Value("${ubi.session.dateFormat}")
     private String dateFormat;
+    @Value("${ubi.session.itemSaleStatsDateFormat}")
+    private String itemSaleStatsDateFormat;
     @Value("${ubi.session.minUncommonPrice}")
     private Integer minUncommonPrice;
     @Value("${ubi.session.maxUncommonPrice}")
@@ -45,4 +47,5 @@ public class UbiServiceConfiguration {
     private Integer minLegendaryPrice;
     @Value("${ubi.session.maxLegendaryPrice}")
     private Integer maxLegendaryPrice;
+
 }

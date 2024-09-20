@@ -1,0 +1,41 @@
+query GetMarketableItems($spaceId: String!, $limit: Int!, $offset: Int, $paymentItemId: String!, $sortBy: MarketableItemSort) {
+    game(spaceId: $spaceId) {
+        marketableItems(
+            limit: $limit
+            offset: $offset
+            sortBy: $sortBy
+            withMarketData: true
+        ) {
+            nodes {
+                ...MarketableItemFragment
+                __typename
+            }
+            totalCount
+            __typename
+        }
+        __typename
+    }
+}
+
+fragment MarketableItemFragment on MarketableItem {
+    item {
+        ...SecondaryStoreItemFragment
+        __typename
+    }
+    priceHistory(paymentItemId: $paymentItemId) {
+        id
+        date
+        lowestPrice
+        averagePrice
+        highestPrice
+        itemsCount
+        __typename
+    }
+    __typename
+}
+
+fragment SecondaryStoreItemFragment on SecondaryStoreItem {
+    itemId
+    __typename
+}
+

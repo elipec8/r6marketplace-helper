@@ -3,10 +3,8 @@ package github.ricemonger.marketplace.services;
 import github.ricemonger.marketplace.services.abstractions.ItemDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleHistoryDatabaseService;
-import github.ricemonger.utils.dtos.Item;
-import github.ricemonger.utils.dtos.ItemFilter;
-import github.ricemonger.utils.dtos.ItemSale;
-import github.ricemonger.utils.dtos.Tag;
+import github.ricemonger.marketplace.services.abstractions.ItemSaleUbiStatsService;
+import github.ricemonger.utils.dtos.*;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.TagGroup;
 import org.junit.jupiter.api.Test;
@@ -40,6 +38,8 @@ class ItemStatsServiceTest {
     private CommonValuesService commonValuesService;
     @MockBean
     private ProfitAndPriorityCalculator profitAndPriorityCalculator;
+    @MockBean
+    private ItemSaleUbiStatsService itemSaleUbiStatsService;
 
     @Test
     public void saveAllItemsAndSales_should_set_limit_prices_for_unspecified_rarity_and_handle_to_services() {
@@ -67,6 +67,13 @@ class ItemStatsServiceTest {
 
         verify(itemService).saveAll(same(items));
         verify(saleService).saveAll(same(items));
+    }
+
+    @Test
+    public void saveAllItemsUbiStats_should_handle_to_service(){
+        List<ItemSaleUbiStats> stats = new ArrayList<>();
+        itemStatsService.saveAllItemsUbiStats(stats);
+        verify(itemSaleUbiStatsService).saveAll(same(stats));
     }
 
     @Test

@@ -80,4 +80,18 @@ public class GraphQlVariablesService {
                         "direction", "DESC",
                         "paymentItemId", commonValuesService.getPaymentItemId()));
     }
+
+    public Map<String, Object> getFetchItemsUbiSaleStats(int offset) {
+        return Map.of(
+                "withOwnership", false,
+                "spaceId", commonValuesService.getUbiGameSpaceId(),
+                "limit", MAX_LIMIT,
+                "offset", offset,
+                "paymentItemId", commonValuesService.getPaymentItemId(),
+                "sortBy", Map.of(
+                        "field", "ACTIVE_COUNT",
+                        "orderType", "Sell",
+                        "direction", "DESC",
+                        "paymentItemId", commonValuesService.getPaymentItemId()));
+    }
 }

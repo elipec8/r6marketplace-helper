@@ -3,6 +3,7 @@ package github.ricemonger.marketplace.services;
 import github.ricemonger.marketplace.services.abstractions.ItemDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleHistoryDatabaseService;
+import github.ricemonger.marketplace.services.abstractions.ItemSaleUbiStatsService;
 import github.ricemonger.utils.dtos.*;
 import github.ricemonger.utils.enums.ItemRarity;
 import lombok.RequiredArgsConstructor;
@@ -29,10 +30,16 @@ public class ItemStatsService {
 
     private final ItemSaleHistoryDatabaseService historyDatabaseService;
 
+    private final ItemSaleUbiStatsService itemSaleUbiStatsService;
+
     public void saveAllItemsAndSales(Collection<Item> items) {
         setLimitPricesForItems(items);
         itemDatabaseService.saveAll(items);
         saleDatabaseService.saveAll(items);
+    }
+
+    public void saveAllItemsUbiStats(List<ItemSaleUbiStats> ubiStats) {
+        itemSaleUbiStatsService.saveAll(ubiStats);
     }
 
     private void setLimitPricesForItems(Collection<Item> items) {

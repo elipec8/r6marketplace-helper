@@ -3,7 +3,7 @@ package github.ricemonger.marketplace.scheduled_tasks;
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.ItemStatsService;
-import github.ricemonger.telegramBot.BotService;
+import github.ricemonger.telegramBot.TelegramBotService;
 import github.ricemonger.utils.dtos.Item;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class ScheduledAllItemsStatsFetcherTest {
     private GraphQlClientService graphQlClientService;
 
     @MockBean
-    private BotService botService;
+    private TelegramBotService telegramBotService;
 
     @MockBean
     private ItemStatsService itemStatsService;
@@ -60,6 +60,6 @@ public class ScheduledAllItemsStatsFetcherTest {
         verify(itemStatsService).saveAllItemsAndSales(same(items));
         verify(itemStatsService).calculateAndSaveItemsSaleHistoryStats();
         verify(commonValuesService).setExpectedItemCount(1);
-        verify(botService).notifyAllUsersAboutItemAmountIncrease(0, 1);
+        verify(telegramBotService).notifyAllUsersAboutItemAmountIncrease(0, 1);
     }
 }

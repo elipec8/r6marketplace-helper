@@ -13,12 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Date;
 
 @Slf4j
-@Entity(name = "ubi_trade")
+@Entity(name = "ubi_user_trade")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UbiTradeEntity {
+public class UbiAccountEntryTradeEntity {
     @Id
     private String tradeId;
 
