@@ -33,14 +33,14 @@ ubi:
     marketplaceProfit: 0.9
     dateFormat: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
     itemSaleStatsDateFormat: yyyy-MM-dd
-    minUncommonPrice: 120
-    maxUncommonPrice: 10000
-    minRarePrice: 120
-    maxRarePrice: 35000
-    minEpicPrice: 120
-    maxEpicPrice: 150000
-    minLegendaryPrice: 120
-    maxLegendaryPrice: 150000
+    minUncommonPrice: 10
+    maxUncommonPrice: 25_000
+    minRarePrice: 10
+    maxRarePrice: 250_000
+    minEpicPrice: 10
+    maxEpicPrice: 1_000_000
+    minLegendaryPrice: 10
+    maxLegendaryPrice: 1_000_000
 
 server:
   port: 8080

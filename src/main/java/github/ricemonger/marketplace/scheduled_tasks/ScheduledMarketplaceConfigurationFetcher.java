@@ -19,7 +19,7 @@ public class ScheduledMarketplaceConfigurationFetcher {
 
     private final TagService tagService;
 
-    @Scheduled(fixedRate = 24 * 60 * 60 * 1000, initialDelay = 30 * 1000) // every 24h with 30s delay
+    @Scheduled(fixedRate = 24 * 60 * 60 * 1000, initialDelay = 20 * 1000) // every 24h with 20s delay
     public void fetchMarketplaceConfigurations() {
         tagService.saveAllTags(graphQlClientService.fetchAllTags());
         graphQlClientService.checkItemTypes();

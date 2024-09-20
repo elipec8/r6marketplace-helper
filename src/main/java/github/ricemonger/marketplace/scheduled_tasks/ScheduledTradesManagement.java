@@ -17,7 +17,7 @@ public class ScheduledTradesManagement {
 
     private final CommonValuesService commonValuesService;
 
-    @Scheduled(fixedRate = 60 * 1000, initialDelay = 120 * 1000) // every 1m after 2m of delay
+    //@Scheduled(fixedRate = 60 * 1000, initialDelay = 300 * 1000) // every 1m after 5m of delay
     public void manageAllUsersTrades() {
      //   int maxBuyTrades = commonValuesService.getMaxBuyTrades();
 
