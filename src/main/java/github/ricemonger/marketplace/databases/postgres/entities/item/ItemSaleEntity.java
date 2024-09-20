@@ -18,7 +18,7 @@ import java.util.Date;
 @IdClass(ItemSaleEntityId.class)
 public class ItemSaleEntity {
     @MapsId
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "itemId", referencedColumnName = "itemId")
     private ItemEntity item;
     @Id

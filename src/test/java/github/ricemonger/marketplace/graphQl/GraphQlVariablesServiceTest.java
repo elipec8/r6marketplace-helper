@@ -97,6 +97,17 @@ public class GraphQlVariablesServiceTest {
     }
 
     @Test
+    public void getFetchLockedItemsVariables_should_have_provided_variables() {
+        String mainUserSpaceId = "mainUserSpaceId";
+
+        when(commonValuesService.getUbiGameSpaceId()).thenReturn(mainUserSpaceId);
+
+        Map<String, Object> result = graphQlVariablesService.getFetchLockedItemsVariables();
+
+        assertTrue(mapContainsEntries(result, Map.entry("spaceId", mainUserSpaceId)));
+    }
+
+    @Test
     public void getFetchItemsVariables_should_have_provided_variables() {
         String mainUserSpaceId = "mainUserSpaceId";
         String paymentItemId = "paymentItemId";
@@ -110,6 +121,23 @@ public class GraphQlVariablesServiceTest {
         assertTrue(mapContainsEntries(result, Map.entry("spaceId", mainUserSpaceId), Map.entry("offset", offset)));
 
         assertTrue(mapContainsEntries((Map) result.get("sortBy"), Map.entry("paymentItemId", paymentItemId)));
+    }
+
+    @Test
+    public void getFetchItemsUbiSaleStats_should_have_provided_variables() {
+        String mainUserSpaceId = "mainUserSpaceId";
+        String paymentItemId = "paymentItemId";
+        int offset = 0;
+
+        when(commonValuesService.getUbiGameSpaceId()).thenReturn(mainUserSpaceId);
+        when(commonValuesService.getPaymentItemId()).thenReturn("paymentItemId");
+
+        Map<String, Object> result = graphQlVariablesService.getFetchItemsUbiSaleStats(offset);
+
+        assertTrue(mapContainsEntries(result, Map.entry("withOwnership", false), Map.entry("spaceId", mainUserSpaceId), Map.entry("offset", offset)));
+
+        assertTrue(mapContainsEntries((Map) result.get("sortBy"), Map.entry("field", "ACTIVE_COUNT"), Map.entry("orderType", "Sell"),
+                Map.entry("direction", "DESC"), Map.entry("paymentItemId", paymentItemId)));
     }
 
     @SafeVarargs

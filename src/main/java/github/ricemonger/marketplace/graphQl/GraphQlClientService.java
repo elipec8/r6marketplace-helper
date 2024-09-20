@@ -77,7 +77,7 @@ public class GraphQlClientService {
         do{
             marketableItems = client
                     .documentName(GraphQlDocuments.QUERY_ITEMS_SALE_STATS_DOCUMENT_NAME)
-                    .variables(graphQlVariablesService.getFetchItemsVariables(offset))
+                    .variables(graphQlVariablesService.getFetchItemsUbiSaleStats(offset))
                     .retrieve("game.marketableItems")
                     .toEntity(github.ricemonger.marketplace.graphQl.dtos.common_query_items_sale_stats.MarketableItems.class)
                     .block();

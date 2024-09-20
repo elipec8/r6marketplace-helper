@@ -7,16 +7,12 @@ import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgre
 import github.ricemonger.marketplace.services.abstractions.ItemSaleUbiStatsService;
 import github.ricemonger.utils.dtos.ItemDaySales;
 import github.ricemonger.utils.dtos.ItemSaleUbiStats;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -34,24 +30,25 @@ public class ItemDaySalesUbiStatsPostgresService implements ItemSaleUbiStatsServ
             return;
         }
 
-        List<String> itemNames = itemRepository.findAllItemIds();
+        Set<String> existingItems = itemRepository.findAllItemIds();
+
+        List<ItemDaySalesUbiStatsEntity> daySalesEntities = new LinkedList<>();
 
         for (ItemSaleUbiStats stats : statsList) {
             try {
-                if (!itemNames.contains(stats.getItemId())) {
+                if (!existingItems.contains(stats.getItemId())) {
                     log.error("Item with id {} not found, day sales parsing for this item skipped", stats.getItemId());
                     continue;
                 }
                 ItemEntity itemEntity = itemRepository.getReferenceById(stats.getItemId());
-                List<ItemDaySalesUbiStatsEntity> salesEntities = new ArrayList<>();
                 for (ItemDaySales itemDaySales : stats.getLast30DaysSales()) {
                     ItemDaySalesUbiStatsEntity salesEntity = new ItemDaySalesUbiStatsEntity(itemEntity, itemDaySales);
-                    salesEntities.add(salesEntity);
+                    daySalesEntities.add(salesEntity);
                 }
-                itemDaySalesUbiStatsRepository.saveAll(salesEntities);
             } catch (Throwable e) {
                 log.error("Item with id {} not found", stats.getItemId());
             }
         }
+        itemDaySalesUbiStatsRepository.saveAll(daySalesEntities);
     }
 }

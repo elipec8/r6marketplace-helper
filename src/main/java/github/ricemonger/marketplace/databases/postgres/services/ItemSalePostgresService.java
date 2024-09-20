@@ -13,9 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -33,18 +31,23 @@ public class ItemSalePostgresService implements ItemSaleDatabaseService {
             return;
         }
 
-        List<ItemSaleEntity> entities = new ArrayList<>();
+        Set<String> existingItems = itemRepository.findAllItemIds();
+
+        List<ItemSaleEntity> salesEntities = new LinkedList<>();
 
         for (Item item : items) {
             try {
-                ItemEntity itemEntity = itemRepository.findById(item.getItemId()).orElseThrow(EntityNotFoundException::new);
-                entities.add(new ItemSaleEntity(itemEntity, item.getLastSoldAt(), item.getLastSoldPrice()));
+                if (!existingItems.contains(item.getItemId())) {
+                    log.error("Item with id {} not found, last sale parsing for this item skipped", item.getItemId());
+                    continue;
+                }
+                ItemEntity itemEntity = itemRepository.getReferenceById(item.getItemId());
+                salesEntities.add(new ItemSaleEntity(itemEntity, item.getLastSoldAt(), item.getLastSoldPrice()));
             } catch (EntityNotFoundException e) {
                 log.error("Item with id {} not found", item.getItemId());
             }
         }
-
-        itemSaleRepository.saveAll(entities);
+        itemSaleRepository.saveAll(salesEntities);
     }
 
     @Override
