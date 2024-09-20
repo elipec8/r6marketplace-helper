@@ -18,7 +18,7 @@ import java.util.Date;
 public class ItemDaySalesUbiStatsEntity {
 
     @Id
-    @ManyToOne(optional = true, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "itemId", referencedColumnName = "itemId")
     private ItemEntity item;
 

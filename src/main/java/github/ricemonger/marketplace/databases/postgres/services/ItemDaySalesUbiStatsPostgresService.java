@@ -27,6 +27,7 @@ public class ItemDaySalesUbiStatsPostgresService implements ItemSaleUbiStatsServ
 
     private final ItemPostgresRepository itemRepository;
 
+    @Override
     @Transactional
     public void saveAll(Collection<ItemSaleUbiStats> statsList) {
         if (statsList == null) {

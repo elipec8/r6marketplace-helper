@@ -6,6 +6,7 @@ import github.ricemonger.marketplace.services.abstractions.ItemSaleHistoryDataba
 import github.ricemonger.utils.dtos.ItemSaleHistory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 
@@ -15,6 +16,8 @@ public class ItemSaleHistoryPostgresService implements ItemSaleHistoryDatabaseSe
 
     private final ItemSaleHistoryPostgresRepository itemSaleHistoryRepository;
 
+    @Override
+    @Transactional
     public void saveAll(Collection<ItemSaleHistory> histories) {
         if (histories != null && !histories.isEmpty()) {
             itemSaleHistoryRepository.saveAll(histories.stream().map(ItemSaleHistoryEntity::new).toList());

@@ -41,7 +41,7 @@ public class ItemEntity {
     private int limitMaxPrice;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ItemDaySalesUbiStatsEntity> daySalesUbiStats;
+    private List<ItemDaySalesUbiStatsEntity> daySalesUbiStats = new ArrayList<>();
 
     public ItemEntity(String itemId){
         this.itemId = itemId;

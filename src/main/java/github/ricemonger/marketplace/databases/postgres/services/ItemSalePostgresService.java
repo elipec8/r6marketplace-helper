@@ -26,6 +26,7 @@ public class ItemSalePostgresService implements ItemSaleDatabaseService {
 
     private final ItemPostgresRepository itemRepository;
 
+    @Override
     @Transactional
     public void saveAll(Collection<Item> items) {
         if (items == null) {
@@ -46,6 +47,7 @@ public class ItemSalePostgresService implements ItemSaleDatabaseService {
         itemSaleRepository.saveAll(entities);
     }
 
+    @Override
     public List<ItemSale> findAll() {
         return itemSaleRepository.findAll().stream().map(ItemSaleEntity::toItemSale).toList();
     }

@@ -7,6 +7,7 @@ import github.ricemonger.utils.dtos.Item;
 import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,6 +20,7 @@ public class ItemPostgresService implements ItemDatabaseService {
     private final ItemPostgresRepository itemRepository;
 
     @Override
+    @Transactional
     public void saveAll(Collection<Item> items) {
         if (items != null && !items.isEmpty()) {
             itemRepository.saveAll(items.stream().map(ItemEntity::new).collect(Collectors.toSet()));

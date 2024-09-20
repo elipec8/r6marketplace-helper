@@ -6,6 +6,7 @@ import github.ricemonger.marketplace.services.abstractions.TagDatabaseService;
 import github.ricemonger.utils.dtos.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -17,6 +18,7 @@ public class TagPostgresService implements TagDatabaseService {
     private final TagPostgresRepository tagRepository;
 
     @Override
+    @Transactional
     public void saveAll(Collection<Tag> tags) {
         tagRepository.saveAll(tags.stream().map(TagEntity::new).toList());
     }
