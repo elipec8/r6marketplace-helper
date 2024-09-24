@@ -4,9 +4,7 @@ import github.ricemonger.utils.dtos.Item;
 import github.ricemonger.utils.enums.ItemType;
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -30,11 +28,22 @@ class ItemEntityTest {
         item.setLimitMinPrice(10);
         item.setLimitMaxPrice(11);
 
+        Set<TagEntity> tagsEntities = new HashSet<>();
+        TagEntity tagEntity1 = new TagEntity();
+        tagEntity1.setValue("tag1");
+        tagsEntities.add(tagEntity1);
+        TagEntity tagEntity2 = new TagEntity();
+        tagEntity2.setValue("tag2");
+        tagsEntities.add(tagEntity2);
+        TagEntity tagEntity3 = new TagEntity();
+        tagEntity3.setValue("tag3");
+        tagsEntities.add(tagEntity3);
+
         ItemEntity expected = new ItemEntity();
         expected.setItemId("1");
         expected.setAssetUrl("2");
         expected.setName("3");
-        expected.setTags("tag1,tag2");
+        expected.setTags(List.of(tagEntity1, tagEntity2));
         expected.setType(ItemType.WeaponSkin);
         expected.setMaxBuyPrice(5);
         expected.setBuyOrdersCount(6);
@@ -45,7 +54,55 @@ class ItemEntityTest {
         expected.setLimitMinPrice(10);
         expected.setLimitMaxPrice(11);
 
-        ItemEntity actual = new ItemEntity(item);
+        ItemEntity actual = new ItemEntity(item,tagsEntities);
+
+        assertTrue(entitiesAreEqual(expected, actual));
+    }
+
+    @Test
+    public void toItemEntity_should_properly_map_with_invalid_tag() {
+        Item item = new Item();
+        item.setItemId("1");
+        item.setAssetUrl("2");
+        item.setName("3");
+        item.setTags(List.of("tag1", "tag2","tag4"));
+        item.setType(ItemType.WeaponSkin);
+        item.setMaxBuyPrice(5);
+        item.setBuyOrdersCount(6);
+        item.setMinSellPrice(7);
+        item.setSellOrdersCount(8);
+        item.setLastSoldAt(new Date(0));
+        item.setLastSoldPrice(9);
+        item.setLimitMinPrice(10);
+        item.setLimitMaxPrice(11);
+
+        Set<TagEntity> tagsEntities = new HashSet<>();
+        TagEntity tagEntity1 = new TagEntity();
+        tagEntity1.setValue("tag1");
+        tagsEntities.add(tagEntity1);
+        TagEntity tagEntity2 = new TagEntity();
+        tagEntity2.setValue("tag2");
+        tagsEntities.add(tagEntity2);
+        TagEntity tagEntity3 = new TagEntity();
+        tagEntity3.setValue("tag3");
+        tagsEntities.add(tagEntity3);
+
+        ItemEntity expected = new ItemEntity();
+        expected.setItemId("1");
+        expected.setAssetUrl("2");
+        expected.setName("3");
+        expected.setTags(List.of(tagEntity1, tagEntity2));
+        expected.setType(ItemType.WeaponSkin);
+        expected.setMaxBuyPrice(5);
+        expected.setBuyOrdersCount(6);
+        expected.setMinSellPrice(7);
+        expected.setSellOrdersCount(8);
+        expected.setLastSoldAt(new Date(0));
+        expected.setLastSoldPrice(9);
+        expected.setLimitMinPrice(10);
+        expected.setLimitMaxPrice(11);
+
+        ItemEntity actual = new ItemEntity(item,tagsEntities);
 
         assertTrue(entitiesAreEqual(expected, actual));
     }
@@ -67,11 +124,22 @@ class ItemEntityTest {
         item.setLimitMinPrice(10);
         item.setLimitMaxPrice(11);
 
+        Set<TagEntity> tagsEntities = new HashSet<>();
+        TagEntity tagEntity1 = new TagEntity();
+        tagEntity1.setValue("tag1");
+        tagsEntities.add(tagEntity1);
+        TagEntity tagEntity2 = new TagEntity();
+        tagEntity2.setValue("tag2");
+        tagsEntities.add(tagEntity2);
+        TagEntity tagEntity3 = new TagEntity();
+        tagEntity3.setValue("tag3");
+        tagsEntities.add(tagEntity3);
+
         ItemEntity expected = new ItemEntity();
         expected.setItemId("1");
         expected.setAssetUrl("2");
         expected.setName("3");
-        expected.setTags("");
+        expected.setTags(new ArrayList<>());
         expected.setType(ItemType.WeaponSkin);
         expected.setMaxBuyPrice(5);
         expected.setBuyOrdersCount(6);
@@ -82,7 +150,7 @@ class ItemEntityTest {
         expected.setLimitMinPrice(10);
         expected.setLimitMaxPrice(11);
 
-        ItemEntity actual = new ItemEntity(item);
+        ItemEntity actual = new ItemEntity(item, tagsEntities);
 
         assertTrue(entitiesAreEqual(expected, actual));
     }
@@ -97,11 +165,22 @@ class ItemEntityTest {
         item.setType(null);
         item.setLastSoldAt(null);
 
+        Set<TagEntity> tagsEntities = new HashSet<>();
+        TagEntity tagEntity1 = new TagEntity();
+        tagEntity1.setValue("tag1");
+        tagsEntities.add(tagEntity1);
+        TagEntity tagEntity2 = new TagEntity();
+        tagEntity2.setValue("tag2");
+        tagsEntities.add(tagEntity2);
+        TagEntity tagEntity3 = new TagEntity();
+        tagEntity3.setValue("tag3");
+        tagsEntities.add(tagEntity3);
+
         ItemEntity expected = new ItemEntity();
         expected.setItemId(null);
         expected.setAssetUrl(null);
         expected.setName(null);
-        expected.setTags("");
+        expected.setTags(new ArrayList<>());
         expected.setType(null);
         expected.setMaxBuyPrice(0);
         expected.setBuyOrdersCount(0);
@@ -112,18 +191,26 @@ class ItemEntityTest {
         expected.setLimitMinPrice(0);
         expected.setLimitMaxPrice(0);
 
-        ItemEntity actual = new ItemEntity(item);
+        ItemEntity actual = new ItemEntity(item,tagsEntities);
 
         assertTrue(entitiesAreEqual(expected, actual));
     }
 
     @Test
     public void toItem_should_properly_map_with_valid_fields() {
+        Set<TagEntity> tagsEntities = new HashSet<>();
+        TagEntity tagEntity1 = new TagEntity();
+        tagEntity1.setValue("tag1");
+        tagsEntities.add(tagEntity1);
+        TagEntity tagEntity2 = new TagEntity();
+        tagEntity2.setValue("tag2");
+        tagsEntities.add(tagEntity2);
+        
         ItemEntity entity = new ItemEntity();
         entity.setItemId("1");
         entity.setAssetUrl("2");
         entity.setName("3");
-        entity.setTags("tag1,tag2");
+        entity.setTags(tagsEntities.stream().toList());
         entity.setType(ItemType.WeaponSkin);
         entity.setMaxBuyPrice(5);
         entity.setBuyOrdersCount(6);
@@ -160,7 +247,7 @@ class ItemEntityTest {
         entity.setItemId("1");
         entity.setAssetUrl("2");
         entity.setName("3");
-        entity.setTags("");
+        entity.setTags(new ArrayList<>());
         entity.setType(ItemType.WeaponSkin);
         entity.setMaxBuyPrice(5);
         entity.setBuyOrdersCount(6);
@@ -222,10 +309,17 @@ class ItemEntityTest {
     }
 
     private boolean entitiesAreEqual(ItemEntity entity1, ItemEntity entity2) {
+
+        List<String> entity1TagsValues = entity1.getTags().stream().map(TagEntity::getValue).toList();
+        List<String> entity2TagsValues = entity2.getTags().stream().map(TagEntity::getValue).toList();
+
+        boolean tagsEqual = entity1TagsValues.containsAll(entity2TagsValues) && entity2TagsValues.containsAll(entity1TagsValues);
+
+
         return Objects.equals(entity1.getItemId(), entity2.getItemId()) &&
                Objects.equals(entity1.getAssetUrl(), entity2.getAssetUrl()) &&
                Objects.equals(entity1.getName(), entity2.getName()) &&
-               Objects.equals(entity1.getTags(), entity2.getTags()) &&
+               tagsEqual &&
                Objects.equals(entity1.getType(), entity2.getType()) &&
                entity1.getMaxBuyPrice() == entity2.getMaxBuyPrice() &&
                entity1.getBuyOrdersCount() == entity2.getBuyOrdersCount() &&
