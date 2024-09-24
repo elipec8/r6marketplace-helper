@@ -2,6 +2,7 @@ package github.ricemonger.marketplace.databases.postgres.entities.item;
 
 import github.ricemonger.utils.dtos.Item;
 import github.ricemonger.utils.dtos.Tag;
+import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,8 @@ public class ItemEntity {
             inverseJoinColumns = @JoinColumn(name = "tagValue", referencedColumnName = "tag_value"))
     private List<TagEntity> tags;
 
+    private ItemRarity rarity;
+
     private ItemType type;
 
     private int maxBuyPrice;
@@ -43,9 +46,6 @@ public class ItemEntity {
 
     private Date lastSoldAt;
     private int lastSoldPrice;
-
-    private int limitMinPrice;
-    private int limitMaxPrice;
 
     public ItemEntity(String itemId){
         this.itemId = itemId;
@@ -63,10 +63,11 @@ public class ItemEntity {
                 }
             }
         }
-        this.tags = tagEntities;
         this.itemId = item.getItemId();
         this.assetUrl = item.getAssetUrl();
         this.name = item.getName();
+        this.tags = tagEntities;
+        this.rarity = item.getRarity();
         this.type = item.getType();
         this.maxBuyPrice = item.getMaxBuyPrice();
         this.buyOrdersCount = item.getBuyOrdersCount();
@@ -74,8 +75,6 @@ public class ItemEntity {
         this.sellOrdersCount = item.getSellOrdersCount();
         this.lastSoldAt = item.getLastSoldAt();
         this.lastSoldPrice = item.getLastSoldPrice();
-        this.limitMinPrice = item.getLimitMinPrice();
-        this.limitMaxPrice = item.getLimitMaxPrice();
     }
 
     public Item toItem() {
@@ -88,6 +87,7 @@ public class ItemEntity {
         item.setAssetUrl(this.assetUrl);
         item.setName(this.name);
         item.setTags(tags);
+        item.setRarity(this.rarity);
         item.setType(this.type);
         item.setMaxBuyPrice(this.maxBuyPrice);
         item.setBuyOrdersCount(this.buyOrdersCount);
@@ -95,8 +95,6 @@ public class ItemEntity {
         item.setSellOrdersCount(this.sellOrdersCount);
         item.setLastSoldAt(this.lastSoldAt);
         item.setLastSoldPrice(this.lastSoldPrice);
-        item.setLimitMinPrice(this.limitMinPrice);
-        item.setLimitMaxPrice(this.limitMaxPrice);
         return item;
     }
 

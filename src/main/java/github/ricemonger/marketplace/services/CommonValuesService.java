@@ -5,6 +5,7 @@ import github.ricemonger.telegramBot.TelegramBotConfiguration;
 import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.utils.dtos.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.dtos.ConfigTrades;
+import github.ricemonger.utils.enums.ItemRarity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -125,6 +126,26 @@ public class CommonValuesService {
 
     public String getItemSaleStatsDateFormat(){
         return ubiServiceConfiguration.getItemSaleStatsDateFormat();
+    }
+
+    public int getMinimumPriceByRarity(ItemRarity rarity) {
+        return switch (rarity) {
+            case UNCOMMON -> getMinimumUncommonPrice();
+            case RARE -> getMinimumRarePrice();
+            case EPIC -> getMinimumEpicPrice();
+            case LEGENDARY -> getMinimumLegendaryPrice();
+            default -> getMinimumLegendaryPrice();
+        };
+    }
+
+    public int getMaximumPriceByRarity(ItemRarity rarity) {
+        return switch (rarity) {
+            case UNCOMMON -> getMaximumUncommonPrice();
+            case RARE -> getMaximumRarePrice();
+            case EPIC -> getMaximumEpicPrice();
+            case LEGENDARY -> getMaximumLegendaryPrice();
+            default -> getMaximumUncommonPrice();
+        };
     }
 
     public Integer getMinimumUncommonPrice() {

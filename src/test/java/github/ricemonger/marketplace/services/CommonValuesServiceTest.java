@@ -5,6 +5,7 @@ import github.ricemonger.telegramBot.TelegramBotConfiguration;
 import github.ricemonger.utils.dtos.AuthorizationDTO;
 import github.ricemonger.utils.dtos.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.dtos.ConfigTrades;
+import github.ricemonger.utils.enums.ItemRarity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -234,6 +235,86 @@ class CommonValuesServiceTest {
         when(ubiServiceConfiguration.getItemSaleStatsDateFormat()).thenReturn(dateFormat);
 
         assertEquals(dateFormat, commonValuesService.getItemSaleStatsDateFormat());
+    }
+
+    @Test
+    public void getMinimumPriceByRarity_should_return_for_uncommon() {
+        Integer minPrice = 10;
+        when(ubiServiceConfiguration.getMinUncommonPrice()).thenReturn(minPrice);
+
+        assertEquals(minPrice, commonValuesService.getMinimumPriceByRarity(ItemRarity.UNCOMMON));
+    }
+
+    @Test
+    public void getMinimumPriceByRarity_should_return_for_rare() {
+        Integer minPrice = 10;
+        when(ubiServiceConfiguration.getMinRarePrice()).thenReturn(minPrice);
+
+        assertEquals(minPrice, commonValuesService.getMinimumPriceByRarity(ItemRarity.RARE));
+    }
+
+    @Test
+    public void getMinimumPriceByRarity_should_return_for_epic() {
+        Integer minPrice = 10;
+        when(ubiServiceConfiguration.getMinEpicPrice()).thenReturn(minPrice);
+
+        assertEquals(minPrice, commonValuesService.getMinimumPriceByRarity(ItemRarity.EPIC));
+    }
+
+    @Test
+    public void getMinimumPriceByRarity_should_return_for_legendary() {
+        Integer minPrice = 10;
+        when(ubiServiceConfiguration.getMinLegendaryPrice()).thenReturn(minPrice);
+
+        assertEquals(minPrice, commonValuesService.getMinimumPriceByRarity(ItemRarity.LEGENDARY));
+    }
+
+    @Test
+    public void getMinimumPriceByRarity_should_return_default() {
+        Integer minPrice = 10;
+        when(ubiServiceConfiguration.getMinLegendaryPrice()).thenReturn(minPrice);
+
+        assertEquals(minPrice, commonValuesService.getMinimumPriceByRarity(ItemRarity.UNKNOWN));
+    }
+
+    @Test
+    public void getMaximumPriceByRarity_should_for_uncommon() {
+        Integer maxPrice = 10;
+        when(ubiServiceConfiguration.getMaxUncommonPrice()).thenReturn(maxPrice);
+
+        assertEquals(maxPrice, commonValuesService.getMaximumPriceByRarity(ItemRarity.UNCOMMON));
+    }
+
+    @Test
+    public void getMaximumPriceByRarity_should_for_rare() {
+        Integer maxPrice = 10;
+        when(ubiServiceConfiguration.getMaxRarePrice()).thenReturn(maxPrice);
+
+        assertEquals(maxPrice, commonValuesService.getMaximumPriceByRarity(ItemRarity.RARE));
+    }
+
+    @Test
+    public void getMaximumPriceByRarity_should_for_epic() {
+        Integer maxPrice = 10;
+        when(ubiServiceConfiguration.getMaxEpicPrice()).thenReturn(maxPrice);
+
+        assertEquals(maxPrice, commonValuesService.getMaximumPriceByRarity(ItemRarity.EPIC));
+    }
+
+    @Test
+    public void getMaximumPriceByRarity_should_for_legendary() {
+        Integer maxPrice = 10;
+        when(ubiServiceConfiguration.getMaxLegendaryPrice()).thenReturn(maxPrice);
+
+        assertEquals(maxPrice, commonValuesService.getMaximumPriceByRarity(ItemRarity.LEGENDARY));
+    }
+
+    @Test
+    public void getMaximumPriceByRarity_should_return_default() {
+        Integer maxPrice = 10;
+        when(ubiServiceConfiguration.getMaxUncommonPrice()).thenReturn(maxPrice);
+
+        assertEquals(maxPrice, commonValuesService.getMaximumPriceByRarity(ItemRarity.UNCOMMON));
     }
 
     @Test

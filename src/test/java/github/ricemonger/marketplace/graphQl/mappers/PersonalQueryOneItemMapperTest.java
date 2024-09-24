@@ -526,8 +526,6 @@ class PersonalQueryOneItemMapperTest {
         expected.setSellOrdersCount(99);
         expected.setLastSoldAt(new Date(date.getTime() + 2000));
         expected.setLastSoldPrice(777);
-        expected.setLimitMinPrice(10000);
-        expected.setLimitMaxPrice(100000);
         expected.setOwned(true);
         Trade expectedTrade = new Trade();
         expectedTrade.setItemId("223");

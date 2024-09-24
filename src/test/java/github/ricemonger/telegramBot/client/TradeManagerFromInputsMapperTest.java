@@ -1,9 +1,11 @@
 package github.ricemonger.telegramBot.client;
 
+import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.ProfitAndPriorityCalculator;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.*;
+import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.TradeManagerTradeType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ class TradeManagerFromInputsMapperTest {
     private TradeManagerFromInputsMapper tradeManagerFromInputsMapper;
     @MockBean
     private ProfitAndPriorityCalculator profitAndPriorityCalculator;
+    @MockBean
+    private CommonValuesService commonValuesService;
 
     @Test
     public void mapToTradeByItemIdManager_should_map_inputs_to_manager_with_valid_inputs() {
@@ -47,8 +51,10 @@ class TradeManagerFromInputsMapperTest {
         Item item = new Item();
         item.setMinSellPrice(0);
         item.setMaxBuyPrice(120);
-        item.setLimitMinPrice(120);
-        item.setLimitMaxPrice(150_000);
+
+        item.setRarity(ItemRarity.UNCOMMON);
+        when(commonValuesService.getMinimumPriceByRarity(item.getRarity())).thenReturn(0);
+        when(commonValuesService.getMaximumPriceByRarity(item.getRarity())).thenReturn(1000);
 
         assertEquals(expected, tradeManagerFromInputsMapper.mapToTradeByItemIdManager(inputs, TradeManagerTradeType.BUY, item, true));
     }
@@ -77,8 +83,12 @@ class TradeManagerFromInputsMapperTest {
         Item item = new Item();
         item.setMinSellPrice(150);
         item.setMaxBuyPrice(0);
-        item.setLimitMinPrice(120);
-        item.setLimitMaxPrice(150_000);
+
+        item.setRarity(ItemRarity.UNCOMMON);
+        when(commonValuesService.getMinimumPriceByRarity(item.getRarity())).thenReturn(120);
+        when(commonValuesService.getMaximumPriceByRarity(item.getRarity())).thenReturn(100000);
+
+
 
         when(profitAndPriorityCalculator.calculateNextBuyPrice(item)).thenReturn(120);
 
@@ -111,8 +121,10 @@ class TradeManagerFromInputsMapperTest {
         Item item = new Item();
         item.setMinSellPrice(150);
         item.setMaxBuyPrice(0);
-        item.setLimitMinPrice(120);
-        item.setLimitMaxPrice(150_000);
+
+        item.setRarity(ItemRarity.UNCOMMON);
+        when(commonValuesService.getMinimumPriceByRarity(item.getRarity())).thenReturn(0);
+        when(commonValuesService.getMaximumPriceByRarity(item.getRarity())).thenReturn(360);
 
         when(profitAndPriorityCalculator.calculateNextBuyPrice(item)).thenReturn(120);
 
@@ -145,8 +157,10 @@ class TradeManagerFromInputsMapperTest {
         Item item = new Item();
         item.setMinSellPrice(150);
         item.setMaxBuyPrice(0);
-        item.setLimitMinPrice(120);
-        item.setLimitMaxPrice(150_000);
+
+        item.setRarity(ItemRarity.UNCOMMON);
+        when(commonValuesService.getMinimumPriceByRarity(item.getRarity())).thenReturn(120);
+        when(commonValuesService.getMaximumPriceByRarity(item.getRarity())).thenReturn(360);
 
         when(profitAndPriorityCalculator.calculateNextBuyPrice(item)).thenReturn(120);
 
@@ -179,8 +193,10 @@ class TradeManagerFromInputsMapperTest {
         Item item = new Item();
         item.setMinSellPrice(150);
         item.setMaxBuyPrice(0);
-        item.setLimitMinPrice(120);
-        item.setLimitMaxPrice(150_000);
+
+        item.setRarity(ItemRarity.UNCOMMON);
+        when(commonValuesService.getMinimumPriceByRarity(item.getRarity())).thenReturn(0);
+        when(commonValuesService.getMaximumPriceByRarity(item.getRarity())).thenReturn(150_000);
 
         when(profitAndPriorityCalculator.calculateNextBuyPrice(item)).thenReturn(120);
 

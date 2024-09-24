@@ -1,6 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.entities.item;
 
 import github.ricemonger.utils.dtos.Item;
+import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
 import org.junit.jupiter.api.Test;
 
@@ -25,8 +26,7 @@ class ItemEntityTest {
         item.setSellOrdersCount(8);
         item.setLastSoldAt(new Date(0));
         item.setLastSoldPrice(9);
-        item.setLimitMinPrice(10);
-        item.setLimitMaxPrice(11);
+        item.setRarity(ItemRarity.EPIC);
 
         Set<TagEntity> tagsEntities = new HashSet<>();
         TagEntity tagEntity1 = new TagEntity();
@@ -51,8 +51,7 @@ class ItemEntityTest {
         expected.setSellOrdersCount(8);
         expected.setLastSoldAt(new Date(0));
         expected.setLastSoldPrice(9);
-        expected.setLimitMinPrice(10);
-        expected.setLimitMaxPrice(11);
+        expected.setRarity(ItemRarity.EPIC);
 
         ItemEntity actual = new ItemEntity(item,tagsEntities);
 
@@ -73,8 +72,7 @@ class ItemEntityTest {
         item.setSellOrdersCount(8);
         item.setLastSoldAt(new Date(0));
         item.setLastSoldPrice(9);
-        item.setLimitMinPrice(10);
-        item.setLimitMaxPrice(11);
+        item.setRarity(ItemRarity.UNCOMMON);
 
         Set<TagEntity> tagsEntities = new HashSet<>();
         TagEntity tagEntity1 = new TagEntity();
@@ -99,8 +97,7 @@ class ItemEntityTest {
         expected.setSellOrdersCount(8);
         expected.setLastSoldAt(new Date(0));
         expected.setLastSoldPrice(9);
-        expected.setLimitMinPrice(10);
-        expected.setLimitMaxPrice(11);
+        expected.setRarity(ItemRarity.UNCOMMON);
 
         ItemEntity actual = new ItemEntity(item,tagsEntities);
 
@@ -121,8 +118,7 @@ class ItemEntityTest {
         item.setSellOrdersCount(8);
         item.setLastSoldAt(new Date(0));
         item.setLastSoldPrice(9);
-        item.setLimitMinPrice(10);
-        item.setLimitMaxPrice(11);
+        item.setRarity(ItemRarity.UNKNOWN);
 
         Set<TagEntity> tagsEntities = new HashSet<>();
         TagEntity tagEntity1 = new TagEntity();
@@ -147,8 +143,7 @@ class ItemEntityTest {
         expected.setSellOrdersCount(8);
         expected.setLastSoldAt(new Date(0));
         expected.setLastSoldPrice(9);
-        expected.setLimitMinPrice(10);
-        expected.setLimitMaxPrice(11);
+        expected.setRarity(ItemRarity.UNKNOWN);
 
         ItemEntity actual = new ItemEntity(item, tagsEntities);
 
@@ -188,8 +183,7 @@ class ItemEntityTest {
         expected.setSellOrdersCount(0);
         expected.setLastSoldAt(null);
         expected.setLastSoldPrice(0);
-        expected.setLimitMinPrice(0);
-        expected.setLimitMaxPrice(0);
+        expected.setRarity(null);
 
         ItemEntity actual = new ItemEntity(item,tagsEntities);
 
@@ -218,8 +212,7 @@ class ItemEntityTest {
         entity.setSellOrdersCount(8);
         entity.setLastSoldAt(new Date(0));
         entity.setLastSoldPrice(9);
-        entity.setLimitMinPrice(10);
-        entity.setLimitMaxPrice(11);
+        entity.setRarity(ItemRarity.LEGENDARY);
 
         Item expected = new Item();
         expected.setItemId("1");
@@ -233,8 +226,7 @@ class ItemEntityTest {
         expected.setSellOrdersCount(8);
         expected.setLastSoldAt(new Date(0));
         expected.setLastSoldPrice(9);
-        expected.setLimitMinPrice(10);
-        expected.setLimitMaxPrice(11);
+        expected.setRarity(ItemRarity.LEGENDARY);
 
         Item actual = entity.toItem();
 
@@ -255,8 +247,7 @@ class ItemEntityTest {
         entity.setSellOrdersCount(8);
         entity.setLastSoldAt(new Date(0));
         entity.setLastSoldPrice(9);
-        entity.setLimitMinPrice(10);
-        entity.setLimitMaxPrice(11);
+        entity.setRarity(ItemRarity.RARE);
 
         Item expected = new Item();
         expected.setItemId("1");
@@ -270,8 +261,7 @@ class ItemEntityTest {
         expected.setSellOrdersCount(8);
         expected.setLastSoldAt(new Date(0));
         expected.setLastSoldPrice(9);
-        expected.setLimitMinPrice(10);
-        expected.setLimitMaxPrice(11);
+        expected.setRarity(ItemRarity.RARE);
 
         Item actual = entity.toItem();
 
@@ -300,8 +290,7 @@ class ItemEntityTest {
         expected.setSellOrdersCount(0);
         expected.setLastSoldAt(null);
         expected.setLastSoldPrice(0);
-        expected.setLimitMinPrice(0);
-        expected.setLimitMaxPrice(0);
+        expected.setRarity(null);
 
         Item actual = entity.toItem();
 
@@ -327,7 +316,6 @@ class ItemEntityTest {
                entity1.getSellOrdersCount() == entity2.getSellOrdersCount() &&
                Objects.equals(entity1.getLastSoldAt(), entity2.getLastSoldAt()) &&
                entity1.getLastSoldPrice() == entity2.getLastSoldPrice() &&
-               entity1.getLimitMinPrice() == entity2.getLimitMinPrice() &&
-               entity1.getLimitMaxPrice() == entity2.getLimitMaxPrice();
+               entity1.getRarity() == entity2.getRarity();
     }
 }

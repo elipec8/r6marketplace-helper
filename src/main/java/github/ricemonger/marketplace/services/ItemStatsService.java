@@ -7,20 +7,17 @@ import github.ricemonger.marketplace.services.abstractions.ItemSaleUbiStatsServi
 import github.ricemonger.utils.dtos.*;
 import github.ricemonger.utils.enums.ItemRarity;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class ItemStatsService {
 
     private final TagService tagService;
-
-    private final CommonValuesService commonValuesService;
 
     private final ProfitAndPriorityCalculator profitAndPriorityCalculator;
 
@@ -33,7 +30,7 @@ public class ItemStatsService {
     private final ItemSaleUbiStatsService itemSaleUbiStatsService;
 
     public void saveAllItemsAndSales(Collection<Item> items) {
-        setLimitPricesForItems(items);
+        setRaritiesForItems(items);
         itemDatabaseService.saveAll(items);
         saleDatabaseService.saveAll(items);
     }
@@ -42,42 +39,15 @@ public class ItemStatsService {
         itemSaleUbiStatsService.saveAll(ubiStats);
     }
 
-    private void setLimitPricesForItems(Collection<Item> items) {
+    private void setRaritiesForItems(Collection<Item> items) {
         List<Tag> tags = new ArrayList<>(tagService.getTagsByNames(List.of("UNCOMMON", "RARE", "EPIC", "LEGENDARY")));
         String uncommonTag = tags.stream().filter(tag -> tag.getName().equals("UNCOMMON")).findFirst().get().getValue();
         String rareTag = tags.stream().filter(tag -> tag.getName().equals("RARE")).findFirst().get().getValue();
         String epicTag = tags.stream().filter(tag -> tag.getName().equals("EPIC")).findFirst().get().getValue();
         String legendaryTag = tags.stream().filter(tag -> tag.getName().equals("LEGENDARY")).findFirst().get().getValue();
 
-        int minUncommon = commonValuesService.getMinimumUncommonPrice();
-        int maxUncommon = commonValuesService.getMaximumUncommonPrice();
-        int minRare = commonValuesService.getMinimumRarePrice();
-        int maxRare = commonValuesService.getMaximumRarePrice();
-        int minEpic = commonValuesService.getMinimumEpicPrice();
-        int maxEpic = commonValuesService.getMaximumEpicPrice();
-        int minLegendary = commonValuesService.getMinimumLegendaryPrice();
-        int maxLegendary = commonValuesService.getMaximumLegendaryPrice();
-        int minMarketplace = commonValuesService.getMinimumMarketplacePrice();
-        int maxMarketplace = commonValuesService.getMaximumMarketplacePrice();
-
         for (Item item : items) {
-            ItemRarity rarity = item.getItemRarity(uncommonTag, rareTag, epicTag, legendaryTag);
-            if (rarity == ItemRarity.UNCOMMON) {
-                item.setLimitMinPrice(minUncommon);
-                item.setLimitMaxPrice(maxUncommon);
-            } else if (rarity == ItemRarity.RARE) {
-                item.setLimitMinPrice(minRare);
-                item.setLimitMaxPrice(maxRare);
-            } else if (rarity == ItemRarity.EPIC) {
-                item.setLimitMinPrice(minEpic);
-                item.setLimitMaxPrice(maxEpic);
-            } else if (rarity == ItemRarity.LEGENDARY) {
-                item.setLimitMinPrice(minLegendary);
-                item.setLimitMaxPrice(maxLegendary);
-            } else {
-                item.setLimitMinPrice(minMarketplace);
-                item.setLimitMaxPrice(maxMarketplace);
-            }
+            item.setRarityByTags(uncommonTag, rareTag, epicTag, legendaryTag);
         }
     }
 

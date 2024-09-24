@@ -1,5 +1,6 @@
 package github.ricemonger.utils.dtos;
 
+import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
 import org.junit.jupiter.api.Test;
 
@@ -18,8 +19,7 @@ class ItemInSetTest {
         item1.setTags(List.of("tag1"));
         item1.setMaxBuyPrice(120);
         item1.setMinSellPrice(100);
-        item1.setLimitMaxPrice(150);
-        item1.setLimitMinPrice(90);
+        item1.setRarity(ItemRarity.UNCOMMON);
         item1.setLastSoldAt(new Date(0));
         item1.setLastSoldPrice(110);
         item1.setType(ItemType.WeaponSkin);
@@ -31,8 +31,7 @@ class ItemInSetTest {
         item2.setTags(List.of("tag2"));
         item2.setMaxBuyPrice(130);
         item2.setMinSellPrice(110);
-        item2.setLimitMaxPrice(160);
-        item2.setLimitMinPrice(100);
+        item2.setRarity(ItemRarity.RARE);
         item2.setLastSoldAt(new Date(1000));
         item2.setLastSoldPrice(120);
         item2.setType(ItemType.CharacterUniform);

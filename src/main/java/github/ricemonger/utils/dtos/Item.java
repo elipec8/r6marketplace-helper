@@ -19,6 +19,9 @@ public class Item implements SoldItemDetails {
     private String assetUrl;
     private String name;
     private List<String> tags;
+
+    private ItemRarity rarity;
+
     private ItemType type;
 
     private int maxBuyPrice;
@@ -30,24 +33,22 @@ public class Item implements SoldItemDetails {
     private Date lastSoldAt;
     private int lastSoldPrice;
 
-    private int limitMinPrice;
-    private int limitMaxPrice;
-
-    public ItemRarity getItemRarity(String uncommonTag, String rareTag, String epicTag, String legendaryTag) {
+    public void setRarityByTags(String uncommonTag, String rareTag, String epicTag, String legendaryTag){
+        List<String> tags = this.tags;
         if (tags == null) {
             log.error("Tags are null for item {}", this);
-            return ItemRarity.UNKNOWN;
+            this.rarity = ItemRarity.UNKNOWN;
         } else if (tags.contains(uncommonTag)) {
-            return ItemRarity.UNCOMMON;
+            this.rarity = ItemRarity.UNCOMMON;
         } else if (tags.contains(rareTag)) {
-            return ItemRarity.RARE;
+            this.rarity = ItemRarity.RARE;
         } else if (tags.contains(epicTag)) {
-            return ItemRarity.EPIC;
+            this.rarity = ItemRarity.EPIC;
         } else if (tags.contains(legendaryTag)) {
-            return ItemRarity.LEGENDARY;
+            this.rarity = ItemRarity.LEGENDARY;
         } else {
             log.error("Unknown rarity tag for item {}", this);
-            return ItemRarity.UNKNOWN;
+            this.rarity = ItemRarity.UNKNOWN;
         }
     }
 
