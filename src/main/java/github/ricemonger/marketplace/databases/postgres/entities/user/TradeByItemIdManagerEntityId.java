@@ -1,18 +1,21 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
+import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class TradeByItemIdManagerEntityId {
     private UserEntity user;
-    private String itemId;
+    private ItemEntity item;
 
     public int hashCode() {
-        return user.getId().hashCode() + itemId.hashCode();
+        return Objects.hash(user.getId(), item.getItemId());
     }
 
     public boolean equals(Object o) {
@@ -22,6 +25,7 @@ public class TradeByItemIdManagerEntityId {
         if (!(o instanceof TradeByItemIdManagerEntityId tradeByItemIdManagerEntityId)) {
             return false;
         }
-        return tradeByItemIdManagerEntityId.user.getId().equals(user.getId()) && tradeByItemIdManagerEntityId.itemId.equals(itemId);
+        return Objects.equals(user.getId(), tradeByItemIdManagerEntityId.user.getId()) &&
+                Objects.equals(item.getItemId(), tradeByItemIdManagerEntityId.item.getItemId());
     }
 }
