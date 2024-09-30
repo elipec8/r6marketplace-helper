@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,7 +34,7 @@ class ItemPostgresRepositoryTest {
         itemPostgresRepository.save(item2);
         itemPostgresRepository.save(item3);
 
-        List<String> itemIds = itemPostgresRepository.findAllItemIds();
+        Set<String> itemIds = itemPostgresRepository.findAllItemIds();
 
         assertEquals(3, itemIds.size());
         assertTrue(itemIds.contains("itemId1"));

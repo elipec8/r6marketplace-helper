@@ -36,6 +36,7 @@ public class PersonalItem extends Item {
                "AssetUrl" + super.getAssetUrl() + "\n" +
                "Name" + super.getName() + "\n" +
                "Tags" + super.getTags() + "\n" +
+               "Rarity" + super.getRarity() + "\n" +
                "Type" + super.getType() + "\n" +
                "MaxBuyPrice" + super.getMaxBuyPrice() + "\n" +
                "BuyOrdersCount" + super.getBuyOrdersCount() + "\n" +
@@ -43,8 +44,6 @@ public class PersonalItem extends Item {
                "SellOrdersCount" + super.getSellOrdersCount() + "\n" +
                "LastSoldAt" + super.getLastSoldAt() + "\n" +
                "LastSoldPrice" + super.getLastSoldPrice() + "\n" +
-               "LimitMinPrice" + super.getLimitMinPrice() + "\n" +
-               "LimitMaxPrice" + super.getLimitMaxPrice() + "\n" +
                "isOwned" + isOwned + "\n" +
                "trades" + trades + "\n" +
                '}';

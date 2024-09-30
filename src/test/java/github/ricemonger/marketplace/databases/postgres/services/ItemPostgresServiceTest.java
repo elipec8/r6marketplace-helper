@@ -41,11 +41,11 @@ class ItemPostgresServiceTest {
     @Test
     public void saveAll_should_update_existing_item_in_db() {
 
-        Item item1 = new Item();
+        ItemEntity item1 = new ItemEntity();
         item1.setItemId("1");
         item1.setName("old name");
 
-        itemRepository.save(new ItemEntity(item1));
+        itemRepository.save(item1);
 
         Item item2 = new Item();
         item2.setItemId("1");
@@ -59,9 +59,10 @@ class ItemPostgresServiceTest {
 
     @Test
     public void findById_should_return_item_by_id() {
-        Item item = createItem("1");
+        ItemEntity item = new ItemEntity();
+        item.setItemId("1");
         item.setName("name");
-        itemRepository.save(new ItemEntity(item));
+        itemRepository.save(item);
 
         assertEquals("name", itemService.findById("1").getName());
     }
@@ -73,12 +74,14 @@ class ItemPostgresServiceTest {
 
     @Test
     public void findAll_should_return_all_items() {
-        Item item1 = createItem("1");
+        ItemEntity item1 = new ItemEntity();
+        item1.setItemId("1");
         item1.setName("name1");
-        Item item2 = createItem("2");
+        ItemEntity item2 = new ItemEntity();
+        item2.setItemId("2");
         item2.setName("name2");
-        itemRepository.save(new ItemEntity(item1));
-        itemRepository.save(new ItemEntity(item2));
+        itemRepository.save(item1);
+        itemRepository.save(item2);
 
         List<String> result = itemService.findAll().stream().map(Item::getName).toList();
 

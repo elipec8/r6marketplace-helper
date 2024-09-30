@@ -10,6 +10,7 @@ import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.v
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.viewer.meta.trades.nodes.PaymentOptions;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.viewer.meta.trades.nodes.PaymentProposal;
 import github.ricemonger.marketplace.services.CommonValuesService;
+import github.ricemonger.marketplace.services.TagService;
 import github.ricemonger.utils.dtos.PersonalItem;
 import github.ricemonger.utils.dtos.Trade;
 import github.ricemonger.utils.enums.ItemType;
@@ -112,8 +113,6 @@ public class PersonalQueryOneItemMapper {
         if (marketableItem.getPaymentLimitations() == null || marketableItem.getPaymentLimitations().getMinPrice() == null || marketableItem.getPaymentLimitations().getMaxPrice() == null) {
             throw new GraphQlPersonalOneItemMappingException("PaymentLimitations or it's field is null in MarketableItem: " + marketableItem);
         }
-        result.setLimitMinPrice(marketableItem.getPaymentLimitations().getMinPrice());
-        result.setLimitMaxPrice(marketableItem.getPaymentLimitations().getMaxPrice());
 
         if (marketableItem.getItem().getViewer() == null || marketableItem.getItem().getViewer().getMeta() == null || marketableItem.getItem().getViewer().getMeta().getIsOwned() == null) {
             throw new GraphQlPersonalOneItemMappingException("Item's viewer or it's field is null in MarketableItem: " + marketableItem);

@@ -1,13 +1,16 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
 
+import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByItemIdManagerEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByItemIdManagerEntityId;
+import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TradeByItemIdManagerPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserTradeByItemIdManagerDatabaseService;
 import github.ricemonger.utils.dtos.TradeByItemIdManager;
+import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TradeByItemIdManagerDoesntExistException;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,21 +28,25 @@ public class TelegramUserTradeByItemIdManagerPostgresService implements Telegram
 
     private final TelegramUserPostgresRepository telegramUserRepository;
 
+    private final ItemPostgresRepository itemRepository;
+
     @Override
     @Transactional
     public void save(String chatId, TradeByItemIdManager tradeManager) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
+        ItemEntity item = getItemEntityByIdOrThrow(tradeManager.getItemId());
 
-        tradeByItemIdManagerRepository.save(new TradeByItemIdManagerEntity(telegramUser.getUser(), tradeManager));
+        tradeByItemIdManagerRepository.save(new TradeByItemIdManagerEntity(telegramUser.getUser(),item, tradeManager));
     }
 
     @Override
     @Transactional
     public void invertEnabledFlagById(String chatId, String itemId) throws TelegramUserDoesntExistException, TradeByItemIdManagerDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
+        ItemEntity item = getItemEntityByIdOrThrow(itemId);
 
         TradeByItemIdManagerEntity manager = tradeByItemIdManagerRepository.findById
-                        (new TradeByItemIdManagerEntityId(telegramUser.getUser(), itemId))
+                        (new TradeByItemIdManagerEntityId(telegramUser.getUser(), item))
                 .orElseThrow(() -> new TradeByItemIdManagerDoesntExistException(String.format("Trade manager by chatId %s and itemId %s not found", chatId, itemId)));
 
         manager.setEnabled(!manager.isEnabled());
@@ -58,7 +65,7 @@ public class TelegramUserTradeByItemIdManagerPostgresService implements Telegram
 
         while (iterator.hasNext()) {
             TradeByItemIdManagerEntity manager = iterator.next();
-            if (manager.getItemId().equals(itemId)) {
+            if (manager.getItem().getItemId().equals(itemId)) {
                 iterator.remove();
                 break;
             }
@@ -70,8 +77,9 @@ public class TelegramUserTradeByItemIdManagerPostgresService implements Telegram
     @Override
     public TradeByItemIdManager findById(String chatId, String itemId) throws TelegramUserDoesntExistException, TradeByItemIdManagerDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
+        ItemEntity item = getItemEntityByIdOrThrow(itemId);
 
-        return tradeByItemIdManagerRepository.findById(new TradeByItemIdManagerEntityId(telegramUser.getUser(), itemId)).map(TradeByItemIdManagerEntity::toTradeByItemIdManager).orElseThrow(() -> new TradeByItemIdManagerDoesntExistException(String.format("Trade manager by chatId %s and itemId %s not found", chatId, itemId)));
+        return tradeByItemIdManagerRepository.findById(new TradeByItemIdManagerEntityId(telegramUser.getUser(), item)).map(TradeByItemIdManagerEntity::toTradeByItemIdManager).orElseThrow(() -> new TradeByItemIdManagerDoesntExistException(String.format("Trade manager by chatId %s and itemId %s not found", chatId, itemId)));
     }
 
     @Override
@@ -83,5 +91,9 @@ public class TelegramUserTradeByItemIdManagerPostgresService implements Telegram
 
     private TelegramUserEntity getTelegramUserEntityByIdOrThrow(String chatId) {
         return telegramUserRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found"));
+    }
+
+    private ItemEntity getItemEntityByIdOrThrow(String itemId) {
+        return itemRepository.findById(itemId).orElseThrow(() -> new ItemDoesntExistException("Item with id " + itemId + " doesn't exist"));
     }
 }

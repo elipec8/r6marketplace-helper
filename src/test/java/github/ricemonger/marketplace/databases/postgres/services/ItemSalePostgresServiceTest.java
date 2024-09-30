@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,7 +42,7 @@ class ItemSalePostgresServiceTest {
         Item item2 = createSoldItem("2", DATE, 100);
         Item item3 = createSoldItem("1", new Date(DATE.getTime() + 1), 100);
 
-        itemRepository.saveAll(Stream.of(item1, item2, item3).map(ItemEntity::new).toList());
+        itemRepository.saveAll(Stream.of(item1, item2, item3).map(item -> new ItemEntity(item, Set.of())).toList());
 
         itemSaleService.saveAll(List.of(item1, item2, item3));
 
@@ -54,14 +55,14 @@ class ItemSalePostgresServiceTest {
         Item item2 = createSoldItem("2", DATE, 200);
         Item item11 = createSoldItem("1", DATE, 200);
 
-        itemRepository.saveAll(Stream.of(item1, item2).map(ItemEntity::new).toList());
+        itemRepository.saveAll(Stream.of(item1, item2).map(item -> new ItemEntity(item, Set.of())).toList());
 
         itemSaleService.saveAll(List.of(item1, item2));
 
         itemSaleService.saveAll(List.of(item2, item11));
 
         assertEquals(2, itemSaleRepository.count());
-        assertEquals(itemSaleRepository.findById(new ItemSaleEntityId(new ItemEntity(item1),DATE)).get().getPrice(), 200);
+        assertEquals(itemSaleRepository.findById(new ItemSaleEntityId(new ItemEntity(item1, Set.of()),DATE)).get().getPrice(), 200);
     }
 
     @Test
@@ -70,7 +71,7 @@ class ItemSalePostgresServiceTest {
         Item item2 = createSoldItem("2", DATE, 100);
         Item item3 = createSoldItem("3", new Date(DATE.getTime() + 1), 100);
 
-        itemRepository.saveAll(Stream.of(item1).map(ItemEntity::new).toList());
+        itemRepository.saveAll(Stream.of(item1).map(item -> new ItemEntity(item, Set.of())).toList());
 
         itemSaleService.saveAll(List.of(item1, item2, item3));
 
@@ -82,7 +83,7 @@ class ItemSalePostgresServiceTest {
         Item item1 = createSoldItem("1", DATE, 100);
         Item item2 = createSoldItem("2", DATE, 100);
 
-        itemRepository.saveAll(Stream.of(item1, item2).map(ItemEntity::new).toList());
+        itemRepository.saveAll(Stream.of(item1, item2).map(item -> new ItemEntity(item, Set.of())).toList());
 
         itemSaleService.saveAll(List.of(item1, item2));
 

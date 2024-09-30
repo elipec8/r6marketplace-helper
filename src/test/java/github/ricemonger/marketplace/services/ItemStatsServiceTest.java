@@ -6,6 +6,7 @@ import github.ricemonger.marketplace.services.abstractions.ItemSaleHistoryDataba
 import github.ricemonger.marketplace.services.abstractions.ItemSaleUbiStatsService;
 import github.ricemonger.utils.dtos.*;
 import github.ricemonger.utils.enums.FilterType;
+import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.TagGroup;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ class ItemStatsServiceTest {
     private ItemSaleUbiStatsService itemSaleUbiStatsService;
 
     @Test
-    public void saveAllItemsAndSales_should_set_limit_prices_for_unspecified_rarity_and_handle_to_services() {
+    public void saveAllItemsAndSales_should_set_unknown_rarity_for_unspecified_rarity_tag_and_handle_to_services() {
         Item item = new Item();
         item.setItemId("1");
         item.setTags(new ArrayList<>());
@@ -62,8 +63,7 @@ class ItemStatsServiceTest {
 
         itemStatsService.saveAllItemsAndSales(items);
 
-        assertEquals(100, item.getLimitMinPrice());
-        assertEquals(200, item.getLimitMaxPrice());
+        assertEquals(ItemRarity.UNKNOWN, item.getRarity());
 
         verify(itemService).saveAll(same(items));
         verify(saleService).saveAll(same(items));
@@ -77,7 +77,7 @@ class ItemStatsServiceTest {
     }
 
     @Test
-    public void saveAllItemsAndSales_should_set_limit_prices_for_uncommon() {
+    public void saveAllItemsAndSales_should_set_rarity_for_uncommon() {
         Item item = new Item();
         item.setItemId("1");
         item.setTags(List.of("UNCOMMON"));
@@ -97,12 +97,11 @@ class ItemStatsServiceTest {
 
         itemStatsService.saveAllItemsAndSales(items);
 
-        assertEquals(300, item.getLimitMinPrice());
-        assertEquals(400, item.getLimitMaxPrice());
+        assertEquals(ItemRarity.UNCOMMON, item.getRarity());
     }
 
     @Test
-    public void saveAllItemsAndSales_should_set_limit_prices_for_rare() {
+    public void saveAllItemsAndSales_should_set_rarity_for_rare() {
         Item item = new Item();
         item.setItemId("1");
         item.setTags(List.of("RARE"));
@@ -122,12 +121,11 @@ class ItemStatsServiceTest {
 
         itemStatsService.saveAllItemsAndSales(items);
 
-        assertEquals(500, item.getLimitMinPrice());
-        assertEquals(600, item.getLimitMaxPrice());
+        assertEquals(ItemRarity.RARE, item.getRarity());
     }
 
     @Test
-    public void saveAllItemsAndSales_should_set_limit_prices_for_epic() {
+    public void saveAllItemsAndSales_should_set_rarity_for_epic() {
         Item item = new Item();
         item.setItemId("1");
         item.setTags(List.of("EPIC"));
@@ -147,12 +145,11 @@ class ItemStatsServiceTest {
 
         itemStatsService.saveAllItemsAndSales(items);
 
-        assertEquals(700, item.getLimitMinPrice());
-        assertEquals(800, item.getLimitMaxPrice());
+        assertEquals(ItemRarity.EPIC, item.getRarity());
     }
 
     @Test
-    public void saveAllItemsAndSales_should_set_limit_prices_for_legendary() {
+    public void saveAllItemsAndSales_should_set_rarity_for_legendary() {
         Item item = new Item();
         item.setItemId("1");
         item.setTags(List.of("LEGENDARY"));
@@ -172,8 +169,7 @@ class ItemStatsServiceTest {
 
         itemStatsService.saveAllItemsAndSales(items);
 
-        assertEquals(900, item.getLimitMinPrice());
-        assertEquals(1000, item.getLimitMaxPrice());
+        assertEquals(ItemRarity.LEGENDARY, item.getRarity());
     }
 
     @Test

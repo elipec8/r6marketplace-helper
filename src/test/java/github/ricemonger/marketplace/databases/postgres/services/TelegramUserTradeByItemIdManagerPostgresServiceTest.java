@@ -1,12 +1,15 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
+import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByItemIdManagerEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
+import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TradeByItemIdManagerPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.utils.dtos.TradeByItemIdManager;
+import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TradeByItemIdManagerDoesntExistException;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,13 +35,17 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
     private TelegramUserPostgresRepository telegramUserRepository;
     @Autowired
     private UserPostgresRepository userRepository;
+    @Autowired
+    private ItemPostgresRepository itemRepository;
 
     @BeforeEach
     public void setUp() {
         tradeManagerByItemIdRepository.deleteAll();
         telegramUserRepository.deleteAll();
         userRepository.deleteAll();
+        itemRepository.deleteAll();
         createTelegramUser(CHAT_ID);
+        createItem("1");
     }
 
     private TelegramUserEntity createTelegramUser(String chatId) {
@@ -46,11 +53,17 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
         return telegramUserRepository.save(new TelegramUserEntity(chatId, user));
     }
 
+    private ItemEntity createItem(String itemId) {
+        return itemRepository.save(new ItemEntity(itemId));
+    }
+
     @Test
     public void save_should_create_new_trade_manager_if_doesnt_exist() {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("1");
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
+
+        createItem("2");
         tradeManager.setItemId("2");
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
 
@@ -97,12 +110,21 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
     }
 
     @Test
+    public void save_should_throw_exception_if_item_doesnt_exist() {
+        TradeByItemIdManager tradeManager = new TradeByItemIdManager();
+        tradeManager.setItemId("2");
+
+        assertThrows(ItemDoesntExistException.class, () -> telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager));
+    }
+
+    @Test
     public void invertEnabledFlagById_should_invert_enabled_flag() {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("1");
         tradeManager.setEnabled(true);
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
 
+        createItem("2");
         tradeManager.setItemId("2");
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
 
@@ -135,6 +157,8 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("1");
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
+
+        createItem("2");
         tradeManager.setItemId("2");
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
 
@@ -160,6 +184,7 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
         tradeManager.setBuyStartingPrice(1);
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
 
+        createItem("2");
         tradeManager.setItemId("2");
         tradeManager.setBuyStartingPrice(1);
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
@@ -191,6 +216,7 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
         tradeManager.setBuyStartingPrice(1);
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
 
+        createItem("2");
         tradeManager.setItemId("2");
         tradeManager.setBuyStartingPrice(1);
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);

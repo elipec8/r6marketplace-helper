@@ -1,5 +1,6 @@
 package github.ricemonger.telegramBot.client;
 
+import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.ProfitAndPriorityCalculator;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputState;
@@ -15,6 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TradeManagerFromInputsMapper {
 
+    private final CommonValuesService commonValuesService;
+
     private final ProfitAndPriorityCalculator profitAndPriorityCalculator;
 
     public TradeByItemIdManager mapToTradeByItemIdManager(Collection<TelegramUserInput> inputs,
@@ -28,8 +31,8 @@ public class TradeManagerFromInputsMapper {
         String boundaryBuyPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_BUY_PRICE);
         String priority = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_PRIORITY);
 
-        int limitMinPrice = item.getLimitMinPrice();
-        int limitMaxPrice = item.getLimitMaxPrice();
+        int limitMinPrice = commonValuesService.getMinimumPriceByRarity(item.getRarity());
+        int limitMaxPrice = commonValuesService.getMaximumPriceByRarity(item.getRarity());
         int minSellPrice = item.getMinSellPrice() <= limitMinPrice ? limitMinPrice : item.getMinSellPrice() - 1;
 
         int boundSellPrice = parseIntValue(boundarySellPrice, limitMinPrice, limitMaxPrice, minSellPrice);

@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
+import github.ricemonger.marketplace.databases.postgres.entities.item.ItemDaySalesUbiStatsEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemDaySalesUbiStatsPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
@@ -82,6 +83,9 @@ class ItemDaySalesUbiStatsPostgresServiceTest {
         assertEquals(4, itemDaySalesUbiStatsPostgresRepository.count());
 
         assertEquals(3, itemDaySalesUbiStatsPostgresRepository.findAllByItemItemId("itemId1").size());
+
+        System.out.println(itemDaySalesUbiStatsPostgresRepository.findAllByItemItemId("itemId1").stream().map(ItemDaySalesUbiStatsEntity::toItemDaySales).toList());
+        System.out.println(itemDaySales3Updated);
 
         assertTrue(itemDaySalesUbiStatsPostgresRepository.findAllByItemItemId("itemId1").stream().anyMatch(itemDaySales -> itemDaySales.toItemDaySales().equals(itemDaySales3Updated)));
 
