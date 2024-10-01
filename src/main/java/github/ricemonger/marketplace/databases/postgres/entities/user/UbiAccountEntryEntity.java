@@ -1,8 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
-import github.ricemonger.utils.dtos.UbiAccountAuthorizationEntry;
-import github.ricemonger.utils.dtos.UbiAccountAuthorizationEntryWithTelegram;
+import github.ricemonger.utils.dtos.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -110,5 +109,51 @@ public class UbiAccountEntryEntity {
         ubiAccountEntry.setUbiRememberDeviceTicket(this.ubiRememberDeviceTicket);
         ubiAccountEntry.setUbiRememberMeTicket(this.ubiRememberMeTicket);
         return ubiAccountEntry;
+    }
+
+    public UbiAccountTradingEntry toUbiAccountTradingEntry() {
+        UbiAccountTradingEntry ubiAccountTradingEntry = new UbiAccountTradingEntry();
+        ubiAccountTradingEntry.setUbiProfileId(this.ubiProfileId);
+        ubiAccountTradingEntry.setUbiSessionId(this.ubiSessionId);
+        ubiAccountTradingEntry.setUbiSpaceId(this.ubiSpaceId);
+        ubiAccountTradingEntry.setUbiAuthTicket(this.ubiAuthTicket);
+        ubiAccountTradingEntry.setUbiTwoFactorAuthTicket(this.ubiTwoFactorAuthTicket);
+        ubiAccountTradingEntry.setUbiRememberDeviceTicket(this.ubiRememberDeviceTicket);
+        ubiAccountTradingEntry.setUbiRememberMeTicket(this.ubiRememberMeTicket);
+
+        List<String> ownedItemsIds = new ArrayList<>();
+        for (ItemEntity item : this.ownedItems) {
+            ownedItemsIds.add(item.getItemId());
+        }
+        ubiAccountTradingEntry.setOwnedItemsIds(ownedItemsIds);
+
+        ubiAccountTradingEntry.setSoldIn24h(this.soldIn24h);
+        ubiAccountTradingEntry.setBoughtIn24h(this.boughtIn24h);
+
+        List<ItemResaleLock> resaleLocks = new ArrayList<>();
+        for (ItemResaleLockEntity lock : this.resaleLocks) {
+            resaleLocks.add(lock.toItemResaleLock());
+        }
+        ubiAccountTradingEntry.setResaleLocks(resaleLocks);
+
+        List<UbiTrade> currentBuyTrades = new ArrayList<>();
+        for (UbiTradeEntity trade : this.currentBuyTrades) {
+            currentBuyTrades.add(trade.toUbiTrade());
+        }
+        ubiAccountTradingEntry.setCurrentBuyTrades(currentBuyTrades);
+
+        List<UbiTrade> currentSellTrades = new ArrayList<>();
+        for (UbiTradeEntity trade : this.currentSellTrades) {
+            currentSellTrades.add(trade.toUbiTrade());
+        }
+        ubiAccountTradingEntry.setCurrentSellTrades(currentSellTrades);
+
+        List<UbiTrade> finishedTrades = new ArrayList<>();
+        for (UbiTradeEntity trade : this.finishedTrades) {
+            finishedTrades.add(trade.toUbiTrade());
+        }
+        ubiAccountTradingEntry.setFinishedTrades(finishedTrades);
+
+        return ubiAccountTradingEntry;
     }
 }

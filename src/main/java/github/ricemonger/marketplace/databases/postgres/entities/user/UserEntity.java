@@ -60,6 +60,14 @@ public class UserEntity {
 
 
     public TradingUser toTradingUser(){
-        return null;
+        TradingUser tradingUser = new TradingUser();
+        tradingUser.setId(this.id);
+        tradingUser.setChatId(this.telegramUser.getChatId());
+        tradingUser.setUbiAccountTradeEntry(this.ubiAccountEntry.toUbiAccountTradingEntry());
+        tradingUser.setItemFilters(this.itemFilters.stream().map(ItemFilterEntity::toItemFilter).toList());
+        tradingUser.setTradeByItemIdManagers(this.tradeByItemIdManagers.stream().map(TradeByItemIdManagerEntity::toTradeByItemIdManager).toList());
+        tradingUser.setTradeByFiltersManagers(this.tradeByFiltersManagers.stream().map(TradeByFiltersManagerEntity::toTradeByFiltersManager).toList());
+        tradingUser.setPrivateNotificationsEnabledFlag(this.privateNotificationsEnabledFlag);
+        return tradingUser;
     }
 }

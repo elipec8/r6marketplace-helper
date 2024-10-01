@@ -1,6 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
+import github.ricemonger.utils.dtos.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
 import jakarta.persistence.*;
@@ -35,4 +36,23 @@ public class UbiTradeEntity {
 
     private int proposedPaymentPrice;
     private int proposedPaymentFee;
+
+    public UbiTrade toUbiTrade() {
+        UbiTrade ubiTrade = new UbiTrade();
+        ubiTrade.setTradeId(tradeId);
+        ubiTrade.setItemId(item.toItem().getItemId());
+
+        ubiTrade.setState(state);
+        ubiTrade.setCategory(category);
+        ubiTrade.setExpiresAt(expiresAt);
+        ubiTrade.setLastModifiedAt(lastModifiedAt);
+
+        ubiTrade.setSuccessPaymentPrice(successPaymentPrice);
+        ubiTrade.setSuccessPaymentFee(successPaymentFee);
+
+        ubiTrade.setProposedPaymentPrice(proposedPaymentPrice);
+        ubiTrade.setProposedPaymentFee(proposedPaymentFee);
+
+        return ubiTrade;
+    }
 }

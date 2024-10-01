@@ -10,6 +10,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemResaleLock {
+    private String ubiProfileId;
     private String itemId;
     private Date expiresAt;
 }

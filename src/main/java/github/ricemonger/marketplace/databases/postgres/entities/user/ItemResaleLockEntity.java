@@ -1,6 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
+import github.ricemonger.utils.dtos.ItemResaleLock;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,4 +29,12 @@ public class ItemResaleLockEntity {
     private ItemEntity item;
 
     private Date expiresAt;
+
+    public ItemResaleLock toItemResaleLock() {
+        return new ItemResaleLock(
+                ubiAccountEntry.getUbiProfileId(),
+                item.getItemId(),
+                expiresAt
+        );
+    }
 }
