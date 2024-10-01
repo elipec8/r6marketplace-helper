@@ -12,7 +12,7 @@ import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.v
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.TagService;
 import github.ricemonger.utils.dtos.PersonalItem;
-import github.ricemonger.utils.dtos.Trade;
+import github.ricemonger.utils.dtos.UbiTrade;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
@@ -128,11 +128,11 @@ public class PersonalQueryOneItemMapper {
         return result;
     }
 
-    private Trade mapTrade(Nodes node, String itemId) throws GraphQlPersonalOneItemMappingException {
+    private UbiTrade mapTrade(Nodes node, String itemId) throws GraphQlPersonalOneItemMappingException {
         if (node == null || node.getTradeId() == null || node.getState() == null || node.getCategory() == null || node.getExpiresAt() == null || node.getLastModifiedAt() == null) {
             throw new GraphQlPersonalOneItemMappingException("Trade node or one of it's fields is null: " + node);
         }
-        Trade result = new Trade();
+        UbiTrade result = new UbiTrade();
 
         SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
 

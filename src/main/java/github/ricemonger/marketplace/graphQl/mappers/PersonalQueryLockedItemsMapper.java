@@ -3,7 +3,7 @@ package github.ricemonger.marketplace.graphQl.mappers;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.TradeLimitations;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.tradeLimitations.sell.ResaleLocks;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.dtos.LockedItem;
+import github.ricemonger.utils.dtos.ItemResaleLock;
 import github.ricemonger.utils.dtos.UserTransactionsCount;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalLockedItemsMappingException;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class PersonalQueryLockedItemsMapper {
 
     private final CommonValuesService commonValuesService;
 
-    public List<LockedItem> mapLockedItems(TradeLimitations tradeLimitations) throws GraphQlPersonalLockedItemsMappingException {
+    public List<ItemResaleLock> mapLockedItems(TradeLimitations tradeLimitations) throws GraphQlPersonalLockedItemsMappingException {
         if (tradeLimitations == null) {
             throw new GraphQlPersonalLockedItemsMappingException("Trade limitations is null");
         }
@@ -34,11 +34,11 @@ public class PersonalQueryLockedItemsMapper {
         }
     }
 
-    public LockedItem mapLockedItem(ResaleLocks resaleLocks) throws GraphQlPersonalLockedItemsMappingException {
+    public ItemResaleLock mapLockedItem(ResaleLocks resaleLocks) throws GraphQlPersonalLockedItemsMappingException {
         if (resaleLocks == null || resaleLocks.getItemId() == null || resaleLocks.getExpiresAt() == null) {
             throw new GraphQlPersonalLockedItemsMappingException("Resale locks or one of it's fields is null:" + resaleLocks);
         }
-        LockedItem result = new LockedItem();
+        ItemResaleLock result = new ItemResaleLock();
         result.setItemId(resaleLocks.getItemId());
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());

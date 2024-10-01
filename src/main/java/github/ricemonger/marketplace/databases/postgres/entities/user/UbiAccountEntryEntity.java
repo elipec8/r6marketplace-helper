@@ -1,7 +1,8 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
-import github.ricemonger.utils.dtos.UbiAccountEntry;
-import github.ricemonger.utils.dtos.UbiAccountWithTelegram;
+import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
+import github.ricemonger.utils.dtos.UbiAccountAuthorizationEntry;
+import github.ricemonger.utils.dtos.UbiAccountAuthorizationEntryWithTelegram;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +11,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -44,16 +44,15 @@ public class UbiAccountEntryEntity {
     @Column(columnDefinition = "TEXT")
     private String ubiRememberMeTicket;
 
-    @Column(columnDefinition = "TEXT")
-    private String ownedItemsIds;
-
     private Integer soldIn24h;
 
     private Integer boughtIn24h;
 
-    private Integer availableBuySlots;
-
-    private Integer availableSellSlots;
+    @ManyToMany
+    @JoinTable(name = "ubi_account_current_owned_items",
+            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
+            inverseJoinColumns = @JoinColumn(name = "itemId", referencedColumnName = "itemid"))
+    private List<ItemEntity> ownedItems;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(name = "ubi_account_current_resale_locks",
@@ -65,21 +64,21 @@ public class UbiAccountEntryEntity {
     @JoinTable(name = "ubi_account_current_buy_trades",
             joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
             inverseJoinColumns = @JoinColumn(name = "tradeId", referencedColumnName = "tradeId"))
-    private List<UbiAccountEntryTradeEntity> currentBuyTrades = new ArrayList<>();
+    private List<UbiTradeEntity> currentBuyTrades = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(name = "ubi_account_current_sell_trades",
             joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
             inverseJoinColumns = @JoinColumn(name = "tradeId", referencedColumnName = "tradeId"))
-    private List<UbiAccountEntryTradeEntity> currentSellTrades = new ArrayList<>();
+    private List<UbiTradeEntity> currentSellTrades = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(name = "ubi_account_finished_trades",
             joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
             inverseJoinColumns = @JoinColumn(name = "tradeId", referencedColumnName = "tradeId"))
-    private List<UbiAccountEntryTradeEntity> finishedTrades = new ArrayList<>();
+    private List<UbiTradeEntity> finishedTrades = new ArrayList<>();
 
-    public UbiAccountEntryEntity(UserEntity user, UbiAccountEntry account) {
+    public UbiAccountEntryEntity(UserEntity user, UbiAccountAuthorizationEntry account) {
         this.user = user;
         this.email = account.getEmail();
         this.encodedPassword = account.getEncodedPassword();
@@ -90,29 +89,17 @@ public class UbiAccountEntryEntity {
         this.ubiTwoFactorAuthTicket = account.getUbiTwoFactorAuthTicket();
         this.ubiRememberDeviceTicket = account.getUbiRememberDeviceTicket();
         this.ubiRememberMeTicket = account.getUbiRememberMeTicket();
-        StringBuilder itemsIds = new StringBuilder();
-        if (account.getOwnedItemsIds() != null) {
-            for (String id : account.getOwnedItemsIds()) {
-                itemsIds.append(id).append(",");
-            }
-            try {
-                itemsIds.deleteCharAt(itemsIds.length() - 1);
-            } catch (StringIndexOutOfBoundsException e) {
-                log.error("Owned items ids list is empty");
-            }
-        }
-        this.ownedItemsIds = itemsIds.toString();
     }
 
-    public UbiAccountWithTelegram toUbiAccountWithTelegram() {
-        UbiAccountWithTelegram ubiAccountWithTelegram = new UbiAccountWithTelegram();
-        ubiAccountWithTelegram.setUbiAccountEntry(this.toUbiAccount());
+    public UbiAccountAuthorizationEntryWithTelegram toUbiAccountWithTelegram() {
+        UbiAccountAuthorizationEntryWithTelegram ubiAccountWithTelegram = new UbiAccountAuthorizationEntryWithTelegram();
+        ubiAccountWithTelegram.setUbiAccountEntry(this.toUbiAccountEntryForAuthorization());
         ubiAccountWithTelegram.setChatId(this.user.getTelegramUser().getChatId());
         return ubiAccountWithTelegram;
     }
 
-    public UbiAccountEntry toUbiAccount() {
-        UbiAccountEntry ubiAccountEntry = new UbiAccountEntry();
+    public UbiAccountAuthorizationEntry toUbiAccountEntryForAuthorization() {
+        UbiAccountAuthorizationEntry ubiAccountEntry = new UbiAccountAuthorizationEntry();
         ubiAccountEntry.setEmail(this.email);
         ubiAccountEntry.setEncodedPassword(this.encodedPassword);
         ubiAccountEntry.setUbiProfileId(this.ubiProfileId);
@@ -122,12 +109,6 @@ public class UbiAccountEntryEntity {
         ubiAccountEntry.setUbiTwoFactorAuthTicket(this.ubiTwoFactorAuthTicket);
         ubiAccountEntry.setUbiRememberDeviceTicket(this.ubiRememberDeviceTicket);
         ubiAccountEntry.setUbiRememberMeTicket(this.ubiRememberMeTicket);
-        List<String> itemIds = new ArrayList<>();
-        if (this.getOwnedItemsIds() != null) {
-            String[] thisOwnedItemsIds = this.getOwnedItemsIds().split(",");
-            itemIds = new ArrayList<>(Arrays.asList(thisOwnedItemsIds));
-        }
-        ubiAccountEntry.setOwnedItemsIds(itemIds);
         return ubiAccountEntry;
     }
 }

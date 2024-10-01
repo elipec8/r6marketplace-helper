@@ -2,6 +2,7 @@ package github.ricemonger.marketplace.scheduled_tasks;
 
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.UserService;
+import github.ricemonger.utils.dtos.ConfigTrades;
 import github.ricemonger.utils.dtos.TradingUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,21 +18,18 @@ public class ScheduledTradesManagement {
 
     private final CommonValuesService commonValuesService;
 
-    //@Scheduled(fixedRate = 60 * 1000, initialDelay = 300 * 1000) // every 1m after 5m of delay
+    @Scheduled(fixedRate = 60 * 1000, initialDelay = 300 * 1000) // every 1m after 5m of delay
     public void manageAllUsersTrades() {
-     //   int maxBuyTrades = commonValuesService.getMaxBuyTrades();
-
-      //  int maxSellTrades = commonValuesService.getMaxSellTrades();
+        ConfigTrades configTrades = commonValuesService.getConfigTrades();
 
         List<TradingUser> toManage = userService.getAllTradingUsers();
 
         for (TradingUser user : toManage) {
-       //     managerUserTrades(user, maxBuyTrades, maxSellTrades);
+            managerUserTrades(user, configTrades);
         }
     }
 
-    private void managerUserTrades(TradingUser user, int maxBuyTrades, int maxSellTrades) {
-      //  int activeBuyTrades = user.getActiveBuyTrades();
-      //  int activeSellTrades = user.getActiveSellTrades();
+    private void managerUserTrades(TradingUser user, ConfigTrades configTrades) {
+
     }
 }

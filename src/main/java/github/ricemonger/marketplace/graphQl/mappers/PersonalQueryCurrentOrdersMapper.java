@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.graphQl.dtos.personal_query_current_orders.
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_current_orders.trades.nodes.PaymentOptions;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_current_orders.trades.nodes.PaymentProposal;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.dtos.Trade;
+import github.ricemonger.utils.dtos.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalCurrentOrderMappingException;
@@ -26,7 +26,7 @@ public class PersonalQueryCurrentOrdersMapper {
 
     private final CommonValuesService commonValuesService;
 
-    public Collection<Trade> mapCurrentOrders(Trades trades) throws GraphQlPersonalCurrentOrderMappingException {
+    public Collection<UbiTrade> mapCurrentOrders(Trades trades) throws GraphQlPersonalCurrentOrderMappingException {
         if (trades == null) {
             throw new GraphQlPersonalCurrentOrderMappingException("Trades is null");
         }
@@ -35,12 +35,12 @@ public class PersonalQueryCurrentOrdersMapper {
         return nodes.stream().map(this::mapCurrentOrder).toList();
     }
 
-    public Trade mapCurrentOrder(Nodes node) throws GraphQlPersonalCurrentOrderMappingException {
+    public UbiTrade mapCurrentOrder(Nodes node) throws GraphQlPersonalCurrentOrderMappingException {
         if (node == null) {
             throw new GraphQlPersonalCurrentOrderMappingException("Node is null");
         }
 
-        Trade result = new Trade();
+        UbiTrade result = new UbiTrade();
 
         SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
 

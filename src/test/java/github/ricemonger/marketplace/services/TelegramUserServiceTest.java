@@ -391,9 +391,9 @@ class TelegramUserServiceTest {
 
     @Test
     public void getUserUbiAccountEntry_should_return_user_ubi_account_entry() {
-        when(telegramUserUbiAccountEntryDatabaseService.findByChatId("123")).thenReturn(new UbiAccountEntry());
+        when(telegramUserUbiAccountEntryDatabaseService.findByChatId("123")).thenReturn(new UbiAccountAuthorizationEntry());
 
-        assertEquals(new UbiAccountEntry(), telegramUserService.getUserUbiAccountEntry(123L));
+        assertEquals(new UbiAccountAuthorizationEntry(), telegramUserService.getUserUbiAccountEntry(123L));
 
         verify(telegramUserUbiAccountEntryDatabaseService).findByChatId("123");
     }

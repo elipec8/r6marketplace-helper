@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.tr
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.tradeLimitations.Sell;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.tradeLimitations.sell.ResaleLocks;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.dtos.LockedItem;
+import github.ricemonger.utils.dtos.ItemResaleLock;
 import github.ricemonger.utils.dtos.UserTransactionsCount;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalLockedItemsMappingException;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-class PersonalQueryLockedItemsMapperTest {
+class PersonalQueryItemsMapperTestResaleLock {
     @SpyBean
     private PersonalQueryLockedItemsMapper personalQueryLockedItemsMapper;
     @Autowired
@@ -41,10 +41,10 @@ class PersonalQueryLockedItemsMapperTest {
         tradeLimitations.getSell().getResaleLocks().add(new ResaleLocks("1", sdf.format(date)));
         tradeLimitations.getSell().getResaleLocks().add(new ResaleLocks("2", sdf.format(date.getTime() + 1000)));
 
-        LockedItem expected1 = new LockedItem("1", date);
-        LockedItem expected2 = new LockedItem("2", new Date(date.getTime() + 1000));
+        ItemResaleLock expected1 = new ItemResaleLock("1", date);
+        ItemResaleLock expected2 = new ItemResaleLock("2", new Date(date.getTime() + 1000));
 
-        List<LockedItem> result = personalQueryLockedItemsMapper.mapLockedItems(tradeLimitations);
+        List<ItemResaleLock> result = personalQueryLockedItemsMapper.mapLockedItems(tradeLimitations);
 
         assertTrue(result.contains(expected1) && result.contains(expected2));
         verify(personalQueryLockedItemsMapper, times(2)).mapLockedItem(any());
@@ -81,7 +81,7 @@ class PersonalQueryLockedItemsMapperTest {
 
         ResaleLocks resaleLocks = new ResaleLocks("1", sdf.format(date));
 
-        LockedItem expected = new LockedItem("1", date);
+        ItemResaleLock expected = new ItemResaleLock("1", date);
 
         assertEquals(expected, personalQueryLockedItemsMapper.mapLockedItem(resaleLocks));
     }
@@ -90,7 +90,7 @@ class PersonalQueryLockedItemsMapperTest {
     public void mapLockedItem_should_map_item_with_invalid_expiresAt() {
         ResaleLocks resaleLocks = new ResaleLocks("1", "invalid date");
 
-        LockedItem expected = new LockedItem("1", new Date(0));
+        ItemResaleLock expected = new ItemResaleLock("1", new Date(0));
 
         assertEquals(expected, personalQueryLockedItemsMapper.mapLockedItem(resaleLocks));
     }

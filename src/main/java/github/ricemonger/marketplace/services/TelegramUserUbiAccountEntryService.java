@@ -3,8 +3,8 @@ package github.ricemonger.marketplace.services;
 import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
 import github.ricemonger.utils.dtos.AuthorizationDTO;
-import github.ricemonger.utils.dtos.UbiAccountEntry;
-import github.ricemonger.utils.dtos.UbiAccountWithTelegram;
+import github.ricemonger.utils.dtos.UbiAccountAuthorizationEntry;
+import github.ricemonger.utils.dtos.UbiAccountAuthorizationEntryWithTelegram;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiUserAuthorizationClientErrorException;
@@ -33,19 +33,19 @@ public class TelegramUserUbiAccountEntryService {
             UbiUserAuthorizationServerErrorException {
         AuthorizationDTO userAuthorizationDTO = authorizationService.authorizeAndGetDTO(email, password);
 
-        telegramUserUbiAccountEntryDatabaseService.save(chatId, buildUbiAccount(email, authorizationService.getEncodedPassword(password), userAuthorizationDTO));
+        telegramUserUbiAccountEntryDatabaseService.saveAuthorizationInfo(chatId, buildUbiAccount(email, authorizationService.getEncodedPassword(password), userAuthorizationDTO));
     }
 
     public void deleteByChatId(String chatId) throws TelegramUserDoesntExistException {
         telegramUserUbiAccountEntryDatabaseService.deleteByChatId(chatId);
     }
 
-    public List<UbiAccountWithTelegram> reauthorizeAllUbiUsersAndGetUnauthorizedList() {
-        List<UbiAccountWithTelegram> users = new ArrayList<>(telegramUserUbiAccountEntryDatabaseService.findAll());
+    public List<UbiAccountAuthorizationEntryWithTelegram> reauthorizeAllUbiUsersAndGetUnauthorizedList() {
+        List<UbiAccountAuthorizationEntryWithTelegram> users = new ArrayList<>(telegramUserUbiAccountEntryDatabaseService.findAll());
 
-        List<UbiAccountWithTelegram> unauthorizedUsers = new ArrayList<>();
+        List<UbiAccountAuthorizationEntryWithTelegram> unauthorizedUsers = new ArrayList<>();
 
-        for (UbiAccountWithTelegram user : users) {
+        for (UbiAccountAuthorizationEntryWithTelegram user : users) {
             try {
                 reauthorizeAndSaveUser(user.getChatId(), user.getEmail(), user.getEncodedPassword());
             } catch (UbiUserAuthorizationClientErrorException | UbiUserAuthorizationServerErrorException e) {
@@ -56,7 +56,7 @@ public class TelegramUserUbiAccountEntryService {
         return unauthorizedUsers;
     }
 
-    public UbiAccountEntry findByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
+    public UbiAccountAuthorizationEntry findByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
         return telegramUserUbiAccountEntryDatabaseService.findByChatId(chatId);
     }
 
@@ -64,7 +64,7 @@ public class TelegramUserUbiAccountEntryService {
         AuthorizationDTO dto = authorizationService.authorizeAndGetDtoForEncodedPassword(email, encodedPassword);
 
         try {
-            telegramUserUbiAccountEntryDatabaseService.save(chatId, buildUbiAccount(email, encodedPassword, dto));
+            telegramUserUbiAccountEntryDatabaseService.saveAuthorizationInfo(chatId, buildUbiAccount(email, encodedPassword, dto));
         } catch (TelegramUserDoesntExistException e) {
             log.error("Telegram user with chatId {} doesn't exist, but reauthorize ubi user was called fir him with authorizationDto-{}", chatId, dto);
         } catch (UbiAccountEntryAlreadyExistsException e) {
@@ -72,8 +72,8 @@ public class TelegramUserUbiAccountEntryService {
         }
     }
 
-    private UbiAccountEntry buildUbiAccount(String email, String encodedPassword, AuthorizationDTO authorizationDTO) {
-        UbiAccountEntry user = new UbiAccountEntry();
+    private UbiAccountAuthorizationEntry buildUbiAccount(String email, String encodedPassword, AuthorizationDTO authorizationDTO) {
+        UbiAccountAuthorizationEntry user = new UbiAccountAuthorizationEntry();
         user.setEmail(email);
         user.setEncodedPassword(encodedPassword);
 

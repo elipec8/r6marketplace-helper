@@ -14,7 +14,7 @@ import java.util.Objects;
 @AllArgsConstructor
 public class PersonalItem extends Item {
     private boolean isOwned;
-    private List<Trade> trades;
+    private List<UbiTrade> trades;
 
     @Override
     public boolean equals(Object o) {

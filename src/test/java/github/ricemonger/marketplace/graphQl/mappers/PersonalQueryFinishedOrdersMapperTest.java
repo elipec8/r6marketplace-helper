@@ -9,7 +9,7 @@ import github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.trades.nodes.TradeItems;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.trades.nodes.tradeItems.Item;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.dtos.Trade;
+import github.ricemonger.utils.dtos.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalFinishedOrdersMappingException;
@@ -76,7 +76,7 @@ class PersonalQueryFinishedOrdersMapperTest {
         Nodes node = createNode(sdf, date, date2);
         node.setPaymentProposal(null);
 
-        Trade expected = new Trade();
+        UbiTrade expected = new UbiTrade();
         expected.setTradeId("tradeId");
         expected.setState(TradeState.Created);
         expected.setCategory(TradeCategory.Buy);
@@ -103,7 +103,7 @@ class PersonalQueryFinishedOrdersMapperTest {
         Nodes node = createNode(sdf, date, date2);
         node.setPaymentOptions(null);
 
-        Trade expected = new Trade();
+        UbiTrade expected = new UbiTrade();
         expected.setTradeId("tradeId");
         expected.setState(TradeState.Created);
         expected.setCategory(TradeCategory.Buy);
@@ -131,7 +131,7 @@ class PersonalQueryFinishedOrdersMapperTest {
         node.setPaymentProposal(null);
         node.setPayment(null);
 
-        Trade expected = new Trade();
+        UbiTrade expected = new UbiTrade();
         expected.setTradeId("tradeId");
         expected.setState(TradeState.Created);
         expected.setCategory(TradeCategory.Buy);
@@ -159,7 +159,7 @@ class PersonalQueryFinishedOrdersMapperTest {
         node.setPaymentProposal(null);
         node.setState("invalid");
 
-        Trade expected = new Trade();
+        UbiTrade expected = new UbiTrade();
         expected.setTradeId("tradeId");
         expected.setState(TradeState.Unknown);
         expected.setCategory(TradeCategory.Buy);
@@ -187,7 +187,7 @@ class PersonalQueryFinishedOrdersMapperTest {
         node.setPaymentProposal(null);
         node.setCategory("invalid");
 
-        Trade expected = new Trade();
+        UbiTrade expected = new UbiTrade();
         expected.setTradeId("tradeId");
         expected.setState(TradeState.Created);
         expected.setCategory(TradeCategory.Unknown);

@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.trades.nodes.PaymentOptions;
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.trades.nodes.PaymentProposal;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.dtos.Trade;
+import github.ricemonger.utils.dtos.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalFinishedOrdersMappingException;
@@ -26,7 +26,7 @@ public class PersonalQueryFinishedOrdersMapper {
 
     private final CommonValuesService commonValuesService;
 
-    public Collection<Trade> mapFinishedOrders(Trades trades) throws GraphQlPersonalFinishedOrdersMappingException {
+    public Collection<UbiTrade> mapFinishedOrders(Trades trades) throws GraphQlPersonalFinishedOrdersMappingException {
         if (trades == null) {
             throw new GraphQlPersonalFinishedOrdersMappingException("Trades is null");
         }
@@ -35,12 +35,12 @@ public class PersonalQueryFinishedOrdersMapper {
         return nodes.stream().map(this::mapFinishedOrder).toList();
     }
 
-    public Trade mapFinishedOrder(Nodes node) throws GraphQlPersonalFinishedOrdersMappingException {
+    public UbiTrade mapFinishedOrder(Nodes node) throws GraphQlPersonalFinishedOrdersMappingException {
         if (node == null) {
             throw new GraphQlPersonalFinishedOrdersMappingException("Node is null");
         }
 
-        Trade result = new Trade();
+        UbiTrade result = new UbiTrade();
 
         SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
 

@@ -1,6 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 
+import github.ricemonger.utils.dtos.TradingUser;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,6 +39,8 @@ public class UserEntity {
 
     private Boolean publicNotificationsEnabledFlag = true;
 
+    private Boolean privateNotificationsEnabledFlag = true;
+
     private Boolean itemShowNameFlag = true;
     private Boolean itemShowItemTypeFlag = true;
     private Boolean itemShowMaxBuyPrice = true;
@@ -54,4 +57,9 @@ public class UserEntity {
 
     private Boolean newManagersAreActiveFlag = true;
     private Boolean managingEnabledFlag = true;
+
+
+    public TradingUser toTradingUser(){
+        return null;
+    }
 }

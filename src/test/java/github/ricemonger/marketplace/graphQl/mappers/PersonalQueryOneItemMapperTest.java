@@ -17,7 +17,7 @@ import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.v
 import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.viewer.meta.trades.nodes.PaymentProposal;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.dtos.PersonalItem;
-import github.ricemonger.utils.dtos.Trade;
+import github.ricemonger.utils.dtos.UbiTrade;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
@@ -527,7 +527,7 @@ class PersonalQueryOneItemMapperTest {
         expected.setLastSoldAt(new Date(date.getTime() + 2000));
         expected.setLastSoldPrice(777);
         expected.setOwned(true);
-        Trade expectedTrade = new Trade();
+        UbiTrade expectedTrade = new UbiTrade();
         expectedTrade.setItemId("223");
         expectedTrade.setTradeId("123");
         expectedTrade.setState(TradeState.Created);

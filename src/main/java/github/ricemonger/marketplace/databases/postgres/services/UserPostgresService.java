@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
+import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.UserDatabaseService;
 import github.ricemonger.utils.dtos.TradingUser;
@@ -18,6 +19,6 @@ public class UserPostgresService implements UserDatabaseService {
 
     @Override
     public List<TradingUser> getAllTradingUsers() {
-        return null;
+        return userRepository.findAllManageableUsers().stream().map(UserEntity::toTradingUser).toList();
     }
 }

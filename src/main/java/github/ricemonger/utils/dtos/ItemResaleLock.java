@@ -9,7 +9,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LockedItem {
+public class ItemResaleLock {
     private String itemId;
     private Date expiresAt;
 }

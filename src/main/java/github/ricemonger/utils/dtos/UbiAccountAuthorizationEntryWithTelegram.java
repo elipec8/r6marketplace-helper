@@ -4,15 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UbiAccountWithTelegram {
+public class UbiAccountAuthorizationEntryWithTelegram {
     private String chatId;
 
-    private UbiAccountEntry ubiAccountEntry;
+    private UbiAccountAuthorizationEntry ubiAccountEntry;
 
     public String getEmail() {
         return ubiAccountEntry.getEmail();
@@ -84,13 +82,5 @@ public class UbiAccountWithTelegram {
 
     public void setUbiRememberMeTicket(String ubiRememberMeTicket) {
         ubiAccountEntry.setUbiRememberMeTicket(ubiRememberMeTicket);
-    }
-
-    public List<String> getOwnedItemsIds() {
-        return ubiAccountEntry.getOwnedItemsIds();
-    }
-
-    public void setOwnedItemsIds(List<String> ownedItemsIds) {
-        ubiAccountEntry.setOwnedItemsIds(ownedItemsIds);
     }
 }
