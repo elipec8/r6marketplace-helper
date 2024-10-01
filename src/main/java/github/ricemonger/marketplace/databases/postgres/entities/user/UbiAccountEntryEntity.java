@@ -57,7 +57,7 @@ public class UbiAccountEntryEntity {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(name = "ubi_account_current_resale_locks",
             joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
-            inverseJoinColumns = @JoinColumn(name = "resaleLockId", referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "itemId", referencedColumnName = "itemId"))
     private List<ItemResaleLockEntity> resaleLocks = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)

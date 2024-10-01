@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
+import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,13 +16,16 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@IdClass(ItemResaleLockEntityId.class)
 public class ItemResaleLockEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "resale_lock_sequence")
-    @SequenceGenerator(name = "resale_lock_sequence", sequenceName = "resale_lock_sequence", allocationSize = 1)
-    private Long id;
-
-    private String itemId;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "ubiProfileId", referencedColumnName = "ubiProfileId")
+    private UbiAccountEntryEntity ubiAccountEntry;
+    @Id
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "itemId", referencedColumnName = "itemId")
+    private ItemEntity item;
 
     private Date expiresAt;
 }
