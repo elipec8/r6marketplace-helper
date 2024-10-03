@@ -1,6 +1,6 @@
 package github.ricemonger.utils.dtos;
 
-import github.ricemonger.utils.enums.TradeManagerTradeType;
+import github.ricemonger.utils.enums.TradeManagingType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.List;
 public class TradeByFiltersManager {
     private String name;
     private boolean enabled;
-    private TradeManagerTradeType tradeType;
+    private TradeManagingType tradeManagingType;
     private List<ItemFilter> appliedFilters;
     private Integer minBuySellProfit;
     private Integer minProfitPercent;
@@ -23,7 +23,7 @@ public class TradeByFiltersManager {
         String sb = "Trade By Item Filter Manager: \n" +
                     "Name: " + name + "\n" +
                     "Enabled: " + enabled + "\n" +
-                    "Trade type: " + tradeType + "\n";
+                    "Trade type: " + tradeManagingType + "\n";
         if (appliedFilters != null) {
             sb = sb + "Applied filters' names: " + appliedFilters.stream().map(ItemFilter::getName).reduce((a, b) -> a + ", " + b).orElse("") + "\n";
         } else {

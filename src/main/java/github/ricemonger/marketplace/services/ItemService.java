@@ -5,7 +5,6 @@ import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseServi
 import github.ricemonger.marketplace.services.abstractions.ItemSaleHistoryDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleUbiStatsService;
 import github.ricemonger.utils.dtos.*;
-import github.ricemonger.utils.enums.ItemRarity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -15,11 +14,9 @@ import java.util.*;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class ItemStatsService {
+public class ItemService {
 
     private final TagService tagService;
-
-    private final ProfitAndPriorityCalculator profitAndPriorityCalculator;
 
     private final ItemDatabaseService itemDatabaseService;
 
@@ -127,5 +124,9 @@ public class ItemStatsService {
         List<Item> items = itemDatabaseService.findAll();
 
         return new ArrayList<>(ItemFilter.filterItems(items, filters));
+    }
+
+    public List<Item> getAllItems() {
+        return itemDatabaseService.findAll();
     }
 }

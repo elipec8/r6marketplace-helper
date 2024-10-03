@@ -1,12 +1,12 @@
 package github.ricemonger.telegramBot.client;
 
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.marketplace.services.ProfitAndPriorityCalculator;
+import github.ricemonger.marketplace.services.PriceCalculator;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.*;
 import github.ricemonger.utils.enums.ItemRarity;
-import github.ricemonger.utils.enums.TradeManagerTradeType;
+import github.ricemonger.utils.enums.TradeManagingType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +23,7 @@ class TradeManagerFromInputsMapperTest {
     @Autowired
     private TradeManagerFromInputsMapper tradeManagerFromInputsMapper;
     @MockBean
-    private ProfitAndPriorityCalculator profitAndPriorityCalculator;
+    private PriceCalculator priceCalculator;
     @MockBean
     private CommonValuesService commonValuesService;
 
@@ -39,7 +39,7 @@ class TradeManagerFromInputsMapperTest {
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_PRIORITY, "2"));
 
         TradeByItemIdManager expected = new TradeByItemIdManager();
-        expected.setTradeType(TradeManagerTradeType.BUY);
+        expected.setTradeManagingType(TradeManagingType.BUY);
         expected.setItemId("itemId");
         expected.setEnabled(true);
         expected.setSellStartingPrice(160);
@@ -56,7 +56,7 @@ class TradeManagerFromInputsMapperTest {
         when(commonValuesService.getMinimumPriceByRarity(item.getRarity())).thenReturn(0);
         when(commonValuesService.getMaximumPriceByRarity(item.getRarity())).thenReturn(1000);
 
-        assertEquals(expected, tradeManagerFromInputsMapper.mapToTradeByItemIdManager(inputs, TradeManagerTradeType.BUY, item, true));
+        assertEquals(expected, tradeManagerFromInputsMapper.mapToTradeByItemIdManager(inputs, TradeManagingType.BUY, item, true));
     }
 
     @Test
@@ -71,7 +71,7 @@ class TradeManagerFromInputsMapperTest {
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_PRIORITY, ""));
 
         TradeByItemIdManager expected = new TradeByItemIdManager();
-        expected.setTradeType(TradeManagerTradeType.SELL);
+        expected.setTradeManagingType(TradeManagingType.SELL);
         expected.setItemId("");
         expected.setEnabled(false);
         expected.setSellBoundaryPrice(149);
@@ -90,9 +90,9 @@ class TradeManagerFromInputsMapperTest {
 
 
 
-        when(profitAndPriorityCalculator.calculateNextBuyPrice(item)).thenReturn(120);
+        when(priceCalculator.getNextFancyBuyPriceByCurrentPrices(item)).thenReturn(120);
 
-        TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeByItemIdManager(inputs, TradeManagerTradeType.SELL, item, false);
+        TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeByItemIdManager(inputs, TradeManagingType.SELL, item, false);
 
         assertEquals(expected, actual);
     }
@@ -109,7 +109,7 @@ class TradeManagerFromInputsMapperTest {
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_PRIORITY, "1"));
 
         TradeByItemIdManager expected = new TradeByItemIdManager();
-        expected.setTradeType(TradeManagerTradeType.BUY_AND_SELL);
+        expected.setTradeManagingType(TradeManagingType.BUY_AND_SELL);
         expected.setItemId("itemId");
         expected.setEnabled(false);
         expected.setSellBoundaryPrice(161);
@@ -126,9 +126,9 @@ class TradeManagerFromInputsMapperTest {
         when(commonValuesService.getMinimumPriceByRarity(item.getRarity())).thenReturn(0);
         when(commonValuesService.getMaximumPriceByRarity(item.getRarity())).thenReturn(360);
 
-        when(profitAndPriorityCalculator.calculateNextBuyPrice(item)).thenReturn(120);
+        when(priceCalculator.getNextFancyBuyPriceByCurrentPrices(item)).thenReturn(120);
 
-        TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeByItemIdManager(inputs, TradeManagerTradeType.BUY_AND_SELL, item, false);
+        TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeByItemIdManager(inputs, TradeManagingType.BUY_AND_SELL, item, false);
 
         assertEquals(expected, actual);
     }
@@ -145,7 +145,7 @@ class TradeManagerFromInputsMapperTest {
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_PRIORITY, "1"));
 
         TradeByItemIdManager expected = new TradeByItemIdManager();
-        expected.setTradeType(TradeManagerTradeType.BUY_AND_SELL);
+        expected.setTradeManagingType(TradeManagingType.BUY_AND_SELL);
         expected.setItemId("itemId");
         expected.setEnabled(true);
         expected.setSellBoundaryPrice(120);
@@ -162,9 +162,9 @@ class TradeManagerFromInputsMapperTest {
         when(commonValuesService.getMinimumPriceByRarity(item.getRarity())).thenReturn(120);
         when(commonValuesService.getMaximumPriceByRarity(item.getRarity())).thenReturn(360);
 
-        when(profitAndPriorityCalculator.calculateNextBuyPrice(item)).thenReturn(120);
+        when(priceCalculator.getNextFancyBuyPriceByCurrentPrices(item)).thenReturn(120);
 
-        TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeByItemIdManager(inputs, TradeManagerTradeType.BUY_AND_SELL, item, true);
+        TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeByItemIdManager(inputs, TradeManagingType.BUY_AND_SELL, item, true);
 
         assertEquals(expected, actual);
     }
@@ -181,7 +181,7 @@ class TradeManagerFromInputsMapperTest {
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_PRIORITY, "1"));
 
         TradeByItemIdManager expected = new TradeByItemIdManager();
-        expected.setTradeType(TradeManagerTradeType.BUY_AND_SELL);
+        expected.setTradeManagingType(TradeManagingType.BUY_AND_SELL);
         expected.setItemId("itemId");
         expected.setEnabled(true);
         expected.setSellBoundaryPrice(150_000);
@@ -198,9 +198,9 @@ class TradeManagerFromInputsMapperTest {
         when(commonValuesService.getMinimumPriceByRarity(item.getRarity())).thenReturn(0);
         when(commonValuesService.getMaximumPriceByRarity(item.getRarity())).thenReturn(150_000);
 
-        when(profitAndPriorityCalculator.calculateNextBuyPrice(item)).thenReturn(120);
+        when(priceCalculator.getNextFancyBuyPriceByCurrentPrices(item)).thenReturn(120);
 
-        TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeByItemIdManager(inputs, TradeManagerTradeType.BUY_AND_SELL, item, true);
+        TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeByItemIdManager(inputs, TradeManagingType.BUY_AND_SELL, item, true);
 
         assertEquals(expected, actual);
     }
@@ -218,7 +218,7 @@ class TradeManagerFromInputsMapperTest {
         TradeByFiltersManager expected = new TradeByFiltersManager();
         expected.setName("name");
         expected.setEnabled(true);
-        expected.setTradeType(TradeManagerTradeType.BUY);
+        expected.setTradeManagingType(TradeManagingType.BUY);
         expected.setAppliedFilters(List.of(new ItemFilter()));
         expected.setMinBuySellProfit(100);
         expected.setMinProfitPercent(30);
@@ -241,7 +241,7 @@ class TradeManagerFromInputsMapperTest {
         TradeByFiltersManager expected = new TradeByFiltersManager();
         expected.setName("");
         expected.setEnabled(false);
-        expected.setTradeType(TradeManagerTradeType.BUY_AND_SELL);
+        expected.setTradeManagingType(TradeManagingType.BUY_AND_SELL);
         expected.setAppliedFilters(List.of());
         expected.setMinBuySellProfit(50);
         expected.setMinProfitPercent(20);
@@ -264,7 +264,7 @@ class TradeManagerFromInputsMapperTest {
         TradeByFiltersManager expected = new TradeByFiltersManager();
         expected.setName(null);
         expected.setEnabled(true);
-        expected.setTradeType(TradeManagerTradeType.SELL);
+        expected.setTradeManagingType(TradeManagingType.SELL);
         expected.setAppliedFilters(List.of());
         expected.setMinBuySellProfit(-150_000);
         expected.setMinProfitPercent(-2147483647);
@@ -288,7 +288,7 @@ class TradeManagerFromInputsMapperTest {
         TradeByFiltersManager expected = new TradeByFiltersManager();
         expected.setName("name");
         expected.setEnabled(true);
-        expected.setTradeType(TradeManagerTradeType.BUY_AND_SELL);
+        expected.setTradeManagingType(TradeManagingType.BUY_AND_SELL);
         expected.setAppliedFilters(List.of());
         expected.setMinBuySellProfit(150_000);
         expected.setMinProfitPercent(Integer.MAX_VALUE);

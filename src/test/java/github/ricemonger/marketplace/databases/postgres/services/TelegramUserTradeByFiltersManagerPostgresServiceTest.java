@@ -6,7 +6,7 @@ import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUse
 import github.ricemonger.marketplace.databases.postgres.repositories.TradeByFiltersManagerPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.utils.dtos.TradeByFiltersManager;
-import github.ricemonger.utils.enums.TradeManagerTradeType;
+import github.ricemonger.utils.enums.TradeManagingType;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TradeByFiltersManagerDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TradeByItemIdManagerDoesntExistException;
@@ -69,13 +69,13 @@ class TelegramUserTradeByFiltersManagerPostgresServiceTest {
         tradeManager.setPriority(10);
         tradeManager.setMinBuySellProfit(100);
         tradeManager.setMinProfitPercent(100);
-        tradeManager.setTradeType(TradeManagerTradeType.BUY);
+        tradeManager.setTradeManagingType(TradeManagingType.BUY);
         telegramUserTradeByFiltersManagerService.save(CHAT_ID, tradeManager);
         tradeManager.setName("name1");
         tradeManager.setPriority(20);
         tradeManager.setMinBuySellProfit(200);
         tradeManager.setMinProfitPercent(200);
-        tradeManager.setTradeType(TradeManagerTradeType.SELL);
+        tradeManager.setTradeManagingType(TradeManagingType.SELL);
         tradeManager.setAppliedFilters(List.of());
         telegramUserTradeByFiltersManagerService.save(CHAT_ID, tradeManager);
 

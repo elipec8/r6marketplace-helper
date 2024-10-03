@@ -1,11 +1,11 @@
 package github.ricemonger.telegramBot.client;
 
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.marketplace.services.ProfitAndPriorityCalculator;
+import github.ricemonger.marketplace.services.PriceCalculator;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.dtos.*;
-import github.ricemonger.utils.enums.TradeManagerTradeType;
+import github.ricemonger.utils.enums.TradeManagingType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,10 +18,10 @@ public class TradeManagerFromInputsMapper {
 
     private final CommonValuesService commonValuesService;
 
-    private final ProfitAndPriorityCalculator profitAndPriorityCalculator;
+    private final PriceCalculator priceCalculator;
 
     public TradeByItemIdManager mapToTradeByItemIdManager(Collection<TelegramUserInput> inputs,
-                                                          TradeManagerTradeType tradeType,
+                                                          TradeManagingType tradeManagingType,
                                                           Item item,
                                                           boolean enabledFlag) {
         String itemId = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID);
@@ -37,7 +37,7 @@ public class TradeManagerFromInputsMapper {
 
         int boundSellPrice = parseIntValue(boundarySellPrice, limitMinPrice, limitMaxPrice, minSellPrice);
         int startSellPrice = parseIntValue(startingSellPrice, boundSellPrice, limitMaxPrice, boundSellPrice);
-        int boundBuyPrice = parseIntValue(boundaryBuyPrice, limitMinPrice, limitMaxPrice, profitAndPriorityCalculator.calculateNextBuyPrice(item));
+        int boundBuyPrice = parseIntValue(boundaryBuyPrice, limitMinPrice, limitMaxPrice, priceCalculator.getNextFancyBuyPriceByCurrentPrices(item));
         int startBuyPrice = parseIntValue(startingBuyPrice, limitMinPrice, boundBuyPrice, boundBuyPrice);
 
         int prior;
@@ -48,7 +48,7 @@ public class TradeManagerFromInputsMapper {
         }
 
         TradeByItemIdManager tradeByItemIdManager = new TradeByItemIdManager();
-        tradeByItemIdManager.setTradeType(tradeType);
+        tradeByItemIdManager.setTradeManagingType(tradeManagingType);
         tradeByItemIdManager.setItemId(itemId);
         tradeByItemIdManager.setEnabled(enabledFlag);
         tradeByItemIdManager.setSellStartingPrice(startSellPrice);
@@ -75,11 +75,11 @@ public class TradeManagerFromInputsMapper {
         tradeByFiltersManager.setEnabled(enabledFlag);
 
         if (tradeType.equals(Callbacks.TRADE_BY_FILTERS_MANAGER_TYPE_BUY_EDIT)) {
-            tradeByFiltersManager.setTradeType(TradeManagerTradeType.BUY);
+            tradeByFiltersManager.setTradeManagingType(TradeManagingType.BUY);
         } else if (tradeType.equals(Callbacks.TRADE_BY_FILTERS_MANAGER_TYPE_SELL_EDIT)) {
-            tradeByFiltersManager.setTradeType(TradeManagerTradeType.SELL);
+            tradeByFiltersManager.setTradeManagingType(TradeManagingType.SELL);
         } else {
-            tradeByFiltersManager.setTradeType(TradeManagerTradeType.BUY_AND_SELL);
+            tradeByFiltersManager.setTradeManagingType(TradeManagingType.BUY_AND_SELL);
         }
 
         tradeByFiltersManager.setAppliedFilters(itemFilters);

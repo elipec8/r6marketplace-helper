@@ -1,6 +1,6 @@
 package github.ricemonger.utils.dtos;
 
-import github.ricemonger.utils.enums.TradeManagerTradeType;
+import github.ricemonger.utils.enums.TradeManagingType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TradeByItemIdManager {
-    private TradeManagerTradeType tradeType;
+    private TradeManagingType tradeManagingType;
     private String itemId;
     private boolean enabled;
     private Integer sellStartingPrice;
@@ -21,17 +21,17 @@ public class TradeByItemIdManager {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Trade Manager for one item: \n");
-        sb.append("Trade type: ").append(tradeType).append("\n");
+        sb.append("Trade type: ").append(tradeManagingType).append("\n");
         sb.append("Item id: ").append(itemId).append("\n");
         sb.append("Enabled: ").append(enabled).append("\n");
 
-        if (tradeType == TradeManagerTradeType.SELL) {
+        if (tradeManagingType == TradeManagingType.SELL) {
             sb.append("Starting price: ").append(sellStartingPrice).append("\n");
             sb.append("Boundary price: ").append(sellBoundaryPrice).append("\n");
-        } else if (tradeType == TradeManagerTradeType.BUY) {
+        } else if (tradeManagingType == TradeManagingType.BUY) {
             sb.append("Starting price: ").append(buyStartingPrice).append("\n");
             sb.append("Boundary price: ").append(buyBoundaryPrice).append("\n");
-        } else if (tradeType == TradeManagerTradeType.BUY_AND_SELL || tradeType == null) {
+        } else if (tradeManagingType == TradeManagingType.BUY_AND_SELL || tradeManagingType == null) {
             sb.append("Starting Sell price: ").append(sellStartingPrice).append("\n");
             sb.append("Boundary Sell price: ").append(sellBoundaryPrice).append("\n");
             sb.append("Starting Buy price: ").append(buyStartingPrice).append("\n");

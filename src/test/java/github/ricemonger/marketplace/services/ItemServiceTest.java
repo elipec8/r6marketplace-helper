@@ -19,16 +19,17 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class ItemStatsServiceTest {
+class ItemServiceTest {
     @Autowired
-    private ItemStatsService itemStatsService;
+    private ItemService itemService;
     @MockBean
-    private ItemDatabaseService itemService;
+    private ItemDatabaseService itemDatabaseService;
     @MockBean
     private ItemSaleDatabaseService saleService;
     @MockBean
@@ -37,8 +38,6 @@ class ItemStatsServiceTest {
     private TagService tagService;
     @MockBean
     private CommonValuesService commonValuesService;
-    @MockBean
-    private ProfitAndPriorityCalculator profitAndPriorityCalculator;
     @MockBean
     private ItemSaleUbiStatsService itemSaleUbiStatsService;
 
@@ -61,18 +60,18 @@ class ItemStatsServiceTest {
         when(commonValuesService.getMinimumMarketplacePrice()).thenReturn(100);
         when(commonValuesService.getMaximumMarketplacePrice()).thenReturn(200);
 
-        itemStatsService.saveAllItemsAndSales(items);
+        itemService.saveAllItemsAndSales(items);
 
         assertEquals(ItemRarity.UNKNOWN, item.getRarity());
 
-        verify(itemService).saveAll(same(items));
+        verify(itemDatabaseService).saveAll(same(items));
         verify(saleService).saveAll(same(items));
     }
 
     @Test
     public void saveAllItemsUbiStats_should_handle_to_service(){
         List<ItemSaleUbiStats> stats = new ArrayList<>();
-        itemStatsService.saveAllItemsUbiStats(stats);
+        itemService.saveAllItemsUbiStats(stats);
         verify(itemSaleUbiStatsService).saveAll(same(stats));
     }
 
@@ -95,7 +94,7 @@ class ItemStatsServiceTest {
         when(commonValuesService.getMinimumUncommonPrice()).thenReturn(300);
         when(commonValuesService.getMaximumUncommonPrice()).thenReturn(400);
 
-        itemStatsService.saveAllItemsAndSales(items);
+        itemService.saveAllItemsAndSales(items);
 
         assertEquals(ItemRarity.UNCOMMON, item.getRarity());
     }
@@ -119,7 +118,7 @@ class ItemStatsServiceTest {
         when(commonValuesService.getMinimumRarePrice()).thenReturn(500);
         when(commonValuesService.getMaximumRarePrice()).thenReturn(600);
 
-        itemStatsService.saveAllItemsAndSales(items);
+        itemService.saveAllItemsAndSales(items);
 
         assertEquals(ItemRarity.RARE, item.getRarity());
     }
@@ -143,7 +142,7 @@ class ItemStatsServiceTest {
         when(commonValuesService.getMinimumEpicPrice()).thenReturn(700);
         when(commonValuesService.getMaximumEpicPrice()).thenReturn(800);
 
-        itemStatsService.saveAllItemsAndSales(items);
+        itemService.saveAllItemsAndSales(items);
 
         assertEquals(ItemRarity.EPIC, item.getRarity());
     }
@@ -167,7 +166,7 @@ class ItemStatsServiceTest {
         when(commonValuesService.getMinimumLegendaryPrice()).thenReturn(900);
         when(commonValuesService.getMaximumLegendaryPrice()).thenReturn(1000);
 
-        itemStatsService.saveAllItemsAndSales(items);
+        itemService.saveAllItemsAndSales(items);
 
         assertEquals(ItemRarity.LEGENDARY, item.getRarity());
     }
@@ -181,7 +180,7 @@ class ItemStatsServiceTest {
         item2.setItemId("2");
 
         List<Item> items = new ArrayList<>();
-        when(itemService.findAll()).thenReturn(items);
+        when(itemDatabaseService.findAll()).thenReturn(items);
 
         ItemSale sale1 = new ItemSale();
         sale1.setItemId("1");
@@ -202,8 +201,8 @@ class ItemStatsServiceTest {
         List<ItemSale> sales = List.of(sale1, sale2, sale3, sale4);
         when(saleService.findAll()).thenReturn(sales);
 
-        itemStatsService.calculateAndSaveItemsSaleHistoryStats();
-        verify(itemService).findAll();
+        itemService.calculateAndSaveItemsSaleHistoryStats();
+        verify(itemDatabaseService).findAll();
         verify(saleService).findAll();
 
         verify(historyService).saveAll(any());
@@ -213,9 +212,9 @@ class ItemStatsServiceTest {
     public void getItemById_should_handle_to_service() {
         Item item = new Item();
         item.setItemId("1");
-        when(itemService.findById("1")).thenReturn(item);
+        when(itemDatabaseService.findById("1")).thenReturn(item);
 
-        Item result = itemStatsService.getItemById("1");
+        Item result = itemService.getItemById("1");
 
         assertEquals(item, result);
     }
@@ -223,15 +222,25 @@ class ItemStatsServiceTest {
     @Test
     public void getAllItemsByFilter_should_get_all_items_and_call_filter_method_on_them() {
         List<Item> items = new ArrayList<>();
-        when(itemService.findAll()).thenReturn(items);
+        when(itemDatabaseService.findAll()).thenReturn(items);
 
         ItemFilter filter = spy(ItemFilter.class);
         filter.setFilterType(FilterType.ALLOW);
 
-        itemStatsService.getAllItemsByFilters(List.of(filter));
+        itemService.getAllItemsByFilters(List.of(filter));
 
-        verify(itemService).findAll();
+        verify(itemDatabaseService).findAll();
 
         verify(filter).filterItems(items);
+    }
+
+    @Test
+    public void getAllItems_should_return_service_result() {
+        List<Item> items = new ArrayList<>();
+        when(itemDatabaseService.findAll()).thenReturn(items);
+
+        List<Item> result = itemService.getAllItems();
+
+        assertSame(items, result);
     }
 }

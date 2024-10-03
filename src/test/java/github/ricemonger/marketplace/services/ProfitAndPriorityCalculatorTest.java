@@ -6,6 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class ProfitAndPriorityCalculatorTest {
     @Autowired
-    private ProfitAndPriorityCalculator profitAndPriorityCalculator;
+    private PriceCalculator priceCalculator;
 
 }

@@ -11,7 +11,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-class TradeByItemIdManagerEditAskTradeTypeCallbackTest {
+class TradeByItemIdManagerEditAskTradeManagingTypeCallbackTest {
     @MockBean
     private BotInnerService botInnerService;
 

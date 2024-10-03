@@ -7,7 +7,7 @@ import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.utils.dtos.*;
 import github.ricemonger.utils.enums.TagGroup;
-import github.ricemonger.utils.enums.TradeManagerTradeType;
+import github.ricemonger.utils.enums.TradeManagingType;
 import github.ricemonger.utils.exceptions.client.*;
 import github.ricemonger.utils.exceptions.server.*;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class BotInnerService {
 
     private final CommonValuesService commonValuesService;
 
-    private final ItemStatsService itemStatsService;
+    private final ItemService itemService;
 
     private final TagService tagService;
 
@@ -73,7 +73,7 @@ public class BotInnerService {
 
         int offset = getItemOffsetOrZeroByUserInput(chatId);
 
-        List<Item> items = itemStatsService.getAllItemsByFilters(settings.getItemShowAppliedFilters());
+        List<Item> items = itemService.getAllItemsByFilters(settings.getItemShowAppliedFilters());
         try {
             if (offset >= items.size()) {
                 throw new IllegalArgumentException("Offset is bigger or equals than items size");
@@ -267,21 +267,21 @@ public class BotInnerService {
         }
     }
 
-    public void saveUserTradeByItemIdManagerByUserInput(Long chatId, TradeManagerTradeType tradeType) throws TelegramUserDoesntExistException,
+    public void saveUserTradeByItemIdManagerByUserInput(Long chatId, TradeManagingType tradeManagingType) throws TelegramUserDoesntExistException,
             TelegramUserInputDoesntExistException {
-        telegramUserTradeManagerService.saveUserTradeByItemIdManager(String.valueOf(chatId), generateTradeByItemIdManagerByUserInput(chatId, tradeType));
+        telegramUserTradeManagerService.saveUserTradeByItemIdManager(String.valueOf(chatId), generateTradeByItemIdManagerByUserInput(chatId, tradeManagingType));
     }
 
     public void saveUserTradeByFiltersManagerByUserInput(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         telegramUserTradeManagerService.saveUserTradeByFiltersManager(String.valueOf(chatId), generateTradeByFiltersManagerByUserInput(chatId));
     }
 
-    public TradeByItemIdManager generateTradeByItemIdManagerByUserInput(Long chatId, TradeManagerTradeType tradeType) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
+    public TradeByItemIdManager generateTradeByItemIdManagerByUserInput(Long chatId, TradeManagingType tradeManagingType) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         Collection<TelegramUserInput> inputs = telegramUserService.getAllUserInputs(chatId);
 
         return tradeManagerFromInputsMapper.mapToTradeByItemIdManager(
                 inputs,
-                tradeType,
+                tradeManagingType,
                 getItemByUserInputItemId(chatId),
                 telegramUserService.getTradeManagersSettings(chatId).isNewManagersAreActiveFlag());
     }
@@ -306,7 +306,7 @@ public class BotInnerService {
     }
 
     public Item getItemByUserInputItemId(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
-        return itemStatsService.getItemById(getUserInputByState(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID));
+        return itemService.getItemById(getUserInputByState(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID));
     }
 
     public void invertUserTradeByFiltersManagerEnabledByUserInput(Long chatId) throws TelegramUserDoesntExistException,

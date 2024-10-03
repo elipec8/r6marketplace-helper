@@ -3,7 +3,7 @@ package github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneIt
 import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buyAndSell.TradeByItemIdManagerBuyAndSellEditStage8ConfirmedFinishCallback;
-import github.ricemonger.utils.enums.TradeManagerTradeType;
+import github.ricemonger.utils.enums.TradeManagingType;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,7 +22,7 @@ class TradeByItemIdManagerBuyAndSellEditStage8ConfirmedFinishCallbackTest {
         TradeByItemIdManagerBuyAndSellEditStage8ConfirmedFinishCallback commandExecutor = new TradeByItemIdManagerBuyAndSellEditStage8ConfirmedFinishCallback();
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService).saveUserTradeByItemIdManagerByUserInput(MockUpdateInfos.UPDATE_INFO.getChatId(), TradeManagerTradeType.BUY_AND_SELL);
+        verify(botInnerService).saveUserTradeByItemIdManagerByUserInput(MockUpdateInfos.UPDATE_INFO.getChatId(), TradeManagingType.BUY_AND_SELL);
 
         verify(botInnerService).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());
     }

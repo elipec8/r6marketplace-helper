@@ -1,6 +1,6 @@
 package github.ricemonger.utils.enums;
 
-public enum TradeManagerTradeType {
+public enum TradeManagingType {
     BUY,
     SELL,
     BUY_AND_SELL

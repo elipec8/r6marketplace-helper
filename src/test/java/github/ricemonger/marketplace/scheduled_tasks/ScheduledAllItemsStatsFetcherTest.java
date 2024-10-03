@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.scheduled_tasks;
 
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.marketplace.services.ItemStatsService;
+import github.ricemonger.marketplace.services.ItemService;
 import github.ricemonger.telegramBot.TelegramBotService;
 import github.ricemonger.utils.dtos.Item;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ public class ScheduledAllItemsStatsFetcherTest {
     private TelegramBotService telegramBotService;
 
     @MockBean
-    private ItemStatsService itemStatsService;
+    private ItemService itemService;
 
     @MockBean
     private CommonValuesService commonValuesService;
@@ -43,8 +43,8 @@ public class ScheduledAllItemsStatsFetcherTest {
 
         scheduledAllItemsStatsFetcher.fetchAllItemStats();
 
-        verify(itemStatsService).saveAllItemsAndSales(same(items));
-        verify(itemStatsService).calculateAndSaveItemsSaleHistoryStats();
+        verify(itemService).saveAllItemsAndSales(same(items));
+        verify(itemService).calculateAndSaveItemsSaleHistoryStats();
     }
 
     @Test
@@ -57,8 +57,8 @@ public class ScheduledAllItemsStatsFetcherTest {
 
         scheduledAllItemsStatsFetcher.fetchAllItemStats();
 
-        verify(itemStatsService).saveAllItemsAndSales(same(items));
-        verify(itemStatsService).calculateAndSaveItemsSaleHistoryStats();
+        verify(itemService).saveAllItemsAndSales(same(items));
+        verify(itemService).calculateAndSaveItemsSaleHistoryStats();
         verify(commonValuesService).setExpectedItemCount(1);
         verify(telegramBotService).notifyAllUsersAboutItemAmountIncrease(0, 1);
     }
