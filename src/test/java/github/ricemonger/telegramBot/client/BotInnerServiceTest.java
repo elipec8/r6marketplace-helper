@@ -6,9 +6,12 @@ import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.utils.dtos.*;
+import github.ricemonger.utils.DTOs.*;
+import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.ItemFilter;
+import github.ricemonger.utils.DTOs.items.Tag;
 import github.ricemonger.utils.enums.TagGroup;
-import github.ricemonger.utils.enums.TradeManagingType;
+import github.ricemonger.utils.enums.TradeOperationType;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiUserAuthorizationClientErrorException;
@@ -149,32 +152,32 @@ public class BotInnerServiceTest {
         itemShowSettings.setItemShowAppliedFilters(appliedFilters);
         when(commonValuesService.getMaximumTelegramMessageHeight()).thenReturn(2);
 
-        List<Item> items = new ArrayList<>();
+        List<Item> itemMainFields = new ArrayList<>();
 
-        items.add(new Item());
+        itemMainFields.add(new Item());
         itemShowSettings.setItemShowMessagesLimit(1);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("0");
-        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(items));
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
         verify(itemService).getAllItemsByFilters(appliedFilters);
         verify(telegramBotClientService, times(1)).sendText(eq("1"), anyString());
 
-        items.add(new Item());
+        itemMainFields.add(new Item());
         reset(telegramBotClientService);
         itemShowSettings.setItemShowMessagesLimit(1);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("0");
-        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(items));
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
         verify(telegramBotClientService, times(1)).sendText(eq("1"), anyString());
 
-        items.add(new Item());
+        itemMainFields.add(new Item());
         reset(telegramBotClientService);
         itemShowSettings.setItemShowMessagesLimit(2);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("0");
-        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(items));
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
         verify(telegramBotClientService, times(2)).sendText(eq("1"), anyString());
 
@@ -182,7 +185,7 @@ public class BotInnerServiceTest {
         itemShowSettings.setItemShowMessagesLimit(1);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("1");
-        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(items));
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
         verify(telegramBotClientService, times(1)).sendText(eq("1"), anyString());
     }
@@ -196,32 +199,32 @@ public class BotInnerServiceTest {
         itemShowSettings.setItemShowAppliedFilters(new ArrayList<>());
         when(commonValuesService.getMaximumTelegramMessageHeight()).thenReturn(2);
 
-        List<Item> items = new ArrayList<>();
+        List<Item> itemMainFields = new ArrayList<>();
 
-        items.add(new Item());
+        itemMainFields.add(new Item());
         itemShowSettings.setItemShowMessagesLimit(1);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("0");
-        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(items));
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
         verify(itemService).getAllItemsByFilters(appliedFilters);
         verify(telegramBotClientService, times(1)).sendText(eq("1"), anyString());
 
-        items.add(new Item());
+        itemMainFields.add(new Item());
         reset(telegramBotClientService);
         itemShowSettings.setItemShowMessagesLimit(2);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("0");
-        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(items));
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
         verify(telegramBotClientService, times(2)).sendText(eq("1"), anyString());
 
-        items.add(new Item());
+        itemMainFields.add(new Item());
         reset(telegramBotClientService);
         itemShowSettings.setItemShowMessagesLimit(3);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("0");
-        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(items));
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
         verify(telegramBotClientService, times(3)).sendText(eq("1"), anyString());
 
@@ -229,7 +232,7 @@ public class BotInnerServiceTest {
         itemShowSettings.setItemShowMessagesLimit(2);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("1");
-        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(items));
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
         verify(telegramBotClientService, times(2)).sendText(eq("1"), anyString());
 
@@ -237,7 +240,7 @@ public class BotInnerServiceTest {
         itemShowSettings.setItemShowMessagesLimit(5);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("1");
-        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(items));
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
         verify(telegramBotClientService, times(3)).sendText(eq("1"), anyString());
     }
@@ -253,11 +256,11 @@ public class BotInnerServiceTest {
         when(commonValuesService.getMaximumTelegramMessageHeight()).thenReturn(1);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
 
-        List<Item> items = new ArrayList<>();
-        items.add(new Item());
-        items.add(new Item());
-        items.add(new Item());
-        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(items));
+        List<Item> itemMainFields = new ArrayList<>();
+        itemMainFields.add(new Item());
+        itemMainFields.add(new Item());
+        itemMainFields.add(new Item());
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
 
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("invalid");
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
@@ -278,8 +281,8 @@ public class BotInnerServiceTest {
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("100");
 
-        List<Item> items = new ArrayList<>();
-        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(items));
+        List<Item> itemMainFields = new ArrayList<>();
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
 
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
 
@@ -437,7 +440,7 @@ public class BotInnerServiceTest {
     @Test
     public void getUserUbiAccountEntryEmail_should_return_service_result() {
         String email = "Email";
-        UbiAccountAuthorizationEntry entry = new UbiAccountAuthorizationEntry();
+        UbiAccountAuthorizationDTO entry = new UbiAccountAuthorizationDTO();
         entry.setEmail(email);
         when(telegramUserService.getUserUbiAccountEntry(1L)).thenReturn(entry);
 
@@ -941,9 +944,9 @@ public class BotInnerServiceTest {
 
         when(telegramUserService.getTradeManagersSettings(1L)).thenReturn(settings);
 
-        when(tradeManagerFromInputsMapper.mapToTradeByItemIdManager(any(), eq(TradeManagingType.SELL), any(), eq(true))).thenReturn(tradeManager);
+        when(tradeManagerFromInputsMapper.mapToTradeByItemIdManager(any(), eq(TradeOperationType.SELL), any(), eq(true))).thenReturn(tradeManager);
 
-        botInnerService.saveUserTradeByItemIdManagerByUserInput(1L, TradeManagingType.SELL);
+        botInnerService.saveUserTradeByItemIdManagerByUserInput(1L, TradeOperationType.SELL);
 
         verify(telegramUserTradeManagerService).saveUserTradeByItemIdManager("1", tradeManager);
     }
@@ -951,14 +954,14 @@ public class BotInnerServiceTest {
     @Test
     public void saveUserTradeByItemIdManagerByUserInput_should_throw_if_service_throws_during_inputs_find() {
         doThrow(new RuntimeException()).when(telegramUserService).getAllUserInputs(1L);
-        assertThrows(RuntimeException.class, () -> botInnerService.saveUserTradeByItemIdManagerByUserInput(1L, TradeManagingType.SELL));
+        assertThrows(RuntimeException.class, () -> botInnerService.saveUserTradeByItemIdManagerByUserInput(1L, TradeOperationType.SELL));
     }
 
     @Test
     public void saveUserTradeByItemIdManagerByUserInput_should_throw_if_mapper_throws_during_mapping() {
-        doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeByItemIdManager(any(), eq(TradeManagingType.SELL), any(),
+        doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeByItemIdManager(any(), eq(TradeOperationType.SELL), any(),
                 anyBoolean());
-        assertThrows(RuntimeException.class, () -> botInnerService.saveUserTradeByItemIdManagerByUserInput(1L, TradeManagingType.SELL));
+        assertThrows(RuntimeException.class, () -> botInnerService.saveUserTradeByItemIdManagerByUserInput(1L, TradeOperationType.SELL));
     }
 
     @Test
@@ -970,10 +973,10 @@ public class BotInnerServiceTest {
 
         when(telegramUserService.getTradeManagersSettings(1L)).thenReturn(settings);
 
-        when(tradeManagerFromInputsMapper.mapToTradeByItemIdManager(any(), eq(TradeManagingType.SELL), any(), eq(true))).thenReturn(tradeManager);
+        when(tradeManagerFromInputsMapper.mapToTradeByItemIdManager(any(), eq(TradeOperationType.SELL), any(), eq(true))).thenReturn(tradeManager);
 
         doThrow(new RuntimeException()).when(telegramUserTradeManagerService).saveUserTradeByItemIdManager(any(), any());
-        assertThrows(RuntimeException.class, () -> botInnerService.saveUserTradeByItemIdManagerByUserInput(1L, TradeManagingType.SELL));
+        assertThrows(RuntimeException.class, () -> botInnerService.saveUserTradeByItemIdManagerByUserInput(1L, TradeOperationType.SELL));
     }
 
     @Test
@@ -1028,19 +1031,19 @@ public class BotInnerServiceTest {
 
         when(tradeManagerFromInputsMapper.mapToTradeByItemIdManager(any(), any(), any(), eq(true))).thenReturn(tradeManager);
 
-        assertEquals(tradeManager, botInnerService.generateTradeByItemIdManagerByUserInput(1L, TradeManagingType.SELL));
+        assertEquals(tradeManager, botInnerService.generateTradeByItemIdManagerByUserInput(1L, TradeOperationType.SELL));
     }
 
     @Test
     public void generateTradeByItemIdManagerByUserInput_ItemId_should_throw_if_service_throws_during_inputs_find() {
         doThrow(new RuntimeException()).when(telegramUserService).getAllUserInputs(1L);
-        assertThrows(RuntimeException.class, () -> botInnerService.generateTradeByItemIdManagerByUserInput(1L, TradeManagingType.SELL));
+        assertThrows(RuntimeException.class, () -> botInnerService.generateTradeByItemIdManagerByUserInput(1L, TradeOperationType.SELL));
     }
 
     @Test
     public void generateTradeByItemIdManagerByUserInput_ItemId_should_throw_if_mapper_throws_during_mapping() {
         doThrow(new RuntimeException()).when(tradeManagerFromInputsMapper).mapToTradeByItemIdManager(any(), any(), any(), anyBoolean());
-        assertThrows(RuntimeException.class, () -> botInnerService.generateTradeByItemIdManagerByUserInput(1L, TradeManagingType.SELL));
+        assertThrows(RuntimeException.class, () -> botInnerService.generateTradeByItemIdManagerByUserInput(1L, TradeOperationType.SELL));
     }
 
     @Test

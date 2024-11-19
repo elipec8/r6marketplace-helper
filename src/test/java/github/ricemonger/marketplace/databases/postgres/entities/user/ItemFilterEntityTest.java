@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
-import github.ricemonger.utils.dtos.ItemFilter;
-import github.ricemonger.utils.dtos.Tag;
+import github.ricemonger.utils.DTOs.items.ItemFilter;
+import github.ricemonger.utils.DTOs.items.Tag;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.IsOwnedFilter;
 import github.ricemonger.utils.enums.ItemType;

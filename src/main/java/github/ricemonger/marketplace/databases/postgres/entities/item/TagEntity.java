@@ -1,10 +1,8 @@
 package github.ricemonger.marketplace.databases.postgres.entities.item;
 
-import github.ricemonger.utils.dtos.Tag;
+import github.ricemonger.utils.DTOs.items.Tag;
 import github.ricemonger.utils.enums.TagGroup;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +18,7 @@ public class TagEntity {
     @Column(name = "tag_value") // "value" column name conflicts with H2
     private String value;
     private String name;
+    @Enumerated(EnumType.ORDINAL)
     private TagGroup tagGroup;
 
     public TagEntity(Tag tag) {

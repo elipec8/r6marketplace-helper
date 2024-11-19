@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.ItemService;
 import github.ricemonger.telegramBot.TelegramBotService;
-import github.ricemonger.utils.dtos.Item;
+import github.ricemonger.utils.DTOs.items.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -46,8 +46,8 @@ public class ScheduledAllItemsStatsFetcher {
             log.info("Fetched {} items' stats", items.size());
         }
 
-        itemService.saveAllItemsAndSales(items);
-        itemService.calculateAndSaveItemsSaleHistoryStats();
+        itemService.saveAllItemsMainFields(items);
+        itemService.saveAllItemLastSales(items);
     }
 
     private void onItemsAmountIncrease(int expectedItemCount, int fetchedItemsCount) {

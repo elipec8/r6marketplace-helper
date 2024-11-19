@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
-import github.ricemonger.utils.dtos.Item;
+import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,12 +28,12 @@ class ItemPostgresServiceTest {
     @Test
     public void saveAll_should_create_new_item_in_db_if_doesnt_exist() {
 
-        List<Item> items = List.of(
+        List<Item> itemMainFields = List.of(
                 createItem("1"),
                 createItem("2")
         );
 
-        itemService.saveAll(items);
+        itemService.saveAll(itemMainFields);
 
         assertEquals(2, itemRepository.count());
     }

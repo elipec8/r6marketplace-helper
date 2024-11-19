@@ -1,19 +1,18 @@
 package github.ricemonger.marketplace.databases.postgres.entities.item;
 
-import github.ricemonger.utils.dtos.ItemSaleHistory;
+import github.ricemonger.utils.DTOs.items.ItemHistoryFields;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ItemSaleHistoryEntityTest {
 
     @Test
     public void toItemSaleHistoryEntity_should_properly_map_with_valid_fields() {
-        ItemSaleHistory history = new ItemSaleHistory();
+        ItemHistoryFields history = new ItemHistoryFields();
         history.setItemId("1");
         history.setMonthAveragePrice(1);
         history.setMonthMedianPrice(2);
@@ -48,9 +47,9 @@ class ItemSaleHistoryEntityTest {
         expected.setMonthSalesPerDay(5);
         expected.setDayAveragePrice(6);
         expected.setDayMedianPrice(7);
-        expected.setDayMaxPrice(8);
-        expected.setDayMinPrice(9);
-        expected.setDaySales(10);
+        expected.setTodayMaxPrice(8);
+        expected.setTodayMinPrice(9);
+        expected.setTodaySales(10);
         expected.setExpectedProfitByCurrentPrices(11);
         expected.setExpectedProfitPercentByCurrentPrices(12);
         expected.setHoursToSellFor120(13);
@@ -72,7 +71,7 @@ class ItemSaleHistoryEntityTest {
 
     @Test
     public void toItemSaleHistoryEntity_should_properly_map_with_null_fields() {
-        ItemSaleHistory history = new ItemSaleHistory();
+        ItemHistoryFields history = new ItemHistoryFields();
         history.setItemId(null);
         history.setLastDateCurrentPriceOrLastSoldWasHigherThan120(null);
 
@@ -85,9 +84,9 @@ class ItemSaleHistoryEntityTest {
         expected.setMonthSalesPerDay(0);
         expected.setDayAveragePrice(0);
         expected.setDayMedianPrice(0);
-        expected.setDayMaxPrice(0);
-        expected.setDayMinPrice(0);
-        expected.setDaySales(0);
+        expected.setTodayMaxPrice(0);
+        expected.setTodayMinPrice(0);
+        expected.setTodaySales(0);
         expected.setExpectedProfitByCurrentPrices(0);
         expected.setExpectedProfitPercentByCurrentPrices(0);
         expected.setHoursToSellFor120(0);
@@ -118,9 +117,9 @@ class ItemSaleHistoryEntityTest {
         entity.setMonthSalesPerDay(5);
         entity.setDayAveragePrice(6);
         entity.setDayMedianPrice(7);
-        entity.setDayMaxPrice(8);
-        entity.setDayMinPrice(9);
-        entity.setDaySales(10);
+        entity.setTodayMaxPrice(8);
+        entity.setTodayMinPrice(9);
+        entity.setTodaySales(10);
         entity.setExpectedProfitByCurrentPrices(11);
         entity.setExpectedProfitPercentByCurrentPrices(12);
         entity.setHoursToSellFor120(13);
@@ -135,7 +134,7 @@ class ItemSaleHistoryEntityTest {
         entity.setPriceToBuyIn24Hours(22);
         entity.setPriceToBuyIn168Hours(23);
 
-        ItemSaleHistory expected = new ItemSaleHistory();
+        ItemHistoryFields expected = new ItemHistoryFields();
         expected.setItemId("1");
         expected.setMonthAveragePrice(1);
         expected.setMonthMedianPrice(2);
@@ -161,7 +160,7 @@ class ItemSaleHistoryEntityTest {
         expected.setPriceToBuyIn24Hours(22);
         expected.setPriceToBuyIn168Hours(23);
 
-        ItemSaleHistory actual = entity.toItemSaleHistory();
+        ItemHistoryFields actual = entity.toItemSaleHistory();
 
         assertEquals(expected, actual);
     }
@@ -172,7 +171,7 @@ class ItemSaleHistoryEntityTest {
         entity.setItemId(null);
         entity.setLastDateCurrentPriceOrLastSoldWasHigherThan120(null);
 
-        ItemSaleHistory expected = new ItemSaleHistory();
+        ItemHistoryFields expected = new ItemHistoryFields();
         expected.setItemId(null);
         expected.setMonthAveragePrice(0);
         expected.setMonthMedianPrice(0);
@@ -198,7 +197,7 @@ class ItemSaleHistoryEntityTest {
         expected.setPriceToBuyIn24Hours(0);
         expected.setPriceToBuyIn168Hours(0);
 
-        ItemSaleHistory actual = entity.toItemSaleHistory();
+        ItemHistoryFields actual = entity.toItemSaleHistory();
 
         assertEquals(expected, actual);
     }
@@ -212,9 +211,9 @@ class ItemSaleHistoryEntityTest {
                entity1.getMonthSalesPerDay() == entity2.getMonthSalesPerDay() &&
                entity1.getDayAveragePrice() == entity2.getDayAveragePrice() &&
                entity1.getDayMedianPrice() == entity2.getDayMedianPrice() &&
-               entity1.getDayMaxPrice() == entity2.getDayMaxPrice() &&
-               entity1.getDayMinPrice() == entity2.getDayMinPrice() &&
-               entity1.getDaySales() == entity2.getDaySales() &&
+               entity1.getTodayMaxPrice() == entity2.getTodayMaxPrice() &&
+               entity1.getTodayMinPrice() == entity2.getTodayMinPrice() &&
+               entity1.getTodaySales() == entity2.getTodaySales() &&
                entity1.getExpectedProfitByCurrentPrices() == entity2.getExpectedProfitByCurrentPrices() &&
                entity1.getExpectedProfitPercentByCurrentPrices() == entity2.getExpectedProfitPercentByCurrentPrices() &&
                entity1.getHoursToSellFor120() == entity2.getHoursToSellFor120() &&

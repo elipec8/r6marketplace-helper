@@ -1,10 +1,10 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.dtos.config_query_trade.TradesConfig;
-import github.ricemonger.marketplace.graphQl.dtos.config_query_trade.tradesConfig.BuyLimit;
-import github.ricemonger.marketplace.graphQl.dtos.config_query_trade.tradesConfig.SellLimit;
-import github.ricemonger.marketplace.graphQl.dtos.config_query_trade.tradesConfig.TransactionFeesConfig;
-import github.ricemonger.utils.dtos.ConfigTrades;
+import github.ricemonger.marketplace.graphQl.DTOs.config_query_trade.TradesConfig;
+import github.ricemonger.marketplace.graphQl.DTOs.config_query_trade.tradesConfig.BuyLimit;
+import github.ricemonger.marketplace.graphQl.DTOs.config_query_trade.tradesConfig.SellLimit;
+import github.ricemonger.marketplace.graphQl.DTOs.config_query_trade.tradesConfig.TransactionFeesConfig;
+import github.ricemonger.utils.DTOs.ConfigTrades;
 import github.ricemonger.utils.exceptions.server.GraphQlConfigTradeMappingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

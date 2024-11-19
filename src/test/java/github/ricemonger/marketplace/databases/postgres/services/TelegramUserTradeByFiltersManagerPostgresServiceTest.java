@@ -5,8 +5,8 @@ import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TradeByFiltersManagerPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
-import github.ricemonger.utils.dtos.TradeByFiltersManager;
-import github.ricemonger.utils.enums.TradeManagingType;
+import github.ricemonger.utils.DTOs.TradeByFiltersManager;
+import github.ricemonger.utils.enums.TradeOperationType;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TradeByFiltersManagerDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TradeByItemIdManagerDoesntExistException;
@@ -17,8 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class TelegramUserTradeByFiltersManagerPostgresServiceTest {
@@ -69,13 +68,13 @@ class TelegramUserTradeByFiltersManagerPostgresServiceTest {
         tradeManager.setPriority(10);
         tradeManager.setMinBuySellProfit(100);
         tradeManager.setMinProfitPercent(100);
-        tradeManager.setTradeManagingType(TradeManagingType.BUY);
+        tradeManager.setTradeOperationType(TradeOperationType.BUY);
         telegramUserTradeByFiltersManagerService.save(CHAT_ID, tradeManager);
         tradeManager.setName("name1");
         tradeManager.setPriority(20);
         tradeManager.setMinBuySellProfit(200);
         tradeManager.setMinProfitPercent(200);
-        tradeManager.setTradeManagingType(TradeManagingType.SELL);
+        tradeManager.setTradeOperationType(TradeOperationType.SELL);
         tradeManager.setAppliedFilters(List.of());
         telegramUserTradeByFiltersManagerService.save(CHAT_ID, tradeManager);
 
@@ -111,8 +110,8 @@ class TelegramUserTradeByFiltersManagerPostgresServiceTest {
 
         telegramUserTradeByFiltersManagerService.invertEnabledFlagById(CHAT_ID, "1");
 
-        assertEquals(false, telegramUserTradeByFiltersManagerService.findById(CHAT_ID, "1").isEnabled());
-        assertEquals(true, telegramUserTradeByFiltersManagerService.findById(CHAT_ID, "2").isEnabled());
+        assertFalse(telegramUserTradeByFiltersManagerService.findById(CHAT_ID, "1").isEnabled());
+        assertTrue(telegramUserTradeByFiltersManagerService.findById(CHAT_ID, "2").isEnabled());
         assertEquals(2,
                 telegramUserRepository.findById(CHAT_ID).get().getUser().getTradeByFiltersManagers().size());
         assertEquals(2, telegramUserRepository.findAll().size());

@@ -3,7 +3,7 @@ package github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEn
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.client.CallbackButton;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
-import github.ricemonger.utils.dtos.TradeByItemIdManager;
+import github.ricemonger.utils.DTOs.TradeByItemIdManager;
 
 public class TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput extends AbstractBotCommandExecutor {
     @Override

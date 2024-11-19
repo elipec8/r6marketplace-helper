@@ -2,15 +2,13 @@ package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemSaleHistoryEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemSaleHistoryPostgresRepository;
-import github.ricemonger.utils.dtos.ItemSaleHistory;
+import github.ricemonger.utils.DTOs.items.ItemHistoryFields;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class ItemSaleHistoryPostgresServiceTest {
@@ -37,13 +35,13 @@ class ItemSaleHistoryPostgresServiceTest {
     @Test
     public void saveAll_should_update_existing_item_sale_history_in_db() {
 
-        ItemSaleHistory history1 = new ItemSaleHistory();
+        ItemHistoryFields history1 = new ItemHistoryFields();
         history1.setItemId("1");
         history1.setDaySales(999);
 
         itemSaleHistoryRepository.save(new ItemSaleHistoryEntity(history1));
 
-        ItemSaleHistory history2 = new ItemSaleHistory();
+        ItemHistoryFields history2 = new ItemHistoryFields();
         history2.setItemId("1");
         history2.setDaySales(1000);
 
@@ -52,11 +50,11 @@ class ItemSaleHistoryPostgresServiceTest {
         ));
 
         assertEquals(1, itemSaleHistoryRepository.count());
-        assertEquals(1000, itemSaleHistoryRepository.findById("1").get().getDaySales());
+        assertEquals(1000, itemSaleHistoryRepository.findById("1").get().getTodaySales());
     }
 
-    private ItemSaleHistory createItemSaleHistory(String id) {
-        ItemSaleHistory history = new ItemSaleHistory();
+    private ItemHistoryFields createItemSaleHistory(String id) {
+        ItemHistoryFields history = new ItemHistoryFields();
         history.setItemId(id);
         return history;
     }

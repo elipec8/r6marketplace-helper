@@ -11,12 +11,12 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemResaleLockEntityId {
-    private UbiAccountEntryEntity ubiAccountEntry;
+    private UbiAccountEntity ubiAccount;
 
     private ItemEntity item;
 
     public int hashCode() {
-        return Objects.hash(ubiAccountEntry.getUbiProfileId(), item.getItemId());
+        return Objects.hash(ubiAccount.getUbiProfileId(), item.getItemId());
     }
 
     public boolean equals(Object o) {
@@ -26,7 +26,7 @@ public class ItemResaleLockEntityId {
         if (!(o instanceof ItemResaleLockEntityId itemResaleLockEntityId)) {
             return false;
         }
-        return Objects.equals(ubiAccountEntry.getUbiProfileId(), itemResaleLockEntityId.ubiAccountEntry.getUbiProfileId()) &&
+        return Objects.equals(ubiAccount.getUbiProfileId(), itemResaleLockEntityId.ubiAccount.getUbiProfileId()) &&
                Objects.equals(item.getItemId(), itemResaleLockEntityId.item.getItemId());
     }
 }

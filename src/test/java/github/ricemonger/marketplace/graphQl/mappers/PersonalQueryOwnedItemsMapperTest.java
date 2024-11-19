@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_owned_items.marketableItems.Node;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_owned_items.marketableItems.node.Item;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_owned_items.marketableItems.Node;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_owned_items.marketableItems.node.Item;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalOwnedItemsMappingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

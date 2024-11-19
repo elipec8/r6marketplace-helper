@@ -1,12 +1,12 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.Node;
-import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.MarketData;
-import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.marketData.BuyStats;
-import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.marketData.LastSoldAt;
-import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.marketData.SellStats;
+import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.Node;
+import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.MarketData;
+import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.BuyStats;
+import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.LastSoldAt;
+import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.SellStats;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.dtos.Item;
+import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.exceptions.server.GraphQlCommonItemMappingException;
 import org.junit.jupiter.api.Test;
@@ -53,9 +53,9 @@ class CommonQueryItemsMapperTest {
         node3.getItem().setItemId("3");
         nodes.add(node3);
 
-        List<Item> items = commonQueryItemsMapper.mapItems(nodes);
+        List<Item> itemMainFields = commonQueryItemsMapper.mapItems(nodes);
 
-        assertEquals(3, items.size());
+        assertEquals(3, itemMainFields.size());
         verify(commonQueryItemsMapper, times(3)).mapItem(any());
     }
 
@@ -333,8 +333,8 @@ class CommonQueryItemsMapperTest {
     }
 
     private Node createNode(SimpleDateFormat sdf, Date date) {
-        github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.Item nodeItem =
-                new github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.Item();
+        github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.Item nodeItem =
+                new github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.Item();
 
         BuyStats buyStats = new BuyStats();
         buyStats.setHighestPrice(100);

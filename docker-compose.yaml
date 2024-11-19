@@ -1,10 +1,8 @@
-version: '2.4'
-
 services:
 
   postgres:
     container_name: r6helper-postgres
-    image: postgres:16.3
+    image: postgres:16.4
     ports:
       - "5432:5432"
     environment:
@@ -19,7 +17,7 @@ services:
 
   pgadmin:
     container_name: r6helper-pgadmin
-    image: dpage/pgadmin4:8.6
+    image: dpage/pgadmin4:8.12
     ports:
       - "5050:80"
     networks:

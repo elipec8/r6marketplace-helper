@@ -5,7 +5,8 @@ import github.ricemonger.marketplace.services.abstractions.TelegramUserInputData
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.utils.dtos.*;
+import github.ricemonger.utils.DTOs.*;
+import github.ricemonger.utils.DTOs.items.ItemFilter;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiUserAuthorizationClientErrorException;
@@ -391,9 +392,9 @@ class TelegramUserServiceTest {
 
     @Test
     public void getUserUbiAccountEntry_should_return_user_ubi_account_entry() {
-        when(telegramUserUbiAccountEntryDatabaseService.findByChatId("123")).thenReturn(new UbiAccountAuthorizationEntry());
+        when(telegramUserUbiAccountEntryDatabaseService.findByChatId("123")).thenReturn(new UbiAccountAuthorizationDTO());
 
-        assertEquals(new UbiAccountAuthorizationEntry(), telegramUserService.getUserUbiAccountEntry(123L));
+        assertEquals(new UbiAccountAuthorizationDTO(), telegramUserService.getUserUbiAccountEntry(123L));
 
         verify(telegramUserUbiAccountEntryDatabaseService).findByChatId("123");
     }

@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities.item;
 
-import github.ricemonger.utils.dtos.Tag;
+import github.ricemonger.utils.DTOs.items.Tag;
 import github.ricemonger.utils.enums.TagGroup;
 import org.junit.jupiter.api.Test;
 

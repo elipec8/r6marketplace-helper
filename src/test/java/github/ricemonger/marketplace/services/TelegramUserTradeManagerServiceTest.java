@@ -2,8 +2,8 @@ package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.abstractions.TelegramUserTradeByFiltersManagerDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserTradeByItemIdManagerDatabaseService;
-import github.ricemonger.utils.dtos.TradeByFiltersManager;
-import github.ricemonger.utils.dtos.TradeByItemIdManager;
+import github.ricemonger.utils.DTOs.TradeByFiltersManager;
+import github.ricemonger.utils.DTOs.TradeByItemIdManager;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

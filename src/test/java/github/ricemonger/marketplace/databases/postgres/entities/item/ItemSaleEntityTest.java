@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities.item;
 
-import github.ricemonger.utils.dtos.ItemSale;
+import github.ricemonger.utils.DTOs.items.ItemSale;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;

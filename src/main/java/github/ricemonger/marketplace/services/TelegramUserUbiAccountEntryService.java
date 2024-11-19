@@ -2,13 +2,13 @@ package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
-import github.ricemonger.utils.dtos.AuthorizationDTO;
-import github.ricemonger.utils.dtos.UbiAccountAuthorizationEntry;
-import github.ricemonger.utils.dtos.UbiAccountAuthorizationEntryWithTelegram;
+import github.ricemonger.utils.DTOs.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.UbiAccountAuthorizationDTO;
+import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiUserAuthorizationClientErrorException;
-import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
 import github.ricemonger.utils.exceptions.server.UbiUserAuthorizationServerErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +56,7 @@ public class TelegramUserUbiAccountEntryService {
         return unauthorizedUsers;
     }
 
-    public UbiAccountAuthorizationEntry findByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
+    public UbiAccountAuthorizationDTO findByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
         return telegramUserUbiAccountEntryDatabaseService.findByChatId(chatId);
     }
 
@@ -72,8 +72,8 @@ public class TelegramUserUbiAccountEntryService {
         }
     }
 
-    private UbiAccountAuthorizationEntry buildUbiAccount(String email, String encodedPassword, AuthorizationDTO authorizationDTO) {
-        UbiAccountAuthorizationEntry user = new UbiAccountAuthorizationEntry();
+    private UbiAccountAuthorizationDTO buildUbiAccount(String email, String encodedPassword, AuthorizationDTO authorizationDTO) {
+        UbiAccountAuthorizationDTO user = new UbiAccountAuthorizationDTO();
         user.setEmail(email);
         user.setEncodedPassword(encodedPassword);
 

@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.abstractions.TagDatabaseService;
-import github.ricemonger.utils.dtos.Tag;
+import github.ricemonger.utils.DTOs.items.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

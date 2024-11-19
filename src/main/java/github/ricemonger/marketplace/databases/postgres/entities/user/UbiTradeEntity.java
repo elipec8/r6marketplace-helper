@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
-import github.ricemonger.utils.dtos.UbiTrade;
+import github.ricemonger.utils.DTOs.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
 import jakarta.persistence.*;
@@ -26,7 +26,9 @@ public class UbiTradeEntity {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ItemEntity item;
 
+    @Enumerated(EnumType.ORDINAL)
     private TradeState state;
+    @Enumerated(EnumType.ORDINAL)
     private TradeCategory category;
     private Date expiresAt;
     private Date lastModifiedAt;
@@ -40,7 +42,7 @@ public class UbiTradeEntity {
     public UbiTrade toUbiTrade() {
         UbiTrade ubiTrade = new UbiTrade();
         ubiTrade.setTradeId(tradeId);
-        ubiTrade.setItemId(item.toItem().getItemId());
+        ubiTrade.setItemId(item.getItemId());
 
         ubiTrade.setState(state);
         ubiTrade.setCategory(category);

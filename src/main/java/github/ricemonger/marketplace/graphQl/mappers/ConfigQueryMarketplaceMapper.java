@@ -1,9 +1,10 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.Marketplace;
-import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.TagGroup;
-import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.Tags;
-import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.Type;
+import github.ricemonger.marketplace.graphQl.DTOs.config_query_marketplace.Marketplace;
+import github.ricemonger.marketplace.graphQl.DTOs.config_query_marketplace.marketplace.TagGroup;
+import github.ricemonger.marketplace.graphQl.DTOs.config_query_marketplace.marketplace.Tags;
+import github.ricemonger.marketplace.graphQl.DTOs.config_query_marketplace.marketplace.Type;
+import github.ricemonger.utils.DTOs.items.Tag;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.exceptions.server.GraphQlConfigMarketplaceMappingException;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,7 @@ import java.util.List;
 @Component
 public class ConfigQueryMarketplaceMapper {
 
-    public List<github.ricemonger.utils.dtos.Tag> mapTags(Marketplace marketplace) throws GraphQlConfigMarketplaceMappingException {
+    public List<Tag> mapTags(Marketplace marketplace) throws GraphQlConfigMarketplaceMappingException {
 
         if (marketplace == null) {
             throw new GraphQlConfigMarketplaceMappingException("Marketplace is null");
@@ -35,20 +36,20 @@ public class ConfigQueryMarketplaceMapper {
         }
 
 
-        List<github.ricemonger.utils.dtos.Tag> result = new ArrayList<>();
+        List<Tag> result = new ArrayList<>();
 
         for (Tags tag : tags) {
             if (tag == null || tag.getValue() == null || tag.getDisplayName() == null) {
                 throw new GraphQlConfigMarketplaceMappingException("Tag value or display name is null, in tags-" + tags);
             }
-            github.ricemonger.utils.dtos.Tag resultTag = new github.ricemonger.utils.dtos.Tag();
+            Tag resultTag = new Tag();
             resultTag.setValue(tag.getValue());
             resultTag.setName(tag.getDisplayName());
 
             result.add(resultTag);
         }
 
-        for (github.ricemonger.utils.dtos.Tag tag : result) {
+        for (Tag tag : result) {
             for (TagGroup group : tagGroups) {
                 if (group == null || group.getDisplayName() == null || group.getValues() == null) {
                     throw new GraphQlConfigMarketplaceMappingException("Tag group display name or values is null, in tagGroups-" + tagGroups);

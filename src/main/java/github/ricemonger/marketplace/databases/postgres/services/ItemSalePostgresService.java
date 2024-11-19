@@ -5,15 +5,19 @@ import github.ricemonger.marketplace.databases.postgres.entities.item.ItemSaleEn
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemSalePostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseService;
-import github.ricemonger.utils.dtos.Item;
-import github.ricemonger.utils.dtos.ItemSale;
+import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.ItemMainFieldsI;
+import github.ricemonger.utils.DTOs.items.ItemSale;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -26,8 +30,8 @@ public class ItemSalePostgresService implements ItemSaleDatabaseService {
 
     @Override
     @Transactional
-    public void saveAll(Collection<Item> items) {
-        if (items == null) {
+    public void saveAll(Collection<? extends ItemMainFieldsI> itemsMainFields) {
+        if (itemsMainFields == null) {
             return;
         }
 
@@ -35,7 +39,7 @@ public class ItemSalePostgresService implements ItemSaleDatabaseService {
 
         List<ItemSaleEntity> salesEntities = new LinkedList<>();
 
-        for (Item item : items) {
+        for (ItemMainFieldsI item : itemsMainFields) {
             try {
                 if (!existingItems.contains(item.getItemId())) {
                     log.error("Item with id {} not found, last sale parsing for this item skipped", item.getItemId());
@@ -51,8 +55,13 @@ public class ItemSalePostgresService implements ItemSaleDatabaseService {
     }
 
     @Override
-    public List<ItemSale> findAll() {
+    public List<ItemSale> findAllSales() {
         return itemSaleRepository.findAll().stream().map(ItemSaleEntity::toItemSale).toList();
+    }
+
+    @Override
+    public List<ItemSale> findAllLastMonthSales() {
+        return itemSaleRepository.findAllLastMonthSales().stream().map(ItemSaleEntity::toItemSale).toList();
     }
 }
 

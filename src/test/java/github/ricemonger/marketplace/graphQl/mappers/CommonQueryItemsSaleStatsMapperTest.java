@@ -1,11 +1,11 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.dtos.common_query_items_sale_stats.marketableItems.Node;
-import github.ricemonger.marketplace.graphQl.dtos.common_query_items_sale_stats.marketableItems.node.Item;
-import github.ricemonger.marketplace.graphQl.dtos.common_query_items_sale_stats.marketableItems.node.PriceHistory;
+import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node;
+import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.node.Item;
+import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.node.PriceHistory;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.dtos.ItemDaySales;
-import github.ricemonger.utils.dtos.ItemSaleUbiStats;
+import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStats;
+import github.ricemonger.utils.DTOs.items.ItemSalesUbiStatsByItemId;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -38,11 +38,11 @@ class CommonQueryItemsSaleStatsMapperTest {
         node2.setPriceHistory(List.of(new PriceHistory(sdf.format(new Date(0)), 100, 200, 500, 6)));
         List<Node> nodes = List.of(node1, node2);
 
-        ItemSaleUbiStats expected1 = new ItemSaleUbiStats("1", List.of());
-        ItemSaleUbiStats expected2 = new ItemSaleUbiStats("2", List.of(new ItemDaySales(sdf.parse(sdf.format(new Date(0))), 100, 200, 500, 6, 150)));
-        List<ItemSaleUbiStats> expected = List.of(expected1, expected2);
+        ItemSalesUbiStatsByItemId expected1 = new ItemSalesUbiStatsByItemId("1", List.of());
+        ItemSalesUbiStatsByItemId expected2 = new ItemSalesUbiStatsByItemId("2", List.of(new ItemDaySalesUbiStats(sdf.parse(sdf.format(new Date(0))), 100, 200, 500, 6, 150)));
+        List<ItemSalesUbiStatsByItemId> expected = List.of(expected1, expected2);
 
-        List<ItemSaleUbiStats> result = commonQueryItemsSaleStatsMapper.mapItemsSaleStats(nodes);
+        List<ItemSalesUbiStatsByItemId> result = commonQueryItemsSaleStatsMapper.mapItemsSaleStats(nodes);
 
         assertTrue(result.containsAll(expected) && expected.containsAll(result));
 
@@ -58,9 +58,9 @@ class CommonQueryItemsSaleStatsMapperTest {
         node.setItem(new Item("1"));
         node.setPriceHistory(List.of(new PriceHistory(sdf.format(new Date(0)), 100, 200, 500, 6)));
 
-        ItemSaleUbiStats expected = new ItemSaleUbiStats("1", List.of(new ItemDaySales(sdf.parse(sdf.format(new Date(0))), 100, 200, 500, 6, 150)));
+        ItemSalesUbiStatsByItemId expected = new ItemSalesUbiStatsByItemId("1", List.of(new ItemDaySalesUbiStats(sdf.parse(sdf.format(new Date(0))), 100, 200, 500, 6, 150)));
 
-        ItemSaleUbiStats result = commonQueryItemsSaleStatsMapper.mapItemSaleStats(node);
+        ItemSalesUbiStatsByItemId result = commonQueryItemsSaleStatsMapper.mapItemSaleStats(node);
 
         assertEquals(expected, result);
 
@@ -75,11 +75,11 @@ class CommonQueryItemsSaleStatsMapperTest {
         PriceHistory priceHistory2 = new PriceHistory(sdf.format(new Date(1)), 200, 300, 600, 7);
         List<PriceHistory> priceHistories = List.of(priceHistory1, priceHistory2);
 
-        ItemDaySales expected1 = new ItemDaySales(sdf.parse(sdf.format(new Date(0))), 100, 200, 500, 6, 150);
-        ItemDaySales expected2 = new ItemDaySales(sdf.parse(sdf.format(new Date(1))), 200, 300, 600, 7, 260);
-        List<ItemDaySales> expected = List.of(expected1, expected2);
+        ItemDaySalesUbiStats expected1 = new ItemDaySalesUbiStats(sdf.parse(sdf.format(new Date(0))), 100, 200, 500, 6, 150);
+        ItemDaySalesUbiStats expected2 = new ItemDaySalesUbiStats(sdf.parse(sdf.format(new Date(1))), 200, 300, 600, 7, 260);
+        List<ItemDaySalesUbiStats> expected = List.of(expected1, expected2);
 
-        List<ItemDaySales> result = commonQueryItemsSaleStatsMapper.mapAllItemDaySales(priceHistories);
+        List<ItemDaySalesUbiStats> result = commonQueryItemsSaleStatsMapper.mapAllItemDaySales(priceHistories);
 
         assertTrue(result.containsAll(expected) && expected.containsAll(result));
 
@@ -93,9 +93,9 @@ class CommonQueryItemsSaleStatsMapperTest {
 
         PriceHistory priceHistory = new PriceHistory(sdf.format(new Date(10)), 100, 200, 500, 6);
 
-        ItemDaySales expected = new ItemDaySales(sdf.parse(sdf.format(new Date(10))), 100, 200, 500, 6, 150);
+        ItemDaySalesUbiStats expected = new ItemDaySalesUbiStats(sdf.parse(sdf.format(new Date(10))), 100, 200, 500, 6, 150);
 
-        ItemDaySales result = commonQueryItemsSaleStatsMapper.mapItemDaySales(priceHistory);
+        ItemDaySalesUbiStats result = commonQueryItemsSaleStatsMapper.mapItemDaySales(priceHistory);
 
         assertEquals(expected, result);
     }
@@ -106,25 +106,25 @@ class CommonQueryItemsSaleStatsMapperTest {
 
         PriceHistory priceHistory = new PriceHistory(sdf.format(new Date(100000000)), 100, 200, 500, 2);
 
-        ItemDaySales expected = new ItemDaySales(sdf.parse(sdf.format(new Date(100000000))), 100, 200, 500, 2, 0);
+        ItemDaySalesUbiStats expected = new ItemDaySalesUbiStats(sdf.parse(sdf.format(new Date(100000000))), 100, 200, 500, 2, 0);
 
-        ItemDaySales result = commonQueryItemsSaleStatsMapper.mapItemDaySales(priceHistory);
+        ItemDaySalesUbiStats result = commonQueryItemsSaleStatsMapper.mapItemDaySales(priceHistory);
 
         assertEquals(expected, result);
 
         PriceHistory priceHistory1 = new PriceHistory(sdf.format(new Date(1000000000)), 100, 200, 500, 1);
 
-        ItemDaySales expected1 = new ItemDaySales(sdf.parse(sdf.format(new Date(1000000000))), 100, 200, 500, 1, 0);
+        ItemDaySalesUbiStats expected1 = new ItemDaySalesUbiStats(sdf.parse(sdf.format(new Date(1000000000))), 100, 200, 500, 1, 0);
 
-        ItemDaySales result1 = commonQueryItemsSaleStatsMapper.mapItemDaySales(priceHistory1);
+        ItemDaySalesUbiStats result1 = commonQueryItemsSaleStatsMapper.mapItemDaySales(priceHistory1);
 
         assertEquals(expected1, result1);
 
         PriceHistory priceHistory2 = new PriceHistory(sdf.format(new Date(1000)), 100, 200, 500, -222);
 
-        ItemDaySales expected2 = new ItemDaySales(sdf.parse(sdf.format(new Date(1000))), 100, 200, 500, -222, 0);
+        ItemDaySalesUbiStats expected2 = new ItemDaySalesUbiStats(sdf.parse(sdf.format(new Date(1000))), 100, 200, 500, -222, 0);
 
-        ItemDaySales result2 = commonQueryItemsSaleStatsMapper.mapItemDaySales(priceHistory2);
+        ItemDaySalesUbiStats result2 = commonQueryItemsSaleStatsMapper.mapItemDaySales(priceHistory2);
 
         assertEquals(expected2, result2);
     }

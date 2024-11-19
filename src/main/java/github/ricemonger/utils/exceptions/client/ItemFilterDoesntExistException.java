@@ -6,6 +6,7 @@ public class ItemFilterDoesntExistException extends ClientAbstractException {
     public ItemFilterDoesntExistException() {
         super();
     }
+
     public ItemFilterDoesntExistException(String message) {
         super(message);
     }

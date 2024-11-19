@@ -2,8 +2,8 @@ package github.ricemonger.marketplace.scheduled_tasks;
 
 import github.ricemonger.marketplace.services.TelegramUserUbiAccountEntryService;
 import github.ricemonger.telegramBot.client.TelegramBotClientService;
-import github.ricemonger.utils.dtos.UbiAccountAuthorizationEntry;
-import github.ricemonger.utils.dtos.UbiAccountAuthorizationEntryWithTelegram;
+import github.ricemonger.utils.DTOs.UbiAccountAuthorizationDTO;
+import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,7 +32,7 @@ class ScheduledUbiUsersReauthorizationTest {
     @Test
     public void reauthorizeUbiUsersAndNotifyAboutFailures_should_reauthorize_and_notify_via_services() {
         List<UbiAccountAuthorizationEntryWithTelegram> toNotify = new ArrayList<>();
-        toNotify.add(new UbiAccountAuthorizationEntryWithTelegram("chatId", new UbiAccountAuthorizationEntry(
+        toNotify.add(new UbiAccountAuthorizationEntryWithTelegram("chatId", new UbiAccountAuthorizationDTO(
                 "ubiProfileId",
                 "email",
                 "password",

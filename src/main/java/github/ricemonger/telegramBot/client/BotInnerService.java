@@ -5,9 +5,12 @@ import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.utils.dtos.*;
+import github.ricemonger.utils.DTOs.*;
+import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.ItemFilter;
+import github.ricemonger.utils.DTOs.items.Tag;
 import github.ricemonger.utils.enums.TagGroup;
-import github.ricemonger.utils.enums.TradeManagingType;
+import github.ricemonger.utils.enums.TradeOperationType;
 import github.ricemonger.utils.exceptions.client.*;
 import github.ricemonger.utils.exceptions.server.*;
 import lombok.RequiredArgsConstructor;
@@ -73,12 +76,12 @@ public class BotInnerService {
 
         int offset = getItemOffsetOrZeroByUserInput(chatId);
 
-        List<Item> items = itemService.getAllItemsByFilters(settings.getItemShowAppliedFilters());
+        List<Item> itemMainFields = itemService.getAllItemsByFilters(settings.getItemShowAppliedFilters());
         try {
-            if (offset >= items.size()) {
+            if (offset >= itemMainFields.size()) {
                 throw new IllegalArgumentException("Offset is bigger or equals than items size");
             }
-            items = items.subList(offset, items.size());
+            itemMainFields = itemMainFields.subList(offset, itemMainFields.size());
         } catch (IllegalArgumentException | IndexOutOfBoundsException e) {
             telegramBotClientService.sendText(String.valueOf(chatId), "Too big offset or strict filters, no items to show");
             return;
@@ -91,7 +94,7 @@ public class BotInnerService {
         int itemsInCurrentMessageCount = 0;
         StringBuilder currentMessage = new StringBuilder();
 
-        for (Item item : items) {
+        for (Item item : itemMainFields) {
             if (messageCount >= messageLimit) {
                 break;
             }
@@ -267,21 +270,21 @@ public class BotInnerService {
         }
     }
 
-    public void saveUserTradeByItemIdManagerByUserInput(Long chatId, TradeManagingType tradeManagingType) throws TelegramUserDoesntExistException,
+    public void saveUserTradeByItemIdManagerByUserInput(Long chatId, TradeOperationType tradeOperationType) throws TelegramUserDoesntExistException,
             TelegramUserInputDoesntExistException {
-        telegramUserTradeManagerService.saveUserTradeByItemIdManager(String.valueOf(chatId), generateTradeByItemIdManagerByUserInput(chatId, tradeManagingType));
+        telegramUserTradeManagerService.saveUserTradeByItemIdManager(String.valueOf(chatId), generateTradeByItemIdManagerByUserInput(chatId, tradeOperationType));
     }
 
     public void saveUserTradeByFiltersManagerByUserInput(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         telegramUserTradeManagerService.saveUserTradeByFiltersManager(String.valueOf(chatId), generateTradeByFiltersManagerByUserInput(chatId));
     }
 
-    public TradeByItemIdManager generateTradeByItemIdManagerByUserInput(Long chatId, TradeManagingType tradeManagingType) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
+    public TradeByItemIdManager generateTradeByItemIdManagerByUserInput(Long chatId, TradeOperationType tradeOperationType) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         Collection<TelegramUserInput> inputs = telegramUserService.getAllUserInputs(chatId);
 
         return tradeManagerFromInputsMapper.mapToTradeByItemIdManager(
                 inputs,
-                tradeManagingType,
+                tradeOperationType,
                 getItemByUserInputItemId(chatId),
                 telegramUserService.getTradeManagersSettings(chatId).isNewManagersAreActiveFlag());
     }

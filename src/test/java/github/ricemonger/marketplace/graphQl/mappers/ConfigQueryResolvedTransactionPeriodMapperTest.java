@@ -1,9 +1,9 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transaction_period.TradesLimitations;
-import github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transaction_period.tradeLimitations.Buy;
-import github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transaction_period.tradeLimitations.Sell;
-import github.ricemonger.utils.dtos.ConfigResolvedTransactionPeriod;
+import github.ricemonger.marketplace.graphQl.DTOs.config_query_resolved_transaction_period.TradesLimitations;
+import github.ricemonger.marketplace.graphQl.DTOs.config_query_resolved_transaction_period.tradeLimitations.Buy;
+import github.ricemonger.marketplace.graphQl.DTOs.config_query_resolved_transaction_period.tradeLimitations.Sell;
+import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.exceptions.server.GraphQlConfigResolvedTransactionPeriodMappingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities.item;
 
-import github.ricemonger.utils.dtos.Item;
+import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
 import org.junit.jupiter.api.Test;
@@ -53,7 +53,7 @@ class ItemEntityTest {
         expected.setLastSoldPrice(9);
         expected.setRarity(ItemRarity.EPIC);
 
-        ItemEntity actual = new ItemEntity(item,tagsEntities);
+        ItemEntity actual = new ItemEntity(item, tagsEntities);
 
         assertTrue(entitiesAreEqual(expected, actual));
     }
@@ -64,7 +64,7 @@ class ItemEntityTest {
         item.setItemId("1");
         item.setAssetUrl("2");
         item.setName("3");
-        item.setTags(List.of("tag1", "tag2","tag4"));
+        item.setTags(List.of("tag1", "tag2", "tag4"));
         item.setType(ItemType.WeaponSkin);
         item.setMaxBuyPrice(5);
         item.setBuyOrdersCount(6);
@@ -99,7 +99,7 @@ class ItemEntityTest {
         expected.setLastSoldPrice(9);
         expected.setRarity(ItemRarity.UNCOMMON);
 
-        ItemEntity actual = new ItemEntity(item,tagsEntities);
+        ItemEntity actual = new ItemEntity(item, tagsEntities);
 
         assertTrue(entitiesAreEqual(expected, actual));
     }
@@ -185,7 +185,7 @@ class ItemEntityTest {
         expected.setLastSoldPrice(0);
         expected.setRarity(null);
 
-        ItemEntity actual = new ItemEntity(item,tagsEntities);
+        ItemEntity actual = new ItemEntity(item, tagsEntities);
 
         assertTrue(entitiesAreEqual(expected, actual));
     }
@@ -199,7 +199,7 @@ class ItemEntityTest {
         TagEntity tagEntity2 = new TagEntity();
         tagEntity2.setValue("tag2");
         tagsEntities.add(tagEntity2);
-        
+
         ItemEntity entity = new ItemEntity();
         entity.setItemId("1");
         entity.setAssetUrl("2");

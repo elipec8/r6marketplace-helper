@@ -1,13 +1,13 @@
 package github.ricemonger.marketplace.databases.postgres.entities.item;
 
-import github.ricemonger.utils.dtos.ItemDaySales;
+import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStats;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity(name = "item_day_sales_ubi_stats")
 @Getter
@@ -23,32 +23,30 @@ public class ItemDaySalesUbiStatsEntity {
     private ItemEntity item;
 
     @Id
-    private Date date;
+    private LocalDate date;
 
     private int lowestPrice;
     private int averagePrice;
     private int highestPrice;
     private int itemsCount;
-    private int averageNoEdgesPrice;
 
-    public ItemDaySalesUbiStatsEntity(ItemEntity item, ItemDaySales itemDaySales) {
+    public ItemDaySalesUbiStatsEntity(ItemEntity item, ItemDaySalesUbiStats itemDaySalesUbiStats) {
         this.item = item;
-        this.date = itemDaySales.getDate();
-        this.lowestPrice = itemDaySales.getLowestPrice();
-        this.averagePrice = itemDaySales.getAveragePrice();
-        this.highestPrice = itemDaySales.getHighestPrice();
-        this.itemsCount = itemDaySales.getItemsCount();
-        this.averageNoEdgesPrice = itemDaySales.getAverageNoEdgesPrice();
+        this.date = itemDaySalesUbiStats.getDate();
+        this.lowestPrice = itemDaySalesUbiStats.getLowestPrice();
+        this.averagePrice = itemDaySalesUbiStats.getAveragePrice();
+        this.highestPrice = itemDaySalesUbiStats.getHighestPrice();
+        this.itemsCount = itemDaySalesUbiStats.getItemsCount();
     }
 
-    public ItemDaySales toItemDaySales() {
-        ItemDaySales itemDaySales = new ItemDaySales();
-        itemDaySales.setDate(this.date);
-        itemDaySales.setLowestPrice(this.lowestPrice);
-        itemDaySales.setAveragePrice(this.averagePrice);
-        itemDaySales.setHighestPrice(this.highestPrice);
-        itemDaySales.setItemsCount(this.itemsCount);
-        itemDaySales.setAverageNoEdgesPrice(this.averageNoEdgesPrice);
-        return itemDaySales;
+    public ItemDaySalesUbiStats toItemDaySalesUbiStats() {
+        ItemDaySalesUbiStats itemDaySalesUbiStats = new ItemDaySalesUbiStats();
+        itemDaySalesUbiStats.setItemId(this.item.getItemId());
+        itemDaySalesUbiStats.setDate(this.date);
+        itemDaySalesUbiStats.setLowestPrice(this.lowestPrice);
+        itemDaySalesUbiStats.setAveragePrice(this.averagePrice);
+        itemDaySalesUbiStats.setHighestPrice(this.highestPrice);
+        itemDaySalesUbiStats.setItemsCount(this.itemsCount);
+        return itemDaySalesUbiStats;
     }
 }

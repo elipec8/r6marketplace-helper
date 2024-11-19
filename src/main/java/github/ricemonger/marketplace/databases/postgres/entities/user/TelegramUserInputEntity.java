@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.utils.dtos.TelegramUserInput;
+import github.ricemonger.utils.DTOs.TelegramUserInput;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +23,7 @@ public class TelegramUserInputEntity {
     private TelegramUserEntity telegramUser;
 
     @Id
+    @Enumerated(EnumType.ORDINAL)
     private InputState inputState;
 
     @Column(name = "input_value") // "value" column name conflicts with H2

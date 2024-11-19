@@ -8,9 +8,9 @@ import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUse
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.utils.dtos.ItemFilter;
-import github.ricemonger.utils.dtos.ItemShownFieldsSettings;
-import github.ricemonger.utils.dtos.TelegramUser;
+import github.ricemonger.utils.DTOs.ItemShownFieldsSettings;
+import github.ricemonger.utils.DTOs.TelegramUser;
+import github.ricemonger.utils.DTOs.items.ItemFilter;
 import github.ricemonger.utils.exceptions.client.TelegramUserAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import jakarta.transaction.Transactional;
@@ -273,10 +273,10 @@ class TelegramUserPostgresServiceTest {
         createTelegramUser(CHAT_ID);
 
         telegramUserService.setTradeManagersSettingsNewManagersAreActiveFlag(CHAT_ID, false);
-        assertEquals(false, telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isNewManagersAreActiveFlag());
+        assertFalse(telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isNewManagersAreActiveFlag());
 
         telegramUserService.setTradeManagersSettingsNewManagersAreActiveFlag(CHAT_ID, true);
-        assertEquals(true, telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isNewManagersAreActiveFlag());
+        assertTrue(telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isNewManagersAreActiveFlag());
     }
 
     @Test
@@ -289,10 +289,10 @@ class TelegramUserPostgresServiceTest {
         createTelegramUser(CHAT_ID);
 
         telegramUserService.setTradeManagersSettingsManagingEnabledFlag(CHAT_ID, false);
-        assertEquals(false, telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isManagingEnabledFlag());
+        assertFalse(telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isManagingEnabledFlag());
 
         telegramUserService.setTradeManagersSettingsManagingEnabledFlag(CHAT_ID, true);
-        assertEquals(true, telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isManagingEnabledFlag());
+        assertTrue(telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isManagingEnabledFlag());
     }
 
     @Test

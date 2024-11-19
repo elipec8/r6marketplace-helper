@@ -1,18 +1,17 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.Game;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.MarketableItem;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.marketableItem.MarketData;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.marketableItem.marketData.BuyStats;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.marketableItem.marketData.LastSoldAt;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.marketableItem.marketData.SellStats;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.viewer.meta.trades.Nodes;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.viewer.meta.trades.nodes.PaymentOptions;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.viewer.meta.trades.nodes.PaymentProposal;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.Game;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.MarketableItem;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.marketableItem.MarketData;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.marketableItem.marketData.BuyStats;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.marketableItem.marketData.LastSoldAt;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.marketableItem.marketData.SellStats;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.viewer.meta.trades.Nodes;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.viewer.meta.trades.nodes.PaymentOptions;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.viewer.meta.trades.nodes.PaymentProposal;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.marketplace.services.TagService;
-import github.ricemonger.utils.dtos.PersonalItem;
-import github.ricemonger.utils.dtos.UbiTrade;
+import github.ricemonger.utils.DTOs.UbiTrade;
+import github.ricemonger.utils.DTOs.items.PersonalItem;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
@@ -23,6 +22,9 @@ import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 
 @Slf4j
@@ -42,7 +44,7 @@ public class PersonalQueryOneItemMapper {
             throw new GraphQlPersonalOneItemMappingException("MarketableItem is null in Game: " + game);
         }
 
-        github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.game.marketableItem.Item item = marketableItem.getItem();
+        github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.marketableItem.Item item = marketableItem.getItem();
 
         if (item == null || item.getItemId() == null || item.getAssetUrl() == null || item.getName() == null || item.getTags() == null || item.getType() == null) {
             throw new GraphQlPersonalOneItemMappingException("Item or one of it's fields is null in MarketableItem: " + marketableItem);
@@ -98,15 +100,15 @@ public class PersonalQueryOneItemMapper {
                 throw new GraphQlPersonalOneItemMappingException("LastSoldAt performed at is null, lastSoldAt-" + lastSoldAt);
             }
             try {
-                SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-                result.setLastSoldAt(sdf.parse(lastSoldAt.getPerformedAt()));
-            } catch (ParseException e) {
-                result.setLastSoldAt(new Date(0));
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+                result.setLastSoldAt(LocalDateTime.parse(lastSoldAt.getPerformedAt(), dtf));
+            } catch (DateTimeParseException e) {
+                result.setLastSoldAt(LocalDateTime.of(1970, 1, 1, 0, 0));
                 log.error("Error parsing date: {}", lastSoldAt.getPerformedAt());
             }
             result.setLastSoldPrice(lastSoldAt.getPrice());
         } else {
-            result.setLastSoldAt(new Date(0));
+            result.setLastSoldAt(LocalDateTime.of(1970, 1, 1, 0, 0));
             result.setLastSoldPrice(0);
         }
 

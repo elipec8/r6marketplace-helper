@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.scheduled_tasks;
 
 import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.dtos.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.AuthorizationDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

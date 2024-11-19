@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Data
@@ -14,7 +14,7 @@ public class ItemDaySalesUbiStatsEntityId {
 
     private ItemEntity item;
 
-    private Date date;
+    private LocalDate date;
 
     public int hashCode() {
         if (item == null) {

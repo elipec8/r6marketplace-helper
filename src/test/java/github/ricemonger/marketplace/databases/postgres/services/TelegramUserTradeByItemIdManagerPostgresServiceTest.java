@@ -8,7 +8,7 @@ import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgre
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TradeByItemIdManagerPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
-import github.ricemonger.utils.dtos.TradeByItemIdManager;
+import github.ricemonger.utils.DTOs.TradeByItemIdManager;
 import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TradeByItemIdManagerDoesntExistException;
@@ -19,8 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Collection;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class TelegramUserTradeByItemIdManagerPostgresServiceTest {
@@ -133,8 +132,8 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
 
         telegramUserTradeManagerByItemIdService.invertEnabledFlagById(CHAT_ID, "1");
 
-        assertEquals(false, telegramUserTradeManagerByItemIdService.findById(CHAT_ID, "1").isEnabled());
-        assertEquals(true, telegramUserTradeManagerByItemIdService.findById(CHAT_ID, "2").isEnabled());
+        assertFalse(telegramUserTradeManagerByItemIdService.findById(CHAT_ID, "1").isEnabled());
+        assertTrue(telegramUserTradeManagerByItemIdService.findById(CHAT_ID, "2").isEnabled());
         assertEquals(2,
                 telegramUserRepository.findById(CHAT_ID).get().getUser().getTradeByItemIdManagers().size());
         assertEquals(2, telegramUserRepository.findAll().size());

@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
-import github.ricemonger.utils.dtos.ItemResaleLock;
+import github.ricemonger.utils.DTOs.items.ItemResaleLock;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +22,7 @@ public class ItemResaleLockEntity {
     @Id
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "ubiProfileId", referencedColumnName = "ubiProfileId")
-    private UbiAccountEntryEntity ubiAccountEntry;
+    private UbiAccountEntity ubiAccount;
     @Id
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "itemId", referencedColumnName = "itemId")
@@ -32,7 +32,7 @@ public class ItemResaleLockEntity {
 
     public ItemResaleLock toItemResaleLock() {
         return new ItemResaleLock(
-                ubiAccountEntry.getUbiProfileId(),
+                ubiAccount.getUbiProfileId(),
                 item.getItemId(),
                 expiresAt
         );

@@ -1,9 +1,15 @@
 package github.ricemonger.marketplace.services.abstractions;
 
-import github.ricemonger.utils.dtos.ItemSaleUbiStats;
+import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStats;
+import github.ricemonger.utils.DTOs.items.ItemSalesUbiStatsByItemId;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface ItemSaleUbiStatsService {
-    void saveAll(Collection<ItemSaleUbiStats> statsList);
+    void saveAllSales(Collection<ItemSalesUbiStatsByItemId> statsList);
+
+    List<ItemDaySalesUbiStats> findAllDaySales();
+
+    List<ItemDaySalesUbiStats> findAllLastMonthSales();
 }

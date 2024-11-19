@@ -1,12 +1,12 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.TradeLimitations;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.tradeLimitations.Buy;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.tradeLimitations.Sell;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.tradeLimitations.sell.ResaleLocks;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.TradeLimitations;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.tradeLimitations.Buy;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.tradeLimitations.Sell;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.tradeLimitations.sell.ResaleLocks;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.dtos.ItemResaleLock;
-import github.ricemonger.utils.dtos.UserTransactionsCount;
+import github.ricemonger.utils.DTOs.UserTransactionsCount;
+import github.ricemonger.utils.DTOs.items.ItemResaleLock;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalLockedItemsMappingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

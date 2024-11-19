@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.services;
 
-import github.ricemonger.utils.dtos.Item;
+import github.ricemonger.utils.DTOs.items.Item;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

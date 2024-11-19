@@ -26,6 +26,6 @@ public class TradeByItemIdManagerEntityId {
             return false;
         }
         return Objects.equals(user.getId(), tradeByItemIdManagerEntityId.user.getId()) &&
-                Objects.equals(item.getItemId(), tradeByItemIdManagerEntityId.item.getItemId());
+               Objects.equals(item.getItemId(), tradeByItemIdManagerEntityId.item.getItemId());
     }
 }
