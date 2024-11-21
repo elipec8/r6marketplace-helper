@@ -43,8 +43,8 @@ public class ScheduledAllItemsStatsFetcherTest {
 
         scheduledAllItemsStatsFetcher.fetchAllItemStats();
 
+        verify(itemService).saveAllItemsMainFields(same(itemMainFields));
         verify(itemService).saveAllItemLastSales(same(itemMainFields));
-        verify(itemService).recalculateAndSaveAllItemsHistoryFields();
     }
 
     @Test
@@ -57,8 +57,8 @@ public class ScheduledAllItemsStatsFetcherTest {
 
         scheduledAllItemsStatsFetcher.fetchAllItemStats();
 
+        verify(itemService).saveAllItemsMainFields(same(itemMainFields));
         verify(itemService).saveAllItemLastSales(same(itemMainFields));
-        verify(itemService).recalculateAndSaveAllItemsHistoryFields();
         verify(commonValuesService).setExpectedItemCount(1);
         verify(telegramBotService).notifyAllUsersAboutItemAmountIncrease(0, 1);
     }
