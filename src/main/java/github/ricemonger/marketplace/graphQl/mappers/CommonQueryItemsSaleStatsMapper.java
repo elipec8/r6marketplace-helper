@@ -4,8 +4,8 @@ import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.node.Item;
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.node.PriceHistory;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStats;
 import github.ricemonger.utils.DTOs.items.GroupedItemDaySalesUbiStats;
+import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStats;
 import github.ricemonger.utils.exceptions.server.GraphQlCommonItemsSaleStatsMappingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ public class CommonQueryItemsSaleStatsMapper {
 
     private final CommonValuesService commonValuesService;
 
-    public List<GroupedItemDaySalesUbiStats> mapItemsSaleStats(Collection<Node> nodes) throws GraphQlCommonItemsSaleStatsMappingException {
+    public List<GroupedItemDaySalesUbiStats> mapAllItemsSaleStats(Collection<Node> nodes) throws GraphQlCommonItemsSaleStatsMappingException {
         return nodes.stream().map(this::mapItemSaleStats).collect(Collectors.toList());
     }
 
@@ -43,17 +43,17 @@ public class CommonQueryItemsSaleStatsMapper {
         if (node.getPriceHistory() == null) {
             throw new GraphQlCommonItemsSaleStatsMappingException("PriceHistory is null, node-" + node);
         }
-        List<ItemDaySalesUbiStats> itemSaleUbiStats = mapAllItemDaySales(node.getPriceHistory());
+        List<ItemDaySalesUbiStats> itemSaleUbiStats = mapAllItemDaySales(item.getItemId(), node.getPriceHistory());
         result.setDaySales(itemSaleUbiStats);
 
         return result;
     }
 
-    public List<ItemDaySalesUbiStats> mapAllItemDaySales(List<PriceHistory> priceHistories) throws GraphQlCommonItemsSaleStatsMappingException {
-        return priceHistories.stream().map(this::mapItemDaySales).collect(Collectors.toList());
+    public List<ItemDaySalesUbiStats> mapAllItemDaySales(String itemId, List<PriceHistory> priceHistories) throws GraphQlCommonItemsSaleStatsMappingException {
+        return priceHistories.stream().map(priceHistory -> mapItemDaySales(itemId, priceHistory)).collect(Collectors.toList());
     }
 
-    public ItemDaySalesUbiStats mapItemDaySales(PriceHistory priceHistory) throws GraphQlCommonItemsSaleStatsMappingException {
+    public ItemDaySalesUbiStats mapItemDaySales(String itemId, PriceHistory priceHistory) throws GraphQlCommonItemsSaleStatsMappingException {
         if (priceHistory == null) {
             throw new GraphQlCommonItemsSaleStatsMappingException("PriceHistory is null");
         }
@@ -69,6 +69,7 @@ public class CommonQueryItemsSaleStatsMapper {
         if (priceHistory.getItemsCount() == null || priceHistory.getLowestPrice() == null || priceHistory.getHighestPrice() == null || priceHistory.getAveragePrice() == null) {
             throw new GraphQlCommonItemsSaleStatsMappingException("One of priceHistory values is null:" + priceHistory);
         }
+        result.setItemId(itemId);
         result.setItemsCount(priceHistory.getItemsCount());
         result.setLowestPrice(priceHistory.getLowestPrice());
         result.setHighestPrice(priceHistory.getHighestPrice());

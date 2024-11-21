@@ -1,6 +1,6 @@
 package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.utils.DTOs.items.ItemResaleLock;
+import github.ricemonger.utils.DTOs.items.ItemResaleLockWithUbiAccount;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -46,11 +46,11 @@ public class UbiAccountTradingEntry {
         ubiAccountStats.setOwnedItemsIds(ownedItemsIds);
     }
 
-    public List<ItemResaleLock> getResaleLocks() {
+    public List<ItemResaleLockWithUbiAccount> getResaleLocks() {
         return ubiAccountStats.getResaleLocks();
     }
 
-    public void setResaleLocks(List<ItemResaleLock> resaleLocks) {
+    public void setResaleLocks(List<ItemResaleLockWithUbiAccount> resaleLocks) {
         ubiAccountStats.setResaleLocks(resaleLocks);
     }
 

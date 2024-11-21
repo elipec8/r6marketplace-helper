@@ -1,14 +1,14 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
-import github.ricemonger.utils.DTOs.items.ItemResaleLock;
+import github.ricemonger.utils.DTOs.items.ItemResaleLockWithUbiAccount;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ItemResaleLockEntityTest {
+class ItemResaleLockWithUbiAccountEntityTest {
     @Test
     public void toItemResaleLock_should_properly_map_with_all_fields() {
         UbiAccountStatsEntity ubiAccount = new UbiAccountStatsEntity();
@@ -24,9 +24,9 @@ class ItemResaleLockEntityTest {
         entity.setItem(item);
         entity.setExpiresAt(expiresAt);
 
-        ItemResaleLock expected = new ItemResaleLock("ubiProfileId", "itemId", expiresAt);
+        ItemResaleLockWithUbiAccount expected = new ItemResaleLockWithUbiAccount("ubiProfileId", "itemId", expiresAt);
 
-        ItemResaleLock actual = entity.toItemResaleLock();
+        ItemResaleLockWithUbiAccount actual = entity.toItemResaleLock();
 
         assertEquals(expected, actual);
     }

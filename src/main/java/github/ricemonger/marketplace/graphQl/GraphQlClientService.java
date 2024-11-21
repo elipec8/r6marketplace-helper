@@ -96,7 +96,7 @@ public class GraphQlClientService {
         }
         while (marketableItems.getTotalCount() == GraphQlVariablesService.MAX_LIMIT);
 
-        return commonQueryItemsSaleStatsMapper.mapItemsSaleStats(nodes);
+        return commonQueryItemsSaleStatsMapper.mapAllItemsSaleStats(nodes);
     }
 
     public Collection<Tag> fetchAllTags() throws GraphQlConfigMarketplaceMappingException {
@@ -202,7 +202,7 @@ public class GraphQlClientService {
         return personalQueryFinishedOrdersMapper.mapFinishedOrders(trades);
     }
 
-    public Collection<ItemResaleLock> fetchLockedItemsForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalLockedItemsMappingException {
+    public Collection<ItemResaleLockWithUbiAccount> fetchLockedItemsForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalLockedItemsMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
         github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.TradeLimitations tradeLimitations;
@@ -214,7 +214,7 @@ public class GraphQlClientService {
                 .toEntity(github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.TradeLimitations.class)
                 .block();
 
-        return personalQueryLockedItemsMapper.mapLockedItems(tradeLimitations);
+        return personalQueryLockedItemsMapper.mapLockedItems(tradeLimitations).stream().map(item -> (ItemResaleLockWithUbiAccount) item).toList();
     }
 
     public PersonalItem fetchOneItem(AuthorizationDTO authorizationDTO, String itemId) throws GraphQlPersonalOneItemMappingException {

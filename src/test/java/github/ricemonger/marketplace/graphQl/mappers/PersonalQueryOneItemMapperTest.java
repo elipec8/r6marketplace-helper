@@ -26,9 +26,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,10 +42,10 @@ class PersonalQueryOneItemMapperTest {
 
     @Test
     public void mapItem_should_map_item_with_valid_fields_with_PaymentProposal() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.now();
 
-        Game game = createGame(sdf, date);
+        Game game = createGame(dtf, date);
 
         PersonalItem result = personalQueryOneItemMapper.mapItem(game);
 
@@ -56,10 +56,10 @@ class PersonalQueryOneItemMapperTest {
 
     @Test
     public void mapItem_should_map_item_with_valid_fields_with_PaymentOptions() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.now();
 
-        Game game = createGame(sdf, date);
+        Game game = createGame(dtf, date);
         game.getViewer().getMeta().getTrades().getNodes().get(0).setPaymentOptions(new PaymentOptions[]{new PaymentOptions(1000)});
         game.getViewer().getMeta().getTrades().getNodes().get(0).setPaymentProposal(null);
 
@@ -72,10 +72,10 @@ class PersonalQueryOneItemMapperTest {
 
     @Test
     public void mapItem_should_map_item_with_invalid_type() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.now();
 
-        Game game = createGame(sdf, date);
+        Game game = createGame(dtf, date);
         game.getMarketableItem().getItem().setType("invalidType");
 
         PersonalItem result = personalQueryOneItemMapper.mapItem(game);
@@ -88,58 +88,58 @@ class PersonalQueryOneItemMapperTest {
 
     @Test
     public void mapItem_should_map_item_with_invalid_last_sold_at() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.now();
 
-        Game game = createGame(sdf, date);
+        Game game = createGame(dtf, date);
         game.getMarketableItem().getMarketData().getLastSoldAt()[0].setPerformedAt("invalidDate");
 
         PersonalItem result = personalQueryOneItemMapper.mapItem(game);
 
         PersonalItem expected = createPersonalItem(date);
-        expected.setLastSoldAt(new Date(0));
+        expected.setLastSoldAt(LocalDateTime.MIN);
 
         assertEquals(expected, result);
     }
 
     @Test
     public void mapItem_should_map_item_with_invalid_expires_at() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.now();
 
-        Game game = createGame(sdf, date);
+        Game game = createGame(dtf, date);
         game.getViewer().getMeta().getTrades().getNodes().get(0).setExpiresAt("invalidDate");
 
         PersonalItem result = personalQueryOneItemMapper.mapItem(game);
 
         PersonalItem expected = createPersonalItem(date);
-        expected.getTrades().get(0).setExpiresAt(new Date(0));
+        expected.getTrades().get(0).setExpiresAt(LocalDateTime.MIN);
 
         assertEquals(expected, result);
     }
 
     @Test
     public void mapItem_should_map_item_with_invalid_last_modified_at() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.now();
 
-        Game game = createGame(sdf, date);
+        Game game = createGame(dtf, date);
         game.getViewer().getMeta().getTrades().getNodes().get(0).setLastModifiedAt("invalidDate");
 
         PersonalItem result = personalQueryOneItemMapper.mapItem(game);
 
         PersonalItem expected = createPersonalItem(date);
-        expected.getTrades().get(0).setLastModifiedAt(new Date(0));
+        expected.getTrades().get(0).setLastModifiedAt(LocalDateTime.MIN);
 
         assertEquals(expected, result);
     }
 
     @Test
     public void mapItem_should_map_item_with_invalid_TradeState() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.now();
 
-        Game game = createGame(sdf, date);
+        Game game = createGame(dtf, date);
         game.getViewer().getMeta().getTrades().getNodes().get(0).setState("invalidState");
 
         PersonalItem result = personalQueryOneItemMapper.mapItem(game);
@@ -152,10 +152,10 @@ class PersonalQueryOneItemMapperTest {
 
     @Test
     public void mapItem_should_map_item_with_invalid_TradeCategory() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.now();
 
-        Game game = createGame(sdf, date);
+        Game game = createGame(dtf, date);
         game.getViewer().getMeta().getTrades().getNodes().get(0).setCategory("invalidCategory");
 
         PersonalItem result = personalQueryOneItemMapper.mapItem(game);
@@ -455,12 +455,12 @@ class PersonalQueryOneItemMapperTest {
     }
 
     private Game createGame() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        return createGame(sdf, date);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.now();
+        return createGame(dtf, date);
     }
 
-    private Game createGame(SimpleDateFormat sdf, Date date) {
+    private Game createGame(DateTimeFormatter dtf, LocalDateTime date) {
         github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.marketableItem.item.viewer.Meta itemMeta =
                 new github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.marketableItem.item.viewer.Meta();
         itemMeta.setIsOwned(true);
@@ -485,7 +485,7 @@ class PersonalQueryOneItemMapperTest {
         buyStats.setHighestPrice(888);
         LastSoldAt lastSoldAt = new LastSoldAt();
         lastSoldAt.setPrice(777);
-        lastSoldAt.setPerformedAt(sdf.format(new Date(date.getTime() + 2000)));
+        lastSoldAt.setPerformedAt(dtf.format(date.minusSeconds(1000)));
 
         MarketableItem marketableItem = new MarketableItem();
         marketableItem.setItem(item);
@@ -497,8 +497,8 @@ class PersonalQueryOneItemMapperTest {
         nodes1.setTradeId("123");
         nodes1.setState(TradeState.Created.name());
         nodes1.setCategory(TradeCategory.Sell.name());
-        nodes1.setExpiresAt(sdf.format(date));
-        nodes1.setLastModifiedAt(sdf.format(new Date(date.getTime() + 1000)));
+        nodes1.setExpiresAt(dtf.format(date));
+        nodes1.setLastModifiedAt(dtf.format(date.plusSeconds(1000)));
         nodes1.setPayment(new Payment(550, 55));
         //nodes1.setPaymentOptions(new PaymentOptions[]{new PaymentOptions(1000)});
         nodes1.setPaymentProposal(new PaymentProposal(1000, 100));
@@ -513,7 +513,7 @@ class PersonalQueryOneItemMapperTest {
         return game;
     }
 
-    private PersonalItem createPersonalItem(Date date) {
+    private PersonalItem createPersonalItem(LocalDateTime date) {
         PersonalItem expected = new PersonalItem();
         expected.setItemId("223");
         expected.setAssetUrl("https://assetUrl.com");
@@ -524,7 +524,7 @@ class PersonalQueryOneItemMapperTest {
         expected.setBuyOrdersCount(88);
         expected.setMinSellPrice(999);
         expected.setSellOrdersCount(99);
-        expected.setLastSoldAt(new Date(date.getTime() + 2000));
+        expected.setLastSoldAt(date.minusSeconds(1000));
         expected.setLastSoldPrice(777);
         expected.setOwned(true);
         UbiTrade expectedTrade = new UbiTrade();
@@ -533,7 +533,7 @@ class PersonalQueryOneItemMapperTest {
         expectedTrade.setState(TradeState.Created);
         expectedTrade.setCategory(TradeCategory.Sell);
         expectedTrade.setExpiresAt(date);
-        expectedTrade.setLastModifiedAt(new Date(date.getTime() + 1000));
+        expectedTrade.setLastModifiedAt(date.plusSeconds(1000));
         expectedTrade.setProposedPaymentPrice(1000);
         expectedTrade.setProposedPaymentFee(100);
         expectedTrade.setSuccessPaymentPrice(550);

@@ -1,6 +1,6 @@
 package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.utils.DTOs.items.ItemResaleLock;
+import github.ricemonger.utils.DTOs.items.ItemResaleLockWithUbiAccount;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,7 @@ public class UbiAccountStats {
     private Integer boughtIn24h;
 
     private List<String> ownedItemsIds;
-    private List<ItemResaleLock> resaleLocks;
+    private List<ItemResaleLockWithUbiAccount> resaleLocks;
     private List<UbiTrade> currentBuyTrades;
     private List<UbiTrade> currentSellTrades;
     private List<UbiTrade> finishedTrades;

@@ -5,6 +5,7 @@ import github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.tr
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.DTOs.UserTransactionsCount;
 import github.ricemonger.utils.DTOs.items.ItemResaleLock;
+import github.ricemonger.utils.DTOs.items.ItemResaleLockWithUbiAccount;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalLockedItemsMappingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +39,7 @@ public class PersonalQueryLockedItemsMapper {
         if (resaleLocks == null || resaleLocks.getItemId() == null || resaleLocks.getExpiresAt() == null) {
             throw new GraphQlPersonalLockedItemsMappingException("Resale locks or one of it's fields is null:" + resaleLocks);
         }
-        ItemResaleLock result = new ItemResaleLock();
+        ItemResaleLockWithUbiAccount result = new ItemResaleLockWithUbiAccount();
         result.setItemId(resaleLocks.getItemId());
         try {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());

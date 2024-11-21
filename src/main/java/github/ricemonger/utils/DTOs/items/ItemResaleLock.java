@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemResaleLock {
-    private String ubiProfileId;
     private String itemId;
     private LocalDateTime expiresAt;
 }

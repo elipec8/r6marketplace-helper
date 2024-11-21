@@ -3,7 +3,7 @@ package github.ricemonger.marketplace.databases.postgres.entities.user;
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.utils.DTOs.UbiAccountStats;
 import github.ricemonger.utils.DTOs.UbiTrade;
-import github.ricemonger.utils.DTOs.items.ItemResaleLock;
+import github.ricemonger.utils.DTOs.items.ItemResaleLockWithUbiAccount;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -75,7 +75,7 @@ public class UbiAccountStatsEntity {
         ubiAccountStats.setSoldIn24h(this.boughtIn24h);
         ubiAccountStats.setBoughtIn24h(this.boughtIn24h);
 
-        List<ItemResaleLock> resaleLocks = new ArrayList<>();
+        List<ItemResaleLockWithUbiAccount> resaleLocks = new ArrayList<>();
         for (ItemResaleLockEntity lock : this.resaleLocks) {
             resaleLocks.add(lock.toItemResaleLock());
         }

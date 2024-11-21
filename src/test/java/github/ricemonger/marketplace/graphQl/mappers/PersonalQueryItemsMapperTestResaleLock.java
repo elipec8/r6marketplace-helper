@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,17 +32,18 @@ class PersonalQueryItemsMapperTestResaleLock {
 
     @Test
     public void mapLockedItems_should_map_each_item() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date2 = date.plusSeconds(1000);
 
         TradeLimitations tradeLimitations = new TradeLimitations();
         tradeLimitations.setSell(new Sell());
         tradeLimitations.getSell().setResaleLocks(new ArrayList<>());
-        tradeLimitations.getSell().getResaleLocks().add(new ResaleLocks("1", sdf.format(date)));
-        tradeLimitations.getSell().getResaleLocks().add(new ResaleLocks("2", sdf.format(date.getTime() + 1000)));
+        tradeLimitations.getSell().getResaleLocks().add(new ResaleLocks("1", dtf.format(date)));
+        tradeLimitations.getSell().getResaleLocks().add(new ResaleLocks("2", dtf.format(date2)));
 
         ItemResaleLock expected1 = new ItemResaleLock("1", date);
-        ItemResaleLock expected2 = new ItemResaleLock("2", new Date(date.getTime() + 1000));
+        ItemResaleLock expected2 = new ItemResaleLock("2", date2);
 
         List<ItemResaleLock> result = personalQueryLockedItemsMapper.mapLockedItems(tradeLimitations);
 
@@ -76,10 +77,10 @@ class PersonalQueryItemsMapperTestResaleLock {
 
     @Test
     public void mapLockedItem_should_map_item_with_valid_fields() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.now();
 
-        ResaleLocks resaleLocks = new ResaleLocks("1", sdf.format(date));
+        ResaleLocks resaleLocks = new ResaleLocks("1", dtf.format(date));
 
         ItemResaleLock expected = new ItemResaleLock("1", date);
 
@@ -90,7 +91,7 @@ class PersonalQueryItemsMapperTestResaleLock {
     public void mapLockedItem_should_map_item_with_invalid_expiresAt() {
         ResaleLocks resaleLocks = new ResaleLocks("1", "invalid date");
 
-        ItemResaleLock expected = new ItemResaleLock("1", new Date(0));
+        ItemResaleLock expected = new ItemResaleLock("1", LocalDateTime.MIN);
 
         assertEquals(expected, personalQueryLockedItemsMapper.mapLockedItem(resaleLocks));
     }
