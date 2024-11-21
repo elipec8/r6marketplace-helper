@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationDTO;
+import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +14,7 @@ class UbiAccountAuthorizationEntryEntityTest {
         user.setId(1L);
         UbiAccountStatsEntity ubiAccount = new UbiAccountStatsEntity();
         ubiAccount.setUbiProfileId("profile1");
-        UbiAccountAuthorizationDTO account = new UbiAccountAuthorizationDTO();
+        UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
         account.setEmail("email@example.com");
         account.setEncodedPassword("encodedPassword");
         account.setUbiSessionId("sessionId");
@@ -91,7 +91,7 @@ class UbiAccountAuthorizationEntryEntityTest {
         entity.setUbiRememberDeviceTicket("rememberDeviceTicket");
         entity.setUbiRememberMeTicket("rememberMeTicket");
 
-        UbiAccountAuthorizationDTO result = entity.toUbiAccountAuthorizationEntry();
+        UbiAccountAuthorizationEntry result = entity.toUbiAccountAuthorizationEntry();
 
         assertEquals("email@example.com", result.getEmail());
         assertEquals("encodedPassword", result.getEncodedPassword());

@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationDTO;
+import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import jakarta.persistence.*;
@@ -44,7 +44,7 @@ public class UbiAccountAuthorizationEntryEntity {
     @JoinColumn(name = "ubiProfileId", referencedColumnName = "ubiProfileId")
     private UbiAccountStatsEntity ubiAccountStats;
 
-    public UbiAccountAuthorizationEntryEntity(UserEntity user, UbiAccountStatsEntity ubiAccountStats, UbiAccountAuthorizationDTO account) {
+    public UbiAccountAuthorizationEntryEntity(UserEntity user, UbiAccountStatsEntity ubiAccountStats, UbiAccountAuthorizationEntry account) {
         this.user = user;
         this.email = account.getEmail();
         this.encodedPassword = account.getEncodedPassword();
@@ -69,8 +69,8 @@ public class UbiAccountAuthorizationEntryEntity {
         return ubiAccountWithTelegram;
     }
 
-    public UbiAccountAuthorizationDTO toUbiAccountAuthorizationEntry() {
-        UbiAccountAuthorizationDTO ubiAccountEntry = new UbiAccountAuthorizationDTO();
+    public UbiAccountAuthorizationEntry toUbiAccountAuthorizationEntry() {
+        UbiAccountAuthorizationEntry ubiAccountEntry = new UbiAccountAuthorizationEntry();
         ubiAccountEntry.setEmail(this.email);
         ubiAccountEntry.setEncodedPassword(this.encodedPassword);
         ubiAccountEntry.setUbiProfileId(this.ubiAccountStats.getUbiProfileId());

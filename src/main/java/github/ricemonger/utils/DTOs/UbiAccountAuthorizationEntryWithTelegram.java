@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class UbiAccountAuthorizationEntryWithTelegram {
     private String chatId;
 
-    private UbiAccountAuthorizationDTO ubiAccountEntry;
+    private UbiAccountAuthorizationEntry ubiAccountEntry;
 
     public String getEmail() {
         return ubiAccountEntry.getEmail();

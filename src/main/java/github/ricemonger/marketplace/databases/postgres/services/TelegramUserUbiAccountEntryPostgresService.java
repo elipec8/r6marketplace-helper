@@ -3,11 +3,11 @@ package github.ricemonger.marketplace.databases.postgres.services;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountAuthorizationEntryEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountStatsEntity;
-import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountAuthorizationEntryPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountStatsEntityPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationDTO;
+import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
@@ -22,46 +22,47 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TelegramUserUbiAccountEntryPostgresService implements TelegramUserUbiAccountEntryDatabaseService {
 
-    private final ItemPostgresRepository itemRepository;
+    private final UbiAccountAuthorizationEntryPostgresRepository ubiAccountAuthorizationEntryRepository;
 
-    private final UbiAccountAuthorizationEntryPostgresRepository ubiAccountEntryRepository;
+    private final UbiAccountStatsEntityPostgresRepository ubiAccountStatsRepository;
 
     private final TelegramUserPostgresRepository telegramUserRepository;
 
     @Override
     @Transactional
-    public void saveAuthorizationInfo(String chatId, UbiAccountAuthorizationDTO account) throws TelegramUserDoesntExistException, UbiAccountEntryAlreadyExistsException {
+    public void saveAuthorizationInfo(String chatId, UbiAccountAuthorizationEntry account) throws TelegramUserDoesntExistException, UbiAccountEntryAlreadyExistsException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
-        UbiAccountAuthorizationEntryEntity ubiAccountEntry = ubiAccountEntryRepository.findByUserTelegramUserChatId(telegramUser.getChatId()).orElse(null);
+        UbiAccountAuthorizationEntryEntity ubiAccountAuthorizationEntry = ubiAccountAuthorizationEntryRepository.findByUserTelegramUserChatId(telegramUser.getChatId()).orElse(null);
 
-        if (ubiAccountEntry != null && !ubiAccountEntry.getUbiAccountStats().getUbiProfileId().equals(account.getUbiProfileId())) {
+        if (ubiAccountAuthorizationEntry != null && !ubiAccountAuthorizationEntry.getUbiAccountStats().getUbiProfileId().equals(account.getUbiProfileId())) {
             throw new UbiAccountEntryAlreadyExistsException("User with chatId " + chatId + " already has another Ubi account");
         } else {
-            ubiAccountEntryRepository.save(new UbiAccountAuthorizationEntryEntity(telegramUser.getUser(), new UbiAccountStatsEntity(account.getUbiProfileId()), account));
+            UbiAccountStatsEntity ubiAccountStatsEntity = ubiAccountStatsRepository.findById(account.getUbiProfileId()).orElse(new UbiAccountStatsEntity(account.getUbiProfileId()));
+            ubiAccountAuthorizationEntryRepository.save(new UbiAccountAuthorizationEntryEntity(telegramUser.getUser(), ubiAccountStatsEntity, account));
         }
     }
 
     @Override
     @Transactional
-    public void deleteByChatId(String chatId) throws TelegramUserDoesntExistException {
+    public void deleteAuthorizationInfoByChatId(String chatId) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
-        telegramUser.getUser().setUbiAccountEntry(null);
+        telegramUser.getUser().setUbiAccountAuthorizationEntry(null);
         telegramUserRepository.save(telegramUser);
     }
 
     @Override
-    public UbiAccountAuthorizationDTO findByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
+    public UbiAccountAuthorizationEntry findAuthorizationInfoByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
-        return ubiAccountEntryRepository.findByUserTelegramUserChatId(telegramUser.getChatId())
+        return ubiAccountAuthorizationEntryRepository.findByUserTelegramUserChatId(telegramUser.getChatId())
                 .orElseThrow(() -> new UbiAccountEntryDoesntExistException("User with chatId " + chatId + " doesn't have ubi account entry")).toUbiAccountAuthorizationEntry();
     }
 
     @Override
-    public List<UbiAccountAuthorizationEntryWithTelegram> findAll() {
-        return ubiAccountEntryRepository.findAll().stream().map(UbiAccountAuthorizationEntryEntity::toUbiAccountAuthorizationEntryWithTelegram).toList();
+    public List<UbiAccountAuthorizationEntryWithTelegram> findAllAuthorizationInfoForTelegram() {
+        return ubiAccountAuthorizationEntryRepository.findAll().stream().map(UbiAccountAuthorizationEntryEntity::toUbiAccountAuthorizationEntryWithTelegram).toList();
     }
 
     private TelegramUserEntity getTelegramUserEntityByIdOrThrow(String chatId) {

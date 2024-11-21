@@ -12,7 +12,7 @@ import java.util.Objects;
 public class UbiAccountTradingEntry {
     private UbiAccountStats ubiAccountStats;
 
-    private UbiAccountAuthorizationDTO ubiAccountAuthorizationDTO;
+    private UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry;
 
     public String getUbiProfileId() {
         return ubiAccountStats.getUbiProfileId();
@@ -79,71 +79,71 @@ public class UbiAccountTradingEntry {
     }
 
     public String getEmail() {
-        return ubiAccountAuthorizationDTO.getEmail();
+        return ubiAccountAuthorizationEntry.getEmail();
     }
 
     public void setEmail(String email) {
-        ubiAccountAuthorizationDTO.setEmail(email);
+        ubiAccountAuthorizationEntry.setEmail(email);
     }
 
     public String getEncodedPassword() {
-        return ubiAccountAuthorizationDTO.getEncodedPassword();
+        return ubiAccountAuthorizationEntry.getEncodedPassword();
     }
 
     public void setEncodedPassword(String encodedPassword) {
-        ubiAccountAuthorizationDTO.setEncodedPassword(encodedPassword);
+        ubiAccountAuthorizationEntry.setEncodedPassword(encodedPassword);
     }
 
     public String getUbiSessionId() {
-        return ubiAccountAuthorizationDTO.getUbiSessionId();
+        return ubiAccountAuthorizationEntry.getUbiSessionId();
     }
 
     public void setUbiSessionId(String ubiSessionId) {
-        ubiAccountAuthorizationDTO.setUbiSessionId(ubiSessionId);
+        ubiAccountAuthorizationEntry.setUbiSessionId(ubiSessionId);
     }
 
     public String getUbiSpaceId() {
-        return ubiAccountAuthorizationDTO.getUbiSpaceId();
+        return ubiAccountAuthorizationEntry.getUbiSpaceId();
     }
 
     public void setUbiSpaceId(String ubiSpaceId) {
-        ubiAccountAuthorizationDTO.setUbiSpaceId(ubiSpaceId);
+        ubiAccountAuthorizationEntry.setUbiSpaceId(ubiSpaceId);
     }
 
     public String getUbiAuthTicket() {
-        return ubiAccountAuthorizationDTO.getUbiAuthTicket();
+        return ubiAccountAuthorizationEntry.getUbiAuthTicket();
     }
 
     public void setUbiAuthTicket(String ubiAuthTicket) {
-        ubiAccountAuthorizationDTO.setUbiAuthTicket(ubiAuthTicket);
+        ubiAccountAuthorizationEntry.setUbiAuthTicket(ubiAuthTicket);
     }
 
     public String getUbiTwoFactorAuthTicket() {
-        return ubiAccountAuthorizationDTO.getUbiTwoFactorAuthTicket();
+        return ubiAccountAuthorizationEntry.getUbiTwoFactorAuthTicket();
     }
 
     public void setUbiTwoFactorAuthTicket(String ubiTwoFactorAuthTicket) {
-        ubiAccountAuthorizationDTO.setUbiTwoFactorAuthTicket(ubiTwoFactorAuthTicket);
+        ubiAccountAuthorizationEntry.setUbiTwoFactorAuthTicket(ubiTwoFactorAuthTicket);
     }
 
     public String getUbiRememberDeviceTicket() {
-        return ubiAccountAuthorizationDTO.getUbiRememberDeviceTicket();
+        return ubiAccountAuthorizationEntry.getUbiRememberDeviceTicket();
     }
 
     public void setUbiRememberDeviceTicket(String ubiRememberDeviceTicket) {
-        ubiAccountAuthorizationDTO.setUbiRememberDeviceTicket(ubiRememberDeviceTicket);
+        ubiAccountAuthorizationEntry.setUbiRememberDeviceTicket(ubiRememberDeviceTicket);
     }
 
     public String getUbiRememberMeTicket() {
-        return ubiAccountAuthorizationDTO.getUbiRememberMeTicket();
+        return ubiAccountAuthorizationEntry.getUbiRememberMeTicket();
     }
 
     public void setUbiRememberMeTicket(String ubiRememberMeTicket) {
-        ubiAccountAuthorizationDTO.setUbiRememberMeTicket(ubiRememberMeTicket);
+        ubiAccountAuthorizationEntry.setUbiRememberMeTicket(ubiRememberMeTicket);
     }
 
     public int hashCode() {
-        return Objects.hash(ubiAccountStats, ubiAccountAuthorizationDTO);
+        return Objects.hash(ubiAccountStats, ubiAccountAuthorizationEntry);
     }
 
     public boolean equals(Object o) {
@@ -153,6 +153,6 @@ public class UbiAccountTradingEntry {
         if (!(o instanceof UbiAccountTradingEntry ubiAccountTradingEntry)) {
             return false;
         }
-        return Objects.equals(ubiAccountStats, ubiAccountTradingEntry.ubiAccountStats) && Objects.equals(ubiAccountAuthorizationDTO, ubiAccountTradingEntry.ubiAccountAuthorizationDTO);
+        return Objects.equals(ubiAccountStats, ubiAccountTradingEntry.ubiAccountStats) && Objects.equals(ubiAccountAuthorizationEntry, ubiAccountTradingEntry.ubiAccountAuthorizationEntry);
     }
 }

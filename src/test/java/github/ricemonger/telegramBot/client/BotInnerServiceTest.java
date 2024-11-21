@@ -440,7 +440,7 @@ public class BotInnerServiceTest {
     @Test
     public void getUserUbiAccountEntryEmail_should_return_service_result() {
         String email = "Email";
-        UbiAccountAuthorizationDTO entry = new UbiAccountAuthorizationDTO();
+        UbiAccountAuthorizationEntry entry = new UbiAccountAuthorizationEntry();
         entry.setEmail(email);
         when(telegramUserService.getUserUbiAccountEntry(1L)).thenReturn(entry);
 

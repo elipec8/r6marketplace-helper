@@ -3,7 +3,7 @@ package github.ricemonger.marketplace.services;
 import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
 import github.ricemonger.utils.DTOs.AuthorizationDTO;
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationDTO;
+import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
@@ -37,11 +37,11 @@ public class TelegramUserUbiAccountEntryService {
     }
 
     public void deleteByChatId(String chatId) throws TelegramUserDoesntExistException {
-        telegramUserUbiAccountEntryDatabaseService.deleteByChatId(chatId);
+        telegramUserUbiAccountEntryDatabaseService.deleteAuthorizationInfoByChatId(chatId);
     }
 
     public List<UbiAccountAuthorizationEntryWithTelegram> reauthorizeAllUbiUsersAndGetUnauthorizedList() {
-        List<UbiAccountAuthorizationEntryWithTelegram> users = new ArrayList<>(telegramUserUbiAccountEntryDatabaseService.findAll());
+        List<UbiAccountAuthorizationEntryWithTelegram> users = new ArrayList<>(telegramUserUbiAccountEntryDatabaseService.findAllAuthorizationInfoForTelegram());
 
         List<UbiAccountAuthorizationEntryWithTelegram> unauthorizedUsers = new ArrayList<>();
 
@@ -56,8 +56,8 @@ public class TelegramUserUbiAccountEntryService {
         return unauthorizedUsers;
     }
 
-    public UbiAccountAuthorizationDTO findByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
-        return telegramUserUbiAccountEntryDatabaseService.findByChatId(chatId);
+    public UbiAccountAuthorizationEntry findByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
+        return telegramUserUbiAccountEntryDatabaseService.findAuthorizationInfoByChatId(chatId);
     }
 
     private void reauthorizeAndSaveUser(String chatId, String email, String encodedPassword) throws UbiUserAuthorizationClientErrorException, UbiUserAuthorizationServerErrorException {
@@ -72,8 +72,8 @@ public class TelegramUserUbiAccountEntryService {
         }
     }
 
-    private UbiAccountAuthorizationDTO buildUbiAccount(String email, String encodedPassword, AuthorizationDTO authorizationDTO) {
-        UbiAccountAuthorizationDTO user = new UbiAccountAuthorizationDTO();
+    private UbiAccountAuthorizationEntry buildUbiAccount(String email, String encodedPassword, AuthorizationDTO authorizationDTO) {
+        UbiAccountAuthorizationEntry user = new UbiAccountAuthorizationEntry();
         user.setEmail(email);
         user.setEncodedPassword(encodedPassword);
 

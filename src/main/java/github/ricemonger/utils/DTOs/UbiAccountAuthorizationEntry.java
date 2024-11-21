@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UbiAccountAuthorizationDTO {
+public class UbiAccountAuthorizationEntry {
     private String email;
     private String encodedPassword;
 
