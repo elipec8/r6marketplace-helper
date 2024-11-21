@@ -9,7 +9,7 @@ import java.util.List;
 public interface ItemSaleDatabaseService {
     void saveAll(Collection<? extends ItemMainFieldsI> itemMainFields);
 
-    List<ItemSale> findAllSales();
+    List<ItemSale> findAll();
 
-    List<ItemSale> findAllLastMonthSales();
+    List<ItemSale> findAllForLastMonth();
 }

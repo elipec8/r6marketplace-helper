@@ -5,8 +5,8 @@ import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemDaySalesUbiStatsPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleUbiStatsService;
+import github.ricemonger.utils.DTOs.items.GroupedItemDaySalesUbiStats;
 import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStats;
-import github.ricemonger.utils.DTOs.items.ItemSalesUbiStatsByItemId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,45 +28,36 @@ public class ItemDaySalesUbiStatsPostgresService implements ItemSaleUbiStatsServ
 
     @Override
     @Transactional
-    public void saveAllSales(Collection<ItemSalesUbiStatsByItemId> statsList) {
-        if (statsList == null) {
+    public void saveAll(Collection<GroupedItemDaySalesUbiStats> groupedItemDaySalesUbiStatsList) {
+        if (groupedItemDaySalesUbiStatsList == null || groupedItemDaySalesUbiStatsList.isEmpty()) {
             return;
         }
 
         Set<String> existingItems = itemRepository.findAllItemIds();
 
-        List<ItemDaySalesUbiStatsEntity> daySalesEntities = new LinkedList<>();
+        List<ItemDaySalesUbiStatsEntity> itemDaySalesUbiStatsEntities = new LinkedList<>();
 
-        for (ItemSalesUbiStatsByItemId stats : statsList) {
-            try {
-                if (!existingItems.contains(stats.getItemId())) {
-                    log.error("Item with id {} not found, day sales parsing for this item skipped", stats.getItemId());
-                    continue;
-                }
-                ItemEntity itemEntity = itemRepository.getReferenceById(stats.getItemId());
-                for (ItemDaySalesUbiStats itemDaySalesUbiStats : stats.getDaySales()) {
+        for (GroupedItemDaySalesUbiStats groupedStats : groupedItemDaySalesUbiStatsList) {
+            if (existingItems.contains(groupedStats.getItemId())) {
+                ItemEntity itemEntity = itemRepository.getReferenceById(groupedStats.getItemId());
+                for (ItemDaySalesUbiStats itemDaySalesUbiStats : groupedStats.getDaySales()) {
                     ItemDaySalesUbiStatsEntity salesEntity = new ItemDaySalesUbiStatsEntity(itemEntity, itemDaySalesUbiStats);
-                    daySalesEntities.add(salesEntity);
+                    itemDaySalesUbiStatsEntities.add(salesEntity);
                 }
-            } catch (Throwable e) {
-                log.error("Item with id {} not found", stats.getItemId());
+            } else {
+                log.error("Item with id {} not found, day sales parsing for this item skipped", groupedStats.getItemId());
             }
         }
-        itemDaySalesUbiStatsRepository.saveAll(daySalesEntities);
+        itemDaySalesUbiStatsRepository.saveAll(itemDaySalesUbiStatsEntities);
     }
 
     @Override
-    public List<ItemDaySalesUbiStats> findAllDaySales() {
-        return itemDaySalesUbiStatsRepository.findAll().stream()
-                .map(ItemDaySalesUbiStatsEntity::toItemDaySalesUbiStats)
-                .toList();
+    public List<ItemDaySalesUbiStats> findAll() {
+        return itemDaySalesUbiStatsRepository.findAll().stream().map(ItemDaySalesUbiStatsEntity::toItemDaySalesUbiStats).toList();
     }
 
     @Override
-    public List<ItemDaySalesUbiStats> findAllLastMonthSales() {
-        return itemDaySalesUbiStatsRepository.findAllLastMonthSales().stream()
-                .map(ItemDaySalesUbiStatsEntity::toItemDaySalesUbiStats)
-                .toList();
-
+    public List<ItemDaySalesUbiStats> findAllForLastMonth() {
+        return itemDaySalesUbiStatsRepository.findAllForLastMonth().stream().map(ItemDaySalesUbiStatsEntity::toItemDaySalesUbiStats).toList();
     }
 }

@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.node.PriceHistory;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStats;
-import github.ricemonger.utils.DTOs.items.ItemSalesUbiStatsByItemId;
+import github.ricemonger.utils.DTOs.items.GroupedItemDaySalesUbiStats;
 import github.ricemonger.utils.exceptions.server.GraphQlCommonItemsSaleStatsMappingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,15 +24,15 @@ public class CommonQueryItemsSaleStatsMapper {
 
     private final CommonValuesService commonValuesService;
 
-    public List<ItemSalesUbiStatsByItemId> mapItemsSaleStats(Collection<Node> nodes) throws GraphQlCommonItemsSaleStatsMappingException {
+    public List<GroupedItemDaySalesUbiStats> mapItemsSaleStats(Collection<Node> nodes) throws GraphQlCommonItemsSaleStatsMappingException {
         return nodes.stream().map(this::mapItemSaleStats).collect(Collectors.toList());
     }
 
-    public ItemSalesUbiStatsByItemId mapItemSaleStats(Node node) throws GraphQlCommonItemsSaleStatsMappingException {
+    public GroupedItemDaySalesUbiStats mapItemSaleStats(Node node) throws GraphQlCommonItemsSaleStatsMappingException {
         if (node == null) {
             throw new GraphQlCommonItemsSaleStatsMappingException("Node is null");
         }
-        ItemSalesUbiStatsByItemId result = new ItemSalesUbiStatsByItemId();
+        GroupedItemDaySalesUbiStats result = new GroupedItemDaySalesUbiStats();
 
         Item item = node.getItem();
         if (item == null || item.getItemId() == null) {

@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.node.PriceHistory;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStats;
-import github.ricemonger.utils.DTOs.items.ItemSalesUbiStatsByItemId;
+import github.ricemonger.utils.DTOs.items.GroupedItemDaySalesUbiStats;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -38,11 +38,11 @@ class CommonQueryItemsSaleStatsMapperTest {
         node2.setPriceHistory(List.of(new PriceHistory(sdf.format(new Date(0)), 100, 200, 500, 6)));
         List<Node> nodes = List.of(node1, node2);
 
-        ItemSalesUbiStatsByItemId expected1 = new ItemSalesUbiStatsByItemId("1", List.of());
-        ItemSalesUbiStatsByItemId expected2 = new ItemSalesUbiStatsByItemId("2", List.of(new ItemDaySalesUbiStats(sdf.parse(sdf.format(new Date(0))), 100, 200, 500, 6, 150)));
-        List<ItemSalesUbiStatsByItemId> expected = List.of(expected1, expected2);
+        GroupedItemDaySalesUbiStats expected1 = new GroupedItemDaySalesUbiStats("1", List.of());
+        GroupedItemDaySalesUbiStats expected2 = new GroupedItemDaySalesUbiStats("2", List.of(new ItemDaySalesUbiStats(sdf.parse(sdf.format(new Date(0))), 100, 200, 500, 6, 150)));
+        List<GroupedItemDaySalesUbiStats> expected = List.of(expected1, expected2);
 
-        List<ItemSalesUbiStatsByItemId> result = commonQueryItemsSaleStatsMapper.mapItemsSaleStats(nodes);
+        List<GroupedItemDaySalesUbiStats> result = commonQueryItemsSaleStatsMapper.mapItemsSaleStats(nodes);
 
         assertTrue(result.containsAll(expected) && expected.containsAll(result));
 
@@ -58,9 +58,9 @@ class CommonQueryItemsSaleStatsMapperTest {
         node.setItem(new Item("1"));
         node.setPriceHistory(List.of(new PriceHistory(sdf.format(new Date(0)), 100, 200, 500, 6)));
 
-        ItemSalesUbiStatsByItemId expected = new ItemSalesUbiStatsByItemId("1", List.of(new ItemDaySalesUbiStats(sdf.parse(sdf.format(new Date(0))), 100, 200, 500, 6, 150)));
+        GroupedItemDaySalesUbiStats expected = new GroupedItemDaySalesUbiStats("1", List.of(new ItemDaySalesUbiStats(sdf.parse(sdf.format(new Date(0))), 100, 200, 500, 6, 150)));
 
-        ItemSalesUbiStatsByItemId result = commonQueryItemsSaleStatsMapper.mapItemSaleStats(node);
+        GroupedItemDaySalesUbiStats result = commonQueryItemsSaleStatsMapper.mapItemSaleStats(node);
 
         assertEquals(expected, result);
 

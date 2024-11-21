@@ -11,7 +11,7 @@ public interface ItemDaySalesUbiStatsPostgresRepository extends JpaRepository<It
     List<ItemDaySalesUbiStatsEntity> findAllByItemItemId(String itemId);
 
     @Query(value = "SELECT * FROM item_day_sales_ubi_stats s WHERE s.date >= CURRENT_DATE-30", nativeQuery = true)
-    List<ItemDaySalesUbiStatsEntity> findAllLastMonthSales();
+    List<ItemDaySalesUbiStatsEntity> findAllForLastMonth();
 }
 
 

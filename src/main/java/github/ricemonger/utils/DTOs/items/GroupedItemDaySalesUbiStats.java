@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemSalesUbiStatsByItemId {
+public class GroupedItemDaySalesUbiStats {
     private String itemId;
 
     private List<ItemDaySalesUbiStats> daySales = new ArrayList<>();

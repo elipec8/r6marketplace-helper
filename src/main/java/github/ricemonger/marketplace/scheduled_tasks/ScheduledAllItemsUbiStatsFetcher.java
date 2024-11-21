@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.scheduled_tasks;
 
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.services.ItemService;
-import github.ricemonger.utils.DTOs.items.ItemSalesUbiStatsByItemId;
+import github.ricemonger.utils.DTOs.items.GroupedItemDaySalesUbiStats;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,7 +21,7 @@ public class ScheduledAllItemsUbiStatsFetcher {
 
     @Scheduled(fixedRate = 24 * 60 * 60 * 1000, initialDelay = 2 * 60 * 1000) // every 24h after 2m of delay
     public void fetchAllItemUbiStats() {
-        List<ItemSalesUbiStatsByItemId> ubiStats = graphQlClientService.fetchAllItemsUbiStats();
+        List<GroupedItemDaySalesUbiStats> ubiStats = graphQlClientService.fetchAllItemsUbiStats();
 
         itemService.saveAllItemSaleUbiStats(ubiStats);
     }

@@ -20,7 +20,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TelegramUserUbiAccountEntryPostgresService implements TelegramUserUbiAccountEntryDatabaseService {
+public class TelegramUserUbiAccountPostgresService implements TelegramUserUbiAccountEntryDatabaseService {
 
     private final UbiAccountAuthorizationEntryPostgresRepository ubiAccountAuthorizationEntryRepository;
 

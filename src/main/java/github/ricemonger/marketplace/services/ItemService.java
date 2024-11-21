@@ -29,8 +29,8 @@ public class ItemService {
         saleDatabaseService.saveAll(itemMainFields);
     }
 
-    public void saveAllItemSaleUbiStats(List<ItemSalesUbiStatsByItemId> ubiStats) {
-        itemSaleUbiStatsService.saveAllSales(ubiStats);
+    public void saveAllItemSaleUbiStats(List<GroupedItemDaySalesUbiStats> ubiStats) {
+        itemSaleUbiStatsService.saveAll(ubiStats);
     }
 
     public void saveAllItemsMainFields(Collection<? extends ItemMainFieldsI> itemsMainFields) {
@@ -40,8 +40,8 @@ public class ItemService {
     public void recalculateAndSaveAllItemsHistoryFields() {
         Set<ItemForFastEquals> items = itemDatabaseService.findAll().stream().map(ItemForFastEquals::new).collect(Collectors.toSet());
 
-        Collection<ItemSale> lastMonthSales = saleDatabaseService.findAllLastMonthSales();
-        Collection<ItemDaySalesUbiStats> lastMonthSalesUbiStats = itemSaleUbiStatsService.findAllLastMonthSales();
+        Collection<ItemSale> lastMonthSales = saleDatabaseService.findAllForLastMonth();
+        Collection<ItemDaySalesUbiStats> lastMonthSalesUbiStats = itemSaleUbiStatsService.findAllForLastMonth();
 
         for (Item item : items) {
             Collection<ItemSale> saleStats = getSpecificItemSales(lastMonthSales, item.getItemId());

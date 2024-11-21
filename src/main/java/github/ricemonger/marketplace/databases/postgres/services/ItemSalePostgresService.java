@@ -7,7 +7,6 @@ import github.ricemonger.marketplace.databases.postgres.repositories.ItemSalePos
 import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseService;
 import github.ricemonger.utils.DTOs.items.ItemMainFieldsI;
 import github.ricemonger.utils.DTOs.items.ItemSale;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,8 +28,8 @@ public class ItemSalePostgresService implements ItemSaleDatabaseService {
 
     @Override
     @Transactional
-    public void saveAll(Collection<? extends ItemMainFieldsI> itemsMainFields) {
-        if (itemsMainFields == null) {
+    public void saveAll(Collection<? extends ItemMainFieldsI> itemsMainFieldsList) {
+        if (itemsMainFieldsList == null || itemsMainFieldsList.isEmpty()) {
             return;
         }
 
@@ -38,29 +37,25 @@ public class ItemSalePostgresService implements ItemSaleDatabaseService {
 
         List<ItemSaleEntity> salesEntities = new LinkedList<>();
 
-        for (ItemMainFieldsI item : itemsMainFields) {
-            try {
-                if (!existingItems.contains(item.getItemId())) {
-                    log.error("Item with id {} not found, last sale parsing for this item skipped", item.getItemId());
-                    continue;
-                }
+        for (ItemMainFieldsI item : itemsMainFieldsList) {
+            if (existingItems.contains(item.getItemId())) {
                 ItemEntity itemEntity = itemRepository.getReferenceById(item.getItemId());
                 salesEntities.add(new ItemSaleEntity(itemEntity, item.getLastSoldAt(), item.getLastSoldPrice()));
-            } catch (EntityNotFoundException e) {
-                log.error("Item with id {} not found", item.getItemId());
+            } else {
+                log.error("Item with id {} not found, last sale parsing for this item skipped", item.getItemId());
             }
         }
         itemSaleRepository.saveAll(salesEntities);
     }
 
     @Override
-    public List<ItemSale> findAllSales() {
+    public List<ItemSale> findAll() {
         return itemSaleRepository.findAll().stream().map(ItemSaleEntity::toItemSale).toList();
     }
 
     @Override
-    public List<ItemSale> findAllLastMonthSales() {
-        return itemSaleRepository.findAllLastMonthSales().stream().map(ItemSaleEntity::toItemSale).toList();
+    public List<ItemSale> findAllForLastMonth() {
+        return itemSaleRepository.findAllForLastMonth().stream().map(ItemSaleEntity::toItemSale).toList();
     }
 }
 

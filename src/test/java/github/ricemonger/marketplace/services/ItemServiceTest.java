@@ -70,9 +70,9 @@ class ItemServiceTest {
 
     @Test
     public void saveAllItemSaleUbiStats_should_handle_to_service() {
-        List<ItemSalesUbiStatsByItemId> stats = new ArrayList<>();
+        List<GroupedItemDaySalesUbiStats> stats = new ArrayList<>();
         itemService.saveAllItemSaleUbiStats(stats);
-        verify(itemSaleUbiStatsService).saveAllSales(same(stats));
+        verify(itemSaleUbiStatsService).saveAll(same(stats));
     }
 
     @Test
@@ -199,11 +199,11 @@ class ItemServiceTest {
         sale2.setLastSoldAt(new Date());
 
         List<ItemSale> sales = List.of(sale1, sale2, sale3, sale4);
-        when(saleService.findAllSales()).thenReturn(sales);
+        when(saleService.findAll()).thenReturn(sales);
 
         itemService.recalculateAndSaveAllItemsHistoryFields();
         verify(itemDatabaseService).findAll();
-        verify(saleService).findAllSales();
+        verify(saleService).findAll();
 
         verify(historyService).saveAll(any());
     }

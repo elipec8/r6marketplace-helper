@@ -6,8 +6,8 @@ import github.ricemonger.utils.DTOs.items.Tag;
 import github.ricemonger.utils.enums.TagGroup;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.Set;
@@ -17,9 +17,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class TagPostgresServiceTest {
-    @Autowired
+    @SpyBean
     private TagPostgresService tagService;
-    @Autowired
+    @SpyBean
     private TagPostgresRepository tagRepository;
 
     @BeforeEach

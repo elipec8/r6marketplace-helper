@@ -24,7 +24,7 @@ class ItemDaySalesUbiStatsPostgresRepositoryTest {
     }
 
     @Test
-    public void findAllLastMonthSales_should_return_only_entities_from_last_30_days() {
+    public void findAllLastMonthSales_should_return_only_entities_from_For_last_30_days() {
         ItemEntity item1 = new ItemEntity();
         item1.setItemId("item1");
         ItemDaySalesUbiStatsEntity entity1 = new ItemDaySalesUbiStatsEntity();
@@ -47,7 +47,7 @@ class ItemDaySalesUbiStatsPostgresRepositoryTest {
         repository.save(entity2);
         repository.save(entity3);
 
-        List<ItemDaySalesUbiStatsEntity> result = repository.findAllLastMonthSales();
+        List<ItemDaySalesUbiStatsEntity> result = repository.findAllForLastMonth();
         for (ItemDaySalesUbiStatsEntity entity : result) {
             assertNotEquals(entity3.getItem().getItemId(), entity.getItem().getItemId());
         }
