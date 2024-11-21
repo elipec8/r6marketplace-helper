@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -15,8 +15,8 @@ public class UbiTrade {
     private String tradeId;
     private TradeState state;
     private TradeCategory category;
-    private Date expiresAt;
-    private Date lastModifiedAt;
+    private LocalDateTime expiresAt;
+    private LocalDateTime lastModifiedAt;
 
     private String itemId;
 

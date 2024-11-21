@@ -2,14 +2,13 @@ package github.ricemonger.marketplace.authorization;
 
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.DTOs.AuthorizationDTO;
-import github.ricemonger.utils.exceptions.client.UbiUserAuthorizationClientErrorException;
-import github.ricemonger.utils.exceptions.server.UbiUserAuthorizationServerErrorException;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest

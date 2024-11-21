@@ -10,9 +10,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @Slf4j
@@ -41,11 +41,11 @@ public class PersonalQueryLockedItemsMapper {
         ItemResaleLock result = new ItemResaleLock();
         result.setItemId(resaleLocks.getItemId());
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-            result.setExpiresAt(sdf.parse(resaleLocks.getExpiresAt()));
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+            result.setExpiresAt(LocalDateTime.parse(resaleLocks.getExpiresAt(), dtf));
 
-        } catch (ParseException e) {
-            result.setExpiresAt(new Date(0));
+        } catch (DateTimeParseException e) {
+            result.setExpiresAt(LocalDateTime.MIN);
             log.error("Error parsing date: {}", e.getMessage());
         }
 

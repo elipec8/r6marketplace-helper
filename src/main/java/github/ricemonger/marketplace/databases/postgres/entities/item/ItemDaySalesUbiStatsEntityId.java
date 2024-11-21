@@ -17,11 +17,7 @@ public class ItemDaySalesUbiStatsEntityId {
     private LocalDate date;
 
     public int hashCode() {
-        if (item != null) {
-            return Objects.hash(item.getItemId(), date);
-        } else {
-            return Objects.hash(date);
-        }
+        return Objects.hash(item.getItemId(), date);
     }
 
     public boolean equals(Object o) {

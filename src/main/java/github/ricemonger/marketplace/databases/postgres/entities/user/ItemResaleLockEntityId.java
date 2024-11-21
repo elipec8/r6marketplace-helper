@@ -11,7 +11,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemResaleLockEntityId {
-    private UbiAccountEntity ubiAccount;
+    private UbiAccountStatsEntity ubiAccount;
 
     private ItemEntity item;
 

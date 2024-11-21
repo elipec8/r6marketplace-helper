@@ -4,17 +4,22 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class ItemDaySalesUbiStatsEntityIdTest {
     @Test
     public void hashCode_should_return_same_hash_for_equal_objects() {
         ItemEntity item1 = new ItemEntity();
         item1.setItemId("item1");
+        item1.setAssetUrl("1");
+        ItemEntity item2 = new ItemEntity();
+        item2.setItemId("item1");
+        item2.setAssetUrl("2");
         LocalDate date = LocalDate.of(2023, 1, 1);
 
         ItemDaySalesUbiStatsEntityId id1 = new ItemDaySalesUbiStatsEntityId(item1, date);
-        ItemDaySalesUbiStatsEntityId id2 = new ItemDaySalesUbiStatsEntityId(item1, date);
+        ItemDaySalesUbiStatsEntityId id2 = new ItemDaySalesUbiStatsEntityId(item2, date);
 
         assertEquals(id1.hashCode(), id2.hashCode());
     }
@@ -98,10 +103,14 @@ class ItemDaySalesUbiStatsEntityIdTest {
     public void equals_should_return_true_for_equal_objects() {
         ItemEntity item1 = new ItemEntity();
         item1.setItemId("item1");
+        item1.setAssetUrl("1");
+        ItemEntity item2 = new ItemEntity();
+        item2.setItemId("item1");
+        item2.setAssetUrl("2");
         LocalDate date = LocalDate.of(2023, 1, 1);
 
         ItemDaySalesUbiStatsEntityId id1 = new ItemDaySalesUbiStatsEntityId(item1, date);
-        ItemDaySalesUbiStatsEntityId id2 = new ItemDaySalesUbiStatsEntityId(item1, date);
+        ItemDaySalesUbiStatsEntityId id2 = new ItemDaySalesUbiStatsEntityId(item2, date);
 
         assertEquals(id1, id2);
     }

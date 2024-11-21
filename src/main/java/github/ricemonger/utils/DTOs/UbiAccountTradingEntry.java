@@ -10,72 +10,72 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UbiAccountTradingEntry {
-    private UbiAccountStatsDTO ubiAccountStatsDTO;
+    private UbiAccountStats ubiAccountStats;
 
     private UbiAccountAuthorizationDTO ubiAccountAuthorizationDTO;
 
     public String getUbiProfileId() {
-        return ubiAccountStatsDTO.getUbiProfileId();
+        return ubiAccountStats.getUbiProfileId();
     }
 
     public void setUbiProfileId(String ubiProfileId) {
-        ubiAccountStatsDTO.setUbiProfileId(ubiProfileId);
+        ubiAccountStats.setUbiProfileId(ubiProfileId);
     }
 
     public Integer getSoldIn24h() {
-        return ubiAccountStatsDTO.getSoldIn24h();
+        return ubiAccountStats.getSoldIn24h();
     }
 
     public void setSoldIn24h(Integer soldIn24h) {
-        ubiAccountStatsDTO.setSoldIn24h(soldIn24h);
+        ubiAccountStats.setSoldIn24h(soldIn24h);
     }
 
     public Integer getBoughtIn24h() {
-        return ubiAccountStatsDTO.getBoughtIn24h();
+        return ubiAccountStats.getBoughtIn24h();
     }
 
     public void setBoughtIn24h(Integer boughtIn24h) {
-        ubiAccountStatsDTO.setBoughtIn24h(boughtIn24h);
+        ubiAccountStats.setBoughtIn24h(boughtIn24h);
     }
 
     public List<String> getOwnedItemsIds() {
-        return ubiAccountStatsDTO.getOwnedItemsIds();
+        return ubiAccountStats.getOwnedItemsIds();
     }
 
     public void setOwnedItemsIds(List<String> ownedItemsIds) {
-        ubiAccountStatsDTO.setOwnedItemsIds(ownedItemsIds);
+        ubiAccountStats.setOwnedItemsIds(ownedItemsIds);
     }
 
     public List<ItemResaleLock> getResaleLocks() {
-        return ubiAccountStatsDTO.getResaleLocks();
+        return ubiAccountStats.getResaleLocks();
     }
 
     public void setResaleLocks(List<ItemResaleLock> resaleLocks) {
-        ubiAccountStatsDTO.setResaleLocks(resaleLocks);
+        ubiAccountStats.setResaleLocks(resaleLocks);
     }
 
     public List<UbiTrade> getCurrentBuyTrades() {
-        return ubiAccountStatsDTO.getCurrentBuyTrades();
+        return ubiAccountStats.getCurrentBuyTrades();
     }
 
     public void setCurrentBuyTrades(List<UbiTrade> currentBuyTrades) {
-        ubiAccountStatsDTO.setCurrentBuyTrades(currentBuyTrades);
+        ubiAccountStats.setCurrentBuyTrades(currentBuyTrades);
     }
 
     public List<UbiTrade> getCurrentSellTrades() {
-        return ubiAccountStatsDTO.getCurrentSellTrades();
+        return ubiAccountStats.getCurrentSellTrades();
     }
 
     public void setCurrentSellTrades(List<UbiTrade> currentSellTrades) {
-        ubiAccountStatsDTO.setCurrentSellTrades(currentSellTrades);
+        ubiAccountStats.setCurrentSellTrades(currentSellTrades);
     }
 
     public List<UbiTrade> getFinishedTrades() {
-        return ubiAccountStatsDTO.getFinishedTrades();
+        return ubiAccountStats.getFinishedTrades();
     }
 
     public void setFinishedTrades(List<UbiTrade> finishedTrades) {
-        ubiAccountStatsDTO.setFinishedTrades(finishedTrades);
+        ubiAccountStats.setFinishedTrades(finishedTrades);
     }
 
     public String getEmail() {
@@ -143,7 +143,7 @@ public class UbiAccountTradingEntry {
     }
 
     public int hashCode() {
-        return Objects.hash(ubiAccountStatsDTO, ubiAccountAuthorizationDTO);
+        return Objects.hash(ubiAccountStats, ubiAccountAuthorizationDTO);
     }
 
     public boolean equals(Object o) {
@@ -153,6 +153,6 @@ public class UbiAccountTradingEntry {
         if (!(o instanceof UbiAccountTradingEntry ubiAccountTradingEntry)) {
             return false;
         }
-        return Objects.equals(ubiAccountStatsDTO, ubiAccountTradingEntry.ubiAccountStatsDTO) && Objects.equals(ubiAccountAuthorizationDTO, ubiAccountTradingEntry.ubiAccountAuthorizationDTO);
+        return Objects.equals(ubiAccountStats, ubiAccountTradingEntry.ubiAccountStats) && Objects.equals(ubiAccountAuthorizationDTO, ubiAccountTradingEntry.ubiAccountAuthorizationDTO);
     }
 }

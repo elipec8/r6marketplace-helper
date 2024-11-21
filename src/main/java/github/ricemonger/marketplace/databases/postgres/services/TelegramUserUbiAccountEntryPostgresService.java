@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountAuthorizationEntryEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountStatsEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountAuthorizationEntryPostgresRepository;
@@ -38,7 +38,7 @@ public class TelegramUserUbiAccountEntryPostgresService implements TelegramUserU
         if (ubiAccountEntry != null && !ubiAccountEntry.getUbiAccountStats().getUbiProfileId().equals(account.getUbiProfileId())) {
             throw new UbiAccountEntryAlreadyExistsException("User with chatId " + chatId + " already has another Ubi account");
         } else {
-            ubiAccountEntryRepository.save(new UbiAccountAuthorizationEntryEntity(telegramUser.getUser(), new UbiAccountEntity(account.getUbiProfileId()), account));
+            ubiAccountEntryRepository.save(new UbiAccountAuthorizationEntryEntity(telegramUser.getUser(), new UbiAccountStatsEntity(account.getUbiProfileId()), account));
         }
     }
 

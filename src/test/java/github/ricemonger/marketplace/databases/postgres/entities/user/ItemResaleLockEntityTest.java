@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ItemResaleLockEntityTest {
     @Test
     public void toItemResaleLock_should_properly_map_with_all_fields() {
-        UbiAccountEntity ubiAccount = new UbiAccountEntity();
+        UbiAccountStatsEntity ubiAccount = new UbiAccountStatsEntity();
         ubiAccount.setUbiProfileId("ubiProfileId");
 
         ItemEntity item = new ItemEntity();
@@ -33,7 +33,7 @@ class ItemResaleLockEntityTest {
 
     @Test
     public void constructor_should_properly_map_with_all_fields() {
-        UbiAccountEntity ubiAccount = new UbiAccountEntity();
+        UbiAccountStatsEntity ubiAccount = new UbiAccountStatsEntity();
         ubiAccount.setUbiProfileId("ubiProfileId");
 
         ItemEntity item = new ItemEntity();

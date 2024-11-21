@@ -5,7 +5,6 @@ import github.ricemonger.marketplace.databases.postgres.entities.item.ItemSaleEn
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemSalePostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseService;
-import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.DTOs.items.ItemMainFieldsI;
 import github.ricemonger.utils.DTOs.items.ItemSale;
 import jakarta.persistence.EntityNotFoundException;

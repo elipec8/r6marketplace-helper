@@ -1,6 +1,5 @@
 package github.ricemonger.marketplace.services.abstractions;
 
-import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.DTOs.items.ItemMainFieldsI;
 import github.ricemonger.utils.DTOs.items.ItemSale;
 

@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -17,11 +16,7 @@ public class ItemSaleEntityId implements Serializable {
     private LocalDateTime soldAt;
 
     public int hashCode() {
-        if (item == null) {
-            return Objects.hash(soldAt);
-        } else {
-            return Objects.hash(item.getItemId(), soldAt);
-        }
+        return Objects.hash(item.getItemId(), soldAt);
     }
 
     public boolean equals(Object o) {

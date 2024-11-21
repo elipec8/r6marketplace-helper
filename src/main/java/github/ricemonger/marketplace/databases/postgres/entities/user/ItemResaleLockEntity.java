@@ -10,7 +10,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Slf4j
 @Entity(name = "item_resale_lock")
@@ -23,7 +22,7 @@ public class ItemResaleLockEntity {
     @Id
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "ubiProfileId", referencedColumnName = "ubiProfileId")
-    private UbiAccountEntity ubiAccount;
+    private UbiAccountStatsEntity ubiAccount;
     @Id
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "itemId", referencedColumnName = "itemId")

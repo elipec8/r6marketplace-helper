@@ -2,6 +2,7 @@ package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationDTO;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
+import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,9 +42,9 @@ public class UbiAccountAuthorizationEntryEntity {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "ubiProfileId", referencedColumnName = "ubiProfileId")
-    private UbiAccountEntity ubiAccountStats;
+    private UbiAccountStatsEntity ubiAccountStats;
 
-    public UbiAccountAuthorizationEntryEntity(UserEntity user, UbiAccountEntity ubiAccountStats, UbiAccountAuthorizationDTO account) {
+    public UbiAccountAuthorizationEntryEntity(UserEntity user, UbiAccountStatsEntity ubiAccountStats, UbiAccountAuthorizationDTO account) {
         this.user = user;
         this.email = account.getEmail();
         this.encodedPassword = account.getEncodedPassword();
@@ -59,7 +60,12 @@ public class UbiAccountAuthorizationEntryEntity {
     public UbiAccountAuthorizationEntryWithTelegram toUbiAccountAuthorizationEntryWithTelegram() {
         UbiAccountAuthorizationEntryWithTelegram ubiAccountWithTelegram = new UbiAccountAuthorizationEntryWithTelegram();
         ubiAccountWithTelegram.setUbiAccountEntry(this.toUbiAccountAuthorizationEntry());
-        ubiAccountWithTelegram.setChatId(this.user.getTelegramUser().getChatId());
+        try {
+            ubiAccountWithTelegram.setChatId(this.user.getTelegramUser().getChatId());
+        } catch (NullPointerException e) {
+            log.error("Telegram user not found for user with id: " + this.user.getId());
+            throw new TelegramUserDoesntExistException("Telegram user not found for user with id: " + this.user.getId());
+        }
         return ubiAccountWithTelegram;
     }
 

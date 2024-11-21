@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Slf4j
 @Entity(name = "ubi_user_trade")
@@ -30,8 +30,8 @@ public class UbiTradeEntity {
     private TradeState state;
     @Enumerated(EnumType.ORDINAL)
     private TradeCategory category;
-    private Date expiresAt;
-    private Date lastModifiedAt;
+    private LocalDateTime expiresAt;
+    private LocalDateTime lastModifiedAt;
 
     private int successPaymentPrice;
     private int successPaymentFee;
