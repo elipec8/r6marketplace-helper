@@ -2,7 +2,6 @@ package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.abstractions.ItemDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseService;
-import github.ricemonger.marketplace.services.abstractions.ItemSaleHistoryDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleUbiStatsService;
 import github.ricemonger.utils.DTOs.items.*;
 import github.ricemonger.utils.enums.FilterType;
@@ -13,14 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.*;
 
@@ -32,8 +30,6 @@ class ItemServiceTest {
     private ItemDatabaseService itemDatabaseService;
     @MockBean
     private ItemSaleDatabaseService saleService;
-    @MockBean
-    private ItemSaleHistoryDatabaseService historyService;
     @MockBean
     private TagService tagService;
     @MockBean
@@ -47,8 +43,8 @@ class ItemServiceTest {
         item.setItemId("1");
         item.setTags(new ArrayList<>());
 
-        Collection<Item> itemMainFields = new ArrayList<>();
-        itemMainFields.add(itemMainFields);
+        Collection<Item> items = new ArrayList<>();
+        items.add(item);
 
         List<Tag> tags = new ArrayList<>();
         tags.add(new Tag("UNCOMMON", "UNCOMMON", TagGroup.Rarity));
@@ -60,12 +56,12 @@ class ItemServiceTest {
         when(commonValuesService.getMinimumMarketplacePrice()).thenReturn(100);
         when(commonValuesService.getMaximumMarketplacePrice()).thenReturn(200);
 
-        itemService.saveAllItemLastSales(itemMainFields);
+        itemService.saveAllItemLastSales(items);
 
-        assertEquals(ItemRarity.UNKNOWN, itemMainFields.getRarity());
+        assertEquals(ItemRarity.UNKNOWN, item.getRarity());
 
-        verify(itemDatabaseService).saveAll(same(itemMainFields));
-        verify(saleService).saveAll(same(itemMainFields));
+        verify(itemDatabaseService).saveAll(same(items));
+        verify(saleService).saveAll(same(items));
     }
 
     @Test
@@ -81,8 +77,8 @@ class ItemServiceTest {
         item.setItemId("1");
         item.setTags(List.of("UNCOMMON"));
 
-        Collection<Item> itemMainFields = new ArrayList<>();
-        itemMainFields.add(itemMainFields);
+        Collection<Item> items = new ArrayList<>();
+        items.add(item);
 
         List<Tag> tags = new ArrayList<>();
         tags.add(new Tag("UNCOMMON", "UNCOMMON", TagGroup.Rarity));
@@ -94,9 +90,9 @@ class ItemServiceTest {
         when(commonValuesService.getMinimumUncommonPrice()).thenReturn(300);
         when(commonValuesService.getMaximumUncommonPrice()).thenReturn(400);
 
-        itemService.saveAllItemLastSales(itemMainFields);
+        itemService.saveAllItemLastSales(items);
 
-        assertEquals(ItemRarity.UNCOMMON, itemMainFields.getRarity());
+        assertEquals(ItemRarity.UNCOMMON, item.getRarity());
     }
 
     @Test
@@ -105,8 +101,8 @@ class ItemServiceTest {
         item.setItemId("1");
         item.setTags(List.of("RARE"));
 
-        Collection<Item> itemMainFields = new ArrayList<>();
-        itemMainFields.add(itemMainFields);
+        Collection<Item> items = new ArrayList<>();
+        items.add(item);
 
         List<Tag> tags = new ArrayList<>();
         tags.add(new Tag("UNCOMMON", "UNCOMMON", TagGroup.Rarity));
@@ -118,9 +114,9 @@ class ItemServiceTest {
         when(commonValuesService.getMinimumRarePrice()).thenReturn(500);
         when(commonValuesService.getMaximumRarePrice()).thenReturn(600);
 
-        itemService.saveAllItemLastSales(itemMainFields);
+        itemService.saveAllItemLastSales(items);
 
-        assertEquals(ItemRarity.RARE, itemMainFields.getRarity());
+        assertEquals(ItemRarity.RARE, item.getRarity());
     }
 
     @Test
@@ -129,8 +125,8 @@ class ItemServiceTest {
         item.setItemId("1");
         item.setTags(List.of("EPIC"));
 
-        Collection<Item> itemMainFields = new ArrayList<>();
-        itemMainFields.add(itemMainFields);
+        Collection<Item> items = new ArrayList<>();
+        items.add(item);
 
         List<Tag> tags = new ArrayList<>();
         tags.add(new Tag("UNCOMMON", "UNCOMMON", TagGroup.Rarity));
@@ -142,9 +138,9 @@ class ItemServiceTest {
         when(commonValuesService.getMinimumEpicPrice()).thenReturn(700);
         when(commonValuesService.getMaximumEpicPrice()).thenReturn(800);
 
-        itemService.saveAllItemLastSales(itemMainFields);
+        itemService.saveAllItemLastSales(items);
 
-        assertEquals(ItemRarity.EPIC, itemMainFields.getRarity());
+        assertEquals(ItemRarity.EPIC, item.getRarity());
     }
 
     @Test
@@ -153,8 +149,8 @@ class ItemServiceTest {
         item.setItemId("1");
         item.setTags(List.of("LEGENDARY"));
 
-        Collection<Item> itemMainFields = new ArrayList<>();
-        itemMainFields.add(itemMainFields);
+        Collection<Item> items = new ArrayList<>();
+        items.add(item);
 
         List<Tag> tags = new ArrayList<>();
         tags.add(new Tag("UNCOMMON", "UNCOMMON", TagGroup.Rarity));
@@ -166,9 +162,9 @@ class ItemServiceTest {
         when(commonValuesService.getMinimumLegendaryPrice()).thenReturn(900);
         when(commonValuesService.getMaximumLegendaryPrice()).thenReturn(1000);
 
-        itemService.saveAllItemLastSales(itemMainFields);
+        itemService.saveAllItemLastSales(items);
 
-        assertEquals(ItemRarity.LEGENDARY, itemMainFields.getRarity());
+        assertEquals(ItemRarity.LEGENDARY, item.getRarity());
     }
 
     @Test
@@ -179,24 +175,24 @@ class ItemServiceTest {
         Item item2 = new Item();
         item2.setItemId("2");
 
-        List<Item> itemMainFields = new ArrayList<>();
-        when(itemDatabaseService.findAll()).thenReturn(itemMainFields);
+        List<Item> items = new ArrayList<>();
+        when(itemDatabaseService.findAll()).thenReturn(items);
 
         ItemSale sale1 = new ItemSale();
         sale1.setItemId("1");
-        sale1.setLastSoldAt(new Date());
+        sale1.setLastSoldAt(LocalDateTime.now());
 
         ItemSale sale2 = new ItemSale();
         sale2.setItemId("1");
-        sale2.setLastSoldAt(new Date(new Date().getTime() + 1000));
+        sale2.setLastSoldAt(LocalDateTime.now().plusSeconds(1000));
 
         ItemSale sale3 = new ItemSale();
         sale2.setItemId("3");
-        sale2.setLastSoldAt(new Date());
+        sale2.setLastSoldAt(LocalDateTime.now());
 
         ItemSale sale4 = new ItemSale();
         sale2.setItemId("4");
-        sale2.setLastSoldAt(new Date());
+        sale2.setLastSoldAt(LocalDateTime.now());
 
         List<ItemSale> sales = List.of(sale1, sale2, sale3, sale4);
         when(saleService.findAll()).thenReturn(sales);
@@ -205,7 +201,7 @@ class ItemServiceTest {
         verify(itemDatabaseService).findAll();
         verify(saleService).findAll();
 
-        verify(historyService).saveAll(any());
+        verify(itemDatabaseService).saveAll(same(items));
     }
 
     @Test

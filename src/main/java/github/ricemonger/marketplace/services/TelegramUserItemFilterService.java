@@ -15,23 +15,23 @@ public class TelegramUserItemFilterService {
 
     private final TelegramUserItemFilterDatabaseService telegramUserItemFilterDatabaseService;
 
-    public void saveItemFilter(String chatId, ItemFilter itemFilter) throws TelegramUserDoesntExistException {
+    public void save(String chatId, ItemFilter itemFilter) throws TelegramUserDoesntExistException {
         telegramUserItemFilterDatabaseService.save(chatId, itemFilter);
     }
 
-    public void deleteItemFilterById(String chatId, String name) throws TelegramUserDoesntExistException {
+    public void deleteById(String chatId, String name) throws TelegramUserDoesntExistException {
         telegramUserItemFilterDatabaseService.deleteById(chatId, name);
     }
 
-    public ItemFilter getItemFilterById(String chatId, String name) throws TelegramUserDoesntExistException, ItemFilterDoesntExistException {
+    public ItemFilter getById(String chatId, String name) throws TelegramUserDoesntExistException, ItemFilterDoesntExistException {
         return telegramUserItemFilterDatabaseService.findById(chatId, name);
     }
 
-    public List<ItemFilter> getAllUserItemFilters(String chatId) throws TelegramUserDoesntExistException {
+    public List<ItemFilter> getAllForTelegramUser(String chatId) throws TelegramUserDoesntExistException {
         return telegramUserItemFilterDatabaseService.findAllByChatId(chatId);
     }
 
-    public List<String> getAllUserItemFiltersNames(String chatId) throws TelegramUserDoesntExistException {
+    public List<String> getAllItemFilterNamesForTelegramUser(String chatId) throws TelegramUserDoesntExistException {
         return telegramUserItemFilterDatabaseService.findAllByChatId(chatId).stream().map(ItemFilter::getName).toList();
     }
 }

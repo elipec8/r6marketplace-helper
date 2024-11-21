@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.services;
 
-import github.ricemonger.marketplace.authorization.AuthorizationServiceTest;
+import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
 import github.ricemonger.utils.DTOs.AuthorizationDTO;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
@@ -27,7 +27,7 @@ class TelegramUserUbiAccountEntryServiceTest {
     @Autowired
     private TelegramUserUbiAccountEntryService telegramUserUbiAccountEntryService;
     @MockBean
-    private AuthorizationServiceTest authorizationService;
+    private AuthorizationService authorizationService;
     @MockBean
     private TelegramUserUbiAccountEntryDatabaseService telegramUserUbiAccountEntryDatabaseService;
 

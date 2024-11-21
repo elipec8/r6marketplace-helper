@@ -546,12 +546,12 @@ public class BotInnerServiceTest {
 
         botInnerService.saveUserItemFilterByUserInput(1L);
 
-        verify(telegramUserItemFilterService).saveItemFilter(eq("1"), same(filter));
+        verify(telegramUserItemFilterService).save(eq("1"), same(filter));
     }
 
     @Test
     public void saveUserItemFilterByUserInput_should_throw_if_service_throws() {
-        doThrow(new TelegramUserDoesntExistException("")).when(telegramUserItemFilterService).saveItemFilter(any(), any());
+        doThrow(new TelegramUserDoesntExistException("")).when(telegramUserItemFilterService).save(any(), any());
         assertThrows(TelegramUserDoesntExistException.class, () -> botInnerService.saveUserItemFilterByUserInput(1L));
     }
 
@@ -588,7 +588,7 @@ public class BotInnerServiceTest {
         names.add("name");
         names.add("name2");
 
-        when(telegramUserItemFilterService.getAllUserItemFiltersNames("1")).thenReturn(names);
+        when(telegramUserItemFilterService.getAllItemFilterNamesForTelegramUser("1")).thenReturn(names);
 
         List<String> result = botInnerService.getAllUserItemFiltersNames(1L);
 
@@ -597,7 +597,7 @@ public class BotInnerServiceTest {
 
     @Test
     public void getAllUserItemFilterNames_should_throw_if_service_throws() {
-        when(telegramUserItemFilterService.getAllUserItemFiltersNames("1")).thenThrow(new TelegramUserDoesntExistException(""));
+        when(telegramUserItemFilterService.getAllItemFilterNamesForTelegramUser("1")).thenThrow(new TelegramUserDoesntExistException(""));
         assertThrows(TelegramUserDoesntExistException.class, () -> botInnerService.getAllUserItemFiltersNames(1L));
     }
 
@@ -608,13 +608,13 @@ public class BotInnerServiceTest {
         ItemFilter filter = new ItemFilter();
         filter.setMaxBuyPrice(1555);
 
-        when(telegramUserItemFilterService.getItemFilterById("1", "filter_name")).thenReturn(filter);
+        when(telegramUserItemFilterService.getById("1", "filter_name")).thenReturn(filter);
 
         assertEquals(filter.getMaxBuyPrice(), botInnerService.getUserItemFilterByUserInputCallbackFilterName(1L).getMaxBuyPrice());
 
         verify(telegramUserService).getUserInputByState(1L, InputState.ITEM_FILTER_NAME);
 
-        verify(telegramUserItemFilterService).getItemFilterById("1", "filter_name");
+        verify(telegramUserItemFilterService).getById("1", "filter_name");
     }
 
     @Test
@@ -627,7 +627,7 @@ public class BotInnerServiceTest {
     @Test
     public void getUserItemFilterByUserInputCallbackFilterName_should_throw_if_service_throws_during_filter_find() {
         when(telegramUserService.getUserInputByState(1L, InputState.ITEM_FILTER_NAME)).thenReturn(Callbacks.INPUT_CALLBACK_PREFIX + "filter_name");
-        doThrow(new RuntimeException()).when(telegramUserItemFilterService).getItemFilterById(any(), any());
+        doThrow(new RuntimeException()).when(telegramUserItemFilterService).getById(any(), any());
 
         assertThrows(RuntimeException.class, () -> botInnerService.getUserItemFilterByUserInputCallbackFilterName(1L));
     }
@@ -645,7 +645,7 @@ public class BotInnerServiceTest {
 
         botInnerService.removeUserItemFilterByUserInputCallbackFilterName(1L);
 
-        verify(telegramUserItemFilterService).deleteItemFilterById("1", "filter_name");
+        verify(telegramUserItemFilterService).deleteById("1", "filter_name");
     }
 
     @Test
@@ -658,7 +658,7 @@ public class BotInnerServiceTest {
     @Test
     public void removeUserItemFilterByUserInputCallbackFilterName_should_throw_if_service_throws_during_remove() {
         when(telegramUserService.getUserInputByState(1L, InputState.ITEM_FILTER_NAME)).thenReturn(Callbacks.INPUT_CALLBACK_PREFIX + "filter_name");
-        doThrow(new RuntimeException()).when(telegramUserItemFilterService).deleteItemFilterById(any(), any());
+        doThrow(new RuntimeException()).when(telegramUserItemFilterService).deleteById(any(), any());
 
         assertThrows(RuntimeException.class, () -> botInnerService.removeUserItemFilterByUserInputCallbackFilterName(1L));
     }
@@ -781,7 +781,7 @@ public class BotInnerServiceTest {
         ItemFilter filter = new ItemFilter();
         filter.setName(filterName);
         filter.setMaxBuyPrice(10);
-        when(telegramUserItemFilterService.getItemFilterById("1", filterName)).thenReturn(filter);
+        when(telegramUserItemFilterService.getById("1", filterName)).thenReturn(filter);
 
         ItemShowSettings itemShowSettings = new ItemShowSettings();
         itemShowSettings.setItemShowAppliedFilters(new ArrayList<>());
@@ -803,7 +803,7 @@ public class BotInnerServiceTest {
         ItemFilter filter = new ItemFilter();
         filter.setName(filterName);
         filter.setMaxBuyPrice(10);
-        when(telegramUserItemFilterService.getItemFilterById("1", filterName)).thenReturn(filter);
+        when(telegramUserItemFilterService.getById("1", filterName)).thenReturn(filter);
 
         ItemShowSettings itemShowSettings = new ItemShowSettings();
         List<ItemFilter> appliedFilters = new ArrayList<>();
@@ -827,7 +827,7 @@ public class BotInnerServiceTest {
         ItemFilter filter = new ItemFilter();
         filter.setName(filterName);
         filter.setMaxBuyPrice(10);
-        when(telegramUserItemFilterService.getItemFilterById("1", filterName)).thenReturn(filter);
+        when(telegramUserItemFilterService.getById("1", filterName)).thenReturn(filter);
 
         ItemShowSettings itemShowSettings = new ItemShowSettings();
         List<ItemFilter> appliedFilters = new ArrayList<>();
@@ -851,7 +851,7 @@ public class BotInnerServiceTest {
         ItemFilter filter = new ItemFilter();
         filter.setName(filterName);
         filter.setMaxBuyPrice(10);
-        when(telegramUserItemFilterService.getItemFilterById("1", filterName)).thenReturn(filter);
+        when(telegramUserItemFilterService.getById("1", filterName)).thenReturn(filter);
 
         ItemShowSettings itemShowSettings = new ItemShowSettings();
         itemShowSettings.setItemShowAppliedFilters(new ArrayList<>());
@@ -873,7 +873,7 @@ public class BotInnerServiceTest {
         ItemFilter filter = new ItemFilter();
         filter.setName(filterName);
         filter.setMaxBuyPrice(10);
-        when(telegramUserItemFilterService.getItemFilterById("1", filterName)).thenReturn(filter);
+        when(telegramUserItemFilterService.getById("1", filterName)).thenReturn(filter);
 
         ItemShowSettings itemShowSettings = new ItemShowSettings();
         itemShowSettings.setItemShowAppliedFilters(new ArrayList<>());
@@ -894,7 +894,7 @@ public class BotInnerServiceTest {
         ItemFilter filter = new ItemFilter();
         filter.setName(filterName);
         filter.setMaxBuyPrice(10);
-        when(telegramUserItemFilterService.getItemFilterById("1", filterName)).thenReturn(filter);
+        when(telegramUserItemFilterService.getById("1", filterName)).thenReturn(filter);
 
         ItemShowSettings itemShowSettings = new ItemShowSettings();
         List<ItemFilter> appliedFilters = new ArrayList<>();
@@ -926,7 +926,7 @@ public class BotInnerServiceTest {
     @Test
     public void updateUserItemShowAppliedFiltersSettingsByUserInput_should_throw_if_service_throws_during_filter_find() {
         when(telegramUserService.getUserInputByState(1L, InputState.ITEM_FILTER_NAME)).thenReturn(Callbacks.INPUT_CALLBACK_PREFIX + "filter_name");
-        doThrow(new RuntimeException()).when(telegramUserItemFilterService).getItemFilterById("1", "filter_name");
+        doThrow(new RuntimeException()).when(telegramUserItemFilterService).getById("1", "filter_name");
         assertThrows(RuntimeException.class, () -> botInnerService.updateUserItemShowAppliedFiltersSettingsByUserInput(1L));
     }
 

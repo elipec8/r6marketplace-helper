@@ -1,5 +1,8 @@
 package github.ricemonger.utils.DTOs.items;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class ItemForFastEquals extends Item {
 
     public ItemForFastEquals(Item item) {
