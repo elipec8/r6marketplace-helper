@@ -3,7 +3,7 @@ package github.ricemonger.marketplace.databases.postgres.entities.item;
 import github.ricemonger.utils.DTOs.items.ItemSale;
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,12 +15,12 @@ class ItemSaleEntityTest {
     public void toItemSaleEntity_should_properly_map_with_valid_fields() {
         ItemSale sale = new ItemSale();
         sale.setItemId("1");
-        sale.setLastSoldAt(new Date(0));
+        sale.setLastSoldAt(LocalDateTime.MIN);
         sale.setLastSoldPrice(2);
 
         ItemSaleEntity expected = new ItemSaleEntity();
         expected.setItem(new ItemEntity("1"));
-        expected.setSoldAt(new Date(0));
+        expected.setSoldAt(LocalDateTime.MIN);
         expected.setPrice(2);
 
         ItemSaleEntity actual = new ItemSaleEntity(sale);
@@ -48,12 +48,12 @@ class ItemSaleEntityTest {
     public void toItemSale_should_properly_map_with_valid_fields() {
         ItemSaleEntity entity = new ItemSaleEntity();
         entity.setItem(new ItemEntity("1"));
-        entity.setSoldAt(new Date(0));
+        entity.setSoldAt(LocalDateTime.MAX);
         entity.setPrice(2);
 
         ItemSale expected = new ItemSale();
         expected.setItemId("1");
-        expected.setSoldAt(new Date(0));
+        expected.setSoldAt(LocalDateTime.MAX);
         expected.setPrice(2);
 
         ItemSale actual = entity.toItemSale();

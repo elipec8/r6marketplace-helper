@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
-import github.ricemonger.marketplace.authorization.AuthorizationService;
+import github.ricemonger.marketplace.authorization.AuthorizationServiceTest;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.DTOs.AuthorizationDTO;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ class ScheduledMainUserReauthorizationTest {
     private CommonValuesService commonValuesService;
 
     @MockBean
-    private AuthorizationService authorizationService;
+    private AuthorizationServiceTest authorizationService;
 
     @Autowired
     private ScheduledMainUserReauthorization scheduledMainUserReauthorization;

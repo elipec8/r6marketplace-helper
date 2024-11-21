@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -12,5 +13,5 @@ import java.util.Date;
 public class ItemResaleLock {
     private String ubiProfileId;
     private String itemId;
-    private Date expiresAt;
+    private LocalDateTime expiresAt;
 }

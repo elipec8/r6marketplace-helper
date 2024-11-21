@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.redis.services;
 
-import github.ricemonger.marketplace.authorization.AuthorizationService;
+import github.ricemonger.marketplace.authorization.AuthorizationServiceTest;
 import github.ricemonger.utils.DTOs.AuthorizationDTO;
 import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.DTOs.ConfigTrades;
@@ -29,7 +29,7 @@ public class RedisServiceTest {
     @Qualifier("redisTemplate")
     private RedisTemplate<String, String> redisTemplate;
     @MockBean
-    private AuthorizationService authorizationService;
+    private AuthorizationServiceTest authorizationService;
     @Autowired
     private RedisService redisService;
 

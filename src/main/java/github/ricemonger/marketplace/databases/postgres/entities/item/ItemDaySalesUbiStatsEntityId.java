@@ -17,10 +17,10 @@ public class ItemDaySalesUbiStatsEntityId {
     private LocalDate date;
 
     public int hashCode() {
-        if (item == null) {
-            return Objects.hash(date);
-        } else {
+        if (item != null) {
             return Objects.hash(item.getItemId(), date);
+        } else {
+            return Objects.hash(date);
         }
     }
 
@@ -31,10 +31,10 @@ public class ItemDaySalesUbiStatsEntityId {
         if (!(o instanceof ItemDaySalesUbiStatsEntityId itemDaySalesUbiStatsEntityId)) {
             return false;
         }
-        boolean item = this.item == itemDaySalesUbiStatsEntityId.item || (
-                this.item != null &&
-                itemDaySalesUbiStatsEntityId.item != null &&
-                Objects.equals(this.item.getItemId(), itemDaySalesUbiStatsEntityId.item.getItemId()));
+        boolean item = this.item == itemDaySalesUbiStatsEntityId.item ||
+                       (this.item != null &&
+                        itemDaySalesUbiStatsEntityId.item != null &&
+                        Objects.equals(this.item.getItemId(), itemDaySalesUbiStatsEntityId.item.getItemId()));
 
         boolean date = Objects.equals(this.date, itemDaySalesUbiStatsEntityId.date);
 

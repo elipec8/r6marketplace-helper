@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Slf4j
@@ -28,7 +29,7 @@ public class ItemResaleLockEntity {
     @JoinColumn(name = "itemId", referencedColumnName = "itemId")
     private ItemEntity item;
 
-    private Date expiresAt;
+    private LocalDateTime expiresAt;
 
     public ItemResaleLock toItemResaleLock() {
         return new ItemResaleLock(
