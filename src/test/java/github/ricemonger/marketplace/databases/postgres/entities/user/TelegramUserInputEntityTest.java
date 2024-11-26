@@ -38,7 +38,7 @@ class TelegramUserInputEntityTest {
         entity.setValue("inputValue1");
 
         TelegramUserInput expected = new TelegramUserInput();
-        expected.setChatId("chatId1");
+        expected.setChatId("1");
         expected.setInputState(InputState.ITEM_FILTER_ITEM_TAGS_ESPORTS);
         expected.setValue("inputValue1");
 

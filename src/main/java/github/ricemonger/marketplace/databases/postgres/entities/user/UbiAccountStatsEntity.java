@@ -72,7 +72,7 @@ public class UbiAccountStatsEntity {
         }
         ubiAccountStats.setOwnedItemsIds(ownedItemsIds);
 
-        ubiAccountStats.setSoldIn24h(this.boughtIn24h);
+        ubiAccountStats.setSoldIn24h(this.soldIn24h);
         ubiAccountStats.setBoughtIn24h(this.boughtIn24h);
 
         List<ItemResaleLockWithUbiAccount> resaleLocks = new ArrayList<>();
