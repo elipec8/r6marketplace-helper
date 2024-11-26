@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ItemResaleLockWithUbiAccountEntityTest {
+class ItemResaleLockEntityTest {
     @Test
     public void toItemResaleLock_should_properly_map_with_all_fields() {
         UbiAccountStatsEntity ubiAccount = new UbiAccountStatsEntity();
@@ -26,7 +26,7 @@ class ItemResaleLockWithUbiAccountEntityTest {
 
         ItemResaleLockWithUbiAccount expected = new ItemResaleLockWithUbiAccount("ubiProfileId", "itemId", expiresAt);
 
-        ItemResaleLockWithUbiAccount actual = entity.toItemResaleLock();
+        ItemResaleLockWithUbiAccount actual = entity.toItemResaleLockWithUbiAccount();
 
         assertEquals(expected, actual);
     }
@@ -48,6 +48,8 @@ class ItemResaleLockWithUbiAccountEntityTest {
 
         ItemResaleLockEntity actual = new ItemResaleLockEntity(ubiAccount, item, expiresAt);
 
-        assertEquals(expected, actual);
+        assertEquals(expected.getUbiAccount().getUbiProfileId(), actual.getUbiAccount().getUbiProfileId());
+        assertEquals(expected.getItem().getItemId(), actual.getItem().getItemId());
+        assertEquals(expected.getExpiresAt(), actual.getExpiresAt());
     }
 }

@@ -30,7 +30,7 @@ public class ItemResaleLockEntity {
 
     private LocalDateTime expiresAt;
 
-    public ItemResaleLockWithUbiAccount toItemResaleLock() {
+    public ItemResaleLockWithUbiAccount toItemResaleLockWithUbiAccount() {
         return new ItemResaleLockWithUbiAccount(
                 ubiAccount.getUbiProfileId(),
                 item.getItemId(),

@@ -77,7 +77,7 @@ public class UbiAccountStatsEntity {
 
         List<ItemResaleLockWithUbiAccount> resaleLocks = new ArrayList<>();
         for (ItemResaleLockEntity lock : this.resaleLocks) {
-            resaleLocks.add(lock.toItemResaleLock());
+            resaleLocks.add(lock.toItemResaleLockWithUbiAccount());
         }
         ubiAccountStats.setResaleLocks(resaleLocks);
 

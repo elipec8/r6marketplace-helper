@@ -36,4 +36,8 @@ public class ItemResaleLockWithUbiAccount extends ItemResaleLock {
         ItemResaleLockWithUbiAccount other = (ItemResaleLockWithUbiAccount) obj;
         return super.equals(obj) && ubiProfileId.equals(other.ubiProfileId);
     }
+
+    public String toString() {
+        return "ItemResaleLockWithUbiAccount(ubiProfileId=" + ubiProfileId + ", itemId=" + getItemId() + ", expiresAt=" + getExpiresAt() + ")";
+    }
 }

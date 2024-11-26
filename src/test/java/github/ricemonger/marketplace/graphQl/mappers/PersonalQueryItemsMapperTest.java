@@ -24,7 +24,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-class PersonalQueryItemsMapperTestResaleLock {
+class PersonalQueryItemsMapperTest {
     @SpyBean
     private PersonalQueryLockedItemsMapper personalQueryLockedItemsMapper;
     @Autowired
@@ -33,7 +33,7 @@ class PersonalQueryItemsMapperTestResaleLock {
     @Test
     public void mapLockedItems_should_map_each_item() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
         LocalDateTime date2 = date.plusSeconds(1000);
 
         TradeLimitations tradeLimitations = new TradeLimitations();
@@ -78,7 +78,7 @@ class PersonalQueryItemsMapperTestResaleLock {
     @Test
     public void mapLockedItem_should_map_item_with_valid_fields() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         ResaleLocks resaleLocks = new ResaleLocks("1", dtf.format(date));
 

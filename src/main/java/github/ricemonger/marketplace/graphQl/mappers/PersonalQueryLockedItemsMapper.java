@@ -39,7 +39,7 @@ public class PersonalQueryLockedItemsMapper {
         if (resaleLocks == null || resaleLocks.getItemId() == null || resaleLocks.getExpiresAt() == null) {
             throw new GraphQlPersonalLockedItemsMappingException("Resale locks or one of it's fields is null:" + resaleLocks);
         }
-        ItemResaleLockWithUbiAccount result = new ItemResaleLockWithUbiAccount();
+        ItemResaleLock result = new ItemResaleLock();
         result.setItemId(resaleLocks.getItemId());
         try {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
