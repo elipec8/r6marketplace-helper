@@ -110,7 +110,7 @@ class TradeByFiltersManagerEntityTest {
         assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.isEnabled(), actual.isEnabled());
         assertEquals(expected.getTradeOperationType(), actual.getTradeOperationType());
-        assertEquals(expected.getAppliedFilters(), actual.getAppliedFilters());
+        assertEquals(expected.getAppliedFilters().stream().map(ItemFilterEntity::toItemFilter).toList(), actual.getAppliedFilters().stream().map(ItemFilterEntity::toItemFilter).toList());
         assertEquals(expected.getMinBuySellProfit(), actual.getMinBuySellProfit());
         assertEquals(expected.getMinProfitPercent(), actual.getMinProfitPercent());
         assertEquals(expected.getPriority(), actual.getPriority());
