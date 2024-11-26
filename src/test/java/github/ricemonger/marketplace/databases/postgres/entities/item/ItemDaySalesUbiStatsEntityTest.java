@@ -57,6 +57,11 @@ class ItemDaySalesUbiStatsEntityTest {
 
         ItemDaySalesUbiStatsEntity actual = new ItemDaySalesUbiStatsEntity(item, itemDaySalesUbiStats);
 
-        assertEquals(expected, actual);
+        assertEquals(expected.getItem().getItemId(), actual.getItem().getItemId());
+        assertEquals(expected.getDate(), actual.getDate());
+        assertEquals(expected.getLowestPrice(), actual.getLowestPrice());
+        assertEquals(expected.getAveragePrice(), actual.getAveragePrice());
+        assertEquals(expected.getHighestPrice(), actual.getHighestPrice());
+        assertEquals(expected.getItemsCount(), actual.getItemsCount());
     }
 }

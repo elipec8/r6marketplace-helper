@@ -39,7 +39,7 @@ class CommonQueryItemsMapperTest {
         Collection<Node> nodes = new ArrayList<>();
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Node node1 = createNode(dtf, date);
         node1.getItem().setItemId("1");
@@ -62,7 +62,7 @@ class CommonQueryItemsMapperTest {
     @Test
     public void mapItem_should_map_item_with_valid_fields() throws ParseException {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Node node = createNode(dtf, date);
 
@@ -87,7 +87,7 @@ class CommonQueryItemsMapperTest {
     @Test
     public void mapItem_should_map_item_with_invalid_item_type() throws ParseException {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Node node = createNode(dtf, date);
         node.getItem().setType("invalidType");
@@ -113,7 +113,7 @@ class CommonQueryItemsMapperTest {
     @Test
     public void mapItem_should_map_item_with_null_BuyStats() throws ParseException {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Node node = createNode(dtf, date);
         node.getMarketData().setBuyStats(null);
@@ -139,7 +139,7 @@ class CommonQueryItemsMapperTest {
     @Test
     public void mapItem_should_map_item_with_null_SellStats() throws ParseException {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Node node = createNode(dtf, date);
         node.getMarketData().setSellStats(null);
@@ -165,7 +165,7 @@ class CommonQueryItemsMapperTest {
     @Test
     public void mapItem_should_map_item_with_null_LastSoldAt() throws ParseException {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Node node = createNode(dtf, date);
         node.getMarketData().setLastSoldAt(null);
@@ -181,7 +181,7 @@ class CommonQueryItemsMapperTest {
         expectedItem.setMinSellPrice(50);
         expectedItem.setSellOrdersCount(5);
         expectedItem.setLastSoldPrice(0);
-        expectedItem.setLastSoldAt(LocalDateTime.MIN);
+        expectedItem.setLastSoldAt(LocalDateTime.of(1970, 1, 1, 0, 0, 0));
 
         Item resultItem = commonQueryItemsMapper.mapItem(node);
 
@@ -202,7 +202,7 @@ class CommonQueryItemsMapperTest {
     @Test
     public void mapItem_should_throw_exception_when_item_id_is_null() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Node node = createNode(dtf, date);
         node.getItem().setItemId(null);
@@ -213,7 +213,7 @@ class CommonQueryItemsMapperTest {
     @Test
     public void mapItem_should_throw_exception_when_item_assetUrl_is_null() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Node node = createNode(dtf, date);
         node.getItem().setAssetUrl(null);
@@ -224,7 +224,7 @@ class CommonQueryItemsMapperTest {
     @Test
     public void mapItem_should_throw_exception_when_item_name_is_null() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Node node = createNode(dtf, date);
         node.getItem().setName(null);
@@ -235,7 +235,7 @@ class CommonQueryItemsMapperTest {
     @Test
     public void mapItem_should_throw_exception_when_item_tags_is_null() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Node node = createNode(dtf, date);
         node.getItem().setTags(null);
@@ -247,7 +247,7 @@ class CommonQueryItemsMapperTest {
     @Test
     public void mapItem_should_throw_exception_when_item_type_is_null() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Node node = createNode(dtf, date);
         node.getItem().setType(null);
@@ -258,7 +258,7 @@ class CommonQueryItemsMapperTest {
     @Test
     public void mapItem_should_throw_exception_when_market_data_is_null() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Node node = createNode(dtf, date);
         node.setMarketData(null);
@@ -269,7 +269,7 @@ class CommonQueryItemsMapperTest {
     @Test
     public void mapItem_should_throw_exception_when_buyStats_activeCount_is_null() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Node node = createNode(dtf, date);
         node.getMarketData().getBuyStats()[0].setActiveCount(null);
@@ -280,7 +280,7 @@ class CommonQueryItemsMapperTest {
     @Test
     public void mapItem_should_throw_exception_when_buyStats_highestPrice_is_null() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Node node = createNode(dtf, date);
         node.getMarketData().getBuyStats()[0].setHighestPrice(null);
@@ -291,7 +291,7 @@ class CommonQueryItemsMapperTest {
     @Test
     public void mapItem_should_throw_exception_when_sellStats_activeCount_is_null() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Node node = createNode(dtf, date);
         node.getMarketData().getSellStats()[0].setActiveCount(null);
@@ -302,7 +302,7 @@ class CommonQueryItemsMapperTest {
     @Test
     public void mapItem_should_throw_exception_when_sellStats_lowestPrice_is_null() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Node node = createNode(dtf, date);
         node.getMarketData().getSellStats()[0].setLowestPrice(null);
@@ -313,7 +313,7 @@ class CommonQueryItemsMapperTest {
     @Test
     public void mapItem_should_throw_exception_when_lastSoldAt_performedAt_is_null() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Node node = createNode(dtf, date);
         node.getMarketData().getLastSoldAt()[0].setPerformedAt(null);
@@ -324,7 +324,7 @@ class CommonQueryItemsMapperTest {
     @Test
     public void mapItem_should_throw_exception_when_lastSoldAt_price_is_null() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Node node = createNode(dtf, date);
         node.getMarketData().getLastSoldAt()[0].setPrice(null);

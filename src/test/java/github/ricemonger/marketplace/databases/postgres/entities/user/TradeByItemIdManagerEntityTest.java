@@ -40,13 +40,13 @@ class TradeByItemIdManagerEntityTest {
     @Test
     public void constructor_should_map_fields() {
         TradeByItemIdManager manager = new TradeByItemIdManager();
-        manager.setEnabled(true);
-        manager.setTradeOperationType(TradeOperationType.BUY);
-        manager.setSellStartingPrice(100);
-        manager.setSellBoundaryPrice(200);
-        manager.setBuyStartingPrice(300);
-        manager.setBuyBoundaryPrice(400);
-        manager.setPriority(1);
+        manager.setEnabled(false);
+        manager.setTradeOperationType(TradeOperationType.SELL);
+        manager.setSellStartingPrice(200);
+        manager.setSellBoundaryPrice(400);
+        manager.setBuyStartingPrice(600);
+        manager.setBuyBoundaryPrice(800);
+        manager.setPriority(2);
 
         UserEntity userEntity = new UserEntity();
         userEntity.setId(1L);
