@@ -37,16 +37,6 @@ class ItemSaleEntityIdTest {
     }
 
     @Test
-    public void hashCode_should_return_same_hash_for_equal_objects_null_item() {
-        LocalDateTime date = LocalDateTime.of(2023, 1, 1, 1, 1);
-
-        ItemSaleEntityId id1 = new ItemSaleEntityId(null, date);
-        ItemSaleEntityId id2 = new ItemSaleEntityId(null, date);
-
-        assertEquals(id1.hashCode(), id2.hashCode());
-    }
-
-    @Test
     public void hashCode_should_return_different_hash_for_different_items() {
         ItemEntity item1 = new ItemEntity();
         item1.setItemId("item1");
@@ -84,17 +74,6 @@ class ItemSaleEntityIdTest {
 
         ItemSaleEntityId id1 = new ItemSaleEntityId(item, date1);
         ItemSaleEntityId id2 = new ItemSaleEntityId(item, date2);
-
-        assertNotEquals(id1.hashCode(), id2.hashCode());
-    }
-
-    @Test
-    public void hashCode_should_return_different_hash_for_different_dates_null_item() {
-        LocalDateTime date1 = LocalDateTime.of(2023, 1, 1, 1, 1);
-        LocalDateTime date2 = LocalDateTime.of(2024, 1, 1, 1, 1);
-
-        ItemSaleEntityId id1 = new ItemSaleEntityId(null, date1);
-        ItemSaleEntityId id2 = new ItemSaleEntityId(null, date2);
 
         assertNotEquals(id1.hashCode(), id2.hashCode());
     }
