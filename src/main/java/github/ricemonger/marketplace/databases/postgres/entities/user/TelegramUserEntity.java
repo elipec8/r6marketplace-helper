@@ -139,8 +139,7 @@ public class TelegramUserEntity {
         this.user.setItemsShowSellOrdersCountFlag(telegramUser.isItemsShowSellOrdersCountFlag());
         this.user.setItemShowPictureFlag(telegramUser.isItemShowPictureFlag());
         if (telegramUser.getItemShowAppliedFilters() != null) {
-            this.user.getItemShowAppliedFilters().clear();
-            this.user.getItemShowAppliedFilters().addAll(telegramUser.getItemShowAppliedFilters().stream().map(ItemFilterEntity::new).toList());
+            this.user.setItemShowAppliedFilters(telegramUser.getItemShowAppliedFilters().stream().map(ItemFilterEntity::new).toList());
         }
         this.user.setNewManagersAreActiveFlag(telegramUser.isNewManagersAreActiveFlag());
         this.user.setManagingEnabledFlag(telegramUser.isManagingEnabledFlag());

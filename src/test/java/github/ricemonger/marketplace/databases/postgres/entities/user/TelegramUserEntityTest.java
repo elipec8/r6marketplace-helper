@@ -304,7 +304,7 @@ class TelegramUserEntityTest {
 
         entity.setManagingEnabledFlag(false);
 
-        assertTrue(user.getManagingEnabledFlag());
+        assertFalse(user.getManagingEnabledFlag());
     }
 
     @Test
@@ -345,7 +345,7 @@ class TelegramUserEntityTest {
         assertTrue(user.getItemShowMinSellPriceFlag());
         assertTrue(user.getItemsShowSellOrdersCountFlag());
         assertTrue(user.getItemShowPictureFlag());
-        assertEquals(user.getItemShowAppliedFilters(), telegramUser.getItemShowAppliedFilters().stream().map(ItemFilterEntity::new).toList());
+        assertEquals(user.getItemShowAppliedFilters().stream().map(ItemFilterEntity::toItemFilter).toList(), telegramUser.getItemShowAppliedFilters());
         assertTrue(user.getNewManagersAreActiveFlag());
         assertTrue(user.getManagingEnabledFlag());
     }
