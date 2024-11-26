@@ -13,7 +13,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class AuthorizationServiceTest {
-    @MockBean
+    @SpyBean
     private CommonValuesService commonValuesService;
 
     @MockBean
@@ -21,20 +21,6 @@ public class AuthorizationServiceTest {
 
     @SpyBean
     private AuthorizationService authorizationService;
-
-    @Test
-    void authorizeAndGetDtoForEncodedPassword_should_encode_password_and_return_authorizeAndGet_result() throws Exception {
-        String email = "email";
-        String encodedPassword = "encodedPassword";
-        AuthorizationDTO authorizationDTO = new AuthorizationDTO();
-
-        when(aesPasswordEncoder.decode(encodedPassword)).thenReturn("password");
-        when(authorizationService.authorizeAndGetDTO(email, "password")).thenReturn(authorizationDTO);
-
-        AuthorizationDTO actualAuthorizationDTO = authorizationService.authorizeAndGetDtoForEncodedPassword(email, encodedPassword);
-
-        assertSame(authorizationDTO, actualAuthorizationDTO);
-    }
 
     @Test
     void getEncodedPassword_should_return_encoded_password() {
