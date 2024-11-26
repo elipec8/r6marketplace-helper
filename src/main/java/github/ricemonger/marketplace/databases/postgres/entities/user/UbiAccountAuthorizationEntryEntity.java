@@ -40,7 +40,7 @@ public class UbiAccountAuthorizationEntryEntity {
     @Column(columnDefinition = "TEXT")
     private String ubiRememberMeTicket;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ubiProfileId", referencedColumnName = "ubiProfileId")
     private UbiAccountStatsEntity ubiAccountStats;
 

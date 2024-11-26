@@ -18,29 +18,33 @@ class ItemDaySalesUbiStatsPostgresRepositoryTest {
     @SpyBean
     private ItemDaySalesUbiStatsPostgresRepository repository;
 
+    @SpyBean
+    private ItemPostgresRepository itemRepository;
+
     @BeforeEach
     void setUp() {
         repository.deleteAll();
+        itemRepository.deleteAll();
     }
 
     @Test
-    public void findAllLastMonthSales_should_return_only_entities_from_For_last_30_days() {
+    public void findAllLastMonthSales_should_return_only_entities_from_last_30_days() {
         ItemEntity item1 = new ItemEntity();
         item1.setItemId("item1");
         ItemDaySalesUbiStatsEntity entity1 = new ItemDaySalesUbiStatsEntity();
-        entity1.setItem(item1);
+        entity1.setItem(itemRepository.getReferenceById("item1"));
         entity1.setDate(LocalDate.now());
 
         ItemEntity item2 = new ItemEntity();
         item2.setItemId("item2");
         ItemDaySalesUbiStatsEntity entity2 = new ItemDaySalesUbiStatsEntity();
-        entity2.setItem(item2);
+        entity2.setItem(itemRepository.getReferenceById("item2"));
         entity2.setDate(LocalDate.now().minusDays(29));
 
         ItemEntity item3 = new ItemEntity();
         item3.setItemId("item3");
         ItemDaySalesUbiStatsEntity entity3 = new ItemDaySalesUbiStatsEntity();
-        entity3.setItem(item3);
+        entity3.setItem(itemRepository.getReferenceById("item3"));
         entity3.setDate(LocalDate.now().minusDays(30));
 
         repository.save(entity1);

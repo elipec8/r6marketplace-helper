@@ -32,13 +32,11 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
 
     @Override
     public void create(String chatId) throws TelegramUserAlreadyExistsException {
-        UserEntity user = userRepository.save(new UserEntity());
-        TelegramUserEntity telegramUser = new TelegramUserEntity(chatId, user);
-
         if (telegramUserRepository.existsById(chatId)) {
             throw new TelegramUserAlreadyExistsException("Telegram user with chatId " + chatId + " already exists");
         } else {
-            telegramUserRepository.save(telegramUser);
+            UserEntity user = userRepository.save(new UserEntity());
+            telegramUserRepository.save(new TelegramUserEntity(chatId, user));
         }
     }
 

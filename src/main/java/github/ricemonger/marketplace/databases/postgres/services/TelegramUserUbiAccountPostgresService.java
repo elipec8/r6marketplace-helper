@@ -38,7 +38,9 @@ public class TelegramUserUbiAccountPostgresService implements TelegramUserUbiAcc
         if (ubiAccountAuthorizationEntry != null && !ubiAccountAuthorizationEntry.getUbiAccountStats().getUbiProfileId().equals(account.getUbiProfileId())) {
             throw new UbiAccountEntryAlreadyExistsException("User with chatId " + chatId + " already has another Ubi account");
         } else {
-            UbiAccountStatsEntity ubiAccountStatsEntity = ubiAccountStatsRepository.findById(account.getUbiProfileId()).orElse(new UbiAccountStatsEntity(account.getUbiProfileId()));
+            UbiAccountStatsEntity ubiAccountStatsEntity = ubiAccountStatsRepository
+                    .findById(account.getUbiProfileId())
+                    .orElse(ubiAccountStatsRepository.save(new UbiAccountStatsEntity(account.getUbiProfileId())));
             ubiAccountAuthorizationEntryRepository.save(new UbiAccountAuthorizationEntryEntity(telegramUser.getUser(), ubiAccountStatsEntity, account));
         }
     }

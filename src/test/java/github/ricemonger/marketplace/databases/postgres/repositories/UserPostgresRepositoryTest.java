@@ -40,13 +40,14 @@ class UserPostgresRepositoryTest {
         ubiAccountAuthorizationEntry.setEmail("email");
         ubiAccountAuthorizationEntry.setUbiProfileId("ubiProfileId");
 
-        UbiAccountStatsEntity ubiAccountStatsEntity = new UbiAccountStatsEntity();
-        ubiAccountStatsEntity.setUbiProfileId("ubiProfileId");
 
         // Have managers, true flag and ubi account entry - must be returned
 
         UserEntity userWithTradeByItemIdManagerTrue = new UserEntity();
-        userWithTradeByItemIdManagerTrue.setUbiAccountAuthorizationEntry(new UbiAccountAuthorizationEntryEntity(userWithTradeByItemIdManagerTrue, ubiAccountStatsEntity, ubiAccountAuthorizationEntry));
+        UbiAccountStatsEntity ubiAccountStatsEntity1 = new UbiAccountStatsEntity();
+        ubiAccountStatsEntity1.setUbiProfileId("ubiProfileId1");
+        userWithTradeByItemIdManagerTrue.setUbiAccountAuthorizationEntry(new UbiAccountAuthorizationEntryEntity(userWithTradeByItemIdManagerTrue,
+                ubiAccountStatsEntity1, ubiAccountAuthorizationEntry));
         userWithTradeByItemIdManagerTrue.setManagingEnabledFlag(true);
         TradeByItemIdManagerEntity tradeByItemIdManagerEntityTrue = new TradeByItemIdManagerEntity();
         tradeByItemIdManagerEntityTrue.setItem(new ItemEntity("1"));
@@ -54,7 +55,10 @@ class UserPostgresRepositoryTest {
         userWithTradeByItemIdManagerTrue.getTradeByItemIdManagers().add(tradeByItemIdManagerEntityTrue);
 
         UserEntity userWithTradeByFiltersManagerTrue = new UserEntity();
-        userWithTradeByFiltersManagerTrue.setUbiAccountAuthorizationEntry(new UbiAccountAuthorizationEntryEntity(userWithTradeByFiltersManagerTrue, ubiAccountStatsEntity, ubiAccountAuthorizationEntry));
+        UbiAccountStatsEntity ubiAccountStatsEntity2 = new UbiAccountStatsEntity();
+        ubiAccountStatsEntity2.setUbiProfileId("ubiProfileId2");
+        userWithTradeByFiltersManagerTrue.setUbiAccountAuthorizationEntry(new UbiAccountAuthorizationEntryEntity(userWithTradeByFiltersManagerTrue,
+                ubiAccountStatsEntity2, ubiAccountAuthorizationEntry));
         userWithTradeByFiltersManagerTrue.setManagingEnabledFlag(true);
         TradeByFiltersManagerEntity tradeByFiltersManagerEntityTrue = new TradeByFiltersManagerEntity();
         tradeByFiltersManagerEntityTrue.setName("name");
@@ -62,7 +66,10 @@ class UserPostgresRepositoryTest {
         userWithTradeByFiltersManagerTrue.getTradeByFiltersManagers().add(tradeByFiltersManagerEntityTrue);
 
         UserEntity userWithBothManagersTrue = new UserEntity();
-        userWithBothManagersTrue.setUbiAccountAuthorizationEntry(new UbiAccountAuthorizationEntryEntity(userWithBothManagersTrue, ubiAccountStatsEntity, ubiAccountAuthorizationEntry));
+        UbiAccountStatsEntity ubiAccountStatsEntity3 = new UbiAccountStatsEntity();
+        ubiAccountStatsEntity3.setUbiProfileId("ubiProfileId3");
+        userWithBothManagersTrue.setUbiAccountAuthorizationEntry(new UbiAccountAuthorizationEntryEntity(userWithBothManagersTrue,
+                ubiAccountStatsEntity3, ubiAccountAuthorizationEntry));
         userWithBothManagersTrue.setManagingEnabledFlag(true);
         TradeByItemIdManagerEntity tradeByItemIdManagerEntityForBothTrue = new TradeByItemIdManagerEntity();
         tradeByItemIdManagerEntityForBothTrue.setItem(new ItemEntity("2"));
@@ -80,7 +87,10 @@ class UserPostgresRepositoryTest {
         // Have managers and ubi account entry, but false flag
 
         UserEntity userWithTradeByItemIdManagerFalse = new UserEntity();
-        userWithTradeByItemIdManagerFalse.setUbiAccountAuthorizationEntry(new UbiAccountAuthorizationEntryEntity(userWithTradeByItemIdManagerFalse, ubiAccountStatsEntity, ubiAccountAuthorizationEntry));
+        UbiAccountStatsEntity ubiAccountStatsEntity4 = new UbiAccountStatsEntity();
+        ubiAccountStatsEntity4.setUbiProfileId("ubiProfileId4");
+        userWithTradeByItemIdManagerFalse.setUbiAccountAuthorizationEntry(new UbiAccountAuthorizationEntryEntity(userWithTradeByItemIdManagerFalse,
+                ubiAccountStatsEntity4, ubiAccountAuthorizationEntry));
         userWithTradeByItemIdManagerFalse.setManagingEnabledFlag(false);
         TradeByItemIdManagerEntity tradeByItemIdManagerEntityFalse = new TradeByItemIdManagerEntity();
         tradeByItemIdManagerEntityFalse.setItem(new ItemEntity("3"));
@@ -88,7 +98,9 @@ class UserPostgresRepositoryTest {
         userWithTradeByItemIdManagerFalse.getTradeByItemIdManagers().add(tradeByItemIdManagerEntityFalse);
 
         UserEntity userWithTradeByFiltersManagerFalse = new UserEntity();
-        userWithTradeByFiltersManagerFalse.setUbiAccountAuthorizationEntry(new UbiAccountAuthorizationEntryEntity(userWithTradeByFiltersManagerFalse, ubiAccountStatsEntity, ubiAccountAuthorizationEntry));
+        UbiAccountStatsEntity ubiAccountStatsEntity5 = new UbiAccountStatsEntity();
+        ubiAccountStatsEntity5.setUbiProfileId("ubiProfileId5");
+        userWithTradeByFiltersManagerFalse.setUbiAccountAuthorizationEntry(new UbiAccountAuthorizationEntryEntity(userWithTradeByFiltersManagerFalse, ubiAccountStatsEntity5, ubiAccountAuthorizationEntry));
         userWithTradeByFiltersManagerFalse.setManagingEnabledFlag(false);
         TradeByFiltersManagerEntity tradeByFiltersManagerEntityFalse = new TradeByFiltersManagerEntity();
         tradeByFiltersManagerEntityFalse.setName("name");
@@ -96,7 +108,10 @@ class UserPostgresRepositoryTest {
         userWithTradeByFiltersManagerFalse.getTradeByFiltersManagers().add(tradeByFiltersManagerEntityFalse);
 
         UserEntity userWithBothManagersFalse = new UserEntity();
-        userWithBothManagersFalse.setUbiAccountAuthorizationEntry(new UbiAccountAuthorizationEntryEntity(userWithBothManagersFalse, ubiAccountStatsEntity, ubiAccountAuthorizationEntry));
+        UbiAccountStatsEntity ubiAccountStatsEntity6 = new UbiAccountStatsEntity();
+        ubiAccountStatsEntity6.setUbiProfileId("ubiProfileId6");
+        userWithBothManagersFalse.setUbiAccountAuthorizationEntry(new UbiAccountAuthorizationEntryEntity(userWithBothManagersFalse,
+                ubiAccountStatsEntity6, ubiAccountAuthorizationEntry));
         userWithBothManagersFalse.setManagingEnabledFlag(false);
         TradeByItemIdManagerEntity tradeByItemIdManagerEntityForBothFalse = new TradeByItemIdManagerEntity();
         tradeByItemIdManagerEntityForBothFalse.setItem(new ItemEntity("4"));
