@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class ItemSalePostgresServiceTest {
-    private final static LocalDateTime DATE = LocalDateTime.now();
+    private final static LocalDateTime DATE = LocalDateTime.now().withNano(0);
 
     @SpyBean
     private ItemSalePostgresService itemSaleService;
@@ -57,13 +57,13 @@ class ItemSalePostgresServiceTest {
     public void saveAll_should_update_sales_if_already_exist() {
         Item item1 = createSoldItem("1", DATE, 100);
         Item item2 = createSoldItem("2", DATE, 200);
-        Item item11 = createSoldItem("1", DATE, 200);
+        Item item1Updated = createSoldItem("1", DATE, 200);
 
-        itemRepository.saveAll(Stream.of(item1, item2).map(item -> new ItemEntity(item, Set.of())).toList());
+        itemRepository.saveAllAndFlush(Stream.of(item1, item2).map(item -> new ItemEntity(item, Set.of())).toList());
 
         itemSaleService.saveAll(List.of(item1, item2));
 
-        itemSaleService.saveAll(List.of(item2, item11));
+        itemSaleService.saveAll(List.of(item2, item1Updated));
 
         assertEquals(2, itemSaleRepository.count());
         assertEquals(200, itemSaleRepository.findById(new ItemSaleEntityId(new ItemEntity(item1, Set.of()), DATE)).get().getPrice());

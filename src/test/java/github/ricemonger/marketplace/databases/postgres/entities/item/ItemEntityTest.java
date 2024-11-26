@@ -561,8 +561,14 @@ class ItemEntityTest {
 
     private boolean entitiesAreEqual(ItemEntity entity1, ItemEntity entity2) {
 
-        List<String> entity1TagsValues = entity1.getTags().stream().map(TagEntity::getValue).toList();
-        List<String> entity2TagsValues = entity2.getTags().stream().map(TagEntity::getValue).toList();
+        List<String> entity1TagsValues = new ArrayList<>();
+        if(entity1.getTags() != null){
+        entity1TagsValues = entity1.getTags().stream().map(TagEntity::getValue).toList();
+        }
+        List<String> entity2TagsValues = new ArrayList<>();
+        if(entity2.getTags() != null) {
+            entity2TagsValues = entity2.getTags().stream().map(TagEntity::getValue).toList();
+        }
 
         boolean tagsEqual = entity1TagsValues.containsAll(entity2TagsValues) && entity2TagsValues.containsAll(entity1TagsValues);
 

@@ -88,7 +88,7 @@ public class ItemEntity {
         this.name = item.getName();
 
         List<TagEntity> itemTags = new ArrayList<>();
-        if (tageEntities != null && !tageEntities.isEmpty()) {
+        if (item.getTags() != null && tageEntities != null && !tageEntities.isEmpty()) {
             for (TagEntity tag : tageEntities) {
                 if (item.getTags().contains(tag.getValue())) {
                     itemTags.add(tag);

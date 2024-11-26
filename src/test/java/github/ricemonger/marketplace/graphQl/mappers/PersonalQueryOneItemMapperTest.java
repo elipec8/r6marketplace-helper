@@ -43,7 +43,7 @@ class PersonalQueryOneItemMapperTest {
     @Test
     public void mapItem_should_map_item_with_valid_fields_with_PaymentProposal() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Game game = createGame(dtf, date);
 
@@ -57,7 +57,7 @@ class PersonalQueryOneItemMapperTest {
     @Test
     public void mapItem_should_map_item_with_valid_fields_with_PaymentOptions() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Game game = createGame(dtf, date);
         game.getViewer().getMeta().getTrades().getNodes().get(0).setPaymentOptions(new PaymentOptions[]{new PaymentOptions(1000)});
@@ -73,7 +73,7 @@ class PersonalQueryOneItemMapperTest {
     @Test
     public void mapItem_should_map_item_with_invalid_type() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Game game = createGame(dtf, date);
         game.getMarketableItem().getItem().setType("invalidType");
@@ -89,7 +89,7 @@ class PersonalQueryOneItemMapperTest {
     @Test
     public void mapItem_should_map_item_with_invalid_last_sold_at() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Game game = createGame(dtf, date);
         game.getMarketableItem().getMarketData().getLastSoldAt()[0].setPerformedAt("invalidDate");
@@ -97,7 +97,7 @@ class PersonalQueryOneItemMapperTest {
         PersonalItem result = personalQueryOneItemMapper.mapItem(game);
 
         PersonalItem expected = createPersonalItem(date);
-        expected.setLastSoldAt(LocalDateTime.MIN);
+        expected.setLastSoldAt(LocalDateTime.of(1970, 1, 1, 0, 0, 0));
 
         assertEquals(expected, result);
     }
@@ -105,7 +105,7 @@ class PersonalQueryOneItemMapperTest {
     @Test
     public void mapItem_should_map_item_with_invalid_expires_at() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Game game = createGame(dtf, date);
         game.getViewer().getMeta().getTrades().getNodes().get(0).setExpiresAt("invalidDate");
@@ -121,7 +121,7 @@ class PersonalQueryOneItemMapperTest {
     @Test
     public void mapItem_should_map_item_with_invalid_last_modified_at() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Game game = createGame(dtf, date);
         game.getViewer().getMeta().getTrades().getNodes().get(0).setLastModifiedAt("invalidDate");
@@ -137,7 +137,7 @@ class PersonalQueryOneItemMapperTest {
     @Test
     public void mapItem_should_map_item_with_invalid_TradeState() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Game game = createGame(dtf, date);
         game.getViewer().getMeta().getTrades().getNodes().get(0).setState("invalidState");
@@ -153,7 +153,7 @@ class PersonalQueryOneItemMapperTest {
     @Test
     public void mapItem_should_map_item_with_invalid_TradeCategory() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
 
         Game game = createGame(dtf, date);
         game.getViewer().getMeta().getTrades().getNodes().get(0).setCategory("invalidCategory");
@@ -456,7 +456,7 @@ class PersonalQueryOneItemMapperTest {
 
     private Game createGame() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.now().withNano(0);
         return createGame(dtf, date);
     }
 

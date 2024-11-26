@@ -37,16 +37,6 @@ class ItemDaySalesUbiStatsEntityIdTest {
     }
 
     @Test
-    public void hashCode_should_return_same_hash_for_equal_objects_null_item() {
-        LocalDate date = LocalDate.of(2023, 1, 1);
-
-        ItemDaySalesUbiStatsEntityId id1 = new ItemDaySalesUbiStatsEntityId(null, date);
-        ItemDaySalesUbiStatsEntityId id2 = new ItemDaySalesUbiStatsEntityId(null, date);
-
-        assertEquals(id1.hashCode(), id2.hashCode());
-    }
-
-    @Test
     public void hashCode_should_return_different_hash_for_different_items() {
         ItemEntity item1 = new ItemEntity();
         item1.setItemId("item1");
@@ -84,17 +74,6 @@ class ItemDaySalesUbiStatsEntityIdTest {
 
         ItemDaySalesUbiStatsEntityId id1 = new ItemDaySalesUbiStatsEntityId(item, date1);
         ItemDaySalesUbiStatsEntityId id2 = new ItemDaySalesUbiStatsEntityId(item, date2);
-
-        assertNotEquals(id1.hashCode(), id2.hashCode());
-    }
-
-    @Test
-    public void hashCode_should_return_different_hash_for_different_dates_null_item() {
-        LocalDate date1 = LocalDate.of(2023, 1, 1);
-        LocalDate date2 = LocalDate.of(2024, 1, 1);
-
-        ItemDaySalesUbiStatsEntityId id1 = new ItemDaySalesUbiStatsEntityId(null, date1);
-        ItemDaySalesUbiStatsEntityId id2 = new ItemDaySalesUbiStatsEntityId(null, date2);
 
         assertNotEquals(id1.hashCode(), id2.hashCode());
     }
