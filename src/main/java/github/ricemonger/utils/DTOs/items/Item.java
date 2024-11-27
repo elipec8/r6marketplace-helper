@@ -67,4 +67,9 @@ public class Item implements ItemMainFieldsI, ItemHistoryFieldsI {
         setMainFields(mainFields);
         setHistoryFields(historyFields);
     }
+
+    public Item(ItemForFastEquals itemForFastEquals){
+        setMainFields(itemForFastEquals);
+        setHistoryFields(itemForFastEquals);
+    }
 }

@@ -390,11 +390,11 @@ class ItemServiceTest {
         expectedRecalculatedItem2.setDaySales(0);
         expectedRecalculatedItem2.setPriceToSellIn1Hour(0);
         expectedRecalculatedItem2.setPriceToSellIn6Hours(0);
-        expectedRecalculatedItem2.setPriceToSellIn24Hours(300);
+        expectedRecalculatedItem2.setPriceToSellIn24Hours(200);
         expectedRecalculatedItem2.setPriceToSellIn168Hours(300);
         expectedRecalculatedItem2.setPriceToBuyIn1Hour(0);
         expectedRecalculatedItem2.setPriceToBuyIn6Hours(0);
-        expectedRecalculatedItem2.setPriceToBuyIn24Hours(300);
+        expectedRecalculatedItem2.setPriceToBuyIn24Hours(800);
         expectedRecalculatedItem2.setPriceToBuyIn168Hours(300);
 
         Item expectedItemNoSales = new Item();
@@ -429,11 +429,11 @@ class ItemServiceTest {
         expectedItemNoSales.setPriceToBuyIn24Hours(0);
         expectedItemNoSales.setPriceToBuyIn168Hours(0);
 
-        List<Item> expectedResult = List.of(expectedRecalculatedItem1, expectedItemNoSales);
+        List<Item> expectedResult = List.of(expectedRecalculatedItem1, expectedRecalculatedItem2, expectedItemNoSales);
 
         itemService.recalculateAndSaveAllItemsHistoryFields();
 
-        verify(itemDatabaseService).saveAll(argThat(arg -> arg.containsAll(expectedResult) && arg.size() == expectedResult.size()));
+        verify(itemDatabaseService).saveAll(argThat(arg -> expectedResult.containsAll(arg) && arg.size() == expectedResult.size()));
     }
 
     @Test

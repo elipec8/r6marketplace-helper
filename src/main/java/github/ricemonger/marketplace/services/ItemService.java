@@ -76,7 +76,7 @@ public class ItemService {
             item.setPriceToBuyIn24Hours(pricesToBuy.priceToBuyIn24Hours());
             item.setPriceToBuyIn168Hours(pricesToBuy.priceToBuyIn168Hours());
 
-            PricesToSell pricesToSell = recalculatePricesToSell(sortedMonthPricesAndQuantities.descendingMap());
+            PricesToSell pricesToSell = recalculatePricesToSell(sortedMonthPricesAndQuantities);
             item.setPriceToSellIn1Hour(pricesToSell.priceToSellIn1Hour());
             item.setPriceToSellIn6Hours(pricesToSell.priceToSellIn6Hours());
             item.setPriceToSellIn24Hours(pricesToSell.priceToSellIn24Hours());
@@ -109,7 +109,7 @@ public class ItemService {
         int currentQuantity = 0;
         for (Map.Entry<Integer, Integer> entry : sortedTodayPrices.entrySet()) {
             currentQuantity += entry.getValue();
-            if (currentQuantity >= todaySalesQuantity) {
+            if (currentQuantity >= (float)todaySalesQuantity / 2) {
                 todayMedianPrice = entry.getKey();
                 break;
             }
@@ -148,7 +148,7 @@ public class ItemService {
             currentQuantity = 0;
             for (Map.Entry<Integer, Integer> entry : sortedPrices.entrySet()) {
                 currentQuantity += entry.getValue();
-                if (currentQuantity >= daySalesQuantity / 2) {
+                if (currentQuantity >= (float) daySalesQuantity / 2) {
                     monthDayMedianPricesAndQuantities.put(entry.getKey(),
                             monthDayMedianPricesAndQuantities.getOrDefault(entry.getKey(), 0) + daySalesQuantity);
                     break;
@@ -208,7 +208,7 @@ public class ItemService {
         return new PricesToBuy(priceToBuyIn1Hour, priceToBuyIn6Hours, priceToBuyIn24Hours, priceToBuyIn168Hours);
     }
 
-    private PricesToSell recalculatePricesToSell(NavigableMap<Integer, Integer> sortedDescendingMonthPricesAndQuantities) {
+    private PricesToSell recalculatePricesToSell(NavigableMap<Integer, Integer> sortedMonthPricesAndQuantities) {
         Integer priceToSellIn1Hour = 0;
         boolean priceToSellIn1HourFound = false;
         Integer priceToSellIn6Hours = 0;
@@ -218,8 +218,9 @@ public class ItemService {
         Integer priceToSellIn168Hours = 0;
         boolean priceToSellIn168HoursFound = false;
 
+
         int currentQuantity = 0;
-        for (Map.Entry<Integer, Integer> entry : sortedDescendingMonthPricesAndQuantities.descendingMap().entrySet()) {
+        for (Map.Entry<Integer, Integer> entry : sortedMonthPricesAndQuantities.descendingMap().entrySet()) {
             currentQuantity += entry.getValue();
             if (!priceToSellIn1HourFound && currentQuantity >= 720) {
                 priceToSellIn1Hour = entry.getKey();
@@ -251,7 +252,7 @@ public class ItemService {
             ItemDaySalesStatsByItemId daySaleStats = new ItemDaySalesStatsByItemId(item.getItemId(), day, saleStats);
             ItemDaySalesStatsByItemId ubiDayStats = new ItemDaySalesStatsByItemId(day, item.getItemId(), ubiSaleStats);
 
-            if (daySaleStats.getQuantity() < (int)(ubiDayStats.getQuantity() * 0.8)) {
+            if (daySaleStats.getQuantity() < (int) (ubiDayStats.getQuantity() * 0.8)) {
                 resultingPerDayStats.add(ubiDayStats);
             } else {
                 resultingPerDayStats.add(daySaleStats);
@@ -295,7 +296,8 @@ public class ItemService {
     private record PricesToBuy(Integer priceToBuyIn1Hour, Integer priceToBuyIn6Hours, Integer priceToBuyIn24Hours, Integer priceToBuyIn168Hours) {
     }
 
-    private record PricesToSell(Integer priceToSellIn1Hour, Integer priceToSellIn6Hours, Integer priceToSellIn24Hours, Integer priceToSellIn168Hours) {
+    private record PricesToSell(Integer priceToSellIn1Hour, Integer priceToSellIn6Hours, Integer priceToSellIn24Hours,
+                                Integer priceToSellIn168Hours) {
     }
 
     private record TodayPriceStats(int quantity, int averagePrice, int maxPrice, int minPrice, int medianPrice) {
