@@ -8,9 +8,9 @@ import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUse
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.utils.dtos.ItemFilter;
-import github.ricemonger.utils.dtos.ItemShownFieldsSettings;
-import github.ricemonger.utils.dtos.TelegramUser;
+import github.ricemonger.utils.DTOs.ItemShownFieldsSettings;
+import github.ricemonger.utils.DTOs.TelegramUser;
+import github.ricemonger.utils.DTOs.items.ItemFilter;
 import github.ricemonger.utils.exceptions.client.TelegramUserAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import jakarta.transaction.Transactional;
@@ -18,12 +18,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class TelegramUserPostgresServiceTest {
     private final static String CHAT_ID = "1";
     private final static String ANOTHER_CHAT_ID = "2";
@@ -273,10 +275,10 @@ class TelegramUserPostgresServiceTest {
         createTelegramUser(CHAT_ID);
 
         telegramUserService.setTradeManagersSettingsNewManagersAreActiveFlag(CHAT_ID, false);
-        assertEquals(false, telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isNewManagersAreActiveFlag());
+        assertFalse(telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isNewManagersAreActiveFlag());
 
         telegramUserService.setTradeManagersSettingsNewManagersAreActiveFlag(CHAT_ID, true);
-        assertEquals(true, telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isNewManagersAreActiveFlag());
+        assertTrue(telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isNewManagersAreActiveFlag());
     }
 
     @Test
@@ -289,10 +291,10 @@ class TelegramUserPostgresServiceTest {
         createTelegramUser(CHAT_ID);
 
         telegramUserService.setTradeManagersSettingsManagingEnabledFlag(CHAT_ID, false);
-        assertEquals(false, telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isManagingEnabledFlag());
+        assertFalse(telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isManagingEnabledFlag());
 
         telegramUserService.setTradeManagersSettingsManagingEnabledFlag(CHAT_ID, true);
-        assertEquals(true, telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isManagingEnabledFlag());
+        assertTrue(telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isManagingEnabledFlag());
     }
 
     @Test

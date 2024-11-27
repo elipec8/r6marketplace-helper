@@ -20,7 +20,7 @@ class FiltersShowAllNamesStage1AskNameCallbackTest {
 
     @Test
     public void initAndExecute_should_process_first_input_and_get_all_user_filters_names_and_ask_filter_to_show_if_filters_exist() {
-        when(botInnerService.getAllUserItemFiltersNames(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(List.of("naame","name"));
+        when(botInnerService.getAllUserItemFiltersNames(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(List.of("naame", "name"));
 
         FiltersShowAllNamesStage1AskNameCallback filtersShowAllNamesStage1AskNameCallback = new FiltersShowAllNamesStage1AskNameCallback();
         filtersShowAllNamesStage1AskNameCallback.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
@@ -31,7 +31,7 @@ class FiltersShowAllNamesStage1AskNameCallbackTest {
 
         verify(botInnerService).getAllUserItemFiltersNames(MockUpdateInfos.UPDATE_INFO.getChatId());
 
-        verify(botInnerService,times(0)).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());
+        verify(botInnerService, times(0)).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());
 
         verify(botInnerService).askFromInlineKeyboard(eq(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());
     }
@@ -43,14 +43,14 @@ class FiltersShowAllNamesStage1AskNameCallbackTest {
         FiltersShowAllNamesStage1AskNameCallback filtersShowAllNamesStage1AskNameCallback = new FiltersShowAllNamesStage1AskNameCallback();
         filtersShowAllNamesStage1AskNameCallback.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService,times(0)).clearUserInputs(MockUpdateInfos.UPDATE_INFO.getChatId());
-        verify(botInnerService,times(0)).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.ITEM_FILTER_NAME);
-        verify(botInnerService,times(0)).setUserInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.ITEM_FILTER_SHOW_OR_REMOVE);
+        verify(botInnerService, times(0)).clearUserInputs(MockUpdateInfos.UPDATE_INFO.getChatId());
+        verify(botInnerService, times(0)).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.ITEM_FILTER_NAME);
+        verify(botInnerService, times(0)).setUserInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.ITEM_FILTER_SHOW_OR_REMOVE);
 
         verify(botInnerService).getAllUserItemFiltersNames(MockUpdateInfos.UPDATE_INFO.getChatId());
 
         verify(botInnerService).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());
 
-        verify(botInnerService,times(0)).askFromInlineKeyboard(eq(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());
+        verify(botInnerService, times(0)).askFromInlineKeyboard(eq(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());
     }
 }

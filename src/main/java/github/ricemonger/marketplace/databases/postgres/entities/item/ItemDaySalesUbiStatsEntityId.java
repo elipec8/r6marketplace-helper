@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Data
@@ -14,14 +14,10 @@ public class ItemDaySalesUbiStatsEntityId {
 
     private ItemEntity item;
 
-    private Date date;
+    private LocalDate date;
 
     public int hashCode() {
-        if (item == null) {
-            return Objects.hash(date);
-        } else {
-            return Objects.hash(item.getItemId(), date);
-        }
+        return Objects.hash(item.getItemId(), date);
     }
 
     public boolean equals(Object o) {
@@ -31,10 +27,10 @@ public class ItemDaySalesUbiStatsEntityId {
         if (!(o instanceof ItemDaySalesUbiStatsEntityId itemDaySalesUbiStatsEntityId)) {
             return false;
         }
-        boolean item = this.item == itemDaySalesUbiStatsEntityId.item || (
-                this.item != null &&
-                itemDaySalesUbiStatsEntityId.item != null &&
-                Objects.equals(this.item.getItemId(), itemDaySalesUbiStatsEntityId.item.getItemId()));
+        boolean item = this.item == itemDaySalesUbiStatsEntityId.item ||
+                       (this.item != null &&
+                        itemDaySalesUbiStatsEntityId.item != null &&
+                        Objects.equals(this.item.getItemId(), itemDaySalesUbiStatsEntityId.item.getItemId()));
 
         boolean date = Objects.equals(this.date, itemDaySalesUbiStatsEntityId.date);
 

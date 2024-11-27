@@ -2,13 +2,13 @@ package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
-import github.ricemonger.utils.dtos.AuthorizationDTO;
-import github.ricemonger.utils.dtos.UbiAccountAuthorizationEntry;
-import github.ricemonger.utils.dtos.UbiAccountAuthorizationEntryWithTelegram;
+import github.ricemonger.utils.DTOs.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
+import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
+import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiUserAuthorizationClientErrorException;
-import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
 import github.ricemonger.utils.exceptions.server.UbiUserAuthorizationServerErrorException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,12 +82,12 @@ class TelegramUserUbiAccountEntryServiceTest {
     public void deleteByChatId_should_handle_to_service() {
         telegramUserUbiAccountEntryService.deleteByChatId("chatId");
 
-        verify(telegramUserUbiAccountEntryDatabaseService).deleteByChatId("chatId");
+        verify(telegramUserUbiAccountEntryDatabaseService).deleteAuthorizationInfoByChatId("chatId");
     }
 
     @Test
     public void deleteByChatId_should_throw_if_user_doesnt_exist() {
-        doThrow(TelegramUserDoesntExistException.class).when(telegramUserUbiAccountEntryDatabaseService).deleteByChatId(any());
+        doThrow(TelegramUserDoesntExistException.class).when(telegramUserUbiAccountEntryDatabaseService).deleteAuthorizationInfoByChatId(any());
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserUbiAccountEntryService.deleteByChatId("chatId"));
     }
@@ -133,13 +133,13 @@ class TelegramUserUbiAccountEntryServiceTest {
         allUsers.addAll(authUsersWithDatabaseExceptions);
         allUsers.addAll(unAuthUsers);
 
-        when(telegramUserUbiAccountEntryDatabaseService.findAll()).thenReturn(allUsers);
+        when(telegramUserUbiAccountEntryDatabaseService.findAllAuthorizationInfoForTelegram()).thenReturn(allUsers);
 
         List<UbiAccountAuthorizationEntryWithTelegram> result = telegramUserUbiAccountEntryService.reauthorizeAllUbiUsersAndGetUnauthorizedList();
 
         assertTrue(result.containsAll(unAuthUsers) && unAuthUsers.containsAll(result));
 
-        verify(telegramUserUbiAccountEntryDatabaseService).findAll();
+        verify(telegramUserUbiAccountEntryDatabaseService).findAllAuthorizationInfoForTelegram();
 
         verify(authorizationService, times(7)).authorizeAndGetDtoForEncodedPassword(any(), any());
 
@@ -153,23 +153,23 @@ class TelegramUserUbiAccountEntryServiceTest {
         String chatId = "chatId";
         UbiAccountAuthorizationEntry entry = new UbiAccountAuthorizationEntry();
         entry.setEmail("email");
-        when(telegramUserUbiAccountEntryDatabaseService.findByChatId(chatId)).thenReturn(entry);
+        when(telegramUserUbiAccountEntryDatabaseService.findAuthorizationInfoByChatId(chatId)).thenReturn(entry);
 
         assertEquals(entry, telegramUserUbiAccountEntryService.findByChatId(chatId));
 
-        verify(telegramUserUbiAccountEntryDatabaseService).findByChatId(chatId);
+        verify(telegramUserUbiAccountEntryDatabaseService).findAuthorizationInfoByChatId(chatId);
     }
 
     @Test
     public void findByChatId_should_throw_if_user_doesnt_exist() {
-        doThrow(TelegramUserDoesntExistException.class).when(telegramUserUbiAccountEntryDatabaseService).findByChatId(any());
+        doThrow(TelegramUserDoesntExistException.class).when(telegramUserUbiAccountEntryDatabaseService).findAuthorizationInfoByChatId(any());
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserUbiAccountEntryService.findByChatId("chatId"));
     }
 
     @Test
     public void findByChatId_should_throw_if_ubi_account_entry_doesnt_exist() {
-        doThrow(UbiAccountEntryDoesntExistException.class).when(telegramUserUbiAccountEntryDatabaseService).findByChatId(any());
+        doThrow(UbiAccountEntryDoesntExistException.class).when(telegramUserUbiAccountEntryDatabaseService).findAuthorizationInfoByChatId(any());
 
         assertThrows(UbiAccountEntryDoesntExistException.class, () -> telegramUserUbiAccountEntryService.findByChatId("chatId"));
     }

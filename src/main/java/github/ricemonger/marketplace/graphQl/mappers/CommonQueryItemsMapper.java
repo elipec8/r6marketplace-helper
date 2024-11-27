@@ -1,22 +1,22 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.Node;
-import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.MarketData;
-import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.marketData.BuyStats;
-import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.marketData.LastSoldAt;
-import github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.marketData.SellStats;
+import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.Node;
+import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.MarketData;
+import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.BuyStats;
+import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.LastSoldAt;
+import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.SellStats;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.dtos.Item;
+import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.exceptions.server.GraphQlCommonItemMappingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +35,7 @@ public class CommonQueryItemsMapper {
         if (node == null) {
             throw new GraphQlCommonItemMappingException("Node is null");
         }
-        github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.node.Item item = node.getItem();
+        github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.Item item = node.getItem();
 
         if (item == null) {
             throw new GraphQlCommonItemMappingException("Item is null, node-" + node);
@@ -100,15 +100,15 @@ public class CommonQueryItemsMapper {
                 throw new GraphQlCommonItemMappingException("LastSoldAt performed at is null, lastSoldAt-" + lastSoldAt);
             }
             try {
-                SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-                result.setLastSoldAt(sdf.parse(lastSoldAt.getPerformedAt()));
-            } catch (ParseException e) {
-                result.setLastSoldAt(new Date(0));
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+                result.setLastSoldAt(LocalDateTime.parse(lastSoldAt.getPerformedAt(), dtf));
+            } catch (DateTimeParseException e) {
+                result.setLastSoldAt(LocalDateTime.of(1970, 1, 1, 0, 0));
                 log.error("Error parsing date: {}", lastSoldAt.getPerformedAt());
             }
             result.setLastSoldPrice(lastSoldAt.getPrice());
         } else {
-            result.setLastSoldAt(new Date(0));
+            result.setLastSoldAt(LocalDateTime.of(1970, 1, 1, 0, 0));
             result.setLastSoldPrice(0);
         }
 

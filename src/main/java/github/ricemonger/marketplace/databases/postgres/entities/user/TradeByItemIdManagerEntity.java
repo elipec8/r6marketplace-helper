@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
-import github.ricemonger.utils.dtos.TradeByItemIdManager;
-import github.ricemonger.utils.enums.TradeManagerTradeType;
+import github.ricemonger.utils.DTOs.TradeByItemIdManager;
+import github.ricemonger.utils.enums.TradeOperationType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,7 +31,8 @@ public class TradeByItemIdManagerEntity {
 
     private boolean enabled;
 
-    private TradeManagerTradeType tradeType;
+    @Enumerated(EnumType.ORDINAL)
+    private TradeOperationType tradeOperationType;
 
     private Integer sellBoundaryPrice;
     private Integer sellStartingPrice;
@@ -45,7 +46,7 @@ public class TradeByItemIdManagerEntity {
         this.user = user;
         this.item = item;
         this.enabled = tradeManager.isEnabled();
-        this.tradeType = tradeManager.getTradeType();
+        this.tradeOperationType = tradeManager.getTradeOperationType();
         this.sellStartingPrice = tradeManager.getSellStartingPrice();
         this.sellBoundaryPrice = tradeManager.getSellBoundaryPrice();
         this.buyStartingPrice = tradeManager.getBuyStartingPrice();
@@ -57,7 +58,7 @@ public class TradeByItemIdManagerEntity {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId(item.getItemId());
         tradeManager.setEnabled(enabled);
-        tradeManager.setTradeType(tradeType);
+        tradeManager.setTradeOperationType(tradeOperationType);
         tradeManager.setSellStartingPrice(sellStartingPrice);
         tradeManager.setSellBoundaryPrice(sellBoundaryPrice);
         tradeManager.setBuyStartingPrice(buyStartingPrice);

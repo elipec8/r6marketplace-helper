@@ -1,9 +1,9 @@
 package github.ricemonger.marketplace.databases.redis.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationService;
-import github.ricemonger.utils.dtos.AuthorizationDTO;
-import github.ricemonger.utils.dtos.ConfigResolvedTransactionPeriod;
-import github.ricemonger.utils.dtos.ConfigTrades;
+import github.ricemonger.utils.DTOs.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
+import github.ricemonger.utils.DTOs.ConfigTrades;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

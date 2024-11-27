@@ -5,8 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public interface ItemPostgresRepository extends JpaRepository<ItemEntity, String> {
     @Query("SELECT i.itemId FROM item i")

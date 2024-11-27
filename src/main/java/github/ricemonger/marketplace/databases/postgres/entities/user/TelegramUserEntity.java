@@ -2,10 +2,10 @@ package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.utils.dtos.ItemShowSettings;
-import github.ricemonger.utils.dtos.ItemShownFieldsSettings;
-import github.ricemonger.utils.dtos.TelegramUser;
-import github.ricemonger.utils.dtos.TradeManagersSettings;
+import github.ricemonger.utils.DTOs.ItemShowSettings;
+import github.ricemonger.utils.DTOs.ItemShownFieldsSettings;
+import github.ricemonger.utils.DTOs.TelegramUser;
+import github.ricemonger.utils.DTOs.TradeManagersSettings;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,7 +31,9 @@ public class TelegramUserEntity {
     @OneToMany(mappedBy = "telegramUser", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<TelegramUserInputEntity> telegramUserInputs = new ArrayList<>();
 
+    @Enumerated(EnumType.ORDINAL)
     private InputState inputState = InputState.BASE;
+    @Enumerated(EnumType.ORDINAL)
     private InputGroup inputGroup = InputGroup.BASE;
 
     private Integer itemShowMessagesLimit = 50;

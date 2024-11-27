@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -13,14 +13,10 @@ import java.util.Objects;
 @Data
 public class ItemSaleEntityId implements Serializable {
     private ItemEntity item;
-    private Date soldAt;
+    private LocalDateTime soldAt;
 
     public int hashCode() {
-        if (item == null) {
-            return Objects.hash(soldAt);
-        } else {
-            return Objects.hash(item.getItemId(), soldAt);
-        }
+        return Objects.hash(item.getItemId(), soldAt);
     }
 
     public boolean equals(Object o) {

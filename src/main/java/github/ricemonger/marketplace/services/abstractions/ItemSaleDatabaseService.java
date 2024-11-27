@@ -1,13 +1,15 @@
 package github.ricemonger.marketplace.services.abstractions;
 
-import github.ricemonger.utils.dtos.Item;
-import github.ricemonger.utils.dtos.ItemSale;
+import github.ricemonger.utils.DTOs.items.ItemMainFieldsI;
+import github.ricemonger.utils.DTOs.items.ItemSale;
 
 import java.util.Collection;
 import java.util.List;
 
 public interface ItemSaleDatabaseService {
-    void saveAll(Collection<Item> items);
+    void saveAll(Collection<? extends ItemMainFieldsI> itemMainFields);
 
     List<ItemSale> findAll();
+
+    List<ItemSale> findAllForLastMonth();
 }

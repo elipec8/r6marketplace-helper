@@ -4,7 +4,7 @@ import github.ricemonger.marketplace.services.TelegramUserService;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.utils.dtos.TelegramUser;
+import github.ricemonger.utils.DTOs.TelegramUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

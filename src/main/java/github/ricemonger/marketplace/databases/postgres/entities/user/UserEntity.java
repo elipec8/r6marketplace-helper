@@ -1,7 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 
-import github.ricemonger.utils.dtos.TradingUser;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,7 +25,7 @@ public class UserEntity {
     private TelegramUserEntity telegramUser;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, optional = true)
-    private UbiAccountEntryEntity ubiAccountEntry;
+    private UbiAccountAuthorizationEntryEntity ubiAccountAuthorizationEntry;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ItemFilterEntity> itemFilters = new ArrayList<>();
@@ -38,7 +37,6 @@ public class UserEntity {
     private List<TradeByItemIdManagerEntity> tradeByItemIdManagers = new ArrayList<>();
 
     private Boolean publicNotificationsEnabledFlag = true;
-
     private Boolean privateNotificationsEnabledFlag = true;
 
     private Boolean itemShowNameFlag = true;
@@ -57,9 +55,4 @@ public class UserEntity {
 
     private Boolean newManagersAreActiveFlag = true;
     private Boolean managingEnabledFlag = true;
-
-
-    public TradingUser toTradingUser(){
-        return null;
-    }
 }

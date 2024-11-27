@@ -2,9 +2,9 @@ package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.abstractions.CommonValuesDatabaseService;
 import github.ricemonger.telegramBot.TelegramBotConfiguration;
-import github.ricemonger.utils.dtos.AuthorizationDTO;
-import github.ricemonger.utils.dtos.ConfigResolvedTransactionPeriod;
-import github.ricemonger.utils.dtos.ConfigTrades;
+import github.ricemonger.utils.DTOs.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
+import github.ricemonger.utils.DTOs.ConfigTrades;
 import github.ricemonger.utils.enums.ItemRarity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

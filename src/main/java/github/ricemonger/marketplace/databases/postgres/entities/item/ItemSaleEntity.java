@@ -1,14 +1,14 @@
 package github.ricemonger.marketplace.databases.postgres.entities.item;
 
-import github.ricemonger.utils.dtos.ItemSale;
-import github.ricemonger.utils.dtos.SoldItemDetails;
+import github.ricemonger.utils.DTOs.items.ItemSale;
+import github.ricemonger.utils.DTOs.items.SoldItemDetails;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity(name = "item_sale")
 @Getter
@@ -22,7 +22,7 @@ public class ItemSaleEntity {
     @JoinColumn(name = "itemId", referencedColumnName = "itemId")
     private ItemEntity item;
     @Id
-    private Date soldAt;
+    private LocalDateTime soldAt;
     private int price;
 
     public ItemSaleEntity(SoldItemDetails item) {

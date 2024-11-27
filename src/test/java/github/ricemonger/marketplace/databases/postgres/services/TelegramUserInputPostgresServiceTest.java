@@ -7,7 +7,7 @@ import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUse
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.utils.dtos.TelegramUserInput;
+import github.ricemonger.utils.DTOs.TelegramUserInput;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.server.TelegramUserInputDoesntExistException;
 import org.junit.jupiter.api.BeforeEach;

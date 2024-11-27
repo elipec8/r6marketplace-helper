@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.abstractions.TelegramUserItemFilterDatabaseService;
-import github.ricemonger.utils.dtos.ItemFilter;
+import github.ricemonger.utils.DTOs.items.ItemFilter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,7 +26,7 @@ class TelegramUserItemFilterServiceTest {
         ItemFilter itemFilter = new ItemFilter();
         String chatId = "chatId";
 
-        telegramUserItemFilterService.saveItemFilter(chatId, itemFilter);
+        telegramUserItemFilterService.save(chatId, itemFilter);
 
         verify(telegramUserItemFilterDatabaseService).save(same(chatId), same(itemFilter));
     }
@@ -36,7 +36,7 @@ class TelegramUserItemFilterServiceTest {
         String chatId = "chatId";
         String name = "name";
 
-        telegramUserItemFilterService.deleteItemFilterById(chatId, name);
+        telegramUserItemFilterService.deleteById(chatId, name);
 
         verify(telegramUserItemFilterDatabaseService).deleteById(same(chatId), same(name));
     }
@@ -50,7 +50,7 @@ class TelegramUserItemFilterServiceTest {
 
         when(telegramUserItemFilterDatabaseService.findById(chatId, name)).thenReturn(itemFilter);
 
-        assertEquals(itemFilter, telegramUserItemFilterService.getItemFilterById(chatId, name));
+        assertEquals(itemFilter, telegramUserItemFilterService.getById(chatId, name));
 
         verify(telegramUserItemFilterDatabaseService).findById(same(chatId), same(name));
     }
@@ -62,7 +62,7 @@ class TelegramUserItemFilterServiceTest {
 
         when(telegramUserItemFilterDatabaseService.findAllByChatId(chatId)).thenReturn(List.of(itemFilter));
 
-        assertEquals(List.of(itemFilter), telegramUserItemFilterService.getAllUserItemFilters(chatId));
+        assertEquals(List.of(itemFilter), telegramUserItemFilterService.getAllForTelegramUser(chatId));
 
         verify(telegramUserItemFilterDatabaseService).findAllByChatId(same(chatId));
     }
@@ -75,7 +75,7 @@ class TelegramUserItemFilterServiceTest {
 
         when(telegramUserItemFilterDatabaseService.findAllByChatId(chatId)).thenReturn(List.of(itemFilter));
 
-        assertEquals(List.of("name"), telegramUserItemFilterService.getAllUserItemFiltersNames(chatId));
+        assertEquals(List.of("name"), telegramUserItemFilterService.getAllItemFilterNamesForTelegramUser(chatId));
 
         verify(telegramUserItemFilterDatabaseService).findAllByChatId(same(chatId));
     }

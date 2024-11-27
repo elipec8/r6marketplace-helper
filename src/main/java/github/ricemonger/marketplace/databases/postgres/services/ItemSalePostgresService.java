@@ -5,15 +5,17 @@ import github.ricemonger.marketplace.databases.postgres.entities.item.ItemSaleEn
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemSalePostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseService;
-import github.ricemonger.utils.dtos.Item;
-import github.ricemonger.utils.dtos.ItemSale;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
+import github.ricemonger.utils.DTOs.items.ItemMainFieldsI;
+import github.ricemonger.utils.DTOs.items.ItemSale;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -26,8 +28,8 @@ public class ItemSalePostgresService implements ItemSaleDatabaseService {
 
     @Override
     @Transactional
-    public void saveAll(Collection<Item> items) {
-        if (items == null) {
+    public void saveAll(Collection<? extends ItemMainFieldsI> itemsMainFieldsList) {
+        if (itemsMainFieldsList == null || itemsMainFieldsList.isEmpty()) {
             return;
         }
 
@@ -35,16 +37,12 @@ public class ItemSalePostgresService implements ItemSaleDatabaseService {
 
         List<ItemSaleEntity> salesEntities = new LinkedList<>();
 
-        for (Item item : items) {
-            try {
-                if (!existingItems.contains(item.getItemId())) {
-                    log.error("Item with id {} not found, last sale parsing for this item skipped", item.getItemId());
-                    continue;
-                }
+        for (ItemMainFieldsI item : itemsMainFieldsList) {
+            if (existingItems.contains(item.getItemId())) {
                 ItemEntity itemEntity = itemRepository.getReferenceById(item.getItemId());
                 salesEntities.add(new ItemSaleEntity(itemEntity, item.getLastSoldAt(), item.getLastSoldPrice()));
-            } catch (EntityNotFoundException e) {
-                log.error("Item with id {} not found", item.getItemId());
+            } else {
+                log.error("Item with id {} not found, last sale parsing for this item skipped", item.getItemId());
             }
         }
         itemSaleRepository.saveAll(salesEntities);
@@ -53,6 +51,11 @@ public class ItemSalePostgresService implements ItemSaleDatabaseService {
     @Override
     public List<ItemSale> findAll() {
         return itemSaleRepository.findAll().stream().map(ItemSaleEntity::toItemSale).toList();
+    }
+
+    @Override
+    public List<ItemSale> findAllForLastMonth() {
+        return itemSaleRepository.findAllForLastMonth().stream().map(ItemSaleEntity::toItemSale).toList();
     }
 }
 

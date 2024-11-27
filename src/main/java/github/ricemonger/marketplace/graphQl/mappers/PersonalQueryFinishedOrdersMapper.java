@@ -1,11 +1,11 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.Trades;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.trades.Nodes;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.trades.nodes.PaymentOptions;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.trades.nodes.PaymentProposal;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.Trades;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.trades.Nodes;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.trades.nodes.PaymentOptions;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.trades.nodes.PaymentProposal;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.dtos.UbiTrade;
+import github.ricemonger.utils.DTOs.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalFinishedOrdersMappingException;
@@ -13,10 +13,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -42,7 +42,7 @@ public class PersonalQueryFinishedOrdersMapper {
 
         UbiTrade result = new UbiTrade();
 
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
 
         if (node.getTradeId() == null
             || node.getState() == null
@@ -72,16 +72,16 @@ public class PersonalQueryFinishedOrdersMapper {
         }
 
         try {
-            result.setExpiresAt(sdf.parse(node.getExpiresAt()));
-        } catch (ParseException e) {
-            result.setExpiresAt(new Date(0));
+            result.setExpiresAt(LocalDateTime.parse(node.getExpiresAt(), dtf));
+        } catch (DateTimeParseException e) {
+            result.setExpiresAt(LocalDateTime.MIN);
             log.error("Invalid expiresAt: {}", node.getExpiresAt());
         }
 
         try {
-            result.setLastModifiedAt(sdf.parse(node.getLastModifiedAt()));
-        } catch (ParseException e) {
-            result.setLastModifiedAt(new Date(0));
+            result.setLastModifiedAt(LocalDateTime.parse(node.getLastModifiedAt(), dtf));
+        } catch (DateTimeParseException e) {
+            result.setLastModifiedAt(LocalDateTime.MIN);
             log.error("Invalid lastModifiedAt: {}", node.getLastModifiedAt());
         }
 

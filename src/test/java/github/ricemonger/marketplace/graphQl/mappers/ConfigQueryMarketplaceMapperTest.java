@@ -1,10 +1,10 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.Marketplace;
-import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.TagGroup;
-import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.Tags;
-import github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.marketplace.Type;
-import github.ricemonger.utils.dtos.Tag;
+import github.ricemonger.marketplace.graphQl.DTOs.config_query_marketplace.Marketplace;
+import github.ricemonger.marketplace.graphQl.DTOs.config_query_marketplace.marketplace.TagGroup;
+import github.ricemonger.marketplace.graphQl.DTOs.config_query_marketplace.marketplace.Tags;
+import github.ricemonger.marketplace.graphQl.DTOs.config_query_marketplace.marketplace.Type;
+import github.ricemonger.utils.DTOs.items.Tag;
 import github.ricemonger.utils.exceptions.server.GraphQlConfigMarketplaceMappingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

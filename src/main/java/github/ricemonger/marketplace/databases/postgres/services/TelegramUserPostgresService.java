@@ -6,13 +6,17 @@ import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserDatabaseService;
-import github.ricemonger.utils.dtos.*;
+import github.ricemonger.utils.DTOs.ItemShowSettings;
+import github.ricemonger.utils.DTOs.ItemShownFieldsSettings;
+import github.ricemonger.utils.DTOs.TelegramUser;
+import github.ricemonger.utils.DTOs.TradeManagersSettings;
+import github.ricemonger.utils.DTOs.items.ItemFilter;
 import github.ricemonger.utils.exceptions.client.TelegramUserAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
-import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +32,11 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
 
     @Override
     public void create(String chatId) throws TelegramUserAlreadyExistsException {
-        UserEntity user = userRepository.save(new UserEntity());
-        TelegramUserEntity telegramUser = new TelegramUserEntity(chatId, user);
-
         if (telegramUserRepository.existsById(chatId)) {
             throw new TelegramUserAlreadyExistsException("Telegram user with chatId " + chatId + " already exists");
         } else {
-            telegramUserRepository.save(telegramUser);
+            UserEntity user = userRepository.save(new UserEntity());
+            telegramUserRepository.save(new TelegramUserEntity(chatId, user));
         }
     }
 

@@ -27,7 +27,7 @@ public class AesPasswordEncoder {
             byte[] encrypted = cipher.doFinal(password.getBytes());
             encodedPassword = Base64.getEncoder().encodeToString(encrypted);
             return encodedPassword;
-        } catch (GeneralSecurityException e) {
+        } catch (GeneralSecurityException | NullPointerException e) {
             throw new UbiCredentialsInnerException(e);
         }
     }
@@ -38,7 +38,7 @@ public class AesPasswordEncoder {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
             cipher.init(Cipher.DECRYPT_MODE, aesKey);
             return new String(cipher.doFinal(Base64.getDecoder().decode(encodedPassword)));
-        } catch (GeneralSecurityException e) {
+        } catch (GeneralSecurityException | NullPointerException e) {
             throw new UbiCredentialsInnerException(e);
         }
     }

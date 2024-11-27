@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.authorization;
 
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.dtos.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.AuthorizationDTO;
 import github.ricemonger.utils.exceptions.client.UbiUserAuthorizationClientErrorException;
 import github.ricemonger.utils.exceptions.server.UbiUserAuthorizationServerErrorException;
 import lombok.RequiredArgsConstructor;
@@ -70,6 +70,10 @@ public class AuthorizationService {
         return dto;
     }
 
+    public String getEncodedPassword(String password) {
+        return AESPasswordEncoder.encode(password);
+    }
+
     private String getBasicTokenForCredentials(String email, String password) {
 
         String token = Base64.getEncoder().encodeToString(String.format("%s:%s", email, password).getBytes());
@@ -77,7 +81,6 @@ public class AuthorizationService {
         return "Basic " + token;
     }
 
-    public String getEncodedPassword(String password) {
-        return AESPasswordEncoder.encode(password);
+    private record AuthorizationBodyValue(boolean rememberMe) {
     }
 }

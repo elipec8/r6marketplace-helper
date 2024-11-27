@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
-import github.ricemonger.utils.dtos.TradeByFiltersManager;
-import github.ricemonger.utils.enums.TradeManagerTradeType;
+import github.ricemonger.utils.DTOs.TradeByFiltersManager;
+import github.ricemonger.utils.enums.TradeOperationType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,7 +27,8 @@ public class TradeByFiltersManagerEntity {
 
     private boolean enabled;
 
-    private TradeManagerTradeType tradeType;
+    @Enumerated(EnumType.ORDINAL)
+    private TradeOperationType tradeOperationType;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "trade_manager_by_item_filters_applied_filters",
@@ -45,7 +46,7 @@ public class TradeByFiltersManagerEntity {
         this.user = user;
         this.enabled = tradeManager.isEnabled();
         this.name = tradeManager.getName();
-        this.tradeType = tradeManager.getTradeType();
+        this.tradeOperationType = tradeManager.getTradeOperationType();
         if (tradeManager.getAppliedFilters() != null) {
             this.appliedFilters = tradeManager.getAppliedFilters().stream().map(filter -> new ItemFilterEntity(user, filter)).toList();
         }
@@ -58,7 +59,7 @@ public class TradeByFiltersManagerEntity {
         TradeByFiltersManager tradeManager = new TradeByFiltersManager();
         tradeManager.setName(this.name);
         tradeManager.setEnabled(this.enabled);
-        tradeManager.setTradeType(this.tradeType);
+        tradeManager.setTradeOperationType(this.tradeOperationType);
         if (this.appliedFilters != null) {
             tradeManager.setAppliedFilters(this.appliedFilters.stream().map(ItemFilterEntity::toItemFilter).toList());
         }

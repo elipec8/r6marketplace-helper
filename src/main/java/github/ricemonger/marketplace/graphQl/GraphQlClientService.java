@@ -1,7 +1,11 @@
 package github.ricemonger.marketplace.graphQl;
 
 import github.ricemonger.marketplace.graphQl.mappers.*;
-import github.ricemonger.utils.dtos.*;
+import github.ricemonger.utils.DTOs.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
+import github.ricemonger.utils.DTOs.ConfigTrades;
+import github.ricemonger.utils.DTOs.UbiTrade;
+import github.ricemonger.utils.DTOs.items.*;
 import github.ricemonger.utils.exceptions.server.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.client.HttpGraphQlClient;
@@ -43,8 +47,8 @@ public class GraphQlClientService {
 
     public Collection<Item> fetchAllItemStats() throws GraphQlCommonItemMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
-        github.ricemonger.marketplace.graphQl.dtos.common_query_items.MarketableItems marketableItems;
-        List<github.ricemonger.marketplace.graphQl.dtos.common_query_items.marketableItems.Node> nodes = new ArrayList<>();
+        github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems marketableItems;
+        List<github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.Node> nodes = new ArrayList<>();
         int offset = 0;
 
         do {
@@ -52,7 +56,7 @@ public class GraphQlClientService {
                     .documentName(GraphQlDocuments.QUERY_ITEMS_STATS_DOCUMENT_NAME)
                     .variables(graphQlVariablesService.getFetchItemsVariables(offset))
                     .retrieve("game.marketableItems")
-                    .toEntity(github.ricemonger.marketplace.graphQl.dtos.common_query_items.MarketableItems.class)
+                    .toEntity(github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems.class)
                     .block();
 
             if (marketableItems == null || marketableItems.getNodes() == null || marketableItems.getTotalCount() == null) {
@@ -68,18 +72,18 @@ public class GraphQlClientService {
         return commonQueryItemsMapper.mapItems(nodes);
     }
 
-    public List<ItemSaleUbiStats> fetchAllItemsUbiStats() throws GraphQlCommonItemsSaleStatsMappingException{
+    public List<GroupedItemDaySalesUbiStats> fetchAllItemsUbiStats() throws GraphQlCommonItemsSaleStatsMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
-        github.ricemonger.marketplace.graphQl.dtos.common_query_items_sale_stats.MarketableItems marketableItems;
-        List<github.ricemonger.marketplace.graphQl.dtos.common_query_items_sale_stats.marketableItems.Node> nodes = new ArrayList<>();
+        github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems marketableItems;
+        List<github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node> nodes = new ArrayList<>();
         int offset = 0;
 
-        do{
+        do {
             marketableItems = client
                     .documentName(GraphQlDocuments.QUERY_ITEMS_SALE_STATS_DOCUMENT_NAME)
                     .variables(graphQlVariablesService.getFetchItemsUbiSaleStats(offset))
                     .retrieve("game.marketableItems")
-                    .toEntity(github.ricemonger.marketplace.graphQl.dtos.common_query_items_sale_stats.MarketableItems.class)
+                    .toEntity(github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems.class)
                     .block();
 
             if (marketableItems == null || marketableItems.getNodes() == null || marketableItems.getTotalCount() == null) {
@@ -92,16 +96,16 @@ public class GraphQlClientService {
         }
         while (marketableItems.getTotalCount() == GraphQlVariablesService.MAX_LIMIT);
 
-        return commonQueryItemsSaleStatsMapper.mapItemsSaleStats(nodes);
+        return commonQueryItemsSaleStatsMapper.mapAllItemsSaleStats(nodes);
     }
 
     public Collection<Tag> fetchAllTags() throws GraphQlConfigMarketplaceMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
-        github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.Marketplace marketplace = client
+        github.ricemonger.marketplace.graphQl.DTOs.config_query_marketplace.Marketplace marketplace = client
                 .documentName(GraphQlDocuments.QUERY_MARKETPLACE_CONFIG_DOCUMENT_NAME)
                 .variables(graphQlVariablesService.getFetchConfigVariables())
                 .retrieve("game.marketplace")
-                .toEntity(github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.Marketplace.class)
+                .toEntity(github.ricemonger.marketplace.graphQl.DTOs.config_query_marketplace.Marketplace.class)
                 .block();
 
         return configQueryMarketplaceMapper.mapTags(marketplace);
@@ -109,11 +113,11 @@ public class GraphQlClientService {
 
     public void checkItemTypes() throws GraphQlConfigMarketplaceMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
-        github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.Marketplace marketplace = client
+        github.ricemonger.marketplace.graphQl.DTOs.config_query_marketplace.Marketplace marketplace = client
                 .documentName(GraphQlDocuments.QUERY_MARKETPLACE_CONFIG_DOCUMENT_NAME)
                 .variables(graphQlVariablesService.getFetchConfigVariables())
                 .retrieve("game.marketplace")
-                .toEntity(github.ricemonger.marketplace.graphQl.dtos.config_query_marketplace.Marketplace.class)
+                .toEntity(github.ricemonger.marketplace.graphQl.DTOs.config_query_marketplace.Marketplace.class)
                 .block();
 
         configQueryMarketplaceMapper.checkItemTypes(marketplace);
@@ -122,11 +126,11 @@ public class GraphQlClientService {
     public ConfigResolvedTransactionPeriod fetchConfigResolvedTransactionPeriod() throws GraphQlConfigResolvedTransactionPeriodMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
 
-        github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transaction_period.TradesLimitations tradesLimitations = client
+        github.ricemonger.marketplace.graphQl.DTOs.config_query_resolved_transaction_period.TradesLimitations tradesLimitations = client
                 .documentName(GraphQlDocuments.QUERY_RESOLVED_TRANSACTION_PERIOD_CONFIG_DOCUMENT_NAME)
                 .variables(graphQlVariablesService.getFetchConfigVariables())
                 .retrieve("game.viewer.meta.tradesLimitations")
-                .toEntity(github.ricemonger.marketplace.graphQl.dtos.config_query_resolved_transaction_period.TradesLimitations.class)
+                .toEntity(github.ricemonger.marketplace.graphQl.DTOs.config_query_resolved_transaction_period.TradesLimitations.class)
                 .block();
 
         return configQueryResolvedTransactionPeriodMapper.mapConfigResolvedTransactionPeriod(tradesLimitations);
@@ -134,11 +138,11 @@ public class GraphQlClientService {
 
     public ConfigTrades fetchConfigTrades() throws GraphQlConfigTradeMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
-        github.ricemonger.marketplace.graphQl.dtos.config_query_trade.TradesConfig tradesConfig = client
+        github.ricemonger.marketplace.graphQl.DTOs.config_query_trade.TradesConfig tradesConfig = client
                 .documentName(GraphQlDocuments.QUERY_TRADE_CONFIG_DOCUMENT_NAME)
                 .variables(graphQlVariablesService.getFetchConfigVariables())
                 .retrieve("game.tradesConfig")
-                .toEntity(github.ricemonger.marketplace.graphQl.dtos.config_query_trade.TradesConfig.class)
+                .toEntity(github.ricemonger.marketplace.graphQl.DTOs.config_query_trade.TradesConfig.class)
                 .block();
 
         return configQueryTradeMapper.mapConfigTrades(tradesConfig);
@@ -146,11 +150,11 @@ public class GraphQlClientService {
 
     public int fetchCreditAmountForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalCreditAmountMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
-        github.ricemonger.marketplace.graphQl.dtos.personal_query_credits_amount.Meta meta = client
+        github.ricemonger.marketplace.graphQl.DTOs.personal_query_credits_amount.Meta meta = client
                 .documentName(GraphQlDocuments.QUERY_CREDITS_AMOUNT_DOCUMENT_NAME)
                 .variables(graphQlVariablesService.getFetchCreditAmountVariables())
                 .retrieve("game.viewer.meta.secondaryStoreItem.meta")
-                .toEntity(github.ricemonger.marketplace.graphQl.dtos.personal_query_credits_amount.Meta.class)
+                .toEntity(github.ricemonger.marketplace.graphQl.DTOs.personal_query_credits_amount.Meta.class)
                 .block();
 
         return personalQueryCreditAmountMapper.mapCreditAmount(meta);
@@ -159,13 +163,13 @@ public class GraphQlClientService {
     public Collection<UbiTrade> fetchCurrentOrdersForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalCurrentOrderMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
-        github.ricemonger.marketplace.graphQl.dtos.personal_query_current_orders.Trades trades;
+        github.ricemonger.marketplace.graphQl.DTOs.personal_query_current_orders.Trades trades;
 
         trades = client
                 .documentName(GraphQlDocuments.QUERY_CURRENT_ORDERS_DOCUMENT_NAME)
                 .variables(graphQlVariablesService.getFetchOrdersVariables(0))
                 .retrieve("game.viewer.meta.trades")
-                .toEntity(github.ricemonger.marketplace.graphQl.dtos.personal_query_current_orders.Trades.class)
+                .toEntity(github.ricemonger.marketplace.graphQl.DTOs.personal_query_current_orders.Trades.class)
                 .block();
 
         return personalQueryCurrentOrdersMapper.mapCurrentOrders(trades);
@@ -173,7 +177,7 @@ public class GraphQlClientService {
 
     public Collection<UbiTrade> fetchFinishedOrdersForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalFinishedOrdersMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
-        github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.Trades trades;
+        github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.Trades trades;
         int offset = 0;
         int totalCount;
 
@@ -182,7 +186,7 @@ public class GraphQlClientService {
                     .documentName(GraphQlDocuments.QUERY_FINISHED_ORDERS_DOCUMENT_NAME)
                     .variables(graphQlVariablesService.getFetchOrdersVariables(offset))
                     .retrieve("game.viewer.meta.trades")
-                    .toEntity(github.ricemonger.marketplace.graphQl.dtos.personal_query_finished_orders.Trades.class)
+                    .toEntity(github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.Trades.class)
                     .block();
 
             if (trades == null || trades.getNodes() == null) {
@@ -198,29 +202,29 @@ public class GraphQlClientService {
         return personalQueryFinishedOrdersMapper.mapFinishedOrders(trades);
     }
 
-    public Collection<ItemResaleLock> fetchLockedItemsForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalLockedItemsMappingException {
+    public Collection<ItemResaleLockWithUbiAccount> fetchLockedItemsForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalLockedItemsMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
-        github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.TradeLimitations tradeLimitations;
+        github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.TradeLimitations tradeLimitations;
 
         tradeLimitations = client
                 .documentName(GraphQlDocuments.QUERY_LOCKED_ITEMS_DOCUMENT_NAME)
                 .variables(graphQlVariablesService.getFetchLockedItemsVariables())
                 .retrieve("game.viewer.meta.tradeLimitations")
-                .toEntity(github.ricemonger.marketplace.graphQl.dtos.personal_query_locked_items.TradeLimitations.class)
+                .toEntity(github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.TradeLimitations.class)
                 .block();
 
-        return personalQueryLockedItemsMapper.mapLockedItems(tradeLimitations);
+        return personalQueryLockedItemsMapper.mapLockedItems(tradeLimitations).stream().map(item -> (ItemResaleLockWithUbiAccount) item).toList();
     }
 
     public PersonalItem fetchOneItem(AuthorizationDTO authorizationDTO, String itemId) throws GraphQlPersonalOneItemMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
-        github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.Game game = client
+        github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.Game game = client
                 .documentName(GraphQlDocuments.QUERY_ONE_ITEM_STATS_DOCUMENT_NAME)
                 .variables(graphQlVariablesService.getFetchOneItemVariables(itemId))
                 .retrieve("game")
-                .toEntity(github.ricemonger.marketplace.graphQl.dtos.personal_query_one_item.Game.class)
+                .toEntity(github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.Game.class)
                 .block();
 
         return personalQueryOneItemMapper.mapItem(game);
@@ -229,8 +233,8 @@ public class GraphQlClientService {
 
     public Collection<String> fetchAllOwnedItemsIdsForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalOwnedItemsMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
-        github.ricemonger.marketplace.graphQl.dtos.personal_query_owned_items.MarketableItems marketableItems;
-        List<github.ricemonger.marketplace.graphQl.dtos.personal_query_owned_items.marketableItems.Node> nodes = new ArrayList<>();
+        github.ricemonger.marketplace.graphQl.DTOs.personal_query_owned_items.MarketableItems marketableItems;
+        List<github.ricemonger.marketplace.graphQl.DTOs.personal_query_owned_items.marketableItems.Node> nodes = new ArrayList<>();
         int offset = 0;
 
         do {
@@ -238,7 +242,7 @@ public class GraphQlClientService {
                     .documentName(GraphQlDocuments.QUERY_OWNED_ITEMS_DOCUMENT_NAME)
                     .variables(graphQlVariablesService.getFetchItemsVariables(offset))
                     .retrieve("game.viewer.meta.marketableItems")
-                    .toEntity(github.ricemonger.marketplace.graphQl.dtos.personal_query_owned_items.MarketableItems.class)
+                    .toEntity(github.ricemonger.marketplace.graphQl.DTOs.personal_query_owned_items.MarketableItems.class)
                     .block();
 
             if (marketableItems == null || marketableItems.getNodes() == null || marketableItems.getTotalCount() == null) {

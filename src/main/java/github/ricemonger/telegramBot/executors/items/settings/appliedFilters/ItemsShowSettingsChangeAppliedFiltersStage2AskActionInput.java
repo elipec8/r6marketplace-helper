@@ -3,7 +3,7 @@ package github.ricemonger.telegramBot.executors.items.settings.appliedFilters;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
-import github.ricemonger.utils.dtos.ItemFilter;
+import github.ricemonger.utils.DTOs.items.ItemFilter;
 
 import java.util.Collection;
 

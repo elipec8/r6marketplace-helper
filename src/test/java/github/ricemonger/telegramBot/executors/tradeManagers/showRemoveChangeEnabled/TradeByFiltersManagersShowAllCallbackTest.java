@@ -2,7 +2,7 @@ package github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEn
 
 import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
-import github.ricemonger.utils.dtos.TradeByFiltersManager;
+import github.ricemonger.utils.DTOs.TradeByFiltersManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

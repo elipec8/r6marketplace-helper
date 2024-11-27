@@ -1,13 +1,13 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_current_orders.Trades;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_current_orders.trades.Nodes;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_current_orders.trades.nodes.PaymentOptions;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_current_orders.trades.nodes.PaymentProposal;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_current_orders.trades.nodes.TradeItems;
-import github.ricemonger.marketplace.graphQl.dtos.personal_query_current_orders.trades.nodes.tradeItems.Item;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_current_orders.Trades;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_current_orders.trades.Nodes;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_current_orders.trades.nodes.PaymentOptions;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_current_orders.trades.nodes.PaymentProposal;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_current_orders.trades.nodes.TradeItems;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_current_orders.trades.nodes.tradeItems.Item;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.dtos.UbiTrade;
+import github.ricemonger.utils.DTOs.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalCurrentOrderMappingException;
@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,19 +35,19 @@ class PersonalQueryCurrentOrdersMapperTest {
 
     @Test
     public void mapCurrentOrders_should_map_each_order() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        Date date2 = new Date(date.getTime() + 1000);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
-        Nodes node1 = createNode(sdf, date, date2);
+        Nodes node1 = createNode(dtf, date, date2);
         node1.setPaymentProposal(null);
         node1.setTradeId("tradeId1");
 
-        Nodes node2 = createNode(sdf, date, date2);
+        Nodes node2 = createNode(dtf, date, date2);
         node2.setPaymentProposal(null);
         node2.setTradeId("tradeId2");
 
-        Nodes node3 = createNode(sdf, date, date2);
+        Nodes node3 = createNode(dtf, date, date2);
         node3.setPaymentProposal(null);
         node3.setTradeId("tradeId3");
 
@@ -67,11 +67,11 @@ class PersonalQueryCurrentOrdersMapperTest {
 
     @Test
     public void mapCurrentOrder_should_map_order_if_valid_fields_and_null_paymentProposal() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        Date date2 = new Date(date.getTime() + 1000);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
-        Nodes node = createNode(sdf, date, date2);
+        Nodes node = createNode(dtf, date, date2);
         node.setPaymentProposal(null);
 
         UbiTrade expected = new UbiTrade();
@@ -94,11 +94,11 @@ class PersonalQueryCurrentOrdersMapperTest {
 
     @Test
     public void mapCurrentOrder_should_map_order_if_valid_fields_and_null_paymentOptions() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        Date date2 = new Date(date.getTime() + 1000);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
-        Nodes node = createNode(sdf, date, date2);
+        Nodes node = createNode(dtf, date, date2);
         node.setPaymentOptions(null);
 
         UbiTrade expected = new UbiTrade();
@@ -121,11 +121,11 @@ class PersonalQueryCurrentOrdersMapperTest {
 
     @Test
     public void mapCurrentOrder_should_map_order_if_invalid_tradeState() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        Date date2 = new Date(date.getTime() + 1000);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
-        Nodes node = createNode(sdf, date, date2);
+        Nodes node = createNode(dtf, date, date2);
         node.setPaymentProposal(null);
         node.setState("invalid");
 
@@ -149,11 +149,11 @@ class PersonalQueryCurrentOrdersMapperTest {
 
     @Test
     public void mapCurrentOrder_should_map_order_if_invalid_tradeCategory() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        Date date2 = new Date(date.getTime() + 1000);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
-        Nodes node = createNode(sdf, date, date2);
+        Nodes node = createNode(dtf, date, date2);
         node.setPaymentProposal(null);
         node.setCategory("invalid");
 
@@ -177,11 +177,11 @@ class PersonalQueryCurrentOrdersMapperTest {
 
     @Test
     public void mapCurrentOrder_should_throw_if_valid_fields_and_both_paymentOptions_and_paymentProposal() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        Date date2 = new Date(date.getTime() + 1000);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
-        Nodes node = createNode(sdf, date, date2);
+        Nodes node = createNode(dtf, date, date2);
 
         assertThrows(GraphQlPersonalCurrentOrderMappingException.class, () -> {
             personalQueryCurrentOrdersMapper.mapCurrentOrder(node);
@@ -197,11 +197,11 @@ class PersonalQueryCurrentOrdersMapperTest {
 
     @Test
     public void mapCurrentOrder_should_throw_if_null_tradeId() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        Date date2 = new Date(date.getTime() + 1000);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
-        Nodes node = createNode(sdf, date, date2);
+        Nodes node = createNode(dtf, date, date2);
         node.setPaymentProposal(null);
         node.setTradeId(null);
 
@@ -212,11 +212,11 @@ class PersonalQueryCurrentOrdersMapperTest {
 
     @Test
     public void mapCurrentOrder_should_throw_if_null_state() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        Date date2 = new Date(date.getTime() + 1000);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
-        Nodes node = createNode(sdf, date, date2);
+        Nodes node = createNode(dtf, date, date2);
         node.setPaymentProposal(null);
         node.setState(null);
 
@@ -227,11 +227,11 @@ class PersonalQueryCurrentOrdersMapperTest {
 
     @Test
     public void mapCurrentOrder_should_throw_if_null_category() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        Date date2 = new Date(date.getTime() + 1000);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
-        Nodes node = createNode(sdf, date, date2);
+        Nodes node = createNode(dtf, date, date2);
         node.setPaymentProposal(null);
         node.setCategory(null);
 
@@ -242,11 +242,11 @@ class PersonalQueryCurrentOrdersMapperTest {
 
     @Test
     public void mapCurrentOrder_should_throw_if_null_expiresAt() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        Date date2 = new Date(date.getTime() + 1000);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
-        Nodes node = createNode(sdf, date, date2);
+        Nodes node = createNode(dtf, date, date2);
         node.setPaymentProposal(null);
         node.setExpiresAt(null);
 
@@ -257,11 +257,11 @@ class PersonalQueryCurrentOrdersMapperTest {
 
     @Test
     public void mapCurrentOrder_should_throw_if_null_lastModifiedAt() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        Date date2 = new Date(date.getTime() + 1000);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
-        Nodes node = createNode(sdf, date, date2);
+        Nodes node = createNode(dtf, date, date2);
         node.setPaymentProposal(null);
         node.setLastModifiedAt(null);
 
@@ -272,11 +272,10 @@ class PersonalQueryCurrentOrdersMapperTest {
 
     @Test
     public void mapCurrentOrder_should_throw_if_null_tradeItems() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        Date date2 = new Date(date.getTime() + 1000);
-
-        Nodes node = createNode(sdf, date, date2);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
+        Nodes node = createNode(dtf, date, date2);
         node.setPaymentProposal(null);
         node.setTradeItems(null);
 
@@ -287,11 +286,11 @@ class PersonalQueryCurrentOrdersMapperTest {
 
     @Test
     public void mapCurrentOrder_should_throw_if_empty_tradeItems() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        Date date2 = new Date(date.getTime() + 1000);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
-        Nodes node = createNode(sdf, date, date2);
+        Nodes node = createNode(dtf, date, date2);
         node.setPaymentProposal(null);
         node.setTradeItems(new TradeItems[0]);
 
@@ -302,11 +301,11 @@ class PersonalQueryCurrentOrdersMapperTest {
 
     @Test
     public void mapCurrentOrder_should_throw_if_null_item() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        Date date2 = new Date(date.getTime() + 1000);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
-        Nodes node = createNode(sdf, date, date2);
+        Nodes node = createNode(dtf, date, date2);
         node.setPaymentProposal(null);
         node.getTradeItems()[0].setItem(null);
 
@@ -317,11 +316,11 @@ class PersonalQueryCurrentOrdersMapperTest {
 
     @Test
     public void mapCurrentOrder_should_throw_if_null_itemId() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        Date date2 = new Date(date.getTime() + 1000);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
-        Nodes node = createNode(sdf, date, date2);
+        Nodes node = createNode(dtf, date, date2);
         node.setPaymentProposal(null);
         node.getTradeItems()[0].getItem().setItemId(null);
 
@@ -332,11 +331,11 @@ class PersonalQueryCurrentOrdersMapperTest {
 
     @Test
     public void mapCurrentOrder_should_throw_if_null_paymentProposal_and_paymentOptions() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        Date date2 = new Date(date.getTime() + 1000);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
-        Nodes node = createNode(sdf, date, date2);
+        Nodes node = createNode(dtf, date, date2);
         node.setPaymentProposal(null);
         node.setPaymentOptions(null);
 
@@ -347,11 +346,11 @@ class PersonalQueryCurrentOrdersMapperTest {
 
     @Test
     public void mapCurrentOrder_should_throw_if_null_empty_paymentOptions() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        Date date2 = new Date(date.getTime() + 1000);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
-        Nodes node = createNode(sdf, date, date2);
+        Nodes node = createNode(dtf, date, date2);
         node.setPaymentProposal(null);
         node.setPaymentOptions(new PaymentOptions[0]);
 
@@ -362,11 +361,11 @@ class PersonalQueryCurrentOrdersMapperTest {
 
     @Test
     public void mapCurrentOrder_should_throw_if_null_paymentOptions_price() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        Date date2 = new Date(date.getTime() + 1000);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
-        Nodes node = createNode(sdf, date, date2);
+        Nodes node = createNode(dtf, date, date2);
         node.setPaymentProposal(null);
         node.getPaymentOptions()[0].setPrice(null);
 
@@ -377,11 +376,11 @@ class PersonalQueryCurrentOrdersMapperTest {
 
     @Test
     public void mapCurrentOrder_should_throw_if_null_paymentProposal_price() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        Date date2 = new Date(date.getTime() + 1000);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
-        Nodes node = createNode(sdf, date, date2);
+        Nodes node = createNode(dtf, date, date2);
         node.setPaymentOptions(null);
         node.getPaymentProposal().setPrice(null);
 
@@ -392,11 +391,11 @@ class PersonalQueryCurrentOrdersMapperTest {
 
     @Test
     public void mapCurrentOrder_should_throw_if_null_paymentProposal_fee() {
-        SimpleDateFormat sdf = new SimpleDateFormat(commonValuesService.getDateFormat());
-        Date date = new Date();
-        Date date2 = new Date(date.getTime() + 1000);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
-        Nodes node = createNode(sdf, date, date2);
+        Nodes node = createNode(dtf, date, date2);
         node.setPaymentOptions(null);
         node.getPaymentProposal().setTransactionFee(null);
 
@@ -405,7 +404,7 @@ class PersonalQueryCurrentOrdersMapperTest {
         });
     }
 
-    private Nodes createNode(SimpleDateFormat sdf, Date date1, Date date2) {
+    private Nodes createNode(DateTimeFormatter dtf, LocalDateTime date1, LocalDateTime date2) {
         Item item = new Item();
         item.setItemId("1");
         TradeItems tradeItems = new TradeItems();
@@ -419,8 +418,8 @@ class PersonalQueryCurrentOrdersMapperTest {
         return new Nodes("tradeId",
                 TradeState.Created.name(),
                 TradeCategory.Buy.name(),
-                sdf.format(date1),
-                sdf.format(date2),
+                dtf.format(date1),
+                dtf.format(date2),
                 new TradeItems[]{tradeItems},
                 new PaymentOptions[]{paymentOption},
                 paymentProposal);

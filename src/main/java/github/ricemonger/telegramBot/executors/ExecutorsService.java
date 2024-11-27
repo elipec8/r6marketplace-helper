@@ -5,6 +5,8 @@ import github.ricemonger.telegramBot.client.BotInnerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.InvocationTargetException;
+
 @Service
 @RequiredArgsConstructor
 public class ExecutorsService {
@@ -15,7 +17,7 @@ public class ExecutorsService {
         try {
             T executorInstance = executor.getDeclaredConstructor().newInstance();
             executorInstance.initAndExecute(updateInfo, botInnerService);
-        } catch (Exception e) {
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
     }

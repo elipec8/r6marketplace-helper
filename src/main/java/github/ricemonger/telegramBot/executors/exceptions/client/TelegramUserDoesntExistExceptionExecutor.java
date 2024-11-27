@@ -7,6 +7,6 @@ import static github.ricemonger.telegramBot.client.PublicBotCommands.START_COMMA
 public class TelegramUserDoesntExistExceptionExecutor extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        sendText("You are not registered. Please use "+ START_COMMAND +" command to register");
+        sendText("You are not registered. Please use " + START_COMMAND + " command to register");
     }
 }

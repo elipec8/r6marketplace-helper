@@ -9,13 +9,13 @@ import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgre
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TradeByItemIdManagerPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserTradeByItemIdManagerDatabaseService;
-import github.ricemonger.utils.dtos.TradeByItemIdManager;
+import github.ricemonger.utils.DTOs.TradeByItemIdManager;
 import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TradeByItemIdManagerDoesntExistException;
-import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Iterator;
 import java.util.List;
@@ -36,7 +36,7 @@ public class TelegramUserTradeByItemIdManagerPostgresService implements Telegram
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
         ItemEntity item = getItemEntityByIdOrThrow(tradeManager.getItemId());
 
-        tradeByItemIdManagerRepository.save(new TradeByItemIdManagerEntity(telegramUser.getUser(),item, tradeManager));
+        tradeByItemIdManagerRepository.save(new TradeByItemIdManagerEntity(telegramUser.getUser(), item, tradeManager));
     }
 
     @Override
