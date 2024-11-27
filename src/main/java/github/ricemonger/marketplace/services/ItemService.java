@@ -44,9 +44,10 @@ public class ItemService {
         Collection<ItemDaySalesUbiStats> lastMonthSalesUbiStats = itemSaleUbiStatsService.findAllForLastMonth();
 
         for (Item item : items) {
-            Collection<ItemSale> saleStats = getSpecificItemSales(lastMonthSales, item.getItemId());
-            Collection<ItemDaySalesUbiStats> ubiSaleStats = getSpecificItemDaySalesUbiStats(lastMonthSalesUbiStats, item.getItemId());
-            List<ItemDaySalesStatsByItemId> resultingPerDayStats = getResultingSaleStatsForPeriod(saleStats, ubiSaleStats, item, LocalDate.now().minusDays(29), LocalDate.now());
+            Collection<ItemSale> saleStats = getItemSalesForItem(lastMonthSales, item.getItemId());
+            Collection<ItemDaySalesUbiStats> ubiSaleStats = getItemDaySalesUbiStatsForItem(lastMonthSalesUbiStats, item.getItemId());
+            List<ItemDaySalesStatsByItemId> resultingPerDayStats = getResultingSaleStatsByPeriodForItem(saleStats, ubiSaleStats, item,
+                    LocalDate.now().minusDays(30), LocalDate.now());
 
             TodayPriceStats todayStats = recalculateTodayItemPriceStats(resultingPerDayStats.get(30));
             item.setDaySales(todayStats.quantity());
@@ -69,13 +70,13 @@ public class ItemService {
                 }
             }
 
-            PricesToBuy pricesToBuy = recalculatePricesToBuy(item.getMinSellPrice(), sortedMonthPricesAndQuantities);
+            PricesToBuy pricesToBuy = recalculatePricesToBuy(sortedMonthPricesAndQuantities);
             item.setPriceToBuyIn1Hour(pricesToBuy.priceToBuyIn1Hour());
             item.setPriceToBuyIn6Hours(pricesToBuy.priceToBuyIn6Hours());
             item.setPriceToBuyIn24Hours(pricesToBuy.priceToBuyIn24Hours());
             item.setPriceToBuyIn168Hours(pricesToBuy.priceToBuyIn168Hours());
 
-            PricesToSell pricesToSell = recalculatePricesToSell(item.getMaxBuyPrice(), sortedMonthPricesAndQuantities.descendingMap());
+            PricesToSell pricesToSell = recalculatePricesToSell(sortedMonthPricesAndQuantities.descendingMap());
             item.setPriceToSellIn1Hour(pricesToSell.priceToSellIn1Hour());
             item.setPriceToSellIn6Hours(pricesToSell.priceToSellIn6Hours());
             item.setPriceToSellIn24Hours(pricesToSell.priceToSellIn24Hours());
@@ -91,7 +92,7 @@ public class ItemService {
     public List<Item> getAllItemsByFilters(Collection<ItemFilter> filters) {
         List<Item> item = itemDatabaseService.findAll();
 
-        return new ArrayList<>(ItemFilter.filterItems(item, filters));
+        return ItemFilter.filterItems(item, filters);
     }
 
     public List<Item> getAllItems() {
@@ -167,19 +168,19 @@ public class ItemService {
         }
 
 
-        return new LastMonthPriceStats(monthSalesQuantity / 30, monthSalesQuantity == 0 ? 0 : monthSumSales / monthSalesQuantity, monthMaxPrice,
+        return new LastMonthPriceStats(monthSalesQuantity / 31, monthSalesQuantity == 0 ? 0 : monthSumSales / monthSalesQuantity, monthMaxPrice,
                 monthMinPrice,
                 monthMedianPrice);
     }
 
-    private PricesToBuy recalculatePricesToBuy(int minSellPrice, NavigableMap<Integer, Integer> sortedMonthPricesAndQuantities) {
-        int priceToBuyIn1Hour = 0;
+    private PricesToBuy recalculatePricesToBuy(NavigableMap<Integer, Integer> sortedMonthPricesAndQuantities) {
+        Integer priceToBuyIn1Hour = 0;
         boolean priceToBuyIn1HourFound = false;
-        int priceToBuyIn6Hours = 0;
+        Integer priceToBuyIn6Hours = 0;
         boolean priceToBuyIn6HoursFound = false;
-        int priceToBuyIn24Hours = 0;
+        Integer priceToBuyIn24Hours = 0;
         boolean priceToBuyIn24HoursFound = false;
-        int priceToBuyIn168Hours = 0;
+        Integer priceToBuyIn168Hours = 0;
         boolean priceToBuyIn168HoursFound = false;
 
         int currentQuantity = 0;
@@ -204,30 +205,17 @@ public class ItemService {
             }
         }
 
-        if (!priceToBuyIn1HourFound) {
-            priceToBuyIn1Hour = minSellPrice;
-        }
-        if (!priceToBuyIn6HoursFound) {
-            priceToBuyIn6Hours = minSellPrice;
-        }
-        if (!priceToBuyIn24HoursFound) {
-            priceToBuyIn24Hours = minSellPrice;
-        }
-        if (!priceToBuyIn168HoursFound) {
-            priceToBuyIn168Hours = minSellPrice;
-        }
-
         return new PricesToBuy(priceToBuyIn1Hour, priceToBuyIn6Hours, priceToBuyIn24Hours, priceToBuyIn168Hours);
     }
 
-    private PricesToSell recalculatePricesToSell(int maxBuyPrice, NavigableMap<Integer, Integer> sortedDescendingMonthPricesAndQuantities) {
-        int priceToSellIn1Hour = 0;
+    private PricesToSell recalculatePricesToSell(NavigableMap<Integer, Integer> sortedDescendingMonthPricesAndQuantities) {
+        Integer priceToSellIn1Hour = 0;
         boolean priceToSellIn1HourFound = false;
-        int priceToSellIn6Hours = 0;
+        Integer priceToSellIn6Hours = 0;
         boolean priceToSellIn6HoursFound = false;
-        int priceToSellIn24Hours = 0;
+        Integer priceToSellIn24Hours = 0;
         boolean priceToSellIn24HoursFound = false;
-        int priceToSellIn168Hours = 0;
+        Integer priceToSellIn168Hours = 0;
         boolean priceToSellIn168HoursFound = false;
 
         int currentQuantity = 0;
@@ -252,31 +240,18 @@ public class ItemService {
             }
         }
 
-        if (!priceToSellIn1HourFound) {
-            priceToSellIn1Hour = maxBuyPrice;
-        }
-        if (!priceToSellIn6HoursFound) {
-            priceToSellIn6Hours = maxBuyPrice;
-        }
-        if (!priceToSellIn24HoursFound) {
-            priceToSellIn24Hours = maxBuyPrice;
-        }
-        if (!priceToSellIn168HoursFound) {
-            priceToSellIn168Hours = maxBuyPrice;
-        }
         return new PricesToSell(priceToSellIn1Hour, priceToSellIn6Hours, priceToSellIn24Hours, priceToSellIn168Hours);
     }
 
-    private List<ItemDaySalesStatsByItemId> getResultingSaleStatsForPeriod(Collection<ItemSale> saleStats,
-                                                                           Collection<ItemDaySalesUbiStats> ubiSaleStats, Item item, LocalDate startDate, LocalDate endDate) {
+    private List<ItemDaySalesStatsByItemId> getResultingSaleStatsByPeriodForItem(Collection<ItemSale> saleStats,
+                                                                                 Collection<ItemDaySalesUbiStats> ubiSaleStats, Item item, LocalDate startDate, LocalDate endDate) {
         List<ItemDaySalesStatsByItemId> resultingPerDayStats = new ArrayList<>();
-        ItemDaySalesStatsByItemId todayStats = new ItemDaySalesStatsByItemId(item.getItemId(), LocalDate.now(), saleStats);
-        resultingPerDayStats.add(todayStats);
 
         for (LocalDate day = startDate; day.isBefore(endDate.plusDays(1)); day = day.plusDays(1)) {
             ItemDaySalesStatsByItemId daySaleStats = new ItemDaySalesStatsByItemId(item.getItemId(), day, saleStats);
             ItemDaySalesStatsByItemId ubiDayStats = new ItemDaySalesStatsByItemId(day, item.getItemId(), ubiSaleStats);
-            if (daySaleStats.getQuantity() < ubiDayStats.getQuantity() * 0.8) {
+
+            if (daySaleStats.getQuantity() < (int)(ubiDayStats.getQuantity() * 0.8)) {
                 resultingPerDayStats.add(ubiDayStats);
             } else {
                 resultingPerDayStats.add(daySaleStats);
@@ -285,11 +260,11 @@ public class ItemService {
         return resultingPerDayStats;
     }
 
-    private Collection<ItemSale> getSpecificItemSales(Collection<ItemSale> itemSales, String itemId) {
+    private Collection<ItemSale> getItemSalesForItem(Collection<ItemSale> itemSales, String itemId) {
         return itemSales.stream().filter(itemSale -> itemSale.getItemId().equals(itemId)).toList();
     }
 
-    private Collection<ItemDaySalesUbiStats> getSpecificItemDaySalesUbiStats(Collection<ItemDaySalesUbiStats> itemDaySalesUbiStats, String itemId) {
+    private Collection<ItemDaySalesUbiStats> getItemDaySalesUbiStatsForItem(Collection<ItemDaySalesUbiStats> itemDaySalesUbiStats, String itemId) {
         return itemDaySalesUbiStats.stream().filter(ubiStats -> ubiStats.getItemId().equals(itemId)).toList();
     }
 
@@ -317,10 +292,10 @@ public class ItemService {
     private record LastMonthPriceStats(int salesPerDay, int averagePrice, int maxPrice, int minPrice, int medianPrice) {
     }
 
-    private record PricesToBuy(int priceToBuyIn1Hour, int priceToBuyIn6Hours, int priceToBuyIn24Hours, int priceToBuyIn168Hours) {
+    private record PricesToBuy(Integer priceToBuyIn1Hour, Integer priceToBuyIn6Hours, Integer priceToBuyIn24Hours, Integer priceToBuyIn168Hours) {
     }
 
-    private record PricesToSell(int priceToSellIn1Hour, int priceToSellIn6Hours, int priceToSellIn24Hours, int priceToSellIn168Hours) {
+    private record PricesToSell(Integer priceToSellIn1Hour, Integer priceToSellIn6Hours, Integer priceToSellIn24Hours, Integer priceToSellIn168Hours) {
     }
 
     private record TodayPriceStats(int quantity, int averagePrice, int maxPrice, int minPrice, int medianPrice) {

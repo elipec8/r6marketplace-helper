@@ -33,9 +33,9 @@ public class ItemFilter {
     private Integer minLastSoldPrice;
     private Integer maxLastSoldPrice;
 
-    public static Collection<Item> filterItems(Collection<Item> items, Collection<ItemFilter> filters) {
+    public static List<Item> filterItems(Collection<Item> items, Collection<ItemFilter> filters) {
         if (filters == null || filters.isEmpty()) {
-            return items;
+            return items.stream().toList();
         } else {
             List<ItemFilter> allowedFilters =
                     filters.stream().filter(filter -> filter.getFilterType() != null && filter.getFilterType().equals(FilterType.ALLOW)).toList();
@@ -54,7 +54,7 @@ public class ItemFilter {
             }
 
             if (deniedFilters.isEmpty()) {
-                return result;
+                return result.stream().toList();
             } else {
                 List<Item> deniedItemMainFields = new ArrayList<>();
                 for (ItemFilter filter : deniedFilters) {
@@ -62,7 +62,7 @@ public class ItemFilter {
                 }
                 deniedItemMainFields.forEach(result::remove);
             }
-            return result;
+            return result.stream().toList();
         }
     }
 

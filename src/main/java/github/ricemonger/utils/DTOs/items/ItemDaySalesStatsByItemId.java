@@ -44,11 +44,13 @@ public class ItemDaySalesStatsByItemId {
                 priceAndQuantity.put(ubiDaySaleStats.getAveragePrice(), 1);
             } else if (ubiDaySaleStats.getItemsCount() == 2) {
                 priceAndQuantity.put(ubiDaySaleStats.getLowestPrice(), 1);
-                priceAndQuantity.put(ubiDaySaleStats.getHighestPrice(), 1);
+                priceAndQuantity.put(ubiDaySaleStats.getHighestPrice(), priceAndQuantity.getOrDefault(ubiDaySaleStats.getHighestPrice(), 0) + 1);
             } else if (ubiDaySaleStats.getItemsCount() > 2) {
                 priceAndQuantity.put(ubiDaySaleStats.getLowestPrice(), 1);
-                priceAndQuantity.put(ubiDaySaleStats.getAveragePrice(), ubiDaySaleStats.getItemsCount() - 2);
-                priceAndQuantity.put(ubiDaySaleStats.getHighestPrice(), 1);
+                int averageNoEdgesPrice =
+                        ((ubiDaySaleStats.getAveragePrice() * ubiDaySaleStats.getItemsCount()) - (ubiDaySaleStats.getLowestPrice() + ubiDaySaleStats.getHighestPrice())) / (ubiDaySaleStats.getItemsCount() - 2);
+                priceAndQuantity.put(averageNoEdgesPrice, priceAndQuantity.getOrDefault(averageNoEdgesPrice, 0) + ubiDaySaleStats.getItemsCount() - 2);
+                priceAndQuantity.put(ubiDaySaleStats.getHighestPrice(), priceAndQuantity.getOrDefault(ubiDaySaleStats.getHighestPrice(), 0) + 1);
             }
 
             this.priceAndQuantity = priceAndQuantity;

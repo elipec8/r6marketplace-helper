@@ -80,14 +80,14 @@ public interface ItemMainFieldsI extends SoldItemDetails {
         if (tags == null) {
             log.error("Tags are null for item {}", this);
             this.setRarity(ItemRarity.UNKNOWN);
-        } else if (tags.contains(uncommonTag)) {
-            this.setRarity(ItemRarity.UNCOMMON);
-        } else if (tags.contains(rareTag)) {
-            this.setRarity(ItemRarity.RARE);
-        } else if (tags.contains(epicTag)) {
-            this.setRarity(ItemRarity.EPIC);
         } else if (tags.contains(legendaryTag)) {
             this.setRarity(ItemRarity.LEGENDARY);
+        } else if (tags.contains(epicTag)) {
+            this.setRarity(ItemRarity.EPIC);
+        } else if (tags.contains(rareTag)) {
+            this.setRarity(ItemRarity.RARE);
+        } else if (tags.contains(uncommonTag)) {
+            this.setRarity(ItemRarity.UNCOMMON);
         } else {
             log.error("Unknown rarity tag for item {}", this);
             this.setRarity(ItemRarity.UNKNOWN);
