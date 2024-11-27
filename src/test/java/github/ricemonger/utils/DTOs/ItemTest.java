@@ -59,27 +59,27 @@ class ItemTest {
     }
 
     @Test
-    public void setRarityByTags_should_set_smallest_rarity_if_contains_few_uncommon() {
+    public void setRarityByTags_should_set_highest_rarity_if_contains_few_rare() {
         Item item = new Item();
-        item.setTags(List.of("uncommon", "rare", "epic", "legendary"));
-        item.setRarityByTags("uncommon", "rare", "epic", "legendary");
-        assertEquals(ItemRarity.UNCOMMON, item.getRarity());
-    }
-
-    @Test
-    public void setRarityByTags_should_set_smallest_rarity_if_contains_few_rare() {
-        Item item = new Item();
-        item.setTags(List.of("rare", "epic", "legendary"));
+        item.setTags(List.of("uncommon","rare"));
         item.setRarityByTags("uncommon", "rare", "epic", "legendary");
         assertEquals(ItemRarity.RARE, item.getRarity());
     }
 
     @Test
-    public void setRarityByTags_should_set_smallest_rarity_if_contains_few_epic() {
+    public void setRarityByTags_should_set_highest_rarity_if_contains_few_epic() {
         Item item = new Item();
-        item.setTags(List.of("epic", "legendary"));
+        item.setTags(List.of("uncommon","rare","epic"));
         item.setRarityByTags("uncommon", "rare", "epic", "legendary");
         assertEquals(ItemRarity.EPIC, item.getRarity());
+    }
+
+    @Test
+    public void setRarityByTags_should_set_highest_rarity_if_contains_few_legendary() {
+        Item item = new Item();
+        item.setTags(List.of("uncommon","rare","epic", "legendary"));
+        item.setRarityByTags("uncommon", "rare", "epic", "legendary");
+        assertEquals(ItemRarity.LEGENDARY, item.getRarity());
     }
 
     @Test

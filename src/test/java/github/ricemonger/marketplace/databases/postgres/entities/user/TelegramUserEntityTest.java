@@ -8,6 +8,7 @@ import github.ricemonger.utils.DTOs.TelegramUser;
 import github.ricemonger.utils.DTOs.TradeManagersSettings;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -353,7 +354,10 @@ class TelegramUserEntityTest {
     @Test
     public void setFields_should_update_altered_fields() {
         UserEntity user = new UserEntity();
-        user.setItemShowAppliedFilters(List.of(new ItemFilterEntity()));
+        ItemFilterEntity filter = new ItemFilterEntity();
+        List<ItemFilterEntity> filters = new ArrayList<>();
+        filters.add(filter);
+        user.setItemShowAppliedFilters(filters);
         TelegramUserEntity entity = new TelegramUserEntity("chatId", user);
 
         TelegramUser telegramUser = new TelegramUser();
