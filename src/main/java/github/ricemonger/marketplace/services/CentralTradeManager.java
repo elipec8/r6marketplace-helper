@@ -3,8 +3,8 @@ package github.ricemonger.marketplace.services;
 import github.ricemonger.utils.DTOs.*;
 import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.DTOs.items.ItemFilter;
+import github.ricemonger.utils.DTOs.items.ItemForCentralTradeManagerDTO;
 import github.ricemonger.utils.DTOs.items.ItemForFastEquals;
-import github.ricemonger.utils.DTOs.items.ItemForTradeDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,41 +36,41 @@ public class CentralTradeManager {
     }
 
     private List<CentralTradeManagerCommand> createCentralTradeManagerCommandsForUser(TradingUser tradingUser, ConfigTrades configTrades, Collection<Item> existingItemMainFields) {
-        Set<ItemForTradeDTO> itemsFromFiltersManagerForTradeDTOS = getTradingItemsFromTradeByFiltersManagers(tradingUser.getTradeByFiltersManagers(), existingItemMainFields);
+        List<CentralTradeManagerCommand> commands = new LinkedList<>();
 
-        Set<ItemForTradeDTO> itemFromItemForTradeDTOIdManagers = getTradingItemsFromTradeByItemIdManagers(tradingUser.getTradeByItemIdManagers(), existingItemMainFields);
+        Set<ItemForCentralTradeManagerDTO> itemsForTrading = new HashSet<>();
+        Set<ItemForCentralTradeManagerDTO> itemsFromFiltersManagerForTradeDTOS = getTradingItemsFromTradeByFiltersManagers(tradingUser.getTradeByFiltersManagers(), existingItemMainFields);
+        Set<ItemForCentralTradeManagerDTO> itemFromItemForTradeDTOIdManagers = getTradingItemsFromTradeByItemIdManagers(tradingUser.getTradeByItemIdManagers(), existingItemMainFields);
+        itemsForTrading.addAll(itemsFromFiltersManagerForTradeDTOS);
+        itemsForTrading.addAll(itemFromItemForTradeDTOIdManagers);
 
-        Set<ItemForTradeDTO> itemForTradeDTOS = new HashSet<>();
-        itemForTradeDTOS.addAll(itemsFromFiltersManagerForTradeDTOS);
-        itemForTradeDTOS.addAll(itemFromItemForTradeDTOIdManagers);
-
-        return null;
+        return commands;
     }
 
 
-    private Set<ItemForTradeDTO> getTradingItemsFromTradeByFiltersManagers(List<TradeByFiltersManager> tradeByFiltersManagers, Collection<Item> existingItemMainFields) {
-        Set<ItemForTradeDTO> itemForTradeDTOS = new HashSet<>();
+    private Set<ItemForCentralTradeManagerDTO> getTradingItemsFromTradeByFiltersManagers(List<TradeByFiltersManager> tradeByFiltersManagers, Collection<Item> existingItemMainFields) {
+        Set<ItemForCentralTradeManagerDTO> itemForTradeDTOS = new HashSet<>();
 
         for (TradeByFiltersManager tradeByFiltersManager : tradeByFiltersManagers) {
             itemForTradeDTOS.addAll(
                     ItemFilter.filterItems(existingItemMainFields, tradeByFiltersManager.getAppliedFilters())
                             .stream()
-                            .map(item -> new ItemForTradeDTO(item, tradeByFiltersManager.getTradeOperationType(), tradeByFiltersManager.getPriority()))
+                            .map(item -> new ItemForCentralTradeManagerDTO(item, tradeByFiltersManager))
                             .toList());
         }
         return itemForTradeDTOS;
     }
 
-    private Set<ItemForTradeDTO> getTradingItemsFromTradeByItemIdManagers(List<TradeByItemIdManager> tradeByItemIdManagers,
-                                                                          Collection<Item> existingItemMainFields) {
+    private Set<ItemForCentralTradeManagerDTO> getTradingItemsFromTradeByItemIdManagers(List<TradeByItemIdManager> tradeByItemIdManagers,
+                                                                                        Collection<Item> existingItemMainFields) {
         Set<ItemForFastEquals> existingItemsSet = existingItemMainFields.stream().map(item -> (ItemForFastEquals) item).collect(Collectors.toSet());
 
-        Set<ItemForTradeDTO> itemForTradeDTOS = new HashSet<>();
+        Set<ItemForCentralTradeManagerDTO> itemForTradeDTOS = new HashSet<>();
 
         for (TradeByItemIdManager tradeByItemIdManager : tradeByItemIdManagers) {
             Item item = getItemFromSetByItemId(existingItemsSet, tradeByItemIdManager.getItemId());
             if (item != null) {
-                itemForTradeDTOS.add(new ItemForTradeDTO(item, tradeByItemIdManager.getTradeOperationType(), tradeByItemIdManager.getPriority()));
+                itemForTradeDTOS.add(new ItemForCentralTradeManagerDTO(item, tradeByItemIdManager));
             }
         }
         return itemForTradeDTOS;

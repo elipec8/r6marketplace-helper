@@ -16,9 +16,7 @@ class TradeByItemIdManagerEntityTest {
         entity.setItem(item);
         entity.setEnabled(true);
         entity.setTradeOperationType(TradeOperationType.BUY);
-        entity.setSellStartingPrice(100);
         entity.setSellBoundaryPrice(200);
-        entity.setBuyStartingPrice(300);
         entity.setBuyBoundaryPrice(400);
         entity.setPriority(1);
 
@@ -26,9 +24,7 @@ class TradeByItemIdManagerEntityTest {
         expected.setItemId("1");
         expected.setEnabled(true);
         expected.setTradeOperationType(TradeOperationType.BUY);
-        expected.setSellStartingPrice(100);
         expected.setSellBoundaryPrice(200);
-        expected.setBuyStartingPrice(300);
         expected.setBuyBoundaryPrice(400);
         expected.setPriority(1);
 
@@ -42,9 +38,7 @@ class TradeByItemIdManagerEntityTest {
         TradeByItemIdManager manager = new TradeByItemIdManager();
         manager.setEnabled(false);
         manager.setTradeOperationType(TradeOperationType.SELL);
-        manager.setSellStartingPrice(200);
         manager.setSellBoundaryPrice(400);
-        manager.setBuyStartingPrice(600);
         manager.setBuyBoundaryPrice(800);
         manager.setPriority(2);
 
@@ -58,9 +52,7 @@ class TradeByItemIdManagerEntityTest {
         expected.setItem(itemEntity);
         expected.setEnabled(false);
         expected.setTradeOperationType(TradeOperationType.SELL);
-        expected.setSellStartingPrice(200);
         expected.setSellBoundaryPrice(400);
-        expected.setBuyStartingPrice(600);
         expected.setBuyBoundaryPrice(800);
         expected.setPriority(2);
 
@@ -70,9 +62,7 @@ class TradeByItemIdManagerEntityTest {
         assertEquals(expected.getItem().getItemId(), actual.getItem().getItemId());
         assertEquals(expected.isEnabled(), actual.isEnabled());
         assertEquals(expected.getTradeOperationType(), actual.getTradeOperationType());
-        assertEquals(expected.getSellStartingPrice(), actual.getSellStartingPrice());
         assertEquals(expected.getSellBoundaryPrice(), actual.getSellBoundaryPrice());
-        assertEquals(expected.getBuyStartingPrice(), actual.getBuyStartingPrice());
         assertEquals(expected.getBuyBoundaryPrice(), actual.getBuyBoundaryPrice());
         assertEquals(expected.getPriority(), actual.getPriority());
     }
