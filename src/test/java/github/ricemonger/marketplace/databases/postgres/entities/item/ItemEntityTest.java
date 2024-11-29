@@ -414,6 +414,13 @@ class ItemEntityTest {
 
         Item actual = entity.toItem();
 
+        List<String> expectedTags = expected.getTags();
+        List<String> actualTags = actual.getTags();
+
+        expected.setTags(null);
+        actual.setTags(null);
+
+        assertTrue(expectedTags.containsAll(actualTags) && actualTags.containsAll(expectedTags));
         assertEquals(expected, actual);
     }
 
@@ -562,11 +569,11 @@ class ItemEntityTest {
     private boolean entitiesAreEqual(ItemEntity entity1, ItemEntity entity2) {
 
         List<String> entity1TagsValues = new ArrayList<>();
-        if(entity1.getTags() != null){
-        entity1TagsValues = entity1.getTags().stream().map(TagEntity::getValue).toList();
+        if (entity1.getTags() != null) {
+            entity1TagsValues = entity1.getTags().stream().map(TagEntity::getValue).toList();
         }
         List<String> entity2TagsValues = new ArrayList<>();
-        if(entity2.getTags() != null) {
+        if (entity2.getTags() != null) {
             entity2TagsValues = entity2.getTags().stream().map(TagEntity::getValue).toList();
         }
 

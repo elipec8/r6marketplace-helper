@@ -109,7 +109,7 @@ public class ItemService {
         int currentQuantity = 0;
         for (Map.Entry<Integer, Integer> entry : sortedTodayPrices.entrySet()) {
             currentQuantity += entry.getValue();
-            if (currentQuantity >= (float)todaySalesQuantity / 2) {
+            if (currentQuantity >= (float) todaySalesQuantity / 2) {
                 todayMedianPrice = entry.getKey();
                 break;
             }

@@ -60,6 +60,10 @@ public class RedisServiceTest {
         redisTemplate.delete("paymentItemId");
         redisTemplate.delete("feePercentage");
         redisTemplate.delete("twoFactorAuthenticationRule");
+        redisTemplate.delete("mainUserAuthorizationToken");
+        redisTemplate.delete("mainUserSessionId");
+        redisTemplate.delete("mainUserProfileId");
+        redisTemplate.delete("mainUserRememberMeTicket");
     }
 
     @Test
@@ -189,6 +193,55 @@ public class RedisServiceTest {
     @Test
     public void getPaymentItemId_should_return_null_if_empty() {
         assertNull(redisService.getPaymentItemId());
+    }
+
+    @Test
+    public void getMainUserAuthorizationToken_should_return_value_from_redis() {
+        redisTemplate.opsForValue().set("mainUserAuthorizationToken", "mainUserAuthorizationToken");
+
+        assertEquals("mainUserAuthorizationToken", redisService.getMainUserAuthorizationToken());
+    }
+
+    @Test
+    public void getMainUserAuthorizationToken_should_return_null_if_empty() {
+        assertNull(redisService.getMainUserAuthorizationToken());
+    }
+
+    @Test
+    public void getMainUserProfileId_should_return_value_from_redis() {
+        redisTemplate.opsForValue().set("mainUserProfileId", "mainUserProfileId");
+
+        assertEquals("mainUserProfileId", redisService.getMainUserProfileId());
+    }
+
+    @Test
+    public void getMainUserProfileId_should_return_null_if_empty() {
+        assertNull(redisService.getMainUserProfileId());
+    }
+
+
+    @Test
+    public void getMainUserSessionId_should_return_value_from_redis() {
+        redisTemplate.opsForValue().set("mainUserSessionId", "mainUserSessionId");
+
+        assertEquals("mainUserSessionId", redisService.getMainUserSessionId());
+    }
+
+    @Test
+    public void getMainUserSessionId_should_return_null_if_empty() {
+        assertNull(redisService.getMainUserSessionId());
+    }
+
+    @Test
+    public void getMainUserRememberMeTicket_should_return_value_from_redis() {
+        redisTemplate.opsForValue().set("mainUserRememberMeTicket", "mainUserRememberMeTicket");
+
+        assertEquals("mainUserRememberMeTicket", redisService.getMainUserRememberMeTicket());
+    }
+
+    @Test
+    public void getMainUserRememberMeTicket_should_return_null_if_empty() {
+        assertNull(redisService.getMainUserRememberMeTicket());
     }
 
     @Test
