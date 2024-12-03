@@ -49,16 +49,16 @@ public class ScheduledAllItemsStatsFetcherTest {
 
     @Test
     public void fetchAllItemStats_should_call_services_when_item_amount_increased() {
-        List<Item> itemMainFields = new ArrayList<>();
-        itemMainFields.add(new Item());
+        List<Item> items = new ArrayList<>();
+        items.add(new Item());
 
-        when(graphQlClientService.fetchAllItemStats()).thenReturn(itemMainFields);
+        when(graphQlClientService.fetchAllItemStats()).thenReturn(items);
         when(commonValuesService.getExpectedItemCount()).thenReturn(0);
 
         scheduledAllItemsStatsFetcher.fetchAllItemStats();
 
-        verify(itemService).saveAllItemsMainFields(same(itemMainFields));
-        verify(itemService).saveAllItemLastSales(same(itemMainFields));
+        verify(itemService).saveAllItemsMainFields(same(items));
+        verify(itemService).saveAllItemLastSales(same(items));
         verify(commonValuesService).setExpectedItemCount(1);
         verify(telegramBotService).notifyAllUsersAboutItemAmountIncrease(0, 1);
     }

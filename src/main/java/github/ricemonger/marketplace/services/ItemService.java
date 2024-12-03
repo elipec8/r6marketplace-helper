@@ -38,7 +38,7 @@ public class ItemService {
     }
 
     public void recalculateAndSaveAllItemsHistoryFields() {
-        Set<ItemForFastEquals> items = itemDatabaseService.findAll().stream().map(ItemForFastEquals::new).collect(Collectors.toSet());
+        Set<Item> items = itemDatabaseService.findAll().stream().map(Item::new).collect(Collectors.toSet());
 
         Collection<ItemSale> lastMonthSales = saleDatabaseService.findAllForLastMonth();
         Collection<ItemDaySalesUbiStats> lastMonthSalesUbiStats = itemSaleUbiStatsService.findAllForLastMonth();
@@ -109,7 +109,7 @@ public class ItemService {
         int currentQuantity = 0;
         for (Map.Entry<Integer, Integer> entry : sortedTodayPrices.entrySet()) {
             currentQuantity += entry.getValue();
-            if (currentQuantity >= (float)todaySalesQuantity / 2) {
+            if (currentQuantity >= (float) todaySalesQuantity / 2) {
                 todayMedianPrice = entry.getKey();
                 break;
             }
@@ -269,20 +269,20 @@ public class ItemService {
         return itemDaySalesUbiStats.stream().filter(ubiStats -> ubiStats.getItemId().equals(itemId)).toList();
     }
 
-    private Set<ItemForFastEquals> getAllItemsFromDbInConjunctionWithUpdatedMainFields(Collection<? extends ItemMainFieldsI> itemMainFields) {
+    private Set<Item> getAllItemsFromDbInConjunctionWithUpdatedMainFields(Collection<? extends ItemMainFieldsI> itemMainFields) {
         Set<Tag> tags = new HashSet<>(tagService.getTagsByNames(Set.of("UNCOMMON", "RARE", "EPIC", "LEGENDARY")));
         String uncommonTag = tags.stream().filter(tag -> tag.getName().equals("UNCOMMON")).findFirst().get().getValue();
         String rareTag = tags.stream().filter(tag -> tag.getName().equals("RARE")).findFirst().get().getValue();
         String epicTag = tags.stream().filter(tag -> tag.getName().equals("EPIC")).findFirst().get().getValue();
         String legendaryTag = tags.stream().filter(tag -> tag.getName().equals("LEGENDARY")).findFirst().get().getValue();
 
-        Set<ItemForFastEquals> existingItems = itemDatabaseService.findAll().stream().map(ItemForFastEquals::new).collect(Collectors.toSet());
+        Set<Item> existingItems = itemDatabaseService.findAll().stream().map(Item::new).collect(Collectors.toSet());
 
-        Set<ItemForFastEquals> updatedItems = itemMainFields.stream().map(ItemForFastEquals::new).collect(Collectors.toSet());
+        Set<Item> updatedItems = itemMainFields.stream().map(Item::new).collect(Collectors.toSet());
 
-        for (ItemForFastEquals updatedItem : updatedItems) {
+        for (Item updatedItem : updatedItems) {
             if (existingItems.contains(updatedItem)) {
-                ItemForFastEquals existingItem = existingItems.stream().filter(existing -> existing.equals(updatedItem)).findFirst().get();
+                Item existingItem = existingItems.stream().filter(existing -> existing.equals(updatedItem)).findFirst().get();
                 updatedItem.setHistoryFields(existingItem);
             }
             updatedItem.setRarityByTags(uncommonTag, rareTag, epicTag, legendaryTag);

@@ -11,7 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UbiAccountStats {
-
     private String ubiProfileId;
 
     private Integer soldIn24h;

@@ -65,7 +65,7 @@ public class GraphQlClientService {
 
             nodes.addAll(marketableItems.getNodes());
 
-            offset += GraphQlVariablesService.MAX_LIMIT;
+            offset += marketableItems.getTotalCount();
         }
         while (marketableItems.getTotalCount() == GraphQlVariablesService.MAX_LIMIT);
 
@@ -92,7 +92,7 @@ public class GraphQlClientService {
 
             nodes.addAll(marketableItems.getNodes());
 
-            offset += GraphQlVariablesService.MAX_LIMIT;
+            offset += marketableItems.getTotalCount();
         }
         while (marketableItems.getTotalCount() == GraphQlVariablesService.MAX_LIMIT);
 

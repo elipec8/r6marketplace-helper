@@ -21,7 +21,8 @@ public class ItemDaySalesStatsByItemId {
     public ItemDaySalesStatsByItemId(String itemId, LocalDate day, Collection<ItemSale> itemSales) {
         this.itemId = itemId;
         this.date = day;
-        List<ItemSale> daySales = itemSales.stream().filter(itemSale -> itemSale.getLastSoldAt().toLocalDate().equals(day)).toList();
+        List<ItemSale> daySales =
+                itemSales.stream().filter(itemSale -> day.equals(itemSale.getLastSoldAt().toLocalDate()) && itemId.equals(itemSale.getItemId())).toList();
         HashMap<Integer, Integer> priceAndQuantity = new HashMap<>();
         for (ItemSale itemSale : daySales) {
             priceAndQuantity.put(itemSale.getPrice(), priceAndQuantity.getOrDefault(itemSale.getPrice(), 0) + 1);
@@ -33,7 +34,8 @@ public class ItemDaySalesStatsByItemId {
         this.itemId = itemId;
         this.date = day;
 
-        ItemDaySalesUbiStats ubiDaySaleStats = ubiSaleStats.stream().filter(ubiStats -> ubiStats.getDate().equals(day)).findFirst().orElse(null);
+        ItemDaySalesUbiStats ubiDaySaleStats =
+                ubiSaleStats.stream().filter(ubiStats -> ubiStats.getDate().equals(day) && itemId.equals(ubiStats.getItemId())).findFirst().orElse(null);
         HashMap<Integer, Integer> priceAndQuantity = new HashMap<>();
 
         if (ubiDaySaleStats == null) {

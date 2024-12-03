@@ -1,12 +1,14 @@
 package github.ricemonger.utils.DTOs;
 
+import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.DTOs.items.ItemFilter;
+import github.ricemonger.utils.DTOs.items.ItemForCentralTradeManager;
 import github.ricemonger.utils.enums.TradeOperationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
@@ -19,6 +21,33 @@ public class TradeByFiltersManager {
     private Integer minBuySellProfit;
     private Integer minProfitPercent;
     private Integer priority;
+
+    public static Set<ItemForCentralTradeManager> getItemsForCentralTradeManagerFromTradeByFiltersManagersByPriority(List<TradeByFiltersManager> tradeByFiltersManagers, Collection<Item> existingItems) {
+        Set<ItemForCentralTradeManager> itemForCentralTradeManagers = new HashSet<>();
+
+        if (tradeByFiltersManagers == null || tradeByFiltersManagers.isEmpty() || existingItems == null || existingItems.isEmpty()) {
+            return itemForCentralTradeManagers;
+        }
+
+        List<TradeByFiltersManager> sortedTradeByFiltersManagers =
+                tradeByFiltersManagers.stream().filter(m -> m.priority != null).sorted(Comparator.comparingInt(TradeByFiltersManager::getPriority)).toList();
+
+        for (TradeByFiltersManager tradeByFiltersManager : sortedTradeByFiltersManagers) {
+            itemForCentralTradeManagers.addAll(tradeByFiltersManager.toItemForCentralTradeManagerDTOs(existingItems));
+        }
+        return itemForCentralTradeManagers;
+    }
+
+    public Set<ItemForCentralTradeManager> toItemForCentralTradeManagerDTOs(Collection<Item> existingItems) {
+        if (this.getAppliedFilters() == null || this.getAppliedFilters().isEmpty()) {
+            return new HashSet<>();
+        } else {
+            return new HashSet<>(ItemFilter.filterItems(existingItems, this.getAppliedFilters())
+                    .stream()
+                    .map(item -> new ItemForCentralTradeManager(item, this))
+                    .toList());
+        }
+    }
 
     public String toString() {
         String sb = "Trade By Item Filter Manager: \n" +

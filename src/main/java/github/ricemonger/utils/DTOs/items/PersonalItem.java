@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -16,19 +15,6 @@ import java.util.Objects;
 public class PersonalItem extends Item {
     private boolean isOwned;
     private List<UbiTrade> trades;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PersonalItem that)) return false;
-        if (!super.equals(o)) return false;
-        return isOwned() == that.isOwned() && Objects.equals(getTrades(), that.getTrades());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), isOwned(), getTrades());
-    }
 
     @Override
     public String toString() {

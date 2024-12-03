@@ -23,11 +23,11 @@ import github.ricemonger.telegramBot.executors.tradeManagers.edit.itemFilter.Tra
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.itemFilter.TradeByFiltersManagerEditStage8ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.TradeByItemIdManagerEditAskTradeTypeCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage1AskItemIdCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage6ConfirmedFinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage5ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buyAndSell.TradeByItemIdManagerBuyAndSellEditStage1AskItemIdCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buyAndSell.TradeByItemIdManagerBuyAndSellEditStage8ConfirmedFinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buyAndSell.TradeByItemIdManagerBuyAndSellEditStage6ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage1AskItemIdCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage6ConfirmedFinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage5ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.settings.TradeManagersSettingsCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagAskFlagCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagNoCallback;
@@ -128,19 +128,19 @@ public class CallbackCommandListener {
                     executorsService.execute(TradeByItemIdManagerBuyEditStage1AskItemIdCallback.class, updateInfo);
 
             case Callbacks.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_EDIT_FINISH_CONFIRMED ->
-                    executorsService.execute(TradeByItemIdManagerBuyEditStage6ConfirmedFinishCallback.class, updateInfo);
+                    executorsService.execute(TradeByItemIdManagerBuyEditStage5ConfirmedFinishCallback.class, updateInfo);
 
             case Callbacks.TRADE_BY_ITEM_ID_MANAGER_TYPE_SELL_EDIT ->
                     executorsService.execute(TradeByItemIdManagerSellEditStage1AskItemIdCallback.class, updateInfo);
 
             case Callbacks.TRADE_BY_ITEM_ID_MANAGER_TYPE_SELL_EDIT_FINISH_CONFIRMED ->
-                    executorsService.execute(TradeByItemIdManagerSellEditStage6ConfirmedFinishCallback.class, updateInfo);
+                    executorsService.execute(TradeByItemIdManagerSellEditStage5ConfirmedFinishCallback.class, updateInfo);
 
             case Callbacks.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT ->
                     executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage1AskItemIdCallback.class, updateInfo);
 
             case Callbacks.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT_FINISH_CONFIRMED ->
-                    executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage8ConfirmedFinishCallback.class,
+                    executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage6ConfirmedFinishCallback.class,
                             updateInfo);
 
 

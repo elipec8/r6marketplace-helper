@@ -38,7 +38,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrders_should_map_each_order() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node1 = createNode(dtf, date, date2);
@@ -70,7 +70,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_map_order_if_valid_fields_and_null_paymentProposal() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -97,7 +97,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_map_order_if_valid_fields_and_null_paymentOptions() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -124,7 +124,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_map_order_if_null_payment() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -152,7 +152,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_map_order_if_invalid_tradeState() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -180,7 +180,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_map_order_if_invalid_tradeCategory() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -208,7 +208,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_throw_if_valid_fields_and_both_paymentOptions_and_paymentProposal() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -228,7 +228,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_throw_if_null_tradeId() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -243,7 +243,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_throw_if_null_state() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -258,7 +258,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_throw_if_null_category() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -273,7 +273,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_throw_if_null_expiresAt() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -288,7 +288,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_throw_if_null_lastModifiedAt() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -303,7 +303,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_throw_if_null_tradeItems() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -318,7 +318,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_throw_if_empty_tradeItems() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -333,7 +333,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_throw_if_null_item() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -348,7 +348,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_throw_if_null_itemId() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -363,7 +363,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_throw_if_null_payment_price() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -378,7 +378,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_throw_if_null_payment_transactionFee() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -393,7 +393,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_throw_if_null_paymentProposal_and_paymentOptions() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -408,7 +408,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_throw_if_null_empty_paymentOptions() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -423,7 +423,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_throw_if_null_paymentOptions_price() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -438,7 +438,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_throw_if_null_paymentProposal_price() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);
@@ -453,7 +453,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     @Test
     public void mapFinishedOrder_should_throw_if_null_paymentProposal_fee() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970,1,1,0,0,0);
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         LocalDateTime date2 = LocalDateTime.now().withNano(0);
 
         Nodes node = createNode(dtf, date, date2);

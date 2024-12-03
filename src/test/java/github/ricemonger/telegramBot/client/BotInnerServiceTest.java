@@ -1080,7 +1080,7 @@ public class BotInnerServiceTest {
         when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID)).thenReturn("item_id");
         when(itemService.getItemById("item_id")).thenReturn(item);
 
-        assertEquals(item, botInnerService.getItemByUserInputItemId(1L));
+        assertTrue(botInnerService.getItemByUserInputItemId(1L).isFullyEqualTo(item));
     }
 
     @Test

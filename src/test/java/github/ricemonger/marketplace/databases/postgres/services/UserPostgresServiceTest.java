@@ -2,14 +2,17 @@ package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
+import github.ricemonger.utils.DTOs.UserForCentralTradeManager;
+import github.ricemonger.utils.DTOs.items.Item;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.Collection;
 import java.util.List;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class UserPostgresServiceTest {
@@ -19,15 +22,22 @@ class UserPostgresServiceTest {
     private UserPostgresRepository userPostgresRepository;
 
     @Test
-    public void getAllTradingUsers_should_return_mapped_repository_result() {
-        UserEntity user1 = new UserEntity();
+    public void getAllUsers_ForCentralTradeManager_should_return_mapped_repository_result() {
+        Collection<Item> existingItems = List.of();
 
-        UserEntity user2 = new UserEntity();
-
-        UserEntity user3 = new UserEntity();
-
+        UserEntity user1 = mock(UserEntity.class);
+        UserEntity user2 = mock(UserEntity.class);
+        UserEntity user3 = mock(UserEntity.class);
 
         when(userPostgresRepository.findAllManageableUsers()).thenReturn(List.of(user1, user2, user3));
 
+        UserForCentralTradeManager userForCentralTradeManager1 = new UserForCentralTradeManager();
+
+        userPostgresService.getAllUsersForCentralTradeManager(existingItems);
+
+        verify(userPostgresRepository, times(1)).findAllManageableUsers();
+        verify(user1).toUserForCentralTradeManagerDTO(same(existingItems));
+        verify(user2).toUserForCentralTradeManagerDTO(same(existingItems));
+        verify(user3).toUserForCentralTradeManagerDTO(same(existingItems));
     }
 }

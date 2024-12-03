@@ -23,11 +23,11 @@ import github.ricemonger.telegramBot.executors.tradeManagers.edit.itemFilter.Tra
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.itemFilter.TradeByFiltersManagerEditStage8ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.TradeByItemIdManagerEditAskTradeTypeCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage1AskItemIdCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage6ConfirmedFinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage5ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buyAndSell.TradeByItemIdManagerBuyAndSellEditStage1AskItemIdCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buyAndSell.TradeByItemIdManagerBuyAndSellEditStage8ConfirmedFinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buyAndSell.TradeByItemIdManagerBuyAndSellEditStage6ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage1AskItemIdCallback;
-import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage6ConfirmedFinishCallback;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage5ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.settings.TradeManagersSettingsCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagAskFlagCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagNoCallback;
@@ -208,7 +208,7 @@ class CallbackCommandListenerTest {
     public void handleUpdate_should_trade_by_item_id_manager_type_buy_edit_finish_confirmed() {
         callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_EDIT_FINISH_CONFIRMED));
 
-        verify(executorsService).execute(TradeByItemIdManagerBuyEditStage6ConfirmedFinishCallback.class, updateInfo(Callbacks.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_EDIT_FINISH_CONFIRMED));
+        verify(executorsService).execute(TradeByItemIdManagerBuyEditStage5ConfirmedFinishCallback.class, updateInfo(Callbacks.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_EDIT_FINISH_CONFIRMED));
     }
 
     @Test
@@ -222,7 +222,7 @@ class CallbackCommandListenerTest {
     public void handleUpdate_should_trade_by_item_id_manager_type_sell_edit_finish_confirmed() {
         callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_BY_ITEM_ID_MANAGER_TYPE_SELL_EDIT_FINISH_CONFIRMED));
 
-        verify(executorsService).execute(TradeByItemIdManagerSellEditStage6ConfirmedFinishCallback.class, updateInfo(Callbacks.TRADE_BY_ITEM_ID_MANAGER_TYPE_SELL_EDIT_FINISH_CONFIRMED));
+        verify(executorsService).execute(TradeByItemIdManagerSellEditStage5ConfirmedFinishCallback.class, updateInfo(Callbacks.TRADE_BY_ITEM_ID_MANAGER_TYPE_SELL_EDIT_FINISH_CONFIRMED));
     }
 
     @Test
@@ -236,7 +236,7 @@ class CallbackCommandListenerTest {
     public void handleUpdate_should_trade_by_item_id_manager_type_buy_and_sell_edit_finish_confirmed() {
         callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT_FINISH_CONFIRMED));
 
-        verify(executorsService).execute(TradeByItemIdManagerBuyAndSellEditStage8ConfirmedFinishCallback.class, updateInfo(Callbacks.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT_FINISH_CONFIRMED));
+        verify(executorsService).execute(TradeByItemIdManagerBuyAndSellEditStage6ConfirmedFinishCallback.class, updateInfo(Callbacks.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT_FINISH_CONFIRMED));
     }
 
     @Test

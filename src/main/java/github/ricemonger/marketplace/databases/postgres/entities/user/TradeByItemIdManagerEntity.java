@@ -35,10 +35,7 @@ public class TradeByItemIdManagerEntity {
     private TradeOperationType tradeOperationType;
 
     private Integer sellBoundaryPrice;
-    private Integer sellStartingPrice;
-
     private Integer buyBoundaryPrice;
-    private Integer buyStartingPrice;
 
     private Integer priority;
 
@@ -47,9 +44,7 @@ public class TradeByItemIdManagerEntity {
         this.item = item;
         this.enabled = tradeManager.isEnabled();
         this.tradeOperationType = tradeManager.getTradeOperationType();
-        this.sellStartingPrice = tradeManager.getSellStartingPrice();
         this.sellBoundaryPrice = tradeManager.getSellBoundaryPrice();
-        this.buyStartingPrice = tradeManager.getBuyStartingPrice();
         this.buyBoundaryPrice = tradeManager.getBuyBoundaryPrice();
         this.priority = tradeManager.getPriority();
     }
@@ -59,9 +54,7 @@ public class TradeByItemIdManagerEntity {
         tradeManager.setItemId(item.getItemId());
         tradeManager.setEnabled(enabled);
         tradeManager.setTradeOperationType(tradeOperationType);
-        tradeManager.setSellStartingPrice(sellStartingPrice);
         tradeManager.setSellBoundaryPrice(sellBoundaryPrice);
-        tradeManager.setBuyStartingPrice(buyStartingPrice);
         tradeManager.setBuyBoundaryPrice(buyBoundaryPrice);
         tradeManager.setPriority(priority);
         return tradeManager;

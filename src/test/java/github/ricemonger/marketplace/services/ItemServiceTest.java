@@ -219,16 +219,33 @@ class ItemServiceTest {
         updatedItem1.setPriceToBuyIn24Hours(17);
         updatedItem1.setPriceToBuyIn168Hours(18);
 
-        List<ItemForFastEquals> updatedItems = new ArrayList<>();
-        updatedItems.add(new ItemForFastEquals(updatedItem1));
-        updatedItems.add(new ItemForFastEquals(item2));
-        updatedItems.add(new ItemForFastEquals(item3));
-        updatedItems.add(new ItemForFastEquals(item4));
-        updatedItems.add(new ItemForFastEquals(item5));
+        Item updatedItem2 = new Item(item2);
+        updatedItem2.setRarity(ItemRarity.LEGENDARY);
+
+        Item updatedItem3 = new Item(item3);
+        updatedItem3.setRarity(ItemRarity.EPIC);
+
+        Item updatedItem4 = new Item(item4);
+        updatedItem4.setRarity(ItemRarity.RARE);
+
+        Item updatedItem5 = new Item(item5);
+        updatedItem5.setRarity(ItemRarity.UNCOMMON);
+
+        List<Item> updatedItems = new ArrayList<>();
+        updatedItems.add(updatedItem1);
+        updatedItems.add(updatedItem2);
+        updatedItems.add(updatedItem3);
+        updatedItems.add(updatedItem4);
+        updatedItems.add(updatedItem5);
 
         itemService.saveAllItemsMainFields(itemsMainFields);
 
-        verify(itemDatabaseService).saveAll(argThat(arg -> arg.containsAll(updatedItems) && arg.size() == updatedItems.size()));
+        verify(itemDatabaseService).saveAll(argThat(arg -> arg.size() == updatedItems.size() &&
+                                                           updatedItems.stream().allMatch(updatedItem ->
+                                                                   arg.stream().anyMatch(actualItem ->
+                                                                           actualItem.isFullyEqualTo(updatedItem)
+                                                                   )
+                                                           )));
     }
 
     @Test
@@ -433,7 +450,14 @@ class ItemServiceTest {
 
         itemService.recalculateAndSaveAllItemsHistoryFields();
 
-        verify(itemDatabaseService).saveAll(argThat(arg -> expectedResult.containsAll(arg) && arg.size() == expectedResult.size()));
+        verify(itemDatabaseService).saveAll(argThat(arg ->
+                arg.size() == expectedResult.size() &&
+                expectedResult.stream().allMatch(expectedItem ->
+                        arg.stream().anyMatch(actualItem ->
+                                actualItem.isFullyEqualTo(expectedItem)
+                        )
+                )
+        ));
     }
 
     @Test

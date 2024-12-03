@@ -1,5 +1,7 @@
 package github.ricemonger.utils.DTOs.items;
 
+import java.util.Objects;
+
 public interface ItemHistoryFieldsI extends ItemIdFieldI {
     Integer getMonthAveragePrice();
 
@@ -72,6 +74,35 @@ public interface ItemHistoryFieldsI extends ItemIdFieldI {
     Integer getPriceToBuyIn168Hours();
 
     void setPriceToBuyIn168Hours(Integer priceToBuyIn168Hours);
+
+    default boolean itemHistoryFieldsAreEqual(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ItemHistoryFieldsI item)) {
+            return false;
+        }
+
+        return Objects.equals(item.getItemId(), this.getItemId()) &&
+               Objects.equals(item.getMonthAveragePrice(), this.getMonthAveragePrice()) &&
+               Objects.equals(item.getMonthMedianPrice(), this.getMonthMedianPrice()) &&
+               Objects.equals(item.getMonthMaxPrice(), this.getMonthMaxPrice()) &&
+               Objects.equals(item.getMonthMinPrice(), this.getMonthMinPrice()) &&
+               Objects.equals(item.getMonthSalesPerDay(), this.getMonthSalesPerDay()) &&
+               Objects.equals(item.getDayAveragePrice(), this.getDayAveragePrice()) &&
+               Objects.equals(item.getDayMedianPrice(), this.getDayMedianPrice()) &&
+               Objects.equals(item.getDayMaxPrice(), this.getDayMaxPrice()) &&
+               Objects.equals(item.getDayMinPrice(), this.getDayMinPrice()) &&
+               Objects.equals(item.getDaySales(), this.getDaySales()) &&
+               Objects.equals(item.getPriceToSellIn1Hour(), this.getPriceToSellIn1Hour()) &&
+               Objects.equals(item.getPriceToSellIn6Hours(), this.getPriceToSellIn6Hours()) &&
+               Objects.equals(item.getPriceToSellIn24Hours(), this.getPriceToSellIn24Hours()) &&
+               Objects.equals(item.getPriceToSellIn168Hours(), this.getPriceToSellIn168Hours()) &&
+               Objects.equals(item.getPriceToBuyIn1Hour(), this.getPriceToBuyIn1Hour()) &&
+               Objects.equals(item.getPriceToBuyIn6Hours(), this.getPriceToBuyIn6Hours()) &&
+               Objects.equals(item.getPriceToBuyIn24Hours(), this.getPriceToBuyIn24Hours()) &&
+               Objects.equals(item.getPriceToBuyIn168Hours(), this.getPriceToBuyIn168Hours());
+    }
 
     default void setHistoryFields(ItemHistoryFieldsI historyFieldsI) {
         this.setMonthAveragePrice(historyFieldsI.getMonthAveragePrice());
