@@ -1,9 +1,9 @@
-package github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy;
+package github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buyAndSell;
 
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 
-public class TradeByItemIdManagerBuyEditStage4AskPriorityInput extends AbstractBotCommandExecutor {
+public class TradeByItemIdManagerBuyAndSellEditStage4AskPriorityInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
         processMiddleInput(InputState.TRADE_BY_ITEM_ID_MANAGER_PRIORITY);

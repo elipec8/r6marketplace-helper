@@ -1,7 +1,8 @@
 package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.abstractions.UserDatabaseService;
-import github.ricemonger.utils.DTOs.TradingUser;
+import github.ricemonger.utils.DTOs.UserForCentralTradeManager;
+import github.ricemonger.utils.DTOs.items.Item;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,17 +22,21 @@ class UserServiceTest {
     private UserDatabaseService userDatabaseService;
 
     @Test
-    public void getAllTradingUsers_should_return_service_result() {
-        List expected = List.of(new TradingUser());
-        when(userDatabaseService.getAllTradingUsers()).thenReturn(expected);
+    public void getAllUserForCentralTradeManagerDTOs_should_return_service_result() {
+        List<Item> existingItems = List.of(new Item());
 
-        assertSame(expected, userService.getAllTradingUsers());
+        List expected = List.of(new UserForCentralTradeManager());
+        when(userDatabaseService.getAllUsersForCentralTradeManager(existingItems)).thenReturn(expected);
+
+        assertSame(expected, userService.getAllUserForCentralTradeManagerDTOs(existingItems));
     }
 
     @Test
-    public void getAllTradingUsers_should_throw_if_service_throws() {
-        when(userDatabaseService.getAllTradingUsers()).thenThrow(new RuntimeException());
+    public void getAllUserForCentralTradeManagerDTOs_should_throw_if_service_throws() {
+        List<Item> existingItems = List.of(new Item());
 
-        assertThrows(RuntimeException.class, () -> userService.getAllTradingUsers());
+        when(userDatabaseService.getAllUsersForCentralTradeManager(existingItems)).thenThrow(new RuntimeException());
+
+        assertThrows(RuntimeException.class, () -> userService.getAllUserForCentralTradeManagerDTOs(existingItems));
     }
 }

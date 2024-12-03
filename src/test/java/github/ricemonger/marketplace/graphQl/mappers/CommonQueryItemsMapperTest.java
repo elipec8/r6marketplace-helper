@@ -21,8 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -81,7 +80,7 @@ class CommonQueryItemsMapperTest {
 
         Item resultItem = commonQueryItemsMapper.mapItem(node);
 
-        assertEquals(expectedItem, resultItem);
+        assertTrue(expectedItem.isFullyEqualTo(resultItem));
     }
 
     @Test
@@ -107,7 +106,7 @@ class CommonQueryItemsMapperTest {
 
         Item resultItem = commonQueryItemsMapper.mapItem(node);
 
-        assertEquals(expectedItem, resultItem);
+        assertTrue(expectedItem.isFullyEqualTo(resultItem));
     }
 
     @Test
@@ -133,7 +132,7 @@ class CommonQueryItemsMapperTest {
 
         Item resultItem = commonQueryItemsMapper.mapItem(node);
 
-        assertEquals(expectedItem, resultItem);
+        assertTrue(expectedItem.isFullyEqualTo(resultItem));
     }
 
     @Test
@@ -159,7 +158,7 @@ class CommonQueryItemsMapperTest {
 
         Item resultItem = commonQueryItemsMapper.mapItem(node);
 
-        assertEquals(expectedItem, resultItem);
+        assertTrue(expectedItem.isFullyEqualTo(resultItem));
     }
 
     @Test
@@ -185,7 +184,7 @@ class CommonQueryItemsMapperTest {
 
         Item resultItem = commonQueryItemsMapper.mapItem(node);
 
-        assertEquals(expectedItem, resultItem);
+        assertTrue(expectedItem.isFullyEqualTo(resultItem));
     }
 
     @Test

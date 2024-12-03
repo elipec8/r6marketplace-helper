@@ -16,14 +16,15 @@ import github.ricemonger.telegramBot.executors.items.settings.shownFields.*;
 import github.ricemonger.telegramBot.executors.items.show.ItemsShowStage2FinishInput;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.itemFilter.*;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage2AskBoundaryPriceInput;
-import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage3AskStartingPriceInput;
-import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage4AskPriorityInput;
-import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage5AskConfirmationFinishInput;
-import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buyAndSell.*;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage3AskPriorityInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage4AskConfirmationFinishInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buyAndSell.TradeByItemIdManagerBuyAndSellEditStage2AskBoundarySellPriceInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buyAndSell.TradeByItemIdManagerBuyAndSellEditStage3AskBoundaryBuyPriceInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buyAndSell.TradeByItemIdManagerBuyAndSellEditStage4AskPriorityInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buyAndSell.TradeByItemIdManagerBuyAndSellEditStage5AskConfirmationFinishInput;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage2AskBoundaryPriceInput;
-import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage3AskStartingPriceInput;
-import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage4AskPriorityInput;
-import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage5AskConfirmationFinishInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage3AskPriorityInput;
+import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage4AskConfirmationFinishInput;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemFilters.TradeByFiltersManagerRemoveStage2AskConfirmationFinishInput;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkStage1AskFullOrEmailInput;
@@ -429,15 +430,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_BUY_PRICE);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(TradeByItemIdManagerBuyEditStage3AskStartingPriceInput.class, updateInfo);
-    }
-
-    @Test
-    public void handleUpdate_should_trade_by_item_id_manager_type_buy_edit_starting_buy_price() {
-        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_STARTING_BUY_PRICE);
-        inputCommandListener.handleUpdate(updateInfo);
-
-        verify(executorsService).execute(TradeByItemIdManagerBuyEditStage4AskPriorityInput.class, updateInfo);
+        verify(executorsService).execute(TradeByItemIdManagerBuyEditStage3AskPriorityInput.class, updateInfo);
     }
 
     @Test
@@ -445,7 +438,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_PRIORITY);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(TradeByItemIdManagerBuyEditStage5AskConfirmationFinishInput.class, updateInfo);
+        verify(executorsService).execute(TradeByItemIdManagerBuyEditStage4AskConfirmationFinishInput.class, updateInfo);
     }
 
     @Test
@@ -469,15 +462,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(TradeByItemIdManagerSellEditStage3AskStartingPriceInput.class, updateInfo);
-    }
-
-    @Test
-    public void handleUpdate_should_trade_by_item_id_manager_type_sell_edit_starting_sell_price() {
-        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_STARTING_SELL_PRICE);
-        inputCommandListener.handleUpdate(updateInfo);
-
-        verify(executorsService).execute(TradeByItemIdManagerSellEditStage4AskPriorityInput.class, updateInfo);
+        verify(executorsService).execute(TradeByItemIdManagerSellEditStage3AskPriorityInput.class, updateInfo);
     }
 
     @Test
@@ -485,7 +470,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_PRIORITY);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(TradeByItemIdManagerSellEditStage5AskConfirmationFinishInput.class, updateInfo);
+        verify(executorsService).execute(TradeByItemIdManagerSellEditStage4AskConfirmationFinishInput.class, updateInfo);
     }
 
     @Test
@@ -509,15 +494,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(TradeByItemIdManagerBuyAndSellEditStage3AskStartingSellPriceInput.class, updateInfo);
-    }
-
-    @Test
-    public void handleUpdate_should_trade_by_item_id_manager_type_buy_and_sell_edit_starting_sell_price() {
-        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_STARTING_SELL_PRICE);
-        inputCommandListener.handleUpdate(updateInfo);
-
-        verify(executorsService).execute(TradeByItemIdManagerBuyAndSellEditStage4AskBoundaryBuyPriceInput.class, updateInfo);
+        verify(executorsService).execute(TradeByItemIdManagerBuyAndSellEditStage3AskBoundaryBuyPriceInput.class, updateInfo);
     }
 
     @Test
@@ -525,15 +502,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_BUY_PRICE);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(TradeByItemIdManagerBuyAndSellEditStage5AskStartingBuyPriceInput.class, updateInfo);
-    }
-
-    @Test
-    public void handleUpdate_should_trade_by_item_id_manager_type_buy_and_sell_edit_starting_buy_price() {
-        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_STARTING_BUY_PRICE);
-        inputCommandListener.handleUpdate(updateInfo);
-
-        verify(executorsService).execute(TradeByItemIdManagerBuyAndSellEditStage6AskPriorityInput.class, updateInfo);
+        verify(executorsService).execute(TradeByItemIdManagerBuyAndSellEditStage4AskPriorityInput.class, updateInfo);
     }
 
     @Test
@@ -541,7 +510,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_PRIORITY);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(TradeByItemIdManagerBuyAndSellEditStage7AskConfirmationFinishInput.class, updateInfo);
+        verify(executorsService).execute(TradeByItemIdManagerBuyAndSellEditStage5AskConfirmationFinishInput.class, updateInfo);
     }
 
     @Test

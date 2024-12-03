@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class ItemForCentralTradeManagerDTOTest {
+class ItemForCentralTradeManagerTest {
 
     @Test
     public void tradeByFilterManager_constructor_should_set_all_fields() {
@@ -49,7 +49,7 @@ class ItemForCentralTradeManagerDTOTest {
         item.setPriceToBuyIn24Hours(22);
         item.setPriceToBuyIn168Hours(23);
 
-        ItemForCentralTradeManagerDTO itemForTradeDTO = new ItemForCentralTradeManagerDTO(item, tradeByFiltersManager);
+        ItemForCentralTradeManager itemForTradeDTO = new ItemForCentralTradeManager(item, tradeByFiltersManager);
 
         assertEquals(item.getItemId(), itemForTradeDTO.getItemId());
         assertEquals(item.getRarity(), itemForTradeDTO.getRarity());
@@ -83,8 +83,8 @@ class ItemForCentralTradeManagerDTOTest {
         assertEquals(tradeByFiltersManager.getMinBuySellProfit(), itemForTradeDTO.getMinBuySellProfit());
         assertEquals(tradeByFiltersManager.getMinProfitPercent(), itemForTradeDTO.getMinProfitPercent());
 
-        assertEquals(0, itemForTradeDTO.getBuyBoundaryPrice());
-        assertEquals(Integer.MAX_VALUE, itemForTradeDTO.getSellBoundaryPrice());
+        assertEquals(0, itemForTradeDTO.getSellBoundaryPrice());
+        assertEquals(Integer.MAX_VALUE, itemForTradeDTO.getBuyBoundaryPrice());
     }
 
     @Test
@@ -123,7 +123,7 @@ class ItemForCentralTradeManagerDTOTest {
         item.setPriceToBuyIn24Hours(22);
         item.setPriceToBuyIn168Hours(23);
 
-        ItemForCentralTradeManagerDTO itemForTradeDTO = new ItemForCentralTradeManagerDTO(item, tradeByItemIdManager);
+        ItemForCentralTradeManager itemForTradeDTO = new ItemForCentralTradeManager(item, tradeByItemIdManager);
 
         assertEquals(item.getItemId(), itemForTradeDTO.getItemId());
         assertEquals(item.getRarity(), itemForTradeDTO.getRarity());
@@ -163,33 +163,37 @@ class ItemForCentralTradeManagerDTOTest {
 
     @Test
     public void hashCode_and_equals_should_use_only_itemId_tradeOperationType() {
-        ItemForCentralTradeManagerDTO itemForTradeDTO1 = new ItemForCentralTradeManagerDTO();
-        itemForTradeDTO1.setItemId("itemId");
-        itemForTradeDTO1.setRarity(ItemRarity.RARE);
-        itemForTradeDTO1.setMaxBuyPrice(1);
-        itemForTradeDTO1.setBuyOrdersCount(2);
-        itemForTradeDTO1.setMinSellPrice(3);
-        itemForTradeDTO1.setSellOrdersCount(4);
-        itemForTradeDTO1.setLastSoldAt(LocalDateTime.of(2024, 1, 1, 0, 0, 0));
-        itemForTradeDTO1.setLastSoldPrice(5);
-        itemForTradeDTO1.setMonthAveragePrice(6);
-        itemForTradeDTO1.setMonthMedianPrice(7);
-        itemForTradeDTO1.setMonthMaxPrice(8);
-        itemForTradeDTO1.setMonthMinPrice(9);
-        itemForTradeDTO1.setMonthSalesPerDay(10);
-        itemForTradeDTO1.setDayAveragePrice(11);
-        itemForTradeDTO1.setDayMedianPrice(12);
-        itemForTradeDTO1.setDayMaxPrice(13);
-        itemForTradeDTO1.setDayMinPrice(14);
-        itemForTradeDTO1.setDaySales(15);
-        itemForTradeDTO1.setPriceToSellIn1Hour(16);
-        itemForTradeDTO1.setPriceToSellIn6Hours(17);
-        itemForTradeDTO1.setPriceToSellIn24Hours(18);
-        itemForTradeDTO1.setPriceToSellIn168Hours(19);
-        itemForTradeDTO1.setPriceToBuyIn1Hour(20);
-        itemForTradeDTO1.setPriceToBuyIn6Hours(21);
-        itemForTradeDTO1.setPriceToBuyIn24Hours(22);
-        itemForTradeDTO1.setPriceToBuyIn168Hours(23);
+        ItemForCentralTradeManager itemForTradeDTO1 = new ItemForCentralTradeManager();
+
+        Item item1 = new Item();
+        item1.setItemId("itemId");
+        item1.setRarity(ItemRarity.RARE);
+        item1.setMaxBuyPrice(1);
+        item1.setBuyOrdersCount(2);
+        item1.setMinSellPrice(3);
+        item1.setSellOrdersCount(4);
+        item1.setLastSoldAt(LocalDateTime.of(2024, 1, 1, 0, 0, 0));
+        item1.setLastSoldPrice(5);
+        item1.setMonthAveragePrice(6);
+        item1.setMonthMedianPrice(7);
+        item1.setMonthMaxPrice(8);
+        item1.setMonthMinPrice(9);
+        item1.setMonthSalesPerDay(10);
+        item1.setDayAveragePrice(11);
+        item1.setDayMedianPrice(12);
+        item1.setDayMaxPrice(13);
+        item1.setDayMinPrice(14);
+        item1.setDaySales(15);
+        item1.setPriceToSellIn1Hour(16);
+        item1.setPriceToSellIn6Hours(17);
+        item1.setPriceToSellIn24Hours(18);
+        item1.setPriceToSellIn168Hours(19);
+        item1.setPriceToBuyIn1Hour(20);
+        item1.setPriceToBuyIn6Hours(21);
+        item1.setPriceToBuyIn24Hours(22);
+        item1.setPriceToBuyIn168Hours(23);
+
+        itemForTradeDTO1.setItem(item1);
         itemForTradeDTO1.setBuyBoundaryPrice(24);
         itemForTradeDTO1.setSellBoundaryPrice(25);
         itemForTradeDTO1.setMinBuySellProfit(26);
@@ -197,33 +201,38 @@ class ItemForCentralTradeManagerDTOTest {
         itemForTradeDTO1.setTradeOperationType(TradeOperationType.BUY);
         itemForTradeDTO1.setPriority(1);
 
-        ItemForCentralTradeManagerDTO itemForTradeDTO2 = new ItemForCentralTradeManagerDTO();
-        itemForTradeDTO2.setItemId("itemId");
-        itemForTradeDTO2.setRarity(ItemRarity.UNCOMMON);
-        itemForTradeDTO2.setMaxBuyPrice(2);
-        itemForTradeDTO2.setBuyOrdersCount(3);
-        itemForTradeDTO2.setMinSellPrice(4);
-        itemForTradeDTO2.setSellOrdersCount(5);
-        itemForTradeDTO2.setLastSoldAt(LocalDateTime.of(2025, 1, 1, 0, 0, 0));
-        itemForTradeDTO2.setLastSoldPrice(6);
-        itemForTradeDTO2.setMonthAveragePrice(7);
-        itemForTradeDTO2.setMonthMedianPrice(8);
-        itemForTradeDTO2.setMonthMaxPrice(9);
-        itemForTradeDTO2.setMonthMinPrice(10);
-        itemForTradeDTO2.setMonthSalesPerDay(11);
-        itemForTradeDTO2.setDayAveragePrice(12);
-        itemForTradeDTO2.setDayMedianPrice(13);
-        itemForTradeDTO2.setDayMaxPrice(14);
-        itemForTradeDTO2.setDayMinPrice(15);
-        itemForTradeDTO2.setDaySales(16);
-        itemForTradeDTO2.setPriceToSellIn1Hour(17);
-        itemForTradeDTO2.setPriceToSellIn6Hours(18);
-        itemForTradeDTO2.setPriceToSellIn24Hours(19);
-        itemForTradeDTO2.setPriceToSellIn168Hours(20);
-        itemForTradeDTO2.setPriceToBuyIn1Hour(21);
-        itemForTradeDTO2.setPriceToBuyIn6Hours(22);
-        itemForTradeDTO2.setPriceToBuyIn24Hours(23);
-        itemForTradeDTO2.setPriceToBuyIn168Hours(24);
+        ItemForCentralTradeManager itemForTradeDTO2 = new ItemForCentralTradeManager();
+
+        Item item2 = new Item();
+        item2.setItemId("itemId");
+        item2.setRarity(ItemRarity.UNCOMMON);
+        item2.setMaxBuyPrice(2);
+        item2.setBuyOrdersCount(3);
+        item2.setMinSellPrice(4);
+        item2.setSellOrdersCount(5);
+        item2.setLastSoldAt(LocalDateTime.of(2025, 1, 1, 0, 0, 0));
+        item2.setLastSoldPrice(6);
+        item2.setMonthAveragePrice(7);
+        item2.setMonthMedianPrice(8);
+        item2.setMonthMaxPrice(9);
+        item2.setMonthMinPrice(10);
+        item2.setMonthSalesPerDay(11);
+        item2.setDayAveragePrice(12);
+        item2.setDayMedianPrice(13);
+        item2.setDayMaxPrice(14);
+        item2.setDayMinPrice(15);
+        item2.setDaySales(16);
+        item2.setPriceToSellIn1Hour(17);
+        item2.setPriceToSellIn6Hours(18);
+        item2.setPriceToSellIn24Hours(19);
+        item2.setPriceToSellIn168Hours(20);
+        item2.setPriceToBuyIn1Hour(21);
+        item2.setPriceToBuyIn6Hours(22);
+        item2.setPriceToBuyIn24Hours(23);
+        item2.setPriceToBuyIn168Hours(24);
+
+
+        itemForTradeDTO2.setItem(item2);
         itemForTradeDTO2.setBuyBoundaryPrice(25);
         itemForTradeDTO2.setSellBoundaryPrice(26);
         itemForTradeDTO2.setMinBuySellProfit(27);
@@ -239,21 +248,22 @@ class ItemForCentralTradeManagerDTOTest {
         assertNotEquals(itemForTradeDTO1, itemForTradeDTO2);
 
         itemForTradeDTO2.setTradeOperationType(TradeOperationType.BUY);
-        itemForTradeDTO2.setItemId("itemId2");
+        item2.setItemId("itemId2");
+        itemForTradeDTO2.setItem(item2);
         assertNotEquals(itemForTradeDTO1.hashCode(), itemForTradeDTO2.hashCode());
         assertNotEquals(itemForTradeDTO1, itemForTradeDTO2);
     }
 
     @Test
     public void equals_should_return_true_for_same_object() {
-        ItemForCentralTradeManagerDTO itemForTradeDTO1 = new ItemForCentralTradeManagerDTO();
-        ItemForCentralTradeManagerDTO itemForTradeDTO2 = itemForTradeDTO1;
+        ItemForCentralTradeManager itemForTradeDTO1 = new ItemForCentralTradeManager();
+        ItemForCentralTradeManager itemForTradeDTO2 = itemForTradeDTO1;
         assertEquals(itemForTradeDTO1, itemForTradeDTO2);
     }
 
     @Test
     public void equals_should_return_false_for_wrong_class_or_null() {
-        assertNotEquals(new ItemForCentralTradeManagerDTO(), null);
-        assertNotEquals(new ItemForCentralTradeManagerDTO(), new Object());
+        assertNotEquals(new ItemForCentralTradeManager(), null);
+        assertNotEquals(new ItemForCentralTradeManager(), new Object());
     }
 }

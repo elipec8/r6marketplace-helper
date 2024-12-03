@@ -78,24 +78,18 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
     public void save_should_update_existing_trade_manager() {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("1");
-        tradeManager.setBuyStartingPrice(1);
         tradeManager.setBuyBoundaryPrice(2);
-        tradeManager.setSellStartingPrice(3);
         tradeManager.setSellBoundaryPrice(4);
         tradeManager.setPriority(5);
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
 
-        tradeManager.setBuyStartingPrice(6);
         tradeManager.setBuyBoundaryPrice(7);
-        tradeManager.setSellStartingPrice(8);
         tradeManager.setSellBoundaryPrice(9);
         tradeManager.setPriority(10);
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
 
         TradeByItemIdManagerEntity tradeManagerEntity = tradeManagerByItemIdRepository.findAll().get(0);
-        assertEquals(6, tradeManagerEntity.getBuyStartingPrice());
         assertEquals(7, tradeManagerEntity.getBuyBoundaryPrice());
-        assertEquals(8, tradeManagerEntity.getSellStartingPrice());
         assertEquals(9, tradeManagerEntity.getSellBoundaryPrice());
         assertEquals(10, tradeManagerEntity.getPriority());
     }
@@ -180,22 +174,22 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
     public void findById_should_return_trade_manager() {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("1");
-        tradeManager.setBuyStartingPrice(1);
+        tradeManager.setBuyBoundaryPrice(1);
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
 
         createItem("2");
         tradeManager.setItemId("2");
-        tradeManager.setBuyStartingPrice(1);
+        tradeManager.setBuyBoundaryPrice(3);
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
 
         createTelegramUser(ANOTHER_CHAT_ID);
         tradeManager.setItemId("1");
-        tradeManager.setBuyStartingPrice(1);
+        tradeManager.setBuyBoundaryPrice(2);
         telegramUserTradeManagerByItemIdService.save(ANOTHER_CHAT_ID, tradeManager);
 
         TradeByItemIdManager foundTradeManager = telegramUserTradeManagerByItemIdService.findById(CHAT_ID, "1");
 
-        assertEquals(1, foundTradeManager.getBuyStartingPrice());
+        assertEquals(1, foundTradeManager.getBuyBoundaryPrice());
     }
 
     @Test
@@ -212,17 +206,17 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
     public void findAllByChatId_should_return_all_trade_managers_for_user() {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("1");
-        tradeManager.setBuyStartingPrice(1);
+        tradeManager.setBuyBoundaryPrice(1);
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
 
         createItem("2");
         tradeManager.setItemId("2");
-        tradeManager.setBuyStartingPrice(1);
+        tradeManager.setBuyBoundaryPrice(3);
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
 
         createTelegramUser(ANOTHER_CHAT_ID);
         tradeManager.setItemId("1");
-        tradeManager.setBuyStartingPrice(1);
+        tradeManager.setBuyBoundaryPrice(2);
         telegramUserTradeManagerByItemIdService.save(ANOTHER_CHAT_ID, tradeManager);
 
         Collection<TradeByItemIdManager> tradeManagers = telegramUserTradeManagerByItemIdService.findAllByChatId(CHAT_ID);

@@ -100,10 +100,6 @@ class ItemFilterTest {
 
         Collection<Item> result = ItemFilter.filterItems(allItemMainFields, List.of(allowFilter1, allowFilter2, denyFilter1, denyFilter2));
 
-        for (Item item : result) {
-            System.out.println(item);
-        }
-
         assertTrue(result.containsAll(expected) && expected.containsAll(result));
     }
 
@@ -139,6 +135,7 @@ class ItemFilterTest {
 
     private Item createItem(String name, ItemType type, List<String> tagValues, int minSellPrice, int maxBuyPrice, int lastSoldPrice) {
         Item item = new Item();
+        item.setItemId(name);
         item.setName(name);
         item.setType(type);
         item.setTags(tagValues);

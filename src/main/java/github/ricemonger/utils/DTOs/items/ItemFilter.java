@@ -66,8 +66,8 @@ public class ItemFilter {
         }
     }
 
-    public Collection<Item> filterItems(Collection<Item> itemMainFields) {
-        return itemMainFields.stream()
+    public List<Item> filterItems(Collection<Item> items) {
+        return items.stream()
                 .filter(item -> this.itemNamePatterns == null || this.itemNamePatterns.isEmpty() || this.itemNamePatterns.stream().anyMatch(s -> item.getName().toLowerCase().contains(s.toLowerCase())))
                 .filter(item -> this.itemTypes == null || this.itemTypes.isEmpty() || this.itemTypes.contains(item.getType()))
                 .filter(item -> this.tags == null || this.tags.isEmpty() || this.tags.stream().anyMatch(tag -> item.getTags().contains(tag.getValue())))

@@ -4,7 +4,7 @@ import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 import github.ricemonger.utils.enums.TradeOperationType;
 
-public class TradeByItemIdManagerSellEditStage5AskConfirmationFinishInput extends AbstractBotCommandExecutor {
+public class TradeByItemIdManagerSellEditStage4AskConfirmationFinishInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
         processLastInput();

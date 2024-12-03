@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class UbiAccountTradingEntry {
+public class UbiAccountEntry {
     private UbiAccountStats ubiAccountStats;
 
     private UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry;
@@ -150,9 +150,9 @@ public class UbiAccountTradingEntry {
         if (o == this) {
             return true;
         }
-        if (!(o instanceof UbiAccountTradingEntry ubiAccountTradingEntry)) {
+        if (!(o instanceof UbiAccountEntry ubiAccountEntry)) {
             return false;
         }
-        return Objects.equals(ubiAccountStats, ubiAccountTradingEntry.ubiAccountStats) && Objects.equals(ubiAccountAuthorizationEntry, ubiAccountTradingEntry.ubiAccountAuthorizationEntry);
+        return Objects.equals(ubiAccountStats, ubiAccountEntry.ubiAccountStats) && Objects.equals(ubiAccountAuthorizationEntry, ubiAccountEntry.ubiAccountAuthorizationEntry);
     }
 }

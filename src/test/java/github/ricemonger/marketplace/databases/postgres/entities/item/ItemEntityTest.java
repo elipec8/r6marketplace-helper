@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ItemEntityTest {
@@ -421,7 +420,7 @@ class ItemEntityTest {
         actual.setTags(null);
 
         assertTrue(expectedTags.containsAll(actualTags) && actualTags.containsAll(expectedTags));
-        assertEquals(expected, actual);
+        assertTrue(expected.isFullyEqualTo(actual));
     }
 
     @Test
@@ -492,7 +491,7 @@ class ItemEntityTest {
 
         Item actual = entity.toItem();
 
-        assertEquals(expected, actual);
+        assertTrue(expected.isFullyEqualTo(actual));
     }
 
     @Test
@@ -563,7 +562,7 @@ class ItemEntityTest {
 
         Item actual = entity.toItem();
 
-        assertEquals(expected, actual);
+        assertTrue(expected.isFullyEqualTo(actual));
     }
 
     private boolean entitiesAreEqual(ItemEntity entity1, ItemEntity entity2) {

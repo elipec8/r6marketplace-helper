@@ -29,9 +29,7 @@ public class TradeManagerFromInputsMapper {
                                                           Item item,
                                                           boolean enabledFlag) {
         String itemId = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID);
-        String startingSellPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_STARTING_SELL_PRICE);
         String boundarySellPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
-        String startingBuyPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_STARTING_BUY_PRICE);
         String boundaryBuyPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_BUY_PRICE);
         String priority = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_PRIORITY);
 
@@ -40,9 +38,7 @@ public class TradeManagerFromInputsMapper {
         int minSellPrice = item.getMinSellPrice() <= limitMinPrice ? limitMinPrice : item.getMinSellPrice() - 1;
 
         int boundSellPrice = parseIntValue(boundarySellPrice, limitMinPrice, limitMaxPrice, minSellPrice);
-        int startSellPrice = parseIntValue(startingSellPrice, boundSellPrice, limitMaxPrice, boundSellPrice);
         int boundBuyPrice = parseIntValue(boundaryBuyPrice, limitMinPrice, limitMaxPrice, priceCalculator.getNextFancyBuyPriceByCurrentPrices(item));
-        int startBuyPrice = parseIntValue(startingBuyPrice, limitMinPrice, boundBuyPrice, boundBuyPrice);
 
         int prior;
         try {
@@ -55,9 +51,7 @@ public class TradeManagerFromInputsMapper {
         tradeByItemIdManager.setTradeOperationType(tradeOperationType);
         tradeByItemIdManager.setItemId(itemId);
         tradeByItemIdManager.setEnabled(enabledFlag);
-        tradeByItemIdManager.setSellStartingPrice(startSellPrice);
         tradeByItemIdManager.setSellBoundaryPrice(boundSellPrice);
-        tradeByItemIdManager.setBuyStartingPrice(startBuyPrice);
         tradeByItemIdManager.setBuyBoundaryPrice(boundBuyPrice);
         tradeByItemIdManager.setPriority(prior);
 
