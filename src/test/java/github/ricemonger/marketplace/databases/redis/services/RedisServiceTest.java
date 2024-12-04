@@ -291,4 +291,21 @@ public class RedisServiceTest {
         verify(mock, never()).set("mainUserRememberMeTicket", dto.getRememberMeTicket());
         verify(redisTemplate, never()).expire("mainUserRememberMeTicket", EXPIRE_TIMEOUT, TimeUnit.SECONDS);
     }
+
+    @Test
+    public void setLastUbiUsersStatsFetchTime_should_save_in_redis() {
+        ValueOperations valueOperations = mock(ValueOperations.class);
+        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+
+        redisService.setLastUbiUsersStatsFetchTime("2021-10-10T10:10:10");
+
+        verify(valueOperations).set("lastUbiUsersStatsFetchTime", "2021-10-10T10:10:10");
+    }
+
+    @Test
+    public void getLastUbiUsersStatsFetchTime_should_return_value_from_redis() {
+        redisTemplate.opsForValue().set("lastUbiUsersStatsFetchTime", "2021-10-10T10:10:10");
+
+        assertEquals("2021-10-10T10:10:10", redisService.getLastUbiUsersStatsFetchTime());
+    }
 }

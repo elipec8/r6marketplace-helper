@@ -26,7 +26,7 @@ public class PersonalQueryFinishedOrdersMapper {
 
     private final CommonValuesService commonValuesService;
 
-    public Collection<UbiTrade> mapFinishedOrders(Trades trades) throws GraphQlPersonalFinishedOrdersMappingException {
+    public List<UbiTrade> mapFinishedOrders(Trades trades) throws GraphQlPersonalFinishedOrdersMappingException {
         if (trades == null) {
             throw new GraphQlPersonalFinishedOrdersMappingException("Trades is null");
         }

@@ -1,13 +1,13 @@
 package github.ricemonger.marketplace.databases.postgres.repositories;
 
-import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountAuthorizationEntryEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountAuthorizationEntryEntityId;
+import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountEntryEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountEntryEntityId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface UbiAccountAuthorizationEntryPostgresRepository extends JpaRepository<UbiAccountAuthorizationEntryEntity, UbiAccountAuthorizationEntryEntityId> {
-    Optional<UbiAccountAuthorizationEntryEntity> findByUserTelegramUserChatId(String chatId);
+public interface UbiAccountAuthorizationEntryPostgresRepository extends JpaRepository<UbiAccountEntryEntity, UbiAccountEntryEntityId> {
+    Optional<UbiAccountEntryEntity> findByUserTelegramUserChatId(String chatId);
 
     void deleteByUserTelegramUserChatId(String chatId);
 }

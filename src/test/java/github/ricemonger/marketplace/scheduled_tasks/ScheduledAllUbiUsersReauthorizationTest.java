@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
 import github.ricemonger.marketplace.services.TelegramUserUbiAccountEntryService;
-import github.ricemonger.telegramBot.client.TelegramBotClientService;
+import github.ricemonger.telegramBot.TelegramBotService;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
 import org.junit.jupiter.api.Test;
@@ -18,21 +18,21 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class ScheduledUbiUsersReauthorizationTest {
+class ScheduledAllUbiUsersReauthorizationTest {
 
     @MockBean
     private TelegramUserUbiAccountEntryService telegramUserUbiAccountEntryService;
 
     @MockBean
-    private TelegramBotClientService telegramBotClientService;
+    private TelegramBotService telegramBotService;
 
     @Autowired
-    private ScheduledUbiUsersReauthorization scheduledUbiUsersReauthorization;
+    private ScheduledAllUbiUsersReauthorization scheduledAllUbiUsersReauthorization;
 
     @Test
-    public void reauthorizeUbiUsersAndNotifyAboutFailures_should_reauthorize_and_notify_via_services() {
+    public void reauthorizeUbiUsersAndNotifyAboutFailures_should_reauthorize_All_and_notify_via_services() {
         List<UbiAccountAuthorizationEntryWithTelegram> toNotify = new ArrayList<>();
-        toNotify.add(new UbiAccountAuthorizationEntryWithTelegram("chatId", new UbiAccountAuthorizationEntry(
+        toNotify.add(new UbiAccountAuthorizationEntryWithTelegram("chatId", true, new UbiAccountAuthorizationEntry(
                 "ubiProfileId",
                 "email",
                 "password",
@@ -44,10 +44,10 @@ class ScheduledUbiUsersReauthorizationTest {
                 "ubiRememberMeTicket")));
         when(telegramUserUbiAccountEntryService.reauthorizeAllUbiUsersAndGetUnauthorizedList()).thenReturn(toNotify);
 
-        scheduledUbiUsersReauthorization.reauthorizeUbiUsersAndNotifyAboutFailures();
+        scheduledAllUbiUsersReauthorization.reauthorizeAllUbiUsersAndNotifyAboutFailures();
 
         verify(telegramUserUbiAccountEntryService).reauthorizeAllUbiUsersAndGetUnauthorizedList();
 
-        verify(telegramBotClientService).sendText(eq("chatId"), anyString());
+        verify(telegramBotService).sendNotificationToUser(eq("chatId"), anyString());
     }
 }

@@ -160,7 +160,7 @@ public class GraphQlClientService {
         return personalQueryCreditAmountMapper.mapCreditAmount(meta);
     }
 
-    public Collection<UbiTrade> fetchCurrentOrdersForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalCurrentOrderMappingException {
+    public List<UbiTrade> fetchCurrentOrdersForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalCurrentOrderMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
         github.ricemonger.marketplace.graphQl.DTOs.personal_query_current_orders.Trades trades;
@@ -175,7 +175,7 @@ public class GraphQlClientService {
         return personalQueryCurrentOrdersMapper.mapCurrentOrders(trades);
     }
 
-    public Collection<UbiTrade> fetchFinishedOrdersForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalFinishedOrdersMappingException {
+    public List<UbiTrade> fetchFinishedOrdersForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalFinishedOrdersMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
         github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.Trades trades;
         int offset = 0;
@@ -202,7 +202,7 @@ public class GraphQlClientService {
         return personalQueryFinishedOrdersMapper.mapFinishedOrders(trades);
     }
 
-    public Collection<ItemResaleLockWithUbiAccount> fetchLockedItemsForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalLockedItemsMappingException {
+    public List<ItemResaleLockWithUbiAccount> fetchLockedItemsForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalLockedItemsMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
         github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.TradeLimitations tradeLimitations;
@@ -231,7 +231,7 @@ public class GraphQlClientService {
     }
 
 
-    public Collection<String> fetchAllOwnedItemsIdsForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalOwnedItemsMappingException {
+    public List<String> fetchAllOwnedItemsIdsForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalOwnedItemsMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
         github.ricemonger.marketplace.graphQl.DTOs.personal_query_owned_items.MarketableItems marketableItems;
         List<github.ricemonger.marketplace.graphQl.DTOs.personal_query_owned_items.marketableItems.Node> nodes = new ArrayList<>();

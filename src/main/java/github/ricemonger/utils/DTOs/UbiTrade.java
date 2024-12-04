@@ -20,9 +20,9 @@ public class UbiTrade {
 
     private String itemId;
 
-    private int successPaymentPrice;
-    private int successPaymentFee;
+    private Integer successPaymentPrice;
+    private Integer successPaymentFee;
 
-    private int proposedPaymentPrice;
-    private int proposedPaymentFee;
+    private Integer proposedPaymentPrice;
+    private Integer proposedPaymentFee;
 }

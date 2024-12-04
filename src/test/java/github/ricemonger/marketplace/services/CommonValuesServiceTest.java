@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -414,5 +416,24 @@ class CommonValuesServiceTest {
         when(telegramBotConfiguration.getMessageLimit()).thenReturn(messageLimit);
 
         assertEquals(messageLimit, commonValuesService.getMaximumTelegramMessageLimit());
+    }
+
+    @Test
+    public void setLastUbiUsersStatsFetchTime_should_handle_to_service() {
+
+        when(ubiServiceConfiguration.getDateFormat()).thenReturn("yyyy-MM-dd HH:mm:ss");
+
+        commonValuesService.setLastUbiUsersStatsFetchTime(LocalDateTime.of(2021, 1, 2, 3, 4, 5));
+
+        verify(commonValuesDatabaseService).setLastUbiUsersStatsFetchTime("2021-01-02 03:04:05");
+    }
+
+    @Test
+    public void getLastUbiUsersStatsFetchTime_should_handle_to_service() {
+
+        when(ubiServiceConfiguration.getDateFormat()).thenReturn("yyyy-MM-dd HH:mm:ss");
+        when(commonValuesDatabaseService.getLastUbiUsersStatsFetchTime()).thenReturn("2021-01-02 03:04:05");
+
+        assertEquals(LocalDateTime.of(2021, 1, 2, 3, 4, 5), commonValuesService.getLastUbiUsersStatsFetchTime());
     }
 }

@@ -23,6 +23,7 @@ class ItemForCentralTradeManagerTest {
 
         Item item = new Item();
         item.setItemId("itemId");
+        item.setName("name");
         item.setRarity(ItemRarity.RARE);
         item.setMaxBuyPrice(1);
         item.setBuyOrdersCount(2);
@@ -52,6 +53,7 @@ class ItemForCentralTradeManagerTest {
         ItemForCentralTradeManager itemForTradeDTO = new ItemForCentralTradeManager(item, tradeByFiltersManager);
 
         assertEquals(item.getItemId(), itemForTradeDTO.getItemId());
+        assertEquals(item.getName(), itemForTradeDTO.getName());
         assertEquals(item.getRarity(), itemForTradeDTO.getRarity());
         assertEquals(item.getMaxBuyPrice(), itemForTradeDTO.getMaxBuyPrice());
         assertEquals(item.getBuyOrdersCount(), itemForTradeDTO.getBuyOrdersCount());
@@ -97,6 +99,7 @@ class ItemForCentralTradeManagerTest {
 
         Item item = new Item();
         item.setItemId("itemId");
+        item.setName("name");
         item.setRarity(ItemRarity.RARE);
         item.setMaxBuyPrice(1);
         item.setBuyOrdersCount(2);
@@ -126,6 +129,7 @@ class ItemForCentralTradeManagerTest {
         ItemForCentralTradeManager itemForTradeDTO = new ItemForCentralTradeManager(item, tradeByItemIdManager);
 
         assertEquals(item.getItemId(), itemForTradeDTO.getItemId());
+        assertEquals(item.getName(), itemForTradeDTO.getName());
         assertEquals(item.getRarity(), itemForTradeDTO.getRarity());
         assertEquals(item.getMaxBuyPrice(), itemForTradeDTO.getMaxBuyPrice());
         assertEquals(item.getBuyOrdersCount(), itemForTradeDTO.getBuyOrdersCount());
@@ -167,6 +171,7 @@ class ItemForCentralTradeManagerTest {
 
         Item item1 = new Item();
         item1.setItemId("itemId");
+        item1.setName("name");
         item1.setRarity(ItemRarity.RARE);
         item1.setMaxBuyPrice(1);
         item1.setBuyOrdersCount(2);
@@ -205,6 +210,7 @@ class ItemForCentralTradeManagerTest {
 
         Item item2 = new Item();
         item2.setItemId("itemId");
+        item2.setName("name1");
         item2.setRarity(ItemRarity.UNCOMMON);
         item2.setMaxBuyPrice(2);
         item2.setBuyOrdersCount(3);

@@ -5,6 +5,8 @@ import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccoun
 import github.ricemonger.utils.DTOs.AuthorizationDTO;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
+import github.ricemonger.utils.DTOs.UbiAccountStats;
+import github.ricemonger.utils.UbiAccountEntryWithTelegram;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
@@ -36,6 +38,10 @@ public class TelegramUserUbiAccountEntryService {
         telegramUserUbiAccountEntryDatabaseService.saveAuthorizationInfo(chatId, buildUbiAccount(email, authorizationService.getEncodedPassword(password), userAuthorizationDTO));
     }
 
+    public void saveAllUbiAccountStats(List<UbiAccountStats> ubiAccounts) {
+        telegramUserUbiAccountEntryDatabaseService.saveAllUbiAccountStats(ubiAccounts);
+    }
+
     public void deleteByChatId(String chatId) throws TelegramUserDoesntExistException {
         telegramUserUbiAccountEntryDatabaseService.deleteAuthorizationInfoByChatId(chatId);
     }
@@ -58,6 +64,10 @@ public class TelegramUserUbiAccountEntryService {
 
     public UbiAccountAuthorizationEntry findByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
         return telegramUserUbiAccountEntryDatabaseService.findAuthorizationInfoByChatId(chatId);
+    }
+
+    public List<UbiAccountEntryWithTelegram> findAllForTelegram() {
+        return telegramUserUbiAccountEntryDatabaseService.findAllForTelegram();
     }
 
     private void reauthorizeAndSaveUser(String chatId, String email, String encodedPassword) throws UbiUserAuthorizationClientErrorException, UbiUserAuthorizationServerErrorException {

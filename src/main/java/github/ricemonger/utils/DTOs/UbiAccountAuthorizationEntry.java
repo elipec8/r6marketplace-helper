@@ -8,10 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UbiAccountAuthorizationEntry {
+    private String ubiProfileId;
+
     private String email;
     private String encodedPassword;
 
-    private String ubiProfileId;
     private String ubiSessionId;
     private String ubiSpaceId;
     private String ubiAuthTicket;

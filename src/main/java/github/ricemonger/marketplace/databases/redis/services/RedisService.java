@@ -104,6 +104,16 @@ public class RedisService implements CommonValuesDatabaseService {
         }
     }
 
+    @Override
+    public void setLastUbiUsersStatsFetchTime(String dateTime) {
+        redisTemplate.opsForValue().set("lastUbiUsersStatsFetchTime", dateTime);
+    }
+
+    @Override
+    public String getLastUbiUsersStatsFetchTime() {
+        return redisTemplate.opsForValue().get("lastUbiUsersStatsFetchTime");
+    }
+
     private void setFieldAndExpire(String field, String value, int expireTimeout) {
         redisTemplate.opsForValue().set(field, value);
         redisTemplate.expire(field, expireTimeout, TimeUnit.SECONDS);
