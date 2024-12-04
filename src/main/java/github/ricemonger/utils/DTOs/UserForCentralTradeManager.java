@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,7 +28,7 @@ public class UserForCentralTradeManager {
     private String chatId;
     private Boolean privateNotificationsEnabledFlag;
 
-    private Set<ItemForCentralTradeManager> itemsForCentralTradeManager;
+    private Set<ItemForCentralTradeManager> itemsForCentralTradeManager = new HashSet<>();
 
     public String getUbiProfileId() {
         return ubiAccountStats.getUbiProfileId();
@@ -39,6 +40,10 @@ public class UserForCentralTradeManager {
 
     public Integer getBoughtIn24h() {
         return ubiAccountStats.getBoughtIn24h();
+    }
+
+    public Integer getCreditAmount() {
+        return ubiAccountStats.getCreditAmount();
     }
 
     public List<String> getOwnedItemsIds() {

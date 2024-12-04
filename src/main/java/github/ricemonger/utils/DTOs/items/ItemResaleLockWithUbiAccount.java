@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -23,18 +24,17 @@ public class ItemResaleLockWithUbiAccount extends ItemResaleLock {
     }
 
     public int hashCode() {
-        return super.hashCode() + ubiProfileId.hashCode();
+        return super.hashCode() + Objects.hashCode(ubiProfileId);
     }
 
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
-        if (obj == null || getClass() != obj.getClass()) {
+        if (!(obj instanceof ItemResaleLockWithUbiAccount other)) {
             return false;
         }
-        ItemResaleLockWithUbiAccount other = (ItemResaleLockWithUbiAccount) obj;
-        return super.equals(obj) && ubiProfileId.equals(other.ubiProfileId);
+        return super.equals(obj) && Objects.equals(ubiProfileId, other.ubiProfileId);
     }
 
     public String toString() {

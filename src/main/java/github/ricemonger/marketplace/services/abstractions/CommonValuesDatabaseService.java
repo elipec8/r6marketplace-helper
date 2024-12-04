@@ -28,4 +28,8 @@ public interface CommonValuesDatabaseService {
     String getMainUserRememberMeTicket();
 
     void setMainUserAuthorization(AuthorizationDTO dto, int expireTimeout);
+
+    void setLastUbiUsersStatsFetchTime(String dateTime);
+
+    String getLastUbiUsersStatsFetchTime();
 }

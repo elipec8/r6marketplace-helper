@@ -7,6 +7,7 @@ import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountA
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountStatsEntityPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
+import github.ricemonger.utils.DTOs.UbiAccountStats;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
@@ -14,6 +15,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -107,6 +111,19 @@ class TelegramUserUbiAccountPostgresServiceTest {
     }
 
     @Test
+    public void saveAll_should_handle_to_repository() {
+        UbiAccountStats ubiAccountStats1 = new UbiAccountStats("1", 2, 3, 4, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        UbiAccountStats ubiAccountStats2 = new UbiAccountStats("2", 3, 4, 5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        telegramUserUbiAccountEntryService.saveAllUbiAccountStats(List.of(ubiAccountStats1, ubiAccountStats2));
+
+        assertEquals(2, ubiAccountStatsRepository.findAll().size());
+
+        assertEquals(2, ubiAccountStatsRepository.findById("1").get().getSoldIn24h());
+    }
+
+    @Test
     public void deleteByChatId_should_delete_proper_ubi_account_entry_and_cascade() {
         UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
         account.setEmail("email");
@@ -160,7 +177,7 @@ class TelegramUserUbiAccountPostgresServiceTest {
     }
 
     @Test
-    public void findAll_should_return_all_ubi_accounts() {
+    public void findAllAuthorizationInfoForTelegram_should_return_all_ubi_accounts() {
         UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
         account.setUbiProfileId("1");
         account.setEmail("email");
@@ -177,7 +194,29 @@ class TelegramUserUbiAccountPostgresServiceTest {
     }
 
     @Test
-    public void findAll_should_return_empty_list_if_no_ubi_accounts() {
+    public void findAllAuthorizationInfoForTelegram_should_return_empty_list_if_no_ubi_accounts() {
         assertEquals(0, telegramUserUbiAccountEntryService.findAllAuthorizationInfoForTelegram().size());
+    }
+
+    @Test
+    public void findAllForTelegram_should_return_all_ubi_accounts() {
+        UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
+        account.setUbiProfileId("1");
+        account.setEmail("email");
+        account.setUbiSpaceId("spaceID");
+
+        telegramUserUbiAccountEntryService.saveAuthorizationInfo(CHAT_ID, account);
+
+        createTelegramUser(ANOTHER_CHAT_ID);
+        account.setUbiProfileId("2");
+        account.setUbiSpaceId("spaceID2");
+        telegramUserUbiAccountEntryService.saveAuthorizationInfo(ANOTHER_CHAT_ID, account);
+
+        assertEquals(2, telegramUserUbiAccountEntryService.findAllForTelegram().size());
+    }
+
+    @Test
+    public void findAllForTelegram_should_return_empty_list_if_no_ubi_accounts() {
+        assertEquals(0, telegramUserUbiAccountEntryService.findAllForTelegram().size());
     }
 }

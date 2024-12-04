@@ -53,6 +53,10 @@ public class ItemForCentralTradeManager {
         return item.getItemId();
     }
 
+    public String getName() {
+        return item.getName();
+    }
+
     public ItemRarity getRarity() {
         return item.getRarity();
     }

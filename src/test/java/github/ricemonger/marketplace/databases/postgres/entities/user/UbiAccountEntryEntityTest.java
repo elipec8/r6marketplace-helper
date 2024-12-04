@@ -5,8 +5,9 @@ import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class UbiAccountAuthorizationEntryEntityTest {
+class UbiAccountEntryEntityTest {
 
     @Test
     public void constructor_should_set_fields_correctly() {
@@ -24,7 +25,7 @@ class UbiAccountAuthorizationEntryEntityTest {
         account.setUbiRememberDeviceTicket("rememberDeviceTicket");
         account.setUbiRememberMeTicket("rememberMeTicket");
 
-        UbiAccountAuthorizationEntryEntity result = new UbiAccountAuthorizationEntryEntity(user, ubiAccount, account);
+        UbiAccountEntryEntity result = new UbiAccountEntryEntity(user, ubiAccount, account);
 
         assertEquals(1L, result.getUser().getId());
         assertEquals("profile1", result.getUbiAccountStats().getUbiProfileId());
@@ -44,10 +45,11 @@ class UbiAccountAuthorizationEntryEntityTest {
         telegramUserEntity.setChatId("chat1");
         UserEntity user = new UserEntity();
         user.setId(1L);
+        user.setPrivateNotificationsEnabledFlag(true);
         user.setTelegramUser(telegramUserEntity);
         UbiAccountStatsEntity ubiAccount = new UbiAccountStatsEntity();
         ubiAccount.setUbiProfileId("profile1");
-        UbiAccountAuthorizationEntryEntity entity = new UbiAccountAuthorizationEntryEntity();
+        UbiAccountEntryEntity entity = new UbiAccountEntryEntity();
         entity.setUser(user);
         entity.setUbiAccountStats(ubiAccount);
         entity.setEmail("email@example.com");
@@ -62,15 +64,16 @@ class UbiAccountAuthorizationEntryEntityTest {
         UbiAccountAuthorizationEntryWithTelegram result = entity.toUbiAccountAuthorizationEntryWithTelegram();
 
         assertEquals("chat1", result.getChatId());
-        assertEquals("email@example.com", result.getUbiAccountEntry().getEmail());
-        assertEquals("encodedPassword", result.getUbiAccountEntry().getEncodedPassword());
-        assertEquals("profile1", result.getUbiAccountEntry().getUbiProfileId());
-        assertEquals("sessionId", result.getUbiAccountEntry().getUbiSessionId());
-        assertEquals("spaceId", result.getUbiAccountEntry().getUbiSpaceId());
-        assertEquals("authTicket", result.getUbiAccountEntry().getUbiAuthTicket());
-        assertEquals("twoFactorAuthTicket", result.getUbiAccountEntry().getUbiTwoFactorAuthTicket());
-        assertEquals("rememberDeviceTicket", result.getUbiAccountEntry().getUbiRememberDeviceTicket());
-        assertEquals("rememberMeTicket", result.getUbiAccountEntry().getUbiRememberMeTicket());
+        assertTrue(result.getPrivateNotificationsEnabledFlag());
+        assertEquals("email@example.com", result.getUbiAccountAuthorizationEntry().getEmail());
+        assertEquals("encodedPassword", result.getUbiAccountAuthorizationEntry().getEncodedPassword());
+        assertEquals("profile1", result.getUbiAccountAuthorizationEntry().getUbiProfileId());
+        assertEquals("sessionId", result.getUbiAccountAuthorizationEntry().getUbiSessionId());
+        assertEquals("spaceId", result.getUbiAccountAuthorizationEntry().getUbiSpaceId());
+        assertEquals("authTicket", result.getUbiAccountAuthorizationEntry().getUbiAuthTicket());
+        assertEquals("twoFactorAuthTicket", result.getUbiAccountAuthorizationEntry().getUbiTwoFactorAuthTicket());
+        assertEquals("rememberDeviceTicket", result.getUbiAccountAuthorizationEntry().getUbiRememberDeviceTicket());
+        assertEquals("rememberMeTicket", result.getUbiAccountAuthorizationEntry().getUbiRememberMeTicket());
     }
 
     @Test
@@ -79,7 +82,7 @@ class UbiAccountAuthorizationEntryEntityTest {
         user.setId(1L);
         UbiAccountStatsEntity ubiAccount = new UbiAccountStatsEntity();
         ubiAccount.setUbiProfileId("profile1");
-        UbiAccountAuthorizationEntryEntity entity = new UbiAccountAuthorizationEntryEntity();
+        UbiAccountEntryEntity entity = new UbiAccountEntryEntity();
         entity.setUser(user);
         entity.setUbiAccountStats(ubiAccount);
         entity.setEmail("email@example.com");

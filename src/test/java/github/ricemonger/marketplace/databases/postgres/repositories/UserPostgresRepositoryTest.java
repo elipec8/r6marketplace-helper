@@ -48,7 +48,7 @@ class UserPostgresRepositoryTest {
         UserEntity userWithTradeByItemIdManagerTrue = new UserEntity();
         UbiAccountStatsEntity ubiAccountStatsEntity1 = new UbiAccountStatsEntity();
         ubiAccountStatsEntity1.setUbiProfileId("ubiProfileId1");
-        userWithTradeByItemIdManagerTrue.setUbiAccountAuthorizationEntry(new UbiAccountAuthorizationEntryEntity(userWithTradeByItemIdManagerTrue,
+        userWithTradeByItemIdManagerTrue.setUbiAccountAuthorizationEntry(new UbiAccountEntryEntity(userWithTradeByItemIdManagerTrue,
                 ubiAccountStatsEntity1, ubiAccountAuthorizationEntry));
         userWithTradeByItemIdManagerTrue.setManagingEnabledFlag(true);
         TradeByItemIdManagerEntity tradeByItemIdManagerEntityTrue = new TradeByItemIdManagerEntity();
@@ -59,7 +59,7 @@ class UserPostgresRepositoryTest {
         UserEntity userWithTradeByFiltersManagerTrue = new UserEntity();
         UbiAccountStatsEntity ubiAccountStatsEntity2 = new UbiAccountStatsEntity();
         ubiAccountStatsEntity2.setUbiProfileId("ubiProfileId2");
-        userWithTradeByFiltersManagerTrue.setUbiAccountAuthorizationEntry(new UbiAccountAuthorizationEntryEntity(userWithTradeByFiltersManagerTrue,
+        userWithTradeByFiltersManagerTrue.setUbiAccountAuthorizationEntry(new UbiAccountEntryEntity(userWithTradeByFiltersManagerTrue,
                 ubiAccountStatsEntity2, ubiAccountAuthorizationEntry));
         userWithTradeByFiltersManagerTrue.setManagingEnabledFlag(true);
         TradeByFiltersManagerEntity tradeByFiltersManagerEntityTrue = new TradeByFiltersManagerEntity();
@@ -70,7 +70,7 @@ class UserPostgresRepositoryTest {
         UserEntity userWithBothManagersTrue = new UserEntity();
         UbiAccountStatsEntity ubiAccountStatsEntity3 = new UbiAccountStatsEntity();
         ubiAccountStatsEntity3.setUbiProfileId("ubiProfileId3");
-        userWithBothManagersTrue.setUbiAccountAuthorizationEntry(new UbiAccountAuthorizationEntryEntity(userWithBothManagersTrue,
+        userWithBothManagersTrue.setUbiAccountAuthorizationEntry(new UbiAccountEntryEntity(userWithBothManagersTrue,
                 ubiAccountStatsEntity3, ubiAccountAuthorizationEntry));
         userWithBothManagersTrue.setManagingEnabledFlag(true);
         TradeByItemIdManagerEntity tradeByItemIdManagerEntityForBothTrue = new TradeByItemIdManagerEntity();
@@ -91,7 +91,7 @@ class UserPostgresRepositoryTest {
         UserEntity userWithTradeByItemIdManagerFalse = new UserEntity();
         UbiAccountStatsEntity ubiAccountStatsEntity4 = new UbiAccountStatsEntity();
         ubiAccountStatsEntity4.setUbiProfileId("ubiProfileId4");
-        userWithTradeByItemIdManagerFalse.setUbiAccountAuthorizationEntry(new UbiAccountAuthorizationEntryEntity(userWithTradeByItemIdManagerFalse,
+        userWithTradeByItemIdManagerFalse.setUbiAccountAuthorizationEntry(new UbiAccountEntryEntity(userWithTradeByItemIdManagerFalse,
                 ubiAccountStatsEntity4, ubiAccountAuthorizationEntry));
         userWithTradeByItemIdManagerFalse.setManagingEnabledFlag(false);
         TradeByItemIdManagerEntity tradeByItemIdManagerEntityFalse = new TradeByItemIdManagerEntity();
@@ -102,7 +102,7 @@ class UserPostgresRepositoryTest {
         UserEntity userWithTradeByFiltersManagerFalse = new UserEntity();
         UbiAccountStatsEntity ubiAccountStatsEntity5 = new UbiAccountStatsEntity();
         ubiAccountStatsEntity5.setUbiProfileId("ubiProfileId5");
-        userWithTradeByFiltersManagerFalse.setUbiAccountAuthorizationEntry(new UbiAccountAuthorizationEntryEntity(userWithTradeByFiltersManagerFalse, ubiAccountStatsEntity5, ubiAccountAuthorizationEntry));
+        userWithTradeByFiltersManagerFalse.setUbiAccountAuthorizationEntry(new UbiAccountEntryEntity(userWithTradeByFiltersManagerFalse, ubiAccountStatsEntity5, ubiAccountAuthorizationEntry));
         userWithTradeByFiltersManagerFalse.setManagingEnabledFlag(false);
         TradeByFiltersManagerEntity tradeByFiltersManagerEntityFalse = new TradeByFiltersManagerEntity();
         tradeByFiltersManagerEntityFalse.setName("name");
@@ -112,7 +112,7 @@ class UserPostgresRepositoryTest {
         UserEntity userWithBothManagersFalse = new UserEntity();
         UbiAccountStatsEntity ubiAccountStatsEntity6 = new UbiAccountStatsEntity();
         ubiAccountStatsEntity6.setUbiProfileId("ubiProfileId6");
-        userWithBothManagersFalse.setUbiAccountAuthorizationEntry(new UbiAccountAuthorizationEntryEntity(userWithBothManagersFalse,
+        userWithBothManagersFalse.setUbiAccountAuthorizationEntry(new UbiAccountEntryEntity(userWithBothManagersFalse,
                 ubiAccountStatsEntity6, ubiAccountAuthorizationEntry));
         userWithBothManagersFalse.setManagingEnabledFlag(false);
         TradeByItemIdManagerEntity tradeByItemIdManagerEntityForBothFalse = new TradeByItemIdManagerEntity();

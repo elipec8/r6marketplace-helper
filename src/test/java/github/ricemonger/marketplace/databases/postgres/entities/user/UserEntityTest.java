@@ -47,15 +47,15 @@ class UserEntityTest {
         ubiAccountStatsEntity.setSoldIn24h(1);
         ubiAccountStatsEntity.setBoughtIn24h(2);
 
-        UbiAccountAuthorizationEntryEntity ubiAccountAuthorizationEntryEntity = new UbiAccountAuthorizationEntryEntity();
-        ubiAccountAuthorizationEntryEntity.setUbiAccountStats(ubiAccountStatsEntity);
-        ubiAccountAuthorizationEntryEntity.setUbiSessionId("ubiSessionId");
-        ubiAccountAuthorizationEntryEntity.setUbiSpaceId("ubiSpaceId");
-        ubiAccountAuthorizationEntryEntity.setUbiAuthTicket("ubiAuthTicket");
-        ubiAccountAuthorizationEntryEntity.setUbiTwoFactorAuthTicket("ubiTwoFactorAuthTicket");
-        ubiAccountAuthorizationEntryEntity.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
-        ubiAccountAuthorizationEntryEntity.setUbiRememberMeTicket("ubiRememberMeTicket");
-        userEntity.setUbiAccountAuthorizationEntry(ubiAccountAuthorizationEntryEntity);
+        UbiAccountEntryEntity ubiAccountEntryEntity = new UbiAccountEntryEntity();
+        ubiAccountEntryEntity.setUbiAccountStats(ubiAccountStatsEntity);
+        ubiAccountEntryEntity.setUbiSessionId("ubiSessionId");
+        ubiAccountEntryEntity.setUbiSpaceId("ubiSpaceId");
+        ubiAccountEntryEntity.setUbiAuthTicket("ubiAuthTicket");
+        ubiAccountEntryEntity.setUbiTwoFactorAuthTicket("ubiTwoFactorAuthTicket");
+        ubiAccountEntryEntity.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
+        ubiAccountEntryEntity.setUbiRememberMeTicket("ubiRememberMeTicket");
+        userEntity.setUbiAccountAuthorizationEntry(ubiAccountEntryEntity);
 
         Collection<Item> existingItems = List.of(new Item("itemId1"), new Item("itemId2"));
 

@@ -17,7 +17,7 @@ class CentralTradeManagerTest {
     private CommonValuesService commonValuesService;
 
     @Test
-    public void manageAllUsersTrades_should_create_and_execute_list_of_commands() {
+    public void manageAllUsersTrades_should_create_and_execute_commands_for_all_manageable_users() {
 
     }
 }

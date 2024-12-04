@@ -10,6 +10,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -194,5 +199,20 @@ public class CommonValuesService {
 
     public Integer getMaximumTelegramMessageLimit() {
         return telegramBotConfiguration.getMessageLimit();
+    }
+
+    public void setLastUbiUsersStatsFetchTime(LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ubiServiceConfiguration.getDateFormat());
+        commonValuesDatabaseService.setLastUbiUsersStatsFetchTime(formatter.format(localDateTime));
+    }
+
+    public LocalDateTime getLastUbiUsersStatsFetchTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ubiServiceConfiguration.getDateFormat());
+        try{
+            return LocalDateTime.parse(commonValuesDatabaseService.getLastUbiUsersStatsFetchTime(), formatter);
+        }
+        catch(DateTimeParseException e) {
+            return LocalDateTime.now().minusDays(1).withNano(0);
+        }
     }
 }

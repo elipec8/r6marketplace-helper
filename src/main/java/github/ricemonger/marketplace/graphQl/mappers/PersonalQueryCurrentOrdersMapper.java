@@ -26,7 +26,7 @@ public class PersonalQueryCurrentOrdersMapper {
 
     private final CommonValuesService commonValuesService;
 
-    public Collection<UbiTrade> mapCurrentOrders(Trades trades) throws GraphQlPersonalCurrentOrderMappingException {
+    public List<UbiTrade> mapCurrentOrders(Trades trades) throws GraphQlPersonalCurrentOrderMappingException {
         if (trades == null) {
             throw new GraphQlPersonalCurrentOrderMappingException("Trades is null");
         }

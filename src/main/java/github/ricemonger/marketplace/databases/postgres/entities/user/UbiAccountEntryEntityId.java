@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UbiAccountAuthorizationEntryEntityId {
+public class UbiAccountEntryEntityId {
     private UserEntity user;
     private String email;
 
@@ -19,12 +19,12 @@ public class UbiAccountAuthorizationEntryEntityId {
         if (o == this) {
             return true;
         }
-        if (!(o instanceof UbiAccountAuthorizationEntryEntityId ubiAccountAuthorizationEntryEntityId)) {
+        if (!(o instanceof UbiAccountEntryEntityId ubiAccountEntryEntityId)) {
             return false;
         }
-        if (this.hashCode() != ubiAccountAuthorizationEntryEntityId.hashCode()) {
+        if (this.hashCode() != ubiAccountEntryEntityId.hashCode()) {
             return false;
         }
-        return ubiAccountAuthorizationEntryEntityId.user.getId().equals(user.getId()) && ubiAccountAuthorizationEntryEntityId.email.equals(email);
+        return ubiAccountEntryEntityId.user.getId().equals(user.getId()) && ubiAccountEntryEntityId.email.equals(email);
     }
 }

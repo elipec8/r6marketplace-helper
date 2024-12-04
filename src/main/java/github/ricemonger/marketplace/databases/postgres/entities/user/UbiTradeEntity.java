@@ -33,11 +33,27 @@ public class UbiTradeEntity {
     private LocalDateTime expiresAt;
     private LocalDateTime lastModifiedAt;
 
-    private int successPaymentPrice;
-    private int successPaymentFee;
+    private Integer successPaymentPrice;
+    private Integer successPaymentFee;
 
-    private int proposedPaymentPrice;
-    private int proposedPaymentFee;
+    private Integer proposedPaymentPrice;
+    private Integer proposedPaymentFee;
+
+    public UbiTradeEntity(UbiTrade ubiTrade, ItemEntity item) {
+        this.tradeId = ubiTrade.getTradeId();
+        this.item = item;
+
+        this.state = ubiTrade.getState();
+        this.category = ubiTrade.getCategory();
+        this.expiresAt = ubiTrade.getExpiresAt();
+        this.lastModifiedAt = ubiTrade.getLastModifiedAt();
+
+        this.successPaymentPrice = ubiTrade.getSuccessPaymentPrice();
+        this.successPaymentFee = ubiTrade.getSuccessPaymentFee();
+
+        this.proposedPaymentPrice = ubiTrade.getProposedPaymentPrice();
+        this.proposedPaymentFee = ubiTrade.getProposedPaymentFee();
+    }
 
     public UbiTrade toUbiTrade() {
         UbiTrade ubiTrade = new UbiTrade();
