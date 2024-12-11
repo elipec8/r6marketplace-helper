@@ -3,7 +3,7 @@ package github.ricemonger.marketplace.services.abstractions;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
 import github.ricemonger.utils.DTOs.UbiAccountStats;
-import github.ricemonger.utils.UbiAccountEntryWithTelegram;
+import github.ricemonger.utils.DTOs.UbiAccountEntryWithTelegram;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;

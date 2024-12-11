@@ -49,7 +49,6 @@ class UbiAccountEntityTest {
         UbiTradeEntity finishedTrade3 = new UbiTradeEntity();
         finishedTrade3.setTradeId("trade3f");
         finishedTrade3.setItem(item1);
-        entity.setFinishedTrades(Arrays.asList(finishedTrade1, finishedTrade2, finishedTrade3));
 
         UbiAccountStats stats = entity.toUbiAccountStats();
 
@@ -60,6 +59,5 @@ class UbiAccountEntityTest {
         assertEquals(2, stats.getResaleLocks().size());
         assertEquals(1, stats.getCurrentBuyTrades().size());
         assertEquals(2, stats.getCurrentSellTrades().size());
-        assertEquals(3, stats.getFinishedTrades().size());
     }
 }

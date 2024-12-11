@@ -1,7 +1,5 @@
 package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.utils.UbiAccountEntry;
-import github.ricemonger.utils.UbiAccountEntryWithTelegram;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

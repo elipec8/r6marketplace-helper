@@ -528,7 +528,7 @@ class PersonalQueryOneItemMapperTest {
         expected.setLastSoldPrice(777);
         expected.setOwned(true);
         UbiTrade expectedTrade = new UbiTrade();
-        expectedTrade.setItemId("223");
+        expectedTrade.setItem("223");
         expectedTrade.setTradeId("123");
         expectedTrade.setState(TradeState.Created);
         expectedTrade.setCategory(TradeCategory.Sell);

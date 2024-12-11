@@ -2,12 +2,15 @@ package github.ricemonger.utils.DTOs.items;
 
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
+import github.ricemonger.utils.enums.TradeCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static github.ricemonger.marketplace.services.CentralTradeManager.TRADE_MANAGER_FIXED_RATE_MINUTES;
 
 @Data
 @NoArgsConstructor
@@ -107,6 +110,45 @@ public class Item implements ItemMainFieldsI, ItemHistoryFieldsI {
     public Item(ItemMainFieldsI mainFields, ItemHistoryFieldsI historyFields) {
         setMainFields(mainFields);
         setHistoryFields(historyFields);
+    }
+
+    public Integer getPrognosedTradeSuccessMinutes(Integer proposedPaymentPrice, TradeCategory category) {
+        if (category == TradeCategory.Buy) {
+            if (proposedPaymentPrice >= this.minSellPrice) {
+                return TRADE_MANAGER_FIXED_RATE_MINUTES;
+            } else if (proposedPaymentPrice >= this.priceToBuyIn1Hour) {
+                return 60;
+            } else if (proposedPaymentPrice >= this.priceToBuyIn6Hours) {
+                return 360;
+            } else if (proposedPaymentPrice >= this.priceToBuyIn24Hours) {
+                return 1440;
+            } else if (proposedPaymentPrice >= this.priceToBuyIn168Hours) {
+                return 10080;
+            } else if (proposedPaymentPrice >= this.monthMinPrice) {
+                return 43200;
+            } else {
+                return 0;
+            }
+        } else if (category == TradeCategory.Sell) {
+            if (proposedPaymentPrice <= this.maxBuyPrice) {
+                return TRADE_MANAGER_FIXED_RATE_MINUTES;
+            } else if (proposedPaymentPrice <= this.priceToSellIn1Hour) {
+                return 60;
+            } else if (proposedPaymentPrice <= this.priceToSellIn6Hours) {
+                return 360;
+            } else if (proposedPaymentPrice <= this.priceToSellIn24Hours) {
+                return 1440;
+            } else if (proposedPaymentPrice <= this.priceToSellIn168Hours) {
+                return 10080;
+            } else if (proposedPaymentPrice <= this.monthMaxPrice) {
+                return 43200;
+            } else {
+                return 0;
+            }
+        } else {
+            log.error("Trade category is Unknown is not set for item with id: " + itemId);
+            return 0;
+        }
     }
 
     public boolean isFullyEqualTo(Object o) {

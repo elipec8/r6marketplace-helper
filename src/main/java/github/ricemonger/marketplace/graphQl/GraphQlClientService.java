@@ -1,10 +1,7 @@
 package github.ricemonger.marketplace.graphQl;
 
 import github.ricemonger.marketplace.graphQl.mappers.*;
-import github.ricemonger.utils.DTOs.AuthorizationDTO;
-import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
-import github.ricemonger.utils.DTOs.ConfigTrades;
-import github.ricemonger.utils.DTOs.UbiTrade;
+import github.ricemonger.utils.DTOs.*;
 import github.ricemonger.utils.DTOs.items.*;
 import github.ricemonger.utils.exceptions.server.*;
 import lombok.RequiredArgsConstructor;
@@ -175,46 +172,39 @@ public class GraphQlClientService {
         return personalQueryCurrentOrdersMapper.mapCurrentOrders(trades);
     }
 
-    public List<UbiTrade> fetchFinishedOrdersForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalFinishedOrdersMappingException {
+    public List<UbiTrade> fetchLastFinishedOrdersForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalFinishedOrdersMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
         github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.Trades trades;
         int offset = 0;
-        int totalCount;
+        int limit = 50;
 
-        do {
-            trades = client
-                    .documentName(GraphQlDocuments.QUERY_FINISHED_ORDERS_DOCUMENT_NAME)
-                    .variables(graphQlVariablesService.getFetchOrdersVariables(offset))
-                    .retrieve("game.viewer.meta.trades")
-                    .toEntity(github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.Trades.class)
-                    .block();
+        trades = client
+                .documentName(GraphQlDocuments.QUERY_FINISHED_ORDERS_DOCUMENT_NAME)
+                .variables(graphQlVariablesService.getFetchOrdersVariables(offset, limit))
+                .retrieve("game.viewer.meta.trades")
+                .toEntity(github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.Trades.class)
+                .block();
 
-            if (trades == null || trades.getNodes() == null) {
-                throw new GraphQlPersonalFinishedOrdersMappingException("Trades or it's field is null");
-            }
-
-            totalCount = trades.getNodes().size();
-
-            offset += GraphQlVariablesService.MAX_LIMIT;
+        if (trades == null || trades.getNodes() == null) {
+            throw new GraphQlPersonalFinishedOrdersMappingException("Trades or it's field is null");
         }
-        while (totalCount == GraphQlVariablesService.MAX_LIMIT);
 
         return personalQueryFinishedOrdersMapper.mapFinishedOrders(trades);
     }
 
-    public List<ItemResaleLockWithUbiAccount> fetchLockedItemsForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalLockedItemsMappingException {
+    public UserTradesLimitations fetchTradesLimitationsForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalLockedItemsMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
-        github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.TradeLimitations tradeLimitations;
+        github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.TradesLimitations tradesLimitations;
 
-        tradeLimitations = client
+        tradesLimitations = client
                 .documentName(GraphQlDocuments.QUERY_LOCKED_ITEMS_DOCUMENT_NAME)
                 .variables(graphQlVariablesService.getFetchLockedItemsVariables())
-                .retrieve("game.viewer.meta.tradeLimitations")
-                .toEntity(github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.TradeLimitations.class)
+                .retrieve("game.viewer.meta.tradesLimitations")
+                .toEntity(github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.TradesLimitations.class)
                 .block();
 
-        return personalQueryLockedItemsMapper.mapLockedItems(tradeLimitations).stream().map(item -> (ItemResaleLockWithUbiAccount) item).toList();
+        return personalQueryLockedItemsMapper.mapTradesLimitationsForUser(tradesLimitations, authorizationDTO.getProfileId());
     }
 
     public PersonalItem fetchOneItem(AuthorizationDTO authorizationDTO, String itemId) throws GraphQlPersonalOneItemMappingException {
@@ -229,7 +219,6 @@ public class GraphQlClientService {
 
         return personalQueryOneItemMapper.mapItem(game);
     }
-
 
     public List<String> fetchAllOwnedItemsIdsForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalOwnedItemsMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TradeLimitations {
+public class TradesLimitations {
     private Buy buy;
     private Sell sell;
 }

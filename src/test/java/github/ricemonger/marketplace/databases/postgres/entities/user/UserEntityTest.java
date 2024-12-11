@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class UserEntityTest {
 
     @Test
-    public void toUserForCentralTradeManagerDTO_should_properly_map_dto() {
+    public void toUserForCentralTradeManagerDTO_should_properly_map_() {
         ItemFilterEntity itemFilterEntity1 = new ItemFilterEntity();
         itemFilterEntity1.setName("itemFilterName1");
         itemFilterEntity1.setFilterType(FilterType.ALLOW);
@@ -59,7 +59,7 @@ class UserEntityTest {
 
         Collection<Item> existingItems = List.of(new Item("itemId1"), new Item("itemId2"));
 
-        UserForCentralTradeManager userForCentralTradeManager = userEntity.toUserForCentralTradeManagerDTO(existingItems);
+        UserForCentralTradeManager userForCentralTradeManager = userEntity.toUserForCentralTradeManager(existingItems);
 
         ItemForCentralTradeManager itemForCentralTradeManager1 = new ItemForCentralTradeManager();
         itemForCentralTradeManager1.setItem(new Item("itemId1"));

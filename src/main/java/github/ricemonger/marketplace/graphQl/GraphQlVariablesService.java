@@ -51,6 +51,14 @@ public class GraphQlVariablesService {
         );
     }
 
+    public Map<String, Object> getFetchOrdersVariables(int offset, int limit) {
+        return Map.of(
+                "spaceId", commonValuesService.getUbiGameSpaceId(),
+                "limit", limit,
+                "offset", offset
+        );
+    }
+
     public Map<String, Object> getFetchCreditAmountVariables() {
         return Map.of(
                 "spaceId", commonValuesService.getUbiGameSpaceId(),

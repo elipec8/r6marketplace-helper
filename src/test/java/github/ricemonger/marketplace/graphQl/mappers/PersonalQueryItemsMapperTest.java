@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.TradeLimitations;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.TradesLimitations;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.tradeLimitations.Buy;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.tradeLimitations.Sell;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.tradeLimitations.sell.ResaleLocks;
@@ -36,16 +36,16 @@ class PersonalQueryItemsMapperTest {
         LocalDateTime date = LocalDateTime.now().withNano(0);
         LocalDateTime date2 = date.plusSeconds(1000);
 
-        TradeLimitations tradeLimitations = new TradeLimitations();
-        tradeLimitations.setSell(new Sell());
-        tradeLimitations.getSell().setResaleLocks(new ArrayList<>());
-        tradeLimitations.getSell().getResaleLocks().add(new ResaleLocks("1", dtf.format(date)));
-        tradeLimitations.getSell().getResaleLocks().add(new ResaleLocks("2", dtf.format(date2)));
+        TradesLimitations tradesLimitations = new TradesLimitations();
+        tradesLimitations.setSell(new Sell());
+        tradesLimitations.getSell().setResaleLocks(new ArrayList<>());
+        tradesLimitations.getSell().getResaleLocks().add(new ResaleLocks("1", dtf.format(date)));
+        tradesLimitations.getSell().getResaleLocks().add(new ResaleLocks("2", dtf.format(date2)));
 
         ItemResaleLock expected1 = new ItemResaleLock("1", date);
         ItemResaleLock expected2 = new ItemResaleLock("2", date2);
 
-        List<ItemResaleLock> result = personalQueryLockedItemsMapper.mapLockedItems(tradeLimitations);
+        List<ItemResaleLock> result = personalQueryLockedItemsMapper.mapTradesLimitationsForUser(tradesLimitations);
 
         assertTrue(result.contains(expected1) && result.contains(expected2));
         verify(personalQueryLockedItemsMapper, times(2)).mapLockedItem(any());
@@ -54,24 +54,24 @@ class PersonalQueryItemsMapperTest {
     @Test
     public void mapLockedItems_should_throw_exception_when_tradeLimitations_is_null() {
         assertThrows(GraphQlPersonalLockedItemsMappingException.class, () -> {
-            personalQueryLockedItemsMapper.mapLockedItems(null);
+            personalQueryLockedItemsMapper.mapTradesLimitationsForUser(null);
         });
     }
 
     @Test
     public void mapLockedItems_should_throw_exception_when_sell_is_null() {
         assertThrows(GraphQlPersonalLockedItemsMappingException.class, () -> {
-            personalQueryLockedItemsMapper.mapLockedItems(new TradeLimitations());
+            personalQueryLockedItemsMapper.mapTradesLimitationsForUser(new TradesLimitations());
         });
     }
 
     @Test
     public void mapLockedItems_should_throw_exception_when_resaleLocks_is_null() {
-        TradeLimitations tradeLimitations = new TradeLimitations();
-        tradeLimitations.setSell(new Sell());
+        TradesLimitations tradesLimitations = new TradesLimitations();
+        tradesLimitations.setSell(new Sell());
 
         assertThrows(GraphQlPersonalLockedItemsMappingException.class, () -> {
-            personalQueryLockedItemsMapper.mapLockedItems(tradeLimitations);
+            personalQueryLockedItemsMapper.mapTradesLimitationsForUser(tradesLimitations);
         });
     }
 
@@ -119,11 +119,11 @@ class PersonalQueryItemsMapperTest {
 
     @Test
     public void mapUserTransactionsCount_should_map_user_transactions_count() {
-        TradeLimitations tradeLimitations = createTradeLimitations();
+        TradesLimitations tradesLimitations = createTradeLimitations();
 
         UserTransactionsCount expected = new UserTransactionsCount(1, 2, 3, 4);
 
-        assertEquals(expected, personalQueryLockedItemsMapper.mapUserTransactionsCount(tradeLimitations));
+        assertEquals(expected, personalQueryLockedItemsMapper.mapUserTransactionsCount(tradesLimitations));
     }
 
     @Test
@@ -135,73 +135,73 @@ class PersonalQueryItemsMapperTest {
 
     @Test
     public void mapUserTransactionsCount_should_throw_exception_when_buy_is_null() {
-        TradeLimitations tradeLimitations = createTradeLimitations();
-        tradeLimitations.setBuy(null);
+        TradesLimitations tradesLimitations = createTradeLimitations();
+        tradesLimitations.setBuy(null);
 
         assertThrows(GraphQlPersonalLockedItemsMappingException.class, () -> {
-            personalQueryLockedItemsMapper.mapUserTransactionsCount(tradeLimitations);
+            personalQueryLockedItemsMapper.mapUserTransactionsCount(tradesLimitations);
         });
     }
 
     @Test
     public void mapUserTransactionsCount_should_throw_exception_when_sell_is_null() {
-        TradeLimitations tradeLimitations = createTradeLimitations();
-        tradeLimitations.setSell(null);
+        TradesLimitations tradesLimitations = createTradeLimitations();
+        tradesLimitations.setSell(null);
 
         assertThrows(GraphQlPersonalLockedItemsMappingException.class, () -> {
-            personalQueryLockedItemsMapper.mapUserTransactionsCount(tradeLimitations);
+            personalQueryLockedItemsMapper.mapUserTransactionsCount(tradesLimitations);
         });
     }
 
     @Test
     public void mapUserTransactionsCount_should_throw_exception_when_buy_activeTransactionCount_is_null() {
-        TradeLimitations tradeLimitations = createTradeLimitations();
-        tradeLimitations.getBuy().setActiveTransactionCount(null);
+        TradesLimitations tradesLimitations = createTradeLimitations();
+        tradesLimitations.getBuy().setActiveTransactionCount(null);
 
         assertThrows(GraphQlPersonalLockedItemsMappingException.class, () -> {
-            personalQueryLockedItemsMapper.mapUserTransactionsCount(tradeLimitations);
+            personalQueryLockedItemsMapper.mapUserTransactionsCount(tradesLimitations);
         });
     }
 
     @Test
     public void mapUserTransactionsCount_should_throw_exception_when_buy_resolvedTransactionCount_is_null() {
-        TradeLimitations tradeLimitations = createTradeLimitations();
-        tradeLimitations.getBuy().setResolvedTransactionCount(null);
+        TradesLimitations tradesLimitations = createTradeLimitations();
+        tradesLimitations.getBuy().setResolvedTransactionCount(null);
 
         assertThrows(GraphQlPersonalLockedItemsMappingException.class, () -> {
-            personalQueryLockedItemsMapper.mapUserTransactionsCount(tradeLimitations);
+            personalQueryLockedItemsMapper.mapUserTransactionsCount(tradesLimitations);
         });
     }
 
     @Test
     public void mapUserTransactionsCount_should_throw_exception_when_sell_activeTransactionCount_is_null() {
-        TradeLimitations tradeLimitations = createTradeLimitations();
-        tradeLimitations.getSell().setActiveTransactionCount(null);
+        TradesLimitations tradesLimitations = createTradeLimitations();
+        tradesLimitations.getSell().setActiveTransactionCount(null);
 
         assertThrows(GraphQlPersonalLockedItemsMappingException.class, () -> {
-            personalQueryLockedItemsMapper.mapUserTransactionsCount(tradeLimitations);
+            personalQueryLockedItemsMapper.mapUserTransactionsCount(tradesLimitations);
         });
     }
 
     @Test
     public void mapUserTransactionsCount_should_throw_exception_when_sell_resolvedTransactionCount_is_null() {
-        TradeLimitations tradeLimitations = createTradeLimitations();
-        tradeLimitations.getSell().setResolvedTransactionCount(null);
+        TradesLimitations tradesLimitations = createTradeLimitations();
+        tradesLimitations.getSell().setResolvedTransactionCount(null);
 
         assertThrows(GraphQlPersonalLockedItemsMappingException.class, () -> {
-            personalQueryLockedItemsMapper.mapUserTransactionsCount(tradeLimitations);
+            personalQueryLockedItemsMapper.mapUserTransactionsCount(tradesLimitations);
         });
     }
 
-    private TradeLimitations createTradeLimitations() {
-        TradeLimitations tradeLimitations = new TradeLimitations();
-        tradeLimitations.setBuy(new Buy());
-        tradeLimitations.setSell(new Sell());
-        tradeLimitations.getBuy().setResolvedTransactionCount(1);
-        tradeLimitations.getBuy().setActiveTransactionCount(2);
-        tradeLimitations.getSell().setResaleLocks(new ArrayList<>());
-        tradeLimitations.getSell().setResolvedTransactionCount(3);
-        tradeLimitations.getSell().setActiveTransactionCount(4);
-        return tradeLimitations;
+    private TradesLimitations createTradeLimitations() {
+        TradesLimitations tradesLimitations = new TradesLimitations();
+        tradesLimitations.setBuy(new Buy());
+        tradesLimitations.setSell(new Sell());
+        tradesLimitations.getBuy().setResolvedTransactionCount(1);
+        tradesLimitations.getBuy().setActiveTransactionCount(2);
+        tradesLimitations.getSell().setResaleLocks(new ArrayList<>());
+        tradesLimitations.getSell().setResolvedTransactionCount(3);
+        tradesLimitations.getSell().setActiveTransactionCount(4);
+        return tradesLimitations;
     }
 }

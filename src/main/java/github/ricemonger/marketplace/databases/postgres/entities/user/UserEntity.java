@@ -2,18 +2,14 @@ package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 
 import github.ricemonger.utils.DTOs.UserForCentralTradeManager;
-import github.ricemonger.utils.DTOs.items.Item;
-import github.ricemonger.utils.DTOs.items.ItemForCentralTradeManager;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.*;
-
-import static github.ricemonger.utils.DTOs.TradeByFiltersManager.getItemsForCentralTradeManagerFromTradeByFiltersManagersByPriority;
-import static github.ricemonger.utils.DTOs.TradeByItemIdManager.getItemsForCentralTradeManagerFromTradeByItemIdManagersByPriority;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "helper_user")
 @Getter
@@ -61,7 +57,7 @@ public class UserEntity {
     private Boolean newManagersAreActiveFlag = true;
     private Boolean managingEnabledFlag = true;
 
-    public UserForCentralTradeManager toUserForCentralTradeManagerDTO(Collection<Item> existingItems) {
+    public UserForCentralTradeManager toUserForCentralTradeManager() {
         UserForCentralTradeManager userForCentralTradeManager = new UserForCentralTradeManager();
 
         userForCentralTradeManager.setId(id);
@@ -78,18 +74,9 @@ public class UserEntity {
         userForCentralTradeManager.setChatId(telegramUser.getChatId());
         userForCentralTradeManager.setPrivateNotificationsEnabledFlag(privateNotificationsEnabledFlag);
 
-        userForCentralTradeManager.setItemsForCentralTradeManager(getItemForCentralTradeManagerFromTradeManagersByPriority(existingItems));
+        userForCentralTradeManager.setTradeByFiltersManagers(tradeByFiltersManagers.stream().map(TradeByFiltersManagerEntity::toTradeByFiltersManager).toList());
+        userForCentralTradeManager.setTradeByItemIdManagers(tradeByItemIdManagers.stream().map(TradeByItemIdManagerEntity::toTradeByItemIdManager).toList());
 
         return userForCentralTradeManager;
-    }
-
-    private Set<ItemForCentralTradeManager> getItemForCentralTradeManagerFromTradeManagersByPriority(Collection<Item> existingItems) {
-        Set<ItemForCentralTradeManager> itemForCentralTradeManagers = new HashSet<>();
-        itemForCentralTradeManagers.addAll(getItemsForCentralTradeManagerFromTradeByFiltersManagersByPriority(tradeByFiltersManagers.stream().map(TradeByFiltersManagerEntity::toTradeByFiltersManager).toList(),
-                existingItems));
-        itemForCentralTradeManagers.addAll(getItemsForCentralTradeManagerFromTradeByItemIdManagersByPriority(tradeByItemIdManagers.stream().map(TradeByItemIdManagerEntity::toTradeByItemIdManager).toList(),
-                existingItems));
-
-        return itemForCentralTradeManagers;
     }
 }

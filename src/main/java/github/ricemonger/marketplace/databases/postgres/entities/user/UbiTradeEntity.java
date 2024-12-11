@@ -23,7 +23,7 @@ public class UbiTradeEntity {
     @Id
     private String tradeId;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private ItemEntity item;
 
     @Enumerated(EnumType.ORDINAL)
@@ -58,7 +58,7 @@ public class UbiTradeEntity {
     public UbiTrade toUbiTrade() {
         UbiTrade ubiTrade = new UbiTrade();
         ubiTrade.setTradeId(tradeId);
-        ubiTrade.setItemId(item.getItemId());
+        ubiTrade.setItem(item.toItem());
 
         ubiTrade.setState(state);
         ubiTrade.setCategory(category);

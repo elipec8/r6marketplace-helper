@@ -11,4 +11,9 @@ public class TradeManagersSettings {
     private boolean newManagersAreActiveFlag;
 
     private boolean managingEnabledFlag;
+
+    public String toHandsomeString() {
+        return "New managers are active: " + newManagersAreActiveFlag + "\n" +
+               "Managing enabled: " + managingEnabledFlag + "\n";
+    }
 }

@@ -6,14 +6,68 @@ import github.ricemonger.utils.DTOs.items.ItemHistoryFieldsI;
 import github.ricemonger.utils.DTOs.items.ItemMainFieldsI;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
+import github.ricemonger.utils.enums.TradeCategory;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static github.ricemonger.marketplace.services.CentralTradeManager.TRADE_MANAGER_FIXED_RATE_MINUTES;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ItemTest {
+
+    @Test
+    public void getPrognosedTradeSuccessMinutes_should_return_0_when_trade_category_is_null_or_Unknown() {
+        Item item = new Item();
+        item.setMinSellPrice(10);
+        item.setPriceToBuyIn1Hour(20);
+        item.setPriceToBuyIn6Hours(30);
+        item.setPriceToBuyIn24Hours(40);
+        item.setPriceToBuyIn168Hours(50);
+        item.setMaxBuyPrice(60);
+        item.setPriceToSellIn1Hour(70);
+        item.setPriceToSellIn6Hours(80);
+        item.setPriceToSellIn24Hours(90);
+        item.setPriceToSellIn168Hours(100);
+
+        assertEquals(0, item.getPrognosedTradeSuccessMinutes(15, null));
+        assertEquals(0, item.getPrognosedTradeSuccessMinutes(15, TradeCategory.Unknown));
+    }
+
+    @Test
+    public void getPrognosedTradeSuccessMinutes_should_return_value_by_prices_and_tradeCategory() {
+        Item item = new Item();
+        item.setMinSellPrice(120);
+        item.setPriceToBuyIn1Hour(110);
+        item.setPriceToBuyIn6Hours(100);
+        item.setPriceToBuyIn24Hours(90);
+        item.setPriceToBuyIn168Hours(80);
+        item.setMonthMinPrice(70);
+
+        item.setMaxBuyPrice(10);
+        item.setPriceToSellIn1Hour(20);
+        item.setPriceToSellIn6Hours(30);
+        item.setPriceToSellIn24Hours(40);
+        item.setPriceToSellIn168Hours(50);
+        item.setMonthMaxPrice(60);
+
+        assertEquals(TRADE_MANAGER_FIXED_RATE_MINUTES, item.getPrognosedTradeSuccessMinutes(125, TradeCategory.Buy));
+        assertEquals(60, item.getPrognosedTradeSuccessMinutes(115, TradeCategory.Buy));
+        assertEquals(360, item.getPrognosedTradeSuccessMinutes(105, TradeCategory.Buy));
+        assertEquals(1440, item.getPrognosedTradeSuccessMinutes(95, TradeCategory.Buy));
+        assertEquals(10080, item.getPrognosedTradeSuccessMinutes(85, TradeCategory.Buy));
+        assertEquals(43200, item.getPrognosedTradeSuccessMinutes(75, TradeCategory.Buy));
+        assertEquals(0, item.getPrognosedTradeSuccessMinutes(65, TradeCategory.Buy));
+
+        assertEquals(TRADE_MANAGER_FIXED_RATE_MINUTES, item.getPrognosedTradeSuccessMinutes(5, TradeCategory.Sell));
+        assertEquals(60, item.getPrognosedTradeSuccessMinutes(15, TradeCategory.Sell));
+        assertEquals(360, item.getPrognosedTradeSuccessMinutes(25, TradeCategory.Sell));
+        assertEquals(1440, item.getPrognosedTradeSuccessMinutes(35, TradeCategory.Sell));
+        assertEquals(10080, item.getPrognosedTradeSuccessMinutes(45, TradeCategory.Sell));
+        assertEquals(43200, item.getPrognosedTradeSuccessMinutes(55, TradeCategory.Sell));
+        assertEquals(0, item.getPrognosedTradeSuccessMinutes(65, TradeCategory.Sell));
+    }
 
     @Test
     public void setRarityByTags_should_set_rarity_to_unknown_when_tags_are_null() {

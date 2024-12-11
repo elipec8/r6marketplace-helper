@@ -4,11 +4,8 @@ import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.TelegramUserUbiAccountEntryService;
 import github.ricemonger.telegramBot.TelegramBotService;
-import github.ricemonger.utils.DTOs.AuthorizationDTO;
-import github.ricemonger.utils.DTOs.UbiAccountStats;
-import github.ricemonger.utils.DTOs.UbiTrade;
+import github.ricemonger.utils.DTOs.*;
 import github.ricemonger.utils.DTOs.items.ItemResaleLockWithUbiAccount;
-import github.ricemonger.utils.UbiAccountEntryWithTelegram;
 import github.ricemonger.utils.enums.TradeCategory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +36,7 @@ public class ScheduledAllUbiUsersStatsFetcher {
         List<UbiAccountStats> updatedUbiAccountsStats = new ArrayList<>();
 
         for (UbiAccountEntryWithTelegram ubiAccountWithTelegram : ubiAccountsWithTelegram) {
+            System.out.println("Fetching stats for " + ubiAccountWithTelegram);
             updatedUbiAccountsStats.add(fetchAndGetUserPersonalStats(ubiAccountWithTelegram));
         }
 
@@ -51,8 +49,9 @@ public class ScheduledAllUbiUsersStatsFetcher {
         AuthorizationDTO authorizationDTO = new AuthorizationDTO(ubiAccountWithTelegram);
         int creditAmount = graphQlClientService.fetchCreditAmountForUser(authorizationDTO);
         List<UbiTrade> currentOrders = graphQlClientService.fetchCurrentOrdersForUser(authorizationDTO);
-        List<UbiTrade> finishedOrders = graphQlClientService.fetchFinishedOrdersForUser(authorizationDTO);
-        List<ItemResaleLockWithUbiAccount> itemResaleLocks = graphQlClientService.fetchLockedItemsForUser(authorizationDTO);
+        List<UbiTrade> finishedOrders = graphQlClientService.fetchLastFinishedOrdersForUser(authorizationDTO);
+        UserTradesLimitations userTradesLimitations = graphQlClientService.fetchTradesLimitationsForUser(authorizationDTO);
+        List<ItemResaleLockWithUbiAccount> itemResaleLocks = userTradesLimitations.getItemResaleLocksWithUbiAccount();
         List<String> ownedItemsIds = graphQlClientService.fetchAllOwnedItemsIdsForUser(authorizationDTO);
 
         LocalDateTime lastDayPeriod = LocalDateTime.now().minusDays(1).withNano(0);
@@ -72,18 +71,18 @@ public class ScheduledAllUbiUsersStatsFetcher {
 
         return new UbiAccountStats(
                 ubiAccountWithTelegram.getUbiProfileId(),
-                soldIn24h.size(),
-                boughtIn24h.size(),
+                userTradesLimitations.getResolvedSellTransactionCount(),
+                userTradesLimitations.getResolvedBuyTransactionCount(),
                 creditAmount,
                 ownedItemsIds,
                 itemResaleLocks,
                 currentBuyTrades,
-                currentSellTrades,
-                finishedOrders);
+                currentSellTrades);
     }
 
     private void notifyUser(UbiAccountEntryWithTelegram ubiAccountWithTelegram, int creditAmount, List<UbiTrade> soldIn24h, List<UbiTrade> boughtIn24h) {
-        boolean creditsChanged = ubiAccountWithTelegram.getCreditAmount() != creditAmount;
+
+        boolean creditsChanged = ubiAccountWithTelegram.getCreditAmount() == null || ubiAccountWithTelegram.getCreditAmount() != creditAmount;
         boolean soldIn24hChanged = soldIn24h.stream().anyMatch(trade -> trade.getLastModifiedAt().isAfter(commonValuesService.getLastUbiUsersStatsFetchTime()));
         boolean boughtIn24hChanged = boughtIn24h.stream().anyMatch(trade -> trade.getLastModifiedAt().isAfter(commonValuesService.getLastUbiUsersStatsFetchTime()));
 
@@ -96,13 +95,13 @@ public class ScheduledAllUbiUsersStatsFetcher {
             if (soldIn24hChanged) {
                 message.append("You have additionally sold these items in the last 24 hours:\n");
                 for (UbiTrade trade : soldIn24h.stream().filter(trade -> trade.getLastModifiedAt().isAfter(commonValuesService.getLastUbiUsersStatsFetchTime())).toList()) {
-                    message.append(trade.getItemId()).append(" for ").append(trade.getSuccessPaymentPrice() - trade.getSuccessPaymentFee()).append("\n");
+                    message.append(trade.getItem()).append(" for ").append(trade.getSuccessPaymentPrice() - trade.getSuccessPaymentFee()).append("\n");
                 }
             }
             if (boughtIn24hChanged) {
                 message.append("You have additionally bought these items in the last 24 hours:\n");
                 for (UbiTrade trade : boughtIn24h.stream().filter(trade -> trade.getLastModifiedAt().isAfter(commonValuesService.getLastUbiUsersStatsFetchTime())).toList()) {
-                    message.append(trade.getItemId()).append(" for ").append(trade.getSuccessPaymentPrice()).append("\n");
+                    message.append(trade.getItem()).append(" for ").append(trade.getSuccessPaymentPrice()).append("\n");
                 }
             }
 

@@ -83,7 +83,7 @@ class ItemForCentralTradeManagerTest {
         assertEquals(tradeByFiltersManager.getTradeOperationType(), itemForTradeDTO.getTradeOperationType());
         assertEquals(tradeByFiltersManager.getPriority(), itemForTradeDTO.getPriority());
         assertEquals(tradeByFiltersManager.getMinBuySellProfit(), itemForTradeDTO.getMinBuySellProfit());
-        assertEquals(tradeByFiltersManager.getMinProfitPercent(), itemForTradeDTO.getMinProfitPercent());
+        assertEquals(tradeByFiltersManager.getMinProfitPercent(), itemForTradeDTO.getMinBuySellProfitPercent());
 
         assertEquals(0, itemForTradeDTO.getSellBoundaryPrice());
         assertEquals(Integer.MAX_VALUE, itemForTradeDTO.getBuyBoundaryPrice());
@@ -162,7 +162,7 @@ class ItemForCentralTradeManagerTest {
         assertEquals(tradeByItemIdManager.getSellBoundaryPrice(), itemForTradeDTO.getSellBoundaryPrice());
 
         assertEquals(Integer.MIN_VALUE, itemForTradeDTO.getMinBuySellProfit());
-        assertEquals(Integer.MIN_VALUE, itemForTradeDTO.getMinProfitPercent());
+        assertEquals(Integer.MIN_VALUE, itemForTradeDTO.getMinBuySellProfitPercent());
     }
 
     @Test
@@ -202,7 +202,7 @@ class ItemForCentralTradeManagerTest {
         itemForTradeDTO1.setBuyBoundaryPrice(24);
         itemForTradeDTO1.setSellBoundaryPrice(25);
         itemForTradeDTO1.setMinBuySellProfit(26);
-        itemForTradeDTO1.setMinProfitPercent(27);
+        itemForTradeDTO1.setMinBuySellProfitPercent(27);
         itemForTradeDTO1.setTradeOperationType(TradeOperationType.BUY);
         itemForTradeDTO1.setPriority(1);
 
@@ -242,7 +242,7 @@ class ItemForCentralTradeManagerTest {
         itemForTradeDTO2.setBuyBoundaryPrice(25);
         itemForTradeDTO2.setSellBoundaryPrice(26);
         itemForTradeDTO2.setMinBuySellProfit(27);
-        itemForTradeDTO2.setMinProfitPercent(28);
+        itemForTradeDTO2.setMinBuySellProfitPercent(28);
         itemForTradeDTO2.setTradeOperationType(TradeOperationType.BUY);
         itemForTradeDTO2.setPriority(2);
 

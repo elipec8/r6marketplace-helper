@@ -28,7 +28,7 @@ public class UbiAccountStatsEntity {
 
     private Integer creditAmount;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "ubi_account_current_owned_items",
             joinColumns = {@JoinColumn(name = "ubiProfileId", referencedColumnName = "ubiProfileId")},
             inverseJoinColumns = @JoinColumn(name = "itemId", referencedColumnName = "itemid"))
@@ -51,12 +51,6 @@ public class UbiAccountStatsEntity {
             joinColumns = {@JoinColumn(name = "ubiProfileId", referencedColumnName = "ubiProfileId")},
             inverseJoinColumns = @JoinColumn(name = "tradeId", referencedColumnName = "tradeId"))
     private List<UbiTradeEntity> currentSellTrades = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinTable(name = "ubi_account_finished_trades",
-            joinColumns = {@JoinColumn(name = "ubiProfileId", referencedColumnName = "ubiProfileId")},
-            inverseJoinColumns = @JoinColumn(name = "tradeId", referencedColumnName = "tradeId"))
-    private List<UbiTradeEntity> finishedTrades = new ArrayList<>();
 
     public UbiAccountStatsEntity(String ubiProfileId) {
         this.ubiProfileId = ubiProfileId;
@@ -83,7 +77,7 @@ public class UbiAccountStatsEntity {
         List<UbiTradeEntity> updatedCurrentBuyTrades = ubiAccountStats.getCurrentBuyTrades().stream().map(ubiTrade -> {
             ItemEntity item = existingItems.stream().filter(i -> i.getItemId().equals(ubiTrade.getItemId())).findFirst().orElse(null);
             if (item == null) {
-                log.error("Item with id {} not found in existing items", ubiTrade.getItemId());
+                log.error("Item with id {} not found in existing items", ubiTrade.getItem());
                 return null;
             }
             return new UbiTradeEntity(ubiTrade, item);
@@ -94,24 +88,13 @@ public class UbiAccountStatsEntity {
         List<UbiTradeEntity> updatedCurrentSellTrades = ubiAccountStats.getCurrentSellTrades().stream().map(ubiTrade -> {
             ItemEntity item = existingItems.stream().filter(i -> i.getItemId().equals(ubiTrade.getItemId())).findFirst().orElse(null);
             if (item == null) {
-                log.error("Item with id {} not found in existing items", ubiTrade.getItemId());
+                log.error("Item with id {} not found in existing items", ubiTrade.getItem());
                 return null;
             }
             return new UbiTradeEntity(ubiTrade, item);
         }).toList();
         this.currentSellTrades.clear();
         this.currentSellTrades.addAll(updatedCurrentSellTrades);
-
-        List<UbiTradeEntity> updatedFinishedTrades = ubiAccountStats.getFinishedTrades().stream().map(ubiTrade -> {
-            ItemEntity item = existingItems.stream().filter(i -> i.getItemId().equals(ubiTrade.getItemId())).findFirst().orElse(null);
-            if (item == null) {
-                log.error("Item with id {} not found in existing items", ubiTrade.getItemId());
-                return null;
-            }
-            return new UbiTradeEntity(ubiTrade, item);
-        }).toList();
-        this.finishedTrades.clear();
-        this.finishedTrades.addAll(updatedFinishedTrades);
     }
 
     public UbiAccountStats toUbiAccountStats() {
@@ -124,7 +107,6 @@ public class UbiAccountStatsEntity {
         ubiAccountStats.setResaleLocks(this.resaleLocks.stream().map(ItemResaleLockEntity::toItemResaleLockWithUbiAccount).toList());
         ubiAccountStats.setCurrentBuyTrades(this.currentBuyTrades.stream().map(UbiTradeEntity::toUbiTrade).toList());
         ubiAccountStats.setCurrentSellTrades(this.currentSellTrades.stream().map(UbiTradeEntity::toUbiTrade).toList());
-        ubiAccountStats.setFinishedTrades(this.finishedTrades.stream().map(UbiTradeEntity::toUbiTrade).toList());
         return ubiAccountStats;
     }
 }

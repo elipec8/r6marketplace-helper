@@ -36,8 +36,8 @@ class UserPostgresServiceTest {
         userPostgresService.getAllUsersForCentralTradeManager(existingItems);
 
         verify(userPostgresRepository, times(1)).findAllManageableUsers();
-        verify(user1).toUserForCentralTradeManagerDTO(same(existingItems));
-        verify(user2).toUserForCentralTradeManagerDTO(same(existingItems));
-        verify(user3).toUserForCentralTradeManagerDTO(same(existingItems));
+        verify(user1).toUserForCentralTradeManager(same(existingItems));
+        verify(user2).toUserForCentralTradeManager(same(existingItems));
+        verify(user3).toUserForCentralTradeManager(same(existingItems));
     }
 }

@@ -7,5 +7,5 @@ import java.util.Collection;
 import java.util.List;
 
 public interface UserDatabaseService {
-    List<UserForCentralTradeManager> getAllUsersForCentralTradeManager(Collection<Item> existingItems);
+    List<UserForCentralTradeManager> getAllUsersForCentralTradeManager();
 }

@@ -1,6 +1,5 @@
-package github.ricemonger.utils;
+package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.utils.DTOs.UbiTrade;
 import github.ricemonger.utils.DTOs.items.ItemResaleLockWithUbiAccount;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -84,9 +83,5 @@ public class UbiAccountEntryWithTelegram {
 
     public List<UbiTrade> getCurrentSellTrades() {
         return ubiAccountEntry.getCurrentSellTrades();
-    }
-
-    public List<UbiTrade> getFinishedTrades() {
-        return ubiAccountEntry.getFinishedTrades();
     }
 }

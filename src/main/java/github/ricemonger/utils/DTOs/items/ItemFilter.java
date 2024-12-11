@@ -56,11 +56,11 @@ public class ItemFilter {
             if (deniedFilters.isEmpty()) {
                 return result.stream().toList();
             } else {
-                List<Item> deniedItemMainFields = new ArrayList<>();
+                List<Item> deniedItems = new ArrayList<>();
                 for (ItemFilter filter : deniedFilters) {
-                    deniedItemMainFields.addAll(filter.filterItems(items));
+                    deniedItems.addAll(filter.filterItems(items));
                 }
-                deniedItemMainFields.forEach(result::remove);
+                deniedItems.forEach(result::remove);
             }
             return result.stream().toList();
         }

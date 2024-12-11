@@ -23,7 +23,6 @@ public class UbiAccountStats {
     private List<ItemResaleLockWithUbiAccount> resaleLocks = new ArrayList<>();
     private List<UbiTrade> currentBuyTrades = new ArrayList<>();
     private List<UbiTrade> currentSellTrades = new ArrayList<>();
-    private List<UbiTrade> finishedTrades = new ArrayList<>();
 
     public UbiAccountStats(String ubiProfileId) {
         this.ubiProfileId = ubiProfileId;
@@ -63,9 +62,6 @@ public class UbiAccountStats {
         boolean currentSellTradesEqual = currentSellTrades.size() == ubiAccountStats.currentSellTrades.size() &&
                                          new HashSet<>(currentSellTrades).containsAll(ubiAccountStats.currentSellTrades);
 
-        boolean finishedTradesEqual = finishedTrades.size() == ubiAccountStats.finishedTrades.size() &&
-                                      new HashSet<>(finishedTrades).containsAll(ubiAccountStats.finishedTrades);
-
         return ubiAccountStats.ubiProfileId.equals(ubiProfileId) &&
                ubiAccountStats.soldIn24h.equals(soldIn24h) &&
                ubiAccountStats.boughtIn24h.equals(boughtIn24h) &&
@@ -73,7 +69,6 @@ public class UbiAccountStats {
                ownedItemsIdsEqual &&
                resaleLocksEqual &&
                currentBuyTradesEqual &&
-               currentSellTradesEqual &&
-               finishedTradesEqual;
+               currentSellTradesEqual;
     }
 }

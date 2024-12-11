@@ -6,6 +6,7 @@ import github.ricemonger.marketplace.graphQl.DTOs.personal_query_current_orders.
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_current_orders.trades.nodes.PaymentProposal;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.DTOs.UbiTrade;
+import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalCurrentOrderMappingException;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Collection;
 import java.util.List;
 
 @Slf4j
@@ -61,31 +61,31 @@ public class PersonalQueryCurrentOrdersMapper {
             result.setState(TradeState.valueOf(node.getState()));
         } catch (IllegalArgumentException e) {
             result.setState(TradeState.Unknown);
-            log.error("Invalid tradeState: {}", node.getState());
+            log.error("Invalid tradeState for Node: {}", node);
         }
 
         try {
             result.setCategory(TradeCategory.valueOf(node.getCategory()));
         } catch (IllegalArgumentException e) {
             result.setCategory(TradeCategory.Unknown);
-            log.error("Invalid tradeCategory: {}", node.getCategory());
+            log.error("Invalid tradeCategory for Node: {}", node);
         }
 
         try {
             result.setExpiresAt(LocalDateTime.parse(node.getExpiresAt(), dtf));
-        } catch (DateTimeParseException e) {
-            result.setExpiresAt(LocalDateTime.MIN);
-            log.error("Invalid expiresAt: {}", node.getExpiresAt());
+        } catch (DateTimeParseException | NullPointerException e) {
+            result.setExpiresAt(LocalDateTime.of(1970, 1, 1, 0, 0));
+            log.error("Invalid expiresAt for Node: {}", node);
         }
 
         try {
             result.setLastModifiedAt(LocalDateTime.parse(node.getLastModifiedAt(), dtf));
-        } catch (DateTimeParseException e) {
-            result.setLastModifiedAt(LocalDateTime.MIN);
-            log.error("Invalid lastModifiedAt: {}", node.getLastModifiedAt());
+        } catch (DateTimeParseException | NullPointerException e) {
+            result.setLastModifiedAt(LocalDateTime.of(1970, 1, 1, 0, 0));
+            log.error("Invalid lastModifiedAt for Node: {}", node);
         }
 
-        result.setItemId(node.getTradeItems()[0].getItem().getItemId());
+        result.setItem(new Item(node.getTradeItems()[0].getItem().getItemId()));
 
         result.setSuccessPaymentPrice(0);
         result.setSuccessPaymentFee(0);
@@ -93,20 +93,17 @@ public class PersonalQueryCurrentOrdersMapper {
         PaymentOptions[] paymentOptions = node.getPaymentOptions();
         PaymentProposal paymentProposal = node.getPaymentProposal();
 
-        if (paymentOptions != null && paymentProposal != null) {
+        boolean paymentOptionsIsNull = paymentOptions == null || paymentOptions.length == 0 || paymentOptions[0].getPrice() == null;
+        boolean paymentProposalIsNull = paymentProposal == null || paymentProposal.getPrice() == null;
+
+        if (!paymentOptionsIsNull && !paymentProposalIsNull) {
             throw new GraphQlPersonalCurrentOrderMappingException("Node have both paymentOptions and paymentProposal-" + node);
-        } else if (paymentOptions != null) {
-            if (paymentOptions.length == 0 || paymentOptions[0].getPrice() == null) {
-                throw new GraphQlPersonalCurrentOrderMappingException("One of paymentOptions fields is null-" + node);
-            }
+        } else if (!paymentOptionsIsNull) {
             result.setProposedPaymentPrice(paymentOptions[0].getPrice());
             result.setProposedPaymentFee((int) Math.ceil(paymentOptions[0].getPrice() / 10.));
-        } else if (paymentProposal != null) {
-            if (paymentProposal.getPrice() == null || paymentProposal.getTransactionFee() == null) {
-                throw new GraphQlPersonalCurrentOrderMappingException("One of paymentProposal fields is null-" + node);
-            }
+        } else if (!paymentProposalIsNull) {
             result.setProposedPaymentPrice(paymentProposal.getPrice());
-            result.setProposedPaymentFee(paymentProposal.getTransactionFee());
+            result.setProposedPaymentFee(0);
         } else {
             throw new GraphQlPersonalCurrentOrderMappingException("Node doesnt have neither paymentOptions, neither paymentProposal-" + node);
         }

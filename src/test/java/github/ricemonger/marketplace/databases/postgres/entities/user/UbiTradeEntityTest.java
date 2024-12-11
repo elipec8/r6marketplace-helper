@@ -28,7 +28,7 @@ class UbiTradeEntityTest {
         UbiTrade actual = entity.toUbiTrade();
 
         assertEquals("tradeId", actual.getTradeId());
-        assertEquals("item1", actual.getItemId());
+        assertEquals("item1", actual.getItem());
         assertEquals(TradeState.Created, actual.getState());
         assertEquals(TradeCategory.Buy, actual.getCategory());
         assertEquals(LocalDateTime.MAX, actual.getExpiresAt());

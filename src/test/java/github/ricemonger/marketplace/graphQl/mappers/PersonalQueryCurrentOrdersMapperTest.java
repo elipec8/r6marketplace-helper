@@ -81,7 +81,7 @@ class PersonalQueryCurrentOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItemId("1");
+        expected.setItem("1");
 
         expected.setSuccessPaymentPrice(0);
         expected.setSuccessPaymentFee(0);
@@ -108,7 +108,7 @@ class PersonalQueryCurrentOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItemId("1");
+        expected.setItem("1");
 
         expected.setSuccessPaymentPrice(0);
         expected.setSuccessPaymentFee(0);
@@ -136,7 +136,7 @@ class PersonalQueryCurrentOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItemId("1");
+        expected.setItem("1");
 
         expected.setSuccessPaymentPrice(0);
         expected.setSuccessPaymentFee(0);
@@ -164,7 +164,7 @@ class PersonalQueryCurrentOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItemId("1");
+        expected.setItem("1");
 
         expected.setSuccessPaymentPrice(0);
         expected.setSuccessPaymentFee(0);

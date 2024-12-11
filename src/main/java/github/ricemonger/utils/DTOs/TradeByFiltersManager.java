@@ -22,33 +22,6 @@ public class TradeByFiltersManager {
     private Integer minProfitPercent;
     private Integer priority;
 
-    public static Set<ItemForCentralTradeManager> getItemsForCentralTradeManagerFromTradeByFiltersManagersByPriority(List<TradeByFiltersManager> tradeByFiltersManagers, Collection<Item> existingItems) {
-        Set<ItemForCentralTradeManager> itemForCentralTradeManagers = new HashSet<>();
-
-        if (tradeByFiltersManagers == null || tradeByFiltersManagers.isEmpty() || existingItems == null || existingItems.isEmpty()) {
-            return itemForCentralTradeManagers;
-        }
-
-        List<TradeByFiltersManager> sortedTradeByFiltersManagers =
-                tradeByFiltersManagers.stream().filter(m -> m.priority != null).sorted(Comparator.comparingInt(TradeByFiltersManager::getPriority)).toList();
-
-        for (TradeByFiltersManager tradeByFiltersManager : sortedTradeByFiltersManagers) {
-            itemForCentralTradeManagers.addAll(tradeByFiltersManager.toItemForCentralTradeManagerDTOs(existingItems));
-        }
-        return itemForCentralTradeManagers;
-    }
-
-    public Set<ItemForCentralTradeManager> toItemForCentralTradeManagerDTOs(Collection<Item> existingItems) {
-        if (this.getAppliedFilters() == null || this.getAppliedFilters().isEmpty()) {
-            return new HashSet<>();
-        } else {
-            return new HashSet<>(ItemFilter.filterItems(existingItems, this.getAppliedFilters())
-                    .stream()
-                    .map(item -> new ItemForCentralTradeManager(item, this))
-                    .toList());
-        }
-    }
-
     public String toString() {
         String sb = "Trade By Item Filter Manager: \n" +
                     "Name: " + name + "\n" +
