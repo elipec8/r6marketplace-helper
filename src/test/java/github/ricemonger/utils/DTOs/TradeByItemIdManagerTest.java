@@ -1,7 +1,7 @@
 package github.ricemonger.utils.DTOs;
 
+import github.ricemonger.marketplace.services.central_trade_manager.PersonalItem;
 import github.ricemonger.utils.DTOs.items.Item;
-import github.ricemonger.utils.DTOs.items.ItemForCentralTradeManager;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TradeOperationType;
@@ -37,31 +37,31 @@ class TradeByItemIdManagerTest {
         TradeByItemIdManager tradeByItemIdManager1 = new TradeByItemIdManager();
         tradeByItemIdManager1.setItemId("item1");
         tradeByItemIdManager1.setTradeOperationType(TradeOperationType.BUY);
-        tradeByItemIdManager1.setPriority(1);
+        tradeByItemIdManager1.setPriorityMultiplier(1);
 
         TradeByItemIdManager tradeByItemIdManager2 = new TradeByItemIdManager();
         tradeByItemIdManager2.setItemId("item2");
         tradeByItemIdManager2.setTradeOperationType(TradeOperationType.SELL);
-        tradeByItemIdManager2.setPriority(1);
+        tradeByItemIdManager2.setPriorityMultiplier(1);
 
         TradeByItemIdManager tradeByItemIdManager3 = new TradeByItemIdManager();
         tradeByItemIdManager3.setItemId("item2");
         tradeByItemIdManager3.setTradeOperationType(TradeOperationType.SELL);
-        tradeByItemIdManager3.setPriority(2);
+        tradeByItemIdManager3.setPriorityMultiplier(2);
 
         TradeByItemIdManager tradeByItemIdManager4 = new TradeByItemIdManager();
         tradeByItemIdManager4.setItemId("item4");
         tradeByItemIdManager4.setTradeOperationType(TradeOperationType.SELL);
-        tradeByItemIdManager4.setPriority(1);
+        tradeByItemIdManager4.setPriorityMultiplier(1);
 
         List<TradeByItemIdManager> tradeByItemIdManagers = List.of(tradeByItemIdManager1, tradeByItemIdManager2, tradeByItemIdManager3, tradeByItemIdManager4);
         List<Item> existingItems = List.of(new Item("item1"), new Item("item2"), new Item("item3"));
 
-        Set<ItemForCentralTradeManager> result = TradeByItemIdManager.getItemsForCentralTradeManagerFromTradeByItemIdManagersByPriority(tradeByItemIdManagers, existingItems);
+        Set<PersonalItem> result = TradeByItemIdManager.getItemsForCentralTradeManagerFromTradeByItemIdManagersByPriority(tradeByItemIdManagers, existingItems);
 
         assertEquals(2, result.size());
-        assertTrue(result.contains(new ItemForCentralTradeManager(new Item("item1"), tradeByItemIdManager1)));
-        assertTrue(result.contains(new ItemForCentralTradeManager(new Item("item2"), tradeByItemIdManager3)));
+        assertTrue(result.contains(new PersonalItem(new Item("item1"), tradeByItemIdManager1)));
+        assertTrue(result.contains(new PersonalItem(new Item("item2"), tradeByItemIdManager3)));
     }
 
     @Test
@@ -83,7 +83,7 @@ class TradeByItemIdManagerTest {
         tradeByItemIdManager.setEnabled(true);
         tradeByItemIdManager.setBuyBoundaryPrice(100);
         tradeByItemIdManager.setSellBoundaryPrice(200);
-        tradeByItemIdManager.setPriority(1);
+        tradeByItemIdManager.setPriorityMultiplier(1);
 
         Item item = new Item();
         item.setItemId("itemId");
@@ -117,6 +117,6 @@ class TradeByItemIdManagerTest {
         item.setPriceToBuyIn24Hours(2400);
         item.setPriceToBuyIn168Hours(2500);
 
-        assertEquals(tradeByItemIdManager.toItemForCentralTradeManagerDtoOrNull(List.of(item)), new ItemForCentralTradeManager(item, tradeByItemIdManager));
+        assertEquals(tradeByItemIdManager.toItemForCentralTradeManagerDtoOrNull(List.of(item)), new PersonalItem(item, tradeByItemIdManager));
     }
 }

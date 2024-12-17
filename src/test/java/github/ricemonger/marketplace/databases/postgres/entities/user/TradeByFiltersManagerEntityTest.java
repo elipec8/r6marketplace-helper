@@ -27,7 +27,7 @@ class TradeByFiltersManagerEntityTest {
         entity.setAppliedFilters(List.of(filter1, filter2));
         entity.setMinBuySellProfit(100);
         entity.setMinProfitPercent(10);
-        entity.setPriority(1);
+        entity.setPriorityMultiplier(1);
 
         TradeByFiltersManager expected = new TradeByFiltersManager();
         expected.setName("managerName");
@@ -36,7 +36,7 @@ class TradeByFiltersManagerEntityTest {
         expected.setAppliedFilters(List.of(filter1.toItemFilter(), filter2.toItemFilter()));
         expected.setMinBuySellProfit(100);
         expected.setMinProfitPercent(10);
-        expected.setPriority(1);
+        expected.setPriorityMultiplier(1);
 
         TradeByFiltersManager actual = entity.toTradeByFiltersManager();
 
@@ -56,7 +56,7 @@ class TradeByFiltersManagerEntityTest {
         entity.setAppliedFilters(null);
         entity.setMinBuySellProfit(10_000);
         entity.setMinProfitPercent(100);
-        entity.setPriority(2);
+        entity.setPriorityMultiplier(2);
 
         TradeByFiltersManager expected = new TradeByFiltersManager();
         expected.setName("managerName");
@@ -65,7 +65,7 @@ class TradeByFiltersManagerEntityTest {
         expected.setAppliedFilters(null);
         expected.setMinBuySellProfit(10_000);
         expected.setMinProfitPercent(100);
-        expected.setPriority(2);
+        expected.setPriorityMultiplier(2);
 
         TradeByFiltersManager actual = entity.toTradeByFiltersManager();
 
@@ -89,7 +89,7 @@ class TradeByFiltersManagerEntityTest {
         tradeManager.setAppliedFilters(List.of(filter1.toItemFilter(), filter2.toItemFilter()));
         tradeManager.setMinBuySellProfit(100);
         tradeManager.setMinProfitPercent(10);
-        tradeManager.setPriority(1);
+        tradeManager.setPriorityMultiplier(1);
 
         TradeByFiltersManagerEntity expected = new TradeByFiltersManagerEntity();
         expected.setUser(user);
@@ -99,7 +99,7 @@ class TradeByFiltersManagerEntityTest {
         expected.setAppliedFilters(List.of(filter1, filter2));
         expected.setMinBuySellProfit(100);
         expected.setMinProfitPercent(10);
-        expected.setPriority(1);
+        expected.setPriorityMultiplier(1);
 
         TradeByFiltersManagerEntity actual = new TradeByFiltersManagerEntity(user, tradeManager);
 
@@ -113,6 +113,6 @@ class TradeByFiltersManagerEntityTest {
         assertEquals(expected.getAppliedFilters().stream().map(ItemFilterEntity::toItemFilter).toList(), actual.getAppliedFilters().stream().map(ItemFilterEntity::toItemFilter).toList());
         assertEquals(expected.getMinBuySellProfit(), actual.getMinBuySellProfit());
         assertEquals(expected.getMinProfitPercent(), actual.getMinProfitPercent());
-        assertEquals(expected.getPriority(), actual.getPriority());
+        assertEquals(expected.getPriorityMultiplier(), actual.getPriorityMultiplier());
     }
 }

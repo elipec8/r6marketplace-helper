@@ -1189,7 +1189,7 @@ public class BotInnerServiceTest {
     public void getUserTradeByItemIdManagerByUserInputItemId_should_return_service_result() {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("item_id");
-        tradeManager.setPriority(100);
+        tradeManager.setPriorityMultiplier(100);
         when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID)).thenReturn("item_id");
         when(telegramUserTradeManagerService.getUserTradeByItemIdManagerById("1", "item_id")).thenReturn(tradeManager);
 
@@ -1206,7 +1206,7 @@ public class BotInnerServiceTest {
     public void getUserTradeByItemIdManagerByUserInputItemId_should_throw_if_service_throws_during_tradeManager_find() {
         TradeByItemIdManager tradeManager = new TradeByItemIdManager();
         tradeManager.setItemId("item_id");
-        tradeManager.setPriority(100);
+        tradeManager.setPriorityMultiplier(100);
         when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID)).thenReturn("item_id");
 
         doThrow(new RuntimeException()).when(telegramUserTradeManagerService).getUserTradeByItemIdManagerById("1", "item_id");
@@ -1217,7 +1217,7 @@ public class BotInnerServiceTest {
     public void getUserTradeByFiltersManagerByUserInputItemId_should_return_service_result() {
         TradeByFiltersManager tradeManager = new TradeByFiltersManager();
         tradeManager.setName("name");
-        tradeManager.setPriority(100);
+        tradeManager.setPriorityMultiplier(100);
         when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_FILTERS_MANAGER_NAME)).thenReturn("name");
         when(telegramUserTradeManagerService.getUserTradeByFiltersManagerById("1", "name")).thenReturn(tradeManager);
 
@@ -1234,7 +1234,7 @@ public class BotInnerServiceTest {
     public void getUserTradeByFiltersManagerByUserInputItemId_should_throw_if_service_throws_during_tradeManager_find() {
         TradeByFiltersManager tradeManager = new TradeByFiltersManager();
         tradeManager.setName("name");
-        tradeManager.setPriority(100);
+        tradeManager.setPriorityMultiplier(100);
         when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_FILTERS_MANAGER_NAME)).thenReturn("name");
 
         doThrow(new RuntimeException()).when(telegramUserTradeManagerService).getUserTradeByFiltersManagerById("1", "name");

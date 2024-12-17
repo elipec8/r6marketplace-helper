@@ -67,13 +67,13 @@ class TelegramUserTradeByFiltersManagerPostgresServiceTest {
     public void save_should_update_trade_manager_if_exists() {
         TradeByFiltersManager tradeManager = new TradeByFiltersManager();
         tradeManager.setName("name1");
-        tradeManager.setPriority(10);
+        tradeManager.setPriorityMultiplier(10);
         tradeManager.setMinBuySellProfit(100);
         tradeManager.setMinProfitPercent(100);
         tradeManager.setTradeOperationType(TradeOperationType.BUY);
         telegramUserTradeByFiltersManagerService.save(CHAT_ID, tradeManager);
         tradeManager.setName("name1");
-        tradeManager.setPriority(20);
+        tradeManager.setPriorityMultiplier(20);
         tradeManager.setMinBuySellProfit(200);
         tradeManager.setMinProfitPercent(200);
         tradeManager.setTradeOperationType(TradeOperationType.SELL);

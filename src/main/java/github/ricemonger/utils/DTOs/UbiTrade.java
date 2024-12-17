@@ -7,9 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
-import static github.ricemonger.marketplace.services.CentralTradeManager.TRADE_MANAGER_FIXED_RATE_MINUTES;
 
 @Data
 @NoArgsConstructor
@@ -29,12 +27,11 @@ public class UbiTrade {
     private Integer proposedPaymentPrice;
     private Integer proposedPaymentFee;
 
-    public Integer getPrognosedPaymentsSuccessMinutes() {
-        int secondsTradeExists = (int) Duration.between(lastModifiedAt, expiresAt).toMinutes();
-        return Math.max(item.getPrognosedTradeSuccessMinutes(proposedPaymentPrice, category) - secondsTradeExists, TRADE_MANAGER_FIXED_RATE_MINUTES);
-    }
-
     public String getItemId() {
         return item.getItemId();
+    }
+
+    public String getItemName() {
+        return item.getName();
     }
 }

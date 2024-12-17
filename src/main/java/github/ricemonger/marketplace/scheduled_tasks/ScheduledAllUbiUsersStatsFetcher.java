@@ -2,9 +2,11 @@ package github.ricemonger.marketplace.scheduled_tasks;
 
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.services.CommonValuesService;
+import github.ricemonger.marketplace.services.ItemService;
 import github.ricemonger.marketplace.services.TelegramUserUbiAccountEntryService;
 import github.ricemonger.telegramBot.TelegramBotService;
 import github.ricemonger.utils.DTOs.*;
+import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.DTOs.items.ItemResaleLockWithUbiAccount;
 import github.ricemonger.utils.enums.TradeCategory;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,8 @@ public class ScheduledAllUbiUsersStatsFetcher {
     private final GraphQlClientService graphQlClientService;
 
     private final CommonValuesService commonValuesService;
+
+    private final ItemService itemService;
 
     @Scheduled(fixedRate = 5 * 60 * 1000, initialDelay = 2 * 60 * 1000) // every 5m after 2m of delay
     public void fetchAllUbiUsersStats() {
@@ -95,17 +99,22 @@ public class ScheduledAllUbiUsersStatsFetcher {
             if (soldIn24hChanged) {
                 message.append("You have additionally sold these items in the last 24 hours:\n");
                 for (UbiTrade trade : soldIn24h.stream().filter(trade -> trade.getLastModifiedAt().isAfter(commonValuesService.getLastUbiUsersStatsFetchTime())).toList()) {
-                    message.append(trade.getItem()).append(" for ").append(trade.getSuccessPaymentPrice() - trade.getSuccessPaymentFee()).append("\n");
+                    message.append(getFinishedTradeString(trade)).append("\n");
                 }
             }
             if (boughtIn24hChanged) {
                 message.append("You have additionally bought these items in the last 24 hours:\n");
                 for (UbiTrade trade : boughtIn24h.stream().filter(trade -> trade.getLastModifiedAt().isAfter(commonValuesService.getLastUbiUsersStatsFetchTime())).toList()) {
-                    message.append(trade.getItem()).append(" for ").append(trade.getSuccessPaymentPrice()).append("\n");
+                    message.append(getFinishedTradeString(trade)).append("\n");
                 }
             }
 
             telegramBotService.sendNotificationToUser(ubiAccountWithTelegram.getChatId(), message.toString());
         }
+    }
+
+    private String getFinishedTradeString(UbiTrade trade) {
+        Item item = itemService.getItemById(trade.getItemId());
+        return item.getName() + " : " + item.getAssetUrl() + " for " + (trade.getSuccessPaymentPrice() - trade.getSuccessPaymentFee());
     }
 }

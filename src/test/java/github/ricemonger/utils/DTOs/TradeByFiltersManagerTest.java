@@ -1,8 +1,8 @@
 package github.ricemonger.utils.DTOs;
 
+import github.ricemonger.marketplace.services.central_trade_manager.PersonalItem;
 import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.DTOs.items.ItemFilter;
-import github.ricemonger.utils.DTOs.items.ItemForCentralTradeManager;
 import github.ricemonger.utils.enums.FilterType;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -58,7 +58,7 @@ class TradeByFiltersManagerTest {
 
         TradeByFiltersManager tradeByFiltersManager1 = new TradeByFiltersManager();
         tradeByFiltersManager1.setAppliedFilters(appliedFilters1);
-        tradeByFiltersManager1.setPriority(1);
+        tradeByFiltersManager1.setPriorityMultiplier(1);
 
 
         ItemFilter itemFilter3 = new ItemFilter();
@@ -74,18 +74,18 @@ class TradeByFiltersManagerTest {
 
         TradeByFiltersManager tradeByFiltersManager2 = new TradeByFiltersManager();
         tradeByFiltersManager2.setAppliedFilters(appliedFilters2);
-        tradeByFiltersManager2.setPriority(2);
+        tradeByFiltersManager2.setPriorityMultiplier(2);
 
         List<Item> existingItems = List.of(item1, item2, item3);
 
-        Set<ItemForCentralTradeManager> result =
+        Set<PersonalItem> result =
                 TradeByFiltersManager.getItemsForCentralTradeManagerFromTradeByFiltersManagersByPriority(List.of(tradeByFiltersManager1, tradeByFiltersManager2),
                         existingItems);
 
         assertEquals(3, result.size());
-        assertTrue(result.contains(new ItemForCentralTradeManager(item2, tradeByFiltersManager1)));
-        assertTrue(result.contains(new ItemForCentralTradeManager(item1, tradeByFiltersManager2)));
-        assertTrue(result.contains(new ItemForCentralTradeManager(item3, tradeByFiltersManager2)));
+        assertTrue(result.contains(new PersonalItem(item2, tradeByFiltersManager1)));
+        assertTrue(result.contains(new PersonalItem(item1, tradeByFiltersManager2)));
+        assertTrue(result.contains(new PersonalItem(item3, tradeByFiltersManager2)));
     }
 
     @Test
@@ -97,7 +97,7 @@ class TradeByFiltersManagerTest {
         existingItems.add(new Item("item1"));
         existingItems.add(new Item("item2"));
 
-        Set<ItemForCentralTradeManager> result = tradeByFiltersManager.toItemForCentralTradeManagerDTOs(existingItems);
+        Set<PersonalItem> result = tradeByFiltersManager.toItemForCentralTradeManagerDTOs(existingItems);
 
         assertTrue(result.isEmpty());
     }
@@ -111,7 +111,7 @@ class TradeByFiltersManagerTest {
         existingItems.add(new Item("item1"));
         existingItems.add(new Item("item2"));
 
-        Set<ItemForCentralTradeManager> result = tradeByFiltersManager.toItemForCentralTradeManagerDTOs(existingItems);
+        Set<PersonalItem> result = tradeByFiltersManager.toItemForCentralTradeManagerDTOs(existingItems);
 
         assertTrue(result.isEmpty());
     }
@@ -141,9 +141,9 @@ class TradeByFiltersManagerTest {
 
         TradeByFiltersManager tradeByFiltersManager = new TradeByFiltersManager();
         tradeByFiltersManager.setAppliedFilters(appliedFilters);
-        tradeByFiltersManager.setPriority(1);
+        tradeByFiltersManager.setPriorityMultiplier(1);
 
-        Set<ItemForCentralTradeManager> result = tradeByFiltersManager.toItemForCentralTradeManagerDTOs(existingItems);
+        Set<PersonalItem> result = tradeByFiltersManager.toItemForCentralTradeManagerDTOs(existingItems);
 
         assertEquals(2, result.size());
         assertTrue(result.stream().noneMatch(item -> item.getItemId().equals("item1")));

@@ -82,18 +82,18 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
         tradeManager.setItemId("1");
         tradeManager.setBuyBoundaryPrice(2);
         tradeManager.setSellBoundaryPrice(4);
-        tradeManager.setPriority(5);
+        tradeManager.setPriorityMultiplier(5);
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
 
         tradeManager.setBuyBoundaryPrice(7);
         tradeManager.setSellBoundaryPrice(9);
-        tradeManager.setPriority(10);
+        tradeManager.setPriorityMultiplier(10);
         telegramUserTradeManagerByItemIdService.save(CHAT_ID, tradeManager);
 
         TradeByItemIdManagerEntity tradeManagerEntity = tradeManagerByItemIdRepository.findAll().get(0);
         assertEquals(7, tradeManagerEntity.getBuyBoundaryPrice());
         assertEquals(9, tradeManagerEntity.getSellBoundaryPrice());
-        assertEquals(10, tradeManagerEntity.getPriority());
+        assertEquals(10, tradeManagerEntity.getPriorityMultiplier());
     }
 
     @Test

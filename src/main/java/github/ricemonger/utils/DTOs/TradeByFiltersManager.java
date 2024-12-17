@@ -1,8 +1,6 @@
 package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.DTOs.items.ItemFilter;
-import github.ricemonger.utils.DTOs.items.ItemForCentralTradeManager;
 import github.ricemonger.utils.enums.TradeOperationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +18,7 @@ public class TradeByFiltersManager {
     private List<ItemFilter> appliedFilters;
     private Integer minBuySellProfit;
     private Integer minProfitPercent;
-    private Integer priority;
+    private Integer priorityMultiplier;
 
     public String toString() {
         String sb = "Trade By Item Filter Manager: \n" +
@@ -34,7 +32,7 @@ public class TradeByFiltersManager {
         }
         sb = sb + "Min profit: " + minBuySellProfit + "\n" +
              "Min profit percent: " + minProfitPercent + "\n" +
-             "Priority: " + priority + "\n";
+             "Priority: " + priorityMultiplier + "\n";
         return sb;
     }
 }

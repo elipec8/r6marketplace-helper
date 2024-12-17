@@ -78,7 +78,7 @@ public class PersonalQueryFinishedOrdersMapper {
             result.setExpiresAt(LocalDateTime.parse(node.getExpiresAt(), dtf));
         } catch (DateTimeParseException | NullPointerException e) {
             result.setExpiresAt(LocalDateTime.of(1970, 1, 1, 0, 0));
-            log.error("Invalid expiresAt for Node: {}", node);
+            log.trace("Invalid expiresAt for order for Node: {}", node);
         }
 
         try {

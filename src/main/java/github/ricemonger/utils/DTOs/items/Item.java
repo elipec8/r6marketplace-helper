@@ -2,15 +2,13 @@ package github.ricemonger.utils.DTOs.items;
 
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
-import github.ricemonger.utils.enums.TradeCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static github.ricemonger.marketplace.services.CentralTradeManager.TRADE_MANAGER_FIXED_RATE_MINUTES;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -48,15 +46,22 @@ public class Item implements ItemMainFieldsI, ItemHistoryFieldsI {
     private Integer dayMinPrice;
     private Integer daySales;
 
-    private Integer priceToSellIn1Hour;
-    private Integer priceToSellIn6Hours;
-    private Integer priceToSellIn24Hours;
-    private Integer priceToSellIn168Hours;
+    private Long priorityToSellByMaxBuyPrice; //updated with every item stats update, not recalculation
+    private Long priorityToSellByNextFancySellPrice; //updated with every item stats update, not recalculation
+
+    private Long priorityToBuyByMinSellPrice; //updated with every item stats update, not recalculation
+
+    private Long priorityToBuyIn1Hour;
+    private Long priorityToBuyIn6Hours;
+    private Long priorityToBuyIn24Hours;
+    private Long priorityToBuyIn168Hours;
+    private Long priorityToBuyIn720Hours;
 
     private Integer priceToBuyIn1Hour;
     private Integer priceToBuyIn6Hours;
     private Integer priceToBuyIn24Hours;
     private Integer priceToBuyIn168Hours;
+    private Integer priceToBuyIn720Hours;
 
     public Item(String itemId) {
         this.itemId = itemId;
@@ -89,14 +94,19 @@ public class Item implements ItemMainFieldsI, ItemHistoryFieldsI {
         this.dayMaxPrice = item.getDayMaxPrice();
         this.dayMinPrice = item.getDayMinPrice();
         this.daySales = item.getDaySales();
-        this.priceToSellIn1Hour = item.getPriceToSellIn1Hour();
-        this.priceToSellIn6Hours = item.getPriceToSellIn6Hours();
-        this.priceToSellIn24Hours = item.getPriceToSellIn24Hours();
-        this.priceToSellIn168Hours = item.getPriceToSellIn168Hours();
+        this.priorityToSellByMaxBuyPrice = item.getPriorityToSellByMaxBuyPrice();
+        this.priorityToSellByNextFancySellPrice = item.getPriorityToSellByNextFancySellPrice();
+        this.priorityToBuyByMinSellPrice = item.getPriorityToBuyByMinSellPrice();
+        this.priorityToBuyIn1Hour = item.getPriorityToBuyIn1Hour();
+        this.priorityToBuyIn6Hours = item.getPriorityToBuyIn6Hours();
+        this.priorityToBuyIn24Hours = item.getPriorityToBuyIn24Hours();
+        this.priorityToBuyIn168Hours = item.getPriorityToBuyIn168Hours();
+        this.priorityToBuyIn720Hours = item.getPriorityToBuyIn720Hours();
         this.priceToBuyIn1Hour = item.getPriceToBuyIn1Hour();
         this.priceToBuyIn6Hours = item.getPriceToBuyIn6Hours();
         this.priceToBuyIn24Hours = item.getPriceToBuyIn24Hours();
         this.priceToBuyIn168Hours = item.getPriceToBuyIn168Hours();
+        this.priceToBuyIn720Hours = item.getPriceToBuyIn720Hours();
     }
 
     public Item(ItemMainFieldsI mainFields) {
@@ -112,43 +122,12 @@ public class Item implements ItemMainFieldsI, ItemHistoryFieldsI {
         setHistoryFields(historyFields);
     }
 
-    public Integer getPrognosedTradeSuccessMinutes(Integer proposedPaymentPrice, TradeCategory category) {
-        if (category == TradeCategory.Buy) {
-            if (proposedPaymentPrice >= this.minSellPrice) {
-                return TRADE_MANAGER_FIXED_RATE_MINUTES;
-            } else if (proposedPaymentPrice >= this.priceToBuyIn1Hour) {
-                return 60;
-            } else if (proposedPaymentPrice >= this.priceToBuyIn6Hours) {
-                return 360;
-            } else if (proposedPaymentPrice >= this.priceToBuyIn24Hours) {
-                return 1440;
-            } else if (proposedPaymentPrice >= this.priceToBuyIn168Hours) {
-                return 10080;
-            } else if (proposedPaymentPrice >= this.monthMinPrice) {
-                return 43200;
-            } else {
-                return 0;
-            }
-        } else if (category == TradeCategory.Sell) {
-            if (proposedPaymentPrice <= this.maxBuyPrice) {
-                return TRADE_MANAGER_FIXED_RATE_MINUTES;
-            } else if (proposedPaymentPrice <= this.priceToSellIn1Hour) {
-                return 60;
-            } else if (proposedPaymentPrice <= this.priceToSellIn6Hours) {
-                return 360;
-            } else if (proposedPaymentPrice <= this.priceToSellIn24Hours) {
-                return 1440;
-            } else if (proposedPaymentPrice <= this.priceToSellIn168Hours) {
-                return 10080;
-            } else if (proposedPaymentPrice <= this.monthMaxPrice) {
-                return 43200;
-            } else {
-                return 0;
-            }
-        } else {
-            log.error("Trade category is Unknown is not set for item with id: " + itemId);
-            return 0;
-        }
+    public void updateCurrentPricesPriorities(Long priorityToSellByMaxBuyPrice,
+                                              Long priorityToSellByNextFancySellPrice,
+                                              Long priorityToBuyByMinSellPrice) {
+        this.priorityToSellByMaxBuyPrice = priorityToSellByMaxBuyPrice;
+        this.priorityToSellByNextFancySellPrice = priorityToSellByNextFancySellPrice;
+        this.priorityToBuyByMinSellPrice = priorityToBuyByMinSellPrice;
     }
 
     public boolean isFullyEqualTo(Object o) {
@@ -171,10 +150,10 @@ public class Item implements ItemMainFieldsI, ItemHistoryFieldsI {
         if (item.getItemId() == null || this.getItemId() == null) {
             return false;
         }
-        return item.getItemId().equals(this.getItemId());
+        return Objects.equals(item.getItemId(), this.getItemId());
     }
 
     public int hashCode() {
-        return this.getItemId().hashCode();
+        return Objects.hash(itemId);
     }
 }

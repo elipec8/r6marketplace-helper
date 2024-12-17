@@ -134,6 +134,9 @@ public class CommonValuesService {
     }
 
     public int getMinimumPriceByRarity(ItemRarity rarity) {
+        if (rarity == null) {
+            return getMinimumMarketplacePrice();
+        }
         return switch (rarity) {
             case UNCOMMON -> getMinimumUncommonPrice();
             case RARE -> getMinimumRarePrice();
@@ -144,6 +147,9 @@ public class CommonValuesService {
     }
 
     public int getMaximumPriceByRarity(ItemRarity rarity) {
+        if(rarity == null) {
+            return getMaximumMarketplacePrice();
+        }
         return switch (rarity) {
             case UNCOMMON -> getMaximumUncommonPrice();
             case RARE -> getMaximumRarePrice();

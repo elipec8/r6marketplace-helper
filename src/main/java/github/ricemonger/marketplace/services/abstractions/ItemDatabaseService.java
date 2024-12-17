@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 public interface ItemDatabaseService {
-    void saveAll(Collection<? extends Item> itemMainFields);
+    void saveAll(Collection<? extends Item> items);
 
     Item findById(String itemId) throws ItemDoesntExistException;
 

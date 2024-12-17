@@ -1,5 +1,6 @@
 package github.ricemonger.utils.DTOs.items;
 
+import github.ricemonger.marketplace.services.central_trade_manager.PersonalItem;
 import github.ricemonger.utils.DTOs.TradeByFiltersManager;
 import github.ricemonger.utils.DTOs.TradeByItemIdManager;
 import github.ricemonger.utils.enums.ItemRarity;
@@ -11,12 +12,12 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class ItemForCentralTradeManagerTest {
+class PersonalItemTest {
 
     @Test
     public void tradeByFilterManager_constructor_should_set_all_fields() {
         TradeByFiltersManager tradeByFiltersManager = new TradeByFiltersManager();
-        tradeByFiltersManager.setPriority(1);
+        tradeByFiltersManager.setPriorityMultiplier(1);
         tradeByFiltersManager.setTradeOperationType(TradeOperationType.BUY);
         tradeByFiltersManager.setMinProfitPercent(50);
         tradeByFiltersManager.setMinBuySellProfit(30);
@@ -50,7 +51,7 @@ class ItemForCentralTradeManagerTest {
         item.setPriceToBuyIn24Hours(22);
         item.setPriceToBuyIn168Hours(23);
 
-        ItemForCentralTradeManager itemForTradeDTO = new ItemForCentralTradeManager(item, tradeByFiltersManager);
+        PersonalItem itemForTradeDTO = new PersonalItem(item, tradeByFiltersManager);
 
         assertEquals(item.getItemId(), itemForTradeDTO.getItemId());
         assertEquals(item.getName(), itemForTradeDTO.getName());
@@ -81,9 +82,9 @@ class ItemForCentralTradeManagerTest {
         assertEquals(item.getPriceToBuyIn168Hours(), itemForTradeDTO.getPriceToBuyIn168Hours());
 
         assertEquals(tradeByFiltersManager.getTradeOperationType(), itemForTradeDTO.getTradeOperationType());
-        assertEquals(tradeByFiltersManager.getPriority(), itemForTradeDTO.getPriority());
-        assertEquals(tradeByFiltersManager.getMinBuySellProfit(), itemForTradeDTO.getMinBuySellProfit());
-        assertEquals(tradeByFiltersManager.getMinProfitPercent(), itemForTradeDTO.getMinBuySellProfitPercent());
+        assertEquals(tradeByFiltersManager.getPriorityMultiplier(), itemForTradeDTO.getPriorityMultiplier());
+        assertEquals(tradeByFiltersManager.getMinBuySellProfit(), itemForTradeDTO.getMinMedianPriceDifference());
+        assertEquals(tradeByFiltersManager.getMinProfitPercent(), itemForTradeDTO.getMinMedianPriceDifferencePercent());
 
         assertEquals(0, itemForTradeDTO.getSellBoundaryPrice());
         assertEquals(Integer.MAX_VALUE, itemForTradeDTO.getBuyBoundaryPrice());
@@ -92,7 +93,7 @@ class ItemForCentralTradeManagerTest {
     @Test
     public void tradeByItemIdManager_constructor_should_set_all_fields() {
         TradeByItemIdManager tradeByItemIdManager = new TradeByItemIdManager();
-        tradeByItemIdManager.setPriority(1);
+        tradeByItemIdManager.setPriorityMultiplier(1);
         tradeByItemIdManager.setTradeOperationType(TradeOperationType.BUY);
         tradeByItemIdManager.setBuyBoundaryPrice(60);
         tradeByItemIdManager.setSellBoundaryPrice(70);
@@ -126,7 +127,7 @@ class ItemForCentralTradeManagerTest {
         item.setPriceToBuyIn24Hours(22);
         item.setPriceToBuyIn168Hours(23);
 
-        ItemForCentralTradeManager itemForTradeDTO = new ItemForCentralTradeManager(item, tradeByItemIdManager);
+        PersonalItem itemForTradeDTO = new PersonalItem(item, tradeByItemIdManager);
 
         assertEquals(item.getItemId(), itemForTradeDTO.getItemId());
         assertEquals(item.getName(), itemForTradeDTO.getName());
@@ -157,17 +158,17 @@ class ItemForCentralTradeManagerTest {
         assertEquals(item.getPriceToBuyIn168Hours(), itemForTradeDTO.getPriceToBuyIn168Hours());
 
         assertEquals(tradeByItemIdManager.getTradeOperationType(), itemForTradeDTO.getTradeOperationType());
-        assertEquals(tradeByItemIdManager.getPriority(), itemForTradeDTO.getPriority());
+        assertEquals(tradeByItemIdManager.getPriorityMultiplier(), itemForTradeDTO.getPriorityMultiplier());
         assertEquals(tradeByItemIdManager.getBuyBoundaryPrice(), itemForTradeDTO.getBuyBoundaryPrice());
         assertEquals(tradeByItemIdManager.getSellBoundaryPrice(), itemForTradeDTO.getSellBoundaryPrice());
 
-        assertEquals(Integer.MIN_VALUE, itemForTradeDTO.getMinBuySellProfit());
-        assertEquals(Integer.MIN_VALUE, itemForTradeDTO.getMinBuySellProfitPercent());
+        assertEquals(Integer.MIN_VALUE, itemForTradeDTO.getMinMedianPriceDifference());
+        assertEquals(Integer.MIN_VALUE, itemForTradeDTO.getMinMedianPriceDifferencePercent());
     }
 
     @Test
     public void hashCode_and_equals_should_use_only_itemId_tradeOperationType() {
-        ItemForCentralTradeManager itemForTradeDTO1 = new ItemForCentralTradeManager();
+        PersonalItem itemForTradeDTO1 = new PersonalItem();
 
         Item item1 = new Item();
         item1.setItemId("itemId");
@@ -201,12 +202,12 @@ class ItemForCentralTradeManagerTest {
         itemForTradeDTO1.setItem(item1);
         itemForTradeDTO1.setBuyBoundaryPrice(24);
         itemForTradeDTO1.setSellBoundaryPrice(25);
-        itemForTradeDTO1.setMinBuySellProfit(26);
-        itemForTradeDTO1.setMinBuySellProfitPercent(27);
+        itemForTradeDTO1.setMinMedianPriceDifference(26);
+        itemForTradeDTO1.setMinMedianPriceDifferencePercent(27);
         itemForTradeDTO1.setTradeOperationType(TradeOperationType.BUY);
-        itemForTradeDTO1.setPriority(1);
+        itemForTradeDTO1.setPriorityMultiplier(1);
 
-        ItemForCentralTradeManager itemForTradeDTO2 = new ItemForCentralTradeManager();
+        PersonalItem itemForTradeDTO2 = new PersonalItem();
 
         Item item2 = new Item();
         item2.setItemId("itemId");
@@ -241,10 +242,10 @@ class ItemForCentralTradeManagerTest {
         itemForTradeDTO2.setItem(item2);
         itemForTradeDTO2.setBuyBoundaryPrice(25);
         itemForTradeDTO2.setSellBoundaryPrice(26);
-        itemForTradeDTO2.setMinBuySellProfit(27);
-        itemForTradeDTO2.setMinBuySellProfitPercent(28);
+        itemForTradeDTO2.setMinMedianPriceDifference(27);
+        itemForTradeDTO2.setMinMedianPriceDifferencePercent(28);
         itemForTradeDTO2.setTradeOperationType(TradeOperationType.BUY);
-        itemForTradeDTO2.setPriority(2);
+        itemForTradeDTO2.setPriorityMultiplier(2);
 
         assertEquals(itemForTradeDTO1.hashCode(), itemForTradeDTO2.hashCode());
         assertEquals(itemForTradeDTO1, itemForTradeDTO2);
@@ -262,14 +263,14 @@ class ItemForCentralTradeManagerTest {
 
     @Test
     public void equals_should_return_true_for_same_object() {
-        ItemForCentralTradeManager itemForTradeDTO1 = new ItemForCentralTradeManager();
-        ItemForCentralTradeManager itemForTradeDTO2 = itemForTradeDTO1;
+        PersonalItem itemForTradeDTO1 = new PersonalItem();
+        PersonalItem itemForTradeDTO2 = itemForTradeDTO1;
         assertEquals(itemForTradeDTO1, itemForTradeDTO2);
     }
 
     @Test
     public void equals_should_return_false_for_wrong_class_or_null() {
-        assertNotEquals(new ItemForCentralTradeManager(), null);
-        assertNotEquals(new ItemForCentralTradeManager(), new Object());
+        assertNotEquals(new PersonalItem(), null);
+        assertNotEquals(new PersonalItem(), new Object());
     }
 }

@@ -18,21 +18,10 @@ public class PersonalItem extends Item {
 
     @Override
     public String toString() {
-        return "PersonalItem{" + "\n" +
-               "ItemId" + super.getItemId() + "\n" +
-               "AssetUrl" + super.getAssetUrl() + "\n" +
-               "Name" + super.getName() + "\n" +
-               "Tags" + super.getTags() + "\n" +
-               "Rarity" + super.getRarity() + "\n" +
-               "Type" + super.getType() + "\n" +
-               "MaxBuyPrice" + super.getMaxBuyPrice() + "\n" +
-               "BuyOrdersCount" + super.getBuyOrdersCount() + "\n" +
-               "MinSellPrice" + super.getMinSellPrice() + "\n" +
-               "SellOrdersCount" + super.getSellOrdersCount() + "\n" +
-               "LastSoldAt" + super.getLastSoldAt() + "\n" +
-               "LastSoldPrice" + super.getLastSoldPrice() + "\n" +
-               "isOwned" + isOwned + "\n" +
-               "trades" + trades + "\n" +
+        return "PersonalItem{" +
+               super.toString() +
+               "isOwned=" + isOwned +
+               ", trades=" + trades +
                '}';
     }
 }

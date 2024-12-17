@@ -1,13 +1,9 @@
 package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.utils.DTOs.items.Item;
-import github.ricemonger.utils.DTOs.items.ItemForCentralTradeManager;
 import github.ricemonger.utils.enums.TradeOperationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.*;
 
 @Data
 @NoArgsConstructor
@@ -18,7 +14,7 @@ public class TradeByItemIdManager {
     private boolean enabled;
     private Integer sellBoundaryPrice;
     private Integer buyBoundaryPrice;
-    private Integer priority;
+    private Integer priorityMultiplier;
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -36,7 +32,7 @@ public class TradeByItemIdManager {
             sb.append("Boundary Buy price: ").append(buyBoundaryPrice).append("\n");
         }
 
-        sb.append("Priority: ").append(priority).append("\n");
+        sb.append("Priority: ").append(priorityMultiplier).append("\n");
 
         return sb.toString();
     }

@@ -18,7 +18,7 @@ class TradeByItemIdManagerEntityTest {
         entity.setTradeOperationType(TradeOperationType.BUY);
         entity.setSellBoundaryPrice(200);
         entity.setBuyBoundaryPrice(400);
-        entity.setPriority(1);
+        entity.setPriorityMultiplier(1);
 
         TradeByItemIdManager expected = new TradeByItemIdManager();
         expected.setItemId("1");
@@ -26,7 +26,7 @@ class TradeByItemIdManagerEntityTest {
         expected.setTradeOperationType(TradeOperationType.BUY);
         expected.setSellBoundaryPrice(200);
         expected.setBuyBoundaryPrice(400);
-        expected.setPriority(1);
+        expected.setPriorityMultiplier(1);
 
         TradeByItemIdManager actual = entity.toTradeByItemIdManager();
 
@@ -40,7 +40,7 @@ class TradeByItemIdManagerEntityTest {
         manager.setTradeOperationType(TradeOperationType.SELL);
         manager.setSellBoundaryPrice(400);
         manager.setBuyBoundaryPrice(800);
-        manager.setPriority(2);
+        manager.setPriorityMultiplier(2);
 
         UserEntity userEntity = new UserEntity();
         userEntity.setId(1L);
@@ -54,7 +54,7 @@ class TradeByItemIdManagerEntityTest {
         expected.setTradeOperationType(TradeOperationType.SELL);
         expected.setSellBoundaryPrice(400);
         expected.setBuyBoundaryPrice(800);
-        expected.setPriority(2);
+        expected.setPriorityMultiplier(2);
 
         TradeByItemIdManagerEntity actual = new TradeByItemIdManagerEntity(userEntity, itemEntity, manager);
 
@@ -64,6 +64,6 @@ class TradeByItemIdManagerEntityTest {
         assertEquals(expected.getTradeOperationType(), actual.getTradeOperationType());
         assertEquals(expected.getSellBoundaryPrice(), actual.getSellBoundaryPrice());
         assertEquals(expected.getBuyBoundaryPrice(), actual.getBuyBoundaryPrice());
-        assertEquals(expected.getPriority(), actual.getPriority());
+        assertEquals(expected.getPriorityMultiplier(), actual.getPriorityMultiplier());
     }
 }

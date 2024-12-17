@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class PublicMethodLogger {
 
+    private static final int LOG_THRESHOLD_TIME_MS = 9;
+
     @Around("execution(* github.ricemonger.*..*.*(..))")
     public Object logMethodCall(ProceedingJoinPoint joinPoint) throws Throwable {
         String className = joinPoint.getTarget().getClass().getSimpleName();
@@ -30,7 +32,9 @@ public class PublicMethodLogger {
 
         long timeTaken = System.currentTimeMillis() - timeBefore;
 
-        log.debug("{} | Method: {} took: {}ms", className, methodName, timeTaken);
+        if (timeTaken > LOG_THRESHOLD_TIME_MS) {
+            log.debug("{} | Method: {} took: {}ms", className, methodName, timeTaken);
+        }
 
         if (result != null) {
             if (methodArgs.length > 0) {

@@ -3,7 +3,7 @@ package github.ricemonger.marketplace.databases.postgres.entities.user;
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.utils.DTOs.UserForCentralTradeManager;
 import github.ricemonger.utils.DTOs.items.Item;
-import github.ricemonger.utils.DTOs.items.ItemForCentralTradeManager;
+import github.ricemonger.marketplace.services.central_trade_manager.PersonalItem;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.TradeOperationType;
 import org.junit.jupiter.api.Test;
@@ -23,12 +23,12 @@ class UserEntityTest {
         itemFilterEntity1.setFilterType(FilterType.ALLOW);
 
         TradeByFiltersManagerEntity tradeByFiltersManagerEntity1 = new TradeByFiltersManagerEntity();
-        tradeByFiltersManagerEntity1.setPriority(1);
+        tradeByFiltersManagerEntity1.setPriorityMultiplier(1);
         tradeByFiltersManagerEntity1.setTradeOperationType(TradeOperationType.BUY);
         tradeByFiltersManagerEntity1.setAppliedFilters(List.of(itemFilterEntity1));
 
         TradeByItemIdManagerEntity tradeByItemIdManagerEntity1 = new TradeByItemIdManagerEntity();
-        tradeByItemIdManagerEntity1.setPriority(2);
+        tradeByItemIdManagerEntity1.setPriorityMultiplier(2);
         tradeByItemIdManagerEntity1.setTradeOperationType(TradeOperationType.BUY);
         tradeByItemIdManagerEntity1.setItem(new ItemEntity("itemId2"));
 
@@ -61,18 +61,18 @@ class UserEntityTest {
 
         UserForCentralTradeManager userForCentralTradeManager = userEntity.toUserForCentralTradeManager(existingItems);
 
-        ItemForCentralTradeManager itemForCentralTradeManager1 = new ItemForCentralTradeManager();
-        itemForCentralTradeManager1.setItem(new Item("itemId1"));
-        itemForCentralTradeManager1.setTradeOperationType(TradeOperationType.BUY);
-        itemForCentralTradeManager1.setPriority(1);
+        PersonalItem personalItem1 = new PersonalItem();
+        personalItem1.setItem(new Item("itemId1"));
+        personalItem1.setTradeOperationType(TradeOperationType.BUY);
+        personalItem1.setPriorityMultiplier(1);
 
-        ItemForCentralTradeManager itemForCentralTradeManager2 = new ItemForCentralTradeManager();
-        itemForCentralTradeManager2.setItem(new Item("itemId2"));
-        itemForCentralTradeManager2.setTradeOperationType(TradeOperationType.BUY);
-        itemForCentralTradeManager2.setPriority(2);
+        PersonalItem personalItem2 = new PersonalItem();
+        personalItem2.setItem(new Item("itemId2"));
+        personalItem2.setTradeOperationType(TradeOperationType.BUY);
+        personalItem2.setPriorityMultiplier(2);
 
 
-        List<ItemForCentralTradeManager> expectedItems = List.of(itemForCentralTradeManager1, itemForCentralTradeManager2);
+        List<PersonalItem> expectedItems = List.of(personalItem1, personalItem2);
 
         assertEquals(userEntity.getId(), userForCentralTradeManager.getId());
         assertEquals(userEntity.getPrivateNotificationsEnabledFlag(), userForCentralTradeManager.getPrivateNotificationsEnabledFlag());

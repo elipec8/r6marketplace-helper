@@ -40,7 +40,7 @@ public class TradeByFiltersManagerEntity {
     private Integer minBuySellProfit;
     private Integer minProfitPercent;
 
-    private Integer priority;
+    private Integer priorityMultiplier;
 
     public TradeByFiltersManagerEntity(UserEntity user, TradeByFiltersManager tradeManager) {
         this.user = user;
@@ -52,7 +52,7 @@ public class TradeByFiltersManagerEntity {
         }
         this.minBuySellProfit = tradeManager.getMinBuySellProfit();
         this.minProfitPercent = tradeManager.getMinProfitPercent();
-        this.priority = tradeManager.getPriority();
+        this.priorityMultiplier = tradeManager.getPriorityMultiplier();
     }
 
     public TradeByFiltersManager toTradeByFiltersManager() {
@@ -65,7 +65,7 @@ public class TradeByFiltersManagerEntity {
         }
         tradeManager.setMinBuySellProfit(this.minBuySellProfit);
         tradeManager.setMinProfitPercent(this.minProfitPercent);
-        tradeManager.setPriority(this.priority);
+        tradeManager.setPriorityMultiplier(this.priorityMultiplier);
         return tradeManager;
     }
 }

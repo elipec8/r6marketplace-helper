@@ -37,7 +37,7 @@ public class TradeByItemIdManagerEntity {
     private Integer sellBoundaryPrice;
     private Integer buyBoundaryPrice;
 
-    private Integer priority;
+    private Integer priorityMultiplier;
 
     public TradeByItemIdManagerEntity(UserEntity user, ItemEntity item, TradeByItemIdManager tradeManager) {
         this.user = user;
@@ -46,7 +46,7 @@ public class TradeByItemIdManagerEntity {
         this.tradeOperationType = tradeManager.getTradeOperationType();
         this.sellBoundaryPrice = tradeManager.getSellBoundaryPrice();
         this.buyBoundaryPrice = tradeManager.getBuyBoundaryPrice();
-        this.priority = tradeManager.getPriority();
+        this.priorityMultiplier = tradeManager.getPriorityMultiplier();
     }
 
     public TradeByItemIdManager toTradeByItemIdManager() {
@@ -56,7 +56,7 @@ public class TradeByItemIdManagerEntity {
         tradeManager.setTradeOperationType(tradeOperationType);
         tradeManager.setSellBoundaryPrice(sellBoundaryPrice);
         tradeManager.setBuyBoundaryPrice(buyBoundaryPrice);
-        tradeManager.setPriority(priority);
+        tradeManager.setPriorityMultiplier(priorityMultiplier);
         return tradeManager;
     }
 }

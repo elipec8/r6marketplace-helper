@@ -60,15 +60,6 @@ public class ItemEntity {
     private Integer dayMinPrice;
     private Integer daySales;
 
-    @Column(name = "price_to_sell_in_1_hour")
-    private Integer priceToSellIn1Hour;
-    @Column(name = "price_to_sell_in_6_hours")
-    private Integer priceToSellIn6Hours;
-    @Column(name = "price_to_sell_in_24_hours")
-    private Integer priceToSellIn24Hours;
-    @Column(name = "price_to_sell_in_168_hours")
-    private Integer priceToSellIn168Hours;
-
     @Column(name = "price_to_buy_in_1_hour")
     private Integer priceToBuyIn1Hour;
     @Column(name = "price_to_buy_in_6_hours")
@@ -77,6 +68,24 @@ public class ItemEntity {
     private Integer priceToBuyIn24Hours;
     @Column(name = "price_to_buy_in_168_hours")
     private Integer priceToBuyIn168Hours;
+    @Column(name = "price_to_buy_in_720_hours")
+    private Integer priceToBuyIn720Hours;
+
+    private Long priorityToSellByMaxBuyPrice; //updated with every item stats update, not recalculation
+    private Long priorityToSellByNextFancySellPrice; //updated with every item stats update, not recalculation
+
+    private Long priorityToBuyByMinSellPrice; //updated with every item stats update, not recalculation
+
+    @Column(name = "priority_to_buy_in_1_hour")
+    private Long priorityToBuyIn1Hour;
+    @Column(name = "priority_to_buy_in_6_hours")
+    private Long priorityToBuyIn6Hours;
+    @Column(name = "priority_to_buy_in_24_hours")
+    private Long priorityToBuyIn24Hours;
+    @Column(name = "priority_to_buy_in_168_hours")
+    private Long priorityToBuyIn168Hours;
+    @Column(name = "priority_to_buy_in_720_hours")
+    private Long priorityToBuyIn720Hours;
 
     public ItemEntity(String itemId) {
         this.itemId = itemId;
@@ -121,15 +130,22 @@ public class ItemEntity {
         this.dayMinPrice = item.getDayMinPrice();
         this.daySales = item.getDaySales();
 
-        this.priceToSellIn1Hour = item.getPriceToSellIn1Hour();
-        this.priceToSellIn6Hours = item.getPriceToSellIn6Hours();
-        this.priceToSellIn24Hours = item.getPriceToSellIn24Hours();
-        this.priceToSellIn168Hours = item.getPriceToSellIn168Hours();
+        this.priorityToSellByMaxBuyPrice = item.getPriorityToSellByMaxBuyPrice();
+        this.priorityToSellByNextFancySellPrice = item.getPriorityToSellByNextFancySellPrice();
+
+        this.priorityToBuyByMinSellPrice = item.getPriorityToBuyByMinSellPrice();
+
+        this.priorityToBuyIn1Hour = item.getPriorityToBuyIn1Hour();
+        this.priorityToBuyIn6Hours = item.getPriorityToBuyIn6Hours();
+        this.priorityToBuyIn24Hours = item.getPriorityToBuyIn24Hours();
+        this.priorityToBuyIn168Hours = item.getPriorityToBuyIn168Hours();
+        this.priorityToBuyIn720Hours = item.getPriorityToBuyIn720Hours();
 
         this.priceToBuyIn1Hour = item.getPriceToBuyIn1Hour();
         this.priceToBuyIn6Hours = item.getPriceToBuyIn6Hours();
         this.priceToBuyIn24Hours = item.getPriceToBuyIn24Hours();
         this.priceToBuyIn168Hours = item.getPriceToBuyIn168Hours();
+        this.priceToBuyIn720Hours = item.getPriceToBuyIn720Hours();
     }
 
     public Item toItem() {
@@ -169,15 +185,23 @@ public class ItemEntity {
         item.setDayMinPrice(this.dayMinPrice);
         item.setDaySales(this.daySales);
 
-        item.setPriceToSellIn1Hour(this.priceToSellIn1Hour);
-        item.setPriceToSellIn6Hours(this.priceToSellIn6Hours);
-        item.setPriceToSellIn24Hours(this.priceToSellIn24Hours);
-        item.setPriceToSellIn168Hours(this.priceToSellIn168Hours);
+        item.setPriorityToSellByMaxBuyPrice(this.priorityToSellByMaxBuyPrice);
+        item.setPriorityToSellByNextFancySellPrice(this.priorityToSellByNextFancySellPrice);
+
+        item.setPriorityToBuyByMinSellPrice(this.priorityToBuyByMinSellPrice);
+
+        item.setPriorityToBuyIn1Hour(this.priorityToBuyIn1Hour);
+        item.setPriorityToBuyIn6Hours(this.priorityToBuyIn6Hours);
+        item.setPriorityToBuyIn24Hours(this.priorityToBuyIn24Hours);
+        item.setPriorityToBuyIn168Hours(this.priorityToBuyIn168Hours);
+        item.setPriorityToBuyIn720Hours(this.priorityToBuyIn720Hours);
 
         item.setPriceToBuyIn1Hour(this.priceToBuyIn1Hour);
         item.setPriceToBuyIn6Hours(this.priceToBuyIn6Hours);
         item.setPriceToBuyIn24Hours(this.priceToBuyIn24Hours);
         item.setPriceToBuyIn168Hours(this.priceToBuyIn168Hours);
+        item.setPriceToBuyIn720Hours(this.priceToBuyIn720Hours);
+
         return item;
     }
 }
