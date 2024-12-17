@@ -34,7 +34,7 @@ public class GraphQlVariablesServiceTest {
     }
 
     @Test
-    public void getCreateUpdateOrderVariables_should_have_provided_variables() {
+    public void getCreateUpdateSellOrderVariables_should_have_provided_variables() {
         String mainUserSpaceId = "mainUserSpaceId";
         String itemId = "itemId";
         int price = 100;

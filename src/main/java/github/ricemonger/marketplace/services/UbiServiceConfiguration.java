@@ -47,5 +47,4 @@ public class UbiServiceConfiguration {
     private Integer minLegendaryPrice;
     @Value("${ubi.session.maxLegendaryPrice}")
     private Integer maxLegendaryPrice;
-
 }

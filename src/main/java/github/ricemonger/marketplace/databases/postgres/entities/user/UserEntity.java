@@ -38,7 +38,7 @@ public class UserEntity {
     private List<TradeByItemIdManagerEntity> tradeByItemIdManagers = new ArrayList<>();
 
     private Boolean publicNotificationsEnabledFlag = true;
-    private Boolean privateNotificationsEnabledFlag = true;
+    private Boolean privateNotificationsEnabledFlag = false;
 
     private Boolean itemShowNameFlag = true;
     private Boolean itemShowItemTypeFlag = true;

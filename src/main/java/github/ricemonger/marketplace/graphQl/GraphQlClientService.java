@@ -2,7 +2,10 @@ package github.ricemonger.marketplace.graphQl;
 
 import github.ricemonger.marketplace.graphQl.mappers.*;
 import github.ricemonger.utils.DTOs.*;
-import github.ricemonger.utils.DTOs.items.*;
+import github.ricemonger.utils.DTOs.items.GroupedItemDaySalesUbiStats;
+import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.PersonalItem;
+import github.ricemonger.utils.DTOs.items.Tag;
 import github.ricemonger.utils.exceptions.server.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.client.HttpGraphQlClient;
@@ -251,32 +254,32 @@ public class GraphQlClientService {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
         client.documentName(GraphQlDocuments.MUTATION_ORDER_BUY_CREATE_DOCUMENT_NAME)
-                .variables(graphQlVariablesService.getCreateUpdateOrderVariables(itemId, price))
-                .execute();
+                .variables(graphQlVariablesService.getCreateBuyOrderVariables(itemId, price))
+                .execute().block();
     }
 
     public void updateBuyOrderForUser(AuthorizationDTO authorizationDTO, String tradeId, int price) {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
         client.documentName(GraphQlDocuments.MUTATION_ORDER_BUY_UPDATE_DOCUMENT_NAME)
-                .variables(graphQlVariablesService.getCreateUpdateOrderVariables(tradeId, price))
-                .execute();
+                .variables(graphQlVariablesService.getUpdateBuyOrderVariables(tradeId, price))
+                .execute().block();
     }
 
     public void createSellOrderForUser(AuthorizationDTO authorizationDTO, String itemId, int price) {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
         client.documentName(GraphQlDocuments.MUTATION_ORDER_SELL_CREATE_DOCUMENT_NAME)
-                .variables(graphQlVariablesService.getCreateUpdateOrderVariables(itemId, price))
-                .execute();
+                .variables(graphQlVariablesService.getCreateSellOrderVariables(itemId, price))
+                .execute().block();
     }
 
     public void updateSellOrderForUser(AuthorizationDTO authorizationDTO, String tradeId, int price) {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
         client.documentName(GraphQlDocuments.MUTATION_ORDER_SELL_UPDATE_DOCUMENT_NAME)
-                .variables(graphQlVariablesService.getCreateUpdateOrderVariables(tradeId, price))
-                .execute();
+                .variables(graphQlVariablesService.getUpdateSellOrderVariables(tradeId, price))
+                .execute().block();
     }
 
     public void cancelOrderForUser(AuthorizationDTO authorizationDTO, String tradeId) {
@@ -284,6 +287,6 @@ public class GraphQlClientService {
 
         client.documentName(GraphQlDocuments.MUTATION_ORDER_CANCEL_DOCUMENT_NAME)
                 .variables(graphQlVariablesService.getCancelOrderVariables(tradeId))
-                .execute();
+                .execute().block();
     }
 }

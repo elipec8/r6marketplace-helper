@@ -4,6 +4,7 @@ import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.ItemService;
 import github.ricemonger.marketplace.services.TelegramUserUbiAccountEntryService;
+import github.ricemonger.marketplace.services.central_trade_manager.CentralTradeManager;
 import github.ricemonger.telegramBot.TelegramBotService;
 import github.ricemonger.utils.DTOs.*;
 import github.ricemonger.utils.DTOs.items.Item;
@@ -18,10 +19,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static github.ricemonger.marketplace.services.central_trade_manager.PotentialTradeStatsService.TRADE_MANAGER_FIXED_RATE_MINUTES;
+
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class ScheduledAllUbiUsersStatsFetcher {
+public class ScheduledAllUbiUsersManager {
 
     private final TelegramUserUbiAccountEntryService telegramUserUbiAccountEntryService;
 
@@ -33,20 +36,23 @@ public class ScheduledAllUbiUsersStatsFetcher {
 
     private final ItemService itemService;
 
-    @Scheduled(fixedRate = 5 * 60 * 1000, initialDelay = 2 * 60 * 1000) // every 5m after 2m of delay
-    public void fetchAllUbiUsersStats() {
+    private final CentralTradeManager centralTradeManager;
+
+    @Scheduled(fixedRate = TRADE_MANAGER_FIXED_RATE_MINUTES * 60 * 1000, initialDelay = 5 * 60 * 1000) // every 1m after 5m of delay
+    public void fetchAllUbiUsersStatsAndManageTrades() {
         List<UbiAccountEntryWithTelegram> ubiAccountsWithTelegram = telegramUserUbiAccountEntryService.findAllForTelegram();
 
         List<UbiAccountStats> updatedUbiAccountsStats = new ArrayList<>();
 
         for (UbiAccountEntryWithTelegram ubiAccountWithTelegram : ubiAccountsWithTelegram) {
-            System.out.println("Fetching stats for " + ubiAccountWithTelegram);
             updatedUbiAccountsStats.add(fetchAndGetUserPersonalStats(ubiAccountWithTelegram));
         }
 
         commonValuesService.setLastUbiUsersStatsFetchTime(LocalDateTime.now().withNano(0));
 
         telegramUserUbiAccountEntryService.saveAllUbiAccountStats(updatedUbiAccountsStats);
+
+        centralTradeManager.manageAllUsersTrades();
     }
 
     private UbiAccountStats fetchAndGetUserPersonalStats(UbiAccountEntryWithTelegram ubiAccountWithTelegram) {
@@ -86,7 +92,7 @@ public class ScheduledAllUbiUsersStatsFetcher {
 
     private void notifyUser(UbiAccountEntryWithTelegram ubiAccountWithTelegram, int creditAmount, List<UbiTrade> soldIn24h, List<UbiTrade> boughtIn24h) {
 
-        boolean creditsChanged = ubiAccountWithTelegram.getCreditAmount() == null || ubiAccountWithTelegram.getCreditAmount() != creditAmount;
+        boolean creditsChanged = ubiAccountWithTelegram.getCreditAmount() != null && ubiAccountWithTelegram.getCreditAmount() != creditAmount;
         boolean soldIn24hChanged = soldIn24h.stream().anyMatch(trade -> trade.getLastModifiedAt().isAfter(commonValuesService.getLastUbiUsersStatsFetchTime()));
         boolean boughtIn24hChanged = boughtIn24h.stream().anyMatch(trade -> trade.getLastModifiedAt().isAfter(commonValuesService.getLastUbiUsersStatsFetchTime()));
 

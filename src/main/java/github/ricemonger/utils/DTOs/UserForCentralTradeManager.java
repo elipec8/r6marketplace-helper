@@ -5,7 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -57,7 +58,15 @@ public class UserForCentralTradeManager {
         return ubiAccountStats.getCurrentBuyTrades();
     }
 
+    public void setCurrentBuyTrades(List<UbiTrade> currentBuyTrades) {
+        ubiAccountStats.setCurrentBuyTrades(currentBuyTrades);
+    }
+
     public List<UbiTrade> getCurrentSellTrades() {
         return ubiAccountStats.getCurrentSellTrades();
+    }
+
+    public void setCurrentSellTrades(List<UbiTrade> currentSellTrades) {
+        ubiAccountStats.setCurrentSellTrades(currentSellTrades);
     }
 }

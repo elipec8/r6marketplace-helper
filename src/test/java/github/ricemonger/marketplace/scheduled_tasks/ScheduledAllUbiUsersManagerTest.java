@@ -19,10 +19,10 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class ScheduledAllUbiUsersStatsFetcherTest {
+class ScheduledAllUbiUsersManagerTest {
 
     @Autowired
-    private ScheduledAllUbiUsersStatsFetcher scheduledAllUbiUsersStatsFetcher;
+    private ScheduledAllUbiUsersManager scheduledAllUbiUsersManager;
 
     @MockBean
     private TelegramUserUbiAccountEntryService telegramUserUbiAccountEntryService;
@@ -37,7 +37,7 @@ class ScheduledAllUbiUsersStatsFetcherTest {
     private CommonValuesService commonValuesService;
 
     @Test
-    public void fetchAllUbiUsersStats_should_update_ubiStats() {
+    public void fetchAllUbiUsersStats_should_update_ubiStatsAndManageTrades() {
         UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry1 = new UbiAccountAuthorizationEntry("ubiAuthProfileId1", "email1",
                 "encodedPassword1",
                 "ubiSessionId1", "ubiSpaceId1", "ubiAuthTicket1", "ubiTwoFactorAuthTicket1", "ubiRememberDeviceTicket1", "ubiRememberMeTicket1");
@@ -134,7 +134,7 @@ class ScheduledAllUbiUsersStatsFetcherTest {
 
         when(commonValuesService.getLastUbiUsersStatsFetchTime()).thenReturn(LocalDateTime.now().minusDays(15));
 
-        scheduledAllUbiUsersStatsFetcher.fetchAllUbiUsersStats();
+        scheduledAllUbiUsersManager.fetchAllUbiUsersStatsAndManageTrades();
 
         UbiAccountStats expectedUbiAccountStats1 = new UbiAccountStats("ubiProfileId1", 1, 1, creditAmount1, List.of("itemId3", "itemId4"),
                 List.of(itemResaleLockWithUbiAccount1, itemResaleLockWithUbiAccount2), List.of(currentBuyTrade1), List.of(currentSellTrade1));
@@ -166,7 +166,7 @@ class ScheduledAllUbiUsersStatsFetcherTest {
     }
 
     @Test
-    public void fetchAllUbiUsersStats_should_notify_users_on_credits_amount_changed() {
+    public void fetchAllUbiUsersStats_should_notify_users_on_credits_amount_changedAndManageTrades() {
         UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry1 = new UbiAccountAuthorizationEntry("ubiAuthProfileId1", "email1",
                 "encodedPassword1",
                 "ubiSessionId1", "ubiSpaceId1", "ubiAuthTicket1", "ubiTwoFactorAuthTicket1", "ubiRememberDeviceTicket1", "ubiRememberMeTicket1");
@@ -204,7 +204,7 @@ class ScheduledAllUbiUsersStatsFetcherTest {
 
         when(commonValuesService.getLastUbiUsersStatsFetchTime()).thenReturn(LocalDateTime.now().minusDays(15));
 
-        scheduledAllUbiUsersStatsFetcher.fetchAllUbiUsersStats();
+        scheduledAllUbiUsersManager.fetchAllUbiUsersStatsAndManageTrades();
 
         verify(telegramBotService,times(1)).sendNotificationToUser(eq("chatId1"),anyString());
         verify(telegramBotService,times(0)).sendNotificationToUser(eq("chatId2"),anyString());
@@ -212,7 +212,7 @@ class ScheduledAllUbiUsersStatsFetcherTest {
     }
 
     @Test
-    public void fetchAllUbiUsersStats_should_notify_users_on_new_sells() {
+    public void fetchAllUbiUsersStats_should_notify_users_on_new_sellsAndManageTrades() {
         UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry1 = new UbiAccountAuthorizationEntry("ubiAuthProfileId1", "email1",
                 "encodedPassword1",
                 "ubiSessionId1", "ubiSpaceId1", "ubiAuthTicket1", "ubiTwoFactorAuthTicket1", "ubiRememberDeviceTicket1", "ubiRememberMeTicket1");
@@ -274,7 +274,7 @@ class ScheduledAllUbiUsersStatsFetcherTest {
 
         when(commonValuesService.getLastUbiUsersStatsFetchTime()).thenReturn(LocalDateTime.now().minusHours(5));
 
-        scheduledAllUbiUsersStatsFetcher.fetchAllUbiUsersStats();
+        scheduledAllUbiUsersManager.fetchAllUbiUsersStatsAndManageTrades();
 
         verify(telegramBotService,times(1)).sendNotificationToUser(eq("chatId1"),anyString());
         verify(telegramBotService,times(0)).sendNotificationToUser(eq("chatId2"),anyString());
@@ -283,7 +283,7 @@ class ScheduledAllUbiUsersStatsFetcherTest {
     }
 
     @Test
-    public void fetchAllUbiUsersStats_should_notify_users_on_new_buys() {
+    public void fetchAllUbiUsersStats_should_notify_users_on_new_buysAndManageTrades() {
         UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry1 = new UbiAccountAuthorizationEntry("ubiAuthProfileId1", "email1",
                 "encodedPassword1",
                 "ubiSessionId1", "ubiSpaceId1", "ubiAuthTicket1", "ubiTwoFactorAuthTicket1", "ubiRememberDeviceTicket1", "ubiRememberMeTicket1");
@@ -343,7 +343,7 @@ class ScheduledAllUbiUsersStatsFetcherTest {
 
         when(commonValuesService.getLastUbiUsersStatsFetchTime()).thenReturn(LocalDateTime.now().minusHours(5));
 
-        scheduledAllUbiUsersStatsFetcher.fetchAllUbiUsersStats();
+        scheduledAllUbiUsersManager.fetchAllUbiUsersStatsAndManageTrades();
 
         verify(telegramBotService,times(1)).sendNotificationToUser(eq("chatId1"),anyString());
         verify(telegramBotService,times(0)).sendNotificationToUser(eq("chatId2"),anyString());

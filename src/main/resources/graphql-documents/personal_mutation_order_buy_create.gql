@@ -1,8 +1,8 @@
-mutation CreateSellOrder($spaceId: String!, $tradeItems: [TradeOrderItem!]!, $paymentOptions: [PaymentItem!]!) {
+mutation CreateBuyOrder($spaceId: String!, $tradeItems: [TradeOrderItem!]!, $paymentProposal: PaymentItem!) {
     createBuyOrder(
         spaceId: $spaceId
         tradeItems: $tradeItems
-        paymentOptions: $paymentOptions
+        paymentProposal: $paymentProposal
     ) {
         trade {
             ...TradeFragment
@@ -80,14 +80,6 @@ fragment SecondaryStoreItemFragment on SecondaryStoreItem {
     name
     tags
     type
-    viewer {
-        meta {
-            id
-            isReserved
-            __typename
-        }
-        __typename
-    }
     __typename
 }
 

@@ -77,8 +77,6 @@ public class CentralTradeManager {
                 userForCentralTradeManager.getChatId(),
                 userForCentralTradeManager.getPrivateNotificationsEnabledFlag() == null ? false : userForCentralTradeManager.getPrivateNotificationsEnabledFlag()));
 
-        System.out.println("commands = ");
-
         for (CentralTradeManagerCommand command : commands.stream().sorted().toList()) {
             executeCentralTradeManagerCommand(command);
         }

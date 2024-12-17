@@ -22,7 +22,7 @@ public class GraphQlVariablesService {
         );
     }
 
-    public Map<String, Object> getCreateUpdateOrderVariables(String itemId, int price) {
+    public Map<String, Object> getCreateSellOrderVariables(String itemId, int price) {
         return Map.of(
                 "spaceId", commonValuesService.getUbiGameSpaceId(),
                 "tradeItems", List.of(
@@ -33,6 +33,40 @@ public class GraphQlVariablesService {
                         Map.of(
                                 "paymentItemId", commonValuesService.getPaymentItemId(),
                                 "price", price))
+        );
+    }
+
+    public Map<String, Object> getUpdateSellOrderVariables(String tradeId, int price) {
+        return Map.of(
+                "spaceId", commonValuesService.getUbiGameSpaceId(),
+                "tradeId", tradeId,
+                "paymentOptions", List.of(
+                        Map.of(
+                                "paymentItemId", commonValuesService.getPaymentItemId(),
+                                "price", price))
+        );
+    }
+
+    public Map<String, Object> getCreateBuyOrderVariables(String itemId, int price) {
+        return Map.of(
+                "spaceId", commonValuesService.getUbiGameSpaceId(),
+                "tradeItems", List.of(
+                        Map.of(
+                                "itemId", itemId,
+                                "quantity", 1)),
+                "paymentProposal", Map.of(
+                        "paymentItemId", commonValuesService.getPaymentItemId(),
+                        "price", price)
+        );
+    }
+
+    public Map<String, Object> getUpdateBuyOrderVariables(String tradeId, int price) {
+        return Map.of(
+                "spaceId", commonValuesService.getUbiGameSpaceId(),
+                "tradeId", tradeId,
+                "paymentProposal", Map.of(
+                                "paymentItemId", commonValuesService.getPaymentItemId(),
+                                "price", price)
         );
     }
 
