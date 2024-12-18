@@ -38,10 +38,10 @@ class ItemDaySalesStatsByItemIdTest {
 
     @Test
     public void constructor_with_ubiSaleStats_should_properly_create_object_ignoring_different_itemId_sale_or_other_dates_with_more_than_2_itemsCount() {
-        List<ItemDaySalesUbiStats> daySalesUbiStats = new ArrayList<>();
-        daySalesUbiStats.add(new ItemDaySalesUbiStats("1", LocalDate.of(2024, 1, 1), 100, 300, 500, 20));
-        daySalesUbiStats.add(new ItemDaySalesUbiStats("1", LocalDate.of(2024, 1, 2), 200, 600, 1000, 40));
-        daySalesUbiStats.add(new ItemDaySalesUbiStats("2", LocalDate.of(2024, 1, 1), 300, 900, 1500, 60));
+        List<ItemDaySalesUbiStatsEntityDTO> daySalesUbiStats = new ArrayList<>();
+        daySalesUbiStats.add(new ItemDaySalesUbiStatsEntityDTO("1", LocalDate.of(2024, 1, 1), 100, 300, 500, 20));
+        daySalesUbiStats.add(new ItemDaySalesUbiStatsEntityDTO("1", LocalDate.of(2024, 1, 2), 200, 600, 1000, 40));
+        daySalesUbiStats.add(new ItemDaySalesUbiStatsEntityDTO("2", LocalDate.of(2024, 1, 1), 300, 900, 1500, 60));
 
         ItemDaySalesStatsByItemId itemDaySalesStatsByItemId = new ItemDaySalesStatsByItemId(LocalDate.of(2024, 1, 1), "1", daySalesUbiStats);
 
@@ -55,8 +55,8 @@ class ItemDaySalesStatsByItemIdTest {
 
     @Test
     public void constructor_with_ubiSaleStats_should_properly_create_object_with_1_item_count() {
-        List<ItemDaySalesUbiStats> daySalesUbiStats = new ArrayList<>();
-        daySalesUbiStats.add(new ItemDaySalesUbiStats("1", LocalDate.of(2024, 1, 1), 100, 300, 500, 1));
+        List<ItemDaySalesUbiStatsEntityDTO> daySalesUbiStats = new ArrayList<>();
+        daySalesUbiStats.add(new ItemDaySalesUbiStatsEntityDTO("1", LocalDate.of(2024, 1, 1), 100, 300, 500, 1));
 
         ItemDaySalesStatsByItemId itemDaySalesStatsByItemId = new ItemDaySalesStatsByItemId(LocalDate.of(2024, 1, 1), "1", daySalesUbiStats);
 
@@ -66,8 +66,8 @@ class ItemDaySalesStatsByItemIdTest {
 
     @Test
     public void constructor_with_ubiSaleStats_should_properly_create_object_with_2_item_count() {
-        List<ItemDaySalesUbiStats> daySalesUbiStats = new ArrayList<>();
-        daySalesUbiStats.add(new ItemDaySalesUbiStats("1", LocalDate.of(2024, 1, 1), 100, 300, 500, 2));
+        List<ItemDaySalesUbiStatsEntityDTO> daySalesUbiStats = new ArrayList<>();
+        daySalesUbiStats.add(new ItemDaySalesUbiStatsEntityDTO("1", LocalDate.of(2024, 1, 1), 100, 300, 500, 2));
 
         ItemDaySalesStatsByItemId itemDaySalesStatsByItemId = new ItemDaySalesStatsByItemId(LocalDate.of(2024, 1, 1), "1", daySalesUbiStats);
 

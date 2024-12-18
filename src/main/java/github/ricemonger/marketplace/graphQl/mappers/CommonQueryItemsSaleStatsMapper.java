@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.node.PriceHistory;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.DTOs.items.GroupedItemDaySalesUbiStats;
-import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStats;
+import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStatsEntityDTO;
 import github.ricemonger.utils.exceptions.server.GraphQlCommonItemsSaleStatsMappingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,21 +43,21 @@ public class CommonQueryItemsSaleStatsMapper {
         if (node.getPriceHistory() == null) {
             throw new GraphQlCommonItemsSaleStatsMappingException("PriceHistory is null, node-" + node);
         }
-        List<ItemDaySalesUbiStats> itemSaleUbiStats = mapAllItemDaySales(item.getItemId(), node.getPriceHistory());
+        List<ItemDaySalesUbiStatsEntityDTO> itemSaleUbiStats = mapAllItemDaySales(item.getItemId(), node.getPriceHistory());
         result.setDaySales(itemSaleUbiStats);
 
         return result;
     }
 
-    public List<ItemDaySalesUbiStats> mapAllItemDaySales(String itemId, List<PriceHistory> priceHistories) throws GraphQlCommonItemsSaleStatsMappingException {
+    public List<ItemDaySalesUbiStatsEntityDTO> mapAllItemDaySales(String itemId, List<PriceHistory> priceHistories) throws GraphQlCommonItemsSaleStatsMappingException {
         return priceHistories.stream().map(priceHistory -> mapItemDaySales(itemId, priceHistory)).collect(Collectors.toList());
     }
 
-    public ItemDaySalesUbiStats mapItemDaySales(String itemId, PriceHistory priceHistory) throws GraphQlCommonItemsSaleStatsMappingException {
+    public ItemDaySalesUbiStatsEntityDTO mapItemDaySales(String itemId, PriceHistory priceHistory) throws GraphQlCommonItemsSaleStatsMappingException {
         if (priceHistory == null) {
             throw new GraphQlCommonItemsSaleStatsMappingException("PriceHistory is null");
         }
-        ItemDaySalesUbiStats result = new ItemDaySalesUbiStats();
+        ItemDaySalesUbiStatsEntityDTO result = new ItemDaySalesUbiStatsEntityDTO();
 
         try {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getItemSaleStatsDateFormat());

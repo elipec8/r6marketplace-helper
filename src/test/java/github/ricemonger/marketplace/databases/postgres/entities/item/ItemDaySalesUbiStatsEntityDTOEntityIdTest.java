@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class ItemDaySalesUbiStatsEntityIdTest {
+class ItemDaySalesUbiStatsEntityDTOEntityIdTest {
     @Test
     public void hashCode_should_return_same_hash_for_equal_objects() {
         ItemEntity item1 = new ItemEntity();

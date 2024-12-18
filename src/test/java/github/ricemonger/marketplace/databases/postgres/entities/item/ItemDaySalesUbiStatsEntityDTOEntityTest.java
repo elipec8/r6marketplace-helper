@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities.item;
 
-import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStats;
+import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStatsEntityDTO;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-class ItemDaySalesUbiStatsEntityTest {
+class ItemDaySalesUbiStatsEntityDTOEntityTest {
     @Test
     public void toItemDaySalesUbiStats_should_properly_map_with_all_fields() {
         ItemEntity item = new ItemEntity();
@@ -22,7 +22,7 @@ class ItemDaySalesUbiStatsEntityTest {
         entity.setHighestPrice(300);
         entity.setItemsCount(10);
 
-        ItemDaySalesUbiStats expected = new ItemDaySalesUbiStats();
+        ItemDaySalesUbiStatsEntityDTO expected = new ItemDaySalesUbiStatsEntityDTO();
         expected.setItemId("1");
         expected.setDate(LocalDate.of(2023, 1, 1));
         expected.setLowestPrice(100);
@@ -30,7 +30,7 @@ class ItemDaySalesUbiStatsEntityTest {
         expected.setHighestPrice(300);
         expected.setItemsCount(10);
 
-        ItemDaySalesUbiStats actual = entity.toItemDaySalesUbiStats();
+        ItemDaySalesUbiStatsEntityDTO actual = entity.toItemDaySalesUbiStats();
 
         assertEquals(expected, actual);
     }
@@ -40,12 +40,12 @@ class ItemDaySalesUbiStatsEntityTest {
         ItemEntity item = new ItemEntity();
         item.setItemId("1");
 
-        ItemDaySalesUbiStats itemDaySalesUbiStats = new ItemDaySalesUbiStats();
-        itemDaySalesUbiStats.setDate(LocalDate.of(2023, 2, 1));
-        itemDaySalesUbiStats.setLowestPrice(100);
-        itemDaySalesUbiStats.setAveragePrice(200);
-        itemDaySalesUbiStats.setHighestPrice(300);
-        itemDaySalesUbiStats.setItemsCount(10);
+        ItemDaySalesUbiStatsEntityDTO itemDaySalesUbiStatsEntityDTO = new ItemDaySalesUbiStatsEntityDTO();
+        itemDaySalesUbiStatsEntityDTO.setDate(LocalDate.of(2023, 2, 1));
+        itemDaySalesUbiStatsEntityDTO.setLowestPrice(100);
+        itemDaySalesUbiStatsEntityDTO.setAveragePrice(200);
+        itemDaySalesUbiStatsEntityDTO.setHighestPrice(300);
+        itemDaySalesUbiStatsEntityDTO.setItemsCount(10);
 
         ItemDaySalesUbiStatsEntity expected = new ItemDaySalesUbiStatsEntity();
         expected.setItem(item);
@@ -55,7 +55,7 @@ class ItemDaySalesUbiStatsEntityTest {
         expected.setHighestPrice(300);
         expected.setItemsCount(10);
 
-        ItemDaySalesUbiStatsEntity actual = new ItemDaySalesUbiStatsEntity(item, itemDaySalesUbiStats);
+        ItemDaySalesUbiStatsEntity actual = new ItemDaySalesUbiStatsEntity(item, itemDaySalesUbiStatsEntityDTO);
 
         assertEquals(expected.getItem().getItemId(), actual.getItem().getItemId());
         assertEquals(expected.getDate(), actual.getDate());

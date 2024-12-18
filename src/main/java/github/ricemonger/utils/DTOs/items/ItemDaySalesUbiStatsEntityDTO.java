@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemDaySalesUbiStats {
+public class ItemDaySalesUbiStatsEntityDTO {
     private String itemId;
     private LocalDate date;
     private int lowestPrice;

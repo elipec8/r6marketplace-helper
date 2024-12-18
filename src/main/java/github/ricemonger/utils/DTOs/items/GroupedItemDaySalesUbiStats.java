@@ -13,6 +13,6 @@ import java.util.List;
 public class GroupedItemDaySalesUbiStats {
     private String itemId;
 
-    private List<ItemDaySalesUbiStats> daySales = new ArrayList<>();
+    private List<ItemDaySalesUbiStatsEntityDTO> daySales = new ArrayList<>();
 }
 

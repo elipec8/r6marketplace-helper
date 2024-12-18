@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @SpringBootTest
 @Transactional
-class ItemDaySalesUbiStatsPostgresRepositoryTest {
+class ItemDaySalesUbiStatsEntityDTOPostgresRepositoryTest {
     @SpyBean
     private ItemDaySalesUbiStatsPostgresRepository itemDaySalesUbiStatsPostgresRepository;
 

@@ -16,8 +16,9 @@ import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.v
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.viewer.meta.trades.nodes.PaymentOptions;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.viewer.meta.trades.nodes.PaymentProposal;
 import github.ricemonger.marketplace.services.CommonValuesService;
+import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.ItemDetails;
 import github.ricemonger.utils.DTOs.items.UbiTrade;
-import github.ricemonger.utils.DTOs.items.PersonalItem;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
@@ -47,9 +48,9 @@ class PersonalQueryOneItemMapperTest {
 
         Game game = createGame(dtf, date);
 
-        PersonalItem result = personalQueryOneItemMapper.mapItem(game);
+        ItemDetails result = personalQueryOneItemMapper.mapItem(game);
 
-        PersonalItem expected = createPersonalItem(date);
+        ItemDetails expected = createItemDetails(date);
 
         assertEquals(expected, result);
     }
@@ -63,9 +64,9 @@ class PersonalQueryOneItemMapperTest {
         game.getViewer().getMeta().getTrades().getNodes().get(0).setPaymentOptions(new PaymentOptions[]{new PaymentOptions(1000)});
         game.getViewer().getMeta().getTrades().getNodes().get(0).setPaymentProposal(null);
 
-        PersonalItem result = personalQueryOneItemMapper.mapItem(game);
+        ItemDetails result = personalQueryOneItemMapper.mapItem(game);
 
-        PersonalItem expected = createPersonalItem(date);
+        ItemDetails expected = createItemDetails(date);
 
         assertEquals(expected, result);
     }
@@ -78,9 +79,9 @@ class PersonalQueryOneItemMapperTest {
         Game game = createGame(dtf, date);
         game.getMarketableItem().getItem().setType("invalidType");
 
-        PersonalItem result = personalQueryOneItemMapper.mapItem(game);
+        ItemDetails result = personalQueryOneItemMapper.mapItem(game);
 
-        PersonalItem expected = createPersonalItem(date);
+        ItemDetails expected = createItemDetails(date);
         expected.setType(ItemType.Unknown);
 
         assertEquals(expected, result);
@@ -94,9 +95,9 @@ class PersonalQueryOneItemMapperTest {
         Game game = createGame(dtf, date);
         game.getMarketableItem().getMarketData().getLastSoldAt()[0].setPerformedAt("invalidDate");
 
-        PersonalItem result = personalQueryOneItemMapper.mapItem(game);
+        ItemDetails result = personalQueryOneItemMapper.mapItem(game);
 
-        PersonalItem expected = createPersonalItem(date);
+        ItemDetails expected = createItemDetails(date);
         expected.setLastSoldAt(LocalDateTime.of(1970, 1, 1, 0, 0, 0));
 
         assertEquals(expected, result);
@@ -110,9 +111,9 @@ class PersonalQueryOneItemMapperTest {
         Game game = createGame(dtf, date);
         game.getViewer().getMeta().getTrades().getNodes().get(0).setExpiresAt("invalidDate");
 
-        PersonalItem result = personalQueryOneItemMapper.mapItem(game);
+        ItemDetails result = personalQueryOneItemMapper.mapItem(game);
 
-        PersonalItem expected = createPersonalItem(date);
+        ItemDetails expected = createItemDetails(date);
         expected.getTrades().get(0).setExpiresAt(LocalDateTime.MIN);
 
         assertEquals(expected, result);
@@ -126,9 +127,9 @@ class PersonalQueryOneItemMapperTest {
         Game game = createGame(dtf, date);
         game.getViewer().getMeta().getTrades().getNodes().get(0).setLastModifiedAt("invalidDate");
 
-        PersonalItem result = personalQueryOneItemMapper.mapItem(game);
+        ItemDetails result = personalQueryOneItemMapper.mapItem(game);
 
-        PersonalItem expected = createPersonalItem(date);
+        ItemDetails expected = createItemDetails(date);
         expected.getTrades().get(0).setLastModifiedAt(LocalDateTime.MIN);
 
         assertEquals(expected, result);
@@ -142,9 +143,9 @@ class PersonalQueryOneItemMapperTest {
         Game game = createGame(dtf, date);
         game.getViewer().getMeta().getTrades().getNodes().get(0).setState("invalidState");
 
-        PersonalItem result = personalQueryOneItemMapper.mapItem(game);
+        ItemDetails result = personalQueryOneItemMapper.mapItem(game);
 
-        PersonalItem expected = createPersonalItem(date);
+        ItemDetails expected = createItemDetails(date);
         expected.getTrades().get(0).setState(TradeState.Unknown);
 
         assertEquals(expected, result);
@@ -158,9 +159,9 @@ class PersonalQueryOneItemMapperTest {
         Game game = createGame(dtf, date);
         game.getViewer().getMeta().getTrades().getNodes().get(0).setCategory("invalidCategory");
 
-        PersonalItem result = personalQueryOneItemMapper.mapItem(game);
+        ItemDetails result = personalQueryOneItemMapper.mapItem(game);
 
-        PersonalItem expected = createPersonalItem(date);
+        ItemDetails expected = createItemDetails(date);
         expected.getTrades().get(0).setCategory(TradeCategory.Unknown);
 
         assertEquals(expected, result);
@@ -449,7 +450,7 @@ class PersonalQueryOneItemMapperTest {
     @Test
     public void mapItem_should_throw_exception_when_game_viewer_meta_trades_nodes_paymentProposal_transaction_fee_is_null() {
         Game game = createGame();
-        game.getViewer().getMeta().getTrades().getNodes().get(0).getPaymentProposal().setTransactionFee(null);
+        game.getViewer().getMeta().getTrades().getNodes().get(0).getPaymentProposal();
 
         assertThrows(GraphQlPersonalOneItemMappingException.class, () -> personalQueryOneItemMapper.mapItem(game));
     }
@@ -501,7 +502,7 @@ class PersonalQueryOneItemMapperTest {
         nodes1.setLastModifiedAt(dtf.format(date.plusSeconds(1000)));
         nodes1.setPayment(new Payment(550, 55));
         //nodes1.setPaymentOptions(new PaymentOptions[]{new PaymentOptions(1000)});
-        nodes1.setPaymentProposal(new PaymentProposal(1000, 100));
+        nodes1.setPaymentProposal(new PaymentProposal(1000));
 
         List<Nodes> nodes = new ArrayList<>();
         nodes.add(nodes1);
@@ -513,8 +514,8 @@ class PersonalQueryOneItemMapperTest {
         return game;
     }
 
-    private PersonalItem createPersonalItem(LocalDateTime date) {
-        PersonalItem expected = new PersonalItem();
+    private ItemDetails createItemDetails(LocalDateTime date) {
+        ItemDetails expected = new ItemDetails();
         expected.setItemId("223");
         expected.setAssetUrl("https://assetUrl.com");
         expected.setName("item name");
@@ -526,9 +527,9 @@ class PersonalQueryOneItemMapperTest {
         expected.setSellOrdersCount(99);
         expected.setLastSoldAt(date.minusSeconds(1000));
         expected.setLastSoldPrice(777);
-        expected.setOwned(true);
+        expected.setIsOwned(true);
         UbiTrade expectedTrade = new UbiTrade();
-        expectedTrade.setItem("223");
+        expectedTrade.setItem(new Item("223"));
         expectedTrade.setTradeId("123");
         expectedTrade.setState(TradeState.Created);
         expectedTrade.setCategory(TradeCategory.Sell);
