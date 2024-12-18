@@ -4,8 +4,8 @@ import github.ricemonger.marketplace.services.PotentialTradeStatsService;
 import github.ricemonger.utils.DTOs.PersonalItem;
 import github.ricemonger.utils.DTOs.PotentialPersonalBuyTrade;
 import github.ricemonger.utils.DTOs.PotentialPersonalSellTrade;
-import github.ricemonger.utils.DTOs.items.PotentialTradeStats;
 import github.ricemonger.utils.DTOs.items.ItemResaleLock;
+import github.ricemonger.utils.DTOs.items.PotentialTradeStats;
 import github.ricemonger.utils.enums.TradeOperationType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -77,7 +77,7 @@ public class PotentialTradeFactory {
 
                     int medianPriceDifference;
                     int monthMedianPrice;
-                    if (personalItem.getMonthAveragePrice() == null) {
+                    if (personalItem.getMonthMedianPrice() == null) {
                         monthMedianPrice = 0;
                         medianPriceDifference = potentialTradeStats.getPrice();
                     } else {
@@ -85,13 +85,17 @@ public class PotentialTradeFactory {
                         medianPriceDifference = (potentialTradeStats.getPrice() - monthMedianPrice);
                     }
 
-                    boolean minAveragePriceDifferenceIsNotExceeded =
+                    if (monthMedianPrice == 0) {
+                        monthMedianPrice = 1;
+                    }
+
+                    boolean minMedianPriceDifferenceIsNotExceeded =
                             personalItem.getMinMedianPriceDifference() == null || medianPriceDifference >= personalItem.getMinMedianPriceDifference();
 
-                    boolean minAveragePriceDifferencePercentIsNotExceeded =
+                    boolean minMedianPriceDifferencePercentIsNotExceeded =
                             personalItem.getMinMedianPriceDifferencePercent() == null || (medianPriceDifference * 100) / monthMedianPrice >= personalItem.getMinMedianPriceDifferencePercent();
 
-                    if (sellBoundaryPriceIsNotExceeded && minAveragePriceDifferenceIsNotExceeded && minAveragePriceDifferencePercentIsNotExceeded) {
+                    if (sellBoundaryPriceIsNotExceeded && minMedianPriceDifferenceIsNotExceeded && minMedianPriceDifferencePercentIsNotExceeded) {
                         potentialPersonalSellTrades.add(new PotentialPersonalSellTrade(personalItem, potentialTradeStats));
                     }
                 }
@@ -167,7 +171,7 @@ public class PotentialTradeFactory {
 
                     int medianPriceDifference;
                     int monthMedianPrice;
-                    if (personalItem.getMonthAveragePrice() == null) {
+                    if (personalItem.getMonthMedianPrice() == null) {
                         monthMedianPrice = 0;
                         medianPriceDifference = potentialTradeStats.getPrice();
                     } else {
@@ -175,12 +179,16 @@ public class PotentialTradeFactory {
                         medianPriceDifference = (monthMedianPrice - potentialTradeStats.getPrice());
                     }
 
-                    boolean minAveragePriceDifferenceIsNotExceeded =
+                    if (monthMedianPrice == 0) {
+                        monthMedianPrice = 1;
+                    }
+
+                    boolean minMedianPriceDifferenceIsNotExceeded =
                             personalItem.getMinMedianPriceDifference() == null || medianPriceDifference >= personalItem.getMinMedianPriceDifference();
 
-                    boolean minAveragePriceDifferencePercentIsNotExceeded = personalItem.getMinMedianPriceDifferencePercent() == null || (medianPriceDifference * 100) / monthMedianPrice >= personalItem.getMinMedianPriceDifferencePercent();
+                    boolean minMedianPriceDifferencePercentIsNotExceeded = personalItem.getMinMedianPriceDifferencePercent() == null || (medianPriceDifference * 100) / monthMedianPrice >= personalItem.getMinMedianPriceDifferencePercent();
 
-                    if (buyBoundaryPriceIsNotExceeded && minAveragePriceDifferenceIsNotExceeded && minAveragePriceDifferencePercentIsNotExceeded) {
+                    if (buyBoundaryPriceIsNotExceeded && minMedianPriceDifferenceIsNotExceeded && minMedianPriceDifferencePercentIsNotExceeded) {
                         potentialPersonalBuyTrades.add(new PotentialPersonalBuyTrade(personalItem, potentialTradeStats));
                     }
                 }
