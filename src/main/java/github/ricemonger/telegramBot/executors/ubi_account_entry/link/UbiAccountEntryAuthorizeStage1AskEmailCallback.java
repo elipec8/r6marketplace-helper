@@ -8,8 +8,8 @@ public class UbiAccountEntryAuthorizeStage1AskEmailCallback extends AbstractBotC
 
     @Override
     protected void executeCommand() {
-        String text = "Please provide your Ubisoft Account's email and password separated in two messages OR in the following format: email:password";
+        String text = "Please provide your Ubisoft Account's email:";
 
-        processFirstInput(InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL, InputGroup.UBI_ACCOUNT_ENTRY_LINK, text);
+        processFirstInput(InputState.UBI_ACCOUNT_ENTRY_EMAIL, InputGroup.UBI_ACCOUNT_ENTRY_LINK, text);
     }
 }

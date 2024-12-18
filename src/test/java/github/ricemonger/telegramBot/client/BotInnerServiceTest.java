@@ -376,49 +376,49 @@ public class BotInnerServiceTest {
 
     @Test
     public void addUserUbiAccountEntryByUserInput_should_get_both_email_and_password_from_one_input_if_conditions_are_met() {
-        when(telegramUserService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL)).thenReturn("email:password");
+        when(telegramUserService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_EMAIL)).thenReturn("email:password");
 
         botInnerService.addUserUbiAccountEntryByUserInput(1L);
 
-        verify(telegramUserService, times(1)).getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
+        verify(telegramUserService, times(1)).getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_EMAIL);
         verify(telegramUserService, times(0)).getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_PASSWORD);
 
-        verify(telegramUserService).addUserUbiAccountEntryIfValidCredentialsOrThrow(1L, "email", "password");
+        verify(telegramUserService).authorizeAndSaveUser(1L, "email", "password");
     }
 
     @Test
     public void addUserUbiAccountEntryByUserInput_should_get_both_email_and_password_from_two_inputs_if_conditions_doesnt_met() {
-        when(telegramUserService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL)).thenReturn("email");
+        when(telegramUserService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_EMAIL)).thenReturn("email");
         when(telegramUserService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_PASSWORD)).thenReturn("password");
 
         botInnerService.addUserUbiAccountEntryByUserInput(1L);
 
-        verify(telegramUserService, times(1)).getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
+        verify(telegramUserService, times(1)).getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_EMAIL);
         verify(telegramUserService, times(1)).getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_PASSWORD);
 
-        verify(telegramUserService).addUserUbiAccountEntryIfValidCredentialsOrThrow(1L, "email", "password");
+        verify(telegramUserService).authorizeAndSaveUser(1L, "email", "password");
     }
 
     @Test
     public void addUserUbiAccountEntryByUserInput_should_throw_exception_if_service_throws_user_doesnt_exist() {
-        when(telegramUserService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL)).thenReturn("email:password");
-        doThrow(new TelegramUserDoesntExistException("")).when(telegramUserService).addUserUbiAccountEntryIfValidCredentialsOrThrow(1L, "email", "password");
+        when(telegramUserService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_EMAIL)).thenReturn("email:password");
+        doThrow(new TelegramUserDoesntExistException("")).when(telegramUserService).authorizeAndSaveUser(1L, "email", "password");
 
         assertThrows(TelegramUserDoesntExistException.class, () -> botInnerService.addUserUbiAccountEntryByUserInput(1L));
     }
 
     @Test
     public void addUserUbiAccountEntryByUserInput_should_throw_exception_if_service_throws_client_auth_error() {
-        when(telegramUserService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL)).thenReturn("email:password");
-        doThrow(new UbiUserAuthorizationClientErrorException("")).when(telegramUserService).addUserUbiAccountEntryIfValidCredentialsOrThrow(1L, "email", "password");
+        when(telegramUserService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_EMAIL)).thenReturn("email:password");
+        doThrow(new UbiUserAuthorizationClientErrorException("")).when(telegramUserService).authorizeAndSaveUser(1L, "email", "password");
 
         assertThrows(UbiUserAuthorizationClientErrorException.class, () -> botInnerService.addUserUbiAccountEntryByUserInput(1L));
     }
 
     @Test
     public void addUserUbiAccountEntryByUserInput_should_throw_exception_if_service_throws_server_auth_error() {
-        when(telegramUserService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL)).thenReturn("email:password");
-        doThrow(new UbiUserAuthorizationServerErrorException("")).when(telegramUserService).addUserUbiAccountEntryIfValidCredentialsOrThrow(1L, "email", "password");
+        when(telegramUserService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_EMAIL)).thenReturn("email:password");
+        doThrow(new UbiUserAuthorizationServerErrorException("")).when(telegramUserService).authorizeAndSaveUser(1L, "email", "password");
 
         assertThrows(UbiUserAuthorizationServerErrorException.class, () -> botInnerService.addUserUbiAccountEntryByUserInput(1L));
     }
@@ -463,7 +463,7 @@ public class BotInnerServiceTest {
     public void saveUserInput_should_save_input_from_message_text() {
         UpdateInfo updateInfo = new UpdateInfo();
         updateInfo.setChatId(1L);
-        updateInfo.setInputState(InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
+        updateInfo.setInputState(InputState.UBI_ACCOUNT_ENTRY_EMAIL);
         updateInfo.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
         updateInfo.setMessageText("text");
         updateInfo.setHasMessage(true);
@@ -477,7 +477,7 @@ public class BotInnerServiceTest {
     public void saveUserInput_should_save_input_from_callback_data() {
         UpdateInfo updateInfo = new UpdateInfo();
         updateInfo.setChatId(1L);
-        updateInfo.setInputState(InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
+        updateInfo.setInputState(InputState.UBI_ACCOUNT_ENTRY_EMAIL);
         updateInfo.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
         updateInfo.setCallbackQueryData("data");
         updateInfo.setHasCallBackQuery(true);
@@ -491,7 +491,7 @@ public class BotInnerServiceTest {
     public void saveUserInput_should_throw_if_no_text_or_data_provided() {
         UpdateInfo updateInfo = new UpdateInfo();
         updateInfo.setChatId(1L);
-        updateInfo.setInputState(InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
+        updateInfo.setInputState(InputState.UBI_ACCOUNT_ENTRY_EMAIL);
         updateInfo.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
 
         assertThrows(InvalidTelegramUserInputException.class, () -> botInnerService.saveUserInput(updateInfo));
@@ -501,7 +501,7 @@ public class BotInnerServiceTest {
     public void saveUserInput_should_throw_if_user_doesnt_exist() {
         UpdateInfo updateInfo = new UpdateInfo();
         updateInfo.setChatId(1L);
-        updateInfo.setInputState(InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
+        updateInfo.setInputState(InputState.UBI_ACCOUNT_ENTRY_EMAIL);
         updateInfo.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
         updateInfo.setCallbackQueryData("data");
         updateInfo.setHasCallBackQuery(true);
@@ -1329,13 +1329,13 @@ public class BotInnerServiceTest {
 
     @Test
     public void getUserInputByState_should_return_service_result() {
-        when(telegramUserService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL)).thenReturn("input");
-        assertEquals("input", botInnerService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL));
+        when(telegramUserService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_EMAIL)).thenReturn("input");
+        assertEquals("input", botInnerService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_EMAIL));
     }
 
     @Test
     public void getUserInputByState_should_throw_if_service_throws() {
-        when(telegramUserService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL)).thenThrow(new RuntimeException());
-        assertThrows(RuntimeException.class, () -> botInnerService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL));
+        when(telegramUserService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_EMAIL)).thenThrow(new RuntimeException());
+        assertThrows(RuntimeException.class, () -> botInnerService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_EMAIL));
     }
 }

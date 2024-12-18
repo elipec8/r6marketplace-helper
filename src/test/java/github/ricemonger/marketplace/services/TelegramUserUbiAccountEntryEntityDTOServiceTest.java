@@ -41,7 +41,7 @@ class TelegramUserUbiAccountEntryEntityDTOServiceTest {
         AuthorizationDTO dto = new AuthorizationDTO();
         dto.setTicket("ticket");
         when(authorizationService.authorizeAndGetBaseAuthorizedDTO(email, password)).thenReturn(dto);
-        when(authorizationService.getEncodedPassword(password)).thenReturn(encodedPassword);
+        when(authorizationService.encodePassword(password)).thenReturn(encodedPassword);
 
         telegramUserUbiAccountEntryService.authorizeAndSaveUser("chatId", email, password);
 

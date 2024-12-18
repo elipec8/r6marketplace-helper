@@ -28,7 +28,9 @@ import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.T
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemFilters.TradeByFiltersManagerRemoveStage2AskConfirmationFinishInput;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryAuthorizeStage2AskPasswordInput;
-import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryAuthorizeStage3ExceptionOrAsk2FaCodeInput;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryAuthorizeStage3Ask2FaCodeInput;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryAuthorizeStage4FinishInput;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.reauth_two_fa_code.UbiAccountEntryReauthorizeEnter2FACodeStage2ExceptionOrSuccessFinishInput;
 import github.ricemonger.utils.exceptions.server.UnexpectedUserInputStateAndGroupConjunctionException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +49,7 @@ class InputCommandListenerTest {
 
     @Test
     public void handleUpdate_should_cancel_if_has_message() {
-        UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
+        UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.UBI_ACCOUNT_ENTRY_EMAIL);
         updateInfo.setHasMessage(true);
         updateInfo.setMessageText("/cancel");
 
@@ -58,7 +60,7 @@ class InputCommandListenerTest {
 
     @Test
     public void handleUpdate_should_cancel_if_has_callback_query() {
-        UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
+        UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.UBI_ACCOUNT_ENTRY_EMAIL);
         updateInfo.setHasCallBackQuery(true);
         updateInfo.setCallbackQueryData(Callbacks.CANCEL);
 
@@ -69,7 +71,7 @@ class InputCommandListenerTest {
 
     @Test
     public void handleUpdate_should_silent_cancel_if_has_message() {
-        UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
+        UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.UBI_ACCOUNT_ENTRY_EMAIL);
         updateInfo.setHasMessage(true);
         updateInfo.setMessageText("/silentCancel");
 
@@ -80,7 +82,7 @@ class InputCommandListenerTest {
 
     @Test
     public void handleUpdate_should_silent_cancel_if_has_callback_query() {
-        UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
+        UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.UBI_ACCOUNT_ENTRY_EMAIL);
         updateInfo.setHasCallBackQuery(true);
         updateInfo.setCallbackQueryData(Callbacks.CANCEL_SILENT);
 
@@ -555,7 +557,7 @@ class InputCommandListenerTest {
 
     @Test
     public void handleUpdate_should_ubi_account_entry_link_full_or_email() {
-        UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
+        UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.UBI_ACCOUNT_ENTRY_EMAIL);
         inputCommandListener.handleUpdate(updateInfo);
 
         verify(executorsService).execute(UbiAccountEntryAuthorizeStage2AskPasswordInput.class, updateInfo);
@@ -566,13 +568,37 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.UBI_ACCOUNT_ENTRY_PASSWORD);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(UbiAccountEntryAuthorizeStage3ExceptionOrAsk2FaCodeInput.class, updateInfo);
+        verify(executorsService).execute(UbiAccountEntryAuthorizeStage3Ask2FaCodeInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_ubi_account_entry_link_2FaCode() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.UBI_ACCOUNT_ENTRY_2FA_CODE);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(UbiAccountEntryAuthorizeStage4FinishInput.class, updateInfo);
     }
 
     @Test
     public void handleUpdate_should_ubi_account_entry_link_throw() {
         assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
             UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE);
+            inputCommandListener.handleUpdate(updateInfo);
+        });
+    }
+
+    @Test
+    public void handleUpdate_should_ubi_account_entry_reauthorize_2FaCode() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_REAUTHORIZE_2FA_CODE, InputState.UBI_ACCOUNT_ENTRY_2FA_CODE);
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(UbiAccountEntryReauthorizeEnter2FACodeStage2ExceptionOrSuccessFinishInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_ubi_account_entry_reauthorize_throw() {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
+            UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_REAUTHORIZE_2FA_CODE, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE);
             inputCommandListener.handleUpdate(updateInfo);
         });
     }

@@ -45,6 +45,7 @@ import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEna
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveOrChangeEnabledStage1AskItemIdCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveStage3ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryAuthorizeStage1AskEmailCallback;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.reauth_two_fa_code.UbiAccountEntryReauthorizeEnter2FACodeStage1Ask2FACodeCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.show.UbiAccountEntryShowCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.unlink.UbiAccountEntryUnlinkConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.unlink.UbiAccountEntryUnlinkRequestCallback;
@@ -203,6 +204,9 @@ public class CallbackCommandListener {
 
             case Callbacks.UBI_ACCOUNT_ENTRY_UNLINK_FINISH_CONFIRMED ->
                     executorsService.execute(UbiAccountEntryUnlinkConfirmedFinishCallback.class, updateInfo);
+
+            case Callbacks.UBI_ACCOUNT_ENTRY_REAUTHORIZE_2FA_CODE ->
+                    executorsService.execute(UbiAccountEntryReauthorizeEnter2FACodeStage1Ask2FACodeCallback.class, updateInfo);
 
             default -> throw new UnexpectedCallbackCommandException("Unexpected callback data: " + data);
         }

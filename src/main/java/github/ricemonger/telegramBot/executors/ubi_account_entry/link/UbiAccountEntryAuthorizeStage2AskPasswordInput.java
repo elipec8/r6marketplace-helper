@@ -6,18 +6,6 @@ import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 public class UbiAccountEntryAuthorizeStage2AskPasswordInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-
-        String userInput = getUserCurrentInput();
-
-        if (userInput.contains(":")) {
-
-            processLastInput();
-
-            botInnerService.addUserUbiAccountEntryByUserInput(updateInfo.getChatId());
-
-            sendText("Credentials successfully provided.");
-        } else {
-            processMiddleInput(InputState.UBI_ACCOUNT_ENTRY_PASSWORD, "Please provide your Ubisoft password:");
-        }
+        processMiddleInput(InputState.UBI_ACCOUNT_ENTRY_PASSWORD, "Please provide your Ubisoft password:");
     }
 }

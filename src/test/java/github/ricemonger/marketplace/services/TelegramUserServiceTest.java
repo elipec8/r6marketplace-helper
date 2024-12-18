@@ -44,10 +44,10 @@ class TelegramUserServiceTest {
     public void setUserInputState_should_save_state() {
         when(telegramUserDatabaseService.findUserById("123")).thenReturn(new TelegramUser(123L));
 
-        telegramUserService.setUserInputState(123L, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
+        telegramUserService.setUserInputState(123L, InputState.UBI_ACCOUNT_ENTRY_EMAIL);
 
         TelegramUser telegramUser = new TelegramUser(123L);
-        telegramUser.setInputState(InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
+        telegramUser.setInputState(InputState.UBI_ACCOUNT_ENTRY_EMAIL);
 
         verify(telegramUserDatabaseService).update(telegramUser);
     }
@@ -174,8 +174,8 @@ class TelegramUserServiceTest {
     }
 
     @Test
-    public void addUserUbiAccountEntryIfValidCredentialsOrThrow_should_create_and_authorize_user_and_clear_user_inputsCredentials() {
-        telegramUserService.addUserUbiAccountEntryIfValidCredentialsOrThrow(123L, "email", "password");
+    public void authorizeAndSaveUserUbiAccountEntryIfValidCredentialsOrThrow_should_create_and_authorize_user_and_clear_user_inputsCredentials() {
+        telegramUserService.authorizeAndSaveUser(123L, "email", "password");
 
         verify(telegramUserInputDatabaseService).deleteAllByChatId("123");
 
@@ -183,24 +183,24 @@ class TelegramUserServiceTest {
     }
 
     @Test
-    public void addUserUbiAccountEntryIfValidCredentialsOrThrow_should_throw_if_user_doesnt_existCredentials() {
+    public void authorizeAndSaveUserUbiAccountEntryIfValidCredentialsOrThrow_should_throw_if_user_doesnt_existCredentials() {
         when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.addUserUbiAccountEntryIfValidCredentialsOrThrow(123L, "email", "password"));
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.authorizeAndSaveUser(123L, "email", "password"));
     }
 
     @Test
-    public void addUserUbiAccountEntryIfValidCredentialsOrThrow_should_throw_if_invalid_user_credentials() {
+    public void authorizeAndSaveUserUbiAccountEntryIfValidCredentialsOrThrow_should_throw_if_invalid_user_credentials() {
         doThrow(UbiUserAuthorizationClientErrorException.class).when(telegramUserUbiAccountEntryDatabaseService).authorizeAndSaveUser("123", "email", "password");
 
-        assertThrows(UbiUserAuthorizationClientErrorException.class, () -> telegramUserService.addUserUbiAccountEntryIfValidCredentialsOrThrow(123L, "email", "password"));
+        assertThrows(UbiUserAuthorizationClientErrorException.class, () -> telegramUserService.authorizeAndSaveUser(123L, "email", "password"));
     }
 
     @Test
-    public void addUserUbiAccountEntryIfValidCredentialsOrThrow_should_throw_if_ubiAccountEntry_server_errorCredentials() {
+    public void authorizeAndSaveUserUbiAccountEntryIfValidCredentialsOrThrow_should_throw_if_ubiAccountEntry_server_errorCredentials() {
         doThrow(UbiUserAuthorizationServerErrorException.class).when(telegramUserUbiAccountEntryDatabaseService).authorizeAndSaveUser("123", "email", "password");
 
-        assertThrows(UbiUserAuthorizationServerErrorException.class, () -> telegramUserService.addUserUbiAccountEntryIfValidCredentialsOrThrow(123L, "email",
+        assertThrows(UbiUserAuthorizationServerErrorException.class, () -> telegramUserService.authorizeAndSaveUser(123L, "email",
                 "password"));
     }
 
@@ -357,10 +357,10 @@ class TelegramUserServiceTest {
     @Test
     public void getUserInputState_should_return_state() {
         TelegramUser telegramUser = new TelegramUser(123L);
-        telegramUser.setInputState(InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
+        telegramUser.setInputState(InputState.UBI_ACCOUNT_ENTRY_EMAIL);
         when(telegramUserDatabaseService.findUserById("123")).thenReturn(telegramUser);
 
-        assertEquals(InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL, telegramUserService.getUserInputState(123L));
+        assertEquals(InputState.UBI_ACCOUNT_ENTRY_EMAIL, telegramUserService.getUserInputState(123L));
 
         verify(telegramUserDatabaseService).findUserById("123");
     }

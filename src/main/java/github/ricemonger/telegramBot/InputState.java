@@ -2,7 +2,7 @@ package github.ricemonger.telegramBot;
 
 public enum InputState {
     BASE,
-    UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL,
+    UBI_ACCOUNT_ENTRY_EMAIL,
     UBI_ACCOUNT_ENTRY_PASSWORD,
     ITEM_FILTER_NAME,
     ITEM_FILTER_TYPE,

@@ -45,6 +45,7 @@ import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEna
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveOrChangeEnabledStage1AskItemIdCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveStage3ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryAuthorizeStage1AskEmailCallback;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.reauth_two_fa_code.UbiAccountEntryReauthorizeEnter2FACodeStage1Ask2FACodeCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.show.UbiAccountEntryShowCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.unlink.UbiAccountEntryUnlinkConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.unlink.UbiAccountEntryUnlinkRequestCallback;
@@ -379,6 +380,13 @@ class CallbackCommandListenerTest {
         callbackCommandListener.handleUpdate(updateInfo(Callbacks.UBI_ACCOUNT_ENTRY_UNLINK_FINISH_CONFIRMED));
 
         verify(executorsService).execute(UbiAccountEntryUnlinkConfirmedFinishCallback.class, updateInfo(Callbacks.UBI_ACCOUNT_ENTRY_UNLINK_FINISH_CONFIRMED));
+    }
+
+    @Test
+    public void handleUpdate_should_ubi_account_entry_reauthorize_enter_2fa_code() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.UBI_ACCOUNT_ENTRY_REAUTHORIZE_2FA_CODE));
+
+        verify(executorsService).execute(UbiAccountEntryReauthorizeEnter2FACodeStage1Ask2FACodeCallback.class, updateInfo(Callbacks.UBI_ACCOUNT_ENTRY_REAUTHORIZE_2FA_CODE));
     }
 
     @Test

@@ -71,7 +71,7 @@ class TelegramUserInputPostgresServiceTest {
     @Test
     public void save_should_create_new_input_if_user_exists_and_input_with_same_inputState_and_user_does_not_exist() {
         InputState inputState = InputState.UBI_ACCOUNT_ENTRY_PASSWORD;
-        InputState inputState2 = InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL;
+        InputState inputState2 = InputState.UBI_ACCOUNT_ENTRY_EMAIL;
         String value = "value";
 
         inputService.save(CHAT_ID, inputState, value);
@@ -111,7 +111,7 @@ class TelegramUserInputPostgresServiceTest {
 
     @Test
     public void deleteAllByChatId_should_delete_all_inputs_for_telegram_user() {
-        inputService.save(CHAT_ID, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL, "value");
+        inputService.save(CHAT_ID, InputState.UBI_ACCOUNT_ENTRY_EMAIL, "value");
         inputService.save(CHAT_ID, InputState.UBI_ACCOUNT_ENTRY_PASSWORD, "value");
         inputService.save(CHAT_ID, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID, "value");
 
@@ -126,7 +126,7 @@ class TelegramUserInputPostgresServiceTest {
     public void deleteAllByChatId_should_ignore_other_user_inputs() {
         createTelegramUser(ANOTHER_CHAT_ID);
 
-        inputService.save(CHAT_ID, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL, "value");
+        inputService.save(CHAT_ID, InputState.UBI_ACCOUNT_ENTRY_EMAIL, "value");
         inputService.save(CHAT_ID, InputState.UBI_ACCOUNT_ENTRY_PASSWORD, "value");
         inputService.save(CHAT_ID, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID, "value");
 
@@ -149,7 +149,7 @@ class TelegramUserInputPostgresServiceTest {
         createTelegramUser(ANOTHER_CHAT_ID);
 
         InputState inputState = InputState.UBI_ACCOUNT_ENTRY_PASSWORD;
-        InputState inputState2 = InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL;
+        InputState inputState2 = InputState.UBI_ACCOUNT_ENTRY_EMAIL;
         String value = "value";
         String value2 = "value2";
         String value3 = "value3";
@@ -185,7 +185,7 @@ class TelegramUserInputPostgresServiceTest {
         createTelegramUser(ANOTHER_CHAT_ID);
 
         InputState inputState = InputState.UBI_ACCOUNT_ENTRY_PASSWORD;
-        InputState inputState2 = InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL;
+        InputState inputState2 = InputState.UBI_ACCOUNT_ENTRY_EMAIL;
         String value = "value";
         String value2 = "value2";
         String value3 = "value3";

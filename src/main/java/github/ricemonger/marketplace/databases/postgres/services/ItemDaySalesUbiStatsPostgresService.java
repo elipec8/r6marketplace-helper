@@ -30,6 +30,7 @@ public class ItemDaySalesUbiStatsPostgresService implements ItemSaleUbiStatsServ
     @Transactional
     public void saveAll(Collection<GroupedItemDaySalesUbiStats> groupedItemDaySalesUbiStatsList) {
         if (groupedItemDaySalesUbiStatsList == null || groupedItemDaySalesUbiStatsList.isEmpty()) {
+            log.error("Empty list of grouped item day sales stats, nothing to save");
             return;
         }
 
@@ -48,6 +49,9 @@ public class ItemDaySalesUbiStatsPostgresService implements ItemSaleUbiStatsServ
                 log.error("Item with id {} not found, day sales parsing for this item skipped", groupedStats.getItemId());
             }
         }
+
+
+
         itemDaySalesUbiStatsRepository.saveAll(itemDaySalesUbiStatsEntities);
     }
 

@@ -27,7 +27,9 @@ import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.T
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemFilters.TradeByFiltersManagerRemoveStage2AskConfirmationFinishInput;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryAuthorizeStage2AskPasswordInput;
-import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryAuthorizeStage3ExceptionOrAsk2FaCodeInput;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryAuthorizeStage3Ask2FaCodeInput;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryAuthorizeStage4FinishInput;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.reauth_two_fa_code.UbiAccountEntryReauthorizeEnter2FACodeStage2ExceptionOrSuccessFinishInput;
 import github.ricemonger.utils.exceptions.server.InputGroupNotSupportedException;
 import github.ricemonger.utils.exceptions.server.UnexpectedUserInputStateAndGroupConjunctionException;
 import lombok.RequiredArgsConstructor;
@@ -74,6 +76,8 @@ public class InputCommandListener {
                 case TRADE_BY_ITEM_ID_MANAGER_SHOW_OR_REMOVE -> tradeByItemIdManagerRemoveInputGroup(updateInfo);
 
                 case UBI_ACCOUNT_ENTRY_LINK -> ubiAccountEntryLinkInputGroup(updateInfo);
+
+                case UBI_ACCOUNT_ENTRY_REAUTHORIZE_2FA_CODE -> ubiAccountEntryReauthorize2FACodeGroup(updateInfo);
 
                 default -> throw new InputGroupNotSupportedException(updateInfo.getInputGroup().name());
             }
@@ -323,9 +327,25 @@ public class InputCommandListener {
 
         switch (inputState) {
 
-            case UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL -> executorsService.execute(UbiAccountEntryAuthorizeStage2AskPasswordInput.class, updateInfo);
+            case UBI_ACCOUNT_ENTRY_EMAIL -> executorsService.execute(UbiAccountEntryAuthorizeStage2AskPasswordInput.class, updateInfo);
 
-            case UBI_ACCOUNT_ENTRY_PASSWORD -> executorsService.execute(UbiAccountEntryAuthorizeStage3ExceptionOrAsk2FaCodeInput.class, updateInfo);
+            case UBI_ACCOUNT_ENTRY_PASSWORD -> executorsService.execute(UbiAccountEntryAuthorizeStage3Ask2FaCodeInput.class, updateInfo);
+
+            case UBI_ACCOUNT_ENTRY_2FA_CODE ->
+                    executorsService.execute(UbiAccountEntryAuthorizeStage4FinishInput.class, updateInfo);
+
+            default ->
+                    throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+        }
+    }
+
+    private void ubiAccountEntryReauthorize2FACodeGroup(UpdateInfo updateInfo) {
+        InputState inputState = updateInfo.getInputState();
+
+        switch (inputState) {
+
+            case UBI_ACCOUNT_ENTRY_2FA_CODE ->
+                    executorsService.execute(UbiAccountEntryReauthorizeEnter2FACodeStage2ExceptionOrSuccessFinishInput.class, updateInfo);
 
             default ->
                     throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());

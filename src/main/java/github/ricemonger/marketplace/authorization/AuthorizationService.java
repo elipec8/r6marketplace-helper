@@ -27,6 +27,20 @@ public class AuthorizationService {
 
     private final AesPasswordEncoder AESPasswordEncoder;
 
+    public AuthorizationDTO authorizeAndGet2FaAuthorizedDTOForEncodedPassword(String email, String encodedPassword, String twoFaCode) throws UbiUserAuthorizationClientErrorException,
+            UbiUserAuthorizationServerErrorException {
+        TwoFaBaseAuthDTO twoFaBaseAuthDTO = authorizeAndGetBase2FaDtoForEncodedPassword(email, encodedPassword);
+
+        return authorizeAndGet2FaAuthorizedDTO(twoFaCode, twoFaBaseAuthDTO.getTwoFactorAuthenticationTicket());
+    }
+
+    public AuthorizationDTO authorizeAndGet2FaAuthorizedDTO(String email, String password, String twoFaCode) throws UbiUserAuthorizationClientErrorException,
+            UbiUserAuthorizationServerErrorException {
+        TwoFaBaseAuthDTO twoFaBaseAuthDTO = authorizeAndGetBase2FaDTO(email, password);
+
+        return authorizeAndGet2FaAuthorizedDTO(twoFaCode, twoFaBaseAuthDTO.getTwoFactorAuthenticationTicket());
+    }
+
     public AuthorizationDTO reauthorizeAndGet2FaAuthorizedDTO(String ticket) throws UbiUserAuthorizationClientErrorException,
             UbiUserAuthorizationServerErrorException {
 
@@ -139,7 +153,7 @@ public class AuthorizationService {
                 .baseUrl(commonValuesService.getAuthorizationUrl())
                 .defaultHeader("Content-Type", commonValuesService.getContentType())
                 .defaultHeader("User-Agent", commonValuesService.getUserAgent())
-                .defaultHeader("Authorization", getBasicTokenForCredentials(email, password))
+                .defaultHeader("Authorization", createBasicTokenForCredentials(email, password))
                 .defaultHeader("Ubi-Appid", commonValuesService.getUbiTwoFaAppId())
                 .build();
 
@@ -187,7 +201,7 @@ public class AuthorizationService {
                 .baseUrl(commonValuesService.getAuthorizationUrl())
                 .defaultHeader("Content-Type", commonValuesService.getContentType())
                 .defaultHeader("User-Agent", commonValuesService.getUserAgent())
-                .defaultHeader("Authorization", getBasicTokenForCredentials(email, password))
+                .defaultHeader("Authorization", createBasicTokenForCredentials(email, password))
                 .defaultHeader("Ubi-Appid", commonValuesService.getUbiBaseAppId())
                 .build();
 
@@ -226,11 +240,11 @@ public class AuthorizationService {
         return dto;
     }
 
-    public String getEncodedPassword(String password) {
+    public String encodePassword(String password) {
         return AESPasswordEncoder.encode(password);
     }
 
-    private String getBasicTokenForCredentials(String email, String password) {
+    private String createBasicTokenForCredentials(String email, String password) {
 
         String token = Base64.getEncoder().encodeToString(String.format("%s:%s", email, password).getBytes());
 

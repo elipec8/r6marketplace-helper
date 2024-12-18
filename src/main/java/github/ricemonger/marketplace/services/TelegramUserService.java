@@ -85,7 +85,7 @@ public class TelegramUserService {
         telegramUserDatabaseService.removeItemShowAppliedFilter(String.valueOf(chatId), filterName);
     }
 
-    public void addUserUbiAccountEntryIfValidCredentialsOrThrow(Long chatId, String email, String password)
+    public void authorizeAndSaveUser(Long chatId, String email, String password, String twoFACode)
             throws TelegramUserDoesntExistException,
             UbiUserAuthorizationClientErrorException,
             UbiUserAuthorizationServerErrorException {
@@ -93,7 +93,18 @@ public class TelegramUserService {
 
         inputDatabaseService.deleteAllByChatId(String.valueOf(chatId));
 
-        credentialsService.authorizeAndSaveUser(String.valueOf(chatId), email, password);
+        credentialsService.authorizeAndSaveUser(String.valueOf(chatId), email, password, twoFACode);
+    }
+
+    public void reauthorizeAndSaveExistingUserBy2FACode(Long chatId, String twoFACode)
+            throws TelegramUserDoesntExistException,
+            UbiUserAuthorizationClientErrorException,
+            UbiUserAuthorizationServerErrorException {
+        getTelegramUserOrThrow(chatId);
+
+        inputDatabaseService.deleteAllByChatId(String.valueOf(chatId));
+
+        credentialsService.reauthorizeAndSaveExistingUserBy2FACode(String.valueOf(chatId), twoFACode);
     }
 
     public void removeUserUbiAccountEntry(Long chatId) throws TelegramUserDoesntExistException {

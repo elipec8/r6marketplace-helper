@@ -21,13 +21,13 @@ public class AuthorizationServiceTest {
     private AuthorizationService authorizationService;
 
     @Test
-    void getEncodedPassword_should_return_encoded_password() {
+    void encode_password() {
         String password = "password";
         String encodedPassword = "encodedPassword";
 
         when(aesPasswordEncoder.encode(password)).thenReturn(encodedPassword);
 
-        String actualEncodedPassword = authorizationService.getEncodedPassword(password);
+        String actualEncodedPassword = authorizationService.encodePassword(password);
 
         assertEquals(encodedPassword, actualEncodedPassword);
     }
