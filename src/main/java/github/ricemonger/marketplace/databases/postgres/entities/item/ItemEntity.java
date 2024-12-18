@@ -53,6 +53,7 @@ public class ItemEntity {
     private Integer monthMaxPrice;
     private Integer monthMinPrice;
     private Integer monthSalesPerDay;
+    private Integer monthSales;
 
     private Integer dayAveragePrice;
     private Integer dayMedianPrice;
@@ -123,6 +124,7 @@ public class ItemEntity {
         this.monthMaxPrice = item.getMonthMaxPrice();
         this.monthMinPrice = item.getMonthMinPrice();
         this.monthSalesPerDay = item.getMonthSalesPerDay();
+        this.monthSales = item.getMonthSales();
 
         this.dayAveragePrice = item.getDayAveragePrice();
         this.dayMedianPrice = item.getDayMedianPrice();
@@ -178,6 +180,7 @@ public class ItemEntity {
         item.setMonthMaxPrice(this.monthMaxPrice);
         item.setMonthMinPrice(this.monthMinPrice);
         item.setMonthSalesPerDay(this.monthSalesPerDay);
+        item.setMonthSales(this.monthSales);
 
         item.setDayAveragePrice(this.dayAveragePrice);
         item.setDayMedianPrice(this.dayMedianPrice);

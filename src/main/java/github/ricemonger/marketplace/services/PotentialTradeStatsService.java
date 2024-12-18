@@ -217,7 +217,8 @@ public class PotentialTradeStatsService {
             long tradePriority = (constant / getPriceFactor(price, 1.0)) *
                                  getPriceDifferenceFactor(price, monthMedianPrice, 1) *
                                  getPriceRatioFactorPercent(price, monthMedianPrice, 1) *
-                                 getTimeFactor(minutesToTrade, 0.66);
+                                 getTimeToResellFactor(item, 1) *
+                                 getTimeFactor(minutesToTrade, 0.4);
 
             if (item.getMonthMedianPrice() != null && price > monthMedianPrice) {
                 tradePriority = -tradePriority;
@@ -227,6 +228,12 @@ public class PotentialTradeStatsService {
         } else {
             return new PotentialTradeStats(price, minutesToTrade, null);
         }
+    }
+
+    private long getTimeToResellFactor(Item item, int pow) {
+        int sales = item.getMonthSales() == null ? 0 : Math.max(item.getMonthSales(), 0);
+
+        return (long) Math.pow(sales, pow);
     }
 
     private PotentialTradeStats getSellTradeStats(Item item, Integer price, Integer minutesToTrade) {

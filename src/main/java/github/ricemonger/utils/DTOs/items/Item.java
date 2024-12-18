@@ -39,6 +39,7 @@ public class Item implements ItemMainFieldsI, ItemHistoryFieldsI {
     private Integer monthMaxPrice;
     private Integer monthMinPrice;
     private Integer monthSalesPerDay;
+    private Integer monthSales;
 
     private Integer dayAveragePrice;
     private Integer dayMedianPrice;
@@ -89,6 +90,7 @@ public class Item implements ItemMainFieldsI, ItemHistoryFieldsI {
         this.monthMaxPrice = item.getMonthMaxPrice();
         this.monthMinPrice = item.getMonthMinPrice();
         this.monthSalesPerDay = item.getMonthSalesPerDay();
+        this.monthSales = item.getMonthSales();
         this.dayAveragePrice = item.getDayAveragePrice();
         this.dayMedianPrice = item.getDayMedianPrice();
         this.dayMaxPrice = item.getDayMaxPrice();

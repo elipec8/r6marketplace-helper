@@ -61,6 +61,7 @@ public class ItemService {
             item.setDayMedianPrice(todayStats.medianPrice());
 
             LastMonthPriceStats lastMonthStats = recalculateLastMonthItemPriceStats(resultingPerDayStats);
+            item.setMonthSales(lastMonthStats.sales());
             item.setMonthSalesPerDay(lastMonthStats.salesPerDay());
             item.setMonthAveragePrice(lastMonthStats.averagePrice());
             item.setMonthMaxPrice(lastMonthStats.maxPrice());
@@ -181,7 +182,8 @@ public class ItemService {
         }
 
 
-        return new LastMonthPriceStats(monthSalesQuantity / 31, monthSalesQuantity == 0 ? 0 : monthSumSales / monthSalesQuantity, monthMaxPrice,
+        return new LastMonthPriceStats(monthSalesQuantity, monthSalesQuantity / 31, monthSalesQuantity == 0 ? 0 : monthSumSales / monthSalesQuantity
+                , monthMaxPrice,
                 monthMinPrice,
                 monthMedianPrice);
     }
@@ -244,7 +246,7 @@ public class ItemService {
     }
 
 
-    private record LastMonthPriceStats(int salesPerDay, int averagePrice, int maxPrice, int minPrice, int medianPrice) {
+    private record LastMonthPriceStats(int sales, int salesPerDay, int averagePrice, int maxPrice, int minPrice, int medianPrice) {
     }
 
     private record TodayPriceStats(int quantity, int averagePrice, int maxPrice, int minPrice, int medianPrice) {
