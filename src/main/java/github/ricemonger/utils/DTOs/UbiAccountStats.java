@@ -1,6 +1,7 @@
 package github.ricemonger.utils.DTOs;
 
 import github.ricemonger.utils.DTOs.items.ItemResaleLockWithUbiAccount;
+import github.ricemonger.utils.DTOs.items.UbiTrade;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,8 +22,6 @@ public class UbiAccountStats {
 
     private List<String> ownedItemsIds = new ArrayList<>();
     private List<ItemResaleLockWithUbiAccount> resaleLocks = new ArrayList<>();
-    private List<UbiTrade> currentBuyTrades = new ArrayList<>();
-    private List<UbiTrade> currentSellTrades = new ArrayList<>();
 
     public UbiAccountStats(String ubiProfileId) {
         this.ubiProfileId = ubiProfileId;
@@ -56,19 +55,11 @@ public class UbiAccountStats {
         boolean resaleLocksEqual = resaleLocks.size() == ubiAccountStats.resaleLocks.size() &&
                                    new HashSet<>(resaleLocks).containsAll(ubiAccountStats.resaleLocks);
 
-        boolean currentBuyTradesEqual = currentBuyTrades.size() == ubiAccountStats.currentBuyTrades.size() &&
-                                        new HashSet<>(currentBuyTrades).containsAll(ubiAccountStats.currentBuyTrades);
-
-        boolean currentSellTradesEqual = currentSellTrades.size() == ubiAccountStats.currentSellTrades.size() &&
-                                         new HashSet<>(currentSellTrades).containsAll(ubiAccountStats.currentSellTrades);
-
         return ubiAccountStats.ubiProfileId.equals(ubiProfileId) &&
                ubiAccountStats.soldIn24h.equals(soldIn24h) &&
                ubiAccountStats.boughtIn24h.equals(boughtIn24h) &&
                ubiAccountStats.creditAmount.equals(creditAmount) &&
                ownedItemsIdsEqual &&
-               resaleLocksEqual &&
-               currentBuyTradesEqual &&
-               currentSellTradesEqual;
+               resaleLocksEqual;
     }
 }

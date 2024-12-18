@@ -1,12 +1,13 @@
-package github.ricemonger.marketplace.services.central_trade_manager;
+package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
-import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.marketplace.services.ItemService;
-import github.ricemonger.marketplace.services.UserService;
+import github.ricemonger.utils.DTOs.PersonalItem;
+import github.ricemonger.utils.DTOs.PotentialPersonalBuyTrade;
+import github.ricemonger.utils.DTOs.PotentialPersonalSellTrade;
 import github.ricemonger.telegramBot.TelegramBotService;
 import github.ricemonger.utils.DTOs.*;
 import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.UbiTrade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,14 +1,14 @@
 package github.ricemonger.telegramBot.client;
 
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.marketplace.services.central_trade_manager.PotentialTradeStatsService;
+import github.ricemonger.marketplace.services.PotentialTradeStatsService;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.DTOs.TelegramUserInput;
 import github.ricemonger.utils.DTOs.TradeByFiltersManager;
 import github.ricemonger.utils.DTOs.TradeByItemIdManager;
 import github.ricemonger.utils.DTOs.items.Item;
-import github.ricemonger.utils.DTOs.items.ItemFilter;
+import github.ricemonger.utils.DTOs.ItemFilter;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.TradeOperationType;
 import org.junit.jupiter.api.Test;

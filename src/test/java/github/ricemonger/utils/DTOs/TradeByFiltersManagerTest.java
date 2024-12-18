@@ -1,8 +1,6 @@
 package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.marketplace.services.central_trade_manager.PersonalItem;
 import github.ricemonger.utils.DTOs.items.Item;
-import github.ricemonger.utils.DTOs.items.ItemFilter;
 import github.ricemonger.utils.enums.FilterType;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

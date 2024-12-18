@@ -10,9 +10,9 @@ import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.v
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.viewer.meta.trades.nodes.PaymentOptions;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.viewer.meta.trades.nodes.PaymentProposal;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.DTOs.UbiTrade;
+import github.ricemonger.utils.DTOs.items.ItemDetails;
+import github.ricemonger.utils.DTOs.items.UbiTrade;
 import github.ricemonger.utils.DTOs.items.Item;
-import github.ricemonger.utils.DTOs.items.PersonalItem;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
@@ -33,7 +33,7 @@ public class PersonalQueryOneItemMapper {
 
     private final CommonValuesService commonValuesService;
 
-    public PersonalItem mapItem(Game game) throws GraphQlPersonalOneItemMappingException {
+    public ItemDetails mapItem(Game game) throws GraphQlPersonalOneItemMappingException {
         if (game == null) {
             throw new GraphQlPersonalOneItemMappingException("Game is null");
         }
@@ -49,7 +49,7 @@ public class PersonalQueryOneItemMapper {
             throw new GraphQlPersonalOneItemMappingException("Item or one of it's fields is null in MarketableItem: " + marketableItem);
         }
 
-        PersonalItem result = new PersonalItem();
+        ItemDetails result = new ItemDetails();
         result.setItemId(item.getItemId());
         result.setAssetUrl(item.getAssetUrl());
         result.setName(item.getName());
@@ -118,7 +118,7 @@ public class PersonalQueryOneItemMapper {
         if (marketableItem.getItem().getViewer() == null || marketableItem.getItem().getViewer().getMeta() == null || marketableItem.getItem().getViewer().getMeta().getIsOwned() == null) {
             throw new GraphQlPersonalOneItemMappingException("Item's viewer or it's field is null in MarketableItem: " + marketableItem);
         }
-        result.setOwned(marketableItem.getItem().getViewer().getMeta().getIsOwned());
+        result.setIsOwned(marketableItem.getItem().getViewer().getMeta().getIsOwned());
 
 
         if (game.getViewer() == null || game.getViewer().getMeta() == null || game.getViewer().getMeta().getTrades() == null || game.getViewer().getMeta().getTrades().getNodes() == null) {

@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
-import github.ricemonger.utils.DTOs.UbiTrade;
+import github.ricemonger.utils.DTOs.items.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
 import org.junit.jupiter.api.Test;

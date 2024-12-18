@@ -1,5 +1,9 @@
-package github.ricemonger.marketplace.services.central_trade_manager;
+package github.ricemonger.marketplace.services;
 
+import github.ricemonger.utils.DTOs.PersonalItem;
+import github.ricemonger.utils.DTOs.PotentialPersonalBuyTrade;
+import github.ricemonger.utils.DTOs.PotentialPersonalSellTrade;
+import github.ricemonger.utils.DTOs.items.PotentialTradeStats;
 import github.ricemonger.utils.DTOs.items.ItemResaleLock;
 import github.ricemonger.utils.enums.TradeOperationType;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,5 @@
-package github.ricemonger.utils.DTOs;
+package github.ricemonger.utils.DTOs.items;
 
-import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
 import lombok.AllArgsConstructor;

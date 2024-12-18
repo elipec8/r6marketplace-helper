@@ -1,6 +1,7 @@
 package github.ricemonger.utils.DTOs;
 
 import github.ricemonger.utils.DTOs.items.ItemResaleLockWithUbiAccount;
+import github.ricemonger.utils.DTOs.items.UbiTrade;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -72,13 +73,5 @@ public class UbiAccountEntry {
 
     public List<ItemResaleLockWithUbiAccount> getResaleLocks() {
         return ubiAccountStats.getResaleLocks();
-    }
-
-    public List<UbiTrade> getCurrentBuyTrades() {
-        return ubiAccountStats.getCurrentBuyTrades();
-    }
-
-    public List<UbiTrade> getCurrentSellTrades() {
-        return ubiAccountStats.getCurrentSellTrades();
     }
 }

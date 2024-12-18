@@ -1,11 +1,11 @@
 package github.ricemonger.marketplace.graphQl;
 
 import github.ricemonger.marketplace.graphQl.mappers.*;
-import github.ricemonger.utils.DTOs.*;
-import github.ricemonger.utils.DTOs.items.GroupedItemDaySalesUbiStats;
-import github.ricemonger.utils.DTOs.items.Item;
-import github.ricemonger.utils.DTOs.items.PersonalItem;
-import github.ricemonger.utils.DTOs.items.Tag;
+import github.ricemonger.utils.DTOs.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
+import github.ricemonger.utils.DTOs.ConfigTrades;
+import github.ricemonger.utils.DTOs.UserTradesLimitations;
+import github.ricemonger.utils.DTOs.items.*;
 import github.ricemonger.utils.exceptions.server.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.client.HttpGraphQlClient;
@@ -210,7 +210,7 @@ public class GraphQlClientService {
         return personalQueryLockedItemsMapper.mapTradesLimitationsForUser(tradesLimitations, authorizationDTO.getProfileId());
     }
 
-    public PersonalItem fetchOneItem(AuthorizationDTO authorizationDTO, String itemId) throws GraphQlPersonalOneItemMappingException {
+    public ItemDetails fetchOneItem(AuthorizationDTO authorizationDTO, String itemId) throws GraphQlPersonalOneItemMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
         github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.Game game = client

@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.services.central_trade_manager;
+package github.ricemonger.utils.DTOs.items;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

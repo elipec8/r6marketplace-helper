@@ -1,7 +1,7 @@
-package github.ricemonger.marketplace.services.central_trade_manager;
+package github.ricemonger.marketplace.services;
 
-import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.DTOs.UbiTrade;
+import github.ricemonger.utils.DTOs.items.PotentialTradeStats;
+import github.ricemonger.utils.DTOs.items.UbiTrade;
 import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.DTOs.items.ItemDaySalesStatsByItemId;
 import github.ricemonger.utils.enums.TradeCategory;

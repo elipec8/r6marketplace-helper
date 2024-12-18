@@ -2,7 +2,6 @@ package github.ricemonger.utils.DTOs;
 
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.utils.DTOs.items.ItemFilter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

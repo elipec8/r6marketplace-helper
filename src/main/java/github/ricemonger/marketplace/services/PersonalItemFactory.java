@@ -1,10 +1,11 @@
-package github.ricemonger.marketplace.services.central_trade_manager;
+package github.ricemonger.marketplace.services;
 
+import github.ricemonger.utils.DTOs.PersonalItem;
 import github.ricemonger.utils.DTOs.TradeByFiltersManager;
 import github.ricemonger.utils.DTOs.TradeByItemIdManager;
-import github.ricemonger.utils.DTOs.UbiTrade;
+import github.ricemonger.utils.DTOs.items.UbiTrade;
 import github.ricemonger.utils.DTOs.items.Item;
-import github.ricemonger.utils.DTOs.items.ItemFilter;
+import github.ricemonger.utils.DTOs.ItemFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

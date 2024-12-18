@@ -1,6 +1,5 @@
 package github.ricemonger.marketplace.services;
 
-import github.ricemonger.marketplace.services.central_trade_manager.CentralTradeManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

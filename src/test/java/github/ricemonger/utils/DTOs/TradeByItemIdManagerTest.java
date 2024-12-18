@@ -1,6 +1,5 @@
 package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.marketplace.services.central_trade_manager.PersonalItem;
 import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;

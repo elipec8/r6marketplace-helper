@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.services.TagService;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.DTOs.TelegramUserInput;
-import github.ricemonger.utils.DTOs.items.ItemFilter;
+import github.ricemonger.utils.DTOs.ItemFilter;
 import github.ricemonger.utils.DTOs.items.Tag;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.IsOwnedFilter;

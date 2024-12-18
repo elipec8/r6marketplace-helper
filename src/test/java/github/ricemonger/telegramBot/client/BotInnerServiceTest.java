@@ -8,7 +8,7 @@ import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.utils.DTOs.*;
 import github.ricemonger.utils.DTOs.items.Item;
-import github.ricemonger.utils.DTOs.items.ItemFilter;
+import github.ricemonger.utils.DTOs.ItemFilter;
 import github.ricemonger.utils.DTOs.items.Tag;
 import github.ricemonger.utils.enums.TagGroup;
 import github.ricemonger.utils.enums.TradeOperationType;

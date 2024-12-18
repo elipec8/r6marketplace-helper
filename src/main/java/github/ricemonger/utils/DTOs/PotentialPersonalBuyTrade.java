@@ -1,5 +1,6 @@
-package github.ricemonger.marketplace.services.central_trade_manager;
+package github.ricemonger.utils.DTOs;
 
+import github.ricemonger.utils.DTOs.items.PotentialTradeStats;
 import github.ricemonger.utils.enums.TradeCategory;
 
 public class PotentialPersonalBuyTrade extends PotentialTrade {

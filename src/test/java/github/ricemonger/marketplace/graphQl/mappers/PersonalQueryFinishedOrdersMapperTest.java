@@ -9,7 +9,7 @@ import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.trades.nodes.TradeItems;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.trades.nodes.tradeItems.Item;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.DTOs.UbiTrade;
+import github.ricemonger.utils.DTOs.items.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalFinishedOrdersMappingException;

@@ -3,6 +3,7 @@ package github.ricemonger.marketplace.services;
 import github.ricemonger.marketplace.services.abstractions.ItemDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleUbiStatsService;
+import github.ricemonger.utils.DTOs.ItemFilter;
 import github.ricemonger.utils.DTOs.items.*;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;

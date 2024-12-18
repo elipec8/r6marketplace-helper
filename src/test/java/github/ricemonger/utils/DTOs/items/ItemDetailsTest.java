@@ -1,6 +1,6 @@
 package github.ricemonger.utils.DTOs.items;
 
-import github.ricemonger.marketplace.services.central_trade_manager.PersonalItem;
+import github.ricemonger.utils.DTOs.PersonalItem;
 import github.ricemonger.utils.DTOs.TradeByFiltersManager;
 import github.ricemonger.utils.DTOs.TradeByItemIdManager;
 import github.ricemonger.utils.enums.ItemRarity;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class PersonalItemTest {
+class ItemDetailsTest {
 
     @Test
     public void tradeByFilterManager_constructor_should_set_all_fields() {

@@ -16,7 +16,7 @@ import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.v
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.viewer.meta.trades.nodes.PaymentOptions;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.viewer.meta.trades.nodes.PaymentProposal;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.DTOs.UbiTrade;
+import github.ricemonger.utils.DTOs.items.UbiTrade;
 import github.ricemonger.utils.DTOs.items.PersonalItem;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TradeCategory;

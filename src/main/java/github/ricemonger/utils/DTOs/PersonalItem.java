@@ -1,7 +1,7 @@
-package github.ricemonger.marketplace.services.central_trade_manager;
+package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.utils.DTOs.UbiTrade;
 import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.UbiTrade;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.TradeOperationType;
 import lombok.AllArgsConstructor;

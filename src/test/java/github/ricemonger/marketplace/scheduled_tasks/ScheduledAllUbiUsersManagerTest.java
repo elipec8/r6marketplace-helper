@@ -6,6 +6,7 @@ import github.ricemonger.marketplace.services.TelegramUserUbiAccountEntryService
 import github.ricemonger.telegramBot.TelegramBotService;
 import github.ricemonger.utils.DTOs.*;
 import github.ricemonger.utils.DTOs.items.ItemResaleLockWithUbiAccount;
+import github.ricemonger.utils.DTOs.items.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

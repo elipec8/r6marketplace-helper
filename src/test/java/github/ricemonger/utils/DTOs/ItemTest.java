@@ -1,7 +1,6 @@
 package github.ricemonger.utils.DTOs;
 
 import github.ricemonger.utils.DTOs.items.Item;
-import github.ricemonger.utils.DTOs.items.ItemFilter;
 import github.ricemonger.utils.DTOs.items.ItemHistoryFieldsI;
 import github.ricemonger.utils.DTOs.items.ItemMainFieldsI;
 import github.ricemonger.utils.enums.ItemRarity;
@@ -12,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static github.ricemonger.marketplace.services.central_trade_manager.CentralTradeManager.TRADE_MANAGER_FIXED_RATE_MINUTES;
+import static github.ricemonger.marketplace.services.CentralTradeManager.TRADE_MANAGER_FIXED_RATE_MINUTES;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ItemTest {

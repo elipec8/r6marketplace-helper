@@ -6,7 +6,7 @@ import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUs
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemFilterPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserItemFilterDatabaseService;
-import github.ricemonger.utils.DTOs.items.ItemFilter;
+import github.ricemonger.utils.DTOs.ItemFilter;
 import github.ricemonger.utils.exceptions.client.ItemFilterDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import lombok.RequiredArgsConstructor;

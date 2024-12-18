@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.abstractions.TelegramUserItemFilterDatabaseService;
-import github.ricemonger.utils.DTOs.items.ItemFilter;
+import github.ricemonger.utils.DTOs.ItemFilter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

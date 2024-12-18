@@ -1,6 +1,5 @@
 package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.utils.DTOs.items.ItemFilter;
 import github.ricemonger.utils.enums.TradeOperationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;

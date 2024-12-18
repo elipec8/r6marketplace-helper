@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.graphQl.DTOs.personal_query_current_orders.
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_current_orders.trades.nodes.PaymentOptions;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_current_orders.trades.nodes.PaymentProposal;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.DTOs.UbiTrade;
+import github.ricemonger.utils.DTOs.items.UbiTrade;
 import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;

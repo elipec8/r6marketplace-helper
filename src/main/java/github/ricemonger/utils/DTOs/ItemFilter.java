@@ -1,5 +1,7 @@
-package github.ricemonger.utils.DTOs.items;
+package github.ricemonger.utils.DTOs;
 
+import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.Tag;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.IsOwnedFilter;
 import github.ricemonger.utils.enums.ItemType;

@@ -3,7 +3,7 @@ package github.ricemonger.marketplace.databases.postgres.entities.user;
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.utils.DTOs.UserForCentralTradeManager;
 import github.ricemonger.utils.DTOs.items.Item;
-import github.ricemonger.marketplace.services.central_trade_manager.PersonalItem;
+import github.ricemonger.utils.DTOs.PersonalItem;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.TradeOperationType;
 import org.junit.jupiter.api.Test;

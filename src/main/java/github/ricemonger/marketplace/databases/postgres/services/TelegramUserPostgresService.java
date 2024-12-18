@@ -10,7 +10,7 @@ import github.ricemonger.utils.DTOs.ItemShowSettings;
 import github.ricemonger.utils.DTOs.ItemShownFieldsSettings;
 import github.ricemonger.utils.DTOs.TelegramUser;
 import github.ricemonger.utils.DTOs.TradeManagersSettings;
-import github.ricemonger.utils.DTOs.items.ItemFilter;
+import github.ricemonger.utils.DTOs.ItemFilter;
 import github.ricemonger.utils.exceptions.client.TelegramUserAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,5 @@
 package github.ricemonger.marketplace.services;
 
-import github.ricemonger.marketplace.services.central_trade_manager.PotentialTradeStatsService;
 import github.ricemonger.utils.DTOs.items.Item;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

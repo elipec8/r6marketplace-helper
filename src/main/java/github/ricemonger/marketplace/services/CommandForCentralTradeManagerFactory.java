@@ -1,8 +1,10 @@
-package github.ricemonger.marketplace.services.central_trade_manager;
+package github.ricemonger.marketplace.services;
 
+import github.ricemonger.utils.DTOs.PotentialPersonalBuyTrade;
+import github.ricemonger.utils.DTOs.PotentialPersonalSellTrade;
 import github.ricemonger.utils.DTOs.AuthorizationDTO;
 import github.ricemonger.utils.DTOs.CentralTradeManagerCommand;
-import github.ricemonger.utils.DTOs.UbiTrade;
+import github.ricemonger.utils.DTOs.items.UbiTrade;
 import github.ricemonger.utils.enums.CentralTradeManagerCommandType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
