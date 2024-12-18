@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.scheduled_tasks;
 
 import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.DTOs.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ public class ScheduledMainUserReauthorization {
 
     @Scheduled(fixedRate = 150 * 60 * 1000) // every 2.5h
     public void reauthorizeMainUserAndSave() {
-        AuthorizationDTO authorizationDTO = authorizationService.authorizeAndGetDTO(commonValuesService.getMainUserEmail(),
+        AuthorizationDTO authorizationDTO = authorizationService.authorizeAndGetBaseAuthorizedDTO(commonValuesService.getMainUserEmail(),
                 commonValuesService.getMainUserPassword());
 
         commonValuesService.setMainUserAuthorization(authorizationDTO);

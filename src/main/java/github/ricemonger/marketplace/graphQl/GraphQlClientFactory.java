@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.graphQl;
 
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.DTOs.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.stereotype.Component;
@@ -54,7 +54,7 @@ public class GraphQlClientFactory {
         return WebClient.builder()
                 .exchangeStrategies(strategies)
                 .defaultHeader("Content-Type", commonValuesService.getContentType())
-                .defaultHeader("Ubi-AppId", commonValuesService.getUbiAppId())
+                .defaultHeader("Ubi-AppId", commonValuesService.getUbiBaseAppId())
                 .defaultHeader("Ubi-RegionId", commonValuesService.getUbiRegionId())
                 .defaultHeader("Ubi-LocaleCode", commonValuesService.getUbiLocaleCode())
                 .defaultHeader("User-Agent", commonValuesService.getUserAgent())

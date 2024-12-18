@@ -39,10 +39,6 @@ public class UbiAccountEntry {
         return ubiAccountAuthorizationEntry.getUbiAuthTicket();
     }
 
-    public String getUbiTwoFactorAuthTicket() {
-        return ubiAccountAuthorizationEntry.getUbiTwoFactorAuthTicket();
-    }
-
     public String getUbiRememberDeviceTicket() {
         return ubiAccountAuthorizationEntry.getUbiRememberDeviceTicket();
     }

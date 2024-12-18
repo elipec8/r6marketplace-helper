@@ -1,5 +1,6 @@
 package github.ricemonger.utils.DTOs;
 
+import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.CentralTradeManagerCommandType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.redis.services;
 
 import github.ricemonger.marketplace.services.abstractions.CommonValuesDatabaseService;
-import github.ricemonger.utils.DTOs.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
 import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.DTOs.ConfigTrades;
 import lombok.RequiredArgsConstructor;

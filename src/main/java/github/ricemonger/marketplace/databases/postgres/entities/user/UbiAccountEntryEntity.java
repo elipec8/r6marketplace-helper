@@ -36,8 +36,6 @@ public class UbiAccountEntryEntity {
     @Column(columnDefinition = "TEXT")
     private String ubiAuthTicket;
     @Column(columnDefinition = "TEXT")
-    private String ubiTwoFactorAuthTicket;
-    @Column(columnDefinition = "TEXT")
     private String ubiRememberDeviceTicket;
     @Column(columnDefinition = "TEXT")
     private String ubiRememberMeTicket;
@@ -54,7 +52,6 @@ public class UbiAccountEntryEntity {
         this.ubiSessionId = account.getUbiSessionId();
         this.ubiSpaceId = account.getUbiSpaceId();
         this.ubiAuthTicket = account.getUbiAuthTicket();
-        this.ubiTwoFactorAuthTicket = account.getUbiTwoFactorAuthTicket();
         this.ubiRememberDeviceTicket = account.getUbiRememberDeviceTicket();
         this.ubiRememberMeTicket = account.getUbiRememberMeTicket();
     }
@@ -80,7 +77,6 @@ public class UbiAccountEntryEntity {
         ubiAccountEntry.setUbiSessionId(this.ubiSessionId);
         ubiAccountEntry.setUbiSpaceId(this.ubiSpaceId);
         ubiAccountEntry.setUbiAuthTicket(this.ubiAuthTicket);
-        ubiAccountEntry.setUbiTwoFactorAuthTicket(this.ubiTwoFactorAuthTicket);
         ubiAccountEntry.setUbiRememberDeviceTicket(this.ubiRememberDeviceTicket);
         ubiAccountEntry.setUbiRememberMeTicket(this.ubiRememberMeTicket);
         return ubiAccountEntry;

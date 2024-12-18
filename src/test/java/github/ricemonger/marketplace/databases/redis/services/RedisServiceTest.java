@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.redis.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationService;
-import github.ricemonger.utils.DTOs.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
 import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.DTOs.ConfigTrades;
 import org.junit.jupiter.api.AfterEach;
@@ -37,7 +37,7 @@ public class RedisServiceTest {
     public void setUp() {
         cleanUp();
 
-        when(authorizationService.authorizeAndGetDTO(any(), any())).thenReturn(new AuthorizationDTO("ticket", "profileId"
+        when(authorizationService.authorizeAndGetBaseAuthorizedDTO(any(), any())).thenReturn(new AuthorizationDTO("ticket", "profileId"
                 , "spaceId", "sessionId", "twoFactorAuthTicket", "rememberDeviceTicket", "rememberMeTicket"));
     }
 
@@ -251,7 +251,7 @@ public class RedisServiceTest {
 
         AuthorizationDTO dto = new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "twoFactorAuthTicket", "rememberDeviceTicket",
                 "rememberMeTicket");
-        when(authorizationService.authorizeAndGetDTO(any(), any())).thenReturn(dto);
+        when(authorizationService.authorizeAndGetBaseAuthorizedDTO(any(), any())).thenReturn(dto);
 
         redisService.setMainUserAuthorization(dto, EXPIRE_TIMEOUT);
 
@@ -275,7 +275,7 @@ public class RedisServiceTest {
 
         AuthorizationDTO dto = new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "twoFactorAuthTicket", "rememberDeviceTicket",
                 null);
-        when(authorizationService.authorizeAndGetDTO(any(), any())).thenReturn(dto);
+        when(authorizationService.authorizeAndGetBaseAuthorizedDTO(any(), any())).thenReturn(dto);
 
         redisService.setMainUserAuthorization(dto, EXPIRE_TIMEOUT);
 

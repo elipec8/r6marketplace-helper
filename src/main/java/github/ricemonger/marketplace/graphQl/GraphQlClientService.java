@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.graphQl;
 
 import github.ricemonger.marketplace.graphQl.mappers.*;
-import github.ricemonger.utils.DTOs.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
 import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.DTOs.ConfigTrades;
 import github.ricemonger.utils.DTOs.UserTradesLimitations;

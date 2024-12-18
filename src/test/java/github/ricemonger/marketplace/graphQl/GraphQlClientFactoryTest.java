@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.graphQl;
 
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.DTOs.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +21,7 @@ public class GraphQlClientFactoryTest {
         graphQlClientFactory.createMainUserClient();
 
         verify(commonValuesService).getContentType();
-        verify(commonValuesService).getUbiAppId();
+        verify(commonValuesService).getUbiBaseAppId();
         verify(commonValuesService).getUbiRegionId();
         verify(commonValuesService).getUbiLocaleCode();
         verify(commonValuesService).getUserAgent();
@@ -40,7 +40,7 @@ public class GraphQlClientFactoryTest {
         graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
         verify(commonValuesService).getContentType();
-        verify(commonValuesService).getUbiAppId();
+        verify(commonValuesService).getUbiBaseAppId();
         verify(commonValuesService).getUbiRegionId();
         verify(commonValuesService).getUbiLocaleCode();
         verify(commonValuesService).getUserAgent();

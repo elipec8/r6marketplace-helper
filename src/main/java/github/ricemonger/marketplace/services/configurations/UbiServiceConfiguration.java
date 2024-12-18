@@ -17,8 +17,10 @@ public class UbiServiceConfiguration {
     private String contentType;
     @Value("${ubi.session.userAgent}")
     private String userAgent;
-    @Value("${ubi.session.appId}")
-    private String ubiAppId;
+    @Value("${ubi.session.baseAppId}")
+    private String ubiBaseAppId;
+    @Value("${ubi.session.twoFaAppId}")
+    private String ubiTwoFaAppId;
     @Value("${ubi.session.spaceId}")
     private String ubiSpaceId;
     @Value("${ubi.session.regionId}")
@@ -27,6 +29,10 @@ public class UbiServiceConfiguration {
     private String UbiLocaleCode;
     @Value("${ubi.session.expireTimeout}")
     private Integer expireTimeout;
+    @Value("${ubi.session.trustedDeviceId}")
+    private String trustedDeviceId;
+    @Value("${ubi.session.trustedDeviceFriendlyName}")
+    private String trustedDeviceFriendlyName;
     @Value("${ubi.session.dateFormat}")
     private String dateFormat;
     @Value("${ubi.session.itemSaleStatsDateFormat}")

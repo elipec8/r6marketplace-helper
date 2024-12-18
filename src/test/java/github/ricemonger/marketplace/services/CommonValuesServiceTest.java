@@ -2,9 +2,9 @@ package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.abstractions.CommonValuesDatabaseService;
 import github.ricemonger.marketplace.services.configurations.MainUserConfiguration;
-import github.ricemonger.marketplace.services.configurations.UbiServiceConfiguration;
 import github.ricemonger.marketplace.services.configurations.TelegramBotConfiguration;
-import github.ricemonger.utils.DTOs.AuthorizationDTO;
+import github.ricemonger.marketplace.services.configurations.UbiServiceConfiguration;
+import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
 import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.DTOs.ConfigTrades;
 import github.ricemonger.utils.enums.ItemRarity;
@@ -154,6 +154,22 @@ class CommonValuesServiceTest {
     }
 
     @Test
+    void getTrustedDevice_Id_should_handle_to_service() {
+        String trustedDevice = "trustedDevice";
+        when(ubiServiceConfiguration.getTrustedDeviceId()).thenReturn(trustedDevice);
+
+        assertEquals(trustedDevice, commonValuesService.getTrustedDeviceId());
+    }
+
+    @Test
+    void getTrustedDeviceFriendlyName_should_handle_to_service() {
+        String friendlyName = "friendlyName";
+        when(ubiServiceConfiguration.getTrustedDeviceFriendlyName()).thenReturn(friendlyName);
+
+        assertEquals(friendlyName, commonValuesService.getTrustedDeviceFriendlyName());
+    }
+
+    @Test
     void getGraphqlUrl_should_handle_to_service() {
         String graphqlUrl = "graphqlUrl";
         when(ubiServiceConfiguration.getGraphqlUrl()).thenReturn(graphqlUrl);
@@ -186,11 +202,19 @@ class CommonValuesServiceTest {
     }
 
     @Test
-    void getUbiAppId_should_handle_to_service() {
+    void getUbiBaseAppId_should_handle_to_service() {
         String ubiAppId = "ubiAppId";
-        when(ubiServiceConfiguration.getUbiAppId()).thenReturn(ubiAppId);
+        when(ubiServiceConfiguration.getUbiBaseAppId()).thenReturn(ubiAppId);
 
-        assertEquals(ubiAppId, commonValuesService.getUbiAppId());
+        assertEquals(ubiAppId, commonValuesService.getUbiBaseAppId());
+    }
+
+    @Test
+    public void getUbiTwoFaAppId_should_handle_to_service() {
+        String ubiTwoFaAppId = "ubiTwoFaAppId";
+        when(ubiServiceConfiguration.getUbiTwoFaAppId()).thenReturn(ubiTwoFaAppId);
+
+        assertEquals(ubiTwoFaAppId, commonValuesService.getUbiTwoFaAppId());
     }
 
     @Test

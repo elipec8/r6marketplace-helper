@@ -16,7 +16,6 @@ public class UbiAccountAuthorizationEntry {
     private String ubiSessionId;
     private String ubiSpaceId;
     private String ubiAuthTicket;
-    private String ubiTwoFactorAuthTicket;
     private String ubiRememberDeviceTicket;
     private String ubiRememberMeTicket;
 }

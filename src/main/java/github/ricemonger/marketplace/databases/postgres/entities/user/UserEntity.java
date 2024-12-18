@@ -67,7 +67,6 @@ public class UserEntity {
         userForCentralTradeManager.setUbiSessionId(ubiAccountAuthorizationEntry.getUbiSessionId());
         userForCentralTradeManager.setUbiSpaceId(ubiAccountAuthorizationEntry.getUbiSpaceId());
         userForCentralTradeManager.setUbiAuthTicket(ubiAccountAuthorizationEntry.getUbiAuthTicket());
-        userForCentralTradeManager.setUbiTwoFactorAuthTicket(ubiAccountAuthorizationEntry.getUbiTwoFactorAuthTicket());
         userForCentralTradeManager.setUbiRememberDeviceTicket(ubiAccountAuthorizationEntry.getUbiRememberDeviceTicket());
         userForCentralTradeManager.setUbiRememberMeTicket(ubiAccountAuthorizationEntry.getUbiRememberMeTicket());
 

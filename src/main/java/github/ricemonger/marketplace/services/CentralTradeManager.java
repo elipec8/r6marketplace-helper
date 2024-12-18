@@ -9,6 +9,7 @@ import github.ricemonger.utils.DTOs.PotentialPersonalBuyTrade;
 import github.ricemonger.utils.DTOs.PotentialPersonalSellTrade;
 import github.ricemonger.telegramBot.TelegramBotService;
 import github.ricemonger.utils.DTOs.*;
+import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
 import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.DTOs.items.UbiTrade;
 import lombok.RequiredArgsConstructor;

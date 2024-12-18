@@ -4,7 +4,7 @@ import github.ricemonger.marketplace.services.abstractions.CommonValuesDatabaseS
 import github.ricemonger.marketplace.services.configurations.MainUserConfiguration;
 import github.ricemonger.marketplace.services.configurations.UbiServiceConfiguration;
 import github.ricemonger.marketplace.services.configurations.TelegramBotConfiguration;
-import github.ricemonger.utils.DTOs.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
 import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.DTOs.ConfigTrades;
 import github.ricemonger.utils.enums.ItemRarity;
@@ -90,6 +90,14 @@ public class CommonValuesService {
         return mainUserConfiguration.getPlatform();
     }
 
+    public String getTrustedDeviceId() {
+        return ubiServiceConfiguration.getTrustedDeviceId();
+    }
+
+    public String getTrustedDeviceFriendlyName() {
+        return ubiServiceConfiguration.getTrustedDeviceFriendlyName();
+    }
+
     public String getGraphqlUrl() {
         return ubiServiceConfiguration.getGraphqlUrl();
     }
@@ -106,8 +114,12 @@ public class CommonValuesService {
         return ubiServiceConfiguration.getUserAgent();
     }
 
-    public String getUbiAppId() {
-        return ubiServiceConfiguration.getUbiAppId();
+    public String getUbiBaseAppId() {
+        return ubiServiceConfiguration.getUbiBaseAppId();
+    }
+
+    public String getUbiTwoFaAppId() {
+        return ubiServiceConfiguration.getUbiTwoFaAppId();
     }
 
     public String getUbiGameSpaceId() {

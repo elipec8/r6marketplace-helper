@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
-import github.ricemonger.utils.DTOs.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
 import github.ricemonger.utils.DTOs.UbiAccountStats;
@@ -40,12 +40,12 @@ class TelegramUserUbiAccountEntryServiceTest {
         String encodedPassword = "encodedPassword";
         AuthorizationDTO dto = new AuthorizationDTO();
         dto.setTicket("ticket");
-        when(authorizationService.authorizeAndGetDTO(email, password)).thenReturn(dto);
+        when(authorizationService.authorizeAndGetBaseAuthorizedDTO(email, password)).thenReturn(dto);
         when(authorizationService.getEncodedPassword(password)).thenReturn(encodedPassword);
 
         telegramUserUbiAccountEntryService.authorizeAndSaveUser("chatId", email, password);
 
-        verify(authorizationService).authorizeAndGetDTO(email, password);
+        verify(authorizationService).authorizeAndGetBaseAuthorizedDTO(email, password);
 
         verify(telegramUserUbiAccountEntryDatabaseService).saveAuthorizationInfo("chatId", buildUbiAccount(email, encodedPassword, dto));
     }
@@ -53,7 +53,7 @@ class TelegramUserUbiAccountEntryServiceTest {
     @Test
     public void authorizeAndSaveUser_should_throw_if_user_doesnt_exist() {
         doThrow(TelegramUserDoesntExistException.class).when(telegramUserUbiAccountEntryDatabaseService).saveAuthorizationInfo(any(), any());
-        when(authorizationService.authorizeAndGetDTO(any(), any())).thenReturn(new AuthorizationDTO());
+        when(authorizationService.authorizeAndGetBaseAuthorizedDTO(any(), any())).thenReturn(new AuthorizationDTO());
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserUbiAccountEntryService.authorizeAndSaveUser("chatId", "email", "password"));
     }
@@ -61,21 +61,21 @@ class TelegramUserUbiAccountEntryServiceTest {
     @Test
     public void authorizeAndSaveUser_should_throw_if_user_already_have_another_ubi_account_entry() {
         doThrow(UbiAccountEntryAlreadyExistsException.class).when(telegramUserUbiAccountEntryDatabaseService).saveAuthorizationInfo(any(), any());
-        when(authorizationService.authorizeAndGetDTO(any(), any())).thenReturn(new AuthorizationDTO());
+        when(authorizationService.authorizeAndGetBaseAuthorizedDTO(any(), any())).thenReturn(new AuthorizationDTO());
 
         assertThrows(UbiAccountEntryAlreadyExistsException.class, () -> telegramUserUbiAccountEntryService.authorizeAndSaveUser("chatId", "email", "password"));
     }
 
     @Test
     public void authorizeAndSaveUser_should_throw_if_client_authorization_exception_was_thrown() {
-        doThrow(UbiUserAuthorizationClientErrorException.class).when(authorizationService).authorizeAndGetDTO(any(), any());
+        doThrow(UbiUserAuthorizationClientErrorException.class).when(authorizationService).authorizeAndGetBaseAuthorizedDTO(any(), any());
 
         assertThrows(UbiUserAuthorizationClientErrorException.class, () -> telegramUserUbiAccountEntryService.authorizeAndSaveUser("chatId", "email", "password"));
     }
 
     @Test
     public void authorizeAndSaveUser_should_throw_if_server_authorization_exception_was_thrown() {
-        doThrow(UbiUserAuthorizationServerErrorException.class).when(authorizationService).authorizeAndGetDTO(any(), any());
+        doThrow(UbiUserAuthorizationServerErrorException.class).when(authorizationService).authorizeAndGetBaseAuthorizedDTO(any(), any());
 
         assertThrows(UbiUserAuthorizationServerErrorException.class, () -> telegramUserUbiAccountEntryService.authorizeAndSaveUser("chatId", "email", "password"));
     }
@@ -127,7 +127,7 @@ class TelegramUserUbiAccountEntryServiceTest {
         authUsersWithDatabaseExceptions.add(new UbiAccountAuthorizationEntryWithTelegram("6", true, authorizedEntry));
         authUsersWithDatabaseExceptions.add(new UbiAccountAuthorizationEntryWithTelegram("7", false, authorizedEntry));
 
-        when(authorizationService.authorizeAndGetDtoForEncodedPassword(authorizedEntry.getEmail(), authorizedEntry.getEncodedPassword())).thenReturn(new AuthorizationDTO());
+        when(authorizationService.authorizeAndGetBaseAuthorizedDtoForEncodedPassword(authorizedEntry.getEmail(), authorizedEntry.getEncodedPassword())).thenReturn(new AuthorizationDTO());
         doThrow(TelegramUserDoesntExistException.class).when(telegramUserUbiAccountEntryDatabaseService).saveAuthorizationInfo(eq("6"), eq(authorizedEntry));
         doThrow(UbiAccountEntryAlreadyExistsException.class).when(telegramUserUbiAccountEntryDatabaseService).saveAuthorizationInfo(eq("7"), eq(authorizedEntry));
 
@@ -135,8 +135,8 @@ class TelegramUserUbiAccountEntryServiceTest {
         unAuthUsers.add(new UbiAccountAuthorizationEntryWithTelegram("4", null, clientErrorEntry));
         unAuthUsers.add(new UbiAccountAuthorizationEntryWithTelegram("5", true, serverErrorEntry));
 
-        doThrow(UbiUserAuthorizationClientErrorException.class).when(authorizationService).authorizeAndGetDtoForEncodedPassword(clientErrorEntry.getEmail(), clientErrorEntry.getEncodedPassword());
-        doThrow(UbiUserAuthorizationServerErrorException.class).when(authorizationService).authorizeAndGetDtoForEncodedPassword(serverErrorEntry.getEmail(), serverErrorEntry.getEncodedPassword());
+        doThrow(UbiUserAuthorizationClientErrorException.class).when(authorizationService).authorizeAndGetBaseAuthorizedDtoForEncodedPassword(clientErrorEntry.getEmail(), clientErrorEntry.getEncodedPassword());
+        doThrow(UbiUserAuthorizationServerErrorException.class).when(authorizationService).authorizeAndGetBaseAuthorizedDtoForEncodedPassword(serverErrorEntry.getEmail(), serverErrorEntry.getEncodedPassword());
 
         List<UbiAccountAuthorizationEntryWithTelegram> allUsers = new ArrayList<>();
         allUsers.addAll(authUsers);
@@ -151,7 +151,7 @@ class TelegramUserUbiAccountEntryServiceTest {
 
         verify(telegramUserUbiAccountEntryDatabaseService).findAllAuthorizationInfoForTelegram();
 
-        verify(authorizationService, times(7)).authorizeAndGetDtoForEncodedPassword(any(), any());
+        verify(authorizationService, times(7)).authorizeAndGetBaseAuthorizedDtoForEncodedPassword(any(), any());
 
         verify(telegramUserUbiAccountEntryDatabaseService, times(5)).saveAuthorizationInfo(any(), eq(authorizedEntry));
         verify(telegramUserUbiAccountEntryDatabaseService, times(0)).saveAuthorizationInfo(any(), eq(clientErrorEntry));

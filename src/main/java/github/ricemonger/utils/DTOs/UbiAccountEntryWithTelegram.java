@@ -42,10 +42,6 @@ public class UbiAccountEntryWithTelegram {
         return ubiAccountEntry.getUbiAuthTicket();
     }
 
-    public String getUbiTwoFactorAuthTicket() {
-        return ubiAccountEntry.getUbiTwoFactorAuthTicket();
-    }
-
     public String getUbiRememberDeviceTicket() {
         return ubiAccountEntry.getUbiRememberDeviceTicket();
     }

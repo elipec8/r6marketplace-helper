@@ -1,5 +1,7 @@
-package github.ricemonger.utils.DTOs;
+package github.ricemonger.utils.DTOs.auth;
 
+import github.ricemonger.utils.DTOs.UbiAccountEntryWithTelegram;
+import github.ricemonger.utils.DTOs.UserForCentralTradeManager;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +14,6 @@ public class AuthorizationDTO {
     private String profileId;
     private String spaceId;
     private String sessionId;
-    private String twoFactorAuthenticationTicket;
     private String rememberDeviceTicket;
     private String rememberMeTicket;
 
@@ -21,7 +22,6 @@ public class AuthorizationDTO {
         this.profileId = userForCentralTradeManager.getUbiProfileId();
         this.spaceId = userForCentralTradeManager.getUbiSpaceId();
         this.sessionId = userForCentralTradeManager.getUbiSessionId();
-        this.twoFactorAuthenticationTicket = userForCentralTradeManager.getUbiTwoFactorAuthTicket();
         this.rememberDeviceTicket = userForCentralTradeManager.getUbiRememberDeviceTicket();
         this.rememberMeTicket = userForCentralTradeManager.getUbiRememberMeTicket();
     }
@@ -31,7 +31,6 @@ public class AuthorizationDTO {
         this.profileId = ubiAccountWithTelegram.getAuthorizationEntryProfileId();
         this.spaceId = ubiAccountWithTelegram.getUbiSpaceId();
         this.sessionId = ubiAccountWithTelegram.getUbiSessionId();
-        this.twoFactorAuthenticationTicket = ubiAccountWithTelegram.getUbiTwoFactorAuthTicket();
         this.rememberDeviceTicket = ubiAccountWithTelegram.getUbiRememberDeviceTicket();
         this.rememberMeTicket = ubiAccountWithTelegram.getUbiRememberMeTicket();
     }
