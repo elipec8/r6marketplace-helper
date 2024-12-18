@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.services;
+package github.ricemonger.marketplace.services.configurations;
 
 import lombok.Getter;
 import lombok.Setter;

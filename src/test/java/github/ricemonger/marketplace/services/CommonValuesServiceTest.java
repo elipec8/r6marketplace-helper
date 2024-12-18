@@ -1,7 +1,9 @@
 package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.abstractions.CommonValuesDatabaseService;
-import github.ricemonger.telegramBot.TelegramBotConfiguration;
+import github.ricemonger.marketplace.services.configurations.MainUserConfiguration;
+import github.ricemonger.marketplace.services.configurations.UbiServiceConfiguration;
+import github.ricemonger.marketplace.services.configurations.TelegramBotConfiguration;
 import github.ricemonger.utils.DTOs.AuthorizationDTO;
 import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.DTOs.ConfigTrades;

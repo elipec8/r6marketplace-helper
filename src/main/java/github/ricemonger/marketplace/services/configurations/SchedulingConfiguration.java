@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.scheduled_tasks;
+package github.ricemonger.marketplace.services.configurations;
 
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

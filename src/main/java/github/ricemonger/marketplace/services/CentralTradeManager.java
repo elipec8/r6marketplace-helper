@@ -1,6 +1,9 @@
 package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
+import github.ricemonger.marketplace.services.factories.CommandForCentralTradeManagerFactory;
+import github.ricemonger.marketplace.services.factories.PersonalItemFactory;
+import github.ricemonger.marketplace.services.factories.PotentialTradeFactory;
 import github.ricemonger.utils.DTOs.PersonalItem;
 import github.ricemonger.utils.DTOs.PotentialPersonalBuyTrade;
 import github.ricemonger.utils.DTOs.PotentialPersonalSellTrade;

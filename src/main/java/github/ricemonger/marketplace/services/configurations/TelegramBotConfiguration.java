@@ -1,4 +1,4 @@
-package github.ricemonger.telegramBot;
+package github.ricemonger.marketplace.services.configurations;
 
 import lombok.Getter;
 import lombok.Setter;

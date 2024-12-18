@@ -1,9 +1,9 @@
 package github.ricemonger.marketplace.services;
 
-import github.ricemonger.utils.DTOs.items.PotentialTradeStats;
-import github.ricemonger.utils.DTOs.items.UbiTrade;
 import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.DTOs.items.ItemDaySalesStatsByItemId;
+import github.ricemonger.utils.DTOs.items.PotentialTradeStats;
+import github.ricemonger.utils.DTOs.items.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,12 +12,12 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.util.*;
 
+import static github.ricemonger.marketplace.scheduled_tasks.ScheduledAllUbiUsersManager.TRADE_MANAGER_FIXED_RATE_MINUTES;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class PotentialTradeStatsService {
-    public static final int TRADE_MANAGER_FIXED_RATE_MINUTES = 1;
-
     private static final int MINUTES_IN_A_MONTH = 43200;
     private static final int MINUTES_IN_A_WEEK = 10080;
     private static final int MINUTES_IN_A_DAY = 1440;
@@ -257,14 +257,9 @@ public class PotentialTradeStatsService {
     }
 
     private long getPriceDifferenceFactor(int price, int medianPrice, double pow) {
-
         long result = (long) Math.pow(price - medianPrice, pow);
 
-        if (result == 0) {
-            return 1;
-        } else {
-            return result > 0 ? result : -result;
-        }
+        return Math.max(Math.abs(result), 1);
     }
 
     private long getPriceRatioFactorPercent(int price, int medianPrice, double pow) {
@@ -276,17 +271,12 @@ public class PotentialTradeStatsService {
 
         long result = (long) Math.pow(differenceInPercent, pow);
 
-        if (result == 0) {
-            return 1;
-        } else {
-            return result > 0 ? result : -result;
-        }
+        return Math.max(Math.abs(result), 1);
     }
 
     private long getTimeFactor(int minutesToTrade, double pow) {
-        if (minutesToTrade == 0) {
-            minutesToTrade = 1;
-        }
+        minutesToTrade = Math.max(minutesToTrade, TRADE_MANAGER_FIXED_RATE_MINUTES);
+
         return MINUTES_IN_A_MONTH / (long) (Math.pow(minutesToTrade, pow));
     }
 
@@ -328,10 +318,6 @@ public class PotentialTradeStatsService {
                 return ((buyPrice - 10_000) / 10_000) * 10_000;
             }
         }
-    }
-
-    private int getNextFancyBuyPriceByMaxBuyPrice(Item item) {
-        return getNextFancyBuyPrice(item, item.getMaxBuyPrice());
     }
 
     private int getCurrentFancyBuyPrice(Item item, Integer buyPrice) {

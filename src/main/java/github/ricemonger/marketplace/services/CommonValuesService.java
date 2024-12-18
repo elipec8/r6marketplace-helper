@@ -1,7 +1,9 @@
 package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.abstractions.CommonValuesDatabaseService;
-import github.ricemonger.telegramBot.TelegramBotConfiguration;
+import github.ricemonger.marketplace.services.configurations.MainUserConfiguration;
+import github.ricemonger.marketplace.services.configurations.UbiServiceConfiguration;
+import github.ricemonger.marketplace.services.configurations.TelegramBotConfiguration;
 import github.ricemonger.utils.DTOs.AuthorizationDTO;
 import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.DTOs.ConfigTrades;
@@ -11,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 

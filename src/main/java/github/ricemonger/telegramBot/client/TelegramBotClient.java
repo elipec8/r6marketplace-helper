@@ -1,6 +1,6 @@
 package github.ricemonger.telegramBot.client;
 
-import github.ricemonger.telegramBot.TelegramBotConfiguration;
+import github.ricemonger.marketplace.services.configurations.TelegramBotConfiguration;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;

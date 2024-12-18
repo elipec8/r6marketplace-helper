@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.services;
+package github.ricemonger.marketplace.services.factories;
 
 import github.ricemonger.utils.DTOs.PersonalItem;
 import github.ricemonger.utils.DTOs.TradeByFiltersManager;

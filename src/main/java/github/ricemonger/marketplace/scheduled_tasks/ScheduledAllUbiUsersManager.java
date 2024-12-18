@@ -20,12 +20,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static github.ricemonger.marketplace.services.PotentialTradeStatsService.TRADE_MANAGER_FIXED_RATE_MINUTES;
-
 @Component
 @Slf4j
 @RequiredArgsConstructor
 public class ScheduledAllUbiUsersManager {
+
+    public static final int TRADE_MANAGER_FIXED_RATE_MINUTES = 1;
 
     private final TelegramUserUbiAccountEntryService telegramUserUbiAccountEntryService;
 

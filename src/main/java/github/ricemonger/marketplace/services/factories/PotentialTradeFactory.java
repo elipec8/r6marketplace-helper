@@ -1,5 +1,6 @@
-package github.ricemonger.marketplace.services;
+package github.ricemonger.marketplace.services.factories;
 
+import github.ricemonger.marketplace.services.PotentialTradeStatsService;
 import github.ricemonger.utils.DTOs.PersonalItem;
 import github.ricemonger.utils.DTOs.PotentialPersonalBuyTrade;
 import github.ricemonger.utils.DTOs.PotentialPersonalSellTrade;
