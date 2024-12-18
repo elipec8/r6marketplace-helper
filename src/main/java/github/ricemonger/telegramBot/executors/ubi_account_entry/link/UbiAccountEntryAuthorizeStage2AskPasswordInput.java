@@ -3,7 +3,7 @@ package github.ricemonger.telegramBot.executors.ubi_account_entry.link;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 
-public class UbiAccountEntryLinkStage1AskFullOrEmailInput extends AbstractBotCommandExecutor {
+public class UbiAccountEntryAuthorizeStage2AskPasswordInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
 

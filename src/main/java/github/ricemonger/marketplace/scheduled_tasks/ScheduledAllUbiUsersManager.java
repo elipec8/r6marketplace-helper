@@ -6,7 +6,10 @@ import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.ItemService;
 import github.ricemonger.marketplace.services.TelegramUserUbiAccountEntryService;
 import github.ricemonger.telegramBot.TelegramBotService;
-import github.ricemonger.utils.DTOs.*;
+import github.ricemonger.utils.DTOs.UbiAccountEntryEntityDTOWithTelegram;
+import github.ricemonger.utils.DTOs.UbiAccountStats;
+import github.ricemonger.utils.DTOs.UbiAccountStatsEntityDTO;
+import github.ricemonger.utils.DTOs.UserTradesLimitations;
 import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
 import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.DTOs.items.ItemResaleLockWithUbiAccount;
@@ -42,22 +45,22 @@ public class ScheduledAllUbiUsersManager {
 
     @Scheduled(fixedRate = TRADE_MANAGER_FIXED_RATE_MINUTES * 60 * 1000, initialDelay = 5 * 60 * 1000) // every 1m after 5m of delay
     public void fetchAllUbiUsersStatsAndManageTrades() {
-        List<UbiAccountEntryWithTelegram> ubiAccountsWithTelegram = telegramUserUbiAccountEntryService.findAllForTelegram();
+        List<UbiAccountEntryEntityDTOWithTelegram> ubiAccountsWithTelegram = telegramUserUbiAccountEntryService.findAllFUbiAccountEntriesWithTelegram();
 
         List<UbiAccountStats> updatedUbiAccountsStats = new ArrayList<>();
 
-        for (UbiAccountEntryWithTelegram ubiAccountWithTelegram : ubiAccountsWithTelegram) {
+        for (UbiAccountEntryEntityDTOWithTelegram ubiAccountWithTelegram : ubiAccountsWithTelegram) {
             updatedUbiAccountsStats.add(fetchAndGetUserPersonalStats(ubiAccountWithTelegram));
         }
 
         commonValuesService.setLastUbiUsersStatsFetchTime(LocalDateTime.now().withNano(0));
 
-        telegramUserUbiAccountEntryService.saveAllUbiAccountStats(updatedUbiAccountsStats);
+        telegramUserUbiAccountEntryService.saveAllUbiAccountStats(updatedUbiAccountsStats.stream().map(UbiAccountStatsEntityDTO::new).toList());
 
-        centralTradeManager.manageAllUsersTrades();
+        centralTradeManager.manageAllUsersTrades(updatedUbiAccountsStats);
     }
 
-    private UbiAccountStatsWithTrades fetchAndGetUserPersonalStats(UbiAccountEntryWithTelegram ubiAccountWithTelegram) {
+    private UbiAccountStats fetchAndGetUserPersonalStats(UbiAccountEntryEntityDTOWithTelegram ubiAccountWithTelegram) {
         AuthorizationDTO authorizationDTO = new AuthorizationDTO(ubiAccountWithTelegram);
         int creditAmount = graphQlClientService.fetchCreditAmountForUser(authorizationDTO);
         List<UbiTrade> currentOrders = graphQlClientService.fetchCurrentOrdersForUser(authorizationDTO);
@@ -81,7 +84,7 @@ public class ScheduledAllUbiUsersManager {
             notifyUser(ubiAccountWithTelegram, creditAmount, soldIn24h, boughtIn24h);
         }
 
-        return new UbiAccountStatsWithTrades(
+        return new UbiAccountStats(
                 ubiAccountWithTelegram.getUbiProfileId(),
                 userTradesLimitations.getResolvedSellTransactionCount(),
                 userTradesLimitations.getResolvedBuyTransactionCount(),
@@ -92,7 +95,7 @@ public class ScheduledAllUbiUsersManager {
                 currentBuyTrades);
     }
 
-    private void notifyUser(UbiAccountEntryWithTelegram ubiAccountWithTelegram, int creditAmount, List<UbiTrade> soldIn24h, List<UbiTrade> boughtIn24h) {
+    private void notifyUser(UbiAccountEntryEntityDTOWithTelegram ubiAccountWithTelegram, int creditAmount, List<UbiTrade> soldIn24h, List<UbiTrade> boughtIn24h) {
 
         boolean creditsChanged = ubiAccountWithTelegram.getCreditAmount() != null && ubiAccountWithTelegram.getCreditAmount() != creditAmount;
         boolean soldIn24hChanged = soldIn24h.stream().anyMatch(trade -> trade.getLastModifiedAt().isAfter(commonValuesService.getLastUbiUsersStatsFetchTime()));

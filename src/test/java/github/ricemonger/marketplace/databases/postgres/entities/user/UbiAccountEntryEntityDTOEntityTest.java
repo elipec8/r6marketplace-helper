@@ -1,13 +1,13 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
+import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryEntityDTO;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class UbiAccountEntryEntityTest {
+class UbiAccountEntryEntityDTOEntityTest {
 
     @Test
     public void constructor_should_set_fields_correctly() {
@@ -15,7 +15,7 @@ class UbiAccountEntryEntityTest {
         user.setId(1L);
         UbiAccountStatsEntity ubiAccount = new UbiAccountStatsEntity();
         ubiAccount.setUbiProfileId("profile1");
-        UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
+        UbiAccountAuthorizationEntryEntityDTO account = new UbiAccountAuthorizationEntryEntityDTO();
         account.setEmail("email@example.com");
         account.setEncodedPassword("encodedPassword");
         account.setUbiSessionId("sessionId");
@@ -65,15 +65,15 @@ class UbiAccountEntryEntityTest {
 
         assertEquals("chat1", result.getChatId());
         assertTrue(result.getPrivateNotificationsEnabledFlag());
-        assertEquals("email@example.com", result.getUbiAccountAuthorizationEntry().getEmail());
-        assertEquals("encodedPassword", result.getUbiAccountAuthorizationEntry().getEncodedPassword());
-        assertEquals("profile1", result.getUbiAccountAuthorizationEntry().getUbiProfileId());
-        assertEquals("sessionId", result.getUbiAccountAuthorizationEntry().getUbiSessionId());
-        assertEquals("spaceId", result.getUbiAccountAuthorizationEntry().getUbiSpaceId());
-        assertEquals("authTicket", result.getUbiAccountAuthorizationEntry().getUbiAuthTicket());
-        assertEquals("twoFactorAuthTicket", result.getUbiAccountAuthorizationEntry().getUbiTwoFactorAuthTicket());
-        assertEquals("rememberDeviceTicket", result.getUbiAccountAuthorizationEntry().getUbiRememberDeviceTicket());
-        assertEquals("rememberMeTicket", result.getUbiAccountAuthorizationEntry().getUbiRememberMeTicket());
+        assertEquals("email@example.com", result.getUbiAccountAuthorizationEntryEntityDTO().getEmail());
+        assertEquals("encodedPassword", result.getUbiAccountAuthorizationEntryEntityDTO().getEncodedPassword());
+        assertEquals("profile1", result.getUbiAccountAuthorizationEntryEntityDTO().getUbiProfileId());
+        assertEquals("sessionId", result.getUbiAccountAuthorizationEntryEntityDTO().getUbiSessionId());
+        assertEquals("spaceId", result.getUbiAccountAuthorizationEntryEntityDTO().getUbiSpaceId());
+        assertEquals("authTicket", result.getUbiAccountAuthorizationEntryEntityDTO().getUbiAuthTicket());
+        assertEquals("twoFactorAuthTicket", result.getUbiAccountAuthorizationEntryEntityDTO().getUbiTwoFactorAuthTicket());
+        assertEquals("rememberDeviceTicket", result.getUbiAccountAuthorizationEntryEntityDTO().getUbiRememberDeviceTicket());
+        assertEquals("rememberMeTicket", result.getUbiAccountAuthorizationEntryEntityDTO().getUbiRememberMeTicket());
     }
 
     @Test
@@ -94,7 +94,7 @@ class UbiAccountEntryEntityTest {
         entity.setUbiRememberDeviceTicket("rememberDeviceTicket");
         entity.setUbiRememberMeTicket("rememberMeTicket");
 
-        UbiAccountAuthorizationEntry result = entity.toUbiAccountAuthorizationEntry();
+        UbiAccountAuthorizationEntryEntityDTO result = entity.toUbiAccountAuthorizationEntry();
 
         assertEquals("email@example.com", result.getEmail());
         assertEquals("encodedPassword", result.getEncodedPassword());

@@ -4,9 +4,9 @@ import github.ricemonger.marketplace.services.abstractions.CommonValuesDatabaseS
 import github.ricemonger.marketplace.services.configurations.MainUserConfiguration;
 import github.ricemonger.marketplace.services.configurations.TelegramBotConfiguration;
 import github.ricemonger.marketplace.services.configurations.UbiServiceConfiguration;
-import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
 import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.DTOs.ConfigTrades;
+import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.ItemRarity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -183,6 +183,14 @@ class CommonValuesServiceTest {
         when(ubiServiceConfiguration.getAuthorizationUrl()).thenReturn(authorizationUrl);
 
         assertEquals(authorizationUrl, commonValuesService.getAuthorizationUrl());
+    }
+
+    @Test
+    public void getGetTwoFaCodeToSmsUrl_should_handle_to_service() {
+        String twoFaCodeToSmsUrl = "twoFaCodeToSmsUrl";
+        when(ubiServiceConfiguration.getTwoFaCodeToSmsUrl()).thenReturn(twoFaCodeToSmsUrl);
+
+        assertEquals(twoFaCodeToSmsUrl, commonValuesService.getTwoFaCodeToSmsUrl());
     }
 
     @Test

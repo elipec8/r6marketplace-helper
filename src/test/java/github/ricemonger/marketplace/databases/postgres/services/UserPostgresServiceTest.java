@@ -33,7 +33,7 @@ class UserPostgresServiceTest {
 
         UserForCentralTradeManager userForCentralTradeManager1 = new UserForCentralTradeManager();
 
-        userPostgresService.getAllUsersForCentralTradeManager(existingItems);
+        userPostgresService.getAllManageableUsers(existingItems);
 
         verify(userPostgresRepository, times(1)).findAllManageableUsers();
         verify(user1).toUserForCentralTradeManager(same(existingItems));

@@ -3,6 +3,7 @@ package github.ricemonger.marketplace.databases.postgres.services;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.services.abstractions.UserDatabaseService;
+import github.ricemonger.utils.DTOs.UserEntityDTO;
 import github.ricemonger.utils.DTOs.UserForCentralTradeManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,7 @@ public class UserPostgresService implements UserDatabaseService {
     private final UserPostgresRepository userRepository;
 
     @Override
-    public List<UserForCentralTradeManager> getAllUsersForCentralTradeManager() {
-        return userRepository.findAllManageableUsers().stream().map(UserEntity::toUserForCentralTradeManager).toList();
+    public List<UserEntityDTO> getAllManageableUsers() {
+        return userRepository.findAllManageableUsers().stream().map(UserEntity::toUserEntityDTO).toList();
     }
 }

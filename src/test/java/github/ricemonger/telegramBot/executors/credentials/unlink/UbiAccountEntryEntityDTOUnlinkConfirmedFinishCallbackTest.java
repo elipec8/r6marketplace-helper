@@ -12,7 +12,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-class UbiAccountEntryUnlinkConfirmedFinishCallbackTest {
+class UbiAccountEntryEntityDTOUnlinkConfirmedFinishCallbackTest {
 
     @MockBean
     private BotInnerService botInnerService;

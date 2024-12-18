@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class UbiAccountEntryEntityIdTest {
+class UbiAccountEntryEntityDTOEntityIdTest {
     @Test
     public void hashCode_should_return_same_hash_for_equal_objects() {
         UserEntity user1 = new UserEntity();

@@ -40,43 +40,43 @@ class ScheduledAllUbiUsersManagerTest {
 
     @Test
     public void fetchAllUbiUsersStats_should_update_ubiStatsAndManageTrades() {
-        UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry1 = new UbiAccountAuthorizationEntry("ubiAuthProfileId1", "email1",
+        UbiAccountAuthorizationEntryEntityDTO ubiAccountAuthorizationEntryEntityDTO1 = new UbiAccountAuthorizationEntryEntityDTO("ubiAuthProfileId1", "email1",
                 "encodedPassword1",
                 "ubiSessionId1", "ubiSpaceId1", "ubiAuthTicket1", "ubiTwoFactorAuthTicket1", "ubiRememberDeviceTicket1", "ubiRememberMeTicket1");
-        UbiAccountStats ubiAccountStats1 = new UbiAccountStats("ubiProfileId1", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
-        UbiAccountEntry ubiAccountEntry1 = new UbiAccountEntry(ubiAccountAuthorizationEntry1, ubiAccountStats1);
-        UbiAccountEntryWithTelegram ubiAccountEntryWithTelegram1 = new UbiAccountEntryWithTelegram("chatId1", false, ubiAccountEntry1);
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO1 = new UbiAccountStatsEntityDTO("ubiProfileId1", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+        UbiAccountEntryEntityDTO ubiAccountEntryEntityDTO1 = new UbiAccountEntryEntityDTO(ubiAccountAuthorizationEntryEntityDTO1, ubiAccountStatsEntityDTO1);
+        UbiAccountEntryEntityDTOWithTelegram ubiAccountEntryEntityDTOWithTelegram1 = new UbiAccountEntryEntityDTOWithTelegram("chatId1", false, ubiAccountEntryEntityDTO1);
 
-        UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry2 = new UbiAccountAuthorizationEntry("ubiAuthProfileId2", "email2",
+        UbiAccountAuthorizationEntryEntityDTO ubiAccountAuthorizationEntryEntityDTO2 = new UbiAccountAuthorizationEntryEntityDTO("ubiAuthProfileId2", "email2",
                 "encodedPassword2",
                 "ubiSessionId2", "ubiSpaceId2", "ubiAuthTicket2", "ubiTwoFactorAuthTicket2", "ubiRememberDeviceTicket2", "ubiRememberMeTicket2");
-        UbiAccountStats ubiAccountStats2 = new UbiAccountStats("ubiProfileId2", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
-        UbiAccountEntry ubiAccountEntry2 = new UbiAccountEntry(ubiAccountAuthorizationEntry2, ubiAccountStats2);
-        UbiAccountEntryWithTelegram ubiAccountEntryWithTelegram2 = new UbiAccountEntryWithTelegram("chatId2", false, ubiAccountEntry2);
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO2 = new UbiAccountStatsEntityDTO("ubiProfileId2", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+        UbiAccountEntryEntityDTO ubiAccountEntryEntityDTO2 = new UbiAccountEntryEntityDTO(ubiAccountAuthorizationEntryEntityDTO2, ubiAccountStatsEntityDTO2);
+        UbiAccountEntryEntityDTOWithTelegram ubiAccountEntryEntityDTOWithTelegram2 = new UbiAccountEntryEntityDTOWithTelegram("chatId2", false, ubiAccountEntryEntityDTO2);
 
-        UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry3 = new UbiAccountAuthorizationEntry("ubiAuthProfileId3", "email3",
+        UbiAccountAuthorizationEntryEntityDTO ubiAccountAuthorizationEntryEntityDTO3 = new UbiAccountAuthorizationEntryEntityDTO("ubiAuthProfileId3", "email3",
                 "encodedPassword3",
                 "ubiSessionId3", "ubiSpaceId3", "ubiAuthTicket3", "ubiTwoFactorAuthTicket3", "ubiRememberDeviceTicket3", "ubiRememberMeTicket3");
-        UbiAccountStats ubiAccountStats3 = new UbiAccountStats("ubiProfileId3", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
-        UbiAccountEntry ubiAccountEntry3 = new UbiAccountEntry(ubiAccountAuthorizationEntry3, ubiAccountStats3);
-        UbiAccountEntryWithTelegram ubiAccountEntryWithTelegram3 = new UbiAccountEntryWithTelegram("chatId3", false, ubiAccountEntry3);
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO3 = new UbiAccountStatsEntityDTO("ubiProfileId3", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+        UbiAccountEntryEntityDTO ubiAccountEntryEntityDTO3 = new UbiAccountEntryEntityDTO(ubiAccountAuthorizationEntryEntityDTO3, ubiAccountStatsEntityDTO3);
+        UbiAccountEntryEntityDTOWithTelegram ubiAccountEntryEntityDTOWithTelegram3 = new UbiAccountEntryEntityDTOWithTelegram("chatId3", false, ubiAccountEntryEntityDTO3);
 
-        List<UbiAccountEntryWithTelegram> ubiAccountAuthorizationEntriesWithTelegram = List.of(
-                ubiAccountEntryWithTelegram1,
-                ubiAccountEntryWithTelegram2,
-                ubiAccountEntryWithTelegram3);
+        List<UbiAccountEntryEntityDTOWithTelegram> ubiAccountAuthorizationEntriesWithTelegram = List.of(
+                ubiAccountEntryEntityDTOWithTelegram1,
+                ubiAccountEntryEntityDTOWithTelegram2,
+                ubiAccountEntryEntityDTOWithTelegram3);
 
-        when(telegramUserUbiAccountEntryService.findAllForTelegram()).thenReturn(ubiAccountAuthorizationEntriesWithTelegram);
+        when(telegramUserUbiAccountEntryService.findAllFUbiAccountEntriesWithTelegram()).thenReturn(ubiAccountAuthorizationEntriesWithTelegram);
 
         int creditAmount1 = 100;
-        when(graphQlClientService.fetchCreditAmountForUser(new AuthorizationDTO(ubiAccountEntryWithTelegram1))).thenReturn(creditAmount1);
+        when(graphQlClientService.fetchCreditAmountForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram1))).thenReturn(creditAmount1);
         UbiTrade currentBuyTrade1 = new UbiTrade();
         currentBuyTrade1.setCategory(TradeCategory.Buy);
         currentBuyTrade1.setTradeId("currentBuyTrade1");
         UbiTrade currentSellTrade1 = new UbiTrade();
         currentSellTrade1.setCategory(TradeCategory.Sell);
         currentSellTrade1.setTradeId("currentSellTrade1");
-        when(graphQlClientService.fetchCurrentOrdersForUser(new AuthorizationDTO(ubiAccountEntryWithTelegram1))).thenReturn(List.of(currentBuyTrade1, currentSellTrade1));
+        when(graphQlClientService.fetchCurrentOrdersForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram1))).thenReturn(List.of(currentBuyTrade1, currentSellTrade1));
         UbiTrade finishedBuyTrade1 = new UbiTrade();
         finishedBuyTrade1.setCategory(TradeCategory.Buy);
         finishedBuyTrade1.setLastModifiedAt(LocalDateTime.now());
@@ -85,7 +85,7 @@ class ScheduledAllUbiUsersManagerTest {
         finishedSellTrade1.setCategory(TradeCategory.Sell);
         finishedSellTrade1.setLastModifiedAt(LocalDateTime.now());
         finishedSellTrade1.setTradeId("finishedSellTrade1");
-        when(graphQlClientService.fetchLastFinishedOrdersForUser(new AuthorizationDTO(ubiAccountEntryWithTelegram1))).thenReturn(List.of(finishedSellTrade1, finishedBuyTrade1));
+        when(graphQlClientService.fetchLastFinishedOrdersForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram1))).thenReturn(List.of(finishedSellTrade1, finishedBuyTrade1));
         ItemResaleLockWithUbiAccount itemResaleLockWithUbiAccount1 = new ItemResaleLockWithUbiAccount();
         itemResaleLockWithUbiAccount1.setItemId("itemId1");
         ItemResaleLockWithUbiAccount itemResaleLockWithUbiAccount2 = new ItemResaleLockWithUbiAccount();
@@ -94,69 +94,69 @@ class ScheduledAllUbiUsersManagerTest {
         UserTradesLimitations userTradesLimitations1 = new UserTradesLimitations();
         userTradesLimitations1.setResaleLocks(List.of(itemResaleLockWithUbiAccount1, itemResaleLockWithUbiAccount2));
 
-        when(graphQlClientService.fetchTradesLimitationsForUser(new AuthorizationDTO(ubiAccountEntryWithTelegram1))).thenReturn(userTradesLimitations1);
-        when(graphQlClientService.fetchAllOwnedItemsIdsForUser(new AuthorizationDTO(ubiAccountEntryWithTelegram1))).thenReturn(List.of("itemId3",
+        when(graphQlClientService.fetchTradesLimitationsForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram1))).thenReturn(userTradesLimitations1);
+        when(graphQlClientService.fetchAllOwnedItemsIdsForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram1))).thenReturn(List.of("itemId3",
                 "itemId4"));
 
         int creditAmount2 = 200;
-        when(graphQlClientService.fetchCreditAmountForUser(new AuthorizationDTO(ubiAccountEntryWithTelegram2))).thenReturn(creditAmount2);
+        when(graphQlClientService.fetchCreditAmountForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram2))).thenReturn(creditAmount2);
         UbiTrade currentBuyTrade2 = new UbiTrade();
         currentBuyTrade2.setCategory(TradeCategory.Buy);
         currentBuyTrade2.setTradeId("currentBuyTrade2");
-        when(graphQlClientService.fetchCurrentOrdersForUser(new AuthorizationDTO(ubiAccountEntryWithTelegram2))).thenReturn(List.of(currentBuyTrade2));
+        when(graphQlClientService.fetchCurrentOrdersForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram2))).thenReturn(List.of(currentBuyTrade2));
         UbiTrade finishedBuyTrade2 = new UbiTrade();
         finishedBuyTrade2.setCategory(TradeCategory.Buy);
         finishedBuyTrade2.setLastModifiedAt(LocalDateTime.now().minusDays(2));
         finishedBuyTrade2.setTradeId("finishedBuyTrade2");
-        when(graphQlClientService.fetchLastFinishedOrdersForUser(new AuthorizationDTO(ubiAccountEntryWithTelegram2))).thenReturn(List.of(finishedBuyTrade2));
+        when(graphQlClientService.fetchLastFinishedOrdersForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram2))).thenReturn(List.of(finishedBuyTrade2));
         ItemResaleLockWithUbiAccount itemResaleLockWithUbiAccount3 = new ItemResaleLockWithUbiAccount();
         itemResaleLockWithUbiAccount3.setItemId("itemId3");
 
         UserTradesLimitations userTradesLimitations2 = new UserTradesLimitations();
         userTradesLimitations2.setResaleLocks(List.of(itemResaleLockWithUbiAccount3));
 
-        when(graphQlClientService.fetchTradesLimitationsForUser(new AuthorizationDTO(ubiAccountEntryWithTelegram2))).thenReturn(userTradesLimitations2);
-        when(graphQlClientService.fetchAllOwnedItemsIdsForUser(new AuthorizationDTO(ubiAccountEntryWithTelegram2))).thenReturn(List.of("itemId5",
+        when(graphQlClientService.fetchTradesLimitationsForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram2))).thenReturn(userTradesLimitations2);
+        when(graphQlClientService.fetchAllOwnedItemsIdsForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram2))).thenReturn(List.of("itemId5",
                 "itemId6"));
 
         int creditAmount3 = 300;
-        when(graphQlClientService.fetchCreditAmountForUser(new AuthorizationDTO(ubiAccountEntryWithTelegram3))).thenReturn(creditAmount3);
+        when(graphQlClientService.fetchCreditAmountForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram3))).thenReturn(creditAmount3);
         UbiTrade currentSellTrade3 = new UbiTrade();
         currentSellTrade3.setCategory(TradeCategory.Sell);
         currentSellTrade3.setTradeId("currentSellTrade3");
-        when(graphQlClientService.fetchCurrentOrdersForUser(new AuthorizationDTO(ubiAccountEntryWithTelegram3))).thenReturn(List.of(currentSellTrade3));
+        when(graphQlClientService.fetchCurrentOrdersForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram3))).thenReturn(List.of(currentSellTrade3));
         UbiTrade finishedSellTrade3 = new UbiTrade();
         finishedSellTrade3.setCategory(TradeCategory.Sell);
         finishedSellTrade3.setLastModifiedAt(LocalDateTime.now().minusDays(2));
         finishedSellTrade3.setTradeId("finishedSellTrade3");
-        when(graphQlClientService.fetchLastFinishedOrdersForUser(new AuthorizationDTO(ubiAccountEntryWithTelegram3))).thenReturn(List.of(finishedSellTrade3));
-        when(graphQlClientService.fetchTradesLimitationsForUser(new AuthorizationDTO(ubiAccountEntryWithTelegram3))).thenReturn(new UserTradesLimitations());
-        when(graphQlClientService.fetchAllOwnedItemsIdsForUser(new AuthorizationDTO(ubiAccountEntryWithTelegram3))).thenReturn(List.of());
+        when(graphQlClientService.fetchLastFinishedOrdersForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram3))).thenReturn(List.of(finishedSellTrade3));
+        when(graphQlClientService.fetchTradesLimitationsForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram3))).thenReturn(new UserTradesLimitations());
+        when(graphQlClientService.fetchAllOwnedItemsIdsForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram3))).thenReturn(List.of());
 
 
         when(commonValuesService.getLastUbiUsersStatsFetchTime()).thenReturn(LocalDateTime.now().minusDays(15));
 
         scheduledAllUbiUsersManager.fetchAllUbiUsersStatsAndManageTrades();
 
-        UbiAccountStats expectedUbiAccountStats1 = new UbiAccountStats("ubiProfileId1", 1, 1, creditAmount1, List.of("itemId3", "itemId4"),
+        UbiAccountStatsEntityDTO expectedUbiAccountStatsEntityDTO1 = new UbiAccountStatsEntityDTO("ubiProfileId1", 1, 1, creditAmount1, List.of("itemId3", "itemId4"),
                 List.of(itemResaleLockWithUbiAccount1, itemResaleLockWithUbiAccount2), List.of(currentBuyTrade1), List.of(currentSellTrade1));
-        UbiAccountStats expectedUbiAccountStats2 = new UbiAccountStats("ubiProfileId2", 0, 0, creditAmount2, List.of("itemId5", "itemId6"),
+        UbiAccountStatsEntityDTO expectedUbiAccountStatsEntityDTO2 = new UbiAccountStatsEntityDTO("ubiProfileId2", 0, 0, creditAmount2, List.of("itemId5", "itemId6"),
                 List.of(itemResaleLockWithUbiAccount3), List.of(currentBuyTrade2), List.of());
-        UbiAccountStats expectedUbiAccountStats3 = new UbiAccountStats("ubiProfileId3", 0, 0, creditAmount3, List.of(),
+        UbiAccountStatsEntityDTO expectedUbiAccountStatsEntityDTO3 = new UbiAccountStatsEntityDTO("ubiProfileId3", 0, 0, creditAmount3, List.of(),
                 List.of(), List.of(), List.of(currentSellTrade3));
-        List<UbiAccountStats> expectedUpdatedUbiAccountStats = List.of(expectedUbiAccountStats1, expectedUbiAccountStats2, expectedUbiAccountStats3);
+        List<UbiAccountStatsEntityDTO> expectedUpdatedUbiAccountStatEntityDTOS = List.of(expectedUbiAccountStatsEntityDTO1, expectedUbiAccountStatsEntityDTO2, expectedUbiAccountStatsEntityDTO3);
 
         System.out.println("Expected:");
-        for (UbiAccountStats expected : expectedUpdatedUbiAccountStats) {
+        for (UbiAccountStatsEntityDTO expected : expectedUpdatedUbiAccountStatEntityDTOS) {
             System.out.println(expected);
         }
         System.out.println("Actual:");
         verify(telegramUserUbiAccountEntryService).saveAllUbiAccountStats(argThat(arg -> {
-            for (UbiAccountStats actual : arg) {
+            for (UbiAccountStatsEntityDTO actual : arg) {
                 System.out.println(actual);
             }
-            for (UbiAccountStats actual : arg) {
-                UbiAccountStats expected = expectedUpdatedUbiAccountStats.stream()
+            for (UbiAccountStatsEntityDTO actual : arg) {
+                UbiAccountStatsEntityDTO expected = expectedUpdatedUbiAccountStatEntityDTOS.stream()
                         .filter(e -> e.getUbiProfileId().equals(actual.getUbiProfileId()))
                         .findFirst().orElse(null);
                 if (expected == null || !expected.isFullyEqual(actual)) {
@@ -169,33 +169,33 @@ class ScheduledAllUbiUsersManagerTest {
 
     @Test
     public void fetchAllUbiUsersStats_should_notify_users_on_credits_amount_changedAndManageTrades() {
-        UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry1 = new UbiAccountAuthorizationEntry("ubiAuthProfileId1", "email1",
+        UbiAccountAuthorizationEntryEntityDTO ubiAccountAuthorizationEntryEntityDTO1 = new UbiAccountAuthorizationEntryEntityDTO("ubiAuthProfileId1", "email1",
                 "encodedPassword1",
                 "ubiSessionId1", "ubiSpaceId1", "ubiAuthTicket1", "ubiTwoFactorAuthTicket1", "ubiRememberDeviceTicket1", "ubiRememberMeTicket1");
-        UbiAccountStats ubiAccountStats1 = new UbiAccountStats("ubiProfileId1", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
-        UbiAccountEntry ubiAccountEntry1 = new UbiAccountEntry(ubiAccountAuthorizationEntry1, ubiAccountStats1);
-        UbiAccountEntryWithTelegram ubiAccountEntryWithTelegram1 = new UbiAccountEntryWithTelegram("chatId1", true, ubiAccountEntry1);
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO1 = new UbiAccountStatsEntityDTO("ubiProfileId1", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+        UbiAccountEntryEntityDTO ubiAccountEntryEntityDTO1 = new UbiAccountEntryEntityDTO(ubiAccountAuthorizationEntryEntityDTO1, ubiAccountStatsEntityDTO1);
+        UbiAccountEntryEntityDTOWithTelegram ubiAccountEntryEntityDTOWithTelegram1 = new UbiAccountEntryEntityDTOWithTelegram("chatId1", true, ubiAccountEntryEntityDTO1);
 
-        UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry2 = new UbiAccountAuthorizationEntry("ubiAuthProfileId2", "email2",
+        UbiAccountAuthorizationEntryEntityDTO ubiAccountAuthorizationEntryEntityDTO2 = new UbiAccountAuthorizationEntryEntityDTO("ubiAuthProfileId2", "email2",
                 "encodedPassword2",
                 "ubiSessionId2", "ubiSpaceId2", "ubiAuthTicket2", "ubiTwoFactorAuthTicket2", "ubiRememberDeviceTicket2", "ubiRememberMeTicket2");
-        UbiAccountStats ubiAccountStats2 = new UbiAccountStats("ubiProfileId2", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
-        UbiAccountEntry ubiAccountEntry2 = new UbiAccountEntry(ubiAccountAuthorizationEntry2, ubiAccountStats2);
-        UbiAccountEntryWithTelegram ubiAccountEntryWithTelegram2 = new UbiAccountEntryWithTelegram("chatId2", false, ubiAccountEntry2);
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO2 = new UbiAccountStatsEntityDTO("ubiProfileId2", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+        UbiAccountEntryEntityDTO ubiAccountEntryEntityDTO2 = new UbiAccountEntryEntityDTO(ubiAccountAuthorizationEntryEntityDTO2, ubiAccountStatsEntityDTO2);
+        UbiAccountEntryEntityDTOWithTelegram ubiAccountEntryEntityDTOWithTelegram2 = new UbiAccountEntryEntityDTOWithTelegram("chatId2", false, ubiAccountEntryEntityDTO2);
 
-        UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry3 = new UbiAccountAuthorizationEntry("ubiAuthProfileId3", "email3",
+        UbiAccountAuthorizationEntryEntityDTO ubiAccountAuthorizationEntryEntityDTO3 = new UbiAccountAuthorizationEntryEntityDTO("ubiAuthProfileId3", "email3",
                 "encodedPassword3",
                 "ubiSessionId3", "ubiSpaceId3", "ubiAuthTicket3", "ubiTwoFactorAuthTicket3", "ubiRememberDeviceTicket3", "ubiRememberMeTicket3");
-        UbiAccountStats ubiAccountStats3 = new UbiAccountStats("ubiProfileId3", 0, 0, 100, List.of(), List.of(), List.of(), List.of());
-        UbiAccountEntry ubiAccountEntry3 = new UbiAccountEntry(ubiAccountAuthorizationEntry3, ubiAccountStats3);
-        UbiAccountEntryWithTelegram ubiAccountEntryWithTelegram3 = new UbiAccountEntryWithTelegram("chatId3", true, ubiAccountEntry3);
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO3 = new UbiAccountStatsEntityDTO("ubiProfileId3", 0, 0, 100, List.of(), List.of(), List.of(), List.of());
+        UbiAccountEntryEntityDTO ubiAccountEntryEntityDTO3 = new UbiAccountEntryEntityDTO(ubiAccountAuthorizationEntryEntityDTO3, ubiAccountStatsEntityDTO3);
+        UbiAccountEntryEntityDTOWithTelegram ubiAccountEntryEntityDTOWithTelegram3 = new UbiAccountEntryEntityDTOWithTelegram("chatId3", true, ubiAccountEntryEntityDTO3);
 
-        List<UbiAccountEntryWithTelegram> ubiAccountAuthorizationEntriesWithTelegram = List.of(
-                ubiAccountEntryWithTelegram1,
-                ubiAccountEntryWithTelegram2,
-                ubiAccountEntryWithTelegram3);
+        List<UbiAccountEntryEntityDTOWithTelegram> ubiAccountAuthorizationEntriesWithTelegram = List.of(
+                ubiAccountEntryEntityDTOWithTelegram1,
+                ubiAccountEntryEntityDTOWithTelegram2,
+                ubiAccountEntryEntityDTOWithTelegram3);
 
-        when(telegramUserUbiAccountEntryService.findAllForTelegram()).thenReturn(ubiAccountAuthorizationEntriesWithTelegram);
+        when(telegramUserUbiAccountEntryService.findAllFUbiAccountEntriesWithTelegram()).thenReturn(ubiAccountAuthorizationEntriesWithTelegram);
 
         int creditAmount = 100;
         when(graphQlClientService.fetchCreditAmountForUser(any())).thenReturn(creditAmount);
@@ -215,40 +215,40 @@ class ScheduledAllUbiUsersManagerTest {
 
     @Test
     public void fetchAllUbiUsersStats_should_notify_users_on_new_sellsAndManageTrades() {
-        UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry1 = new UbiAccountAuthorizationEntry("ubiAuthProfileId1", "email1",
+        UbiAccountAuthorizationEntryEntityDTO ubiAccountAuthorizationEntryEntityDTO1 = new UbiAccountAuthorizationEntryEntityDTO("ubiAuthProfileId1", "email1",
                 "encodedPassword1",
                 "ubiSessionId1", "ubiSpaceId1", "ubiAuthTicket1", "ubiTwoFactorAuthTicket1", "ubiRememberDeviceTicket1", "ubiRememberMeTicket1");
-        UbiAccountStats ubiAccountStats1 = new UbiAccountStats("ubiProfileId1", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
-        UbiAccountEntry ubiAccountEntry1 = new UbiAccountEntry(ubiAccountAuthorizationEntry1, ubiAccountStats1);
-        UbiAccountEntryWithTelegram ubiAccountEntryWithTelegram1 = new UbiAccountEntryWithTelegram("chatId1", true, ubiAccountEntry1);
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO1 = new UbiAccountStatsEntityDTO("ubiProfileId1", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+        UbiAccountEntryEntityDTO ubiAccountEntryEntityDTO1 = new UbiAccountEntryEntityDTO(ubiAccountAuthorizationEntryEntityDTO1, ubiAccountStatsEntityDTO1);
+        UbiAccountEntryEntityDTOWithTelegram ubiAccountEntryEntityDTOWithTelegram1 = new UbiAccountEntryEntityDTOWithTelegram("chatId1", true, ubiAccountEntryEntityDTO1);
 
-        UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry2 = new UbiAccountAuthorizationEntry("ubiAuthProfileId2", "email2",
+        UbiAccountAuthorizationEntryEntityDTO ubiAccountAuthorizationEntryEntityDTO2 = new UbiAccountAuthorizationEntryEntityDTO("ubiAuthProfileId2", "email2",
                 "encodedPassword2",
                 "ubiSessionId2", "ubiSpaceId2", "ubiAuthTicket2", "ubiTwoFactorAuthTicket2", "ubiRememberDeviceTicket2", "ubiRememberMeTicket2");
-        UbiAccountStats ubiAccountStats2 = new UbiAccountStats("ubiProfileId2", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
-        UbiAccountEntry ubiAccountEntry2 = new UbiAccountEntry(ubiAccountAuthorizationEntry2, ubiAccountStats2);
-        UbiAccountEntryWithTelegram ubiAccountEntryWithTelegram2 = new UbiAccountEntryWithTelegram("chatId2", false, ubiAccountEntry2);
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO2 = new UbiAccountStatsEntityDTO("ubiProfileId2", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+        UbiAccountEntryEntityDTO ubiAccountEntryEntityDTO2 = new UbiAccountEntryEntityDTO(ubiAccountAuthorizationEntryEntityDTO2, ubiAccountStatsEntityDTO2);
+        UbiAccountEntryEntityDTOWithTelegram ubiAccountEntryEntityDTOWithTelegram2 = new UbiAccountEntryEntityDTOWithTelegram("chatId2", false, ubiAccountEntryEntityDTO2);
 
-        UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry3 = new UbiAccountAuthorizationEntry("ubiAuthProfileId3", "email3",
+        UbiAccountAuthorizationEntryEntityDTO ubiAccountAuthorizationEntryEntityDTO3 = new UbiAccountAuthorizationEntryEntityDTO("ubiAuthProfileId3", "email3",
                 "encodedPassword3",
                 "ubiSessionId3", "ubiSpaceId3", "ubiAuthTicket3", "ubiTwoFactorAuthTicket3", "ubiRememberDeviceTicket3", "ubiRememberMeTicket3");
-        UbiAccountStats ubiAccountStats3 = new UbiAccountStats("ubiProfileId3", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
-        UbiAccountEntry ubiAccountEntry3 = new UbiAccountEntry(ubiAccountAuthorizationEntry3, ubiAccountStats3);
-        UbiAccountEntryWithTelegram ubiAccountEntryWithTelegram3 = new UbiAccountEntryWithTelegram("chatId3", true, ubiAccountEntry3);
-        UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry4 = new UbiAccountAuthorizationEntry("ubiAuthProfileId3", "email3",
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO3 = new UbiAccountStatsEntityDTO("ubiProfileId3", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+        UbiAccountEntryEntityDTO ubiAccountEntryEntityDTO3 = new UbiAccountEntryEntityDTO(ubiAccountAuthorizationEntryEntityDTO3, ubiAccountStatsEntityDTO3);
+        UbiAccountEntryEntityDTOWithTelegram ubiAccountEntryEntityDTOWithTelegram3 = new UbiAccountEntryEntityDTOWithTelegram("chatId3", true, ubiAccountEntryEntityDTO3);
+        UbiAccountAuthorizationEntryEntityDTO ubiAccountAuthorizationEntryEntityDTO4 = new UbiAccountAuthorizationEntryEntityDTO("ubiAuthProfileId3", "email3",
                 "encodedPassword3",
                 "ubiSessionId3", "ubiSpaceId3", "ubiAuthTicket3", "ubiTwoFactorAuthTicket3", "ubiRememberDeviceTicket3", "ubiRememberMeTicket3");
-        UbiAccountStats ubiAccountStats4 = new UbiAccountStats("ubiProfileId3", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
-        UbiAccountEntry ubiAccountEntry4 = new UbiAccountEntry(ubiAccountAuthorizationEntry4, ubiAccountStats4);
-        UbiAccountEntryWithTelegram ubiAccountEntryWithTelegram4 = new UbiAccountEntryWithTelegram("chatId4", true, ubiAccountEntry4);
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO4 = new UbiAccountStatsEntityDTO("ubiProfileId3", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+        UbiAccountEntryEntityDTO ubiAccountEntryEntityDTO4 = new UbiAccountEntryEntityDTO(ubiAccountAuthorizationEntryEntityDTO4, ubiAccountStatsEntityDTO4);
+        UbiAccountEntryEntityDTOWithTelegram ubiAccountEntryEntityDTOWithTelegram4 = new UbiAccountEntryEntityDTOWithTelegram("chatId4", true, ubiAccountEntryEntityDTO4);
 
 
-        List<UbiAccountEntryWithTelegram> ubiAccountAuthorizationEntriesWithTelegram = List.of(
-                ubiAccountEntryWithTelegram1,
-                ubiAccountEntryWithTelegram2,
-                ubiAccountEntryWithTelegram3);
+        List<UbiAccountEntryEntityDTOWithTelegram> ubiAccountAuthorizationEntriesWithTelegram = List.of(
+                ubiAccountEntryEntityDTOWithTelegram1,
+                ubiAccountEntryEntityDTOWithTelegram2,
+                ubiAccountEntryEntityDTOWithTelegram3);
 
-        when(telegramUserUbiAccountEntryService.findAllForTelegram()).thenReturn(ubiAccountAuthorizationEntriesWithTelegram);
+        when(telegramUserUbiAccountEntryService.findAllFUbiAccountEntriesWithTelegram()).thenReturn(ubiAccountAuthorizationEntriesWithTelegram);
 
         UbiTrade finishedSellTradeValid = new UbiTrade();
         finishedSellTradeValid.setCategory(TradeCategory.Sell);
@@ -268,8 +268,8 @@ class ScheduledAllUbiUsersManagerTest {
         when(graphQlClientService.fetchCurrentOrdersForUser(any())).thenReturn(List.of());
 
         when(graphQlClientService.fetchLastFinishedOrdersForUser(any())).thenReturn(List.of());
-        when(graphQlClientService.fetchLastFinishedOrdersForUser(new AuthorizationDTO(ubiAccountEntryWithTelegram1))).thenReturn(List.of(finishedSellTradeValid));
-        when(graphQlClientService.fetchLastFinishedOrdersForUser(new AuthorizationDTO(ubiAccountEntryWithTelegram4))).thenReturn(List.of(finishedSellTradeInvalid));
+        when(graphQlClientService.fetchLastFinishedOrdersForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram1))).thenReturn(List.of(finishedSellTradeValid));
+        when(graphQlClientService.fetchLastFinishedOrdersForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram4))).thenReturn(List.of(finishedSellTradeInvalid));
 
         when(graphQlClientService.fetchTradesLimitationsForUser(any())).thenReturn(new UserTradesLimitations());
         when(graphQlClientService.fetchAllOwnedItemsIdsForUser(any())).thenReturn(List.of());
@@ -286,40 +286,40 @@ class ScheduledAllUbiUsersManagerTest {
 
     @Test
     public void fetchAllUbiUsersStats_should_notify_users_on_new_buysAndManageTrades() {
-        UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry1 = new UbiAccountAuthorizationEntry("ubiAuthProfileId1", "email1",
+        UbiAccountAuthorizationEntryEntityDTO ubiAccountAuthorizationEntryEntityDTO1 = new UbiAccountAuthorizationEntryEntityDTO("ubiAuthProfileId1", "email1",
                 "encodedPassword1",
                 "ubiSessionId1", "ubiSpaceId1", "ubiAuthTicket1", "ubiTwoFactorAuthTicket1", "ubiRememberDeviceTicket1", "ubiRememberMeTicket1");
-        UbiAccountStats ubiAccountStats1 = new UbiAccountStats("ubiProfileId1", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
-        UbiAccountEntry ubiAccountEntry1 = new UbiAccountEntry(ubiAccountAuthorizationEntry1, ubiAccountStats1);
-        UbiAccountEntryWithTelegram ubiAccountEntryWithTelegram1 = new UbiAccountEntryWithTelegram("chatId1", true, ubiAccountEntry1);
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO1 = new UbiAccountStatsEntityDTO("ubiProfileId1", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+        UbiAccountEntryEntityDTO ubiAccountEntryEntityDTO1 = new UbiAccountEntryEntityDTO(ubiAccountAuthorizationEntryEntityDTO1, ubiAccountStatsEntityDTO1);
+        UbiAccountEntryEntityDTOWithTelegram ubiAccountEntryEntityDTOWithTelegram1 = new UbiAccountEntryEntityDTOWithTelegram("chatId1", true, ubiAccountEntryEntityDTO1);
 
-        UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry2 = new UbiAccountAuthorizationEntry("ubiAuthProfileId2", "email2",
+        UbiAccountAuthorizationEntryEntityDTO ubiAccountAuthorizationEntryEntityDTO2 = new UbiAccountAuthorizationEntryEntityDTO("ubiAuthProfileId2", "email2",
                 "encodedPassword2",
                 "ubiSessionId2", "ubiSpaceId2", "ubiAuthTicket2", "ubiTwoFactorAuthTicket2", "ubiRememberDeviceTicket2", "ubiRememberMeTicket2");
-        UbiAccountStats ubiAccountStats2 = new UbiAccountStats("ubiProfileId2", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
-        UbiAccountEntry ubiAccountEntry2 = new UbiAccountEntry(ubiAccountAuthorizationEntry2, ubiAccountStats2);
-        UbiAccountEntryWithTelegram ubiAccountEntryWithTelegram2 = new UbiAccountEntryWithTelegram("chatId2", false, ubiAccountEntry2);
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO2 = new UbiAccountStatsEntityDTO("ubiProfileId2", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+        UbiAccountEntryEntityDTO ubiAccountEntryEntityDTO2 = new UbiAccountEntryEntityDTO(ubiAccountAuthorizationEntryEntityDTO2, ubiAccountStatsEntityDTO2);
+        UbiAccountEntryEntityDTOWithTelegram ubiAccountEntryEntityDTOWithTelegram2 = new UbiAccountEntryEntityDTOWithTelegram("chatId2", false, ubiAccountEntryEntityDTO2);
 
-        UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry3 = new UbiAccountAuthorizationEntry("ubiAuthProfileId3", "email3",
+        UbiAccountAuthorizationEntryEntityDTO ubiAccountAuthorizationEntryEntityDTO3 = new UbiAccountAuthorizationEntryEntityDTO("ubiAuthProfileId3", "email3",
                 "encodedPassword3",
                 "ubiSessionId3", "ubiSpaceId3", "ubiAuthTicket3", "ubiTwoFactorAuthTicket3", "ubiRememberDeviceTicket3", "ubiRememberMeTicket3");
-        UbiAccountStats ubiAccountStats3 = new UbiAccountStats("ubiProfileId3", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
-        UbiAccountEntry ubiAccountEntry3 = new UbiAccountEntry(ubiAccountAuthorizationEntry3, ubiAccountStats3);
-        UbiAccountEntryWithTelegram ubiAccountEntryWithTelegram3 = new UbiAccountEntryWithTelegram("chatId3", true, ubiAccountEntry3);
-        UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry4 = new UbiAccountAuthorizationEntry("ubiAuthProfileId3", "email3",
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO3 = new UbiAccountStatsEntityDTO("ubiProfileId3", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+        UbiAccountEntryEntityDTO ubiAccountEntryEntityDTO3 = new UbiAccountEntryEntityDTO(ubiAccountAuthorizationEntryEntityDTO3, ubiAccountStatsEntityDTO3);
+        UbiAccountEntryEntityDTOWithTelegram ubiAccountEntryEntityDTOWithTelegram3 = new UbiAccountEntryEntityDTOWithTelegram("chatId3", true, ubiAccountEntryEntityDTO3);
+        UbiAccountAuthorizationEntryEntityDTO ubiAccountAuthorizationEntryEntityDTO4 = new UbiAccountAuthorizationEntryEntityDTO("ubiAuthProfileId3", "email3",
                 "encodedPassword3",
                 "ubiSessionId3", "ubiSpaceId3", "ubiAuthTicket3", "ubiTwoFactorAuthTicket3", "ubiRememberDeviceTicket3", "ubiRememberMeTicket3");
-        UbiAccountStats ubiAccountStats4 = new UbiAccountStats("ubiProfileId3", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
-        UbiAccountEntry ubiAccountEntry4 = new UbiAccountEntry(ubiAccountAuthorizationEntry4, ubiAccountStats4);
-        UbiAccountEntryWithTelegram ubiAccountEntryWithTelegram4 = new UbiAccountEntryWithTelegram("chatId4", true, ubiAccountEntry4);
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO4 = new UbiAccountStatsEntityDTO("ubiProfileId3", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+        UbiAccountEntryEntityDTO ubiAccountEntryEntityDTO4 = new UbiAccountEntryEntityDTO(ubiAccountAuthorizationEntryEntityDTO4, ubiAccountStatsEntityDTO4);
+        UbiAccountEntryEntityDTOWithTelegram ubiAccountEntryEntityDTOWithTelegram4 = new UbiAccountEntryEntityDTOWithTelegram("chatId4", true, ubiAccountEntryEntityDTO4);
 
 
-        List<UbiAccountEntryWithTelegram> ubiAccountAuthorizationEntriesWithTelegram = List.of(
-                ubiAccountEntryWithTelegram1,
-                ubiAccountEntryWithTelegram2,
-                ubiAccountEntryWithTelegram3);
+        List<UbiAccountEntryEntityDTOWithTelegram> ubiAccountAuthorizationEntriesWithTelegram = List.of(
+                ubiAccountEntryEntityDTOWithTelegram1,
+                ubiAccountEntryEntityDTOWithTelegram2,
+                ubiAccountEntryEntityDTOWithTelegram3);
 
-        when(telegramUserUbiAccountEntryService.findAllForTelegram()).thenReturn(ubiAccountAuthorizationEntriesWithTelegram);
+        when(telegramUserUbiAccountEntryService.findAllFUbiAccountEntriesWithTelegram()).thenReturn(ubiAccountAuthorizationEntriesWithTelegram);
 
         UbiTrade finishedSellTradeValid = new UbiTrade();
         finishedSellTradeValid.setCategory(TradeCategory.Buy);
@@ -337,8 +337,8 @@ class ScheduledAllUbiUsersManagerTest {
         when(graphQlClientService.fetchCurrentOrdersForUser(any())).thenReturn(List.of());
 
         when(graphQlClientService.fetchLastFinishedOrdersForUser(any())).thenReturn(List.of());
-        when(graphQlClientService.fetchLastFinishedOrdersForUser(new AuthorizationDTO(ubiAccountEntryWithTelegram1))).thenReturn(List.of(finishedSellTradeValid));
-        when(graphQlClientService.fetchLastFinishedOrdersForUser(new AuthorizationDTO(ubiAccountEntryWithTelegram4))).thenReturn(List.of(finishedSellTradeInvalid));
+        when(graphQlClientService.fetchLastFinishedOrdersForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram1))).thenReturn(List.of(finishedSellTradeValid));
+        when(graphQlClientService.fetchLastFinishedOrdersForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram4))).thenReturn(List.of(finishedSellTradeInvalid));
 
         when(graphQlClientService.fetchTradesLimitationsForUser(any())).thenReturn(new UserTradesLimitations());
         when(graphQlClientService.fetchAllOwnedItemsIdsForUser(any())).thenReturn(List.of());

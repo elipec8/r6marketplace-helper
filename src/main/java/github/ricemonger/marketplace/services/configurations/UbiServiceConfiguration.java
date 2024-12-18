@@ -13,6 +13,8 @@ public class UbiServiceConfiguration {
     private String graphqlUrl;
     @Value("${ubi.urls.authorization}")
     private String authorizationUrl;
+    @Value("${ubi.urls.twoFaCodeToSMS}")
+    private String twoFaCodeToSmsUrl;
     @Value("${ubi.session.contentType}")
     private String contentType;
     @Value("${ubi.session.userAgent}")

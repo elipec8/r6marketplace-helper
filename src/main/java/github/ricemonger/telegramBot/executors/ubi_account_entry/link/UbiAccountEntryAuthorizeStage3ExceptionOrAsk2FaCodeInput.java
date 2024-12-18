@@ -5,7 +5,7 @@ import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistExceptio
 import github.ricemonger.utils.exceptions.client.UbiUserAuthorizationClientErrorException;
 import github.ricemonger.utils.exceptions.server.UbiUserAuthorizationServerErrorException;
 
-public class UbiAccountEntryLinkStage2AskPasswordInput extends AbstractBotCommandExecutor {
+public class UbiAccountEntryAuthorizeStage3ExceptionOrAsk2FaCodeInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand()
             throws TelegramUserDoesntExistException,

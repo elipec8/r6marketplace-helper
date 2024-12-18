@@ -11,13 +11,13 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-class UbiAccountEntryAlreadyExistExceptionExecutorTest {
+class UbiAccountEntryEntityDTODoesntExistExceptionExecutorTest {
     @MockBean
     private BotInnerService botInnerService;
 
     @Test
     public void initAndExecute_should_notify_user() {
-        UbiAccountEntryAlreadyExistExceptionExecutor commandExecutor = new UbiAccountEntryAlreadyExistExceptionExecutor();
+        UbiAccountEntryDoesntExistExceptionExecutor commandExecutor = new UbiAccountEntryDoesntExistExceptionExecutor();
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
         verify(botInnerService).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());

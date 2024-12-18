@@ -6,8 +6,8 @@ import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUse
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountAuthorizationEntryPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountStatsEntityPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
-import github.ricemonger.utils.DTOs.UbiAccountStats;
+import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryEntityDTO;
+import github.ricemonger.utils.DTOs.UbiAccountStatsEntityDTO;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
@@ -51,7 +51,7 @@ class TelegramUserUbiAccountPostgresServiceTest {
 
     @Test
     public void save_should_create_new_ubi_account_entry_if_doesnt_exist() {
-        UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
+        UbiAccountAuthorizationEntryEntityDTO account = new UbiAccountAuthorizationEntryEntityDTO();
         account.setUbiProfileId("1");
         account.setEmail("email");
 
@@ -69,7 +69,7 @@ class TelegramUserUbiAccountPostgresServiceTest {
 
     @Test
     public void save_should_update_ubi_account_entry_if_already_exists() {
-        UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
+        UbiAccountAuthorizationEntryEntityDTO account = new UbiAccountAuthorizationEntryEntityDTO();
         account.setUbiProfileId("1");
         account.setEmail("email");
 
@@ -87,7 +87,7 @@ class TelegramUserUbiAccountPostgresServiceTest {
 
     @Test
     public void save_should_throw_exception_if_user_already_has_another_ubi_account() {
-        UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
+        UbiAccountAuthorizationEntryEntityDTO account = new UbiAccountAuthorizationEntryEntityDTO();
         account.setUbiProfileId("1");
         account.setEmail("email");
 
@@ -103,7 +103,7 @@ class TelegramUserUbiAccountPostgresServiceTest {
 
     @Test
     public void save_should_throw_exception_if_telegram_user_doesnt_exist() {
-        UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
+        UbiAccountAuthorizationEntryEntityDTO account = new UbiAccountAuthorizationEntryEntityDTO();
         account.setUbiProfileId("1");
         account.setEmail("email");
 
@@ -112,11 +112,11 @@ class TelegramUserUbiAccountPostgresServiceTest {
 
     @Test
     public void saveAll_should_handle_to_repository() {
-        UbiAccountStats ubiAccountStats1 = new UbiAccountStats("1", 2, 3, 4, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO1 = new UbiAccountStatsEntityDTO("1", 2, 3, 4, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
-        UbiAccountStats ubiAccountStats2 = new UbiAccountStats("2", 3, 4, 5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO2 = new UbiAccountStatsEntityDTO("2", 3, 4, 5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
-        telegramUserUbiAccountEntryService.saveAllUbiAccountStats(List.of(ubiAccountStats1, ubiAccountStats2));
+        telegramUserUbiAccountEntryService.saveAllUbiAccountStats(List.of(ubiAccountStatsEntityDTO1, ubiAccountStatsEntityDTO2));
 
         assertEquals(2, ubiAccountStatsRepository.findAll().size());
 
@@ -125,7 +125,7 @@ class TelegramUserUbiAccountPostgresServiceTest {
 
     @Test
     public void deleteByChatId_should_delete_proper_ubi_account_entry_and_cascade() {
-        UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
+        UbiAccountAuthorizationEntryEntityDTO account = new UbiAccountAuthorizationEntryEntityDTO();
         account.setEmail("email");
         account.setUbiProfileId("1");
 
@@ -152,7 +152,7 @@ class TelegramUserUbiAccountPostgresServiceTest {
 
     @Test
     public void findByChatId_should_return_ubi_account() {
-        UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
+        UbiAccountAuthorizationEntryEntityDTO account = new UbiAccountAuthorizationEntryEntityDTO();
         account.setUbiProfileId("1");
         account.setEmail("email");
         account.setUbiSpaceId("spaceID");
@@ -178,7 +178,7 @@ class TelegramUserUbiAccountPostgresServiceTest {
 
     @Test
     public void findAllAuthorizationInfoForTelegram_should_return_all_ubi_accounts() {
-        UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
+        UbiAccountAuthorizationEntryEntityDTO account = new UbiAccountAuthorizationEntryEntityDTO();
         account.setUbiProfileId("1");
         account.setEmail("email");
         account.setUbiSpaceId("spaceID");
@@ -200,7 +200,7 @@ class TelegramUserUbiAccountPostgresServiceTest {
 
     @Test
     public void findAllForTelegram_should_return_all_ubi_accounts() {
-        UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
+        UbiAccountAuthorizationEntryEntityDTO account = new UbiAccountAuthorizationEntryEntityDTO();
         account.setUbiProfileId("1");
         account.setEmail("email");
         account.setUbiSpaceId("spaceID");

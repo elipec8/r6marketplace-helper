@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
-import github.ricemonger.utils.DTOs.UbiAccountStats;
+import github.ricemonger.utils.DTOs.UbiAccountStatsEntityDTO;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -50,7 +50,7 @@ class UbiAccountEntityTest {
         finishedTrade3.setTradeId("trade3f");
         finishedTrade3.setItem(item1);
 
-        UbiAccountStats stats = entity.toUbiAccountStats();
+        UbiAccountStatsEntityDTO stats = entity.toUbiAccountStatsEntityDTO();
 
         assertEquals("profile1", stats.getUbiProfileId());
         assertEquals(Arrays.asList("item1", "item2"), stats.getOwnedItemsIds());

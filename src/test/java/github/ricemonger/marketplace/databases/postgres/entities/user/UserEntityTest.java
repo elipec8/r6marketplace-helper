@@ -77,7 +77,7 @@ class UserEntityTest {
         assertEquals(userEntity.getId(), userForCentralTradeManager.getId());
         assertEquals(userEntity.getPrivateNotificationsEnabledFlag(), userForCentralTradeManager.getPrivateNotificationsEnabledFlag());
         assertEquals(userEntity.getTelegramUser().getChatId(), userForCentralTradeManager.getChatId());
-        assertEquals(userEntity.getUbiAccountAuthorizationEntry().getUbiAccountStats().toUbiAccountStats(), userForCentralTradeManager.getUbiAccountStats());
+        assertEquals(userEntity.getUbiAccountAuthorizationEntry().getUbiAccountStats().toUbiAccountStatsEntityDTO(), userForCentralTradeManager.getUbiAccountStats());
         assertEquals(userEntity.getUbiAccountAuthorizationEntry().getUbiSessionId(), userForCentralTradeManager.getUbiSessionId());
         assertEquals(userEntity.getUbiAccountAuthorizationEntry().getUbiSpaceId(), userForCentralTradeManager.getUbiSpaceId());
         assertEquals(userEntity.getUbiAccountAuthorizationEntry().getUbiAuthTicket(), userForCentralTradeManager.getUbiAuthTicket());

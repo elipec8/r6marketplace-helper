@@ -44,7 +44,7 @@ import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEna
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemId.TradeByItemIdManagerChangeEnabledStage3ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveOrChangeEnabledStage1AskItemIdCallback;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveStage3ConfirmedFinishCallback;
-import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkCallback;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryAuthorizeStage1AskEmailCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.show.UbiAccountEntryShowCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.unlink.UbiAccountEntryUnlinkConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.unlink.UbiAccountEntryUnlinkRequestCallback;
@@ -195,7 +195,7 @@ public class CallbackCommandListener {
 
 //--------------------------------------------------------------------------------------------------
 
-            case Callbacks.UBI_ACCOUNT_ENTRY_LINK -> executorsService.execute(UbiAccountEntryLinkCallback.class, updateInfo);
+            case Callbacks.UBI_ACCOUNT_ENTRY_LINK -> executorsService.execute(UbiAccountEntryAuthorizeStage1AskEmailCallback.class, updateInfo);
 
             case Callbacks.UBI_ACCOUNT_ENTRY_SHOW -> executorsService.execute(UbiAccountEntryShowCallback.class, updateInfo);
 

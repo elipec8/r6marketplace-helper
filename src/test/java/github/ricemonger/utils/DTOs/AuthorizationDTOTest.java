@@ -11,9 +11,9 @@ class AuthorizationDTOTest {
     public void userForCentralTradeManager_constructor_sets_fields_correctly() {
         UserForCentralTradeManager userForCentralTradeManager = new UserForCentralTradeManager();
 
-        UbiAccountStats ubiAccountStats = new UbiAccountStats();
-        ubiAccountStats.setUbiProfileId("ubiProfileId");
-        userForCentralTradeManager.setUbiAccountStats(ubiAccountStats);
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO = new UbiAccountStatsEntityDTO();
+        ubiAccountStatsEntityDTO.setUbiProfileId("ubiProfileId");
+        userForCentralTradeManager.setUbiAccountStats(ubiAccountStatsEntityDTO);
 
         userForCentralTradeManager.setUbiSessionId("ubiSessionId");
         userForCentralTradeManager.setUbiSpaceId("ubiSpaceId");
@@ -35,21 +35,21 @@ class AuthorizationDTOTest {
 
     @Test
     public void ubiAccountEntryWithTelegram_constructor_sets_fields_correctly() {
-        UbiAccountStats ubiAccountStats = new UbiAccountStats();
-        ubiAccountStats.setUbiProfileId("ubiProfileIdAccountStats");
-        UbiAccountEntryWithTelegram ubiAccountWithTelegram = new UbiAccountEntryWithTelegram();
-        UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry = new UbiAccountAuthorizationEntry();
-        ubiAccountAuthorizationEntry.setUbiProfileId("ubiProfileId");
-        ubiAccountAuthorizationEntry.setUbiSessionId("ubiSessionId");
-        ubiAccountAuthorizationEntry.setUbiSpaceId("ubiSpaceId");
-        ubiAccountAuthorizationEntry.setUbiAuthTicket("ubiAuthTicket");
-        ubiAccountAuthorizationEntry.setUbiTwoFactorAuthTicket("ubiTwoFactorAuthTicket");
-        ubiAccountAuthorizationEntry.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
-        ubiAccountAuthorizationEntry.setUbiRememberMeTicket("ubiRememberMeTicket");
-        UbiAccountEntry ubiAccountEntry = new UbiAccountEntry();
-        ubiAccountEntry.setUbiAccountAuthorizationEntry(ubiAccountAuthorizationEntry);
-        ubiAccountEntry.setUbiAccountStats(ubiAccountStats);
-        ubiAccountWithTelegram.setUbiAccountEntry(ubiAccountEntry);
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO = new UbiAccountStatsEntityDTO();
+        ubiAccountStatsEntityDTO.setUbiProfileId("ubiProfileIdAccountStats");
+        UbiAccountEntryEntityDTOWithTelegram ubiAccountWithTelegram = new UbiAccountEntryEntityDTOWithTelegram();
+        UbiAccountAuthorizationEntryEntityDTO ubiAccountAuthorizationEntryEntityDTO = new UbiAccountAuthorizationEntryEntityDTO();
+        ubiAccountAuthorizationEntryEntityDTO.setUbiProfileId("ubiProfileId");
+        ubiAccountAuthorizationEntryEntityDTO.setUbiSessionId("ubiSessionId");
+        ubiAccountAuthorizationEntryEntityDTO.setUbiSpaceId("ubiSpaceId");
+        ubiAccountAuthorizationEntryEntityDTO.setUbiAuthTicket("ubiAuthTicket");
+        ubiAccountAuthorizationEntryEntityDTO.setUbiTwoFactorAuthTicket("ubiTwoFactorAuthTicket");
+        ubiAccountAuthorizationEntryEntityDTO.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
+        ubiAccountAuthorizationEntryEntityDTO.setUbiRememberMeTicket("ubiRememberMeTicket");
+        UbiAccountEntryEntityDTO ubiAccountEntryEntityDTO = new UbiAccountEntryEntityDTO();
+        ubiAccountEntryEntityDTO.setUbiAccountAuthorizationEntryEntityDTO(ubiAccountAuthorizationEntryEntityDTO);
+        ubiAccountEntryEntityDTO.setUbiAccountStatsEntityDTO(ubiAccountStatsEntityDTO);
+        ubiAccountWithTelegram.setUbiAccountEntryEntityDTO(ubiAccountEntryEntityDTO);
 
         AuthorizationDTO authorizationDTO = new AuthorizationDTO(ubiAccountWithTelegram);
 

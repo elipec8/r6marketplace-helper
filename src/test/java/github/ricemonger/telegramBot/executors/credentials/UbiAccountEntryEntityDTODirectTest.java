@@ -11,7 +11,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class UbiAccountEntryDirectTest {
+class UbiAccountEntryEntityDTODirectTest {
     @MockBean
     private BotInnerService botInnerService;
 

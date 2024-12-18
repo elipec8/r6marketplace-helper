@@ -3,10 +3,10 @@ package github.ricemonger.marketplace.services;
 import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
 import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
+import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryEntityDTO;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
-import github.ricemonger.utils.DTOs.UbiAccountStats;
-import github.ricemonger.utils.DTOs.UbiAccountEntryWithTelegram;
+import github.ricemonger.utils.DTOs.UbiAccountStatsEntityDTO;
+import github.ricemonger.utils.DTOs.UbiAccountEntryEntityDTOWithTelegram;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
@@ -25,7 +25,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class TelegramUserUbiAccountEntryServiceTest {
+class TelegramUserUbiAccountEntryEntityDTOServiceTest {
     @Autowired
     private TelegramUserUbiAccountEntryService telegramUserUbiAccountEntryService;
     @MockBean
@@ -82,7 +82,7 @@ class TelegramUserUbiAccountEntryServiceTest {
 
     @Test
     public void saveAll_UbiAccountStats_should_handle_to_service() {
-        List<UbiAccountStats> updatedUbiAccounts = new ArrayList<>();
+        List<UbiAccountStatsEntityDTO> updatedUbiAccounts = new ArrayList<>();
         telegramUserUbiAccountEntryService.saveAllUbiAccountStats(updatedUbiAccounts);
 
         verify(telegramUserUbiAccountEntryDatabaseService).saveAllUbiAccountStats(same(updatedUbiAccounts));
@@ -104,15 +104,15 @@ class TelegramUserUbiAccountEntryServiceTest {
 
     @Test
     public void reauthorizeAllUbiUsersAndGetUnauthorizedList_should_reauthorize_all_users_and_return_unauthorized() {
-        UbiAccountAuthorizationEntry authorizedEntry = new UbiAccountAuthorizationEntry();
+        UbiAccountAuthorizationEntryEntityDTO authorizedEntry = new UbiAccountAuthorizationEntryEntityDTO();
         authorizedEntry.setEmail("email");
         authorizedEntry.setEncodedPassword("encodedPassword");
 
-        UbiAccountAuthorizationEntry clientErrorEntry = new UbiAccountAuthorizationEntry();
+        UbiAccountAuthorizationEntryEntityDTO clientErrorEntry = new UbiAccountAuthorizationEntryEntityDTO();
         authorizedEntry.setEmail("email1");
         authorizedEntry.setEncodedPassword("encodedPassword1");
 
-        UbiAccountAuthorizationEntry serverErrorEntry = new UbiAccountAuthorizationEntry();
+        UbiAccountAuthorizationEntryEntityDTO serverErrorEntry = new UbiAccountAuthorizationEntryEntityDTO();
         authorizedEntry.setEmail("email2");
         authorizedEntry.setEncodedPassword("encodedPassword2");
 
@@ -161,7 +161,7 @@ class TelegramUserUbiAccountEntryServiceTest {
     @Test
     public void findByChatId_should_return_ubi_account_entry() {
         String chatId = "chatId";
-        UbiAccountAuthorizationEntry entry = new UbiAccountAuthorizationEntry();
+        UbiAccountAuthorizationEntryEntityDTO entry = new UbiAccountAuthorizationEntryEntityDTO();
         entry.setEmail("email");
         when(telegramUserUbiAccountEntryDatabaseService.findAuthorizationInfoByChatId(chatId)).thenReturn(entry);
 
@@ -186,14 +186,14 @@ class TelegramUserUbiAccountEntryServiceTest {
 
     @Test
     public void findAll_WithTelegram_should_return_service_result() {
-        List<UbiAccountEntryWithTelegram> mockList = new ArrayList<>();
+        List<UbiAccountEntryEntityDTOWithTelegram> mockList = new ArrayList<>();
         when(telegramUserUbiAccountEntryDatabaseService.findAllForTelegram()).thenReturn(mockList);
 
-        assertSame(mockList, telegramUserUbiAccountEntryService.findAllForTelegram());
+        assertSame(mockList, telegramUserUbiAccountEntryService.findAllFUbiAccountEntriesWithTelegram());
     }
 
-    private UbiAccountAuthorizationEntry buildUbiAccount(String email, String password, AuthorizationDTO authorizationDTO) {
-        UbiAccountAuthorizationEntry user = new UbiAccountAuthorizationEntry();
+    private UbiAccountAuthorizationEntryEntityDTO buildUbiAccount(String email, String password, AuthorizationDTO authorizationDTO) {
+        UbiAccountAuthorizationEntryEntityDTO user = new UbiAccountAuthorizationEntryEntityDTO();
         user.setEmail(email);
         user.setEncodedPassword(password);
 

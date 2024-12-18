@@ -22,6 +22,7 @@ ubi:
   urls:
     graphql: https://public-ubiservices.ubi.com/v1/profiles/me/uplay/graphql
     authorization: https://public-ubiservices.ubi.com/v3/profiles/sessions
+    twoFaCodeToSMS: https://public-ubiservices.ubi.com/v3/profiles/me/2facode
   session:
     contentType: application/json
     userAgent: UbiServices_SDK_2020.Release.58_PC64_ansi_static

@@ -4,7 +4,7 @@ import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
-import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkCallback;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryAuthorizeStage1AskEmailCallback;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -14,16 +14,16 @@ import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-class UbiAccountEntryLinkCallbackTest {
+class UbiAccountEntryEntityDTOAuthorizeStage1AskEmailCallbackTest {
 
     @MockBean
     private BotInnerService botInnerService;
 
     @Test
     public void initAndExecute_should_process_first_input() {
-        UbiAccountEntryLinkCallback ubiAccountEntryLinkCallback = new UbiAccountEntryLinkCallback();
+        UbiAccountEntryAuthorizeStage1AskEmailCallback ubiAccountEntryAuthorizeStage1AskEmailCallback = new UbiAccountEntryAuthorizeStage1AskEmailCallback();
 
-        ubiAccountEntryLinkCallback.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
+        ubiAccountEntryAuthorizeStage1AskEmailCallback.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
         verify(botInnerService).clearUserInputs(MockUpdateInfos.UPDATE_INFO.getChatId());
         verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);

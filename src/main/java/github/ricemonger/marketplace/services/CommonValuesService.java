@@ -106,6 +106,10 @@ public class CommonValuesService {
         return ubiServiceConfiguration.getAuthorizationUrl();
     }
 
+    public String getTwoFaCodeToSmsUrl() {
+        return ubiServiceConfiguration.getTwoFaCodeToSmsUrl();
+    }
+
     public String getContentType() {
         return ubiServiceConfiguration.getContentType();
     }

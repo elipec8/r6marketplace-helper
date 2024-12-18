@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UbiAccountAuthorizationEntry {
+public class UbiAccountAuthorizationEntryEntityDTO {
     private String ubiProfileId;
 
     private String email;

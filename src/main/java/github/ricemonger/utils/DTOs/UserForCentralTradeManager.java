@@ -30,9 +30,19 @@ public class UserForCentralTradeManager {
 
     private List<TradeByItemIdManager> tradeByItemIdManagers = new ArrayList<>();
 
-    private List<UbiTrade> currentBuyTrades = new ArrayList<>();
-
-    private List<UbiTrade> currentSellTrades = new ArrayList<>();
+    public UserForCentralTradeManager(UserEntityDTO manageableUser, UbiAccountStats linkedUbiAccount) {
+        this.id = manageableUser.getId();
+        this.ubiAccountStats = linkedUbiAccount;
+        this.ubiSessionId = manageableUser.getUbiSessionId();
+        this.ubiSpaceId = manageableUser.getUbiSpaceId();
+        this.ubiAuthTicket = manageableUser.getUbiAuthTicket();
+        this.ubiRememberDeviceTicket = manageableUser.getUbiRememberDeviceTicket();
+        this.ubiRememberMeTicket = manageableUser.getUbiRememberMeTicket();
+        this.chatId = manageableUser.getChatId();
+        this.privateNotificationsEnabledFlag = manageableUser.getPrivateNotificationsEnabledFlag();
+        this.tradeByFiltersManagers = manageableUser.getTradeByFiltersManagers();
+        this.tradeByItemIdManagers = manageableUser.getTradeByItemIdManagers();
+    }
 
     public String getUbiProfileId() {
         return ubiAccountStats.getUbiProfileId();
@@ -56,5 +66,13 @@ public class UserForCentralTradeManager {
 
     public List<ItemResaleLockWithUbiAccount> getResaleLocks() {
         return ubiAccountStats.getResaleLocks();
+    }
+
+    public List<UbiTrade> getCurrentSellTrades() {
+        return ubiAccountStats.getCurrentSellTrades();
+    }
+
+    public List<UbiTrade> getCurrentBuyTrades() {
+        return ubiAccountStats.getCurrentBuyTrades();
     }
 }

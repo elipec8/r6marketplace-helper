@@ -1,9 +1,9 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
+import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryEntityDTO;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
-import github.ricemonger.utils.DTOs.UbiAccountEntry;
-import github.ricemonger.utils.DTOs.UbiAccountEntryWithTelegram;
+import github.ricemonger.utils.DTOs.UbiAccountEntryEntityDTO;
+import github.ricemonger.utils.DTOs.UbiAccountEntryEntityDTOWithTelegram;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -44,7 +44,7 @@ public class UbiAccountEntryEntity {
     @JoinColumn(name = "ubiProfileId", referencedColumnName = "ubiProfileId")
     private UbiAccountStatsEntity ubiAccountStats;
 
-    public UbiAccountEntryEntity(UserEntity user, UbiAccountStatsEntity ubiAccountStats, UbiAccountAuthorizationEntry account) {
+    public UbiAccountEntryEntity(UserEntity user, UbiAccountStatsEntity ubiAccountStats, UbiAccountAuthorizationEntryEntityDTO account) {
         this.user = user;
         this.email = account.getEmail();
         this.encodedPassword = account.getEncodedPassword();
@@ -58,7 +58,7 @@ public class UbiAccountEntryEntity {
 
     public UbiAccountAuthorizationEntryWithTelegram toUbiAccountAuthorizationEntryWithTelegram() {
         UbiAccountAuthorizationEntryWithTelegram ubiAccountWithTelegram = new UbiAccountAuthorizationEntryWithTelegram();
-        ubiAccountWithTelegram.setUbiAccountAuthorizationEntry(this.toUbiAccountAuthorizationEntry());
+        ubiAccountWithTelegram.setUbiAccountAuthorizationEntryEntityDTO(this.toUbiAccountAuthorizationEntry());
         try {
             ubiAccountWithTelegram.setChatId(this.user.getTelegramUser().getChatId());
             ubiAccountWithTelegram.setPrivateNotificationsEnabledFlag(this.user.getPrivateNotificationsEnabledFlag());
@@ -69,8 +69,8 @@ public class UbiAccountEntryEntity {
         return ubiAccountWithTelegram;
     }
 
-    public UbiAccountAuthorizationEntry toUbiAccountAuthorizationEntry() {
-        UbiAccountAuthorizationEntry ubiAccountEntry = new UbiAccountAuthorizationEntry();
+    public UbiAccountAuthorizationEntryEntityDTO toUbiAccountAuthorizationEntry() {
+        UbiAccountAuthorizationEntryEntityDTO ubiAccountEntry = new UbiAccountAuthorizationEntryEntityDTO();
         ubiAccountEntry.setUbiProfileId(this.ubiAccountStats.getUbiProfileId());
         ubiAccountEntry.setEmail(this.email);
         ubiAccountEntry.setEncodedPassword(this.encodedPassword);
@@ -82,19 +82,19 @@ public class UbiAccountEntryEntity {
         return ubiAccountEntry;
     }
 
-    public UbiAccountEntryWithTelegram toUbiAccountEntryWithTelegram() {
-        UbiAccountEntry ubiAccountEntry = new UbiAccountEntry();
-        ubiAccountEntry.setUbiAccountAuthorizationEntry(this.toUbiAccountAuthorizationEntry());
-        ubiAccountEntry.setUbiAccountStats(this.ubiAccountStats.toUbiAccountStats());
-        UbiAccountEntryWithTelegram ubiAccountEntryWithTelegram = new UbiAccountEntryWithTelegram();
-        ubiAccountEntryWithTelegram.setUbiAccountEntry(ubiAccountEntry);
+    public UbiAccountEntryEntityDTOWithTelegram toUbiAccountEntryWithTelegram() {
+        UbiAccountEntryEntityDTO ubiAccountEntryEntityDTO = new UbiAccountEntryEntityDTO();
+        ubiAccountEntryEntityDTO.setUbiAccountAuthorizationEntryEntityDTO(this.toUbiAccountAuthorizationEntry());
+        ubiAccountEntryEntityDTO.setUbiAccountStatsEntityDTO(this.ubiAccountStats.toUbiAccountStatsEntityDTO());
+        UbiAccountEntryEntityDTOWithTelegram ubiAccountEntryEntityDTOWithTelegram = new UbiAccountEntryEntityDTOWithTelegram();
+        ubiAccountEntryEntityDTOWithTelegram.setUbiAccountEntryEntityDTO(ubiAccountEntryEntityDTO);
         try {
-            ubiAccountEntryWithTelegram.setChatId(this.user.getTelegramUser().getChatId());
-            ubiAccountEntryWithTelegram.setPrivateNotificationsEnabledFlag(this.user.getPrivateNotificationsEnabledFlag());
+            ubiAccountEntryEntityDTOWithTelegram.setChatId(this.user.getTelegramUser().getChatId());
+            ubiAccountEntryEntityDTOWithTelegram.setPrivateNotificationsEnabledFlag(this.user.getPrivateNotificationsEnabledFlag());
         } catch (NullPointerException e) {
             log.error("Telegram user not found for user with id: " + this.user.getId());
             throw new TelegramUserDoesntExistException("Telegram user not found for user with id: " + this.user.getId());
         }
-        return ubiAccountEntryWithTelegram;
+        return ubiAccountEntryEntityDTOWithTelegram;
     }
 }

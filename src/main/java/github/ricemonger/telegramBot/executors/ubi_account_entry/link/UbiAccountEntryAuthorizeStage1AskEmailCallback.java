@@ -4,7 +4,7 @@ import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
 
-public class UbiAccountEntryLinkCallback extends AbstractBotCommandExecutor {
+public class UbiAccountEntryAuthorizeStage1AskEmailCallback extends AbstractBotCommandExecutor {
 
     @Override
     protected void executeCommand() {

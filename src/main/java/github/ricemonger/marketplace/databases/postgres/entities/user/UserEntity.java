@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 
-import github.ricemonger.utils.DTOs.UserForCentralTradeManager;
+import github.ricemonger.utils.DTOs.UserEntityDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -57,25 +57,25 @@ public class UserEntity {
     private Boolean newManagersAreActiveFlag = true;
     private Boolean managingEnabledFlag = true;
 
-    public UserForCentralTradeManager toUserForCentralTradeManager() {
-        UserForCentralTradeManager userForCentralTradeManager = new UserForCentralTradeManager();
+    public UserEntityDTO toUserEntityDTO() {
+        UserEntityDTO userEntityDTO = new UserEntityDTO();
 
-        userForCentralTradeManager.setId(id);
+        userEntityDTO.setId(id);
 
-        userForCentralTradeManager.setUbiAccountStats(ubiAccountAuthorizationEntry.getUbiAccountStats().toUbiAccountStats());
+        userEntityDTO.setUbiAccountStatsEntityDTO(ubiAccountAuthorizationEntry.getUbiAccountStats().toUbiAccountStatsEntityDTO());
 
-        userForCentralTradeManager.setUbiSessionId(ubiAccountAuthorizationEntry.getUbiSessionId());
-        userForCentralTradeManager.setUbiSpaceId(ubiAccountAuthorizationEntry.getUbiSpaceId());
-        userForCentralTradeManager.setUbiAuthTicket(ubiAccountAuthorizationEntry.getUbiAuthTicket());
-        userForCentralTradeManager.setUbiRememberDeviceTicket(ubiAccountAuthorizationEntry.getUbiRememberDeviceTicket());
-        userForCentralTradeManager.setUbiRememberMeTicket(ubiAccountAuthorizationEntry.getUbiRememberMeTicket());
+        userEntityDTO.setUbiSessionId(ubiAccountAuthorizationEntry.getUbiSessionId());
+        userEntityDTO.setUbiSpaceId(ubiAccountAuthorizationEntry.getUbiSpaceId());
+        userEntityDTO.setUbiAuthTicket(ubiAccountAuthorizationEntry.getUbiAuthTicket());
+        userEntityDTO.setUbiRememberDeviceTicket(ubiAccountAuthorizationEntry.getUbiRememberDeviceTicket());
+        userEntityDTO.setUbiRememberMeTicket(ubiAccountAuthorizationEntry.getUbiRememberMeTicket());
 
-        userForCentralTradeManager.setChatId(telegramUser.getChatId());
-        userForCentralTradeManager.setPrivateNotificationsEnabledFlag(privateNotificationsEnabledFlag);
+        userEntityDTO.setChatId(telegramUser.getChatId());
+        userEntityDTO.setPrivateNotificationsEnabledFlag(privateNotificationsEnabledFlag);
 
-        userForCentralTradeManager.setTradeByFiltersManagers(tradeByFiltersManagers.stream().map(TradeByFiltersManagerEntity::toTradeByFiltersManager).toList());
-        userForCentralTradeManager.setTradeByItemIdManagers(tradeByItemIdManagers.stream().map(TradeByItemIdManagerEntity::toTradeByItemIdManager).toList());
+        userEntityDTO.setTradeByFiltersManagers(tradeByFiltersManagers.stream().map(TradeByFiltersManagerEntity::toTradeByFiltersManager).toList());
+        userEntityDTO.setTradeByItemIdManagers(tradeByItemIdManagers.stream().map(TradeByItemIdManagerEntity::toTradeByItemIdManager).toList());
 
-        return userForCentralTradeManager;
+        return userEntityDTO;
     }
 }

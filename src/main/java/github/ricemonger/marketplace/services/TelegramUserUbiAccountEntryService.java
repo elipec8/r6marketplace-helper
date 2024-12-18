@@ -3,10 +3,10 @@ package github.ricemonger.marketplace.services;
 import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
 import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
+import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryEntityDTO;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
-import github.ricemonger.utils.DTOs.UbiAccountStats;
-import github.ricemonger.utils.DTOs.UbiAccountEntryWithTelegram;
+import github.ricemonger.utils.DTOs.UbiAccountStatsEntityDTO;
+import github.ricemonger.utils.DTOs.UbiAccountEntryEntityDTOWithTelegram;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
@@ -38,7 +38,7 @@ public class TelegramUserUbiAccountEntryService {
         telegramUserUbiAccountEntryDatabaseService.saveAuthorizationInfo(chatId, buildUbiAccount(email, authorizationService.getEncodedPassword(password), userAuthorizationDTO));
     }
 
-    public void saveAllUbiAccountStats(List<UbiAccountStats> ubiAccounts) {
+    public void saveAllUbiAccountStats(List<UbiAccountStatsEntityDTO> ubiAccounts) {
         telegramUserUbiAccountEntryDatabaseService.saveAllUbiAccountStats(ubiAccounts);
     }
 
@@ -62,11 +62,11 @@ public class TelegramUserUbiAccountEntryService {
         return unauthorizedUsers;
     }
 
-    public UbiAccountAuthorizationEntry findByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
+    public UbiAccountAuthorizationEntryEntityDTO findByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
         return telegramUserUbiAccountEntryDatabaseService.findAuthorizationInfoByChatId(chatId);
     }
 
-    public List<UbiAccountEntryWithTelegram> findAllForTelegram() {
+    public List<UbiAccountEntryEntityDTOWithTelegram> findAllFUbiAccountEntriesWithTelegram() {
         return telegramUserUbiAccountEntryDatabaseService.findAllForTelegram();
     }
 
@@ -82,8 +82,8 @@ public class TelegramUserUbiAccountEntryService {
         }
     }
 
-    private UbiAccountAuthorizationEntry buildUbiAccount(String email, String encodedPassword, AuthorizationDTO authorizationDTO) {
-        UbiAccountAuthorizationEntry user = new UbiAccountAuthorizationEntry();
+    private UbiAccountAuthorizationEntryEntityDTO buildUbiAccount(String email, String encodedPassword, AuthorizationDTO authorizationDTO) {
+        UbiAccountAuthorizationEntryEntityDTO user = new UbiAccountAuthorizationEntryEntityDTO();
         user.setEmail(email);
         user.setEncodedPassword(encodedPassword);
 

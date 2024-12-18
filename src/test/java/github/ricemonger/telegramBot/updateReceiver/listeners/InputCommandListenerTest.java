@@ -27,8 +27,8 @@ import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.T
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage4AskConfirmationFinishInput;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemFilters.TradeByFiltersManagerRemoveStage2AskConfirmationFinishInput;
 import github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput;
-import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkStage1AskFullOrEmailInput;
-import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryLinkStage2AskPasswordInput;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryAuthorizeStage2AskPasswordInput;
+import github.ricemonger.telegramBot.executors.ubi_account_entry.link.UbiAccountEntryAuthorizeStage3ExceptionOrAsk2FaCodeInput;
 import github.ricemonger.utils.exceptions.server.UnexpectedUserInputStateAndGroupConjunctionException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -558,7 +558,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(UbiAccountEntryLinkStage1AskFullOrEmailInput.class, updateInfo);
+        verify(executorsService).execute(UbiAccountEntryAuthorizeStage2AskPasswordInput.class, updateInfo);
     }
 
     @Test
@@ -566,7 +566,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.UBI_ACCOUNT_ENTRY_LINK, InputState.UBI_ACCOUNT_ENTRY_PASSWORD);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(UbiAccountEntryLinkStage2AskPasswordInput.class, updateInfo);
+        verify(executorsService).execute(UbiAccountEntryAuthorizeStage3ExceptionOrAsk2FaCodeInput.class, updateInfo);
     }
 
     @Test

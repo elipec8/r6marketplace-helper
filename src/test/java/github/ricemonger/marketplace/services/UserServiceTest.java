@@ -22,21 +22,21 @@ class UserServiceTest {
     private UserDatabaseService userDatabaseService;
 
     @Test
-    public void getAllUserForCentralTradeManager_should_return_service_result() {
+    public void getAllManageableUsers_should_return_service_result() {
         List<Item> existingItems = List.of(new Item());
 
         List expected = List.of(new UserForCentralTradeManager());
-        when(userDatabaseService.getAllUsersForCentralTradeManager(existingItems)).thenReturn(expected);
+        when(userDatabaseService.getAllManageableUsers(existingItems)).thenReturn(expected);
 
-        assertSame(expected, userService.getAllUserForCentralTradeManager(existingItems));
+        assertSame(expected, userService.getAllManageableUsers(existingItems));
     }
 
     @Test
-    public void getAllUserForCentralTradeManager_should_throw_if_service_throws() {
+    public void getAllManageableUsers_should_throw_if_service_throws() {
         List<Item> existingItems = List.of(new Item());
 
-        when(userDatabaseService.getAllUsersForCentralTradeManager(existingItems)).thenThrow(new RuntimeException());
+        when(userDatabaseService.getAllManageableUsers(existingItems)).thenThrow(new RuntimeException());
 
-        assertThrows(RuntimeException.class, () -> userService.getAllUserForCentralTradeManager(existingItems));
+        assertThrows(RuntimeException.class, () -> userService.getAllManageableUsers(existingItems));
     }
 }

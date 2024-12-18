@@ -4,9 +4,6 @@ import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.services.factories.CommandForCentralTradeManagerFactory;
 import github.ricemonger.marketplace.services.factories.PersonalItemFactory;
 import github.ricemonger.marketplace.services.factories.PotentialTradeFactory;
-import github.ricemonger.utils.DTOs.PersonalItem;
-import github.ricemonger.utils.DTOs.PotentialPersonalBuyTrade;
-import github.ricemonger.utils.DTOs.PotentialPersonalSellTrade;
 import github.ricemonger.telegramBot.TelegramBotService;
 import github.ricemonger.utils.DTOs.*;
 import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
@@ -15,10 +12,7 @@ import github.ricemonger.utils.DTOs.items.UbiTrade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -32,14 +26,24 @@ public class CentralTradeManager {
     private final PotentialTradeFactory potentialTradeFactory;
     private final CommandForCentralTradeManagerFactory commandForCentralTradeManagerFactory;
 
-    public void manageAllUsersTrades() {
+    public void manageAllUsersTrades(Collection<UbiAccountStats> updatedUbiAccountStats) {
         ConfigTrades configTrades = commonValuesService.getConfigTrades();
 
         List<Item> items = itemService.getAllItems();
 
-        List<UserForCentralTradeManager> userForCentralTradeManagers = userService.getAllUserForCentralTradeManager();
+        List<UserEntityDTO> manageableUsers = userService.getAllManageableUsers();
 
-        for (UserForCentralTradeManager userForCentralTradeManager : userForCentralTradeManagers) {
+        List<UserForCentralTradeManager> usersForCentralTradeManager = new LinkedList<>();
+
+        for (UserEntityDTO manageableUser : manageableUsers) {
+            UbiAccountStats linkedUbiAccount =
+                    updatedUbiAccountStats.stream().filter(u -> Objects.equals(u.getUbiProfileId(), manageableUser.getUbiProfileId())).findFirst().orElse(null);
+            if (manageableUser != null && linkedUbiAccount != null) {
+                usersForCentralTradeManager.add(new UserForCentralTradeManager(manageableUser, linkedUbiAccount));
+            }
+        }
+
+        for (UserForCentralTradeManager userForCentralTradeManager : usersForCentralTradeManager) {
             createAndExecuteCentralTradeManagerCommandsForUser(userForCentralTradeManager, configTrades, items);
         }
     }
