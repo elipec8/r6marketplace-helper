@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.utils.DTOs.UserForCentralTradeManager;
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
 import github.ricemonger.utils.DTOs.PersonalItem;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.TradeOperationType;
@@ -57,17 +57,17 @@ class UserEntityTest {
         ubiAccountEntryEntity.setUbiRememberMeTicket("ubiRememberMeTicket");
         userEntity.setUbiAccountAuthorizationEntry(ubiAccountEntryEntity);
 
-        Collection<Item> existingItems = List.of(new Item("itemId1"), new Item("itemId2"));
+        Collection<ItemEntityDTO> existingItems = List.of(new ItemEntityDTO("itemId1"), new ItemEntityDTO("itemId2"));
 
         UserForCentralTradeManager userForCentralTradeManager = userEntity.toUserForCentralTradeManager(existingItems);
 
         PersonalItem personalItem1 = new PersonalItem();
-        personalItem1.setItem(new Item("itemId1"));
+        personalItem1.setItem(new ItemEntityDTO("itemId1"));
         personalItem1.setTradeOperationType(TradeOperationType.BUY);
         personalItem1.setPriorityMultiplier(1);
 
         PersonalItem personalItem2 = new PersonalItem();
-        personalItem2.setItem(new Item("itemId2"));
+        personalItem2.setItem(new ItemEntityDTO("itemId2"));
         personalItem2.setTradeOperationType(TradeOperationType.BUY);
         personalItem2.setPriorityMultiplier(2);
 

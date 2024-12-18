@@ -1,6 +1,6 @@
 package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
 import github.ricemonger.utils.enums.FilterType;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -21,12 +21,12 @@ class TradeByFiltersManagerTest {
         itemFilter.setName("allowItem1");
         itemFilter.setItemNamePatterns(List.of("item1"));
         itemFilter.setFilterType(FilterType.ALLOW);
-        Item item = new Item("item1");
+        ItemEntityDTO item = new ItemEntityDTO("item1");
         item.setName("item1");
         TradeByFiltersManager tradeByFiltersManager = new TradeByFiltersManager();
         tradeByFiltersManager.setAppliedFilters(List.of(itemFilter));
         List<TradeByFiltersManager> tradeByFiltersManagers = List.of(tradeByFiltersManager);
-        List<Item> existingItems = new ArrayList<>(List.of(item, new Item("item2")));
+        List<ItemEntityDTO> existingItems = new ArrayList<>(List.of(item, new ItemEntityDTO("item2")));
 
         assertTrue(TradeByFiltersManager.getItemsForCentralTradeManagerFromTradeByFiltersManagersByPriority(null, existingItems).isEmpty());
         assertTrue(TradeByFiltersManager.getItemsForCentralTradeManagerFromTradeByFiltersManagersByPriority(tradeByFiltersManagers, null).isEmpty());
@@ -47,11 +47,11 @@ class TradeByFiltersManagerTest {
 
         List<ItemFilter> appliedFilters1 = List.of(itemFilter1, itemFilter2);
 
-        Item item1 = new Item("item1");
+        ItemEntityDTO item1 = new ItemEntityDTO("item1");
         item1.setName("name1");
-        Item item2 = new Item("item2");
+        ItemEntityDTO item2 = new ItemEntityDTO("item2");
         item2.setName("name2");
-        Item item3 = new Item("item3");
+        ItemEntityDTO item3 = new ItemEntityDTO("item3");
         item3.setName("name3");
 
         TradeByFiltersManager tradeByFiltersManager1 = new TradeByFiltersManager();
@@ -74,7 +74,7 @@ class TradeByFiltersManagerTest {
         tradeByFiltersManager2.setAppliedFilters(appliedFilters2);
         tradeByFiltersManager2.setPriorityMultiplier(2);
 
-        List<Item> existingItems = List.of(item1, item2, item3);
+        List<ItemEntityDTO> existingItems = List.of(item1, item2, item3);
 
         Set<PersonalItem> result =
                 TradeByFiltersManager.getItemsForCentralTradeManagerFromTradeByFiltersManagersByPriority(List.of(tradeByFiltersManager1, tradeByFiltersManager2),
@@ -91,9 +91,9 @@ class TradeByFiltersManagerTest {
         TradeByFiltersManager tradeByFiltersManager = new TradeByFiltersManager();
         tradeByFiltersManager.setAppliedFilters(null);
 
-        List<Item> existingItems = new ArrayList<>();
-        existingItems.add(new Item("item1"));
-        existingItems.add(new Item("item2"));
+        List<ItemEntityDTO> existingItems = new ArrayList<>();
+        existingItems.add(new ItemEntityDTO("item1"));
+        existingItems.add(new ItemEntityDTO("item2"));
 
         Set<PersonalItem> result = tradeByFiltersManager.toItemForCentralTradeManagerDTOs(existingItems);
 
@@ -105,9 +105,9 @@ class TradeByFiltersManagerTest {
         TradeByFiltersManager tradeByFiltersManager = new TradeByFiltersManager();
         tradeByFiltersManager.setAppliedFilters(new ArrayList<>());
 
-        List<Item> existingItems = new ArrayList<>();
-        existingItems.add(new Item("item1"));
-        existingItems.add(new Item("item2"));
+        List<ItemEntityDTO> existingItems = new ArrayList<>();
+        existingItems.add(new ItemEntityDTO("item1"));
+        existingItems.add(new ItemEntityDTO("item2"));
 
         Set<PersonalItem> result = tradeByFiltersManager.toItemForCentralTradeManagerDTOs(existingItems);
 
@@ -127,14 +127,14 @@ class TradeByFiltersManagerTest {
 
         List<ItemFilter> appliedFilters = List.of(itemFilter1, itemFilter2);
 
-        Item item1 = new Item("item1");
+        ItemEntityDTO item1 = new ItemEntityDTO("item1");
         item1.setName("name1");
-        Item item2 = new Item("item2");
+        ItemEntityDTO item2 = new ItemEntityDTO("item2");
         item2.setName("name2");
-        Item item3 = new Item("item3");
+        ItemEntityDTO item3 = new ItemEntityDTO("item3");
         item3.setName("name3");
 
-        List<Item> existingItems = List.of(item1, item2, item3);
+        List<ItemEntityDTO> existingItems = List.of(item1, item2, item3);
 
 
         TradeByFiltersManager tradeByFiltersManager = new TradeByFiltersManager();

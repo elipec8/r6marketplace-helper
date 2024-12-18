@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
 import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ class ItemPostgresServiceTest {
     @Test
     public void saveAll_should_create_new_item_in_db_if_doesnt_exist() {
 
-        List<Item> itemMainFields = List.of(
+        List<ItemEntityDTO> itemMainFields = List.of(
                 createItem("1"),
                 createItem("2")
         );
@@ -47,7 +47,7 @@ class ItemPostgresServiceTest {
 
         itemRepository.save(item1);
 
-        Item item2 = new Item();
+        ItemEntityDTO item2 = new ItemEntityDTO();
         item2.setItemId("1");
         item2.setName("new name");
 
@@ -83,13 +83,13 @@ class ItemPostgresServiceTest {
         itemRepository.save(item1);
         itemRepository.save(item2);
 
-        List<String> result = itemService.findAll().stream().map(Item::getName).toList();
+        List<String> result = itemService.findAll().stream().map(ItemEntityDTO::getName).toList();
 
         assertTrue(List.of("name1", "name2").containsAll(result) && result.containsAll(List.of("name1", "name2")));
     }
 
-    private Item createItem(String itemId) {
-        Item item = new Item();
+    private ItemEntityDTO createItem(String itemId) {
+        ItemEntityDTO item = new ItemEntityDTO();
         item.setItemId(itemId);
         return item;
     }

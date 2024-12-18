@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.ItemService;
 import github.ricemonger.telegramBot.TelegramBotService;
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -35,7 +35,7 @@ public class ScheduledAllItemsStatsFetcher {
             log.info("Expected item count is not set");
         }
 
-        Collection<Item> items = graphQlClientService.fetchAllItemStats();
+        Collection<ItemEntityDTO> items = graphQlClientService.fetchAllItemStats();
 
         if (items.size() < expectedItemCount) {
             log.error("Fetched {} items' stats, expected {}", items.size(), expectedItemCount);

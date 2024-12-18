@@ -22,7 +22,7 @@ class ItemDetailsTest {
         tradeByFiltersManager.setMinProfitPercent(50);
         tradeByFiltersManager.setMinBuySellProfit(30);
 
-        Item item = new Item();
+        ItemEntityDTO item = new ItemEntityDTO();
         item.setItemId("itemId");
         item.setName("name");
         item.setRarity(ItemRarity.RARE);
@@ -98,7 +98,7 @@ class ItemDetailsTest {
         tradeByItemIdManager.setBuyBoundaryPrice(60);
         tradeByItemIdManager.setSellBoundaryPrice(70);
 
-        Item item = new Item();
+        ItemEntityDTO item = new ItemEntityDTO();
         item.setItemId("itemId");
         item.setName("name");
         item.setRarity(ItemRarity.RARE);
@@ -170,7 +170,7 @@ class ItemDetailsTest {
     public void hashCode_and_equals_should_use_only_itemId_tradeOperationType() {
         PersonalItem itemForTradeDTO1 = new PersonalItem();
 
-        Item item1 = new Item();
+        ItemEntityDTO item1 = new ItemEntityDTO();
         item1.setItemId("itemId");
         item1.setName("name");
         item1.setRarity(ItemRarity.RARE);
@@ -209,7 +209,7 @@ class ItemDetailsTest {
 
         PersonalItem itemForTradeDTO2 = new PersonalItem();
 
-        Item item2 = new Item();
+        ItemEntityDTO item2 = new ItemEntityDTO();
         item2.setItemId("itemId");
         item2.setName("name1");
         item2.setRarity(ItemRarity.UNCOMMON);

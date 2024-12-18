@@ -7,7 +7,7 @@ import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.utils.DTOs.*;
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
 import github.ricemonger.utils.DTOs.ItemFilter;
 import github.ricemonger.utils.DTOs.items.Tag;
 import github.ricemonger.utils.enums.TagGroup;
@@ -152,9 +152,9 @@ public class BotInnerServiceTest {
         itemShowSettings.setItemShowAppliedFilters(appliedFilters);
         when(commonValuesService.getMaximumTelegramMessageHeight()).thenReturn(2);
 
-        List<Item> itemMainFields = new ArrayList<>();
+        List<ItemEntityDTO> itemMainFields = new ArrayList<>();
 
-        itemMainFields.add(new Item());
+        itemMainFields.add(new ItemEntityDTO());
         itemShowSettings.setItemShowMessagesLimit(1);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("0");
@@ -163,7 +163,7 @@ public class BotInnerServiceTest {
         verify(itemService).getAllItemsByFilters(appliedFilters);
         verify(telegramBotClientService, times(1)).sendText(eq("1"), anyString());
 
-        itemMainFields.add(new Item());
+        itemMainFields.add(new ItemEntityDTO());
         reset(telegramBotClientService);
         itemShowSettings.setItemShowMessagesLimit(1);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
@@ -172,7 +172,7 @@ public class BotInnerServiceTest {
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
         verify(telegramBotClientService, times(1)).sendText(eq("1"), anyString());
 
-        itemMainFields.add(new Item());
+        itemMainFields.add(new ItemEntityDTO());
         reset(telegramBotClientService);
         itemShowSettings.setItemShowMessagesLimit(2);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
@@ -199,9 +199,9 @@ public class BotInnerServiceTest {
         itemShowSettings.setItemShowAppliedFilters(new ArrayList<>());
         when(commonValuesService.getMaximumTelegramMessageHeight()).thenReturn(2);
 
-        List<Item> itemMainFields = new ArrayList<>();
+        List<ItemEntityDTO> itemMainFields = new ArrayList<>();
 
-        itemMainFields.add(new Item());
+        itemMainFields.add(new ItemEntityDTO());
         itemShowSettings.setItemShowMessagesLimit(1);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("0");
@@ -210,7 +210,7 @@ public class BotInnerServiceTest {
         verify(itemService).getAllItemsByFilters(appliedFilters);
         verify(telegramBotClientService, times(1)).sendText(eq("1"), anyString());
 
-        itemMainFields.add(new Item());
+        itemMainFields.add(new ItemEntityDTO());
         reset(telegramBotClientService);
         itemShowSettings.setItemShowMessagesLimit(2);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
@@ -219,7 +219,7 @@ public class BotInnerServiceTest {
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
         verify(telegramBotClientService, times(2)).sendText(eq("1"), anyString());
 
-        itemMainFields.add(new Item());
+        itemMainFields.add(new ItemEntityDTO());
         reset(telegramBotClientService);
         itemShowSettings.setItemShowMessagesLimit(3);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
@@ -256,10 +256,10 @@ public class BotInnerServiceTest {
         when(commonValuesService.getMaximumTelegramMessageHeight()).thenReturn(1);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
 
-        List<Item> itemMainFields = new ArrayList<>();
-        itemMainFields.add(new Item());
-        itemMainFields.add(new Item());
-        itemMainFields.add(new Item());
+        List<ItemEntityDTO> itemMainFields = new ArrayList<>();
+        itemMainFields.add(new ItemEntityDTO());
+        itemMainFields.add(new ItemEntityDTO());
+        itemMainFields.add(new ItemEntityDTO());
         when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
 
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("invalid");
@@ -281,7 +281,7 @@ public class BotInnerServiceTest {
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("100");
 
-        List<Item> itemMainFields = new ArrayList<>();
+        List<ItemEntityDTO> itemMainFields = new ArrayList<>();
         when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
 
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
@@ -1074,7 +1074,7 @@ public class BotInnerServiceTest {
 
     @Test
     public void getItemByUserInputItemId_should_return_service_result() {
-        Item item = new Item();
+        ItemEntityDTO item = new ItemEntityDTO();
         item.setName("item_name");
 
         when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID)).thenReturn("item_id");

@@ -6,7 +6,7 @@ import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableI
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.LastSoldAt;
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.SellStats;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.exceptions.server.GraphQlCommonItemMappingException;
 import org.junit.jupiter.api.Test;
@@ -52,7 +52,7 @@ class CommonQueryItemsMapperTest {
         node3.getItem().setItemId("3");
         nodes.add(node3);
 
-        List<Item> itemMainFields = commonQueryItemsMapper.mapItems(nodes);
+        List<ItemEntityDTO> itemMainFields = commonQueryItemsMapper.mapItems(nodes);
 
         assertEquals(3, itemMainFields.size());
         verify(commonQueryItemsMapper, times(3)).mapItem(any());
@@ -65,7 +65,7 @@ class CommonQueryItemsMapperTest {
 
         Node node = createNode(dtf, date);
 
-        Item expectedItem = new Item();
+        ItemEntityDTO expectedItem = new ItemEntityDTO();
         expectedItem.setItemId("1");
         expectedItem.setAssetUrl("assetUrl");
         expectedItem.setName("name");
@@ -78,7 +78,7 @@ class CommonQueryItemsMapperTest {
         expectedItem.setLastSoldPrice(75);
         expectedItem.setLastSoldAt(date);
 
-        Item resultItem = commonQueryItemsMapper.mapItem(node);
+        ItemEntityDTO resultItem = commonQueryItemsMapper.mapItem(node);
 
         assertTrue(expectedItem.isFullyEqualTo(resultItem));
     }
@@ -91,7 +91,7 @@ class CommonQueryItemsMapperTest {
         Node node = createNode(dtf, date);
         node.getItem().setType("invalidType");
 
-        Item expectedItem = new Item();
+        ItemEntityDTO expectedItem = new ItemEntityDTO();
         expectedItem.setItemId("1");
         expectedItem.setAssetUrl("assetUrl");
         expectedItem.setName("name");
@@ -104,7 +104,7 @@ class CommonQueryItemsMapperTest {
         expectedItem.setLastSoldPrice(75);
         expectedItem.setLastSoldAt(date);
 
-        Item resultItem = commonQueryItemsMapper.mapItem(node);
+        ItemEntityDTO resultItem = commonQueryItemsMapper.mapItem(node);
 
         assertTrue(expectedItem.isFullyEqualTo(resultItem));
     }
@@ -117,7 +117,7 @@ class CommonQueryItemsMapperTest {
         Node node = createNode(dtf, date);
         node.getMarketData().setBuyStats(null);
 
-        Item expectedItem = new Item();
+        ItemEntityDTO expectedItem = new ItemEntityDTO();
         expectedItem.setItemId("1");
         expectedItem.setAssetUrl("assetUrl");
         expectedItem.setName("name");
@@ -130,7 +130,7 @@ class CommonQueryItemsMapperTest {
         expectedItem.setLastSoldPrice(75);
         expectedItem.setLastSoldAt(date);
 
-        Item resultItem = commonQueryItemsMapper.mapItem(node);
+        ItemEntityDTO resultItem = commonQueryItemsMapper.mapItem(node);
 
         assertTrue(expectedItem.isFullyEqualTo(resultItem));
     }
@@ -143,7 +143,7 @@ class CommonQueryItemsMapperTest {
         Node node = createNode(dtf, date);
         node.getMarketData().setSellStats(null);
 
-        Item expectedItem = new Item();
+        ItemEntityDTO expectedItem = new ItemEntityDTO();
         expectedItem.setItemId("1");
         expectedItem.setAssetUrl("assetUrl");
         expectedItem.setName("name");
@@ -156,7 +156,7 @@ class CommonQueryItemsMapperTest {
         expectedItem.setLastSoldPrice(75);
         expectedItem.setLastSoldAt(date);
 
-        Item resultItem = commonQueryItemsMapper.mapItem(node);
+        ItemEntityDTO resultItem = commonQueryItemsMapper.mapItem(node);
 
         assertTrue(expectedItem.isFullyEqualTo(resultItem));
     }
@@ -169,7 +169,7 @@ class CommonQueryItemsMapperTest {
         Node node = createNode(dtf, date);
         node.getMarketData().setLastSoldAt(null);
 
-        Item expectedItem = new Item();
+        ItemEntityDTO expectedItem = new ItemEntityDTO();
         expectedItem.setItemId("1");
         expectedItem.setAssetUrl("assetUrl");
         expectedItem.setName("name");
@@ -182,7 +182,7 @@ class CommonQueryItemsMapperTest {
         expectedItem.setLastSoldPrice(0);
         expectedItem.setLastSoldAt(LocalDateTime.of(1970, 1, 1, 0, 0, 0));
 
-        Item resultItem = commonQueryItemsMapper.mapItem(node);
+        ItemEntityDTO resultItem = commonQueryItemsMapper.mapItem(node);
 
         assertTrue(expectedItem.isFullyEqualTo(resultItem));
     }

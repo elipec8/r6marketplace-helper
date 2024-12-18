@@ -1,6 +1,6 @@
 package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TradeOperationType;
@@ -23,7 +23,7 @@ class TradeByItemIdManagerTest {
         tradeByItemIdManager.setEnabled(true);
 
         List<TradeByItemIdManager> tradeByItemIdManagers = List.of(tradeByItemIdManager);
-        List<Item> existingItems = new ArrayList<>(List.of(new Item("item1"), new Item("item2")));
+        List<ItemEntityDTO> existingItems = new ArrayList<>(List.of(new ItemEntityDTO("item1"), new ItemEntityDTO("item2")));
 
         assertTrue(TradeByItemIdManager.getItemsForCentralTradeManagerFromTradeByItemIdManagersByPriority(null, existingItems).isEmpty());
         assertTrue(TradeByItemIdManager.getItemsForCentralTradeManagerFromTradeByItemIdManagersByPriority(tradeByItemIdManagers, null).isEmpty());
@@ -54,13 +54,13 @@ class TradeByItemIdManagerTest {
         tradeByItemIdManager4.setPriorityMultiplier(1);
 
         List<TradeByItemIdManager> tradeByItemIdManagers = List.of(tradeByItemIdManager1, tradeByItemIdManager2, tradeByItemIdManager3, tradeByItemIdManager4);
-        List<Item> existingItems = List.of(new Item("item1"), new Item("item2"), new Item("item3"));
+        List<ItemEntityDTO> existingItems = List.of(new ItemEntityDTO("item1"), new ItemEntityDTO("item2"), new ItemEntityDTO("item3"));
 
         Set<PersonalItem> result = TradeByItemIdManager.getItemsForCentralTradeManagerFromTradeByItemIdManagersByPriority(tradeByItemIdManagers, existingItems);
 
         assertEquals(2, result.size());
-        assertTrue(result.contains(new PersonalItem(new Item("item1"), tradeByItemIdManager1)));
-        assertTrue(result.contains(new PersonalItem(new Item("item2"), tradeByItemIdManager3)));
+        assertTrue(result.contains(new PersonalItem(new ItemEntityDTO("item1"), tradeByItemIdManager1)));
+        assertTrue(result.contains(new PersonalItem(new ItemEntityDTO("item2"), tradeByItemIdManager3)));
     }
 
     @Test
@@ -68,7 +68,7 @@ class TradeByItemIdManagerTest {
         TradeByItemIdManager tradeByItemIdManager = new TradeByItemIdManager();
         tradeByItemIdManager.setItemId("itemId");
 
-        Item item = new Item();
+        ItemEntityDTO item = new ItemEntityDTO();
         item.setItemId("anotherItemId");
 
         assertNull(tradeByItemIdManager.toItemForCentralTradeManagerDtoOrNull(List.of(item)));
@@ -84,7 +84,7 @@ class TradeByItemIdManagerTest {
         tradeByItemIdManager.setSellBoundaryPrice(200);
         tradeByItemIdManager.setPriorityMultiplier(1);
 
-        Item item = new Item();
+        ItemEntityDTO item = new ItemEntityDTO();
         item.setItemId("itemId");
         item.setName("itemName");
         item.setAssetUrl("assetUrl");

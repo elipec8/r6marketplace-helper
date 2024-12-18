@@ -3,7 +3,7 @@ package github.ricemonger.marketplace.databases.postgres.services;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.utils.DTOs.UserForCentralTradeManager;
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +23,7 @@ class UserPostgresServiceTest {
 
     @Test
     public void getAllUsers_ForCentralTradeManager_should_return_mapped_repository_result() {
-        Collection<Item> existingItems = List.of();
+        Collection<ItemEntityDTO> existingItems = List.of();
 
         UserEntity user1 = mock(UserEntity.class);
         UserEntity user2 = mock(UserEntity.class);

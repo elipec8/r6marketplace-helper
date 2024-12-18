@@ -4,7 +4,7 @@ import github.ricemonger.utils.DTOs.PersonalItem;
 import github.ricemonger.utils.DTOs.TradeByFiltersManager;
 import github.ricemonger.utils.DTOs.TradeByItemIdManager;
 import github.ricemonger.utils.DTOs.items.UbiTrade;
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
 import github.ricemonger.utils.DTOs.ItemFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ public class PersonalItemFactory {
                                                      Collection<UbiTrade> existingSellTrades,
                                                      Collection<UbiTrade> existingBuyTrades,
                                                      Collection<String> ownedItemsId,
-                                                     Collection<Item> existingItems) {
+                                                     Collection<ItemEntityDTO> existingItems) {
         Set<PersonalItem> personalItems = new HashSet<>();
         personalItems.addAll(getItemsForCentralTradeManagerFromTradeByFiltersManagersByPriority(
                 tradeByFiltersManagers,
@@ -42,7 +42,7 @@ public class PersonalItemFactory {
                                                                                                  Collection<UbiTrade> existingSellTrades,
                                                                                                  Collection<UbiTrade> existingBuyTrades,
                                                                                                  Collection<String> ownedItemsIds,
-                                                                                                 Collection<Item> existingItems) {
+                                                                                                 Collection<ItemEntityDTO> existingItems) {
         Set<PersonalItem> personalItems = new HashSet<>();
 
         if (tradeByFiltersManagers == null || tradeByFiltersManagers.isEmpty() || existingItems == null || existingItems.isEmpty()) {
@@ -67,7 +67,7 @@ public class PersonalItemFactory {
                                                                                       Collection<UbiTrade> existingSellTrades,
                                                                                       Collection<UbiTrade> existingBuyTrades,
                                                                                       Collection<String> ownedItemsIds,
-                                                                                      Collection<Item> existingItems) {
+                                                                                      Collection<ItemEntityDTO> existingItems) {
         if (tradeByFiltersManager.getAppliedFilters() == null || tradeByFiltersManager.getAppliedFilters().isEmpty()) {
             return new HashSet<>();
         } else {
@@ -108,7 +108,7 @@ public class PersonalItemFactory {
                                                                                                 Collection<UbiTrade> existingSellTrades,
                                                                                                 Collection<UbiTrade> existingBuyTrades,
                                                                                                 Collection<String> ownedItemsIds,
-                                                                                                Collection<Item> existingItems) {
+                                                                                                Collection<ItemEntityDTO> existingItems) {
         Set<PersonalItem> personalItems = new HashSet<>();
 
         if (tradeByItemIdManagers == null || tradeByItemIdManagers.isEmpty() || existingItems == null || existingItems.isEmpty()) {
@@ -136,8 +136,8 @@ public class PersonalItemFactory {
                                                                                Collection<UbiTrade> existingSellTrades,
                                                                                Collection<UbiTrade> existingBuyTrades,
                                                                                Collection<String> ownedItemsIds,
-                                                                               Collection<Item> existingItems) {
-        Item item = existingItems.stream().filter(i -> i.getItemId().equals(tradeByItemIdManager.getItemId())).findFirst().orElse(null);
+                                                                               Collection<ItemEntityDTO> existingItems) {
+        ItemEntityDTO item = existingItems.stream().filter(i -> i.getItemId().equals(tradeByItemIdManager.getItemId())).findFirst().orElse(null);
         if (item != null) {
             int minBuySellProfit = Integer.MIN_VALUE;
             int minBuySellProfitPercent = Integer.MIN_VALUE;

@@ -1,6 +1,6 @@
 package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
 import github.ricemonger.utils.DTOs.items.Tag;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.IsOwnedFilter;
@@ -35,7 +35,7 @@ public class ItemFilter {
     private Integer minLastSoldPrice;
     private Integer maxLastSoldPrice;
 
-    public static List<Item> filterItems(Collection<Item> items, Collection<ItemFilter> filters) {
+    public static List<ItemEntityDTO> filterItems(Collection<ItemEntityDTO> items, Collection<ItemFilter> filters) {
         if (filters == null || filters.isEmpty()) {
             return items.stream().toList();
         } else {
@@ -44,7 +44,7 @@ public class ItemFilter {
             List<ItemFilter> deniedFilters =
                     filters.stream().filter(filter -> filter.getFilterType() != null && filter.getFilterType().equals(FilterType.DENY)).toList();
 
-            Set<Item> result;
+            Set<ItemEntityDTO> result;
 
             if (allowedFilters.isEmpty()) {
                 result = new HashSet<>(items);
@@ -58,7 +58,7 @@ public class ItemFilter {
             if (deniedFilters.isEmpty()) {
                 return result.stream().toList();
             } else {
-                List<Item> deniedItems = new ArrayList<>();
+                List<ItemEntityDTO> deniedItems = new ArrayList<>();
                 for (ItemFilter filter : deniedFilters) {
                     deniedItems.addAll(filter.filterItems(items));
                 }
@@ -68,7 +68,7 @@ public class ItemFilter {
         }
     }
 
-    public List<Item> filterItems(Collection<Item> items) {
+    public List<ItemEntityDTO> filterItems(Collection<ItemEntityDTO> items) {
         return items.stream()
                 .filter(item -> this.itemNamePatterns == null || this.itemNamePatterns.isEmpty() || this.itemNamePatterns.stream().anyMatch(s -> item.getName().toLowerCase().contains(s.toLowerCase())))
                 .filter(item -> this.itemTypes == null || this.itemTypes.isEmpty() || this.itemTypes.contains(item.getType()))

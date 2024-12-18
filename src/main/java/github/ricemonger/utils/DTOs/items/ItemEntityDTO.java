@@ -13,7 +13,7 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Item implements ItemMainFieldsI, ItemHistoryFieldsI {
+public class ItemEntityDTO implements ItemMainFieldsI, ItemHistoryFieldsI {
     private String itemId;
     private String assetUrl;
     private String name;
@@ -64,11 +64,11 @@ public class Item implements ItemMainFieldsI, ItemHistoryFieldsI {
     private Integer priceToBuyIn168Hours;
     private Integer priceToBuyIn720Hours;
 
-    public Item(String itemId) {
+    public ItemEntityDTO(String itemId) {
         this.itemId = itemId;
     }
 
-    public Item(Item item) {
+    public ItemEntityDTO(ItemEntityDTO item) {
         this.itemId = item.getItemId();
         this.assetUrl = item.getAssetUrl();
         this.name = item.getName();
@@ -111,15 +111,15 @@ public class Item implements ItemMainFieldsI, ItemHistoryFieldsI {
         this.priceToBuyIn720Hours = item.getPriceToBuyIn720Hours();
     }
 
-    public Item(ItemMainFieldsI mainFields) {
+    public ItemEntityDTO(ItemMainFieldsI mainFields) {
         setMainFields(mainFields);
     }
 
-    public Item(ItemHistoryFieldsI historyFields) {
+    public ItemEntityDTO(ItemHistoryFieldsI historyFields) {
         setHistoryFields(historyFields);
     }
 
-    public Item(ItemMainFieldsI mainFields, ItemHistoryFieldsI historyFields) {
+    public ItemEntityDTO(ItemMainFieldsI mainFields, ItemHistoryFieldsI historyFields) {
         setMainFields(mainFields);
         setHistoryFields(historyFields);
     }
@@ -136,7 +136,7 @@ public class Item implements ItemMainFieldsI, ItemHistoryFieldsI {
         if (o == this) {
             return true;
         }
-        if (!(o instanceof Item item)) {
+        if (!(o instanceof ItemEntityDTO item)) {
             return false;
         }
         return itemMainFieldsAreEqual(item) && itemHistoryFieldsAreEqual(item);
@@ -146,7 +146,7 @@ public class Item implements ItemMainFieldsI, ItemHistoryFieldsI {
         if (o == this) {
             return true;
         }
-        if (!(o instanceof Item item)) {
+        if (!(o instanceof ItemEntityDTO item)) {
             return false;
         }
         if (item.getItemId() == null || this.getItemId() == null) {

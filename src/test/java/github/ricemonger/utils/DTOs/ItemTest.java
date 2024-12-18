@@ -1,6 +1,6 @@
 package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
 import github.ricemonger.utils.DTOs.items.ItemHistoryFieldsI;
 import github.ricemonger.utils.DTOs.items.ItemMainFieldsI;
 import github.ricemonger.utils.enums.ItemRarity;
@@ -17,7 +17,7 @@ class ItemTest {
 
     @Test
     public void getPrognosedTradeSuccessMinutes_should_return_0_when_trade_category_is_null_or_Unknown() {
-        Item item = new Item();
+        ItemEntityDTO item = new ItemEntityDTO();
         item.setMinSellPrice(10);
         item.setPriceToBuyIn1Hour(20);
         item.setPriceToBuyIn6Hours(30);
@@ -35,7 +35,7 @@ class ItemTest {
 
     @Test
     public void getPrognosedTradeSuccessMinutes_should_return_value_by_prices_and_tradeCategory() {
-        Item item = new Item();
+        ItemEntityDTO item = new ItemEntityDTO();
         item.setMinSellPrice(120);
         item.setPriceToBuyIn1Hour(110);
         item.setPriceToBuyIn6Hours(100);
@@ -69,7 +69,7 @@ class ItemTest {
 
     @Test
     public void setRarityByTags_should_set_rarity_to_unknown_when_tags_are_null() {
-        Item item = new Item();
+        ItemEntityDTO item = new ItemEntityDTO();
         item.setTags(null);
         item.setRarityByTags("uncommon", "rare", "epic", "legendary");
         assertEquals(ItemRarity.UNKNOWN, item.getRarity());
@@ -77,7 +77,7 @@ class ItemTest {
 
     @Test
     public void setRarityByTags_should_set_rarity_to_unknown_when_tags_contains_no_rarity() {
-        Item item = new Item();
+        ItemEntityDTO item = new ItemEntityDTO();
         item.setTags(List.of("unknown"));
         item.setRarityByTags("uncommon", "rare", "epic", "legendary");
         assertEquals(ItemRarity.UNKNOWN, item.getRarity());
@@ -85,7 +85,7 @@ class ItemTest {
 
     @Test
     public void setRarityByTags_should_set_rarity_to_uncommon_when_tags_contains_uncommon() {
-        Item item = new Item();
+        ItemEntityDTO item = new ItemEntityDTO();
         item.setTags(List.of("uncommon"));
         item.setRarityByTags("uncommon", "rare", "epic", "legendary");
         assertEquals(ItemRarity.UNCOMMON, item.getRarity());
@@ -93,7 +93,7 @@ class ItemTest {
 
     @Test
     public void setRarityByTags_should_set_rarity_to_rare_when_tags_contains_rare() {
-        Item item = new Item();
+        ItemEntityDTO item = new ItemEntityDTO();
         item.setTags(List.of("rare"));
         item.setRarityByTags("uncommon", "rare", "epic", "legendary");
         assertEquals(ItemRarity.RARE, item.getRarity());
@@ -101,7 +101,7 @@ class ItemTest {
 
     @Test
     public void setRarityByTags_should_set_rarity_to_epic_when_tags_contains_epic() {
-        Item item = new Item();
+        ItemEntityDTO item = new ItemEntityDTO();
         item.setTags(List.of("epic"));
         item.setRarityByTags("uncommon", "rare", "epic", "legendary");
         assertEquals(ItemRarity.EPIC, item.getRarity());
@@ -109,7 +109,7 @@ class ItemTest {
 
     @Test
     public void setRarityByTags_should_set_rarity_to_legendary_when_tags_contains_legendary() {
-        Item item = new Item();
+        ItemEntityDTO item = new ItemEntityDTO();
         item.setTags(List.of("legendary"));
         item.setRarityByTags("uncommon", "rare", "epic", "legendary");
         assertEquals(ItemRarity.LEGENDARY, item.getRarity());
@@ -117,7 +117,7 @@ class ItemTest {
 
     @Test
     public void setRarityByTags_should_set_highest_rarity_if_contains_few_rare() {
-        Item item = new Item();
+        ItemEntityDTO item = new ItemEntityDTO();
         item.setTags(List.of("uncommon", "rare"));
         item.setRarityByTags("uncommon", "rare", "epic", "legendary");
         assertEquals(ItemRarity.RARE, item.getRarity());
@@ -125,7 +125,7 @@ class ItemTest {
 
     @Test
     public void setRarityByTags_should_set_highest_rarity_if_contains_few_epic() {
-        Item item = new Item();
+        ItemEntityDTO item = new ItemEntityDTO();
         item.setTags(List.of("uncommon", "rare", "epic"));
         item.setRarityByTags("uncommon", "rare", "epic", "legendary");
         assertEquals(ItemRarity.EPIC, item.getRarity());
@@ -133,7 +133,7 @@ class ItemTest {
 
     @Test
     public void setRarityByTags_should_set_highest_rarity_if_contains_few_legendary() {
-        Item item = new Item();
+        ItemEntityDTO item = new ItemEntityDTO();
         item.setTags(List.of("uncommon", "rare", "epic", "legendary"));
         item.setRarityByTags("uncommon", "rare", "epic", "legendary");
         assertEquals(ItemRarity.LEGENDARY, item.getRarity());
@@ -141,9 +141,9 @@ class ItemTest {
 
     @Test
     public void setMainFields_should_alter_main_fields() {
-        Item item = new Item();
+        ItemEntityDTO item = new ItemEntityDTO();
 
-        ItemMainFieldsI mainFields = new Item();
+        ItemMainFieldsI mainFields = new ItemEntityDTO();
         mainFields.setItemId("1");
         mainFields.setAssetUrl("url");
         mainFields.setName("name");
@@ -174,9 +174,9 @@ class ItemTest {
 
     @Test
     public void setItemHistoryFields_should_alter_history_fields() {
-        Item item = new Item();
+        ItemEntityDTO item = new ItemEntityDTO();
 
-        ItemHistoryFieldsI historyFields = new Item();
+        ItemHistoryFieldsI historyFields = new ItemEntityDTO();
         historyFields.setMonthAveragePrice(60);
         historyFields.setMonthMedianPrice(70);
         historyFields.setMonthMaxPrice(80);
@@ -219,7 +219,7 @@ class ItemTest {
 
     @Test
     public void itemMainFieldsAreEqual_should_return_true_when_all_main_fields_are_equal_ignoring_history_fields() {
-        Item item1 = new Item();
+        ItemEntityDTO item1 = new ItemEntityDTO();
         item1.setItemId("1");
         item1.setAssetUrl("url");
         item1.setName("name");
@@ -251,7 +251,7 @@ class ItemTest {
         item1.setPriceToBuyIn24Hours(22);
         item1.setPriceToBuyIn168Hours(23);
 
-        Item item2 = new Item();
+        ItemEntityDTO item2 = new ItemEntityDTO();
         item2.setItemId("1");
         item2.setAssetUrl("url");
         item2.setName("name");
@@ -288,7 +288,7 @@ class ItemTest {
 
     @Test
     public void itemMainFieldsAreEqual_should_return_false_if_any_main_field_is_different() {
-        Item item1 = new Item();
+        ItemEntityDTO item1 = new ItemEntityDTO();
         item1.setItemId("1");
         item1.setAssetUrl("url");
         item1.setName("name");
@@ -302,40 +302,40 @@ class ItemTest {
         item1.setLastSoldAt(LocalDateTime.of(2021, 1, 1, 1, 1));
         item1.setLastSoldPrice(5);
 
-        Item itemId = new Item(item1);
+        ItemEntityDTO itemId = new ItemEntityDTO(item1);
         itemId.setItemId("2");
 
-        Item assetUrl = new Item(item1);
+        ItemEntityDTO assetUrl = new ItemEntityDTO(item1);
         assetUrl.setAssetUrl("url2");
 
-        Item name = new Item(item1);
+        ItemEntityDTO name = new ItemEntityDTO(item1);
         name.setName("name2");
 
-        Item tags = new Item(item1);
+        ItemEntityDTO tags = new ItemEntityDTO(item1);
         tags.setTags(List.of("tag2"));
 
-        Item rarity = new Item(item1);
+        ItemEntityDTO rarity = new ItemEntityDTO(item1);
         rarity.setRarity(ItemRarity.RARE);
 
-        Item type = new Item(item1);
+        ItemEntityDTO type = new ItemEntityDTO(item1);
         type.setType(ItemType.CharacterHeadgear);
 
-        Item maxBuyPrice = new Item(item1);
+        ItemEntityDTO maxBuyPrice = new ItemEntityDTO(item1);
         maxBuyPrice.setMaxBuyPrice(10);
 
-        Item buyOrdersCount = new Item(item1);
+        ItemEntityDTO buyOrdersCount = new ItemEntityDTO(item1);
         buyOrdersCount.setBuyOrdersCount(20);
 
-        Item minSellPrice = new Item(item1);
+        ItemEntityDTO minSellPrice = new ItemEntityDTO(item1);
         minSellPrice.setMinSellPrice(30);
 
-        Item sellOrdersCount = new Item(item1);
+        ItemEntityDTO sellOrdersCount = new ItemEntityDTO(item1);
         sellOrdersCount.setSellOrdersCount(40);
 
-        Item lastSoldAt = new Item(item1);
+        ItemEntityDTO lastSoldAt = new ItemEntityDTO(item1);
         lastSoldAt.setLastSoldAt(LocalDateTime.of(2024, 1, 1, 1, 1));
 
-        Item lastSoldPrice = new Item(item1);
+        ItemEntityDTO lastSoldPrice = new ItemEntityDTO(item1);
         lastSoldPrice.setLastSoldPrice(50);
 
         assertFalse(item1.itemMainFieldsAreEqual(itemId));
@@ -355,7 +355,7 @@ class ItemTest {
 
     @Test
     public void itemMainFieldsAreEqual_should_return_false_when_item_is_null() {
-        Item item1 = new Item();
+        ItemEntityDTO item1 = new ItemEntityDTO();
         item1.setItemId("1");
         item1.setAssetUrl("url");
         item1.setName("name");
@@ -387,14 +387,14 @@ class ItemTest {
         item1.setPriceToBuyIn24Hours(22);
         item1.setPriceToBuyIn168Hours(23);
 
-        Item item2 = null;
+        ItemEntityDTO item2 = null;
 
         assertFalse(item1.itemMainFieldsAreEqual(item2));
     }
 
     @Test
     public void itemMainFieldsAreEqual_should_return_false_when_object_of_another_class() {
-        Item item1 = new Item();
+        ItemEntityDTO item1 = new ItemEntityDTO();
         item1.setItemId("1");
         item1.setAssetUrl("url");
         item1.setName("name");
@@ -433,7 +433,7 @@ class ItemTest {
 
     @Test
     public void itemHistoryFieldsAreEqual_should_return_true_if_history_fields_are_equal_ignoring_main_fields() {
-        Item item1 = new Item();
+        ItemEntityDTO item1 = new ItemEntityDTO();
         item1.setItemId("1");
         item1.setAssetUrl("url");
         item1.setName("name");
@@ -465,7 +465,7 @@ class ItemTest {
         item1.setPriceToBuyIn24Hours(22);
         item1.setPriceToBuyIn168Hours(23);
 
-        Item item2 = new Item();
+        ItemEntityDTO item2 = new ItemEntityDTO();
         item2.setItemId("1");
         item2.setAssetUrl("url2");
         item2.setName("name2");
@@ -502,7 +502,7 @@ class ItemTest {
 
     @Test
     public void itemHistoryFieldsAreEqual_should_return_false_if_any_history_field_is_different() {
-        Item item1 = new Item();
+        ItemEntityDTO item1 = new ItemEntityDTO();
         item1.setItemId("1");
         item1.setAssetUrl("url");
         item1.setName("name");
@@ -534,61 +534,61 @@ class ItemTest {
         item1.setPriceToBuyIn24Hours(22);
         item1.setPriceToBuyIn168Hours(23);
 
-        Item itemId = new Item(item1);
+        ItemEntityDTO itemId = new ItemEntityDTO(item1);
         itemId.setItemId("2");
 
-        Item monthAveragePrice = new Item(item1);
+        ItemEntityDTO monthAveragePrice = new ItemEntityDTO(item1);
         monthAveragePrice.setMonthAveragePrice(60);
 
-        Item monthMedianPrice = new Item(item1);
+        ItemEntityDTO monthMedianPrice = new ItemEntityDTO(item1);
         monthMedianPrice.setMonthMedianPrice(70);
 
-        Item monthMaxPrice = new Item(item1);
+        ItemEntityDTO monthMaxPrice = new ItemEntityDTO(item1);
         monthMaxPrice.setMonthMaxPrice(80);
 
-        Item monthMinPrice = new Item(item1);
+        ItemEntityDTO monthMinPrice = new ItemEntityDTO(item1);
         monthMinPrice.setMonthMinPrice(90);
 
-        Item monthSalesPerDay = new Item(item1);
+        ItemEntityDTO monthSalesPerDay = new ItemEntityDTO(item1);
         monthSalesPerDay.setMonthSalesPerDay(100);
 
-        Item dayAveragePrice = new Item(item1);
+        ItemEntityDTO dayAveragePrice = new ItemEntityDTO(item1);
         dayAveragePrice.setDayAveragePrice(110);
 
-        Item dayMedianPrice = new Item(item1);
+        ItemEntityDTO dayMedianPrice = new ItemEntityDTO(item1);
         dayMedianPrice.setDayMedianPrice(120);
 
-        Item dayMaxPrice = new Item(item1);
+        ItemEntityDTO dayMaxPrice = new ItemEntityDTO(item1);
         dayMaxPrice.setDayMaxPrice(130);
 
-        Item dayMinPrice = new Item(item1);
+        ItemEntityDTO dayMinPrice = new ItemEntityDTO(item1);
         dayMinPrice.setDayMinPrice(140);
 
-        Item daySales = new Item(item1);
+        ItemEntityDTO daySales = new ItemEntityDTO(item1);
         daySales.setDaySales(150);
 
-        Item priceToSellIn1Hour = new Item(item1);
+        ItemEntityDTO priceToSellIn1Hour = new ItemEntityDTO(item1);
         priceToSellIn1Hour.setPriceToSellIn1Hour(160);
 
-        Item priceToSellIn6Hours = new Item(item1);
+        ItemEntityDTO priceToSellIn6Hours = new ItemEntityDTO(item1);
         priceToSellIn6Hours.setPriceToSellIn6Hours(170);
 
-        Item priceToSellIn24Hours = new Item(item1);
+        ItemEntityDTO priceToSellIn24Hours = new ItemEntityDTO(item1);
         priceToSellIn24Hours.setPriceToSellIn24Hours(180);
 
-        Item priceToSellIn168Hours = new Item(item1);
+        ItemEntityDTO priceToSellIn168Hours = new ItemEntityDTO(item1);
         priceToSellIn168Hours.setPriceToSellIn168Hours(190);
 
-        Item priceToBuyIn1Hour = new Item(item1);
+        ItemEntityDTO priceToBuyIn1Hour = new ItemEntityDTO(item1);
         priceToBuyIn1Hour.setPriceToBuyIn1Hour(200);
 
-        Item priceToBuyIn6Hours = new Item(item1);
+        ItemEntityDTO priceToBuyIn6Hours = new ItemEntityDTO(item1);
         priceToBuyIn6Hours.setPriceToBuyIn6Hours(210);
 
-        Item priceToBuyIn24Hours = new Item(item1);
+        ItemEntityDTO priceToBuyIn24Hours = new ItemEntityDTO(item1);
         priceToBuyIn24Hours.setPriceToBuyIn24Hours(220);
 
-        Item priceToBuyIn168Hours = new Item(item1);
+        ItemEntityDTO priceToBuyIn168Hours = new ItemEntityDTO(item1);
         priceToBuyIn168Hours.setPriceToBuyIn168Hours(230);
 
         assertFalse(item1.itemHistoryFieldsAreEqual(itemId));
@@ -614,7 +614,7 @@ class ItemTest {
 
     @Test
     public void itemHistoryFieldsAreEqual_should_return_false_when_item_is_null() {
-        Item item1 = new Item();
+        ItemEntityDTO item1 = new ItemEntityDTO();
         item1.setItemId("1");
         item1.setAssetUrl("url");
         item1.setName("name");
@@ -646,14 +646,14 @@ class ItemTest {
         item1.setPriceToBuyIn24Hours(22);
         item1.setPriceToBuyIn168Hours(23);
 
-        Item item2 = null;
+        ItemEntityDTO item2 = null;
 
         assertFalse(item1.itemHistoryFieldsAreEqual(item2));
     }
 
     @Test
     public void itemHistoryFieldsAreEqual_should_return_false_when_object_of_another_class() {
-        Item item1 = new Item();
+        ItemEntityDTO item1 = new ItemEntityDTO();
         item1.setItemId("1");
         item1.setAssetUrl("url");
         item1.setName("name");
@@ -692,7 +692,7 @@ class ItemTest {
 
     @Test
     public void isFullyEqualTo_should_return_true_when_all_fields_are_equal() {
-        Item item1 = new Item();
+        ItemEntityDTO item1 = new ItemEntityDTO();
         item1.setItemId("1");
         item1.setAssetUrl("url");
         item1.setName("name");
@@ -724,7 +724,7 @@ class ItemTest {
         item1.setPriceToBuyIn24Hours(22);
         item1.setPriceToBuyIn168Hours(23);
 
-        Item item2 = new Item();
+        ItemEntityDTO item2 = new ItemEntityDTO();
         item2.setItemId("1");
         item2.setAssetUrl("url");
         item2.setName("name");
@@ -761,7 +761,7 @@ class ItemTest {
 
     @Test
     public void isFullyEqualTo_should_return_false_when_any_field_is_different() {
-        Item item1 = new Item();
+        ItemEntityDTO item1 = new ItemEntityDTO();
         item1.setItemId("1");
         item1.setAssetUrl("url");
         item1.setName("name");
@@ -793,94 +793,94 @@ class ItemTest {
         item1.setPriceToBuyIn24Hours(22);
         item1.setPriceToBuyIn168Hours(23);
 
-        Item itemId = new Item(item1);
+        ItemEntityDTO itemId = new ItemEntityDTO(item1);
         itemId.setItemId("2");
 
-        Item assetUrl = new Item(item1);
+        ItemEntityDTO assetUrl = new ItemEntityDTO(item1);
         assetUrl.setAssetUrl("url2");
 
-        Item name = new Item(item1);
+        ItemEntityDTO name = new ItemEntityDTO(item1);
         name.setName("name2");
 
-        Item tags = new Item(item1);
+        ItemEntityDTO tags = new ItemEntityDTO(item1);
         tags.setTags(List.of("tag2"));
 
-        Item rarity = new Item(item1);
+        ItemEntityDTO rarity = new ItemEntityDTO(item1);
         rarity.setRarity(ItemRarity.RARE);
 
-        Item type = new Item(item1);
+        ItemEntityDTO type = new ItemEntityDTO(item1);
         type.setType(ItemType.CharacterHeadgear);
 
-        Item maxBuyPrice = new Item(item1);
+        ItemEntityDTO maxBuyPrice = new ItemEntityDTO(item1);
         maxBuyPrice.setMaxBuyPrice(10);
 
-        Item buyOrdersCount = new Item(item1);
+        ItemEntityDTO buyOrdersCount = new ItemEntityDTO(item1);
         buyOrdersCount.setBuyOrdersCount(20);
 
-        Item minSellPrice = new Item(item1);
+        ItemEntityDTO minSellPrice = new ItemEntityDTO(item1);
         minSellPrice.setMinSellPrice(30);
 
-        Item sellOrdersCount = new Item(item1);
+        ItemEntityDTO sellOrdersCount = new ItemEntityDTO(item1);
         sellOrdersCount.setSellOrdersCount(40);
 
-        Item lastSoldAt = new Item(item1);
+        ItemEntityDTO lastSoldAt = new ItemEntityDTO(item1);
         lastSoldAt.setLastSoldAt(LocalDateTime.of(2024, 1, 1, 1, 1));
 
-        Item lastSoldPrice = new Item(item1);
+        ItemEntityDTO lastSoldPrice = new ItemEntityDTO(item1);
         lastSoldPrice.setLastSoldPrice(50);
 
-        Item monthAveragePrice = new Item(item1);
+        ItemEntityDTO monthAveragePrice = new ItemEntityDTO(item1);
         monthAveragePrice.setMonthAveragePrice(60);
 
-        Item monthMedianPrice = new Item(item1);
+        ItemEntityDTO monthMedianPrice = new ItemEntityDTO(item1);
         monthMedianPrice.setMonthMedianPrice(70);
 
-        Item monthMaxPrice = new Item(item1);
+        ItemEntityDTO monthMaxPrice = new ItemEntityDTO(item1);
         monthMaxPrice.setMonthMaxPrice(80);
 
-        Item monthMinPrice = new Item(item1);
+        ItemEntityDTO monthMinPrice = new ItemEntityDTO(item1);
         monthMinPrice.setMonthMinPrice(90);
 
-        Item monthSalesPerDay = new Item(item1);
+        ItemEntityDTO monthSalesPerDay = new ItemEntityDTO(item1);
         monthSalesPerDay.setMonthSalesPerDay(100);
 
-        Item dayAveragePrice = new Item(item1);
+        ItemEntityDTO dayAveragePrice = new ItemEntityDTO(item1);
         dayAveragePrice.setDayAveragePrice(110);
 
-        Item dayMedianPrice = new Item(item1);
+        ItemEntityDTO dayMedianPrice = new ItemEntityDTO(item1);
         dayMedianPrice.setDayMedianPrice(120);
 
-        Item dayMaxPrice = new Item(item1);
+        ItemEntityDTO dayMaxPrice = new ItemEntityDTO(item1);
         dayMaxPrice.setDayMaxPrice(130);
 
-        Item dayMinPrice = new Item(item1);
+        ItemEntityDTO dayMinPrice = new ItemEntityDTO(item1);
         dayMinPrice.setDayMinPrice(140);
 
-        Item daySales = new Item(item1);
+        ItemEntityDTO daySales = new ItemEntityDTO(item1);
         daySales.setDaySales(150);
 
-        Item priceToSellIn1Hour = new Item(item1);
+        ItemEntityDTO priceToSellIn1Hour = new ItemEntityDTO(item1);
         priceToSellIn1Hour.setPriceToSellIn1Hour(160);
 
-        Item priceToSellIn6Hours = new Item(item1);
+        ItemEntityDTO priceToSellIn6Hours = new ItemEntityDTO(item1);
         priceToSellIn6Hours.setPriceToSellIn6Hours(170);
 
-        Item priceToSellIn24Hours = new Item(item1);
+        ItemEntityDTO priceToSellIn24Hours = new ItemEntityDTO(item1);
         priceToSellIn24Hours.setPriceToSellIn24Hours(180);
 
-        Item priceToSellIn168Hours = new Item(item1);
+        ItemEntityDTO priceToSellIn168Hours = new ItemEntityDTO(item1);
         priceToSellIn168Hours.setPriceToSellIn168Hours(190);
 
-        Item priceToBuyIn1Hour = new Item(item1);
+        ItemEntityDTO priceToBuyIn1Hour = new ItemEntityDTO(item1);
         priceToBuyIn1Hour.setPriceToBuyIn1Hour(200);
 
-        Item priceToBuyIn6Hours = new Item(item1);
+        ItemEntityDTO priceToBuyIn6Hours = new ItemEntityDTO(item1);
         priceToBuyIn6Hours.setPriceToBuyIn6Hours(210);
 
-        Item priceToBuyIn24Hours = new Item(item1);
+        ItemEntityDTO priceToBuyIn24Hours = new ItemEntityDTO(item1);
         priceToBuyIn24Hours.setPriceToBuyIn24Hours(220);
 
-        Item priceToBuyIn168Hours = new Item(item1);
+        ItemEntityDTO priceToBuyIn168Hours = new ItemEntityDTO(item1);
         priceToBuyIn168Hours.setPriceToBuyIn168Hours(230);
 
         assertFalse(item1.isFullyEqualTo(itemId));
@@ -917,7 +917,7 @@ class ItemTest {
 
     @Test
     public void isFullyEqualTo_should_return_false_when_item_is_null() {
-        Item item1 = new Item();
+        ItemEntityDTO item1 = new ItemEntityDTO();
         item1.setItemId("1");
         item1.setAssetUrl("url");
         item1.setName("name");
@@ -949,14 +949,14 @@ class ItemTest {
         item1.setPriceToBuyIn24Hours(22);
         item1.setPriceToBuyIn168Hours(23);
 
-        Item item2 = null;
+        ItemEntityDTO item2 = null;
 
         assertFalse(item1.isFullyEqualTo(item2));
     }
 
     @Test
     public void isFullyEqualTo_should_return_false_when_object_of_another_class() {
-        Item item1 = new Item();
+        ItemEntityDTO item1 = new ItemEntityDTO();
         item1.setItemId("1");
         item1.setAssetUrl("url");
         item1.setName("name");
@@ -1004,7 +1004,7 @@ class ItemTest {
         settings.setItemsShowSellOrdersCountFlag(false);
         settings.setItemShowPictureFlag(false);
 
-        Item item = new Item();
+        ItemEntityDTO item = new ItemEntityDTO();
         assertEquals(1, item.toStringBySettings(settings).split("\n").length);
 
         settings.setItemShowNameFlag(true);
@@ -1031,7 +1031,7 @@ class ItemTest {
 
     @Test
     public void hashCode_should_be_equal_for_equal_itemId_ignoring_other_fields() {
-        Item item1 = new Item();
+        ItemEntityDTO item1 = new ItemEntityDTO();
         item1.setItemId("1");
         item1.setAssetUrl("url");
         item1.setName("name");
@@ -1063,7 +1063,7 @@ class ItemTest {
         item1.setPriceToBuyIn24Hours(22);
         item1.setPriceToBuyIn168Hours(23);
 
-        Item item2 = new Item();
+        ItemEntityDTO item2 = new ItemEntityDTO();
         item2.setItemId("1");
         item2.setAssetUrl("url2");
         item2.setName("name2");
@@ -1100,10 +1100,10 @@ class ItemTest {
 
     @Test
     public void hashCode_should_be_different_for_different_itemId() {
-        Item item1 = new Item();
+        ItemEntityDTO item1 = new ItemEntityDTO();
         item1.setItemId("1");
 
-        Item item2 = new Item();
+        ItemEntityDTO item2 = new ItemEntityDTO();
         item2.setItemId("2");
 
         assertNotEquals(item1.hashCode(), item2.hashCode());
@@ -1111,7 +1111,7 @@ class ItemTest {
 
     @Test
     public void equals_should_be_true_for_equal_itemId_and_ignore_other_fields() {
-        Item item1 = new Item();
+        ItemEntityDTO item1 = new ItemEntityDTO();
         item1.setItemId("1");
         item1.setAssetUrl("url");
         item1.setName("name");
@@ -1143,7 +1143,7 @@ class ItemTest {
         item1.setPriceToBuyIn24Hours(22);
         item1.setPriceToBuyIn168Hours(23);
 
-        Item item2 = new Item();
+        ItemEntityDTO item2 = new ItemEntityDTO();
         item2.setItemId("1");
         item2.setAssetUrl("url2");
         item2.setName("name2");
@@ -1180,10 +1180,10 @@ class ItemTest {
 
     @Test
     public void equals_should_be_false_for_different_itemId() {
-        Item item1 = new Item();
+        ItemEntityDTO item1 = new ItemEntityDTO();
         item1.setItemId("1");
 
-        Item item2 = new Item();
+        ItemEntityDTO item2 = new ItemEntityDTO();
         item2.setItemId("2");
 
         assertNotEquals(item1, item2);
@@ -1191,17 +1191,17 @@ class ItemTest {
 
     @Test
     public void equals_should_be_false_for_null() {
-        Item item1 = new Item();
+        ItemEntityDTO item1 = new ItemEntityDTO();
         item1.setItemId("1");
 
-        Item item2 = null;
+        ItemEntityDTO item2 = null;
 
         assertNotEquals(item2, item1);
     }
 
     @Test
     public void equals_should_be_false_for_object_of_another_class() {
-        Item item1 = new Item();
+        ItemEntityDTO item1 = new ItemEntityDTO();
         item1.setItemId("1");
 
         ItemFilter item2 = new ItemFilter();

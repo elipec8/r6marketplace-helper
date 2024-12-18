@@ -6,7 +6,7 @@ import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableI
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.LastSoldAt;
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.SellStats;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.exceptions.server.GraphQlCommonItemMappingException;
 import lombok.RequiredArgsConstructor;
@@ -27,11 +27,11 @@ public class CommonQueryItemsMapper {
 
     private final CommonValuesService commonValuesService;
 
-    public List<Item> mapItems(Collection<Node> nodes) throws GraphQlCommonItemMappingException {
+    public List<ItemEntityDTO> mapItems(Collection<Node> nodes) throws GraphQlCommonItemMappingException {
         return nodes.stream().map(this::mapItem).collect(Collectors.toList());
     }
 
-    public Item mapItem(Node node) throws GraphQlCommonItemMappingException {
+    public ItemEntityDTO mapItem(Node node) throws GraphQlCommonItemMappingException {
         if (node == null) {
             throw new GraphQlCommonItemMappingException("Node is null");
         }
@@ -41,7 +41,7 @@ public class CommonQueryItemsMapper {
             throw new GraphQlCommonItemMappingException("Item is null, node-" + node);
         }
 
-        Item result = new Item();
+        ItemEntityDTO result = new ItemEntityDTO();
 
         if (item.getItemId() == null
             || item.getAssetUrl() == null

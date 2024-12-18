@@ -42,12 +42,12 @@ public class ItemService {
     }
 
     public void recalculateAndSaveAllItemsHistoryFields() {
-        Set<Item> items = itemDatabaseService.findAll().stream().map(Item::new).collect(Collectors.toSet());
+        Set<ItemEntityDTO> items = itemDatabaseService.findAll().stream().map(ItemEntityDTO::new).collect(Collectors.toSet());
 
         Collection<ItemSale> lastMonthSales = saleDatabaseService.findAllForLastMonth();
         Collection<ItemDaySalesUbiStatsEntityDTO> lastMonthSalesUbiStats = itemSaleUbiStatsService.findAllForLastMonth();
 
-        for (Item item : items) {
+        for (ItemEntityDTO item : items) {
             Collection<ItemSale> saleStats = getItemSalesForItem(lastMonthSales, item.getItemId());
             Collection<ItemDaySalesUbiStatsEntityDTO> ubiSaleStats = getItemDaySalesUbiStatsForItem(lastMonthSalesUbiStats, item.getItemId());
             List<ItemDaySalesStatsByItemId> resultingPerDayStats = getResultingSaleStatsByPeriodForItem(saleStats, ubiSaleStats, item,
@@ -99,17 +99,17 @@ public class ItemService {
         itemDatabaseService.saveAll(items);
     }
 
-    public Item getItemById(String itemId) {
+    public ItemEntityDTO getItemById(String itemId) {
         return itemDatabaseService.findById(itemId);
     }
 
-    public List<Item> getAllItemsByFilters(Collection<ItemFilter> filters) {
-        List<Item> item = itemDatabaseService.findAll();
+    public List<ItemEntityDTO> getAllItemsByFilters(Collection<ItemFilter> filters) {
+        List<ItemEntityDTO> item = itemDatabaseService.findAll();
 
         return ItemFilter.filterItems(item, filters);
     }
 
-    public List<Item> getAllItems() {
+    public List<ItemEntityDTO> getAllItems() {
         return itemDatabaseService.findAll();
     }
 
@@ -189,7 +189,7 @@ public class ItemService {
     }
 
     private List<ItemDaySalesStatsByItemId> getResultingSaleStatsByPeriodForItem(Collection<ItemSale> saleStats,
-                                                                                 Collection<ItemDaySalesUbiStatsEntityDTO> ubiSaleStats, Item item, LocalDate startDate, LocalDate endDate) {
+                                                                                 Collection<ItemDaySalesUbiStatsEntityDTO> ubiSaleStats, ItemEntityDTO item, LocalDate startDate, LocalDate endDate) {
         List<ItemDaySalesStatsByItemId> resultingPerDayStats = new ArrayList<>();
 
         for (LocalDate day = startDate; day.isBefore(endDate.plusDays(1)); day = day.plusDays(1)) {
@@ -213,19 +213,19 @@ public class ItemService {
         return itemDaySalesUbiStatEntityDTOS.stream().filter(ubiStats -> ubiStats.getItemId().equals(itemId)).toList();
     }
 
-    private Set<Item> getAllItemsFromDbInConjunctionWithUpdatedFields(Collection<? extends ItemMainFieldsI> itemMainFields) {
+    private Set<ItemEntityDTO> getAllItemsFromDbInConjunctionWithUpdatedFields(Collection<? extends ItemMainFieldsI> itemMainFields) {
         Set<Tag> tags = new HashSet<>(tagService.getTagsByNames(Set.of("UNCOMMON", "RARE", "EPIC", "LEGENDARY")));
         String uncommonTag = tags.stream().filter(tag -> tag.getName().equals("UNCOMMON")).findFirst().get().getValue();
         String rareTag = tags.stream().filter(tag -> tag.getName().equals("RARE")).findFirst().get().getValue();
         String epicTag = tags.stream().filter(tag -> tag.getName().equals("EPIC")).findFirst().get().getValue();
         String legendaryTag = tags.stream().filter(tag -> tag.getName().equals("LEGENDARY")).findFirst().get().getValue();
 
-        Set<Item> existingItems = itemDatabaseService.findAll().stream().map(Item::new).collect(Collectors.toSet());
+        Set<ItemEntityDTO> existingItems = itemDatabaseService.findAll().stream().map(ItemEntityDTO::new).collect(Collectors.toSet());
 
-        Set<Item> updatedItems = itemMainFields.stream().map(Item::new).collect(Collectors.toSet());
+        Set<ItemEntityDTO> updatedItems = itemMainFields.stream().map(ItemEntityDTO::new).collect(Collectors.toSet());
 
-        for (Item updatedItem : updatedItems) {
-            Item existingItem = existingItems.stream().filter(existing -> existing.equals(updatedItem)).findFirst().orElse(null);
+        for (ItemEntityDTO updatedItem : updatedItems) {
+            ItemEntityDTO existingItem = existingItems.stream().filter(existing -> existing.equals(updatedItem)).findFirst().orElse(null);
             if (existingItem == null) {
                 log.error("Item with id {} not found, getAllItemsFromDbInConjunctionWithUpdatedFields for this item skipped", updatedItem.getItemId());
                 continue;

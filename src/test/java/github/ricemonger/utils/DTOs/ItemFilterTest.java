@@ -1,6 +1,6 @@
 package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
 import github.ricemonger.utils.DTOs.items.Tag;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.ItemType;
@@ -17,13 +17,13 @@ class ItemFilterTest {
 
     @Test
     public void static_filterItems_should_properly_filter_items_by_multiple_filters() {
-        Collection<Item> expected = new ArrayList<>();
+        Collection<ItemEntityDTO> expected = new ArrayList<>();
         expected.add(createItem("test11", ItemType.WeaponSkin, List.of("value1"), 110, 190, 150));
         expected.add(createItem("test2", ItemType.WeaponSkin, List.of("value1", "value3"), 110, 190, 100));
         expected.add(createItem("test3", ItemType.WeaponSkin, List.of("value1", "value3"), 110, 190, 100));
         expected.add(createItem("test33", ItemType.WeaponSkin, List.of("value1", "value3"), 110, 190, 100));
 
-        Collection<Item> allItemMainFields = new ArrayList<>(expected);
+        Collection<ItemEntityDTO> allItemMainFields = new ArrayList<>(expected);
         allItemMainFields.add(createItem("test1", ItemType.Charm, List.of("value1", "value2"), 100, 200, 50));
         allItemMainFields.add(createItem("test1", ItemType.CharacterHeadgear, List.of("value1", "value2"), 100, 200, 50));
         allItemMainFields.add(createItem("test1", ItemType.Charm, List.of(), 100, 200, 50));
@@ -97,19 +97,19 @@ class ItemFilterTest {
         denyFilter3.setMinLastSoldPrice(0);
         denyFilter3.setMaxLastSoldPrice(9999);
 
-        Collection<Item> result = ItemFilter.filterItems(allItemMainFields, List.of(allowFilter1, allowFilter2, denyFilter1, denyFilter2));
+        Collection<ItemEntityDTO> result = ItemFilter.filterItems(allItemMainFields, List.of(allowFilter1, allowFilter2, denyFilter1, denyFilter2));
 
         assertTrue(result.containsAll(expected) && expected.containsAll(result));
     }
 
     @Test
     public void filterItems_should_return_list_by_filter_parameters() {
-        Collection<Item> expected = new ArrayList<>();
+        Collection<ItemEntityDTO> expected = new ArrayList<>();
         expected.add(createItem("test1", ItemType.Charm, List.of("value1", "value2"), 100, 200, 50));
         expected.add(createItem("test1111", ItemType.WeaponSkin, List.of("value1"), 110, 190, 150));
         expected.add(createItem("test2", ItemType.WeaponSkin, List.of("value1", "value3"), 110, 190, 100));
 
-        Collection<Item> allItemMainFields = new ArrayList<>(expected);
+        Collection<ItemEntityDTO> allItemMainFields = new ArrayList<>(expected);
         allItemMainFields.add(createItem("test3", ItemType.WeaponSkin, List.of("value1", "value2"), 100, 200, 50));
         allItemMainFields.add(createItem("test1", ItemType.CharacterHeadgear, List.of("value1", "value2"), 100, 200, 50));
         allItemMainFields.add(createItem("test1", ItemType.Charm, List.of(), 100, 200, 50));
@@ -127,13 +127,13 @@ class ItemFilterTest {
         filter.setMinLastSoldPrice(50);
         filter.setMaxLastSoldPrice(150);
 
-        Collection<Item> result = filter.filterItems(allItemMainFields);
+        Collection<ItemEntityDTO> result = filter.filterItems(allItemMainFields);
 
         assertTrue(result.containsAll(expected) && expected.containsAll(result));
     }
 
-    private Item createItem(String name, ItemType type, List<String> tagValues, int minSellPrice, int maxBuyPrice, int lastSoldPrice) {
-        Item item = new Item();
+    private ItemEntityDTO createItem(String name, ItemType type, List<String> tagValues, int minSellPrice, int maxBuyPrice, int lastSoldPrice) {
+        ItemEntityDTO item = new ItemEntityDTO();
         item.setItemId(name);
         item.setName(name);
         item.setType(type);

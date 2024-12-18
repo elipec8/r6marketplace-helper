@@ -11,7 +11,7 @@ import github.ricemonger.utils.DTOs.UbiAccountStats;
 import github.ricemonger.utils.DTOs.UbiAccountStatsEntityDTO;
 import github.ricemonger.utils.DTOs.UserTradesLimitations;
 import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
 import github.ricemonger.utils.DTOs.items.ItemResaleLockWithUbiAccount;
 import github.ricemonger.utils.DTOs.items.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
@@ -125,7 +125,7 @@ public class ScheduledAllUbiUsersManager {
     }
 
     private String getFinishedTradeString(UbiTrade trade) {
-        Item item = itemService.getItemById(trade.getItemId());
+        ItemEntityDTO item = itemService.getItemById(trade.getItemId());
         return item.getName() + " : " + item.getAssetUrl() + " for " + (trade.getSuccessPaymentPrice() - trade.getSuccessPaymentFee());
     }
 }

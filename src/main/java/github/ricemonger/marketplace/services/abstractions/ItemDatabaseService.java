@@ -1,15 +1,15 @@
 package github.ricemonger.marketplace.services.abstractions;
 
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
 import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 
 import java.util.Collection;
 import java.util.List;
 
 public interface ItemDatabaseService {
-    void saveAll(Collection<? extends Item> items);
+    void saveAll(Collection<? extends ItemEntityDTO> items);
 
-    Item findById(String itemId) throws ItemDoesntExistException;
+    ItemEntityDTO findById(String itemId) throws ItemDoesntExistException;
 
-    List<Item> findAll();
+    List<ItemEntityDTO> findAll();
 }
