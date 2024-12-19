@@ -5,6 +5,7 @@ import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUs
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserInputEntityId;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserInputPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.services.entity_factories.user.TelegramUserInputEntityFactory;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserInputDatabaseService;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.DTOs.TelegramUserInput;
@@ -28,14 +29,12 @@ public class TelegramUserInputPostgresService implements TelegramUserInputDataba
 
     private final TelegramUserPostgresRepository telegramUserRepository;
 
+    private final TelegramUserInputEntityFactory telegramUserInputEntityFactory;
+
     @Override
     @Transactional
     public void save(String chatId, InputState inputState, String value) throws TelegramUserDoesntExistException {
-        TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
-
-        TelegramUserInputEntity input = telegramUserInputRepository.findById(new TelegramUserInputEntityId(telegramUser, inputState)).orElse(new TelegramUserInputEntity(telegramUser, inputState));
-        input.setValue(value);
-        telegramUserInputRepository.save(input);
+        telegramUserInputRepository.save(telegramUserInputEntityFactory.createEntity(new TelegramUserInput(chatId, inputState, value)));
     }
 
     @Override
@@ -52,8 +51,8 @@ public class TelegramUserInputPostgresService implements TelegramUserInputDataba
     public TelegramUserInput findById(String chatId, InputState inputState) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
-        return telegramUserInputRepository.findById(new TelegramUserInputEntityId(telegramUser, inputState)).orElseThrow(() -> new TelegramUserInputDoesntExistException(
-                "Input with chatId" + chatId + " and inputState " + inputState + " not found")).toTelegramUserInput();
+        return telegramUserInputEntityFactory.createDTO(telegramUserInputRepository.findById(new TelegramUserInputEntityId(telegramUser, inputState))
+                .orElseThrow(() -> new TelegramUserInputDoesntExistException("Input with chatId" + chatId + " and inputState " + inputState + " not found")));
     }
 
     @Override
@@ -66,7 +65,7 @@ public class TelegramUserInputPostgresService implements TelegramUserInputDataba
             return new ArrayList<>();
         } else {
             return entities.stream()
-                    .map(TelegramUserInputEntity::toTelegramUserInput)
+                    .map(telegramUserInputEntityFactory::createDTO)
                     .toList();
         }
     }

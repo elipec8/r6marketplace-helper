@@ -29,16 +29,7 @@ public class TelegramUserInputEntity {
     @Column(name = "input_value") // "value" column name conflicts with H2
     private String value;
 
-    public TelegramUserInputEntity(TelegramUserEntity user, InputState inputState) {
-        this.telegramUser = user;
-        this.inputState = inputState;
-    }
-
-    public TelegramUserInput toTelegramUserInput() {
-        TelegramUserInput telegramUserInput = new TelegramUserInput();
-        telegramUserInput.setChatId(this.telegramUser.getChatId());
-        telegramUserInput.setInputState(this.inputState);
-        telegramUserInput.setValue(this.value);
-        return telegramUserInput;
+    public String getChatId() {
+        return telegramUser.getChatId();
     }
 }
