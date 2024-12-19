@@ -1,6 +1,6 @@
 package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
+import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.DTOs.items.UbiTrade;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.TradeOperationType;
@@ -13,7 +13,7 @@ import java.util.Objects;
 @Data
 @AllArgsConstructor
 public class PersonalItem {
-    private ItemEntityDTO item;
+    private Item item;
     private Integer sellBoundaryPrice;
     private Integer buyBoundaryPrice;
     private Integer minMedianPriceDifference;

@@ -4,7 +4,7 @@ import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.ItemService;
 import github.ricemonger.telegramBot.TelegramBotService;
-import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
+import github.ricemonger.utils.DTOs.items.Item;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,7 +37,7 @@ public class ScheduledAllItemsStatsFetcherTest {
 
     @Test
     public void fetchAllItemStats_should_save_items_from_graphql_and_calculate() {
-        List<ItemEntityDTO> itemMainFields = new ArrayList<>();
+        List<Item> itemMainFields = new ArrayList<>();
 
         when(graphQlClientService.fetchAllItemStats()).thenReturn(itemMainFields);
 
@@ -49,8 +49,8 @@ public class ScheduledAllItemsStatsFetcherTest {
 
     @Test
     public void fetchAllItemStats_should_call_services_when_item_amount_increased() {
-        List<ItemEntityDTO> items = new ArrayList<>();
-        items.add(new ItemEntityDTO());
+        List<Item> items = new ArrayList<>();
+        items.add(new Item());
 
         when(graphQlClientService.fetchAllItemStats()).thenReturn(items);
         when(commonValuesService.getExpectedItemCount()).thenReturn(0);

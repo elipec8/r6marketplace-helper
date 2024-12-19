@@ -18,7 +18,7 @@ public class UbiTrade {
     private LocalDateTime expiresAt;
     private LocalDateTime lastModifiedAt;
 
-    private ItemEntityDTO item;
+    private Item item;
 
     private Integer successPaymentPrice;
     private Integer successPaymentFee;

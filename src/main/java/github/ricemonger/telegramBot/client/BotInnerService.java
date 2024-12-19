@@ -6,7 +6,7 @@ import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.utils.DTOs.*;
-import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
+import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.DTOs.items.Tag;
 import github.ricemonger.utils.enums.TagGroup;
 import github.ricemonger.utils.enums.TradeOperationType;
@@ -77,7 +77,7 @@ public class BotInnerService {
 
         int offset = getItemOffsetOrZeroByUserInput(chatId);
 
-        List<ItemEntityDTO> itemMainFields = itemService.getAllItemsByFilters(settings.getItemShowAppliedFilters());
+        List<Item> itemMainFields = itemService.getAllItemsByFilters(settings.getItemShowAppliedFilters());
         try {
             if (offset >= itemMainFields.size()) {
                 throw new IllegalArgumentException("Offset is bigger or equals than items size");
@@ -95,7 +95,7 @@ public class BotInnerService {
         int itemsInCurrentMessageCount = 0;
         StringBuilder currentMessage = new StringBuilder();
 
-        for (ItemEntityDTO item : itemMainFields) {
+        for (Item item : itemMainFields) {
             if (messageCount >= messageLimit) {
                 break;
             }
@@ -314,7 +314,7 @@ public class BotInnerService {
                 telegramUserService.getTradeManagersSettings(chatId).isNewManagersAreActiveFlag());
     }
 
-    public ItemEntityDTO getItemByUserInputItemId(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
+    public Item getItemByUserInputItemId(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         return itemService.getItemById(getUserInputByState(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID));
     }
 

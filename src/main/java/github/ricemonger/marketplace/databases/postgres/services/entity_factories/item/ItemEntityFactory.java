@@ -3,7 +3,7 @@ package github.ricemonger.marketplace.databases.postgres.services.entity_factori
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.TagPostgresRepository;
-import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
+import github.ricemonger.utils.DTOs.items.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -20,12 +20,12 @@ import java.util.List;
 public class ItemEntityFactory {
     private final TagPostgresRepository tagRepository;
 
-    public ItemEntityDTO createDTO(@NotNull ItemEntity itemEntity) {
+    public Item createDTO(@NotNull ItemEntity itemEntity) {
         List<String> tags = new ArrayList<>();
         if (itemEntity.getTags() != null && !itemEntity.getTags().isEmpty()) {
             tags = List.of(itemEntity.getTags().stream().map(TagEntity::getValue).toArray(String[]::new));
         }
-        return new ItemEntityDTO(
+        return new Item(
                 itemEntity.getItemId(),
                 itemEntity.getAssetUrl(),
                 itemEntity.getName(),
@@ -64,19 +64,19 @@ public class ItemEntityFactory {
                 itemEntity.getPriceToBuyIn720Hours());
     }
 
-    public List<ItemEntity> createEntities(Collection<? extends ItemEntityDTO> items) {
+    public List<ItemEntity> createEntities(Collection<? extends Item> items) {
         List<ItemEntity> entities = new LinkedList<>();
 
         List<TagEntity> existingTags = tagRepository.findAll();
 
-        for (ItemEntityDTO item : items) {
+        for (Item item : items) {
             entities.add(createEntity(item, existingTags));
         }
 
         return entities;
     }
 
-    private ItemEntity createEntity(ItemEntityDTO item, Collection<TagEntity> tageEntities) {
+    private ItemEntity createEntity(Item item, Collection<TagEntity> tageEntities) {
         List<TagEntity> itemTagsEntities = new LinkedList<>();
 
         if (item.getTags() != null && tageEntities != null && !tageEntities.isEmpty()) {

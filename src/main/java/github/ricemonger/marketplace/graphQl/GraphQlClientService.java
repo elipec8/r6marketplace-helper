@@ -45,7 +45,7 @@ public class GraphQlClientService {
 
     private final PersonalQueryOwnedItemsMapper personalQueryOwnedItemsMapper;
 
-    public Collection<ItemEntityDTO> fetchAllItemStats() throws GraphQlCommonItemMappingException {
+    public Collection<Item> fetchAllItemStats() throws GraphQlCommonItemMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
         github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems marketableItems;
         List<github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.Node> nodes = new ArrayList<>();

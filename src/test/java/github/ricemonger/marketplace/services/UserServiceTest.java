@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.abstractions.UserDatabaseService;
 import github.ricemonger.utils.DTOs.UserForCentralTradeManager;
-import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
+import github.ricemonger.utils.DTOs.items.Item;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +23,7 @@ class UserServiceTest {
 
     @Test
     public void getAllManageableUsers_should_return_service_result() {
-        List<ItemEntityDTO> existingItems = List.of(new ItemEntityDTO());
+        List<Item> existingItems = List.of(new Item());
 
         List expected = List.of(new UserForCentralTradeManager());
         when(userDatabaseService.getAllManageableUsers(existingItems)).thenReturn(expected);
@@ -33,7 +33,7 @@ class UserServiceTest {
 
     @Test
     public void getAllManageableUsers_should_throw_if_service_throws() {
-        List<ItemEntityDTO> existingItems = List.of(new ItemEntityDTO());
+        List<Item> existingItems = List.of(new Item());
 
         when(userDatabaseService.getAllManageableUsers(existingItems)).thenThrow(new RuntimeException());
 

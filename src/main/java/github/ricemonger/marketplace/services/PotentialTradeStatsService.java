@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.services;
 
-import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
+import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.DTOs.items.ItemDaySalesStatsByItemId;
 import github.ricemonger.utils.DTOs.items.PotentialTradeStats;
 import github.ricemonger.utils.DTOs.items.UbiTrade;
@@ -26,7 +26,7 @@ public class PotentialTradeStatsService {
 
     private final CommonValuesService commonValuesService;
 
-    public List<PotentialTradeStats> getPotentialBuyTradesStats(ItemEntityDTO item) {
+    public List<PotentialTradeStats> getPotentialBuyTradesStats(Item item) {
         List<PotentialTradeStats> result = new ArrayList<>();
 
         if (item.getPriorityToBuyByMinSellPrice() != null) {
@@ -57,7 +57,7 @@ public class PotentialTradeStatsService {
         return result;
     }
 
-    public List<PotentialTradeStats> getPotentialSellTradesStats(ItemEntityDTO item) {
+    public List<PotentialTradeStats> getPotentialSellTradesStats(Item item) {
         List<PotentialTradeStats> result = new ArrayList<>();
 
         if (item.getPriorityToSellByNextFancySellPrice() != null) {
@@ -72,28 +72,28 @@ public class PotentialTradeStatsService {
         return result;
     }
 
-    public PotentialTradeStats calculatePotentialSellTradeStatsByMaxBuyPrice(ItemEntityDTO item) {
+    public PotentialTradeStats calculatePotentialSellTradeStatsByMaxBuyPrice(Item item) {
         return getSellTradeStats(item, item.getMaxBuyPrice(), TRADE_MANAGER_FIXED_RATE_MINUTES);
     }
 
-    public PotentialTradeStats calculatePotentialSellTradeStatsByNextFancySellPrice(ItemEntityDTO item) {
+    public PotentialTradeStats calculatePotentialSellTradeStatsByNextFancySellPrice(Item item) {
         PriceAndTime priceAndTime = getPriceAndTimeForNextFancySellPriceSale(item);
         return getSellTradeStats(item, priceAndTime.price(), priceAndTime.time());
     }
 
-    public PotentialTradeStats calculatePotentialBuyTradeStatsByMinSellPrice(ItemEntityDTO item) {
+    public PotentialTradeStats calculatePotentialBuyTradeStatsByMinSellPrice(Item item) {
         return getBuyTradeStats(item, item.getMinSellPrice(), TRADE_MANAGER_FIXED_RATE_MINUTES);
     }
 
-    public PotentialTradeStats calculatePotentialSellTradeStatsForExistingTrade(ItemEntityDTO item, UbiTrade existingTrade) {
+    public PotentialTradeStats calculatePotentialSellTradeStatsForExistingTrade(Item item, UbiTrade existingTrade) {
         return getSellTradeStats(item, existingTrade.getProposedPaymentPrice(), getPrognosedPaymentsSuccessMinutesOrNull(existingTrade));
     }
 
-    public PotentialTradeStats calculatePotentialBuyTradeStatsForExistingTrade(ItemEntityDTO item, UbiTrade existingTrade) {
+    public PotentialTradeStats calculatePotentialBuyTradeStatsForExistingTrade(Item item, UbiTrade existingTrade) {
         return getBuyTradeStats(item, existingTrade.getProposedPaymentPrice(), getPrognosedPaymentsSuccessMinutesOrNull(existingTrade));
     }
 
-    public PotentialTradeStats calculatePotentialBuyTradeStatsForTime(ItemEntityDTO item, Collection<ItemDaySalesStatsByItemId> resultingPerDayStats, Integer minutesToBuy) {
+    public PotentialTradeStats calculatePotentialBuyTradeStatsForTime(Item item, Collection<ItemDaySalesStatsByItemId> resultingPerDayStats, Integer minutesToBuy) {
         TreeMap<Integer, Integer> sortedMonthPricesAndQuantities = new TreeMap<>(Comparator.naturalOrder());
         for (ItemDaySalesStatsByItemId dayStat : resultingPerDayStats) {
             for (Map.Entry<Integer, Integer> priceAndQuantity : dayStat.getPriceAndQuantity().entrySet()) {
@@ -123,7 +123,7 @@ public class PotentialTradeStatsService {
         return getBuyTradeStats(item, null, minutesToBuy);
     }
 
-    private PriceAndTime getPriceAndTimeForNextFancySellPriceSale(ItemEntityDTO item) {
+    private PriceAndTime getPriceAndTimeForNextFancySellPriceSale(Item item) {
         int monthSalesPerDay = item.getMonthSalesPerDay() == null || item.getMonthSalesPerDay() <= 0 ? 1 : item.getMonthSalesPerDay();
         int nextFancySellPrice = getNextFancySellPrice(item);
         int timeToSellByNextFancySellPrice;
@@ -137,7 +137,7 @@ public class PotentialTradeStatsService {
         return new PriceAndTime(nextFancySellPrice, timeToSellByNextFancySellPrice);
     }
 
-    private int getSameOrHigherPricesBuyOrdersAmount(ItemEntityDTO item, int price) {
+    private int getSameOrHigherPricesBuyOrdersAmount(Item item, int price) {
         int currentBuyers = item.getBuyOrdersCount();
         // buyers prices proportions: 1% - maxBuyPrice
         // 4% - prevFancyPrice
@@ -177,7 +177,7 @@ public class PotentialTradeStatsService {
         }
     }
 
-    private Integer getPrognosedTradeSuccessMinutesOrNull(ItemEntityDTO item, Integer proposedPaymentPrice, TradeCategory category) {
+    private Integer getPrognosedTradeSuccessMinutesOrNull(Item item, Integer proposedPaymentPrice, TradeCategory category) {
         if (category == TradeCategory.Buy) {
             if (item.getMinSellPrice() != null && proposedPaymentPrice >= item.getMinSellPrice()) {
                 return TRADE_MANAGER_FIXED_RATE_MINUTES;
@@ -208,7 +208,7 @@ public class PotentialTradeStatsService {
         }
     }
 
-    private PotentialTradeStats getBuyTradeStats(ItemEntityDTO item, Integer price, Integer minutesToTrade) {
+    private PotentialTradeStats getBuyTradeStats(Item item, Integer price, Integer minutesToTrade) {
         long constant = commonValuesService.getMaximumMarketplacePrice();
         if (price != null && price > 0) {
 
@@ -230,13 +230,13 @@ public class PotentialTradeStatsService {
         }
     }
 
-    private long getTimeToResellFactor(ItemEntityDTO item, int pow) {
+    private long getTimeToResellFactor(Item item, int pow) {
         int sales = item.getMonthSales() == null ? 0 : Math.max(item.getMonthSales(), 0);
 
         return (long) Math.pow(sales, pow);
     }
 
-    private PotentialTradeStats getSellTradeStats(ItemEntityDTO item, Integer price, Integer minutesToTrade) {
+    private PotentialTradeStats getSellTradeStats(Item item, Integer price, Integer minutesToTrade) {
         if (price != null && price > 0) {
             if (item.getMinSellPrice() != null && item.getMinSellPrice() < price) {
                 return new PotentialTradeStats(price, minutesToTrade, Long.MIN_VALUE);
@@ -287,7 +287,7 @@ public class PotentialTradeStatsService {
         return MINUTES_IN_A_MONTH / (long) (Math.pow(minutesToTrade, pow));
     }
 
-    private int getNextFancySellPrice(ItemEntityDTO item) {
+    private int getNextFancySellPrice(Item item) {
         int limitMaxPrice = commonValuesService.getMaximumPriceByRarity(item.getRarity());
 
         int limitMinPrice = commonValuesService.getMinimumPriceByRarity(item.getRarity());
@@ -299,11 +299,11 @@ public class PotentialTradeStatsService {
         }
     }
 
-    private int getPrevFancyBuyPriceByMaxBuyPrice(ItemEntityDTO item) {
+    private int getPrevFancyBuyPriceByMaxBuyPrice(Item item) {
         return getPrevFancyBuyPrice(item, item.getMaxBuyPrice());
     }
 
-    private int getPrevFancyBuyPrice(ItemEntityDTO item, Integer buyPrice) {
+    private int getPrevFancyBuyPrice(Item item, Integer buyPrice) {
         int limitMinPrice = commonValuesService.getMinimumPriceByRarity(item.getRarity());
 
         if (buyPrice == null || buyPrice <= 0) {
@@ -327,7 +327,7 @@ public class PotentialTradeStatsService {
         }
     }
 
-    private int getCurrentFancyBuyPrice(ItemEntityDTO item, Integer buyPrice) {
+    private int getCurrentFancyBuyPrice(Item item, Integer buyPrice) {
         Integer sellPrice = item.getMinSellPrice();
         int limitMinPrice = commonValuesService.getMinimumPriceByRarity(item.getRarity());
 
@@ -424,7 +424,7 @@ public class PotentialTradeStatsService {
         }
     }
 
-    private int getNextFancyBuyPrice(ItemEntityDTO item, Integer buyPrice) {
+    private int getNextFancyBuyPrice(Item item, Integer buyPrice) {
         Integer sellPrice = item.getMinSellPrice();
         int limitMinPrice = commonValuesService.getMinimumPriceByRarity(item.getRarity());
 

@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.services;
 
-import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
+import github.ricemonger.utils.DTOs.items.Item;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -15,7 +15,7 @@ class PotentialTradeStatsServiceTest {
 
     @Test
     public void getNextFancyBuyPriceByCurrentPrices_should_use_current_item_prices() {
-        ItemEntityDTO item = new ItemEntityDTO();
+        Item item = new Item();
         item.setMaxBuyPrice(10);
         item.setMinSellPrice(150);
 

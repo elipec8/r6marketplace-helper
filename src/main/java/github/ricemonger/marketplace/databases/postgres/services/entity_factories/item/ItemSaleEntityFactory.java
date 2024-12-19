@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.databases.postgres.services.entity_factori
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemSaleEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
-import github.ricemonger.utils.DTOs.items.ItemSaleEntityDTO;
+import github.ricemonger.utils.DTOs.items.ItemSale;
 import github.ricemonger.utils.DTOs.items.SoldItemDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +20,8 @@ public class ItemSaleEntityFactory {
 
     private final ItemPostgresRepository itemRepository;
 
-    public ItemSaleEntityDTO createDTO(ItemSaleEntity entity) {
-        return new ItemSaleEntityDTO(entity.getItemId(), entity.getSoldAt(), entity.getPrice());
+    public ItemSale createDTO(ItemSaleEntity entity) {
+        return new ItemSale(entity.getItemId(), entity.getSoldAt(), entity.getPrice());
     }
 
     public Iterable<ItemSaleEntity> createEntities(Collection<? extends SoldItemDetails> soldItems) {

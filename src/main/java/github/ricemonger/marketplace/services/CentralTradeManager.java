@@ -7,7 +7,7 @@ import github.ricemonger.marketplace.services.factories.PotentialTradeFactory;
 import github.ricemonger.telegramBot.TelegramBotService;
 import github.ricemonger.utils.DTOs.*;
 import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
-import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
+import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.DTOs.items.UbiTrade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class CentralTradeManager {
     public void manageAllUsersTrades(Collection<UbiAccountStats> updatedUbiAccountStats) {
         ConfigTrades configTrades = commonValuesService.getConfigTrades();
 
-        List<ItemEntityDTO> items = itemService.getAllItems();
+        List<Item> items = itemService.getAllItems();
 
         List<UserEntityDTO> manageableUsers = userService.getAllManageableUsers();
 
@@ -50,7 +50,7 @@ public class CentralTradeManager {
 
     private void createAndExecuteCentralTradeManagerCommandsForUser(UserForCentralTradeManager userForCentralTradeManager,
                                                                     ConfigTrades configTrades,
-                                                                    Collection<ItemEntityDTO> existingItems) {
+                                                                    Collection<Item> existingItems) {
 
         List<UbiTrade> currentSellTrades = userForCentralTradeManager.getCurrentSellTrades();
         List<UbiTrade> currentBuyTrades = userForCentralTradeManager.getCurrentBuyTrades();

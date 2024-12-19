@@ -5,8 +5,8 @@ import github.ricemonger.marketplace.databases.postgres.entities.item.ItemSaleEn
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemSaleEntityId;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemSalePostgresRepository;
-import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
-import github.ricemonger.utils.DTOs.items.ItemSaleEntityDTO;
+import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.items.ItemSale;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,9 +42,9 @@ class ItemSalePostgresServiceTest {
 
     @Test
     public void saveAll_should_create_new_sales_if_doesnt_exist() {
-        ItemEntityDTO item1 = createSoldItem("1", DATE, 100);
-        ItemEntityDTO item2 = createSoldItem("2", DATE, 100);
-        ItemEntityDTO item3 = createSoldItem("1", LocalDateTime.MAX, 100);
+        Item item1 = createSoldItem("1", DATE, 100);
+        Item item2 = createSoldItem("2", DATE, 100);
+        Item item3 = createSoldItem("1", LocalDateTime.MAX, 100);
 
         itemRepository.saveAll(Stream.of(item1, item2, item3).map(item -> new ItemEntity(item, Set.of())).toList());
 
@@ -55,9 +55,9 @@ class ItemSalePostgresServiceTest {
 
     @Test
     public void saveAll_should_update_sales_if_already_exist() {
-        ItemEntityDTO item1 = createSoldItem("1", DATE, 100);
-        ItemEntityDTO item2 = createSoldItem("2", DATE, 200);
-        ItemEntityDTO item1Updated = createSoldItem("1", DATE, 200);
+        Item item1 = createSoldItem("1", DATE, 100);
+        Item item2 = createSoldItem("2", DATE, 200);
+        Item item1Updated = createSoldItem("1", DATE, 200);
 
         itemRepository.saveAllAndFlush(Stream.of(item1, item2).map(item -> new ItemEntity(item, Set.of())).toList());
 
@@ -71,9 +71,9 @@ class ItemSalePostgresServiceTest {
 
     @Test
     public void saveAll_should_skip_doesnt_exist() {
-        ItemEntityDTO item1 = createSoldItem("1", DATE, 100);
-        ItemEntityDTO item2 = createSoldItem("2", DATE, 100);
-        ItemEntityDTO item3 = createSoldItem("3", DATE, 100);
+        Item item1 = createSoldItem("1", DATE, 100);
+        Item item2 = createSoldItem("2", DATE, 100);
+        Item item3 = createSoldItem("3", DATE, 100);
 
         itemRepository.saveAll(Stream.of(item1).map(item -> new ItemEntity(item, Set.of())).toList());
 
@@ -84,14 +84,14 @@ class ItemSalePostgresServiceTest {
 
     @Test
     public void findAll_should_return_mapped_result_from_repository() {
-        ItemEntityDTO item1 = createSoldItem("1", DATE, 100);
-        ItemEntityDTO item2 = createSoldItem("2", DATE, 100);
+        Item item1 = createSoldItem("1", DATE, 100);
+        Item item2 = createSoldItem("2", DATE, 100);
 
         when(itemSaleRepository.findAll()).thenReturn(List.of(new ItemSaleEntity(new ItemEntity(item1, Set.of()), DATE, 100),
                 new ItemSaleEntity(new ItemEntity(item2, Set.of()), DATE, 100)));
 
-        List<ItemSaleEntityDTO> expected = List.of(new ItemSaleEntityDTO(item1.getItemId(), DATE, 100), new ItemSaleEntityDTO(item2.getItemId(), DATE, 100));
-        List<ItemSaleEntityDTO> result = itemSaleService.findAll();
+        List<ItemSale> expected = List.of(new ItemSale(item1.getItemId(), DATE, 100), new ItemSale(item2.getItemId(), DATE, 100));
+        List<ItemSale> result = itemSaleService.findAll();
 
         assertEquals(2, result.size());
         assertTrue(expected.containsAll(result) && result.containsAll(expected));
@@ -99,21 +99,21 @@ class ItemSalePostgresServiceTest {
 
     @Test
     public void findAllForLastMonth_should_return_mapped_result_from_repository() {
-        ItemEntityDTO item1 = createSoldItem("1", DATE, 100);
-        ItemEntityDTO item2 = createSoldItem("2", DATE, 100);
+        Item item1 = createSoldItem("1", DATE, 100);
+        Item item2 = createSoldItem("2", DATE, 100);
 
         when(itemSaleRepository.findAllForLastMonth()).thenReturn(List.of(new ItemSaleEntity(new ItemEntity(item1, Set.of()), DATE, 100),
                 new ItemSaleEntity(new ItemEntity(item2, Set.of()), DATE, 100)));
 
-        List<ItemSaleEntityDTO> expected = List.of(new ItemSaleEntityDTO(item1.getItemId(), DATE, 100), new ItemSaleEntityDTO(item2.getItemId(), DATE, 100));
-        List<ItemSaleEntityDTO> result = itemSaleService.findAllForLastMonth();
+        List<ItemSale> expected = List.of(new ItemSale(item1.getItemId(), DATE, 100), new ItemSale(item2.getItemId(), DATE, 100));
+        List<ItemSale> result = itemSaleService.findAllForLastMonth();
 
         assertEquals(2, result.size());
         assertTrue(expected.containsAll(result) && result.containsAll(expected));
     }
 
-    private ItemEntityDTO createSoldItem(String id, LocalDateTime date, int price) {
-        ItemEntityDTO item = new ItemEntityDTO();
+    private Item createSoldItem(String id, LocalDateTime date, int price) {
+        Item item = new Item();
         item.setItemId(id);
         item.setLastSoldAt(date);
         item.setLastSoldPrice(price);

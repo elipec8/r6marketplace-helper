@@ -40,11 +40,11 @@ class ItemServiceTest {
 
     @Test
     public void saveAllItemLastSales_should_handle_to_service() {
-        ItemEntityDTO item = new ItemEntityDTO();
+        Item item = new Item();
         item.setItemId("1");
         item.setTags(new ArrayList<>());
 
-        List<ItemEntityDTO> items = List.of(item);
+        List<Item> items = List.of(item);
 
         itemService.saveAllItemLastSales(items);
 
@@ -75,7 +75,7 @@ class ItemServiceTest {
 
         when(tagService.getTagsByNames(any())).thenReturn(List.of(tagUncommon, tagRare, tagEpic, tagLegendary));
 
-        ItemMainFieldsI item1 = new ItemEntityDTO();
+        ItemMainFieldsI item1 = new Item();
         item1.setItemId("itemId1");
         item1.setAssetUrl("assetUrl1");
         item1.setName("name1");
@@ -89,7 +89,7 @@ class ItemServiceTest {
         item1.setLastSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
         item1.setLastSoldPrice(5);
 
-        ItemMainFieldsI item2 = new ItemEntityDTO();
+        ItemMainFieldsI item2 = new Item();
         item2.setItemId("itemId2");
         item2.setAssetUrl("assetUrl2");
         item2.setName("name2");
@@ -103,7 +103,7 @@ class ItemServiceTest {
         item2.setLastSoldAt(LocalDateTime.of(2022, 1, 1, 0, 0));
         item2.setLastSoldPrice(6);
 
-        ItemMainFieldsI item3 = new ItemEntityDTO();
+        ItemMainFieldsI item3 = new Item();
         item3.setItemId("itemId3");
         item3.setAssetUrl("assetUrl3");
         item3.setName("name3");
@@ -117,7 +117,7 @@ class ItemServiceTest {
         item3.setLastSoldAt(LocalDateTime.of(2023, 1, 1, 0, 0));
         item3.setLastSoldPrice(7);
 
-        ItemMainFieldsI item4 = new ItemEntityDTO();
+        ItemMainFieldsI item4 = new Item();
         item4.setItemId("itemId4");
         item4.setAssetUrl("assetUrl4");
         item4.setName("name4");
@@ -131,7 +131,7 @@ class ItemServiceTest {
         item4.setLastSoldAt(LocalDateTime.of(2024, 1, 1, 0, 0));
         item4.setLastSoldPrice(8);
 
-        ItemMainFieldsI item5 = new ItemEntityDTO();
+        ItemMainFieldsI item5 = new Item();
         item5.setItemId("itemId5");
         item5.setAssetUrl("assetUrl5");
         item5.setName("name5");
@@ -147,7 +147,7 @@ class ItemServiceTest {
 
         List<ItemMainFieldsI> itemsMainFields = List.of(item1, item2, item3, item4, item5);
 
-        ItemEntityDTO existingItem1 = new ItemEntityDTO();
+        Item existingItem1 = new Item();
         existingItem1.setItemId("itemId1");
         existingItem1.setAssetUrl("assetUrlNotUpdated1");
         existingItem1.setName("nameNotUpdated1");
@@ -179,16 +179,16 @@ class ItemServiceTest {
         existingItem1.setPriceToBuyIn24Hours(17);
         existingItem1.setPriceToBuyIn168Hours(18);
 
-        ItemEntityDTO existingItem2 = new ItemEntityDTO();
+        Item existingItem2 = new Item();
         existingItem2.setItemId("itemId6");
         existingItem2.setName("name2");
         existingItem2.setTags(List.of());
 
-        List<ItemEntityDTO> existingItems = List.of(existingItem1, existingItem2);
+        List<Item> existingItems = List.of(existingItem1, existingItem2);
 
         when(itemDatabaseService.findAll()).thenReturn(existingItems);
 
-        ItemEntityDTO updatedItem1 = new ItemEntityDTO();
+        Item updatedItem1 = new Item();
         updatedItem1.setItemId("itemId1");
         updatedItem1.setAssetUrl("assetUrl1");
         updatedItem1.setName("name1");
@@ -220,19 +220,19 @@ class ItemServiceTest {
         updatedItem1.setPriceToBuyIn24Hours(17);
         updatedItem1.setPriceToBuyIn168Hours(18);
 
-        ItemEntityDTO updatedItem2 = new ItemEntityDTO(item2);
+        Item updatedItem2 = new Item(item2);
         updatedItem2.setRarity(ItemRarity.LEGENDARY);
 
-        ItemEntityDTO updatedItem3 = new ItemEntityDTO(item3);
+        Item updatedItem3 = new Item(item3);
         updatedItem3.setRarity(ItemRarity.EPIC);
 
-        ItemEntityDTO updatedItem4 = new ItemEntityDTO(item4);
+        Item updatedItem4 = new Item(item4);
         updatedItem4.setRarity(ItemRarity.RARE);
 
-        ItemEntityDTO updatedItem5 = new ItemEntityDTO(item5);
+        Item updatedItem5 = new Item(item5);
         updatedItem5.setRarity(ItemRarity.UNCOMMON);
 
-        List<ItemEntityDTO> updatedItems = new ArrayList<>();
+        List<Item> updatedItems = new ArrayList<>();
         updatedItems.add(updatedItem1);
         updatedItems.add(updatedItem2);
         updatedItems.add(updatedItem3);
@@ -251,7 +251,7 @@ class ItemServiceTest {
 
     @Test
     public void recalculateAndSaveAllItemsHistoryFields_should_recalculate_only_history_fields_and_save_all_items() {
-        ItemEntityDTO existingItemToRecalculate1 = new ItemEntityDTO();
+        Item existingItemToRecalculate1 = new Item();
         existingItemToRecalculate1.setItemId("itemId1");
         existingItemToRecalculate1.setAssetUrl("assetUrl1");
         existingItemToRecalculate1.setName("name1");
@@ -265,7 +265,7 @@ class ItemServiceTest {
         existingItemToRecalculate1.setLastSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
         existingItemToRecalculate1.setLastSoldPrice(5);
 
-        ItemEntityDTO existingItemToRecalculate2 = new ItemEntityDTO();
+        Item existingItemToRecalculate2 = new Item();
         existingItemToRecalculate2.setItemId("itemId2");
         existingItemToRecalculate2.setAssetUrl("assetUrl2");
         existingItemToRecalculate2.setName("name2");
@@ -279,7 +279,7 @@ class ItemServiceTest {
         existingItemToRecalculate2.setLastSoldAt(LocalDateTime.of(2022, 1, 1, 0, 0));
         existingItemToRecalculate2.setLastSoldPrice(6);
 
-        ItemEntityDTO existingItemNoSales = new ItemEntityDTO();
+        Item existingItemNoSales = new Item();
         existingItemNoSales.setItemId("itemId3");
         existingItemNoSales.setAssetUrl("assetUrl3");
         existingItemNoSales.setName("name3");
@@ -311,31 +311,31 @@ class ItemServiceTest {
         existingItemNoSales.setPriceToBuyIn24Hours(17);
         existingItemNoSales.setPriceToBuyIn168Hours(18);
 
-        List<ItemEntityDTO> existingItems = List.of(existingItemToRecalculate1, existingItemToRecalculate2, existingItemNoSales);
+        List<Item> existingItems = List.of(existingItemToRecalculate1, existingItemToRecalculate2, existingItemNoSales);
 
         when(itemDatabaseService.findAll()).thenReturn(existingItems);
 
-        ItemSaleEntityDTO item1TodaySale1 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().withMinute(1).withNano(0), 100);
-        ItemSaleEntityDTO item1TodaySale2 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().withMinute(2).withNano(0), 200);
-        ItemSaleEntityDTO item1TodaySale3 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().withMinute(3).withNano(0), 600);
+        ItemSale item1TodaySale1 = new ItemSale("itemId1", LocalDateTime.now().withMinute(1).withNano(0), 100);
+        ItemSale item1TodaySale2 = new ItemSale("itemId1", LocalDateTime.now().withMinute(2).withNano(0), 200);
+        ItemSale item1TodaySale3 = new ItemSale("itemId1", LocalDateTime.now().withMinute(3).withNano(0), 600);
 
-        ItemSaleEntityDTO item1Day7Sale1 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().minusDays(7).withMinute(1).withNano(0), 200);
-        ItemSaleEntityDTO item1Day7Sale2 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().minusDays(7).withMinute(2).withNano(0), 400);
-        ItemSaleEntityDTO item1Day7Sale3 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().minusDays(7).withMinute(3).withNano(0), 1200);
+        ItemSale item1Day7Sale1 = new ItemSale("itemId1", LocalDateTime.now().minusDays(7).withMinute(1).withNano(0), 200);
+        ItemSale item1Day7Sale2 = new ItemSale("itemId1", LocalDateTime.now().minusDays(7).withMinute(2).withNano(0), 400);
+        ItemSale item1Day7Sale3 = new ItemSale("itemId1", LocalDateTime.now().minusDays(7).withMinute(3).withNano(0), 1200);
 
-        ItemSaleEntityDTO item1Day30Sale1 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().minusDays(30).withMinute(1).withNano(0), 400);
-        ItemSaleEntityDTO item1Day30Sale2 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().minusDays(30).withMinute(2).withNano(0), 800);
-        ItemSaleEntityDTO item1Day30Sale3 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().minusDays(30).withMinute(3).withNano(0), 2400);
+        ItemSale item1Day30Sale1 = new ItemSale("itemId1", LocalDateTime.now().minusDays(30).withMinute(1).withNano(0), 400);
+        ItemSale item1Day30Sale2 = new ItemSale("itemId1", LocalDateTime.now().minusDays(30).withMinute(2).withNano(0), 800);
+        ItemSale item1Day30Sale3 = new ItemSale("itemId1", LocalDateTime.now().minusDays(30).withMinute(3).withNano(0), 2400);
 
-        ItemSaleEntityDTO item1Day31Sale1 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().minusDays(31).withMinute(1).withNano(0), 800);
-        ItemSaleEntityDTO item1Day31Sale2 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().minusDays(31).withMinute(2).withNano(0), 1600);
-        ItemSaleEntityDTO item1Day31Sale3 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().minusDays(31).withMinute(3).withNano(0), 4800);
+        ItemSale item1Day31Sale1 = new ItemSale("itemId1", LocalDateTime.now().minusDays(31).withMinute(1).withNano(0), 800);
+        ItemSale item1Day31Sale2 = new ItemSale("itemId1", LocalDateTime.now().minusDays(31).withMinute(2).withNano(0), 1600);
+        ItemSale item1Day31Sale3 = new ItemSale("itemId1", LocalDateTime.now().minusDays(31).withMinute(3).withNano(0), 4800);
 
-        ItemSaleEntityDTO item2Day7Sale1 = new ItemSaleEntityDTO("itemId2", LocalDateTime.now().minusDays(7).withMinute(1).withNano(0), 200);
-        ItemSaleEntityDTO item2Day7Sale2 = new ItemSaleEntityDTO("itemId2", LocalDateTime.now().minusDays(7).withMinute(2).withNano(0), 800);
-        ItemSaleEntityDTO item2Day7Sale3 = new ItemSaleEntityDTO("itemId2", LocalDateTime.now().minusDays(7).withMinute(3).withNano(0), 5000);
+        ItemSale item2Day7Sale1 = new ItemSale("itemId2", LocalDateTime.now().minusDays(7).withMinute(1).withNano(0), 200);
+        ItemSale item2Day7Sale2 = new ItemSale("itemId2", LocalDateTime.now().minusDays(7).withMinute(2).withNano(0), 800);
+        ItemSale item2Day7Sale3 = new ItemSale("itemId2", LocalDateTime.now().minusDays(7).withMinute(3).withNano(0), 5000);
 
-        List<ItemSaleEntityDTO> existingItemSales = List.of(item1TodaySale1, item1TodaySale2, item1TodaySale3, item1Day7Sale1, item1Day7Sale2, item1Day7Sale3, item1Day30Sale1, item1Day30Sale2, item1Day30Sale3, item1Day31Sale1, item1Day31Sale2, item1Day31Sale3, item2Day7Sale1, item2Day7Sale2, item2Day7Sale3);
+        List<ItemSale> existingItemSales = List.of(item1TodaySale1, item1TodaySale2, item1TodaySale3, item1Day7Sale1, item1Day7Sale2, item1Day7Sale3, item1Day30Sale1, item1Day30Sale2, item1Day30Sale3, item1Day31Sale1, item1Day31Sale2, item1Day31Sale3, item2Day7Sale1, item2Day7Sale2, item2Day7Sale3);
         when(itemSaleDatabaseService.findAllForLastMonth()).thenReturn(existingItemSales);
 
         //  4-200, 1-1200
@@ -351,7 +351,7 @@ class ItemServiceTest {
         List<ItemDaySalesUbiStatsEntityDTO> existingItemDaySalesUbiStatEntityDTOS = List.of(item1Day7Stats, item1Day30Stats, item1Day32Stats, item2Day15Stats);
         when(itemSaleUbiStatsService.findAllForLastMonth()).thenReturn(existingItemDaySalesUbiStatEntityDTOS);
 
-        ItemEntityDTO expectedRecalculatedItem1 = new ItemEntityDTO();
+        Item expectedRecalculatedItem1 = new Item();
         expectedRecalculatedItem1.setItemId("itemId1");
         expectedRecalculatedItem1.setAssetUrl("assetUrl1");
         expectedRecalculatedItem1.setName("name1");
@@ -383,7 +383,7 @@ class ItemServiceTest {
         expectedRecalculatedItem1.setPriceToBuyIn24Hours(0);
         expectedRecalculatedItem1.setPriceToBuyIn168Hours(200);
 
-        ItemEntityDTO expectedRecalculatedItem2 = new ItemEntityDTO();
+        Item expectedRecalculatedItem2 = new Item();
         expectedRecalculatedItem2.setItemId("itemId2");
         expectedRecalculatedItem2.setAssetUrl("assetUrl2");
         expectedRecalculatedItem2.setName("name2");
@@ -415,7 +415,7 @@ class ItemServiceTest {
         expectedRecalculatedItem2.setPriceToBuyIn24Hours(800);
         expectedRecalculatedItem2.setPriceToBuyIn168Hours(300);
 
-        ItemEntityDTO expectedItemNoSales = new ItemEntityDTO();
+        Item expectedItemNoSales = new Item();
         expectedItemNoSales.setItemId("itemId3");
         expectedItemNoSales.setAssetUrl("assetUrl3");
         expectedItemNoSales.setName("name3");
@@ -447,7 +447,7 @@ class ItemServiceTest {
         expectedItemNoSales.setPriceToBuyIn24Hours(0);
         expectedItemNoSales.setPriceToBuyIn168Hours(0);
 
-        List<ItemEntityDTO> expectedResult = List.of(expectedRecalculatedItem1, expectedRecalculatedItem2, expectedItemNoSales);
+        List<Item> expectedResult = List.of(expectedRecalculatedItem1, expectedRecalculatedItem2, expectedItemNoSales);
 
         itemService.recalculateAndSaveAllItemsHistoryFields();
 
@@ -463,7 +463,7 @@ class ItemServiceTest {
 
     @Test
     public void getItemById_should_return_service_result() {
-        ItemEntityDTO item = new ItemEntityDTO();
+        Item item = new Item();
         item.setItemId("1");
 
         when(itemDatabaseService.findById("1")).thenReturn(item);
@@ -473,13 +473,13 @@ class ItemServiceTest {
 
     @Test
     public void getAllItemsByFilter_should_return_service_result_after_filtering() {
-        ItemEntityDTO item1 = new ItemEntityDTO();
+        Item item1 = new Item();
         item1.setItemId("1");
-        ItemEntityDTO item2 = new ItemEntityDTO();
+        Item item2 = new Item();
         item2.setItemId("2");
 
-        List<ItemEntityDTO> items = List.of(item1, item2);
-        List<ItemEntityDTO> filteredItems = List.of(item1);
+        List<Item> items = List.of(item1, item2);
+        List<Item> filteredItems = List.of(item1);
 
         ItemFilter itemFilter = new ItemFilter();
         List<ItemFilter> filters = List.of(itemFilter);
@@ -494,12 +494,12 @@ class ItemServiceTest {
 
     @Test
     public void getAllItems_should_return_service_result() {
-        ItemEntityDTO item1 = new ItemEntityDTO();
+        Item item1 = new Item();
         item1.setItemId("1");
-        ItemEntityDTO item2 = new ItemEntityDTO();
+        Item item2 = new Item();
         item2.setItemId("2");
 
-        List<ItemEntityDTO> items = List.of(item1, item2);
+        List<Item> items = List.of(item1, item2);
 
         when(itemDatabaseService.findAll()).thenReturn(items);
 

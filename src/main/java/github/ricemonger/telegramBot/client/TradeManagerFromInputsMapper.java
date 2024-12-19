@@ -7,7 +7,7 @@ import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.DTOs.TelegramUserInput;
 import github.ricemonger.utils.DTOs.TradeByFiltersManager;
 import github.ricemonger.utils.DTOs.TradeByItemIdManager;
-import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
+import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.DTOs.ItemFilter;
 import github.ricemonger.utils.enums.TradeOperationType;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class TradeManagerFromInputsMapper {
 
     public TradeByItemIdManager mapToTradeByItemIdManager(Collection<TelegramUserInput> inputs,
                                                           TradeOperationType tradeOperationType,
-                                                          ItemEntityDTO item,
+                                                          Item item,
                                                           boolean enabledFlag) {
         String itemId = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID);
         String boundarySellPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);

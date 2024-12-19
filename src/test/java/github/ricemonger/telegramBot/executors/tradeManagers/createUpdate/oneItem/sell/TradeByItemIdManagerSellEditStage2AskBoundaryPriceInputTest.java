@@ -5,7 +5,7 @@ import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage2AskBoundaryPriceInput;
-import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
+import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +21,7 @@ class TradeByItemIdManagerSellEditStage2AskBoundaryPriceInputTest {
 
     @Test
     public void initAndExecute_should_process_middle_input_and_print_chosen_item_and_not_cancel_if_item_is_found() {
-        when(botInnerService.getItemByUserInputItemId(any())).thenReturn(new ItemEntityDTO());
+        when(botInnerService.getItemByUserInputItemId(any())).thenReturn(new Item());
 
         TradeByItemIdManagerSellEditStage2AskBoundaryPriceInput commandExecutor = new TradeByItemIdManagerSellEditStage2AskBoundaryPriceInput();
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);

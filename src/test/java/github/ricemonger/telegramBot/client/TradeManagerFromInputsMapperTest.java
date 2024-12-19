@@ -7,7 +7,7 @@ import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.DTOs.TelegramUserInput;
 import github.ricemonger.utils.DTOs.TradeByFiltersManager;
 import github.ricemonger.utils.DTOs.TradeByItemIdManager;
-import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
+import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.DTOs.ItemFilter;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.TradeOperationType;
@@ -48,7 +48,7 @@ class TradeManagerFromInputsMapperTest {
         expected.setBuyBoundaryPrice(360);
         expected.setPriorityMultiplier(2);
 
-        ItemEntityDTO item = new ItemEntityDTO();
+        Item item = new Item();
         item.setMinSellPrice(0);
         item.setMaxBuyPrice(120);
 
@@ -76,7 +76,7 @@ class TradeManagerFromInputsMapperTest {
         expected.setBuyBoundaryPrice(120);
         expected.setPriorityMultiplier(1);
 
-        ItemEntityDTO item = new ItemEntityDTO();
+        Item item = new Item();
         item.setMinSellPrice(150);
         item.setMaxBuyPrice(0);
 
@@ -109,7 +109,7 @@ class TradeManagerFromInputsMapperTest {
         expected.setBuyBoundaryPrice(152);
         expected.setPriorityMultiplier(1);
 
-        ItemEntityDTO item = new ItemEntityDTO();
+        Item item = new Item();
         item.setMinSellPrice(150);
         item.setMaxBuyPrice(0);
 
@@ -141,7 +141,7 @@ class TradeManagerFromInputsMapperTest {
         expected.setBuyBoundaryPrice(120);
         expected.setPriorityMultiplier(1);
 
-        ItemEntityDTO item = new ItemEntityDTO();
+        Item item = new Item();
         item.setMinSellPrice(150);
         item.setMaxBuyPrice(0);
 
@@ -173,7 +173,7 @@ class TradeManagerFromInputsMapperTest {
         expected.setBuyBoundaryPrice(150_000);
         expected.setPriorityMultiplier(1);
 
-        ItemEntityDTO item = new ItemEntityDTO();
+        Item item = new Item();
         item.setMinSellPrice(150);
         item.setMaxBuyPrice(0);
 
