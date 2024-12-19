@@ -13,6 +13,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity(name = "telegram_user")
 @Getter
@@ -37,6 +38,15 @@ public class TelegramUserEntity {
 
     private Integer itemShowMessagesLimit = 50;
     private Boolean itemShowFewInMessageFlag = false;
+
+    public TelegramUserEntity(String chatId, UserEntity userEntity) {
+        this.chatId = chatId;
+        this.user = userEntity;
+    }
+
+    private Long getUserId() {
+        return user.getId();
+    }
 
     public void setShowItemFieldsSettings(ItemShownFieldsSettings settings) {
         this.user.setItemShowNameFlag(settings.isItemShowNameFlag());
@@ -89,5 +99,23 @@ public class TelegramUserEntity {
         }
         this.user.setNewManagersAreActiveFlag(telegramUser.isNewManagersAreActiveFlag());
         this.user.setManagingEnabledFlag(telegramUser.isManagingEnabledFlag());
+    }
+
+    public boolean isFullyEqualExceptUser(Object o) {
+        if (this == o) return true;
+        if (o instanceof TelegramUserEntity entity) {
+
+            boolean inputsAreEqual = telegramUserInputs.size() == entity.telegramUserInputs.size() &&
+                                     telegramUserInputs.stream().allMatch(input -> entity.telegramUserInputs.stream().anyMatch(input::isFullyEqualExceptTelegramUser));
+
+            return Objects.equals(this.chatId, entity.chatId) &&
+                   Objects.equals(getUserId(), entity.getUserId()) &&
+                   inputsAreEqual &&
+                   inputState == entity.inputState &&
+                   inputGroup == entity.inputGroup &&
+                   Objects.equals(itemShowMessagesLimit, entity.itemShowMessagesLimit) &&
+                   Objects.equals(itemShowFewInMessageFlag, entity.itemShowFewInMessageFlag);
+        }
+        return false;
     }
 }

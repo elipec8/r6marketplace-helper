@@ -1,13 +1,14 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.utils.DTOs.TelegramUserInput;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Objects;
 
 @Slf4j
 @Entity(name = "telegram_user_input")
@@ -31,5 +32,15 @@ public class TelegramUserInputEntity {
 
     public String getChatId() {
         return telegramUser.getChatId();
+    }
+
+    public boolean isFullyEqualExceptTelegramUser(Object o) {
+        if (this == o) return true;
+        if (o instanceof TelegramUserInputEntity entity) {
+            return Objects.equals(getChatId(), entity.getChatId()) &&
+                   inputState == entity.inputState &&
+                   Objects.equals(value, entity.value);
+        }
+        return false;
     }
 }

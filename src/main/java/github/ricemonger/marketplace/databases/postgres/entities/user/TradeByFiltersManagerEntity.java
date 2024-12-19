@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity(name = "trade_manager_by_item_filters")
 @Getter
@@ -40,4 +41,27 @@ public class TradeByFiltersManagerEntity {
     private Integer minDifferenceFromMedianPricePercent;
 
     private Integer priorityMultiplier;
+
+    private Long getUserId() {
+        return user.getId();
+    }
+
+    public boolean isFullyEqualExceptUser(Object o) {
+        if (this == o) return true;
+        if (o instanceof TradeByFiltersManagerEntity entity) {
+
+            boolean appliedFiltersAreEqual = this.appliedFilters.size() == entity.appliedFilters.size() &&
+                                             this.appliedFilters.stream().allMatch(filterEntity -> entity.appliedFilters.stream().anyMatch(filterEntity::isFullyEqualExceptUser));
+
+            return Objects.equals(getUserId(), entity.getUserId()) &&
+                   Objects.equals(name, entity.name) &&
+                   enabled == entity.enabled &&
+                   tradeOperationType == entity.tradeOperationType &&
+                   appliedFiltersAreEqual &&
+                   Objects.equals(minDifferenceFromMedianPrice, entity.minDifferenceFromMedianPrice) &&
+                   Objects.equals(minDifferenceFromMedianPricePercent, entity.minDifferenceFromMedianPricePercent) &&
+                   Objects.equals(priorityMultiplier, entity.priorityMultiplier);
+        }
+        return false;
+    }
 }

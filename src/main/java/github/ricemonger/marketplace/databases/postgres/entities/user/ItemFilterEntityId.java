@@ -11,6 +11,11 @@ public class ItemFilterEntityId {
     private UserEntity user;
     private String name;
 
+    public ItemFilterEntityId(Long userId, String name) {
+        this.user = new UserEntity(userId);
+        this.name = name;
+    }
+
     public int hashCode() {
         return user.getId().hashCode() + name.hashCode();
     }

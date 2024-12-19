@@ -12,6 +12,15 @@ public class TelegramUserInputEntityId {
     private TelegramUserEntity telegramUser;
     private InputState inputState;
 
+    public TelegramUserInputEntityId(String chatId, Long userId, InputState inputState) {
+        this(chatId, new UserEntity(userId), inputState);
+    }
+
+    public TelegramUserInputEntityId(String chatId, UserEntity userEntity, InputState inputState) {
+        this.telegramUser = new TelegramUserEntity(chatId, userEntity);
+        this.inputState = inputState;
+    }
+
     public int hashCode() {
         return telegramUser.getChatId().hashCode() + inputState.hashCode();
     }
