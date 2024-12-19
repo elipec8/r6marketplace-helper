@@ -68,14 +68,14 @@ class TelegramUserTradeByFiltersManagerPostgresServiceTest {
         TradeByFiltersManager tradeManager = new TradeByFiltersManager();
         tradeManager.setName("name1");
         tradeManager.setPriorityMultiplier(10);
-        tradeManager.setMinBuySellProfit(100);
-        tradeManager.setMinProfitPercent(100);
+        tradeManager.setMinDifferenceFromMedianPrice(100);
+        tradeManager.setMinDifferenceFromMedianPricePercent(100);
         tradeManager.setTradeOperationType(TradeOperationType.BUY);
         telegramUserTradeByFiltersManagerService.save(CHAT_ID, tradeManager);
         tradeManager.setName("name1");
         tradeManager.setPriorityMultiplier(20);
-        tradeManager.setMinBuySellProfit(200);
-        tradeManager.setMinProfitPercent(200);
+        tradeManager.setMinDifferenceFromMedianPrice(200);
+        tradeManager.setMinDifferenceFromMedianPricePercent(200);
         tradeManager.setTradeOperationType(TradeOperationType.SELL);
         tradeManager.setAppliedFilters(List.of());
         telegramUserTradeByFiltersManagerService.save(CHAT_ID, tradeManager);
@@ -158,21 +158,21 @@ class TelegramUserTradeByFiltersManagerPostgresServiceTest {
     public void findById_should_return_trade_manager() {
         TradeByFiltersManager tradeManager = new TradeByFiltersManager();
         tradeManager.setName("1");
-        tradeManager.setMinProfitPercent(1);
+        tradeManager.setMinDifferenceFromMedianPricePercent(1);
         telegramUserTradeByFiltersManagerService.save(CHAT_ID, tradeManager);
 
         tradeManager.setName("2");
-        tradeManager.setMinProfitPercent(99);
+        tradeManager.setMinDifferenceFromMedianPricePercent(99);
         telegramUserTradeByFiltersManagerService.save(CHAT_ID, tradeManager);
 
         createTelegramUser(ANOTHER_CHAT_ID);
         tradeManager.setName("1");
-        tradeManager.setMinProfitPercent(10);
+        tradeManager.setMinDifferenceFromMedianPricePercent(10);
         telegramUserTradeByFiltersManagerService.save(ANOTHER_CHAT_ID, tradeManager);
 
         TradeByFiltersManager foundTradeManager = telegramUserTradeByFiltersManagerService.findById(CHAT_ID, "1");
 
-        assertEquals(1, foundTradeManager.getMinProfitPercent());
+        assertEquals(1, foundTradeManager.getMinDifferenceFromMedianPricePercent());
     }
 
     @Test

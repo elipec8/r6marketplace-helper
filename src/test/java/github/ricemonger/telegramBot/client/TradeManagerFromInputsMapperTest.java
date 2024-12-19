@@ -203,8 +203,8 @@ class TradeManagerFromInputsMapperTest {
         expected.setEnabled(true);
         expected.setTradeOperationType(TradeOperationType.BUY);
         expected.setAppliedFilters(List.of(new ItemFilter()));
-        expected.setMinBuySellProfit(100);
-        expected.setMinProfitPercent(30);
+        expected.setMinDifferenceFromMedianPrice(100);
+        expected.setMinDifferenceFromMedianPricePercent(30);
         expected.setPriorityMultiplier(2);
 
         assertEquals(expected, tradeManagerFromInputsMapper.mapToTradeByFiltersManager(inputs, 150_000, List.of(new ItemFilter()), true));
@@ -226,8 +226,8 @@ class TradeManagerFromInputsMapperTest {
         expected.setEnabled(false);
         expected.setTradeOperationType(TradeOperationType.BUY_AND_SELL);
         expected.setAppliedFilters(List.of());
-        expected.setMinBuySellProfit(50);
-        expected.setMinProfitPercent(20);
+        expected.setMinDifferenceFromMedianPrice(50);
+        expected.setMinDifferenceFromMedianPricePercent(20);
         expected.setPriorityMultiplier(1);
 
         assertEquals(expected, tradeManagerFromInputsMapper.mapToTradeByFiltersManager(inputs, 150_000, List.of(), false));
@@ -249,8 +249,8 @@ class TradeManagerFromInputsMapperTest {
         expected.setEnabled(true);
         expected.setTradeOperationType(TradeOperationType.SELL);
         expected.setAppliedFilters(List.of());
-        expected.setMinBuySellProfit(-150_000);
-        expected.setMinProfitPercent(-2147483647);
+        expected.setMinDifferenceFromMedianPrice(-150_000);
+        expected.setMinDifferenceFromMedianPricePercent(-2147483647);
         expected.setPriorityMultiplier(1);
 
         assertEquals(expected, tradeManagerFromInputsMapper.mapToTradeByFiltersManager(inputs, 150_000, List.of(), true));
@@ -273,8 +273,8 @@ class TradeManagerFromInputsMapperTest {
         expected.setEnabled(true);
         expected.setTradeOperationType(TradeOperationType.BUY_AND_SELL);
         expected.setAppliedFilters(List.of());
-        expected.setMinBuySellProfit(150_000);
-        expected.setMinProfitPercent(Integer.MAX_VALUE);
+        expected.setMinDifferenceFromMedianPrice(150_000);
+        expected.setMinDifferenceFromMedianPricePercent(Integer.MAX_VALUE);
         expected.setPriorityMultiplier(Integer.MAX_VALUE);
 
         assertEquals(expected, tradeManagerFromInputsMapper.mapToTradeByFiltersManager(inputs, 150_000, List.of(), true));

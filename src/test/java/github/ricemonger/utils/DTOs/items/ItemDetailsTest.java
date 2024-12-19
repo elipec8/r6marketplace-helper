@@ -19,8 +19,8 @@ class ItemDetailsTest {
         TradeByFiltersManager tradeByFiltersManager = new TradeByFiltersManager();
         tradeByFiltersManager.setPriorityMultiplier(1);
         tradeByFiltersManager.setTradeOperationType(TradeOperationType.BUY);
-        tradeByFiltersManager.setMinProfitPercent(50);
-        tradeByFiltersManager.setMinBuySellProfit(30);
+        tradeByFiltersManager.setMinDifferenceFromMedianPricePercent(50);
+        tradeByFiltersManager.setMinDifferenceFromMedianPrice(30);
 
         Item item = new Item();
         item.setItemId("itemId");
@@ -83,8 +83,8 @@ class ItemDetailsTest {
 
         assertEquals(tradeByFiltersManager.getTradeOperationType(), itemForTradeDTO.getTradeOperationType());
         assertEquals(tradeByFiltersManager.getPriorityMultiplier(), itemForTradeDTO.getPriorityMultiplier());
-        assertEquals(tradeByFiltersManager.getMinBuySellProfit(), itemForTradeDTO.getMinMedianPriceDifference());
-        assertEquals(tradeByFiltersManager.getMinProfitPercent(), itemForTradeDTO.getMinMedianPriceDifferencePercent());
+        assertEquals(tradeByFiltersManager.getMinDifferenceFromMedianPrice(), itemForTradeDTO.getMinMedianPriceDifference());
+        assertEquals(tradeByFiltersManager.getMinDifferenceFromMedianPricePercent(), itemForTradeDTO.getMinMedianPriceDifferencePercent());
 
         assertEquals(0, itemForTradeDTO.getSellBoundaryPrice());
         assertEquals(Integer.MAX_VALUE, itemForTradeDTO.getBuyBoundaryPrice());

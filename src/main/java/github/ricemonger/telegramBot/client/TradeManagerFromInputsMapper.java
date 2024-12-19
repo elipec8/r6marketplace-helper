@@ -80,9 +80,9 @@ public class TradeManagerFromInputsMapper {
         }
 
         tradeByFiltersManager.setAppliedFilters(itemFilters);
-        tradeByFiltersManager.setMinBuySellProfit(parseIntValue(minBuySellProfit, -1 * maxMarketplacePrice,
+        tradeByFiltersManager.setMinDifferenceFromMedianPrice(parseIntValue(minBuySellProfit, -1 * maxMarketplacePrice,
                 maxMarketplacePrice, 50));
-        tradeByFiltersManager.setMinProfitPercent(parseIntValue(minProfitPercent, Integer.MIN_VALUE, Integer.MAX_VALUE, 20));
+        tradeByFiltersManager.setMinDifferenceFromMedianPricePercent(parseIntValue(minProfitPercent, Integer.MIN_VALUE, Integer.MAX_VALUE, 20));
         tradeByFiltersManager.setPriorityMultiplier(parseIntValue(priority, 1, Integer.MAX_VALUE, 1));
 
         return tradeByFiltersManager;

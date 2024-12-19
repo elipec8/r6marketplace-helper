@@ -25,8 +25,8 @@ class TradeByFiltersManagerEntityTest {
         entity.setEnabled(true);
         entity.setTradeOperationType(TradeOperationType.BUY);
         entity.setAppliedFilters(List.of(filter1, filter2));
-        entity.setMinBuySellProfit(100);
-        entity.setMinProfitPercent(10);
+        entity.setMinDifferenceFromMedianPrice(100);
+        entity.setMinDifferenceFromMedianPricePercent(10);
         entity.setPriorityMultiplier(1);
 
         TradeByFiltersManager expected = new TradeByFiltersManager();
@@ -34,8 +34,8 @@ class TradeByFiltersManagerEntityTest {
         expected.setEnabled(true);
         expected.setTradeOperationType(TradeOperationType.BUY);
         expected.setAppliedFilters(List.of(filter1.toItemFilter(), filter2.toItemFilter()));
-        expected.setMinBuySellProfit(100);
-        expected.setMinProfitPercent(10);
+        expected.setMinDifferenceFromMedianPrice(100);
+        expected.setMinDifferenceFromMedianPricePercent(10);
         expected.setPriorityMultiplier(1);
 
         TradeByFiltersManager actual = entity.toTradeByFiltersManager();
@@ -54,8 +54,8 @@ class TradeByFiltersManagerEntityTest {
         entity.setEnabled(false);
         entity.setTradeOperationType(TradeOperationType.SELL);
         entity.setAppliedFilters(null);
-        entity.setMinBuySellProfit(10_000);
-        entity.setMinProfitPercent(100);
+        entity.setMinDifferenceFromMedianPrice(10_000);
+        entity.setMinDifferenceFromMedianPricePercent(100);
         entity.setPriorityMultiplier(2);
 
         TradeByFiltersManager expected = new TradeByFiltersManager();
@@ -63,8 +63,8 @@ class TradeByFiltersManagerEntityTest {
         expected.setEnabled(false);
         expected.setTradeOperationType(TradeOperationType.SELL);
         expected.setAppliedFilters(null);
-        expected.setMinBuySellProfit(10_000);
-        expected.setMinProfitPercent(100);
+        expected.setMinDifferenceFromMedianPrice(10_000);
+        expected.setMinDifferenceFromMedianPricePercent(100);
         expected.setPriorityMultiplier(2);
 
         TradeByFiltersManager actual = entity.toTradeByFiltersManager();
@@ -87,8 +87,8 @@ class TradeByFiltersManagerEntityTest {
         tradeManager.setEnabled(true);
         tradeManager.setTradeOperationType(TradeOperationType.BUY);
         tradeManager.setAppliedFilters(List.of(filter1.toItemFilter(), filter2.toItemFilter()));
-        tradeManager.setMinBuySellProfit(100);
-        tradeManager.setMinProfitPercent(10);
+        tradeManager.setMinDifferenceFromMedianPrice(100);
+        tradeManager.setMinDifferenceFromMedianPricePercent(10);
         tradeManager.setPriorityMultiplier(1);
 
         TradeByFiltersManagerEntity expected = new TradeByFiltersManagerEntity();
@@ -97,8 +97,8 @@ class TradeByFiltersManagerEntityTest {
         expected.setEnabled(true);
         expected.setTradeOperationType(TradeOperationType.BUY);
         expected.setAppliedFilters(List.of(filter1, filter2));
-        expected.setMinBuySellProfit(100);
-        expected.setMinProfitPercent(10);
+        expected.setMinDifferenceFromMedianPrice(100);
+        expected.setMinDifferenceFromMedianPricePercent(10);
         expected.setPriorityMultiplier(1);
 
         TradeByFiltersManagerEntity actual = new TradeByFiltersManagerEntity(user, tradeManager);
@@ -111,8 +111,8 @@ class TradeByFiltersManagerEntityTest {
         assertEquals(expected.isEnabled(), actual.isEnabled());
         assertEquals(expected.getTradeOperationType(), actual.getTradeOperationType());
         assertEquals(expected.getAppliedFilters().stream().map(ItemFilterEntity::toItemFilter).toList(), actual.getAppliedFilters().stream().map(ItemFilterEntity::toItemFilter).toList());
-        assertEquals(expected.getMinBuySellProfit(), actual.getMinBuySellProfit());
-        assertEquals(expected.getMinProfitPercent(), actual.getMinProfitPercent());
+        assertEquals(expected.getMinDifferenceFromMedianPrice(), actual.getMinDifferenceFromMedianPrice());
+        assertEquals(expected.getMinDifferenceFromMedianPricePercent(), actual.getMinDifferenceFromMedianPricePercent());
         assertEquals(expected.getPriorityMultiplier(), actual.getPriorityMultiplier());
     }
 }

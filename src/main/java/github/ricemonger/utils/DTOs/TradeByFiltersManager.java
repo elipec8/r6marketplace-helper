@@ -15,8 +15,8 @@ public class TradeByFiltersManager {
     private boolean enabled;
     private TradeOperationType tradeOperationType;
     private List<ItemFilter> appliedFilters;
-    private Integer minBuySellProfit;
-    private Integer minProfitPercent;
+    private Integer minDifferenceFromMedianPrice;
+    private Integer minDifferenceFromMedianPricePercent;
     private Integer priorityMultiplier;
 
     public String toString() {
@@ -29,8 +29,8 @@ public class TradeByFiltersManager {
         } else {
             sb = sb + "Applied filters: null\n";
         }
-        sb = sb + "Min profit: " + minBuySellProfit + "\n" +
-             "Min profit percent: " + minProfitPercent + "\n" +
+        sb = sb + "Min difference from median price: " + minDifferenceFromMedianPrice + "\n" +
+             "Min difference from median price percent: " + minDifferenceFromMedianPricePercent + "\n" +
              "Priority: " + priorityMultiplier + "\n";
         return sb;
     }
