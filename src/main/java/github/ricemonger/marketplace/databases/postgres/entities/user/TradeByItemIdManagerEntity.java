@@ -18,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @IdClass(TradeByItemIdManagerEntityId.class)
 public class TradeByItemIdManagerEntity {
-
     @Id
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "id")
@@ -39,24 +38,7 @@ public class TradeByItemIdManagerEntity {
 
     private Integer priorityMultiplier;
 
-    public TradeByItemIdManagerEntity(UserEntity user, ItemEntity item, TradeByItemIdManager tradeManager) {
-        this.user = user;
-        this.item = item;
-        this.enabled = tradeManager.isEnabled();
-        this.tradeOperationType = tradeManager.getTradeOperationType();
-        this.sellBoundaryPrice = tradeManager.getSellBoundaryPrice();
-        this.buyBoundaryPrice = tradeManager.getBuyBoundaryPrice();
-        this.priorityMultiplier = tradeManager.getPriorityMultiplier();
-    }
-
-    public TradeByItemIdManager toTradeByItemIdManager() {
-        TradeByItemIdManager tradeManager = new TradeByItemIdManager();
-        tradeManager.setItemId(item.getItemId());
-        tradeManager.setEnabled(enabled);
-        tradeManager.setTradeOperationType(tradeOperationType);
-        tradeManager.setSellBoundaryPrice(sellBoundaryPrice);
-        tradeManager.setBuyBoundaryPrice(buyBoundaryPrice);
-        tradeManager.setPriorityMultiplier(priorityMultiplier);
-        return tradeManager;
+    public String getItemId() {
+        return item.getItemId();
     }
 }

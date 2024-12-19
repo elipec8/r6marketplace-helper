@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TradeByItemIdManager {
-    private TradeOperationType tradeOperationType;
     private String itemId;
     private boolean enabled;
+    private TradeOperationType tradeOperationType;
     private Integer sellBoundaryPrice;
     private Integer buyBoundaryPrice;
     private Integer priorityMultiplier;
@@ -19,10 +19,9 @@ public class TradeByItemIdManager {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Trade Manager for one item: \n");
-        sb.append("Trade type: ").append(tradeOperationType).append("\n");
         sb.append("Item id: ").append(itemId).append("\n");
         sb.append("Enabled: ").append(enabled).append("\n");
-
+        sb.append("Trade type: ").append(tradeOperationType).append("\n");
         if (tradeOperationType == TradeOperationType.SELL) {
             sb.append("Boundary price: ").append(sellBoundaryPrice).append("\n");
         } else if (tradeOperationType == TradeOperationType.BUY) {
