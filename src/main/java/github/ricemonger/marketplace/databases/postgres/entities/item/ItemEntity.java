@@ -94,8 +94,10 @@ public class ItemEntity {
         if (this == o) return true;
         if (o instanceof ItemEntity itemEntity) {
 
-            boolean tagsAreEqual = this.tags.size() == itemEntity.tags.size() &&
-                                   this.tags.stream().allMatch(tag -> itemEntity.tags.stream().anyMatch(tag::isFullyEqual));
+            boolean tagsAreEqual = tags == null && itemEntity.tags == null || (
+                    tags != null && itemEntity.tags != null &&
+                    this.tags.size() == itemEntity.tags.size() &&
+                    this.tags.stream().allMatch(tag -> itemEntity.tags.stream().anyMatch(tag::isFullyEqual)));
 
             return Objects.equals(itemId, itemEntity.itemId) &&
                    Objects.equals(assetUrl, itemEntity.assetUrl) &&

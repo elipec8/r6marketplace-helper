@@ -20,6 +20,10 @@ public class ItemSaleEntityId implements Serializable {
         this.soldAt = soldAt;
     }
 
+    public String getItemId() {
+        return item.getItemId();
+    }
+
     public int hashCode() {
         return Objects.hash(item.getItemId(), soldAt);
     }

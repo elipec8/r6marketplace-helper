@@ -21,6 +21,10 @@ public class ItemDaySalesUbiStatsEntityId {
         this.date = date;
     }
 
+    public String getItemId() {
+        return item.getItemId();
+    }
+
     public int hashCode() {
         return Objects.hash(item.getItemId(), date);
     }
