@@ -2,6 +2,7 @@ package github.ricemonger.marketplace.databases.postgres.services.entity_factori
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.ItemFilterEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_factories.item.TagEntityFactory;
 import github.ricemonger.utils.DTOs.ItemFilter;
@@ -29,7 +30,11 @@ public class ItemFilterEntityFactory {
     private final TagEntityFactory tagEntityFactory;
 
 
-    public ItemFilterEntity createEntityForTelegramUser(String chatId, ItemFilter filter) {
+    public ItemFilterEntity createEntityForTelegramUserChatId(String chatId, ItemFilter filter) {
+        return createEntityForUser(userPostgresRepository.findByTelegramUserChatId(chatId), filter);
+    }
+
+    public ItemFilterEntity createEntityForUser(UserEntity userEntity, ItemFilter filter) {
         String name = filter.getName();
         FilterType filterType = filter.getFilterType();
         IsOwnedFilter isOwned = filter.getIsOwned();
@@ -61,7 +66,7 @@ public class ItemFilterEntityFactory {
         Integer minSellPrice = filter.getMinSellPrice();
         Integer maxBuyPrice = filter.getMaxBuyPrice();
 
-        return new ItemFilterEntity(userPostgresRepository.findByTelegramUserChatId(chatId),
+        return new ItemFilterEntity(userEntity,
                 name,
                 filterType,
                 isOwned,

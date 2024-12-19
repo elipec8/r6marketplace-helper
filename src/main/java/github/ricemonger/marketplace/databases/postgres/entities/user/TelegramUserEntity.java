@@ -1,11 +1,10 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
+import github.ricemonger.marketplace.databases.postgres.services.entity_factories.user.ItemFilterEntityFactory;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.utils.DTOs.ItemShowSettings;
 import github.ricemonger.utils.DTOs.ItemShownFieldsSettings;
 import github.ricemonger.utils.DTOs.TelegramUser;
-import github.ricemonger.utils.DTOs.TradeManagersSettings;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,34 +38,6 @@ public class TelegramUserEntity {
     private Integer itemShowMessagesLimit = 50;
     private Boolean itemShowFewInMessageFlag = false;
 
-    public TelegramUserEntity(String chatId, UserEntity user) {
-        this.chatId = chatId;
-        this.user = user;
-    }
-
-    public TelegramUser toTelegramUser() {
-        TelegramUser telegramUser = new TelegramUser();
-        telegramUser.setChatId(this.chatId);
-        telegramUser.setInputState(this.inputState);
-        telegramUser.setInputGroup(this.inputGroup);
-        telegramUser.setPublicNotificationsEnabledFlag(this.user.getPublicNotificationsEnabledFlag());
-        telegramUser.setItemShowMessagesLimit(this.itemShowMessagesLimit);
-        telegramUser.setItemShowFewInMessageFlag(this.itemShowFewInMessageFlag);
-        telegramUser.setItemShowNameFlag(this.user.getItemShowNameFlag());
-        telegramUser.setItemShowItemTypeFlag(this.user.getItemShowItemTypeFlag());
-        telegramUser.setItemShowMaxBuyPrice(this.user.getItemShowMaxBuyPrice());
-        telegramUser.setItemShowBuyOrdersCountFlag(this.user.getItemShowBuyOrdersCountFlag());
-        telegramUser.setItemShowMinSellPriceFlag(this.user.getItemShowMinSellPriceFlag());
-        telegramUser.setItemsShowSellOrdersCountFlag(this.user.getItemsShowSellOrdersCountFlag());
-        telegramUser.setItemShowPictureFlag(this.user.getItemShowPictureFlag());
-        if (this.user.getItemShowAppliedFilters() != null) {
-            telegramUser.setItemShowAppliedFilters(this.user.getItemShowAppliedFilters().stream().map(ItemFilterEntity::toItemFilter).toList());
-        }
-        telegramUser.setNewManagersAreActiveFlag(this.user.getNewManagersAreActiveFlag());
-        telegramUser.setManagingEnabledFlag(this.user.getManagingEnabledFlag());
-        return telegramUser;
-    }
-
     public void setShowItemFieldsSettings(ItemShownFieldsSettings settings) {
         this.user.setItemShowNameFlag(settings.isItemShowNameFlag());
         this.user.setItemShowItemTypeFlag(settings.isItemShowItemTypeFlag());
@@ -75,25 +46,6 @@ public class TelegramUserEntity {
         this.user.setItemShowMinSellPriceFlag(settings.isItemShowMinSellPriceFlag());
         this.user.setItemsShowSellOrdersCountFlag(settings.isItemsShowSellOrdersCountFlag());
         this.user.setItemShowPictureFlag(settings.isItemShowPictureFlag());
-    }
-
-    public ItemShowSettings toItemShowSettings() {
-        ItemShowSettings itemShowSettings = new ItemShowSettings();
-        itemShowSettings.setItemShowMessagesLimit(this.itemShowMessagesLimit);
-        itemShowSettings.setItemShowFewInMessageFlag(this.itemShowFewInMessageFlag);
-        itemShowSettings.setItemShowNameFlag(this.user.getItemShowNameFlag());
-        itemShowSettings.setItemShowItemTypeFlag(this.user.getItemShowItemTypeFlag());
-        itemShowSettings.setItemShowMaxBuyPrice(this.user.getItemShowMaxBuyPrice());
-        itemShowSettings.setItemShowBuyOrdersCountFlag(this.user.getItemShowBuyOrdersCountFlag());
-        itemShowSettings.setItemShowMinSellPriceFlag(this.user.getItemShowMinSellPriceFlag());
-        itemShowSettings.setItemsShowSellOrdersCountFlag(this.user.getItemsShowSellOrdersCountFlag());
-        itemShowSettings.setItemShowPictureFlag(this.user.getItemShowPictureFlag());
-        if (this.user.getItemShowAppliedFilters() != null) {
-            itemShowSettings.setItemShowAppliedFilters(this.user.getItemShowAppliedFilters().stream().map(ItemFilterEntity::toItemFilter).toList());
-        } else {
-            itemShowSettings.setItemShowAppliedFilters(new ArrayList<>());
-        }
-        return itemShowSettings;
     }
 
     public List<ItemFilterEntity> getItemShowAppliedFilters() {
@@ -109,13 +61,6 @@ public class TelegramUserEntity {
         }
     }
 
-    public TradeManagersSettings toTradeManagersSettings() {
-        TradeManagersSettings tradeManagersSettings = new TradeManagersSettings();
-        tradeManagersSettings.setNewManagersAreActiveFlag(this.user.getNewManagersAreActiveFlag());
-        tradeManagersSettings.setManagingEnabledFlag(this.user.getManagingEnabledFlag());
-        return tradeManagersSettings;
-    }
-
     public void setNewManagersAreActiveFlag(boolean flag) {
         this.user.setNewManagersAreActiveFlag(flag);
     }
@@ -124,7 +69,7 @@ public class TelegramUserEntity {
         this.user.setManagingEnabledFlag(flag);
     }
 
-    public void setFields(TelegramUser telegramUser) {
+    public void setFields(TelegramUser telegramUser, ItemFilterEntityFactory itemFilterEntityFactory) {
         this.chatId = telegramUser.getChatId();
         this.inputState = telegramUser.getInputState();
         this.inputGroup = telegramUser.getInputGroup();
@@ -140,7 +85,7 @@ public class TelegramUserEntity {
         this.user.setItemShowPictureFlag(telegramUser.isItemShowPictureFlag());
         if (telegramUser.getItemShowAppliedFilters() != null) {
             this.user.getItemShowAppliedFilters().clear();
-            this.user.getItemShowAppliedFilters().addAll(telegramUser.getItemShowAppliedFilters().stream().map(ItemFilterEntity::new).toList());
+            this.user.getItemShowAppliedFilters().addAll(telegramUser.getItemShowAppliedFilters().stream().map(itemFilter -> itemFilterEntityFactory.createEntityForTelegramUserChatId(telegramUser.getChatId(), itemFilter)).toList());
         }
         this.user.setNewManagersAreActiveFlag(telegramUser.isNewManagersAreActiveFlag());
         this.user.setManagingEnabledFlag(telegramUser.isManagingEnabledFlag());

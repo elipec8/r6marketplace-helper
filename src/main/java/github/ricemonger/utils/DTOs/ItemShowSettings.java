@@ -19,6 +19,30 @@ public class ItemShowSettings {
 
     private Collection<ItemFilter> itemShowAppliedFilters = new ArrayList<>();
 
+    public ItemShowSettings(Integer itemShowMessagesLimit,
+                            boolean itemShowFewInMessageFlag,
+                            boolean itemShowNameFlag,
+                            boolean itemShowItemTypeFlag,
+                            boolean itemShowMaxBuyPrice,
+                            boolean itemShowBuyOrdersCountFlag,
+                            boolean itemShowMinSellPriceFlag,
+                            boolean itemsShowSellOrdersCountFlag,
+                            boolean itemShowPictureFlag,
+                            Collection<ItemFilter> itemShowAppliedFilters) {
+        this.itemShowMessagesLimit = itemShowMessagesLimit;
+        this.itemShowFewInMessageFlag = itemShowFewInMessageFlag;
+        this.shownFieldsSettings = new ItemShownFieldsSettings(
+                itemShowNameFlag,
+                itemShowItemTypeFlag,
+                itemShowMaxBuyPrice,
+                itemShowBuyOrdersCountFlag,
+                itemShowMinSellPriceFlag,
+                itemsShowSellOrdersCountFlag,
+                itemShowPictureFlag
+        );
+        this.itemShowAppliedFilters = itemShowAppliedFilters;
+    }
+
     public boolean isItemShowNameFlag() {
         return shownFieldsSettings.isItemShowNameFlag();
     }

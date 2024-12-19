@@ -30,8 +30,6 @@ public class TelegramUserService {
 
     private final TelegramUserInputDatabaseService inputDatabaseService;
 
-    private final AuthorizationService authorizationService;
-
     public void registerTelegramUser(Long chatId) throws TelegramUserAlreadyExistsException {
         telegramUserDatabaseService.create(String.valueOf(chatId));
     }

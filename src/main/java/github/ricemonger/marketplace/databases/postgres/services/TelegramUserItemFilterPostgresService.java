@@ -30,7 +30,7 @@ public class TelegramUserItemFilterPostgresService implements TelegramUserItemFi
     @Override
     @Transactional
     public void save(String chatId, ItemFilter filter) throws TelegramUserDoesntExistException {
-        itemFilterRepository.save(itemFilterEntityFactory.createEntityForTelegramUser(chatId, filter));
+        itemFilterRepository.save(itemFilterEntityFactory.createEntityForTelegramUserChatId(chatId, filter));
     }
 
     @Override

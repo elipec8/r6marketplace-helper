@@ -2,15 +2,11 @@ package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.entities.user.ItemFilterEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.services.entity_factories.user.ItemFilterEntityFactory;
+import github.ricemonger.marketplace.databases.postgres.services.entity_factories.user.TelegramUserEntityFactory;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserDatabaseService;
-import github.ricemonger.utils.DTOs.ItemShowSettings;
-import github.ricemonger.utils.DTOs.ItemShownFieldsSettings;
-import github.ricemonger.utils.DTOs.TelegramUser;
-import github.ricemonger.utils.DTOs.TradeManagersSettings;
-import github.ricemonger.utils.DTOs.ItemFilter;
+import github.ricemonger.utils.DTOs.*;
 import github.ricemonger.utils.exceptions.client.TelegramUserAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import lombok.RequiredArgsConstructor;
@@ -28,15 +24,16 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
 
     private final TelegramUserPostgresRepository telegramUserRepository;
 
-    private final UserPostgresRepository userRepository;
+    private final TelegramUserEntityFactory telegramUserEntityFactory;
+
+    private final ItemFilterEntityFactory itemFilterEntityFactory;
 
     @Override
     public void create(String chatId) throws TelegramUserAlreadyExistsException {
         if (telegramUserRepository.existsById(chatId)) {
             throw new TelegramUserAlreadyExistsException("Telegram user with chatId " + chatId + " already exists");
         } else {
-            UserEntity user = userRepository.save(new UserEntity());
-            telegramUserRepository.save(new TelegramUserEntity(chatId, user));
+            telegramUserRepository.save(telegramUserEntityFactory.createNewEntityForNewUser(chatId));
         }
     }
 
@@ -44,7 +41,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     @Transactional
     public void update(TelegramUser updatedTelegramUser) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(updatedTelegramUser.getChatId());
-        telegramUser.setFields(updatedTelegramUser);
+        telegramUser.setFields(updatedTelegramUser, itemFilterEntityFactory);
         telegramUserRepository.save(telegramUser);
     }
 
@@ -79,7 +76,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     public void addItemShowAppliedFilter(String chatId, ItemFilter filter) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
-        ItemFilterEntity filterEntity = new ItemFilterEntity(telegramUser.getUser(), filter);
+        ItemFilterEntity filterEntity = itemFilterEntityFactory.createEntityForUser(telegramUser.getUser(), filter);
 
         if (telegramUser.getItemShowAppliedFilters() == null) {
             telegramUser.setItemShowAppliedFilters(new ArrayList<>());
@@ -136,22 +133,22 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
 
     @Override
     public TelegramUser findUserById(String chatId) throws TelegramUserDoesntExistException {
-        return getTelegramUserEntityByIdOrThrow(chatId).toTelegramUser();
+        return telegramUserEntityFactory.createTelegramUser(getTelegramUserEntityByIdOrThrow(chatId));
     }
 
     @Override
     public ItemShowSettings findUserItemShowSettingsById(String chatId) throws TelegramUserDoesntExistException {
-        return getTelegramUserEntityByIdOrThrow(chatId).toItemShowSettings();
+        return telegramUserEntityFactory.createItemShowSettings(getTelegramUserEntityByIdOrThrow(chatId));
     }
 
     @Override
     public TradeManagersSettings findUserTradeManagersSettingsById(String chatId) throws TelegramUserDoesntExistException {
-        return getTelegramUserEntityByIdOrThrow(chatId).toTradeManagersSettings();
+        return telegramUserEntityFactory.createTradeManagersSettings(getTelegramUserEntityByIdOrThrow(chatId));
     }
 
     @Override
     public List<TelegramUser> findAllUsers() {
-        return telegramUserRepository.findAll().stream().map(TelegramUserEntity::toTelegramUser).toList();
+        return telegramUserRepository.findAll().stream().map(telegramUserEntityFactory::createTelegramUser).toList();
     }
 
     private TelegramUserEntity getTelegramUserEntityByIdOrThrow(String chatId) {
