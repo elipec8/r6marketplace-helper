@@ -228,8 +228,6 @@ class ItemEntityMapperTest {
 
         when(tagRepository.findAll()).thenReturn(List.of(tagEntity1, tagEntity2));
 
-        List<ItemEntity> actual = itemEntityMapper.createEntities(List.of(item1, item3));
-
         ItemEntity entity1 = new ItemEntity();
         entity1.setItemId("itemId");
         entity1.setAssetUrl("assetUrl");
@@ -308,7 +306,8 @@ class ItemEntityMapperTest {
 
         List<ItemEntity> expected = List.of(entity1, entity2);
 
-        assertEquals(2, actual.size());
-        assertTrue(expected.containsAll(actual) && expected.size() == actual.size());
+        List<ItemEntity> actual = itemEntityMapper.createEntities(List.of(item1, item3));
+
+        assertTrue(expected.stream().allMatch(ex -> actual.stream().anyMatch(ac -> ac.isFullyEqual(ex))) && expected.size() == actual.size());
     }
 }

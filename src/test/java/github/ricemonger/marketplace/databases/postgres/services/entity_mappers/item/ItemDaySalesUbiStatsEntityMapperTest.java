@@ -50,6 +50,10 @@ class ItemDaySalesUbiStatsEntityMapperTest {
     @Test
     public void createEntities_should_return_mapped_entities_except_non_existent_items() {
         when(itemPostgresRepository.findAllItemIds()).thenReturn(new HashSet<>(Set.of("itemId1", "itemId2", "itemId4")));
+        when(itemPostgresRepository.getReferenceById("itemId1")).thenReturn(new ItemEntity("itemId1"));
+        when(itemPostgresRepository.getReferenceById("itemId2")).thenReturn(new ItemEntity("itemId2"));
+        when(itemPostgresRepository.getReferenceById("itemId3")).thenReturn(new ItemEntity("itemId3"));
+        when(itemPostgresRepository.getReferenceById("itemId4")).thenReturn(new ItemEntity("itemId4"));
 
         ItemDaySalesUbiStats daySales11 = new ItemDaySalesUbiStats("itemId1", LocalDate.of(2021, 1, 1), 1, 2, 3, 4);
         ItemDaySalesUbiStats daySales12 = new ItemDaySalesUbiStats("itemId1", LocalDate.of(2021, 1, 2), 5, 6, 7, 8);
@@ -74,7 +78,6 @@ class ItemDaySalesUbiStatsEntityMapperTest {
 
         List<ItemDaySalesUbiStatsEntity> actual = itemDaySalesUbiStatsEntityMapper.createEntities(groupedItemDaySalesUbiStatsList);
 
-        assertEquals(4, actual.size());
-        assertTrue(expected.containsAll(actual) && expected.size() == actual.size());
+        assertTrue(expected.stream().allMatch(ex -> actual.stream().anyMatch(ac -> ac.isFullyEqual(ex))) && expected.size() == actual.size());
     }
 }
