@@ -14,9 +14,17 @@ public class TradeByItemIdManagerEntityId {
     private UserEntity user;
     private ItemEntity item;
 
-    public TradeByItemIdManagerEntityId(Long userId, ItemEntity item) {
+    public TradeByItemIdManagerEntityId(Long userId, String itemId) {
         this.user = new UserEntity(userId);
-        this.item = item;
+        this.item = new ItemEntity(itemId);
+    }
+
+    public Long getUserId() {
+        return user.getId();
+    }
+
+    public String getItemId() {
+        return item.getItemId();
     }
 
     public int hashCode() {

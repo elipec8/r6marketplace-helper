@@ -16,6 +16,10 @@ public class ItemFilterEntityId {
         this.name = name;
     }
 
+    public long getUserId() {
+        return user.getId();
+    }
+
     public int hashCode() {
         return user.getId().hashCode() + name.hashCode();
     }

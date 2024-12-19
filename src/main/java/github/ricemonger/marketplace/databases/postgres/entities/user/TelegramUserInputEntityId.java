@@ -21,6 +21,14 @@ public class TelegramUserInputEntityId {
         this.inputState = inputState;
     }
 
+    public String getChatId() {
+        return telegramUser.getChatId();
+    }
+
+    public Long getUserId() {
+        return telegramUser.getUserId();
+    }
+
     public int hashCode() {
         return telegramUser.getChatId().hashCode() + inputState.hashCode();
     }

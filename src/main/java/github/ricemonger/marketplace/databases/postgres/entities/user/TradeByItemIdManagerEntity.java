@@ -39,7 +39,7 @@ public class TradeByItemIdManagerEntity {
 
     private Integer priorityMultiplier;
 
-    private Long getUserId() {
+    public Long getUserId() {
         return user.getId();
     }
 

@@ -40,7 +40,7 @@ public class UbiAccountEntryEntity {
     @JoinColumn(name = "ubiProfileId", referencedColumnName = "ubiProfileId")
     private UbiAccountStatsEntity ubiAccountStats;
 
-    private Long getUserId() {
+    public Long getUserId() {
         return user.getId();
     }
 

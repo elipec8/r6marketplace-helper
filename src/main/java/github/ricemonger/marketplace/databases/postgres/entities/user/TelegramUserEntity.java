@@ -44,7 +44,7 @@ public class TelegramUserEntity {
         this.user = userEntity;
     }
 
-    private Long getUserId() {
+    public Long getUserId() {
         return user.getId();
     }
 
@@ -105,8 +105,10 @@ public class TelegramUserEntity {
         if (this == o) return true;
         if (o instanceof TelegramUserEntity entity) {
 
-            boolean inputsAreEqual = telegramUserInputs.size() == entity.telegramUserInputs.size() &&
-                                     telegramUserInputs.stream().allMatch(input -> entity.telegramUserInputs.stream().anyMatch(input::isFullyEqualExceptTelegramUser));
+            boolean inputsAreEqual = telegramUserInputs == null && entity.telegramUserInputs == null || (
+                    telegramUserInputs != null && entity.telegramUserInputs != null &&
+                    telegramUserInputs.size() == entity.telegramUserInputs.size() &&
+                    telegramUserInputs.stream().allMatch(input -> entity.telegramUserInputs.stream().anyMatch(input::isFullyEqualExceptTelegramUser)));
 
             return Objects.equals(this.chatId, entity.chatId) &&
                    Objects.equals(getUserId(), entity.getUserId()) &&

@@ -40,8 +40,9 @@ public class UbiAccountStatsEntity {
         }
         if (o instanceof UbiAccountStatsEntity entity) {
 
-            boolean ownedItemsIdsAreEqual =
-                    this.ownedItems.size() == entity.ownedItems.size() && this.ownedItems.stream().allMatch(item -> entity.ownedItems.stream().anyMatch(item::isFullyEqual));
+            boolean ownedItemsIdsAreEqual = ownedItems == null && entity.ownedItems == null || (
+                    this.ownedItems != null && entity.ownedItems != null &&
+                    this.ownedItems.size() == entity.ownedItems.size() && this.ownedItems.stream().allMatch(item -> entity.ownedItems.stream().anyMatch(item::isFullyEqual)));
 
             return Objects.equals(this.ubiProfileId, entity.ubiProfileId) &&
                    Objects.equals(this.creditAmount, entity.creditAmount) &&

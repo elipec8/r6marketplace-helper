@@ -64,17 +64,25 @@ public class UserEntity {
     public boolean isFullyEqual(Object o) {
         if (this == o) return true;
         if (o instanceof UserEntity entity) {
-            boolean itemFiltersAreEqual = itemFilters.size() == entity.itemFilters.size() &&
-                                          itemFilters.stream().allMatch(itemFilter -> entity.itemFilters.stream().anyMatch(itemFilter::isFullyEqualExceptUser));
+            boolean itemFiltersAreEqual = itemFilters == null && entity.itemFilters == null || (
+                    itemFilters != null && entity.itemFilters != null &&
+                    itemFilters.size() == entity.itemFilters.size() &&
+                    itemFilters.stream().allMatch(itemFilter -> entity.itemFilters.stream().anyMatch(itemFilter::isFullyEqualExceptUser)));
 
-            boolean tradeByFiltersManagersAreEqual = tradeByFiltersManagers.size() == entity.tradeByFiltersManagers.size() &&
-                                                     tradeByFiltersManagers.stream().allMatch(tradeByFiltersManager -> entity.tradeByFiltersManagers.stream().anyMatch(tradeByFiltersManager::isFullyEqualExceptUser));
+            boolean tradeByFiltersManagersAreEqual = tradeByFiltersManagers == null && entity.tradeByFiltersManagers == null || (
+                    tradeByFiltersManagers != null && entity.tradeByFiltersManagers != null &&
+                    tradeByFiltersManagers.size() == entity.tradeByFiltersManagers.size() &&
+                    tradeByFiltersManagers.stream().allMatch(tradeByFiltersManager -> entity.tradeByFiltersManagers.stream().anyMatch(tradeByFiltersManager::isFullyEqualExceptUser)));
 
-            boolean tradeByItemIdManagersAreEqual = tradeByItemIdManagers.size() == entity.tradeByItemIdManagers.size() &&
-                                                    tradeByItemIdManagers.stream().allMatch(tradeByItemIdManager -> entity.tradeByItemIdManagers.stream().anyMatch(tradeByItemIdManager::isFullyEqualExceptUser));
+            boolean tradeByItemIdManagersAreEqual = tradeByItemIdManagers == null && entity.tradeByItemIdManagers == null || (
+                    tradeByItemIdManagers != null && entity.tradeByItemIdManagers != null &&
+                    tradeByItemIdManagers.size() == entity.tradeByItemIdManagers.size() &&
+                    tradeByItemIdManagers.stream().allMatch(tradeByItemIdManager -> entity.tradeByItemIdManagers.stream().anyMatch(tradeByItemIdManager::isFullyEqualExceptUser)));
 
-            boolean itemShowAppliedFiltersAreEqual = itemShowAppliedFilters.size() == entity.itemShowAppliedFilters.size() &&
-                                                     itemShowAppliedFilters.stream().allMatch(itemFilter -> entity.itemShowAppliedFilters.stream().anyMatch(itemFilter::isFullyEqualExceptUser));
+            boolean itemShowAppliedFiltersAreEqual = itemShowAppliedFilters == null && entity.itemShowAppliedFilters == null || (
+                    itemShowAppliedFilters != null && entity.itemShowAppliedFilters != null &&
+                    itemShowAppliedFilters.size() == entity.itemShowAppliedFilters.size() &&
+                    itemShowAppliedFilters.stream().allMatch(itemFilter -> entity.itemShowAppliedFilters.stream().anyMatch(itemFilter::isFullyEqualExceptUser)));
 
             return Objects.equals(id, entity.id) &&
                    telegramUser.isFullyEqualExceptUser(entity.telegramUser) &&

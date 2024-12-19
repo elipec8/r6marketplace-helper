@@ -16,6 +16,10 @@ public class TradeByFiltersManagerEntityId {
         this.name = name;
     }
 
+    public Long getUserId() {
+        return user.getId();
+    }
+
     public int hashCode() {
         return user.getId().hashCode() + name.hashCode();
     }

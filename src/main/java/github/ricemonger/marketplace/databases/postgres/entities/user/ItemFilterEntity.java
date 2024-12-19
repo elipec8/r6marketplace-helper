@@ -60,8 +60,10 @@ public class ItemFilterEntity {
         if (this == o) return true;
         if (o instanceof ItemFilterEntity entity) {
 
-            boolean tagsAreEqual = this.tags.size() == entity.tags.size() &&
-                                   this.tags.stream().allMatch(tag -> entity.tags.stream().anyMatch(tag::isFullyEqual));
+            boolean tagsAreEqual = this.tags == null && entity.tags == null || (
+                    this.tags != null && entity.tags != null &&
+                    this.tags.size() == entity.tags.size() &&
+                    this.tags.stream().allMatch(tag -> entity.tags.stream().anyMatch(tag::isFullyEqual)));
 
             return Objects.equals(getUserId(), entity.getUserId()) &&
                    Objects.equals(name, entity.name) &&
