@@ -41,6 +41,19 @@ public class UbiAccountEntryEntityMapper {
                 ubiAccountStatsEntity);
     }
 
+    public UbiAccountEntryEntity createEntity(UserEntity userEntity, UbiAccountStatsEntity ubiAccountStatsEntity, UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry) {
+        return new UbiAccountEntryEntity(
+                userEntity,
+                ubiAccountAuthorizationEntry.getEmail(),
+                ubiAccountAuthorizationEntry.getEncodedPassword(),
+                ubiAccountAuthorizationEntry.getUbiSessionId(),
+                ubiAccountAuthorizationEntry.getUbiSpaceId(),
+                ubiAccountAuthorizationEntry.getUbiAuthTicket(),
+                ubiAccountAuthorizationEntry.getUbiRememberDeviceTicket(),
+                ubiAccountAuthorizationEntry.getUbiRememberMeTicket(),
+                ubiAccountStatsEntity);
+    }
+
     public UbiAccountAuthorizationEntryWithTelegram createUbiAccountAuthorizationEntryWithTelegram(UbiAccountEntryEntity entity) {
         return new UbiAccountAuthorizationEntryWithTelegram(
                 entity.getUser().getTelegramUser().getChatId(),
