@@ -6,7 +6,7 @@ import github.ricemonger.marketplace.databases.postgres.entities.item.ItemSaleEn
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemSalePostgresRepository;
 import github.ricemonger.utils.DTOs.items.ItemEntityDTO;
-import github.ricemonger.utils.DTOs.items.ItemSale;
+import github.ricemonger.utils.DTOs.items.ItemSaleEntityDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -90,8 +90,8 @@ class ItemSalePostgresServiceTest {
         when(itemSaleRepository.findAll()).thenReturn(List.of(new ItemSaleEntity(new ItemEntity(item1, Set.of()), DATE, 100),
                 new ItemSaleEntity(new ItemEntity(item2, Set.of()), DATE, 100)));
 
-        List<ItemSale> expected = List.of(new ItemSale(item1.getItemId(), DATE, 100), new ItemSale(item2.getItemId(), DATE, 100));
-        List<ItemSale> result = itemSaleService.findAll();
+        List<ItemSaleEntityDTO> expected = List.of(new ItemSaleEntityDTO(item1.getItemId(), DATE, 100), new ItemSaleEntityDTO(item2.getItemId(), DATE, 100));
+        List<ItemSaleEntityDTO> result = itemSaleService.findAll();
 
         assertEquals(2, result.size());
         assertTrue(expected.containsAll(result) && result.containsAll(expected));
@@ -105,8 +105,8 @@ class ItemSalePostgresServiceTest {
         when(itemSaleRepository.findAllForLastMonth()).thenReturn(List.of(new ItemSaleEntity(new ItemEntity(item1, Set.of()), DATE, 100),
                 new ItemSaleEntity(new ItemEntity(item2, Set.of()), DATE, 100)));
 
-        List<ItemSale> expected = List.of(new ItemSale(item1.getItemId(), DATE, 100), new ItemSale(item2.getItemId(), DATE, 100));
-        List<ItemSale> result = itemSaleService.findAllForLastMonth();
+        List<ItemSaleEntityDTO> expected = List.of(new ItemSaleEntityDTO(item1.getItemId(), DATE, 100), new ItemSaleEntityDTO(item2.getItemId(), DATE, 100));
+        List<ItemSaleEntityDTO> result = itemSaleService.findAllForLastMonth();
 
         assertEquals(2, result.size());
         assertTrue(expected.containsAll(result) && result.containsAll(expected));

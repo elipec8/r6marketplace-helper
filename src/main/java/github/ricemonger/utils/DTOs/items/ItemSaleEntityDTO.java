@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemSale implements SoldItemDetails {
+public class ItemSaleEntityDTO implements SoldItemDetails {
     private String itemId;
     private LocalDateTime soldAt;
     private int price;

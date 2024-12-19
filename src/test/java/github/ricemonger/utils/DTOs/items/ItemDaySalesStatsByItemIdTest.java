@@ -16,13 +16,13 @@ class ItemDaySalesStatsByItemIdTest {
 
     @Test
     public void constructor_with_itemSales_should_properly_create_object_ignoring_different_itemId_sale_or_other_dates() {
-        List<ItemSale> itemSales = new ArrayList<>();
-        itemSales.add(new ItemSale("1", LocalDateTime.of(2024, 1, 1, 1, 0, 0), 1));
-        itemSales.add(new ItemSale("1", LocalDateTime.of(2024, 1, 1, 2, 0, 0), 1));
-        itemSales.add(new ItemSale("1", LocalDateTime.of(2024, 1, 1, 3, 0, 0), 2));
-        itemSales.add(new ItemSale("1", LocalDateTime.of(2024, 1, 1, 4, 0, 0), 3));
-        itemSales.add(new ItemSale("1", LocalDateTime.of(2024, 1, 2, 1, 0, 0), 4));
-        itemSales.add(new ItemSale("2", LocalDateTime.of(2024, 1, 1, 5, 0, 0), 5));
+        List<ItemSaleEntityDTO> itemSales = new ArrayList<>();
+        itemSales.add(new ItemSaleEntityDTO("1", LocalDateTime.of(2024, 1, 1, 1, 0, 0), 1));
+        itemSales.add(new ItemSaleEntityDTO("1", LocalDateTime.of(2024, 1, 1, 2, 0, 0), 1));
+        itemSales.add(new ItemSaleEntityDTO("1", LocalDateTime.of(2024, 1, 1, 3, 0, 0), 2));
+        itemSales.add(new ItemSaleEntityDTO("1", LocalDateTime.of(2024, 1, 1, 4, 0, 0), 3));
+        itemSales.add(new ItemSaleEntityDTO("1", LocalDateTime.of(2024, 1, 2, 1, 0, 0), 4));
+        itemSales.add(new ItemSaleEntityDTO("2", LocalDateTime.of(2024, 1, 1, 5, 0, 0), 5));
 
         ItemDaySalesStatsByItemId itemDaySalesStatsByItemId = new ItemDaySalesStatsByItemId("1", LocalDate.of(2024, 1, 1), itemSales);
 

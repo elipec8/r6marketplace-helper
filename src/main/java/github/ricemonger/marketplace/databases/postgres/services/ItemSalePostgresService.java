@@ -4,9 +4,11 @@ import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemSaleEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemSalePostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.services.entity_factories.item.ItemSaleEntityFactory;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseService;
 import github.ricemonger.utils.DTOs.items.ItemMainFieldsI;
-import github.ricemonger.utils.DTOs.items.ItemSale;
+import github.ricemonger.utils.DTOs.items.ItemSaleEntityDTO;
+import github.ricemonger.utils.DTOs.items.SoldItemDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,38 +26,22 @@ public class ItemSalePostgresService implements ItemSaleDatabaseService {
 
     private final ItemSalePostgresRepository itemSaleRepository;
 
-    private final ItemPostgresRepository itemRepository;
+    private ItemSaleEntityFactory itemSaleEntityFactory;
 
     @Override
     @Transactional
-    public void saveAll(Collection<? extends ItemMainFieldsI> itemsMainFieldsList) {
-        if (itemsMainFieldsList == null || itemsMainFieldsList.isEmpty()) {
-            return;
-        }
-
-        Set<String> existingItems = itemRepository.findAllItemIds();
-
-        List<ItemSaleEntity> salesEntities = new LinkedList<>();
-
-        for (ItemMainFieldsI item : itemsMainFieldsList) {
-            if (existingItems.contains(item.getItemId())) {
-                ItemEntity itemEntity = itemRepository.getReferenceById(item.getItemId());
-                salesEntities.add(new ItemSaleEntity(itemEntity, item.getLastSoldAt(), item.getLastSoldPrice()));
-            } else {
-                log.error("Item with id {} not found, last sale parsing for this item skipped", item.getItemId());
-            }
-        }
-        itemSaleRepository.saveAll(salesEntities);
+    public void saveAll(Collection<? extends SoldItemDetails> soldItems) {
+        itemSaleRepository.saveAll(itemSaleEntityFactory.createEntities(soldItems));
     }
 
     @Override
-    public List<ItemSale> findAll() {
-        return itemSaleRepository.findAll().stream().map(ItemSaleEntity::toItemSale).toList();
+    public List<ItemSaleEntityDTO> findAll() {
+        return itemSaleRepository.findAll().stream().map(itemSaleEntityFactory::createDTO).toList();
     }
 
     @Override
-    public List<ItemSale> findAllForLastMonth() {
-        return itemSaleRepository.findAllForLastMonth().stream().map(ItemSaleEntity::toItemSale).toList();
+    public List<ItemSaleEntityDTO> findAllForLastMonth() {
+        return itemSaleRepository.findAllForLastMonth().stream().map(itemSaleEntityFactory::createDTO).toList();
     }
 }
 

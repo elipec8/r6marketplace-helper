@@ -18,13 +18,13 @@ public class ItemDaySalesStatsByItemId {
     private LocalDate date;
     private Map<Integer, Integer> priceAndQuantity = new HashMap<>();
 
-    public ItemDaySalesStatsByItemId(String itemId, LocalDate day, Collection<ItemSale> itemSales) {
+    public ItemDaySalesStatsByItemId(String itemId, LocalDate day, Collection<ItemSaleEntityDTO> itemSales) {
         this.itemId = itemId;
         this.date = day;
-        List<ItemSale> daySales =
+        List<ItemSaleEntityDTO> daySales =
                 itemSales.stream().filter(itemSale -> day.equals(itemSale.getLastSoldAt().toLocalDate()) && itemId.equals(itemSale.getItemId())).toList();
         HashMap<Integer, Integer> priceAndQuantity = new HashMap<>();
-        for (ItemSale itemSale : daySales) {
+        for (ItemSaleEntityDTO itemSale : daySales) {
             priceAndQuantity.put(itemSale.getPrice(), priceAndQuantity.getOrDefault(itemSale.getPrice(), 0) + 1);
         }
         this.priceAndQuantity = priceAndQuantity;

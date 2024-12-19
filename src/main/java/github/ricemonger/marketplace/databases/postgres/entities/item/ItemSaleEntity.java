@@ -1,7 +1,5 @@
 package github.ricemonger.marketplace.databases.postgres.entities.item;
 
-import github.ricemonger.utils.DTOs.items.ItemSale;
-import github.ricemonger.utils.DTOs.items.SoldItemDetails;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,19 +23,7 @@ public class ItemSaleEntity {
     private LocalDateTime soldAt;
     private int price;
 
-    public ItemSaleEntity(SoldItemDetails item) {
-        this.item = new ItemEntity(item.getItemId());
-        this.soldAt = item.getLastSoldAt();
-        this.price = item.getLastSoldPrice();
-    }
-
-    public ItemSale toItemSale() {
-        ItemSale item = new ItemSale();
-        if (this.item != null) {
-            item.setItemId(this.item.getItemId());
-        }
-        item.setSoldAt(this.soldAt);
-        item.setPrice(this.price);
-        return item;
+    public String getItemId() {
+        return item.getItemId();
     }
 }

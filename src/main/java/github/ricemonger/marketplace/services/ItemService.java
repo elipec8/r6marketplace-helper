@@ -44,11 +44,11 @@ public class ItemService {
     public void recalculateAndSaveAllItemsHistoryFields() {
         Set<ItemEntityDTO> items = itemDatabaseService.findAll().stream().map(ItemEntityDTO::new).collect(Collectors.toSet());
 
-        Collection<ItemSale> lastMonthSales = saleDatabaseService.findAllForLastMonth();
+        Collection<ItemSaleEntityDTO> lastMonthSales = saleDatabaseService.findAllForLastMonth();
         Collection<ItemDaySalesUbiStatsEntityDTO> lastMonthSalesUbiStats = itemSaleUbiStatsService.findAllForLastMonth();
 
         for (ItemEntityDTO item : items) {
-            Collection<ItemSale> saleStats = getItemSalesForItem(lastMonthSales, item.getItemId());
+            Collection<ItemSaleEntityDTO> saleStats = getItemSalesForItem(lastMonthSales, item.getItemId());
             Collection<ItemDaySalesUbiStatsEntityDTO> ubiSaleStats = getItemDaySalesUbiStatsForItem(lastMonthSalesUbiStats, item.getItemId());
             List<ItemDaySalesStatsByItemId> resultingPerDayStats = getResultingSaleStatsByPeriodForItem(saleStats, ubiSaleStats, item,
                     LocalDate.now().minusDays(30), LocalDate.now());
@@ -188,7 +188,7 @@ public class ItemService {
                 monthMedianPrice);
     }
 
-    private List<ItemDaySalesStatsByItemId> getResultingSaleStatsByPeriodForItem(Collection<ItemSale> saleStats,
+    private List<ItemDaySalesStatsByItemId> getResultingSaleStatsByPeriodForItem(Collection<ItemSaleEntityDTO> saleStats,
                                                                                  Collection<ItemDaySalesUbiStatsEntityDTO> ubiSaleStats, ItemEntityDTO item, LocalDate startDate, LocalDate endDate) {
         List<ItemDaySalesStatsByItemId> resultingPerDayStats = new ArrayList<>();
 
@@ -205,7 +205,7 @@ public class ItemService {
         return resultingPerDayStats;
     }
 
-    private Collection<ItemSale> getItemSalesForItem(Collection<ItemSale> itemSales, String itemId) {
+    private Collection<ItemSaleEntityDTO> getItemSalesForItem(Collection<ItemSaleEntityDTO> itemSales, String itemId) {
         return itemSales.stream().filter(itemSale -> itemSale.getItemId().equals(itemId)).toList();
     }
 

@@ -315,27 +315,27 @@ class ItemServiceTest {
 
         when(itemDatabaseService.findAll()).thenReturn(existingItems);
 
-        ItemSale item1TodaySale1 = new ItemSale("itemId1", LocalDateTime.now().withMinute(1).withNano(0), 100);
-        ItemSale item1TodaySale2 = new ItemSale("itemId1", LocalDateTime.now().withMinute(2).withNano(0), 200);
-        ItemSale item1TodaySale3 = new ItemSale("itemId1", LocalDateTime.now().withMinute(3).withNano(0), 600);
+        ItemSaleEntityDTO item1TodaySale1 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().withMinute(1).withNano(0), 100);
+        ItemSaleEntityDTO item1TodaySale2 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().withMinute(2).withNano(0), 200);
+        ItemSaleEntityDTO item1TodaySale3 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().withMinute(3).withNano(0), 600);
 
-        ItemSale item1Day7Sale1 = new ItemSale("itemId1", LocalDateTime.now().minusDays(7).withMinute(1).withNano(0), 200);
-        ItemSale item1Day7Sale2 = new ItemSale("itemId1", LocalDateTime.now().minusDays(7).withMinute(2).withNano(0), 400);
-        ItemSale item1Day7Sale3 = new ItemSale("itemId1", LocalDateTime.now().minusDays(7).withMinute(3).withNano(0), 1200);
+        ItemSaleEntityDTO item1Day7Sale1 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().minusDays(7).withMinute(1).withNano(0), 200);
+        ItemSaleEntityDTO item1Day7Sale2 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().minusDays(7).withMinute(2).withNano(0), 400);
+        ItemSaleEntityDTO item1Day7Sale3 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().minusDays(7).withMinute(3).withNano(0), 1200);
 
-        ItemSale item1Day30Sale1 = new ItemSale("itemId1", LocalDateTime.now().minusDays(30).withMinute(1).withNano(0), 400);
-        ItemSale item1Day30Sale2 = new ItemSale("itemId1", LocalDateTime.now().minusDays(30).withMinute(2).withNano(0), 800);
-        ItemSale item1Day30Sale3 = new ItemSale("itemId1", LocalDateTime.now().minusDays(30).withMinute(3).withNano(0), 2400);
+        ItemSaleEntityDTO item1Day30Sale1 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().minusDays(30).withMinute(1).withNano(0), 400);
+        ItemSaleEntityDTO item1Day30Sale2 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().minusDays(30).withMinute(2).withNano(0), 800);
+        ItemSaleEntityDTO item1Day30Sale3 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().minusDays(30).withMinute(3).withNano(0), 2400);
 
-        ItemSale item1Day31Sale1 = new ItemSale("itemId1", LocalDateTime.now().minusDays(31).withMinute(1).withNano(0), 800);
-        ItemSale item1Day31Sale2 = new ItemSale("itemId1", LocalDateTime.now().minusDays(31).withMinute(2).withNano(0), 1600);
-        ItemSale item1Day31Sale3 = new ItemSale("itemId1", LocalDateTime.now().minusDays(31).withMinute(3).withNano(0), 4800);
+        ItemSaleEntityDTO item1Day31Sale1 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().minusDays(31).withMinute(1).withNano(0), 800);
+        ItemSaleEntityDTO item1Day31Sale2 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().minusDays(31).withMinute(2).withNano(0), 1600);
+        ItemSaleEntityDTO item1Day31Sale3 = new ItemSaleEntityDTO("itemId1", LocalDateTime.now().minusDays(31).withMinute(3).withNano(0), 4800);
 
-        ItemSale item2Day7Sale1 = new ItemSale("itemId2", LocalDateTime.now().minusDays(7).withMinute(1).withNano(0), 200);
-        ItemSale item2Day7Sale2 = new ItemSale("itemId2", LocalDateTime.now().minusDays(7).withMinute(2).withNano(0), 800);
-        ItemSale item2Day7Sale3 = new ItemSale("itemId2", LocalDateTime.now().minusDays(7).withMinute(3).withNano(0), 5000);
+        ItemSaleEntityDTO item2Day7Sale1 = new ItemSaleEntityDTO("itemId2", LocalDateTime.now().minusDays(7).withMinute(1).withNano(0), 200);
+        ItemSaleEntityDTO item2Day7Sale2 = new ItemSaleEntityDTO("itemId2", LocalDateTime.now().minusDays(7).withMinute(2).withNano(0), 800);
+        ItemSaleEntityDTO item2Day7Sale3 = new ItemSaleEntityDTO("itemId2", LocalDateTime.now().minusDays(7).withMinute(3).withNano(0), 5000);
 
-        List<ItemSale> existingItemSales = List.of(item1TodaySale1, item1TodaySale2, item1TodaySale3, item1Day7Sale1, item1Day7Sale2, item1Day7Sale3, item1Day30Sale1, item1Day30Sale2, item1Day30Sale3, item1Day31Sale1, item1Day31Sale2, item1Day31Sale3, item2Day7Sale1, item2Day7Sale2, item2Day7Sale3);
+        List<ItemSaleEntityDTO> existingItemSales = List.of(item1TodaySale1, item1TodaySale2, item1TodaySale3, item1Day7Sale1, item1Day7Sale2, item1Day7Sale3, item1Day30Sale1, item1Day30Sale2, item1Day30Sale3, item1Day31Sale1, item1Day31Sale2, item1Day31Sale3, item2Day7Sale1, item2Day7Sale2, item2Day7Sale3);
         when(itemSaleDatabaseService.findAllForLastMonth()).thenReturn(existingItemSales);
 
         //  4-200, 1-1200
