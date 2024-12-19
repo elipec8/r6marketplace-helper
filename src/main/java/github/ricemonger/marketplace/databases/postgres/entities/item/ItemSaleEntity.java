@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity(name = "item_sale")
 @Getter
@@ -21,9 +22,17 @@ public class ItemSaleEntity {
     private ItemEntity item;
     @Id
     private LocalDateTime soldAt;
-    private int price;
+    private Integer price;
 
     public String getItemId() {
         return item.getItemId();
+    }
+
+    public boolean isFullyEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof ItemSaleEntity entity) {
+            return item.isFullyEqual(entity.getItem()) && Objects.equals(soldAt, entity.soldAt) && Objects.equals(price, entity.price);
+        }
+        return false;
     }
 }

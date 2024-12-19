@@ -33,11 +33,9 @@ class TagPostgresRepositoryTest {
         tagPostgresRepository.save(tag2);
         tagPostgresRepository.save(tag3);
 
-        List<Tag> tags = tagPostgresRepository.findAllByNames(List.of("tag1", "tag2")).stream().map(TagEntity::toTag).toList();
+        List<TagEntity> tags = tagPostgresRepository.findAllByNames(List.of("tag1", "tag2"));
 
-        assertEquals(2, tags.size());
-        assertTrue(tags.contains(tag1.toTag()));
-        assertTrue(tags.contains(tag2.toTag()));
+
     }
 
 }

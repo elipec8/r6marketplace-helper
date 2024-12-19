@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Entity(name = "tag")
 @Getter
 @Setter
@@ -19,4 +21,14 @@ public class TagEntity {
     private String name;
     @Enumerated(EnumType.ORDINAL)
     private TagGroup tagGroup;
+
+    public boolean isFullyEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof TagEntity tagEntity) {
+            return Objects.equals(value, tagEntity.value) &&
+                   Objects.equals(name, tagEntity.name) &&
+                   tagGroup == tagEntity.tagGroup;
+        }
+        return false;
+    }
 }

@@ -15,6 +15,11 @@ public class ItemSaleEntityId implements Serializable {
     private ItemEntity item;
     private LocalDateTime soldAt;
 
+    public ItemSaleEntityId(String itemId, LocalDateTime soldAt) {
+        this.item = new ItemEntity(itemId);
+        this.soldAt = soldAt;
+    }
+
     public int hashCode() {
         return Objects.hash(item.getItemId(), soldAt);
     }

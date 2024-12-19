@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class ItemSale implements SoldItemDetails {
     private String itemId;
     private LocalDateTime soldAt;
-    private int price;
+    private Integer price;
 
     @Override
     public LocalDateTime getLastSoldAt() {

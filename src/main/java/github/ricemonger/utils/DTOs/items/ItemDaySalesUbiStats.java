@@ -12,8 +12,8 @@ import java.time.LocalDate;
 public class ItemDaySalesUbiStats {
     private String itemId;
     private LocalDate date;
-    private int lowestPrice;
-    private int averagePrice;
-    private int highestPrice;
-    private int itemsCount;
+    private Integer lowestPrice;
+    private Integer averagePrice;
+    private Integer highestPrice;
+    private Integer itemsCount;
 }
