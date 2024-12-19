@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
-import github.ricemonger.marketplace.databases.postgres.services.entity_factories.user.ItemFilterEntityFactory;
+import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.ItemFilterEntityMapper;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.DTOs.ItemShownFieldsSettings;
@@ -69,7 +69,7 @@ public class TelegramUserEntity {
         this.user.setManagingEnabledFlag(flag);
     }
 
-    public void setFields(TelegramUser telegramUser, ItemFilterEntityFactory itemFilterEntityFactory) {
+    public void setFields(TelegramUser telegramUser, ItemFilterEntityMapper itemFilterEntityMapper) {
         this.chatId = telegramUser.getChatId();
         this.inputState = telegramUser.getInputState();
         this.inputGroup = telegramUser.getInputGroup();
@@ -85,7 +85,7 @@ public class TelegramUserEntity {
         this.user.setItemShowPictureFlag(telegramUser.isItemShowPictureFlag());
         if (telegramUser.getItemShowAppliedFilters() != null) {
             this.user.getItemShowAppliedFilters().clear();
-            this.user.getItemShowAppliedFilters().addAll(telegramUser.getItemShowAppliedFilters().stream().map(itemFilter -> itemFilterEntityFactory.createEntityForTelegramUserChatId(telegramUser.getChatId(), itemFilter)).toList());
+            this.user.getItemShowAppliedFilters().addAll(telegramUser.getItemShowAppliedFilters().stream().map(itemFilter -> itemFilterEntityMapper.createEntityForTelegramUserChatId(telegramUser.getChatId(), itemFilter)).toList());
         }
         this.user.setNewManagersAreActiveFlag(telegramUser.isNewManagersAreActiveFlag());
         this.user.setManagingEnabledFlag(telegramUser.isManagingEnabledFlag());

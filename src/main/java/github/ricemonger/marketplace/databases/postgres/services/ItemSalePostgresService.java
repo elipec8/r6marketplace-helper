@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemSalePostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.services.entity_factories.item.ItemSaleEntityFactory;
+import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item.ItemSaleEntityMapper;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseService;
 import github.ricemonger.utils.DTOs.items.ItemSale;
 import github.ricemonger.utils.DTOs.items.SoldItemDetails;
@@ -20,22 +20,22 @@ public class ItemSalePostgresService implements ItemSaleDatabaseService {
 
     private final ItemSalePostgresRepository itemSaleRepository;
 
-    private ItemSaleEntityFactory itemSaleEntityFactory;
+    private final ItemSaleEntityMapper itemSaleEntityMapper;
 
     @Override
     @Transactional
     public void saveAll(Collection<? extends SoldItemDetails> soldItems) {
-        itemSaleRepository.saveAll(itemSaleEntityFactory.createEntities(soldItems));
+        itemSaleRepository.saveAll(itemSaleEntityMapper.createEntities(soldItems));
     }
 
     @Override
     public List<ItemSale> findAll() {
-        return itemSaleRepository.findAll().stream().map(itemSaleEntityFactory::createDTO).toList();
+        return itemSaleRepository.findAll().stream().map(itemSaleEntityMapper::createDTO).toList();
     }
 
     @Override
     public List<ItemSale> findAllForLastMonth() {
-        return itemSaleRepository.findAllForLastMonth().stream().map(itemSaleEntityFactory::createDTO).toList();
+        return itemSaleRepository.findAllForLastMonth().stream().map(itemSaleEntityMapper::createDTO).toList();
     }
 }
 

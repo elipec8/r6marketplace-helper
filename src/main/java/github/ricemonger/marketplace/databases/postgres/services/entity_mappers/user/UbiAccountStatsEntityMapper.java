@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.databases.postgres.services.entity_factories.user;
+package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountStatsEntity;
@@ -13,7 +13,7 @@ import java.util.List;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class UbiAccountStatsEntityFactory {
+public class UbiAccountStatsEntityMapper {
 
     private final ItemPostgresRepository itemPostgresRepository;
 

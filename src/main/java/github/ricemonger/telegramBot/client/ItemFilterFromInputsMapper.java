@@ -44,8 +44,6 @@ public class ItemFilterFromInputsMapper {
         String otherTagsString = getValueByState(inputs, InputState.ITEM_FILTER_ITEM_TAGS_OTHER);
         String minPriceString = getValueByState(inputs, InputState.ITEM_FILTER_MIN_PRICE);
         String maxPriceString = getValueByState(inputs, InputState.ITEM_FILTER_MAX_PRICE);
-        String minLastSoldPriceString = getValueByState(inputs, InputState.ITEM_FILTER_MIN_LAST_SOLD_PRICE);
-        String maxLastSoldPriceString = getValueByState(inputs, InputState.ITEM_FILTER_MAX_LAST_SOLD_PRICE);
 
         ItemFilter itemFilter = new ItemFilter();
 
@@ -87,8 +85,6 @@ public class ItemFilterFromInputsMapper {
 
         itemFilter.setMinSellPrice(parsePrice(minPriceString, commonValuesService.getMinimumMarketplacePrice()));
         itemFilter.setMaxBuyPrice(parsePrice(maxPriceString, commonValuesService.getMaximumMarketplacePrice()));
-        itemFilter.setMinLastSoldPrice(parsePrice(minLastSoldPriceString, commonValuesService.getMinimumMarketplacePrice()));
-        itemFilter.setMaxLastSoldPrice(parsePrice(maxLastSoldPriceString, commonValuesService.getMaximumMarketplacePrice()));
 
         return itemFilter;
     }

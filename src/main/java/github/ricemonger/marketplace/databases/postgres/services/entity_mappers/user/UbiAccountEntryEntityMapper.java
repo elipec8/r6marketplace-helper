@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.databases.postgres.services.entity_factories.user;
+package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountEntryEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountStatsEntity;
@@ -16,13 +16,13 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class UbiAccountEntryEntityFactory {
+public class UbiAccountEntryEntityMapper {
 
     private final UserPostgresRepository userPostgresRepository;
 
     private final UbiAccountStatsEntityPostgresRepository ubiAccountStatsEntityPostgresRepository;
 
-    private final UbiAccountStatsEntityFactory ubiAccountStatsEntityFactory;
+    private final UbiAccountStatsEntityMapper ubiAccountStatsEntityMapper;
 
     public UbiAccountEntryEntity createEntityForTelegramUser(String chatId, UbiAccountAuthorizationEntry account) {
         UserEntity user = userPostgresRepository.findByTelegramUserChatId(chatId);
@@ -51,7 +51,7 @@ public class UbiAccountEntryEntityFactory {
     public UbiAccountEntryWithTelegram createUbiAccountEntryWithTelegram(UbiAccountEntryEntity entity) {
         UbiAccountEntry ubiAccountEntry = new UbiAccountEntry(
                 createUbiAccountAuthorizationEntry(entity),
-                ubiAccountStatsEntityFactory.createDTO(entity.getUbiAccountStats())
+                ubiAccountStatsEntityMapper.createDTO(entity.getUbiAccountStats())
         );
         return new UbiAccountEntryWithTelegram(
                 entity.getUser().getTelegramUser().getChatId(),

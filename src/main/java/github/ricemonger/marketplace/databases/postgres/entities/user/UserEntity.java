@@ -1,7 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 
-import github.ricemonger.utils.DTOs.UserEntityDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -56,26 +55,4 @@ public class UserEntity {
 
     private Boolean newManagersAreActiveFlag = true;
     private Boolean managingEnabledFlag = true;
-
-    public UserEntityDTO toUserEntityDTO() {
-        UserEntityDTO userEntityDTO = new UserEntityDTO();
-
-        userEntityDTO.setId(id);
-
-        userEntityDTO.setUbiAccountStatsEntityDTO(ubiAccountAuthorizationEntry.getUbiAccountStats().toUbiAccountStatsEntityDTO());
-
-        userEntityDTO.setUbiSessionId(ubiAccountAuthorizationEntry.getUbiSessionId());
-        userEntityDTO.setUbiSpaceId(ubiAccountAuthorizationEntry.getUbiSpaceId());
-        userEntityDTO.setUbiAuthTicket(ubiAccountAuthorizationEntry.getUbiAuthTicket());
-        userEntityDTO.setUbiRememberDeviceTicket(ubiAccountAuthorizationEntry.getUbiRememberDeviceTicket());
-        userEntityDTO.setUbiRememberMeTicket(ubiAccountAuthorizationEntry.getUbiRememberMeTicket());
-
-        userEntityDTO.setChatId(telegramUser.getChatId());
-        userEntityDTO.setPrivateNotificationsEnabledFlag(privateNotificationsEnabledFlag);
-
-        userEntityDTO.setTradeByFiltersManagers(tradeByFiltersManagers.stream().map(TradeByFiltersManagerEntity::toTradeByFiltersManager).toList());
-        userEntityDTO.setTradeByItemIdManagers(tradeByItemIdManagers.stream().map(TradeByItemIdManagerEntity::toTradeByItemIdManager).toList());
-
-        return userEntityDTO;
-    }
 }

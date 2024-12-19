@@ -30,7 +30,7 @@ public class UserForCentralTradeManager {
 
     private List<TradeByItemIdManager> tradeByItemIdManagers = new ArrayList<>();
 
-    public UserForCentralTradeManager(UserEntityDTO manageableUser, UbiAccountStats linkedUbiAccount) {
+    public UserForCentralTradeManager(ManageableUser manageableUser, UbiAccountStats linkedUbiAccount) {
         this.id = manageableUser.getId();
         this.ubiAccountStats = linkedUbiAccount;
         this.ubiSessionId = manageableUser.getUbiSessionId();

@@ -126,11 +126,7 @@ public class InputCommandListener {
 
             case ITEM_FILTER_MIN_PRICE -> executorsService.execute(FilterEditStage14AskMaxPriceInput.class, updateInfo);
 
-            case ITEM_FILTER_MAX_PRICE -> executorsService.execute(FilterEditStage15AskMinLastSoldPriceInput.class, updateInfo);
-
-            case ITEM_FILTER_MIN_LAST_SOLD_PRICE -> executorsService.execute(FilterEditStage16AskMaxLastSoldPriceInput.class, updateInfo);
-
-            case ITEM_FILTER_MAX_LAST_SOLD_PRICE -> executorsService.execute(FilterEditStage17FinishRequestInput.class, updateInfo);
+            case ITEM_FILTER_MAX_PRICE -> executorsService.execute(FilterEditStage15FinishRequestInput.class, updateInfo);
 
             default ->
                     throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());

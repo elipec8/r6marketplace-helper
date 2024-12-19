@@ -31,11 +31,11 @@ public class CentralTradeManager {
 
         List<Item> items = itemService.getAllItems();
 
-        List<UserEntityDTO> manageableUsers = userService.getAllManageableUsers();
+        List<ManageableUser> manageableUsers = userService.getAllManageableUsers();
 
         List<UserForCentralTradeManager> usersForCentralTradeManager = new LinkedList<>();
 
-        for (UserEntityDTO manageableUser : manageableUsers) {
+        for (ManageableUser manageableUser : manageableUsers) {
             UbiAccountStats linkedUbiAccount =
                     updatedUbiAccountStats.stream().filter(u -> Objects.equals(u.getUbiProfileId(), manageableUser.getUbiProfileId())).findFirst().orElse(null);
             if (manageableUser != null && linkedUbiAccount != null) {

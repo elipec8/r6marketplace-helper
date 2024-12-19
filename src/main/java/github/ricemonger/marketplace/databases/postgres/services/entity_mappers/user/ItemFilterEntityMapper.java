@@ -1,10 +1,10 @@
-package github.ricemonger.marketplace.databases.postgres.services.entity_factories.user;
+package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.ItemFilterEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.services.entity_factories.item.TagEntityFactory;
+import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item.TagEntityMapper;
 import github.ricemonger.utils.DTOs.ItemFilter;
 import github.ricemonger.utils.DTOs.items.Tag;
 import github.ricemonger.utils.enums.FilterType;
@@ -23,11 +23,11 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ItemFilterEntityFactory {
+public class ItemFilterEntityMapper {
 
     private final UserPostgresRepository userPostgresRepository;
 
-    private final TagEntityFactory tagEntityFactory;
+    private final TagEntityMapper tagEntityMapper;
 
 
     public ItemFilterEntity createEntityForTelegramUserChatId(String chatId, ItemFilter filter) {
@@ -60,7 +60,7 @@ public class ItemFilterEntityFactory {
         if (filter.getTags() == null || filter.getTags().isEmpty()) {
             tags = Set.of();
         } else {
-            tags = filter.getTags().stream().map(tagEntityFactory::createEntity).collect(Collectors.toSet());
+            tags = filter.getTags().stream().map(tagEntityMapper::createEntity).collect(Collectors.toSet());
         }
 
         Integer minSellPrice = filter.getMinSellPrice();
@@ -101,7 +101,7 @@ public class ItemFilterEntityFactory {
 
         List<Tag> tags = new ArrayList<>();
         if (entity.getTags() != null && !entity.getTags().isEmpty()) {
-            tags = entity.getTags().stream().map(tagEntityFactory::createDTO).toList();
+            tags = entity.getTags().stream().map(tagEntityMapper::createDTO).toList();
         }
 
         Integer minSellPrice = entity.getMinSellPrice();

@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.databases.postgres.services.entity_factories.user;
+package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
@@ -19,9 +19,9 @@ import java.util.List;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class TelegramUserEntityFactory {
+public class TelegramUserEntityMapper {
 
-    private final ItemFilterEntityFactory itemFilterEntityFactory;
+    private final ItemFilterEntityMapper itemFilterEntityMapper;
 
     private final UserPostgresRepository userRepository;
 
@@ -49,7 +49,7 @@ public class TelegramUserEntityFactory {
         Boolean itemShowPictureFlag = entity.getUser().getItemShowPictureFlag();
         List<ItemFilter> itemShowAppliedFilters = new ArrayList<>();
         if (entity.getUser().getItemShowAppliedFilters() != null) {
-            itemShowAppliedFilters = (entity.getUser().getItemShowAppliedFilters().stream().map(itemFilterEntityFactory::createDTO).toList());
+            itemShowAppliedFilters = (entity.getUser().getItemShowAppliedFilters().stream().map(itemFilterEntityMapper::createDTO).toList());
         }
 
         Boolean newManagersAreActiveFlag = entity.getUser().getNewManagersAreActiveFlag();
@@ -86,7 +86,7 @@ public class TelegramUserEntityFactory {
         List<ItemFilter> itemShowAppliedFilters = new ArrayList<>();
 
         if (entity.getItemShowAppliedFilters() != null) {
-            itemShowAppliedFilters.addAll(entity.getItemShowAppliedFilters().stream().map(itemFilterEntityFactory::createDTO).toList());
+            itemShowAppliedFilters.addAll(entity.getItemShowAppliedFilters().stream().map(itemFilterEntityMapper::createDTO).toList());
         }
 
         return new ItemShowSettings(messageLimit,

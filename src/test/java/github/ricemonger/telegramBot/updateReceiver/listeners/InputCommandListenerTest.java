@@ -216,7 +216,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_MAX_LAST_SOLD_PRICE);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(FilterEditStage17FinishRequestInput.class, updateInfo);
+        verify(executorsService).execute(FilterEditStage15FinishRequestInput.class, updateInfo);
     }
 
     @Test

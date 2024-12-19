@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.databases.postgres.services.entity_factories.user;
+package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserInputEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class TelegramUserInputEntityFactory {
-    private TelegramUserPostgresRepository telegramUserPostgresRepository;
+public class TelegramUserInputEntityMapper {
+    private final TelegramUserPostgresRepository telegramUserPostgresRepository;
 
     public TelegramUserInputEntity createEntity(TelegramUserInput input) {
         return new TelegramUserInputEntity(telegramUserPostgresRepository.findById(

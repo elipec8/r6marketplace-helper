@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.databases.postgres.services.entity_factories.item;
+package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
 import github.ricemonger.utils.DTOs.items.Tag;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class TagEntityFactory {
+public class TagEntityMapper {
 
     public TagEntity createEntity(Tag tag) {
         return new TagEntity(tag.getValue(), tag.getName(), tag.getTagGroup());

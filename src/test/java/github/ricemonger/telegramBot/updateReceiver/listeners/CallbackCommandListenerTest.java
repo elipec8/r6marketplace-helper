@@ -5,7 +5,7 @@ import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.executors.ExecutorsService;
 import github.ricemonger.telegramBot.executors.cancel.Cancel;
 import github.ricemonger.telegramBot.executors.cancel.SilentCancel;
-import github.ricemonger.telegramBot.executors.itemFilters.edit.FilterEditStage18FinishConfirmedFinishCallback;
+import github.ricemonger.telegramBot.executors.itemFilters.edit.FilterEditStage16FinishConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.itemFilters.edit.FilterEditStage1AskNameCallback;
 import github.ricemonger.telegramBot.executors.itemFilters.showOrRemove.FilterRemoveStage3ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.executors.itemFilters.showOrRemove.FiltersShowAllNamesStage1AskNameCallback;
@@ -90,7 +90,7 @@ class CallbackCommandListenerTest {
     public void handelUpdate_should_item_filter_edit_finish_confirmed() {
         callbackCommandListener.handleUpdate(updateInfo(Callbacks.ITEM_FILTER_EDIT_FINISH_CONFIRMED));
 
-        verify(executorsService).execute(FilterEditStage18FinishConfirmedFinishCallback.class, updateInfo(Callbacks.ITEM_FILTER_EDIT_FINISH_CONFIRMED));
+        verify(executorsService).execute(FilterEditStage16FinishConfirmedFinishCallback.class, updateInfo(Callbacks.ITEM_FILTER_EDIT_FINISH_CONFIRMED));
     }
 
     @Test

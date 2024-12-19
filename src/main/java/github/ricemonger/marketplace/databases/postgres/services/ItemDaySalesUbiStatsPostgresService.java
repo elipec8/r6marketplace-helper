@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemDaySalesUbiStatsPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.services.entity_factories.item.ItemDaySalesUbiStatsEntityFactory;
+import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item.ItemDaySalesUbiStatsEntityMapper;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleUbiStatsService;
 import github.ricemonger.utils.DTOs.items.GroupedItemDaySalesUbiStats;
 import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStats;
@@ -20,21 +20,21 @@ public class ItemDaySalesUbiStatsPostgresService implements ItemSaleUbiStatsServ
 
     private final ItemDaySalesUbiStatsPostgresRepository itemDaySalesUbiStatsRepository;
 
-    private final ItemDaySalesUbiStatsEntityFactory itemDaySalesUbiStatsEntityFactory;
+    private final ItemDaySalesUbiStatsEntityMapper itemDaySalesUbiStatsEntityMapper;
 
     @Override
     @Transactional
     public void saveAll(Collection<GroupedItemDaySalesUbiStats> groupedItemDaySalesUbiStatsList) {
-        itemDaySalesUbiStatsRepository.saveAll(itemDaySalesUbiStatsEntityFactory.createEntities(groupedItemDaySalesUbiStatsList));
+        itemDaySalesUbiStatsRepository.saveAll(itemDaySalesUbiStatsEntityMapper.createEntities(groupedItemDaySalesUbiStatsList));
     }
 
     @Override
     public List<ItemDaySalesUbiStats> findAll() {
-        return itemDaySalesUbiStatsRepository.findAll().stream().map(itemDaySalesUbiStatsEntityFactory::createDTO).toList();
+        return itemDaySalesUbiStatsRepository.findAll().stream().map(itemDaySalesUbiStatsEntityMapper::createDTO).toList();
     }
 
     @Override
     public List<ItemDaySalesUbiStats> findAllForLastMonth() {
-        return itemDaySalesUbiStatsRepository.findAllForLastMonth().stream().map(itemDaySalesUbiStatsEntityFactory::createDTO).toList();
+        return itemDaySalesUbiStatsRepository.findAllForLastMonth().stream().map(itemDaySalesUbiStatsEntityMapper::createDTO).toList();
     }
 }

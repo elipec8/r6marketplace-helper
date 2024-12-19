@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.databases.postgres.services.entity_factories.user;
+package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByFiltersManagerEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class TradeByFiltersManagerEntityFactory {
+public class TradeByFiltersManagerEntityMapper {
 
     private final UserPostgresRepository userPostgresRepository;
 
-    private final ItemFilterEntityFactory itemFilterEntityFactory;
+    private final ItemFilterEntityMapper itemFilterEntityMapper;
 
     public TradeByFiltersManagerEntity createEntityForTelegramUser(String chatId, TradeByFiltersManager dto) {
         UserEntity user = userPostgresRepository.findByTelegramUserChatId(chatId);
@@ -23,7 +23,7 @@ public class TradeByFiltersManagerEntityFactory {
                 dto.getName(),
                 dto.isEnabled(),
                 dto.getTradeOperationType(),
-                dto.getAppliedFilters().stream().map(filter -> itemFilterEntityFactory.createEntityForUser(user, filter)).toList(),
+                dto.getAppliedFilters().stream().map(filter -> itemFilterEntityMapper.createEntityForUser(user, filter)).toList(),
                 dto.getMinDifferenceFromMedianPrice(),
                 dto.getMinDifferenceFromMedianPricePercent(),
                 dto.getPriorityMultiplier());
@@ -33,7 +33,7 @@ public class TradeByFiltersManagerEntityFactory {
         return new TradeByFiltersManager(entity.getName(),
                 entity.isEnabled(),
                 entity.getTradeOperationType(),
-                entity.getAppliedFilters().stream().map(itemFilterEntityFactory::createDTO).toList(),
+                entity.getAppliedFilters().stream().map(itemFilterEntityMapper::createDTO).toList(),
                 entity.getMinDifferenceFromMedianPrice(),
                 entity.getMinDifferenceFromMedianPricePercent(),
                 entity.getPriorityMultiplier());

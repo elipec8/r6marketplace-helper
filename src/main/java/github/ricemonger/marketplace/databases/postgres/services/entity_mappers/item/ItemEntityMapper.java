@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.databases.postgres.services.entity_factories.item;
+package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ItemEntityFactory {
+public class ItemEntityMapper {
     private final TagPostgresRepository tagRepository;
 
     public Item createDTO(@NotNull ItemEntity itemEntity) {
