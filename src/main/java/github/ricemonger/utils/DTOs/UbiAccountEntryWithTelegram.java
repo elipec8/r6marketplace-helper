@@ -1,6 +1,5 @@
 package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.utils.DTOs.items.ItemResaleLockWithUbiAccount;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,12 +9,12 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UbiAccountEntryEntityDTOWithTelegram {
+public class UbiAccountEntryWithTelegram {
     private String chatId;
 
     private Boolean privateNotificationsEnabledFlag;
 
-    private UbiAccountEntryEntityDTO ubiAccountEntryEntityDTO;
+    private UbiAccountEntry ubiAccountEntryEntityDTO;
 
     public String getEmail() {
         return ubiAccountEntryEntityDTO.getEmail();

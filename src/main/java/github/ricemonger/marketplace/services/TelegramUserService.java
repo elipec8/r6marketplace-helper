@@ -1,6 +1,5 @@
 package github.ricemonger.marketplace.services;
 
-import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserInputDatabaseService;
 import github.ricemonger.telegramBot.InputGroup;
@@ -156,7 +155,7 @@ public class TelegramUserService {
         return telegramUser.getInputGroup();
     }
 
-    public UbiAccountAuthorizationEntryEntityDTO getUserUbiAccountEntry(Long chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
+    public UbiAccountAuthorizationEntry getUserUbiAccountEntry(Long chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
         getTelegramUserOrThrow(chatId);
 
         return credentialsService.findByChatId(String.valueOf(chatId));

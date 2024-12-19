@@ -1,6 +1,5 @@
 package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.utils.DTOs.items.ItemResaleLockWithUbiAccount;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,40 +9,40 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UbiAccountEntryEntityDTO {
-    private UbiAccountAuthorizationEntryEntityDTO ubiAccountAuthorizationEntryEntityDTO;
+public class UbiAccountEntry {
+    private UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry;
     private UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO;
 
     public String getEmail() {
-        return ubiAccountAuthorizationEntryEntityDTO.getEmail();
+        return ubiAccountAuthorizationEntry.getEmail();
     }
 
     public String getEncodedPassword() {
-        return ubiAccountAuthorizationEntryEntityDTO.getEncodedPassword();
+        return ubiAccountAuthorizationEntry.getEncodedPassword();
     }
 
     public String getAuthorizationEntryProfileId() {
-        return ubiAccountAuthorizationEntryEntityDTO.getUbiProfileId();
+        return ubiAccountAuthorizationEntry.getUbiProfileId();
     }
 
     public String getUbiSessionId() {
-        return ubiAccountAuthorizationEntryEntityDTO.getUbiSessionId();
+        return ubiAccountAuthorizationEntry.getUbiSessionId();
     }
 
     public String getUbiSpaceId() {
-        return ubiAccountAuthorizationEntryEntityDTO.getUbiSpaceId();
+        return ubiAccountAuthorizationEntry.getUbiSpaceId();
     }
 
     public String getUbiAuthTicket() {
-        return ubiAccountAuthorizationEntryEntityDTO.getUbiAuthTicket();
+        return ubiAccountAuthorizationEntry.getUbiAuthTicket();
     }
 
     public String getUbiRememberDeviceTicket() {
-        return ubiAccountAuthorizationEntryEntityDTO.getUbiRememberDeviceTicket();
+        return ubiAccountAuthorizationEntry.getUbiRememberDeviceTicket();
     }
 
     public String getUbiRememberMeTicket() {
-        return ubiAccountAuthorizationEntryEntityDTO.getUbiRememberMeTicket();
+        return ubiAccountAuthorizationEntry.getUbiRememberMeTicket();
     }
 
     public String getUbiProfileId() {

@@ -2,9 +2,9 @@ package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryEntityDTO;
+import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
-import github.ricemonger.utils.DTOs.UbiAccountEntryEntityDTOWithTelegram;
+import github.ricemonger.utils.DTOs.UbiAccountEntryWithTelegram;
 import github.ricemonger.utils.DTOs.UbiAccountStatsEntityDTO;
 import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
@@ -39,7 +39,7 @@ public class TelegramUserUbiAccountEntryService {
     }
 
     public void reauthorizeAndSaveExistingUserBy2FACode(String chatId, String twoFACode) {
-        UbiAccountAuthorizationEntryEntityDTO user = telegramUserUbiAccountEntryDatabaseService.findAuthorizationInfoByChatId(chatId);
+        UbiAccountAuthorizationEntry user = telegramUserUbiAccountEntryDatabaseService.findAuthorizationInfoByChatId(chatId);
 
         AuthorizationDTO userAuthorizationDTO = authorizationService.authorizeAndGet2FaAuthorizedDTOForEncodedPassword(user.getEmail(), user.getEncodedPassword(), twoFACode);
 
@@ -71,11 +71,11 @@ public class TelegramUserUbiAccountEntryService {
         return unauthorizedUsers;
     }
 
-    public UbiAccountAuthorizationEntryEntityDTO findByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
+    public UbiAccountAuthorizationEntry findByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
         return telegramUserUbiAccountEntryDatabaseService.findAuthorizationInfoByChatId(chatId);
     }
 
-    public List<UbiAccountEntryEntityDTOWithTelegram> findAllFUbiAccountEntriesWithTelegram() {
+    public List<UbiAccountEntryWithTelegram> findAllFUbiAccountEntriesWithTelegram() {
         return telegramUserUbiAccountEntryDatabaseService.findAllForTelegram();
     }
 
@@ -89,8 +89,8 @@ public class TelegramUserUbiAccountEntryService {
         }
     }
 
-    private UbiAccountAuthorizationEntryEntityDTO buildUbiAccount(String email, String encodedPassword, AuthorizationDTO authorizationDTO) {
-        UbiAccountAuthorizationEntryEntityDTO user = new UbiAccountAuthorizationEntryEntityDTO();
+    private UbiAccountAuthorizationEntry buildUbiAccount(String email, String encodedPassword, AuthorizationDTO authorizationDTO) {
+        UbiAccountAuthorizationEntry user = new UbiAccountAuthorizationEntry();
         user.setEmail(email);
         user.setEncodedPassword(encodedPassword);
 

@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.databases.postgres.repositories;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.*;
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryEntityDTO;
+import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ class UserPostgresRepositoryTest {
         userPostgresRepository.save(new UserEntity());
         userPostgresRepository.save(new UserEntity());
 
-        UbiAccountAuthorizationEntryEntityDTO ubiAccountAuthorizationEntryEntityDTO = new UbiAccountAuthorizationEntryEntityDTO();
+        UbiAccountAuthorizationEntry ubiAccountAuthorizationEntryEntityDTO = new UbiAccountAuthorizationEntry();
         ubiAccountAuthorizationEntryEntityDTO.setEmail("email");
         ubiAccountAuthorizationEntryEntityDTO.setUbiProfileId("ubiProfileId");
 

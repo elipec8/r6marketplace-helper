@@ -12,41 +12,41 @@ public class UbiAccountAuthorizationEntryWithTelegram {
 
     private Boolean privateNotificationsEnabledFlag;
 
-    private UbiAccountAuthorizationEntryEntityDTO ubiAccountAuthorizationEntryEntityDTO;
+    private UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry;
 
-    public UbiAccountAuthorizationEntryWithTelegram(UbiAccountAuthorizationEntryEntityDTO ubiAccountAuthorizationEntryEntityDTO) {
-        this.ubiAccountAuthorizationEntryEntityDTO = ubiAccountAuthorizationEntryEntityDTO;
+    public UbiAccountAuthorizationEntryWithTelegram(UbiAccountAuthorizationEntry ubiAccountAuthorizationEntryEntityDTO) {
+        this.ubiAccountAuthorizationEntry = ubiAccountAuthorizationEntryEntityDTO;
     }
 
     public String getEmail() {
-        return ubiAccountAuthorizationEntryEntityDTO.getEmail();
+        return ubiAccountAuthorizationEntry.getEmail();
     }
 
     public String getEncodedPassword() {
-        return ubiAccountAuthorizationEntryEntityDTO.getEncodedPassword();
+        return ubiAccountAuthorizationEntry.getEncodedPassword();
     }
 
     public String getUbiProfileId() {
-        return ubiAccountAuthorizationEntryEntityDTO.getUbiProfileId();
+        return ubiAccountAuthorizationEntry.getUbiProfileId();
     }
 
     public String getUbiSessionId() {
-        return ubiAccountAuthorizationEntryEntityDTO.getUbiSessionId();
+        return ubiAccountAuthorizationEntry.getUbiSessionId();
     }
 
     public String getUbiSpaceId() {
-        return ubiAccountAuthorizationEntryEntityDTO.getUbiSpaceId();
+        return ubiAccountAuthorizationEntry.getUbiSpaceId();
     }
 
     public String getUbiAuthTicket() {
-        return ubiAccountAuthorizationEntryEntityDTO.getUbiAuthTicket();
+        return ubiAccountAuthorizationEntry.getUbiAuthTicket();
     }
 
     public String getUbiRememberDeviceTicket() {
-        return ubiAccountAuthorizationEntryEntityDTO.getUbiRememberDeviceTicket();
+        return ubiAccountAuthorizationEntry.getUbiRememberDeviceTicket();
     }
 
     public String getUbiRememberMeTicket() {
-        return ubiAccountAuthorizationEntryEntityDTO.getUbiRememberMeTicket();
+        return ubiAccountAuthorizationEntry.getUbiRememberMeTicket();
     }
 }

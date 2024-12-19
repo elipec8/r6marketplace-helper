@@ -1,6 +1,6 @@
 package github.ricemonger.utils.DTOs.auth;
 
-import github.ricemonger.utils.DTOs.UbiAccountEntryEntityDTOWithTelegram;
+import github.ricemonger.utils.DTOs.UbiAccountEntryWithTelegram;
 import github.ricemonger.utils.DTOs.UserForCentralTradeManager;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +26,7 @@ public class AuthorizationDTO {
         this.rememberMeTicket = userForCentralTradeManager.getUbiRememberMeTicket();
     }
 
-    public AuthorizationDTO(UbiAccountEntryEntityDTOWithTelegram ubiAccountWithTelegram) {
+    public AuthorizationDTO(UbiAccountEntryWithTelegram ubiAccountWithTelegram) {
         this.ticket = ubiAccountWithTelegram.getUbiAuthTicket();
         this.profileId = ubiAccountWithTelegram.getAuthorizationEntryProfileId();
         this.spaceId = ubiAccountWithTelegram.getUbiSpaceId();
