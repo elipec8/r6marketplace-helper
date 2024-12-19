@@ -339,16 +339,16 @@ class ItemServiceTest {
         when(itemSaleDatabaseService.findAllForLastMonth()).thenReturn(existingItemSales);
 
         //  4-200, 1-1200
-        ItemDaySalesUbiStatsEntityDTO item1Day7Stats = new ItemDaySalesUbiStatsEntityDTO("itemId1", LocalDate.now().minusDays(7), 200, 400, 1200, 5);
+        ItemDaySalesUbiStats item1Day7Stats = new ItemDaySalesUbiStats("itemId1", LocalDate.now().minusDays(7), 200, 400, 1200, 5);
 
-        ItemDaySalesUbiStatsEntityDTO item1Day30Stats = new ItemDaySalesUbiStatsEntityDTO("itemId1", LocalDate.now().minusDays(30), 400, 2000, 3200, 4);
+        ItemDaySalesUbiStats item1Day30Stats = new ItemDaySalesUbiStats("itemId1", LocalDate.now().minusDays(30), 400, 2000, 3200, 4);
 
-        ItemDaySalesUbiStatsEntityDTO item1Day32Stats = new ItemDaySalesUbiStatsEntityDTO("itemId1", LocalDate.now().minusDays(32), 800, 1600, 48000, 3);
+        ItemDaySalesUbiStats item1Day32Stats = new ItemDaySalesUbiStats("itemId1", LocalDate.now().minusDays(32), 800, 1600, 48000, 3);
 
         //1 - 100, 26-300,  1 - 500
-        ItemDaySalesUbiStatsEntityDTO item2Day15Stats = new ItemDaySalesUbiStatsEntityDTO("itemId2", LocalDate.now().minusDays(15), 100, 300, 500, 28);
+        ItemDaySalesUbiStats item2Day15Stats = new ItemDaySalesUbiStats("itemId2", LocalDate.now().minusDays(15), 100, 300, 500, 28);
 
-        List<ItemDaySalesUbiStatsEntityDTO> existingItemDaySalesUbiStatEntityDTOS = List.of(item1Day7Stats, item1Day30Stats, item1Day32Stats, item2Day15Stats);
+        List<ItemDaySalesUbiStats> existingItemDaySalesUbiStatEntityDTOS = List.of(item1Day7Stats, item1Day30Stats, item1Day32Stats, item2Day15Stats);
         when(itemSaleUbiStatsService.findAllForLastMonth()).thenReturn(existingItemDaySalesUbiStatEntityDTOS);
 
         Item expectedRecalculatedItem1 = new Item();

@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.node.PriceHistory;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.DTOs.items.GroupedItemDaySalesUbiStats;
-import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStatsEntityDTO;
+import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStats;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -41,7 +41,7 @@ class CommonQueryItemsSaleStatsMapperTest {
 
         GroupedItemDaySalesUbiStats expected1 = new GroupedItemDaySalesUbiStats("1", List.of());
         GroupedItemDaySalesUbiStats expected2 = new GroupedItemDaySalesUbiStats("2",
-                List.of(new ItemDaySalesUbiStatsEntityDTO("2", LocalDate.of(1970, 1, 1), 100, 200, 500, 6)));
+                List.of(new ItemDaySalesUbiStats("2", LocalDate.of(1970, 1, 1), 100, 200, 500, 6)));
         List<GroupedItemDaySalesUbiStats> expected = List.of(expected1, expected2);
 
         List<GroupedItemDaySalesUbiStats> result = commonQueryItemsSaleStatsMapper.mapAllItemsSaleStats(nodes);
@@ -60,7 +60,7 @@ class CommonQueryItemsSaleStatsMapperTest {
         node.setItem(new Item("1"));
         node.setPriceHistory(List.of(new PriceHistory(dtf.format(LocalDateTime.of(1970, 1, 1, 0, 0, 0)), 100, 200, 500, 6)));
 
-        GroupedItemDaySalesUbiStats expected = new GroupedItemDaySalesUbiStats("1", List.of(new ItemDaySalesUbiStatsEntityDTO("1", LocalDate.of(1970, 1, 1), 100, 200,
+        GroupedItemDaySalesUbiStats expected = new GroupedItemDaySalesUbiStats("1", List.of(new ItemDaySalesUbiStats("1", LocalDate.of(1970, 1, 1), 100, 200,
                 500, 6)));
 
         GroupedItemDaySalesUbiStats result = commonQueryItemsSaleStatsMapper.mapItemSaleStats(node);
@@ -78,11 +78,11 @@ class CommonQueryItemsSaleStatsMapperTest {
         PriceHistory priceHistory2 = new PriceHistory(dtf.format(LocalDateTime.of(1970, 1, 1, 0, 0, 0).plusDays(1)), 200, 300, 600, 7);
         List<PriceHistory> priceHistories = List.of(priceHistory1, priceHistory2);
 
-        ItemDaySalesUbiStatsEntityDTO expected1 = new ItemDaySalesUbiStatsEntityDTO("itemId", LocalDate.of(1970, 1, 1), 100, 200, 500, 6);
-        ItemDaySalesUbiStatsEntityDTO expected2 = new ItemDaySalesUbiStatsEntityDTO("itemId", LocalDate.of(1970, 1, 1).plusDays(1), 200, 300, 600, 7);
-        List<ItemDaySalesUbiStatsEntityDTO> expected = List.of(expected1, expected2);
+        ItemDaySalesUbiStats expected1 = new ItemDaySalesUbiStats("itemId", LocalDate.of(1970, 1, 1), 100, 200, 500, 6);
+        ItemDaySalesUbiStats expected2 = new ItemDaySalesUbiStats("itemId", LocalDate.of(1970, 1, 1).plusDays(1), 200, 300, 600, 7);
+        List<ItemDaySalesUbiStats> expected = List.of(expected1, expected2);
 
-        List<ItemDaySalesUbiStatsEntityDTO> result = commonQueryItemsSaleStatsMapper.mapAllItemDaySales("itemId", priceHistories);
+        List<ItemDaySalesUbiStats> result = commonQueryItemsSaleStatsMapper.mapAllItemDaySales("itemId", priceHistories);
 
         assertTrue(result.containsAll(expected) && expected.containsAll(result));
 
@@ -95,13 +95,13 @@ class CommonQueryItemsSaleStatsMapperTest {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getItemSaleStatsDateFormat());
 
         PriceHistory priceHistory1 = new PriceHistory(dtf.format(LocalDateTime.of(1970, 1, 1, 0, 0, 0)), 100, 200, 500, 6);
-        ItemDaySalesUbiStatsEntityDTO expected1 = new ItemDaySalesUbiStatsEntityDTO("itemId", LocalDate.of(1970, 1, 1), 100, 200, 500, 6);
-        ItemDaySalesUbiStatsEntityDTO result1 = commonQueryItemsSaleStatsMapper.mapItemDaySales("itemId", priceHistory1);
+        ItemDaySalesUbiStats expected1 = new ItemDaySalesUbiStats("itemId", LocalDate.of(1970, 1, 1), 100, 200, 500, 6);
+        ItemDaySalesUbiStats result1 = commonQueryItemsSaleStatsMapper.mapItemDaySales("itemId", priceHistory1);
         assertEquals(expected1, result1);
 
         PriceHistory priceHistory2 = new PriceHistory(dtf.format(LocalDateTime.of(1970, 1, 1, 0, 0, 0).plusDays(1)), 200, 300, 600, 7);
-        ItemDaySalesUbiStatsEntityDTO expected2 = new ItemDaySalesUbiStatsEntityDTO("itemId", LocalDate.of(1970, 1, 1).plusDays(1), 200, 300, 600, 7);
-        ItemDaySalesUbiStatsEntityDTO result2 = commonQueryItemsSaleStatsMapper.mapItemDaySales("itemId", priceHistory2);
+        ItemDaySalesUbiStats expected2 = new ItemDaySalesUbiStats("itemId", LocalDate.of(1970, 1, 1).plusDays(1), 200, 300, 600, 7);
+        ItemDaySalesUbiStats result2 = commonQueryItemsSaleStatsMapper.mapItemDaySales("itemId", priceHistory2);
         assertEquals(expected2, result2);
     }
 }

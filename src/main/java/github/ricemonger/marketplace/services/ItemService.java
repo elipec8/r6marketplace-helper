@@ -45,11 +45,11 @@ public class ItemService {
         Set<Item> items = itemDatabaseService.findAll().stream().map(Item::new).collect(Collectors.toSet());
 
         Collection<ItemSale> lastMonthSales = saleDatabaseService.findAllForLastMonth();
-        Collection<ItemDaySalesUbiStatsEntityDTO> lastMonthSalesUbiStats = itemSaleUbiStatsService.findAllForLastMonth();
+        Collection<ItemDaySalesUbiStats> lastMonthSalesUbiStats = itemSaleUbiStatsService.findAllForLastMonth();
 
         for (Item item : items) {
             Collection<ItemSale> saleStats = getItemSalesForItem(lastMonthSales, item.getItemId());
-            Collection<ItemDaySalesUbiStatsEntityDTO> ubiSaleStats = getItemDaySalesUbiStatsForItem(lastMonthSalesUbiStats, item.getItemId());
+            Collection<ItemDaySalesUbiStats> ubiSaleStats = getItemDaySalesUbiStatsForItem(lastMonthSalesUbiStats, item.getItemId());
             List<ItemDaySalesStatsByItemId> resultingPerDayStats = getResultingSaleStatsByPeriodForItem(saleStats, ubiSaleStats, item,
                     LocalDate.now().minusDays(30), LocalDate.now());
 
@@ -189,7 +189,7 @@ public class ItemService {
     }
 
     private List<ItemDaySalesStatsByItemId> getResultingSaleStatsByPeriodForItem(Collection<ItemSale> saleStats,
-                                                                                 Collection<ItemDaySalesUbiStatsEntityDTO> ubiSaleStats, Item item, LocalDate startDate, LocalDate endDate) {
+                                                                                 Collection<ItemDaySalesUbiStats> ubiSaleStats, Item item, LocalDate startDate, LocalDate endDate) {
         List<ItemDaySalesStatsByItemId> resultingPerDayStats = new ArrayList<>();
 
         for (LocalDate day = startDate; day.isBefore(endDate.plusDays(1)); day = day.plusDays(1)) {
@@ -209,7 +209,7 @@ public class ItemService {
         return itemSales.stream().filter(itemSale -> itemSale.getItemId().equals(itemId)).toList();
     }
 
-    private Collection<ItemDaySalesUbiStatsEntityDTO> getItemDaySalesUbiStatsForItem(Collection<ItemDaySalesUbiStatsEntityDTO> itemDaySalesUbiStatEntityDTOS, String itemId) {
+    private Collection<ItemDaySalesUbiStats> getItemDaySalesUbiStatsForItem(Collection<ItemDaySalesUbiStats> itemDaySalesUbiStatEntityDTOS, String itemId) {
         return itemDaySalesUbiStatEntityDTOS.stream().filter(ubiStats -> ubiStats.getItemId().equals(itemId)).toList();
     }
 

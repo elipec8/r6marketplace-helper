@@ -30,11 +30,11 @@ public class ItemDaySalesStatsByItemId {
         this.priceAndQuantity = priceAndQuantity;
     }
 
-    public ItemDaySalesStatsByItemId(LocalDate day, String itemId, Collection<ItemDaySalesUbiStatsEntityDTO> ubiSaleStats) {
+    public ItemDaySalesStatsByItemId(LocalDate day, String itemId, Collection<ItemDaySalesUbiStats> ubiSaleStats) {
         this.itemId = itemId;
         this.date = day;
 
-        ItemDaySalesUbiStatsEntityDTO ubiDaySaleStats =
+        ItemDaySalesUbiStats ubiDaySaleStats =
                 ubiSaleStats.stream().filter(ubiStats -> ubiStats.getDate().equals(day) && itemId.equals(ubiStats.getItemId())).findFirst().orElse(null);
         HashMap<Integer, Integer> priceAndQuantity = new HashMap<>();
 

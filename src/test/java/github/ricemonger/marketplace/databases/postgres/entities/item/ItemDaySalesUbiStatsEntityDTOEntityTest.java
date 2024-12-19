@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities.item;
 
-import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStatsEntityDTO;
+import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStats;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -22,7 +22,7 @@ class ItemDaySalesUbiStatsEntityDTOEntityTest {
         entity.setHighestPrice(300);
         entity.setItemsCount(10);
 
-        ItemDaySalesUbiStatsEntityDTO expected = new ItemDaySalesUbiStatsEntityDTO();
+        ItemDaySalesUbiStats expected = new ItemDaySalesUbiStats();
         expected.setItemId("1");
         expected.setDate(LocalDate.of(2023, 1, 1));
         expected.setLowestPrice(100);
@@ -30,7 +30,7 @@ class ItemDaySalesUbiStatsEntityDTOEntityTest {
         expected.setHighestPrice(300);
         expected.setItemsCount(10);
 
-        ItemDaySalesUbiStatsEntityDTO actual = entity.toItemDaySalesUbiStats();
+        ItemDaySalesUbiStats actual = entity.toItemDaySalesUbiStats();
 
         assertEquals(expected, actual);
     }
@@ -40,7 +40,7 @@ class ItemDaySalesUbiStatsEntityDTOEntityTest {
         ItemEntity item = new ItemEntity();
         item.setItemId("1");
 
-        ItemDaySalesUbiStatsEntityDTO itemDaySalesUbiStatsEntityDTO = new ItemDaySalesUbiStatsEntityDTO();
+        ItemDaySalesUbiStats itemDaySalesUbiStatsEntityDTO = new ItemDaySalesUbiStats();
         itemDaySalesUbiStatsEntityDTO.setDate(LocalDate.of(2023, 2, 1));
         itemDaySalesUbiStatsEntityDTO.setLowestPrice(100);
         itemDaySalesUbiStatsEntityDTO.setAveragePrice(200);

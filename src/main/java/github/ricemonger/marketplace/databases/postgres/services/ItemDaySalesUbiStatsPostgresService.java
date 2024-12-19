@@ -4,7 +4,7 @@ import github.ricemonger.marketplace.databases.postgres.repositories.ItemDaySale
 import github.ricemonger.marketplace.databases.postgres.services.entity_factories.item.ItemDaySalesUbiStatsEntityFactory;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleUbiStatsService;
 import github.ricemonger.utils.DTOs.items.GroupedItemDaySalesUbiStats;
-import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStatsEntityDTO;
+import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStats;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,12 +29,12 @@ public class ItemDaySalesUbiStatsPostgresService implements ItemSaleUbiStatsServ
     }
 
     @Override
-    public List<ItemDaySalesUbiStatsEntityDTO> findAll() {
+    public List<ItemDaySalesUbiStats> findAll() {
         return itemDaySalesUbiStatsRepository.findAll().stream().map(itemDaySalesUbiStatsEntityFactory::createDTO).toList();
     }
 
     @Override
-    public List<ItemDaySalesUbiStatsEntityDTO> findAllForLastMonth() {
+    public List<ItemDaySalesUbiStats> findAllForLastMonth() {
         return itemDaySalesUbiStatsRepository.findAllForLastMonth().stream().map(itemDaySalesUbiStatsEntityFactory::createDTO).toList();
     }
 }

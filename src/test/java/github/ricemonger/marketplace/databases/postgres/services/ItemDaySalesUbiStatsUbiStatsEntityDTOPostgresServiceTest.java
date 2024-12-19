@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemDaySalesUbiStatsPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.utils.DTOs.items.GroupedItemDaySalesUbiStats;
-import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStatsEntityDTO;
+import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStats;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +39,13 @@ class ItemDaySalesUbiStatsUbiStatsEntityDTOPostgresServiceTest {
 
     @Test
     public void saveAll_should_save_sale_stats_from_each_statList() {
-        ItemDaySalesUbiStatsEntityDTO itemDaySalesUbiStatsEntityDTO1 = new ItemDaySalesUbiStatsEntityDTO("item1", LocalDate.EPOCH, 1, 2, 3, 4);
-        ItemDaySalesUbiStatsEntityDTO itemDaySalesUbiStatsEntityDTO2 = new ItemDaySalesUbiStatsEntityDTO("item1", LocalDate.of(2023, 1, 1), 2, 3, 4, 5);
-        ItemDaySalesUbiStatsEntityDTO itemDaySalesUbiStatsEntityDTO3 = new ItemDaySalesUbiStatsEntityDTO("item1", LocalDate.of(9999, 1, 1), 3, 4, 5, 6);
+        ItemDaySalesUbiStats itemDaySalesUbiStatsEntityDTO1 = new ItemDaySalesUbiStats("item1", LocalDate.EPOCH, 1, 2, 3, 4);
+        ItemDaySalesUbiStats itemDaySalesUbiStatsEntityDTO2 = new ItemDaySalesUbiStats("item1", LocalDate.of(2023, 1, 1), 2, 3, 4, 5);
+        ItemDaySalesUbiStats itemDaySalesUbiStatsEntityDTO3 = new ItemDaySalesUbiStats("item1", LocalDate.of(9999, 1, 1), 3, 4, 5, 6);
 
         GroupedItemDaySalesUbiStats groupedItemDaySalesUbiStats1 = new GroupedItemDaySalesUbiStats("item1", List.of(itemDaySalesUbiStatsEntityDTO1, itemDaySalesUbiStatsEntityDTO2, itemDaySalesUbiStatsEntityDTO3));
 
-        ItemDaySalesUbiStatsEntityDTO itemDaySalesUbiStatsEntityDTO4 = new ItemDaySalesUbiStatsEntityDTO("item2", LocalDate.EPOCH, 4, 5, 6, 7);
+        ItemDaySalesUbiStats itemDaySalesUbiStatsEntityDTO4 = new ItemDaySalesUbiStats("item2", LocalDate.EPOCH, 4, 5, 6, 7);
 
         GroupedItemDaySalesUbiStats groupedItemDaySalesUbiStats2 = new GroupedItemDaySalesUbiStats("item2", List.of(itemDaySalesUbiStatsEntityDTO4));
 
@@ -66,14 +66,14 @@ class ItemDaySalesUbiStatsUbiStatsEntityDTOPostgresServiceTest {
 
     @Test
     public void saveAll_should_create_new_stats_and_update_old() {
-        ItemDaySalesUbiStatsEntityDTO itemDaySalesUbiStatsEntityDTO1 = new ItemDaySalesUbiStatsEntityDTO("item1", LocalDate.EPOCH, 1, 2, 3, 4);
-        ItemDaySalesUbiStatsEntityDTO itemDaySalesUbiStatsEntityDTO2 = new ItemDaySalesUbiStatsEntityDTO("item1", LocalDate.of(2023, 1, 1), 2, 3, 4, 5);
-        ItemDaySalesUbiStatsEntityDTO itemDaySalesUbiStatsEntityDTO3 = new ItemDaySalesUbiStatsEntityDTO("item1", LocalDate.of(9999, 1, 1), 3, 4, 5, 6);
-        ItemDaySalesUbiStatsEntityDTO itemDaySalesUbiStatsEntityDTO3Updated = new ItemDaySalesUbiStatsEntityDTO("item1", LocalDate.of(9999, 1, 1), 4, 5, 6, 7);
+        ItemDaySalesUbiStats itemDaySalesUbiStatsEntityDTO1 = new ItemDaySalesUbiStats("item1", LocalDate.EPOCH, 1, 2, 3, 4);
+        ItemDaySalesUbiStats itemDaySalesUbiStatsEntityDTO2 = new ItemDaySalesUbiStats("item1", LocalDate.of(2023, 1, 1), 2, 3, 4, 5);
+        ItemDaySalesUbiStats itemDaySalesUbiStatsEntityDTO3 = new ItemDaySalesUbiStats("item1", LocalDate.of(9999, 1, 1), 3, 4, 5, 6);
+        ItemDaySalesUbiStats itemDaySalesUbiStatsEntityDTO3Updated = new ItemDaySalesUbiStats("item1", LocalDate.of(9999, 1, 1), 4, 5, 6, 7);
 
         GroupedItemDaySalesUbiStats groupedItemDaySalesUbiStats1 = new GroupedItemDaySalesUbiStats("item1", List.of(itemDaySalesUbiStatsEntityDTO1, itemDaySalesUbiStatsEntityDTO2, itemDaySalesUbiStatsEntityDTO3));
 
-        ItemDaySalesUbiStatsEntityDTO itemDaySalesUbiStatsEntityDTO4 = new ItemDaySalesUbiStatsEntityDTO("item2", LocalDate.of(9999, 1, 1), 5, 6, 7, 8);
+        ItemDaySalesUbiStats itemDaySalesUbiStatsEntityDTO4 = new ItemDaySalesUbiStats("item2", LocalDate.of(9999, 1, 1), 5, 6, 7, 8);
 
         GroupedItemDaySalesUbiStats groupedItemDaySalesUbiStats2 = new GroupedItemDaySalesUbiStats("item2", List.of(itemDaySalesUbiStatsEntityDTO4));
 
@@ -100,13 +100,13 @@ class ItemDaySalesUbiStatsUbiStatsEntityDTOPostgresServiceTest {
 
     @Test
     public void saveAll_should_skip_if_item_doesnt_exist() {
-        ItemDaySalesUbiStatsEntityDTO itemDaySalesUbiStatsEntityDTO1 = new ItemDaySalesUbiStatsEntityDTO("item1", LocalDate.EPOCH, 1, 2, 3, 4);
-        ItemDaySalesUbiStatsEntityDTO itemDaySalesUbiStatsEntityDTO2 = new ItemDaySalesUbiStatsEntityDTO("item1", LocalDate.of(2023, 1, 1), 2, 3, 4, 5);
-        ItemDaySalesUbiStatsEntityDTO itemDaySalesUbiStatsEntityDTO3 = new ItemDaySalesUbiStatsEntityDTO("item1", LocalDate.of(9999, 1, 1), 3, 4, 5, 6);
+        ItemDaySalesUbiStats itemDaySalesUbiStatsEntityDTO1 = new ItemDaySalesUbiStats("item1", LocalDate.EPOCH, 1, 2, 3, 4);
+        ItemDaySalesUbiStats itemDaySalesUbiStatsEntityDTO2 = new ItemDaySalesUbiStats("item1", LocalDate.of(2023, 1, 1), 2, 3, 4, 5);
+        ItemDaySalesUbiStats itemDaySalesUbiStatsEntityDTO3 = new ItemDaySalesUbiStats("item1", LocalDate.of(9999, 1, 1), 3, 4, 5, 6);
 
         GroupedItemDaySalesUbiStats groupedItemDaySalesUbiStats1 = new GroupedItemDaySalesUbiStats("item1", List.of(itemDaySalesUbiStatsEntityDTO1, itemDaySalesUbiStatsEntityDTO2, itemDaySalesUbiStatsEntityDTO3));
 
-        ItemDaySalesUbiStatsEntityDTO itemDaySalesUbiStatsEntityDTO4 = new ItemDaySalesUbiStatsEntityDTO("item2", LocalDate.of(9999, 1, 1), 5, 6, 7, 8);
+        ItemDaySalesUbiStats itemDaySalesUbiStatsEntityDTO4 = new ItemDaySalesUbiStats("item2", LocalDate.of(9999, 1, 1), 5, 6, 7, 8);
 
         GroupedItemDaySalesUbiStats groupedItemDaySalesUbiStats2 = new GroupedItemDaySalesUbiStats("item2", List.of(itemDaySalesUbiStatsEntityDTO4));
 
@@ -128,15 +128,15 @@ class ItemDaySalesUbiStatsUbiStatsEntityDTOPostgresServiceTest {
     @Test
     public void findAll_should_return_mapped_result_from_repository() {
         List<ItemDaySalesUbiStatsEntity> expected = new ArrayList<>();
-        expected.add(new ItemDaySalesUbiStatsEntity(new ItemEntity("item1"), new ItemDaySalesUbiStatsEntityDTO("item1", LocalDate.EPOCH, 1, 2, 3, 4)));
-        expected.add(new ItemDaySalesUbiStatsEntity(new ItemEntity("item2"), new ItemDaySalesUbiStatsEntityDTO("item2", LocalDate.of(2023, 1, 1), 2, 3,
+        expected.add(new ItemDaySalesUbiStatsEntity(new ItemEntity("item1"), new ItemDaySalesUbiStats("item1", LocalDate.EPOCH, 1, 2, 3, 4)));
+        expected.add(new ItemDaySalesUbiStatsEntity(new ItemEntity("item2"), new ItemDaySalesUbiStats("item2", LocalDate.of(2023, 1, 1), 2, 3,
                 4, 5)));
-        expected.add(new ItemDaySalesUbiStatsEntity(new ItemEntity("item3"), new ItemDaySalesUbiStatsEntityDTO("item3", LocalDate.of(9999, 1, 1), 3, 4, 5, 6)));
+        expected.add(new ItemDaySalesUbiStatsEntity(new ItemEntity("item3"), new ItemDaySalesUbiStats("item3", LocalDate.of(9999, 1, 1), 3, 4, 5, 6)));
 
         when(itemDaySalesUbiStatsPostgresRepository.findAll()).thenReturn(expected);
 
-        List<ItemDaySalesUbiStatsEntityDTO> expectedMapped = expected.stream().map(ItemDaySalesUbiStatsEntity::toItemDaySalesUbiStats).toList();
-        List<ItemDaySalesUbiStatsEntityDTO> actual = itemDaySalesUbiStatsPostgresService.findAll();
+        List<ItemDaySalesUbiStats> expectedMapped = expected.stream().map(ItemDaySalesUbiStatsEntity::toItemDaySalesUbiStats).toList();
+        List<ItemDaySalesUbiStats> actual = itemDaySalesUbiStatsPostgresService.findAll();
 
         assertTrue(actual.containsAll(expectedMapped) && expectedMapped.containsAll(actual));
     }
@@ -144,15 +144,15 @@ class ItemDaySalesUbiStatsUbiStatsEntityDTOPostgresServiceTest {
     @Test
     public void findAllForLastMonth_should_return_mapped_result_from_repository() {
         List<ItemDaySalesUbiStatsEntity> expected = new ArrayList<>();
-        expected.add(new ItemDaySalesUbiStatsEntity(new ItemEntity("item1"), new ItemDaySalesUbiStatsEntityDTO("item1", LocalDate.EPOCH, 1, 2, 3, 4)));
-        expected.add(new ItemDaySalesUbiStatsEntity(new ItemEntity("item2"), new ItemDaySalesUbiStatsEntityDTO("item2", LocalDate.of(2023, 1, 1), 2, 3,
+        expected.add(new ItemDaySalesUbiStatsEntity(new ItemEntity("item1"), new ItemDaySalesUbiStats("item1", LocalDate.EPOCH, 1, 2, 3, 4)));
+        expected.add(new ItemDaySalesUbiStatsEntity(new ItemEntity("item2"), new ItemDaySalesUbiStats("item2", LocalDate.of(2023, 1, 1), 2, 3,
                 4, 5)));
-        expected.add(new ItemDaySalesUbiStatsEntity(new ItemEntity("item3"), new ItemDaySalesUbiStatsEntityDTO("item3", LocalDate.of(9999, 1, 1), 3, 4, 5, 6)));
+        expected.add(new ItemDaySalesUbiStatsEntity(new ItemEntity("item3"), new ItemDaySalesUbiStats("item3", LocalDate.of(9999, 1, 1), 3, 4, 5, 6)));
 
         when(itemDaySalesUbiStatsPostgresRepository.findAllForLastMonth()).thenReturn(expected);
 
-        List<ItemDaySalesUbiStatsEntityDTO> expectedMapped = expected.stream().map(ItemDaySalesUbiStatsEntity::toItemDaySalesUbiStats).toList();
-        List<ItemDaySalesUbiStatsEntityDTO> actual = itemDaySalesUbiStatsPostgresService.findAllForLastMonth();
+        List<ItemDaySalesUbiStats> expectedMapped = expected.stream().map(ItemDaySalesUbiStatsEntity::toItemDaySalesUbiStats).toList();
+        List<ItemDaySalesUbiStats> actual = itemDaySalesUbiStatsPostgresService.findAllForLastMonth();
 
         assertTrue(actual.containsAll(expectedMapped) && expectedMapped.containsAll(actual));
     }

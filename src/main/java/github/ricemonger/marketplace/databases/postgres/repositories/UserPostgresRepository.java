@@ -9,4 +9,6 @@ import java.util.List;
 public interface UserPostgresRepository extends JpaRepository<UserEntity, String> {
     @Query("SELECT u FROM helper_user u WHERE (SIZE(u.tradeByItemIdManagers) > 0 OR SIZE(u.tradeByFiltersManagers) > 0) AND u.managingEnabledFlag = true AND u.ubiAccountAuthorizationEntry IS NOT NULL")
     List<UserEntity> findAllManageableUsers();
+
+    UserEntity findByTelegramUserChatId(String chatId);
 }

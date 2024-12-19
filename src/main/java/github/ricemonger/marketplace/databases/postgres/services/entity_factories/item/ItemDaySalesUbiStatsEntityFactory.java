@@ -4,7 +4,7 @@ import github.ricemonger.marketplace.databases.postgres.entities.item.ItemDaySal
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.utils.DTOs.items.GroupedItemDaySalesUbiStats;
-import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStatsEntityDTO;
+import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStats;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,8 +21,8 @@ public class ItemDaySalesUbiStatsEntityFactory {
 
     private final ItemPostgresRepository itemPostgresRepository;
 
-    public ItemDaySalesUbiStatsEntityDTO createDTO(ItemDaySalesUbiStatsEntity itemDaySalesUbiStatsEntity) {
-        return new ItemDaySalesUbiStatsEntityDTO(itemDaySalesUbiStatsEntity.getItemId(),
+    public ItemDaySalesUbiStats createDTO(ItemDaySalesUbiStatsEntity itemDaySalesUbiStatsEntity) {
+        return new ItemDaySalesUbiStats(itemDaySalesUbiStatsEntity.getItemId(),
                 itemDaySalesUbiStatsEntity.getDate(),
                 itemDaySalesUbiStatsEntity.getLowestPrice(),
                 itemDaySalesUbiStatsEntity.getAveragePrice(),
@@ -56,7 +56,7 @@ public class ItemDaySalesUbiStatsEntityFactory {
 
         List<ItemDaySalesUbiStatsEntity> result = new LinkedList<>();
 
-        for (ItemDaySalesUbiStatsEntityDTO dto : groupedStats.getDaySales()) {
+        for (ItemDaySalesUbiStats dto : groupedStats.getDaySales()) {
             result.add(new ItemDaySalesUbiStatsEntity(itemReference,
                     dto.getDate(),
                     dto.getLowestPrice(),
