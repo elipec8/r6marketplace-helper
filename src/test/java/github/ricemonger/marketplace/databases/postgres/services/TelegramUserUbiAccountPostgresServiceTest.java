@@ -57,7 +57,7 @@ class TelegramUserUbiAccountPostgresServiceTest {
 
         telegramUserUbiAccountEntryService.saveAuthorizationInfo(CHAT_ID, account);
 
-        assertEquals("1", userRepository.findAll().get(0).getUbiAccountAuthorizationEntry().getUbiAccountStats().getUbiProfileId());
+        assertEquals("1", userRepository.findAll().get(0).getUbiAccountEntry().getUbiAccountStats().getUbiProfileId());
         assertEquals(1, telegramUserUbiAccountEntryService.findAllAuthorizationInfoForTelegram().size());
 
         account.setEmail("email2");
@@ -75,13 +75,13 @@ class TelegramUserUbiAccountPostgresServiceTest {
 
         telegramUserUbiAccountEntryService.saveAuthorizationInfo(CHAT_ID, account);
 
-        assertEquals("1", userRepository.findAll().get(0).getUbiAccountAuthorizationEntry().getUbiAccountStats().getUbiProfileId());
+        assertEquals("1", userRepository.findAll().get(0).getUbiAccountEntry().getUbiAccountStats().getUbiProfileId());
         assertEquals(1, telegramUserUbiAccountEntryService.findAllAuthorizationInfoForTelegram().size());
 
         account.setUbiSpaceId("spaceID");
         telegramUserUbiAccountEntryService.saveAuthorizationInfo(CHAT_ID, account);
 
-        assertEquals("spaceID", userRepository.findAll().get(0).getUbiAccountAuthorizationEntry().getUbiSpaceId());
+        assertEquals("spaceID", userRepository.findAll().get(0).getUbiAccountEntry().getUbiSpaceId());
         assertEquals(1, telegramUserUbiAccountEntryService.findAllAuthorizationInfoForTelegram().size());
     }
 
@@ -93,7 +93,7 @@ class TelegramUserUbiAccountPostgresServiceTest {
 
         telegramUserUbiAccountEntryService.saveAuthorizationInfo(CHAT_ID, account);
 
-        assertEquals("1", userRepository.findAll().get(0).getUbiAccountAuthorizationEntry().getUbiAccountStats().getUbiProfileId());
+        assertEquals("1", userRepository.findAll().get(0).getUbiAccountEntry().getUbiAccountStats().getUbiProfileId());
         assertEquals(1, telegramUserUbiAccountEntryService.findAllAuthorizationInfoForTelegram().size());
 
         account.setUbiProfileId("2");
@@ -131,7 +131,7 @@ class TelegramUserUbiAccountPostgresServiceTest {
 
         telegramUserUbiAccountEntryService.saveAuthorizationInfo(CHAT_ID, account);
 
-        assertEquals("1", userRepository.findAll().get(0).getUbiAccountAuthorizationEntry().getUbiAccountStats().getUbiProfileId());
+        assertEquals("1", userRepository.findAll().get(0).getUbiAccountEntry().getUbiAccountStats().getUbiProfileId());
         assertEquals(1, ubiAccountAuthorizationEntryRepository.findAll().size());
 
         createTelegramUser(ANOTHER_CHAT_ID);
@@ -141,7 +141,7 @@ class TelegramUserUbiAccountPostgresServiceTest {
 
         telegramUserUbiAccountEntryService.deleteAuthorizationInfoByChatId(CHAT_ID);
 
-        assertNull(userRepository.findAll().get(0).getUbiAccountAuthorizationEntry());
+        assertNull(userRepository.findAll().get(0).getUbiAccountEntry());
         assertEquals(1, ubiAccountAuthorizationEntryRepository.findAll().size());
     }
 

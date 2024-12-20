@@ -8,6 +8,16 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UbiAccountEntryEntityTest {
+
+    @Test
+    public void constructor_should_set_id_fields() {
+        UbiAccountEntryEntity accountEntry = new UbiAccountEntryEntity(1L, "email", "profileId");
+
+        assertEquals(1L, accountEntry.getUserId());
+        assertEquals("email", accountEntry.getEmail());
+        assertEquals("profileId", accountEntry.getProfileId());
+    }
+
     @Test
     public void getUserId_should_return_user_id() {
         UserEntity user = new UserEntity();

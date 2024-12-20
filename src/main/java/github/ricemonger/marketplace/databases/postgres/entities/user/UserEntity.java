@@ -26,7 +26,7 @@ public class UserEntity {
     private TelegramUserEntity telegramUser;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, optional = true)
-    private UbiAccountEntryEntity ubiAccountAuthorizationEntry;
+    private UbiAccountEntryEntity ubiAccountEntry;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ItemFilterEntity> itemFilters = new ArrayList<>();
@@ -86,7 +86,7 @@ public class UserEntity {
 
             return Objects.equals(id, entity.id) &&
                    telegramUser.isFullyEqualExceptUser(entity.telegramUser) &&
-                   ubiAccountAuthorizationEntry.isFullyEqualExceptUser(entity.ubiAccountAuthorizationEntry) &&
+                   ubiAccountEntry.isFullyEqualExceptUser(entity.ubiAccountEntry) &&
                    itemFiltersAreEqual &&
                    tradeByFiltersManagersAreEqual &&
                    tradeByItemIdManagersAreEqual &&

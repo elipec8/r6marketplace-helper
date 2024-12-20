@@ -58,7 +58,7 @@ public class TelegramUserUbiAccountPostgresService implements TelegramUserUbiAcc
     public void deleteAuthorizationInfoByChatId(String chatId) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
-        telegramUser.getUser().setUbiAccountAuthorizationEntry(null);
+        telegramUser.getUser().setUbiAccountEntry(null);
         telegramUserRepository.save(telegramUser);
     }
 

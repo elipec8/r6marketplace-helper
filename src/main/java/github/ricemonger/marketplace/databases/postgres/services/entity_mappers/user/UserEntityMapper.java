@@ -20,12 +20,12 @@ public class UserEntityMapper {
     public ManageableUser createManageableUser(UserEntity entity) {
         return new ManageableUser(
                 entity.getId(),
-                ubiAccountStatsEntityMapper.createDTO(entity.getUbiAccountAuthorizationEntry().getUbiAccountStats()),
-                entity.getUbiAccountAuthorizationEntry().getUbiSessionId(),
-                entity.getUbiAccountAuthorizationEntry().getUbiSpaceId(),
-                entity.getUbiAccountAuthorizationEntry().getUbiAuthTicket(),
-                entity.getUbiAccountAuthorizationEntry().getUbiRememberDeviceTicket(),
-                entity.getUbiAccountAuthorizationEntry().getUbiRememberMeTicket(),
+                ubiAccountStatsEntityMapper.createDTO(entity.getUbiAccountEntry().getUbiAccountStats()),
+                entity.getUbiAccountEntry().getUbiSessionId(),
+                entity.getUbiAccountEntry().getUbiSpaceId(),
+                entity.getUbiAccountEntry().getUbiAuthTicket(),
+                entity.getUbiAccountEntry().getUbiRememberDeviceTicket(),
+                entity.getUbiAccountEntry().getUbiRememberMeTicket(),
                 entity.getTelegramUser().getChatId(),
                 entity.getPrivateNotificationsEnabledFlag(),
                 entity.getTradeByFiltersManagers().stream().map(tradeByFiltersManagerEntityMapper::createDTO).toList(),
