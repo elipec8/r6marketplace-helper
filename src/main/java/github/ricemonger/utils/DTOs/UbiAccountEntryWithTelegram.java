@@ -14,49 +14,49 @@ public class UbiAccountEntryWithTelegram {
 
     private Boolean privateNotificationsEnabledFlag;
 
-    private UbiAccountEntry ubiAccountEntryEntityDTO;
+    private UbiAccountEntry ubiAccountEntry;
 
     public String getEmail() {
-        return ubiAccountEntryEntityDTO.getEmail();
+        return ubiAccountEntry.getEmail();
     }
 
     public String getEncodedPassword() {
-        return ubiAccountEntryEntityDTO.getEncodedPassword();
+        return ubiAccountEntry.getEncodedPassword();
     }
 
     public String getAuthorizationEntryProfileId() {
-        return ubiAccountEntryEntityDTO.getAuthorizationEntryProfileId();
+        return ubiAccountEntry.getAuthorizationEntryProfileId();
     }
 
     public String getUbiSessionId() {
-        return ubiAccountEntryEntityDTO.getUbiSessionId();
+        return ubiAccountEntry.getUbiSessionId();
     }
 
     public String getUbiSpaceId() {
-        return ubiAccountEntryEntityDTO.getUbiSpaceId();
+        return ubiAccountEntry.getUbiSpaceId();
     }
 
     public String getUbiAuthTicket() {
-        return ubiAccountEntryEntityDTO.getUbiAuthTicket();
+        return ubiAccountEntry.getUbiAuthTicket();
     }
 
     public String getUbiRememberDeviceTicket() {
-        return ubiAccountEntryEntityDTO.getUbiRememberDeviceTicket();
+        return ubiAccountEntry.getUbiRememberDeviceTicket();
     }
 
     public String getUbiRememberMeTicket() {
-        return ubiAccountEntryEntityDTO.getUbiRememberMeTicket();
+        return ubiAccountEntry.getUbiRememberMeTicket();
     }
 
     public String getUbiProfileId() {
-        return ubiAccountEntryEntityDTO.getUbiProfileId();
+        return ubiAccountEntry.getUbiProfileId();
     }
 
     public Integer getCreditAmount() {
-        return ubiAccountEntryEntityDTO.getCreditAmount();
+        return ubiAccountEntry.getCreditAmount();
     }
 
     public List<String> getOwnedItemsIds() {
-        return ubiAccountEntryEntityDTO.getOwnedItemsIds();
+        return ubiAccountEntry.getOwnedItemsIds();
     }
 }

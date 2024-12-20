@@ -49,7 +49,7 @@ class AuthorizationDTOTest {
         UbiAccountEntry ubiAccountEntryEntityDTO = new UbiAccountEntry();
         ubiAccountEntryEntityDTO.setUbiAccountAuthorizationEntry(ubiAccountAuthorizationEntryEntityDTO);
         ubiAccountEntryEntityDTO.setUbiAccountStatsEntityDTO(ubiAccountStatsEntityDTO);
-        ubiAccountWithTelegram.setUbiAccountEntryEntityDTO(ubiAccountEntryEntityDTO);
+        ubiAccountWithTelegram.setUbiAccountEntry(ubiAccountEntryEntityDTO);
 
         AuthorizationDTO authorizationDTO = new AuthorizationDTO(ubiAccountWithTelegram);
 

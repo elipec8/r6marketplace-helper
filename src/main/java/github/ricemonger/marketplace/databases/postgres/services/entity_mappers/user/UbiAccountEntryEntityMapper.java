@@ -26,8 +26,7 @@ public class UbiAccountEntryEntityMapper {
 
     public UbiAccountEntryEntity createEntityForTelegramUser(String chatId, UbiAccountAuthorizationEntry account) {
         UserEntity user = userPostgresRepository.findByTelegramUserChatId(chatId);
-        UbiAccountStatsEntity ubiAccountStatsEntity =
-                ubiAccountStatsEntityPostgresRepository.findById(account.getUbiProfileId()).orElse(new UbiAccountStatsEntity(account.getUbiProfileId()));
+        UbiAccountStatsEntity ubiAccountStatsEntity = ubiAccountStatsEntityPostgresRepository.findById(account.getUbiProfileId()).orElse(new UbiAccountStatsEntity(account.getUbiProfileId()));
 
         return new UbiAccountEntryEntity(
                 user,
