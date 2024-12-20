@@ -17,19 +17,19 @@ public class UbiAccountStatsEntityMapper {
 
     private final ItemPostgresRepository itemPostgresRepository;
 
-    public UbiAccountStatsEntityDTO createDTO(UbiAccountStatsEntity entity) {
-        return new UbiAccountStatsEntityDTO(
-                entity.getUbiProfileId(),
-                entity.getCreditAmount(),
-                entity.getOwnedItems().stream().map(ItemEntity::getItemId).toList());
-    }
-
-    public Iterable<UbiAccountStatsEntity> createEntities(List<UbiAccountStatsEntityDTO> ubiAccounts) {
+    public List<UbiAccountStatsEntity> createEntities(List<UbiAccountStatsEntityDTO> ubiAccounts) {
         List<ItemEntity> existingItems = itemPostgresRepository.findAll();
 
         return ubiAccounts.stream().map(ubiAccount -> new UbiAccountStatsEntity(
                 ubiAccount.getUbiProfileId(),
                 ubiAccount.getCreditAmount(),
                 existingItems.stream().filter(item -> ubiAccount.getOwnedItemsIds().contains(item.getItemId())).toList())).toList();
+    }
+
+    public UbiAccountStatsEntityDTO createDTO(UbiAccountStatsEntity entity) {
+        return new UbiAccountStatsEntityDTO(
+                entity.getUbiProfileId(),
+                entity.getCreditAmount(),
+                entity.getOwnedItems().stream().map(ItemEntity::getItemId).toList());
     }
 }
