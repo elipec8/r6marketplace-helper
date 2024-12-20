@@ -64,6 +64,12 @@ class TelegramUserTradeByFiltersManagerPostgresServiceTest {
     }
 
     @Test
+    public void invertEnabledFlagById_should_throw_exception_when_user_doesnt_exist() {
+        when(telegramUserRepository.findById("chatId")).thenReturn(Optional.empty());
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserTradeByFiltersManagerService.invertEnabledFlagById("chatId", "name"));
+    }
+
+    @Test
     public void deleteById_should_remove_manager_and_save_user() throws TelegramUserDoesntExistException {
         TelegramUserEntity user = new TelegramUserEntity();
         TradeByFiltersManagerEntity manager1 = new TradeByFiltersManagerEntity();
@@ -82,6 +88,12 @@ class TelegramUserTradeByFiltersManagerPostgresServiceTest {
     }
 
     @Test
+    public void deleteById_should_throw_exception_when_user_doesnt_exist() {
+        when(telegramUserRepository.findById("chatId")).thenReturn(Optional.empty());
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserTradeByFiltersManagerService.deleteById("chatId", "name"));
+    }
+
+    @Test
     public void findById_should_return_mapped_dto() throws TelegramUserDoesntExistException, TradeByFiltersManagerDoesntExistException {
         TelegramUserEntity user = new TelegramUserEntity();
         user.setUser(new UserEntity(1L));
@@ -94,6 +106,12 @@ class TelegramUserTradeByFiltersManagerPostgresServiceTest {
         TradeByFiltersManager result = telegramUserTradeByFiltersManagerService.findById("chatId", "name");
 
         assertSame(managerDTO, result);
+    }
+
+    @Test
+    public void findById_should_throw_exception_when_manager_doesnt_exist() {
+        when(telegramUserRepository.findById("chatId")).thenReturn(Optional.empty());
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserTradeByFiltersManagerService.findById("chatId", "name"));
     }
 
     @Test
@@ -112,5 +130,11 @@ class TelegramUserTradeByFiltersManagerPostgresServiceTest {
         List<TradeByFiltersManager> result = telegramUserTradeByFiltersManagerService.findAllByChatId("chatId");
 
         assertTrue(result.size() == 2 && result.stream().allMatch(res -> List.of(dto1, dto2).stream().anyMatch(ex -> ex == res)));
+    }
+
+    @Test
+    public void findAllByChatId_should_throw_exception_when_user_doesnt_exist() {
+        when(telegramUserRepository.findById("chatId")).thenReturn(Optional.empty());
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserTradeByFiltersManagerService.findAllByChatId("chatId"));
     }
 }
