@@ -39,7 +39,6 @@ class ScheduledAllUbiUsersReauthorizationTest {
                 "ubiSessionId",
                 "ubiSpaceId",
                 "ubiAuthTicket",
-                "ubiTwoFactorAuthTicket",
                 "ubiRememberDeviceTicket",
                 "ubiRememberMeTicket")));
         when(telegramUserUbiAccountEntryService.reauthorizeAllUbiUsersAndGetUnauthorizedList()).thenReturn(toNotify);

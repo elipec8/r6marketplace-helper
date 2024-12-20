@@ -1,7 +1,9 @@
 package github.ricemonger.marketplace.scheduled_tasks;
 
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
+import github.ricemonger.marketplace.services.CentralTradeManager;
 import github.ricemonger.marketplace.services.CommonValuesService;
+import github.ricemonger.marketplace.services.ItemService;
 import github.ricemonger.marketplace.services.TelegramUserUbiAccountEntryService;
 import github.ricemonger.telegramBot.TelegramBotService;
 import github.ricemonger.utils.DTOs.*;
@@ -22,42 +24,41 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class ScheduledAllUbiUsersManagerTest {
-
     @Autowired
     private ScheduledAllUbiUsersManager scheduledAllUbiUsersManager;
-
     @MockBean
     private TelegramUserUbiAccountEntryService telegramUserUbiAccountEntryService;
-
     @MockBean
     private TelegramBotService telegramBotService;
-
     @MockBean
     private GraphQlClientService graphQlClientService;
-
     @MockBean
     private CommonValuesService commonValuesService;
+    @MockBean
+    private ItemService itemService;
+    @MockBean
+    private CentralTradeManager centralTradeManager;
 
     @Test
-    public void fetchAllUbiUsersStats_should_update_ubiStatsAndManageTrades() {
+    public void fetchAllUbiUsersStatsAndManageTrades_should_update_ubiStats_and_manage_trades() {
         UbiAccountAuthorizationEntry ubiAccountAuthorizationEntryEntityDTO1 = new UbiAccountAuthorizationEntry("ubiAuthProfileId1", "email1",
                 "encodedPassword1",
-                "ubiSessionId1", "ubiSpaceId1", "ubiAuthTicket1", "ubiTwoFactorAuthTicket1", "ubiRememberDeviceTicket1", "ubiRememberMeTicket1");
-        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO1 = new UbiAccountStatsEntityDTO("ubiProfileId1", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+                "ubiSessionId1", "ubiSpaceId1", "ubiAuthTicket1", "ubiRememberDeviceTicket1", "ubiRememberMeTicket1");
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO1 = new UbiAccountStatsEntityDTO("ubiProfileId1", 0, List.of());
         UbiAccountEntry ubiAccountEntryEntityDTO1 = new UbiAccountEntry(ubiAccountAuthorizationEntryEntityDTO1, ubiAccountStatsEntityDTO1);
         UbiAccountEntryWithTelegram ubiAccountEntryEntityDTOWithTelegram1 = new UbiAccountEntryWithTelegram("chatId1", false, ubiAccountEntryEntityDTO1);
 
         UbiAccountAuthorizationEntry ubiAccountAuthorizationEntryEntityDTO2 = new UbiAccountAuthorizationEntry("ubiAuthProfileId2", "email2",
                 "encodedPassword2",
-                "ubiSessionId2", "ubiSpaceId2", "ubiAuthTicket2", "ubiTwoFactorAuthTicket2", "ubiRememberDeviceTicket2", "ubiRememberMeTicket2");
-        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO2 = new UbiAccountStatsEntityDTO("ubiProfileId2", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+                "ubiSessionId2", "ubiSpaceId2", "ubiAuthTicket2", "ubiRememberDeviceTicket2", "ubiRememberMeTicket2");
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO2 = new UbiAccountStatsEntityDTO("ubiProfileId2", 0, List.of());
         UbiAccountEntry ubiAccountEntryEntityDTO2 = new UbiAccountEntry(ubiAccountAuthorizationEntryEntityDTO2, ubiAccountStatsEntityDTO2);
         UbiAccountEntryWithTelegram ubiAccountEntryEntityDTOWithTelegram2 = new UbiAccountEntryWithTelegram("chatId2", false, ubiAccountEntryEntityDTO2);
 
         UbiAccountAuthorizationEntry ubiAccountAuthorizationEntryEntityDTO3 = new UbiAccountAuthorizationEntry("ubiAuthProfileId3", "email3",
                 "encodedPassword3",
-                "ubiSessionId3", "ubiSpaceId3", "ubiAuthTicket3", "ubiTwoFactorAuthTicket3", "ubiRememberDeviceTicket3", "ubiRememberMeTicket3");
-        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO3 = new UbiAccountStatsEntityDTO("ubiProfileId3", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+                "ubiSessionId3", "ubiSpaceId3", "ubiAuthTicket3", "ubiRememberDeviceTicket3", "ubiRememberMeTicket3");
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO3 = new UbiAccountStatsEntityDTO("ubiProfileId3", 0, List.of());
         UbiAccountEntry ubiAccountEntryEntityDTO3 = new UbiAccountEntry(ubiAccountAuthorizationEntryEntityDTO3, ubiAccountStatsEntityDTO3);
         UbiAccountEntryWithTelegram ubiAccountEntryEntityDTOWithTelegram3 = new UbiAccountEntryWithTelegram("chatId3", false, ubiAccountEntryEntityDTO3);
 
@@ -138,12 +139,9 @@ class ScheduledAllUbiUsersManagerTest {
 
         scheduledAllUbiUsersManager.fetchAllUbiUsersStatsAndManageTrades();
 
-        UbiAccountStatsEntityDTO expectedUbiAccountStatsEntityDTO1 = new UbiAccountStatsEntityDTO("ubiProfileId1", 1, 1, creditAmount1, List.of("itemId3", "itemId4"),
-                List.of(itemResaleLockWithUbiAccount1, itemResaleLockWithUbiAccount2), List.of(currentBuyTrade1), List.of(currentSellTrade1));
-        UbiAccountStatsEntityDTO expectedUbiAccountStatsEntityDTO2 = new UbiAccountStatsEntityDTO("ubiProfileId2", 0, 0, creditAmount2, List.of("itemId5", "itemId6"),
-                List.of(itemResaleLockWithUbiAccount3), List.of(currentBuyTrade2), List.of());
-        UbiAccountStatsEntityDTO expectedUbiAccountStatsEntityDTO3 = new UbiAccountStatsEntityDTO("ubiProfileId3", 0, 0, creditAmount3, List.of(),
-                List.of(), List.of(), List.of(currentSellTrade3));
+        UbiAccountStatsEntityDTO expectedUbiAccountStatsEntityDTO1 = new UbiAccountStatsEntityDTO("ubiProfileId1", creditAmount1, List.of("itemId3", "itemId4"));
+        UbiAccountStatsEntityDTO expectedUbiAccountStatsEntityDTO2 = new UbiAccountStatsEntityDTO("ubiProfileId2", creditAmount2, List.of("itemId5", "itemId6"));
+        UbiAccountStatsEntityDTO expectedUbiAccountStatsEntityDTO3 = new UbiAccountStatsEntityDTO("ubiProfileId3", creditAmount3, List.of());
         List<UbiAccountStatsEntityDTO> expectedUpdatedUbiAccountStatEntityDTOS = List.of(expectedUbiAccountStatsEntityDTO1, expectedUbiAccountStatsEntityDTO2, expectedUbiAccountStatsEntityDTO3);
 
         System.out.println("Expected:");
@@ -165,28 +163,30 @@ class ScheduledAllUbiUsersManagerTest {
             }
             return true;
         }));
+
+        verify(centralTradeManager).manageAllUsersTrades(any());
     }
 
     @Test
-    public void fetchAllUbiUsersStats_should_notify_users_on_credits_amount_changedAndManageTrades() {
+    public void fetchAllUbiUsersStatsAndManageTrades_should_notify_users_on_credits_amount() {
         UbiAccountAuthorizationEntry ubiAccountAuthorizationEntryEntityDTO1 = new UbiAccountAuthorizationEntry("ubiAuthProfileId1", "email1",
                 "encodedPassword1",
-                "ubiSessionId1", "ubiSpaceId1", "ubiAuthTicket1", "ubiTwoFactorAuthTicket1", "ubiRememberDeviceTicket1", "ubiRememberMeTicket1");
-        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO1 = new UbiAccountStatsEntityDTO("ubiProfileId1", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+                "ubiSessionId1", "ubiSpaceId1", "ubiAuthTicket1", "ubiRememberDeviceTicket1", "ubiRememberMeTicket1");
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO1 = new UbiAccountStatsEntityDTO("ubiProfileId1", 0, List.of());
         UbiAccountEntry ubiAccountEntryEntityDTO1 = new UbiAccountEntry(ubiAccountAuthorizationEntryEntityDTO1, ubiAccountStatsEntityDTO1);
         UbiAccountEntryWithTelegram ubiAccountEntryEntityDTOWithTelegram1 = new UbiAccountEntryWithTelegram("chatId1", true, ubiAccountEntryEntityDTO1);
 
         UbiAccountAuthorizationEntry ubiAccountAuthorizationEntryEntityDTO2 = new UbiAccountAuthorizationEntry("ubiAuthProfileId2", "email2",
                 "encodedPassword2",
-                "ubiSessionId2", "ubiSpaceId2", "ubiAuthTicket2", "ubiTwoFactorAuthTicket2", "ubiRememberDeviceTicket2", "ubiRememberMeTicket2");
-        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO2 = new UbiAccountStatsEntityDTO("ubiProfileId2", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+                "ubiSessionId2", "ubiSpaceId2", "ubiAuthTicket2", "ubiRememberDeviceTicket2", "ubiRememberMeTicket2");
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO2 = new UbiAccountStatsEntityDTO("ubiProfileId2", 0, List.of());
         UbiAccountEntry ubiAccountEntryEntityDTO2 = new UbiAccountEntry(ubiAccountAuthorizationEntryEntityDTO2, ubiAccountStatsEntityDTO2);
         UbiAccountEntryWithTelegram ubiAccountEntryEntityDTOWithTelegram2 = new UbiAccountEntryWithTelegram("chatId2", false, ubiAccountEntryEntityDTO2);
 
         UbiAccountAuthorizationEntry ubiAccountAuthorizationEntryEntityDTO3 = new UbiAccountAuthorizationEntry("ubiAuthProfileId3", "email3",
                 "encodedPassword3",
-                "ubiSessionId3", "ubiSpaceId3", "ubiAuthTicket3", "ubiTwoFactorAuthTicket3", "ubiRememberDeviceTicket3", "ubiRememberMeTicket3");
-        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO3 = new UbiAccountStatsEntityDTO("ubiProfileId3", 0, 0, 100, List.of(), List.of(), List.of(), List.of());
+                "ubiSessionId3", "ubiSpaceId3", "ubiAuthTicket3", "ubiRememberDeviceTicket3", "ubiRememberMeTicket3");
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO3 = new UbiAccountStatsEntityDTO("ubiProfileId3", 100, List.of());
         UbiAccountEntry ubiAccountEntryEntityDTO3 = new UbiAccountEntry(ubiAccountAuthorizationEntryEntityDTO3, ubiAccountStatsEntityDTO3);
         UbiAccountEntryWithTelegram ubiAccountEntryEntityDTOWithTelegram3 = new UbiAccountEntryWithTelegram("chatId3", true, ubiAccountEntryEntityDTO3);
 
@@ -214,31 +214,31 @@ class ScheduledAllUbiUsersManagerTest {
     }
 
     @Test
-    public void fetchAllUbiUsersStats_should_notify_users_on_new_sellsAndManageTrades() {
+    public void fetchAllUbiUsersStatsAndManageTrades_should_notify_users_on_new_sells() {
         UbiAccountAuthorizationEntry ubiAccountAuthorizationEntryEntityDTO1 = new UbiAccountAuthorizationEntry("ubiAuthProfileId1", "email1",
                 "encodedPassword1",
-                "ubiSessionId1", "ubiSpaceId1", "ubiAuthTicket1", "ubiTwoFactorAuthTicket1", "ubiRememberDeviceTicket1", "ubiRememberMeTicket1");
-        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO1 = new UbiAccountStatsEntityDTO("ubiProfileId1", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+                "ubiSessionId1", "ubiSpaceId1", "ubiAuthTicket1", "ubiRememberDeviceTicket1", "ubiRememberMeTicket1");
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO1 = new UbiAccountStatsEntityDTO("ubiProfileId1", 0, List.of());
         UbiAccountEntry ubiAccountEntryEntityDTO1 = new UbiAccountEntry(ubiAccountAuthorizationEntryEntityDTO1, ubiAccountStatsEntityDTO1);
         UbiAccountEntryWithTelegram ubiAccountEntryEntityDTOWithTelegram1 = new UbiAccountEntryWithTelegram("chatId1", true, ubiAccountEntryEntityDTO1);
 
         UbiAccountAuthorizationEntry ubiAccountAuthorizationEntryEntityDTO2 = new UbiAccountAuthorizationEntry("ubiAuthProfileId2", "email2",
                 "encodedPassword2",
-                "ubiSessionId2", "ubiSpaceId2", "ubiAuthTicket2", "ubiTwoFactorAuthTicket2", "ubiRememberDeviceTicket2", "ubiRememberMeTicket2");
-        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO2 = new UbiAccountStatsEntityDTO("ubiProfileId2", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+                "ubiSessionId2", "ubiSpaceId2", "ubiAuthTicket2", "ubiRememberDeviceTicket2", "ubiRememberMeTicket2");
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO2 = new UbiAccountStatsEntityDTO("ubiProfileId2", 0, List.of());
         UbiAccountEntry ubiAccountEntryEntityDTO2 = new UbiAccountEntry(ubiAccountAuthorizationEntryEntityDTO2, ubiAccountStatsEntityDTO2);
         UbiAccountEntryWithTelegram ubiAccountEntryEntityDTOWithTelegram2 = new UbiAccountEntryWithTelegram("chatId2", false, ubiAccountEntryEntityDTO2);
 
         UbiAccountAuthorizationEntry ubiAccountAuthorizationEntryEntityDTO3 = new UbiAccountAuthorizationEntry("ubiAuthProfileId3", "email3",
                 "encodedPassword3",
-                "ubiSessionId3", "ubiSpaceId3", "ubiAuthTicket3", "ubiTwoFactorAuthTicket3", "ubiRememberDeviceTicket3", "ubiRememberMeTicket3");
-        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO3 = new UbiAccountStatsEntityDTO("ubiProfileId3", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+                "ubiSessionId3", "ubiSpaceId3", "ubiAuthTicket3", "ubiRememberDeviceTicket3", "ubiRememberMeTicket3");
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO3 = new UbiAccountStatsEntityDTO("ubiProfileId3", 0, List.of());
         UbiAccountEntry ubiAccountEntryEntityDTO3 = new UbiAccountEntry(ubiAccountAuthorizationEntryEntityDTO3, ubiAccountStatsEntityDTO3);
         UbiAccountEntryWithTelegram ubiAccountEntryEntityDTOWithTelegram3 = new UbiAccountEntryWithTelegram("chatId3", true, ubiAccountEntryEntityDTO3);
         UbiAccountAuthorizationEntry ubiAccountAuthorizationEntryEntityDTO4 = new UbiAccountAuthorizationEntry("ubiAuthProfileId3", "email3",
                 "encodedPassword3",
-                "ubiSessionId3", "ubiSpaceId3", "ubiAuthTicket3", "ubiTwoFactorAuthTicket3", "ubiRememberDeviceTicket3", "ubiRememberMeTicket3");
-        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO4 = new UbiAccountStatsEntityDTO("ubiProfileId3", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+                "ubiSessionId3", "ubiSpaceId3", "ubiAuthTicket3", "ubiRememberDeviceTicket3", "ubiRememberMeTicket3");
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO4 = new UbiAccountStatsEntityDTO("ubiProfileId3", 0, List.of());
         UbiAccountEntry ubiAccountEntryEntityDTO4 = new UbiAccountEntry(ubiAccountAuthorizationEntryEntityDTO4, ubiAccountStatsEntityDTO4);
         UbiAccountEntryWithTelegram ubiAccountEntryEntityDTOWithTelegram4 = new UbiAccountEntryWithTelegram("chatId4", true, ubiAccountEntryEntityDTO4);
 
@@ -285,31 +285,31 @@ class ScheduledAllUbiUsersManagerTest {
     }
 
     @Test
-    public void fetchAllUbiUsersStats_should_notify_users_on_new_buysAndManageTrades() {
+    public void fetchAllUbiUsersStatsAndManageTrades_should_notify_users_on_new_buys() {
         UbiAccountAuthorizationEntry ubiAccountAuthorizationEntryEntityDTO1 = new UbiAccountAuthorizationEntry("ubiAuthProfileId1", "email1",
                 "encodedPassword1",
-                "ubiSessionId1", "ubiSpaceId1", "ubiAuthTicket1", "ubiTwoFactorAuthTicket1", "ubiRememberDeviceTicket1", "ubiRememberMeTicket1");
-        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO1 = new UbiAccountStatsEntityDTO("ubiProfileId1", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+                "ubiSessionId1", "ubiSpaceId1", "ubiAuthTicket1", "ubiRememberDeviceTicket1", "ubiRememberMeTicket1");
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO1 = new UbiAccountStatsEntityDTO("ubiProfileId1", 0, List.of());
         UbiAccountEntry ubiAccountEntryEntityDTO1 = new UbiAccountEntry(ubiAccountAuthorizationEntryEntityDTO1, ubiAccountStatsEntityDTO1);
         UbiAccountEntryWithTelegram ubiAccountEntryEntityDTOWithTelegram1 = new UbiAccountEntryWithTelegram("chatId1", true, ubiAccountEntryEntityDTO1);
 
         UbiAccountAuthorizationEntry ubiAccountAuthorizationEntryEntityDTO2 = new UbiAccountAuthorizationEntry("ubiAuthProfileId2", "email2",
                 "encodedPassword2",
-                "ubiSessionId2", "ubiSpaceId2", "ubiAuthTicket2", "ubiTwoFactorAuthTicket2", "ubiRememberDeviceTicket2", "ubiRememberMeTicket2");
-        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO2 = new UbiAccountStatsEntityDTO("ubiProfileId2", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+                "ubiSessionId2", "ubiSpaceId2", "ubiAuthTicket2", "ubiRememberDeviceTicket2", "ubiRememberMeTicket2");
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO2 = new UbiAccountStatsEntityDTO("ubiProfileId2", 0, List.of());
         UbiAccountEntry ubiAccountEntryEntityDTO2 = new UbiAccountEntry(ubiAccountAuthorizationEntryEntityDTO2, ubiAccountStatsEntityDTO2);
         UbiAccountEntryWithTelegram ubiAccountEntryEntityDTOWithTelegram2 = new UbiAccountEntryWithTelegram("chatId2", false, ubiAccountEntryEntityDTO2);
 
         UbiAccountAuthorizationEntry ubiAccountAuthorizationEntryEntityDTO3 = new UbiAccountAuthorizationEntry("ubiAuthProfileId3", "email3",
                 "encodedPassword3",
-                "ubiSessionId3", "ubiSpaceId3", "ubiAuthTicket3", "ubiTwoFactorAuthTicket3", "ubiRememberDeviceTicket3", "ubiRememberMeTicket3");
-        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO3 = new UbiAccountStatsEntityDTO("ubiProfileId3", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+                "ubiSessionId3", "ubiSpaceId3", "ubiAuthTicket3", "ubiRememberDeviceTicket3", "ubiRememberMeTicket3");
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO3 = new UbiAccountStatsEntityDTO("ubiProfileId3", 0, List.of());
         UbiAccountEntry ubiAccountEntryEntityDTO3 = new UbiAccountEntry(ubiAccountAuthorizationEntryEntityDTO3, ubiAccountStatsEntityDTO3);
         UbiAccountEntryWithTelegram ubiAccountEntryEntityDTOWithTelegram3 = new UbiAccountEntryWithTelegram("chatId3", true, ubiAccountEntryEntityDTO3);
         UbiAccountAuthorizationEntry ubiAccountAuthorizationEntryEntityDTO4 = new UbiAccountAuthorizationEntry("ubiAuthProfileId3", "email3",
                 "encodedPassword3",
-                "ubiSessionId3", "ubiSpaceId3", "ubiAuthTicket3", "ubiTwoFactorAuthTicket3", "ubiRememberDeviceTicket3", "ubiRememberMeTicket3");
-        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO4 = new UbiAccountStatsEntityDTO("ubiProfileId3", 0, 0, 0, List.of(), List.of(), List.of(), List.of());
+                "ubiSessionId3", "ubiSpaceId3", "ubiAuthTicket3", "ubiRememberDeviceTicket3", "ubiRememberMeTicket3");
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO4 = new UbiAccountStatsEntityDTO("ubiProfileId3", 0, List.of());
         UbiAccountEntry ubiAccountEntryEntityDTO4 = new UbiAccountEntry(ubiAccountAuthorizationEntryEntityDTO4, ubiAccountStatsEntityDTO4);
         UbiAccountEntryWithTelegram ubiAccountEntryEntityDTOWithTelegram4 = new UbiAccountEntryWithTelegram("chatId4", true, ubiAccountEntryEntityDTO4);
 

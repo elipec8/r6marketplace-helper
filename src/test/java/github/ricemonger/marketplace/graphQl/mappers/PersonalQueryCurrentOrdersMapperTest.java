@@ -81,7 +81,7 @@ class PersonalQueryCurrentOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItem("1");
+        expected.setItem(new github.ricemonger.utils.DTOs.items.Item("1"));
 
         expected.setSuccessPaymentPrice(0);
         expected.setSuccessPaymentFee(0);
@@ -108,7 +108,7 @@ class PersonalQueryCurrentOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItem("1");
+        expected.setItem(new github.ricemonger.utils.DTOs.items.Item("1"));
 
         expected.setSuccessPaymentPrice(0);
         expected.setSuccessPaymentFee(0);
@@ -136,7 +136,7 @@ class PersonalQueryCurrentOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItem("1");
+        expected.setItem(new github.ricemonger.utils.DTOs.items.Item("1"));
 
         expected.setSuccessPaymentPrice(0);
         expected.setSuccessPaymentFee(0);
@@ -164,7 +164,7 @@ class PersonalQueryCurrentOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItem("1");
+        expected.setItem(new github.ricemonger.utils.DTOs.items.Item("1"));
 
         expected.setSuccessPaymentPrice(0);
         expected.setSuccessPaymentFee(0);
@@ -397,7 +397,6 @@ class PersonalQueryCurrentOrdersMapperTest {
 
         Nodes node = createNode(dtf, date, date2);
         node.setPaymentOptions(null);
-        node.getPaymentProposal().setTransactionFee(null);
 
         assertThrows(GraphQlPersonalCurrentOrderMappingException.class, () -> {
             personalQueryCurrentOrdersMapper.mapCurrentOrder(node);
@@ -410,10 +409,9 @@ class PersonalQueryCurrentOrdersMapperTest {
         TradeItems tradeItems = new TradeItems();
         tradeItems.setItem(item);
 
-        PaymentOptions paymentOption = new PaymentOptions();
-        paymentOption.setPrice(100);
+        PaymentOptions paymentOption = new PaymentOptions(100);
 
-        PaymentProposal paymentProposal = new PaymentProposal(100, 10);
+        PaymentProposal paymentProposal = new PaymentProposal(100);
 
         return new Nodes("tradeId",
                 TradeState.Created.name(),

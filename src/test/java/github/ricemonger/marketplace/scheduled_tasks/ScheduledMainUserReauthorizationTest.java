@@ -33,7 +33,6 @@ class ScheduledMainUserReauthorizationTest {
         authorizationDTO.setSessionId("sessionId");
         authorizationDTO.setRememberMeTicket("rememberMeTicket");
         authorizationDTO.setRememberDeviceTicket("rememberDeviceTicket");
-        authorizationDTO.setTwoFactorAuthenticationTicket("twoFactorAuthenticationTicket");
 
         when(commonValuesService.getMainUserEmail()).thenReturn("email");
         when(commonValuesService.getMainUserPassword()).thenReturn("password");

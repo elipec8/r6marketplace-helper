@@ -83,7 +83,7 @@ class PersonalQueryFinishedOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItem("1");
+        expected.setItem(new github.ricemonger.utils.DTOs.items.Item("1"));
 
         expected.setSuccessPaymentPrice(1000);
         expected.setSuccessPaymentFee(100);
@@ -110,7 +110,7 @@ class PersonalQueryFinishedOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItem("1");
+        expected.setItem(new github.ricemonger.utils.DTOs.items.Item("1"));
 
         expected.setSuccessPaymentPrice(1000);
         expected.setSuccessPaymentFee(100);
@@ -138,7 +138,7 @@ class PersonalQueryFinishedOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItem("1");
+        expected.setItem(new github.ricemonger.utils.DTOs.items.Item("1"));
 
         expected.setSuccessPaymentPrice(0);
         expected.setSuccessPaymentFee(0);
@@ -166,7 +166,7 @@ class PersonalQueryFinishedOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItem("1");
+        expected.setItem(new github.ricemonger.utils.DTOs.items.Item("1"));
 
         expected.setSuccessPaymentPrice(1000);
         expected.setSuccessPaymentFee(100);
@@ -194,7 +194,7 @@ class PersonalQueryFinishedOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItem("1");
+        expected.setItem(new github.ricemonger.utils.DTOs.items.Item("1"));
 
         expected.setSuccessPaymentPrice(1000);
         expected.setSuccessPaymentFee(100);
@@ -458,7 +458,6 @@ class PersonalQueryFinishedOrdersMapperTest {
 
         Nodes node = createNode(dtf, date, date2);
         node.setPaymentOptions(null);
-        node.getPaymentProposal().setTransactionFee(null);
 
         assertThrows(GraphQlPersonalFinishedOrdersMappingException.class, () -> {
             personalQueryCurrentOrdersMapper.mapFinishedOrder(node);
@@ -473,10 +472,9 @@ class PersonalQueryFinishedOrdersMapperTest {
 
         Payment payment = new Payment(1000, 100);
 
-        PaymentOptions paymentOption = new PaymentOptions();
-        paymentOption.setPrice(100);
+        PaymentOptions paymentOption = new PaymentOptions(100);
 
-        PaymentProposal paymentProposal = new PaymentProposal(100, 10);
+        PaymentProposal paymentProposal = new PaymentProposal(100);
 
         return new Nodes("tradeId",
                 TradeState.Created.name(),

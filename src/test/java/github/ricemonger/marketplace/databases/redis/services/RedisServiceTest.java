@@ -37,8 +37,7 @@ public class RedisServiceTest {
     public void setUp() {
         cleanUp();
 
-        when(authorizationService.authorizeAndGetBaseAuthorizedDTO(any(), any())).thenReturn(new AuthorizationDTO("ticket", "profileId"
-                , "spaceId", "sessionId", "twoFactorAuthTicket", "rememberDeviceTicket", "rememberMeTicket"));
+        when(authorizationService.authorizeAndGetBaseAuthorizedDTO(any(), any())).thenReturn(new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "rememberDeviceTicket", "rememberMeTicket"));
     }
 
     @AfterEach
@@ -249,8 +248,7 @@ public class RedisServiceTest {
         ValueOperations mock = mock(ValueOperations.class);
         when(redisTemplate.opsForValue()).thenReturn(mock);
 
-        AuthorizationDTO dto = new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "twoFactorAuthTicket", "rememberDeviceTicket",
-                "rememberMeTicket");
+        AuthorizationDTO dto = new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "rememberDeviceTicket", "rememberMeTicket");
         when(authorizationService.authorizeAndGetBaseAuthorizedDTO(any(), any())).thenReturn(dto);
 
         redisService.setMainUserAuthorization(dto, EXPIRE_TIMEOUT);
@@ -273,8 +271,7 @@ public class RedisServiceTest {
         ValueOperations mock = mock(ValueOperations.class);
         when(redisTemplate.opsForValue()).thenReturn(mock);
 
-        AuthorizationDTO dto = new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "twoFactorAuthTicket", "rememberDeviceTicket",
-                null);
+        AuthorizationDTO dto = new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "rememberDeviceTicket", null);
         when(authorizationService.authorizeAndGetBaseAuthorizedDTO(any(), any())).thenReturn(dto);
 
         redisService.setMainUserAuthorization(dto, EXPIRE_TIMEOUT);
