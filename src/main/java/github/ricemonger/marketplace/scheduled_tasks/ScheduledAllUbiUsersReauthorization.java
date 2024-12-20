@@ -2,7 +2,6 @@ package github.ricemonger.marketplace.scheduled_tasks;
 
 import github.ricemonger.marketplace.services.TelegramUserUbiAccountEntryService;
 import github.ricemonger.telegramBot.TelegramBotService;
-import github.ricemonger.telegramBot.client.TelegramBotClientService;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;

@@ -208,9 +208,9 @@ class ScheduledAllUbiUsersManagerTest {
 
         scheduledAllUbiUsersManager.fetchAllUbiUsersStatsAndManageTrades();
 
-        verify(telegramBotService,times(1)).sendNotificationToUser(eq("chatId1"),anyString());
-        verify(telegramBotService,times(0)).sendNotificationToUser(eq("chatId2"),anyString());
-        verify(telegramBotService,times(0)).sendNotificationToUser(eq("chatId3"),anyString());
+        verify(telegramBotService, times(1)).sendNotificationToUser(eq("chatId1"), anyString());
+        verify(telegramBotService, times(0)).sendNotificationToUser(eq("chatId2"), anyString());
+        verify(telegramBotService, times(0)).sendNotificationToUser(eq("chatId3"), anyString());
     }
 
     @Test
@@ -278,10 +278,10 @@ class ScheduledAllUbiUsersManagerTest {
 
         scheduledAllUbiUsersManager.fetchAllUbiUsersStatsAndManageTrades();
 
-        verify(telegramBotService,times(1)).sendNotificationToUser(eq("chatId1"),anyString());
-        verify(telegramBotService,times(0)).sendNotificationToUser(eq("chatId2"),anyString());
-        verify(telegramBotService,times(0)).sendNotificationToUser(eq("chatId3"),anyString());
-        verify(telegramBotService,times(0)).sendNotificationToUser(eq("chatId4"),anyString());
+        verify(telegramBotService, times(1)).sendNotificationToUser(eq("chatId1"), anyString());
+        verify(telegramBotService, times(0)).sendNotificationToUser(eq("chatId2"), anyString());
+        verify(telegramBotService, times(0)).sendNotificationToUser(eq("chatId3"), anyString());
+        verify(telegramBotService, times(0)).sendNotificationToUser(eq("chatId4"), anyString());
     }
 
     @Test
@@ -347,9 +347,9 @@ class ScheduledAllUbiUsersManagerTest {
 
         scheduledAllUbiUsersManager.fetchAllUbiUsersStatsAndManageTrades();
 
-        verify(telegramBotService,times(1)).sendNotificationToUser(eq("chatId1"),anyString());
-        verify(telegramBotService,times(0)).sendNotificationToUser(eq("chatId2"),anyString());
-        verify(telegramBotService,times(0)).sendNotificationToUser(eq("chatId3"),anyString());
-        verify(telegramBotService,times(0)).sendNotificationToUser(eq("chatId4"),anyString());
+        verify(telegramBotService, times(1)).sendNotificationToUser(eq("chatId1"), anyString());
+        verify(telegramBotService, times(0)).sendNotificationToUser(eq("chatId2"), anyString());
+        verify(telegramBotService, times(0)).sendNotificationToUser(eq("chatId3"), anyString());
+        verify(telegramBotService, times(0)).sendNotificationToUser(eq("chatId4"), anyString());
     }
 }

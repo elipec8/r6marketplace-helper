@@ -327,8 +327,7 @@ public class InputCommandListener {
 
             case UBI_ACCOUNT_ENTRY_PASSWORD -> executorsService.execute(UbiAccountEntryAuthorizeStage3Ask2FaCodeInput.class, updateInfo);
 
-            case UBI_ACCOUNT_ENTRY_2FA_CODE ->
-                    executorsService.execute(UbiAccountEntryAuthorizeStage4FinishInput.class, updateInfo);
+            case UBI_ACCOUNT_ENTRY_2FA_CODE -> executorsService.execute(UbiAccountEntryAuthorizeStage4FinishInput.class, updateInfo);
 
             default ->
                     throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());

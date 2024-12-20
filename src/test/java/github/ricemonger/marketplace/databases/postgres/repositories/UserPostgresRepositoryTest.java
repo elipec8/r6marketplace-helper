@@ -1,7 +1,10 @@
 package github.ricemonger.marketplace.databases.postgres.repositories;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.*;
+import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByFiltersManagerEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByItemIdManagerEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountStatsEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.UbiAccountEntryEntityMapper;
 import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
 import org.junit.jupiter.api.BeforeEach;

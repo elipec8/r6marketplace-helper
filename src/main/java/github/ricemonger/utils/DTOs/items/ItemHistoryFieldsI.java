@@ -113,7 +113,7 @@ public interface ItemHistoryFieldsI extends ItemIdFieldI {
                Objects.equals(item.getMonthMaxPrice(), this.getMonthMaxPrice()) &&
                Objects.equals(item.getMonthMinPrice(), this.getMonthMinPrice()) &&
                Objects.equals(item.getMonthSalesPerDay(), this.getMonthSalesPerDay()) &&
-                Objects.equals(item.getMonthSales(), this.getMonthSales()) &&
+               Objects.equals(item.getMonthSales(), this.getMonthSales()) &&
                Objects.equals(item.getDayAveragePrice(), this.getDayAveragePrice()) &&
                Objects.equals(item.getDayMedianPrice(), this.getDayMedianPrice()) &&
                Objects.equals(item.getDayMaxPrice(), this.getDayMaxPrice()) &&

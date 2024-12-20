@@ -1,9 +1,9 @@
 package github.ricemonger.marketplace.databases.redis.services;
 
 import github.ricemonger.marketplace.services.abstractions.CommonValuesDatabaseService;
-import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
 import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.DTOs.ConfigTrades;
+import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;

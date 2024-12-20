@@ -24,7 +24,7 @@ public class ItemSaleEntity {
     private LocalDateTime soldAt;
     private Integer price;
 
-    public ItemSaleEntity(String itemId){
+    public ItemSaleEntity(String itemId) {
         this.item = new ItemEntity(itemId);
     }
 

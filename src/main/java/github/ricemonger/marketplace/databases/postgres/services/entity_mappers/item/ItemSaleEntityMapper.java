@@ -24,7 +24,7 @@ public class ItemSaleEntityMapper {
         return new ItemSale(entity.getItemId(), entity.getSoldAt(), entity.getPrice());
     }
 
-    public  List<ItemSaleEntity> createEntities(Collection<? extends SoldItemDetails> soldItems) {
+    public List<ItemSaleEntity> createEntities(Collection<? extends SoldItemDetails> soldItems) {
         Set<String> existingItemsIds = itemRepository.findAllItemIds();
 
         List<ItemSaleEntity> entities = new LinkedList<>();

@@ -1,9 +1,9 @@
 package github.ricemonger.marketplace.services.factories;
 
+import github.ricemonger.utils.DTOs.CentralTradeManagerCommand;
 import github.ricemonger.utils.DTOs.PotentialPersonalBuyTrade;
 import github.ricemonger.utils.DTOs.PotentialPersonalSellTrade;
 import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
-import github.ricemonger.utils.DTOs.CentralTradeManagerCommand;
 import github.ricemonger.utils.DTOs.items.UbiTrade;
 import github.ricemonger.utils.enums.CentralTradeManagerCommandType;
 import lombok.RequiredArgsConstructor;

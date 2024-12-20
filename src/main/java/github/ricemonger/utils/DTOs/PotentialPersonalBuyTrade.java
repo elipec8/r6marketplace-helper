@@ -8,7 +8,7 @@ public class PotentialPersonalBuyTrade extends PotentialTrade {
         super(personalItem, potentialTradeStats);
     }
 
-    public TradeCategory getTradeCategory(){
+    public TradeCategory getTradeCategory() {
         return TradeCategory.Buy;
     }
 }

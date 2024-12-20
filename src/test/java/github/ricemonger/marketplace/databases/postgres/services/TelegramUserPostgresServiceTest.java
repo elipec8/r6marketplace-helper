@@ -136,7 +136,7 @@ class TelegramUserPostgresServiceTest {
     }
 
     @Test
-    public void addItemShowAppliedFilter_should_add_filter_to_user_itemShowAppliedFilters_list_and_save_to_db(){
+    public void addItemShowAppliedFilter_should_add_filter_to_user_itemShowAppliedFilters_list_and_save_to_db() {
         TelegramUserEntity telegramUserEntity = Mockito.mock(TelegramUserEntity.class);
         UserEntity userEntity = Mockito.mock(UserEntity.class);
         when(telegramUserRepository.findById("chatId")).thenReturn(java.util.Optional.of(telegramUserEntity));

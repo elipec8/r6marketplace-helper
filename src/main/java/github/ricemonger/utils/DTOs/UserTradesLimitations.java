@@ -32,7 +32,7 @@ public class UserTradesLimitations {
 
     public List<ItemResaleLockWithUbiAccount> getItemResaleLocksWithUbiAccount() {
         return resaleLocks.stream()
-                .map(itemResaleLock -> new ItemResaleLockWithUbiAccount(ubiProfileId,itemResaleLock))
+                .map(itemResaleLock -> new ItemResaleLockWithUbiAccount(ubiProfileId, itemResaleLock))
                 .toList();
     }
 }

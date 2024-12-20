@@ -2,11 +2,11 @@ package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.abstractions.CommonValuesDatabaseService;
 import github.ricemonger.marketplace.services.configurations.MainUserConfiguration;
-import github.ricemonger.marketplace.services.configurations.UbiServiceConfiguration;
 import github.ricemonger.marketplace.services.configurations.TelegramBotConfiguration;
-import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
+import github.ricemonger.marketplace.services.configurations.UbiServiceConfiguration;
 import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.DTOs.ConfigTrades;
+import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.ItemRarity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -164,7 +164,7 @@ public class CommonValuesService {
     }
 
     public int getMaximumPriceByRarity(ItemRarity rarity) {
-        if(rarity == null) {
+        if (rarity == null) {
             return getMaximumMarketplacePrice();
         }
         return switch (rarity) {
@@ -231,10 +231,9 @@ public class CommonValuesService {
 
     public LocalDateTime getLastUbiUsersStatsFetchTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ubiServiceConfiguration.getDateFormat());
-        try{
+        try {
             return LocalDateTime.parse(commonValuesDatabaseService.getLastUbiUsersStatsFetchTime(), formatter);
-        }
-        catch(DateTimeParseException e) {
+        } catch (DateTimeParseException e) {
             return LocalDateTime.now().minusDays(1).withNano(0);
         }
     }

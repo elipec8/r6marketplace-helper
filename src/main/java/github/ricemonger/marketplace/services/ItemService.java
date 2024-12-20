@@ -4,7 +4,6 @@ import github.ricemonger.marketplace.services.abstractions.ItemDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleUbiStatsService;
 import github.ricemonger.utils.DTOs.ItemFilter;
-import github.ricemonger.utils.DTOs.items.PotentialTradeStats;
 import github.ricemonger.utils.DTOs.items.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

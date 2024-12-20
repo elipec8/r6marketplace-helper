@@ -51,7 +51,7 @@ public class ItemDaySalesStatsByItemId {
                 priceAndQuantity.put(ubiDaySaleStats.getLowestPrice(), 1);
                 int averageNoEdgesPrice =
                         ((ubiDaySaleStats.getAveragePrice() * ubiDaySaleStats.getItemsCount()) - (ubiDaySaleStats.getLowestPrice() + ubiDaySaleStats.getHighestPrice())) / (ubiDaySaleStats.getItemsCount() - 2);
-                if (averageNoEdgesPrice < ubiDaySaleStats.getLowestPrice()){
+                if (averageNoEdgesPrice < ubiDaySaleStats.getLowestPrice()) {
                     averageNoEdgesPrice = ubiDaySaleStats.getLowestPrice();
                 }
                 priceAndQuantity.put(averageNoEdgesPrice, priceAndQuantity.getOrDefault(averageNoEdgesPrice, 0) + ubiDaySaleStats.getItemsCount() - 2);

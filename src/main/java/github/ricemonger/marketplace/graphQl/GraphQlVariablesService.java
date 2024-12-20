@@ -65,8 +65,8 @@ public class GraphQlVariablesService {
                 "spaceId", commonValuesService.getUbiGameSpaceId(),
                 "tradeId", tradeId,
                 "paymentProposal", Map.of(
-                                "paymentItemId", commonValuesService.getPaymentItemId(),
-                                "price", price)
+                        "paymentItemId", commonValuesService.getPaymentItemId(),
+                        "price", price)
         );
     }
 

@@ -106,7 +106,7 @@ class UserEntityTest {
         user1.setId(1L);
         user1.setTelegramUser(null);
         assertFalse(user1.isFullyEqual(user2));
-        user1.setTelegramUser(new TelegramUserEntity("chatId",user1));
+        user1.setTelegramUser(new TelegramUserEntity("chatId", user1));
         assertFalse(user1.isFullyEqual(user2));
         user1.setTelegramUser(new TelegramUserEntity());
         user1.setUbiAccountEntry(null);

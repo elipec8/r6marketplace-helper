@@ -33,13 +33,13 @@ class UserEntityMapperTest {
     public void createManageableUser_should_properly_map_user() {
         UserEntity entity = new UserEntity();
         entity.setId(1L);
-        entity.setUbiAccountEntry(new UbiAccountEntryEntity(1L, "email","ubiProfileId"));
+        entity.setUbiAccountEntry(new UbiAccountEntryEntity(1L, "email", "ubiProfileId"));
         entity.getUbiAccountEntry().setUbiSessionId("ubiSessionId");
         entity.getUbiAccountEntry().setUbiSpaceId("ubiSpaceId");
         entity.getUbiAccountEntry().setUbiAuthTicket("ubiAuthTicket");
         entity.getUbiAccountEntry().setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
         entity.getUbiAccountEntry().setUbiRememberMeTicket("ubiRememberMeTicket");
-        entity.setTelegramUser(new TelegramUserEntity("chatId",1L));
+        entity.setTelegramUser(new TelegramUserEntity("chatId", 1L));
         entity.setPrivateNotificationsEnabledFlag(true);
         entity.setTradeByItemIdManagers(List.of());
         entity.setTradeByFiltersManagers(List.of());

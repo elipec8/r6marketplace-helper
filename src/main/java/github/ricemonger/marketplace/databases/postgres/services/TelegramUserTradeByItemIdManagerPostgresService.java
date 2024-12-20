@@ -36,7 +36,7 @@ public class TelegramUserTradeByItemIdManagerPostgresService implements Telegram
     @Override
     @Transactional
     public void save(String chatId, TradeByItemIdManager tradeManager) throws TelegramUserDoesntExistException {
-         tradeByItemIdManagerRepository.save(tradeByItemIdManagerEntityMapper.createEntityForTelegramUser(chatId, tradeManager));
+        tradeByItemIdManagerRepository.save(tradeByItemIdManagerEntityMapper.createEntityForTelegramUser(chatId, tradeManager));
     }
 
     @Override
