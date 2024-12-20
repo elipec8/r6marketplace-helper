@@ -9,7 +9,7 @@ import java.util.List;
 public interface ItemSaleUbiStatsService {
     void saveAll(Collection<GroupedItemDaySalesUbiStats> statsList);
 
-    List<ItemDaySalesUbiStats> findAll();
-
     List<ItemDaySalesUbiStats> findAllForLastMonth();
+
+    List<ItemDaySalesUbiStats> findAll();
 }

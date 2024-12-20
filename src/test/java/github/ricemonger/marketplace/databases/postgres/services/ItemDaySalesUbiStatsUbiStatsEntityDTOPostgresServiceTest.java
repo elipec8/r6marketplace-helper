@@ -41,25 +41,6 @@ class ItemDaySalesUbiStatsUbiStatsEntityDTOPostgresServiceTest {
     }
 
     @Test
-    public void findAll_should_map_and_return_all_entities() {
-        ItemDaySalesUbiStatsEntity daySaleEntity1 = new ItemDaySalesUbiStatsEntity();
-        ItemDaySalesUbiStatsEntity daySaleEntity2 = new ItemDaySalesUbiStatsEntity();
-        List<ItemDaySalesUbiStatsEntity> entities = List.of(daySaleEntity1, daySaleEntity2);
-        when(itemDaySalesUbiStatsRepository.findAll()).thenReturn(entities);
-
-        ItemDaySalesUbiStats dto1 = new ItemDaySalesUbiStats();
-        ItemDaySalesUbiStats dto2 = new ItemDaySalesUbiStats();
-        List<ItemDaySalesUbiStats> dtos = List.of(dto1, dto2);
-
-        when(itemDaySalesUbiStatsEntityMapper.createDTO(same(daySaleEntity1))).thenReturn(dto1);
-        when(itemDaySalesUbiStatsEntityMapper.createDTO(same(daySaleEntity2))).thenReturn(dto2);
-
-        List<ItemDaySalesUbiStats> result = itemDaySalesUbiStatsPostgresService.findAll();
-
-        assertTrue(dtos.size() == result.size() && result.containsAll(dtos));
-    }
-
-    @Test
     public void findAllForLastMonth_should_map_and_return_all_entities() {
         ItemDaySalesUbiStatsEntity daySaleEntity1 = new ItemDaySalesUbiStatsEntity();
         ItemDaySalesUbiStatsEntity daySaleEntity2 = new ItemDaySalesUbiStatsEntity();
@@ -74,6 +55,25 @@ class ItemDaySalesUbiStatsUbiStatsEntityDTOPostgresServiceTest {
         when(itemDaySalesUbiStatsEntityMapper.createDTO(same(daySaleEntity2))).thenReturn(dto2);
 
         List<ItemDaySalesUbiStats> result = itemDaySalesUbiStatsPostgresService.findAllForLastMonth();
+
+        assertTrue(dtos.size() == result.size() && result.containsAll(dtos));
+    }
+
+    @Test
+    public void findAll_should_map_and_return_all_entities() {
+        ItemDaySalesUbiStatsEntity daySaleEntity1 = new ItemDaySalesUbiStatsEntity();
+        ItemDaySalesUbiStatsEntity daySaleEntity2 = new ItemDaySalesUbiStatsEntity();
+        List<ItemDaySalesUbiStatsEntity> entities = List.of(daySaleEntity1, daySaleEntity2);
+        when(itemDaySalesUbiStatsRepository.findAll()).thenReturn(entities);
+
+        ItemDaySalesUbiStats dto1 = new ItemDaySalesUbiStats();
+        ItemDaySalesUbiStats dto2 = new ItemDaySalesUbiStats();
+        List<ItemDaySalesUbiStats> dtos = List.of(dto1, dto2);
+
+        when(itemDaySalesUbiStatsEntityMapper.createDTO(same(daySaleEntity1))).thenReturn(dto1);
+        when(itemDaySalesUbiStatsEntityMapper.createDTO(same(daySaleEntity2))).thenReturn(dto2);
+
+        List<ItemDaySalesUbiStats> result = itemDaySalesUbiStatsPostgresService.findAll();
 
         assertTrue(dtos.size() == result.size() && result.containsAll(dtos));
     }
