@@ -56,7 +56,7 @@ class ItemDaySalesUbiStatsUbiStatsEntityDTOPostgresServiceTest {
 
         List<ItemDaySalesUbiStats> result = itemDaySalesUbiStatsPostgresService.findAllForLastMonth();
 
-        assertTrue(dtos.size() == result.size() && result.containsAll(dtos));
+        assertTrue(result.size() == dtos.size() && result.stream().allMatch(res -> dtos.stream().anyMatch(ex -> ex == res)));
     }
 
     @Test
@@ -75,6 +75,6 @@ class ItemDaySalesUbiStatsUbiStatsEntityDTOPostgresServiceTest {
 
         List<ItemDaySalesUbiStats> result = itemDaySalesUbiStatsPostgresService.findAll();
 
-        assertTrue(dtos.size() == result.size() && result.containsAll(dtos));
+        assertTrue(result.size() == dtos.size() && result.stream().allMatch(res -> dtos.stream().anyMatch(ex -> ex == res)));
     }
 }

@@ -61,6 +61,6 @@ class ItemPostgresServiceTest {
 
         List<Item> result = itemService.findAll();
 
-        assertTrue(expected.containsAll(result) && result.size() == expected.size());
+        assertTrue(result.size() == expected.size() && result.stream().allMatch(res -> expected.stream().anyMatch(ex -> ex == res)));
     }
 }

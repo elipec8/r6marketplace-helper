@@ -29,13 +29,13 @@ public class ItemSalePostgresService implements ItemSaleDatabaseService {
     }
 
     @Override
-    public List<ItemSale> findAll() {
-        return itemSaleRepository.findAll().stream().map(itemSaleEntityMapper::createDTO).toList();
+    public List<ItemSale> findAllForLastMonth() {
+        return itemSaleRepository.findAllForLastMonth().stream().map(itemSaleEntityMapper::createDTO).toList();
     }
 
     @Override
-    public List<ItemSale> findAllForLastMonth() {
-        return itemSaleRepository.findAllForLastMonth().stream().map(itemSaleEntityMapper::createDTO).toList();
+    public List<ItemSale> findAll() {
+        return itemSaleRepository.findAll().stream().map(itemSaleEntityMapper::createDTO).toList();
     }
 }
 

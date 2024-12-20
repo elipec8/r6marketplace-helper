@@ -24,6 +24,10 @@ public class ItemSaleEntity {
     private LocalDateTime soldAt;
     private Integer price;
 
+    public ItemSaleEntity(String itemId){
+        this.item = new ItemEntity(itemId);
+    }
+
     public String getItemId() {
         return item.getItemId();
     }

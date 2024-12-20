@@ -7,6 +7,13 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ItemSaleEntityTest {
+
+    @Test
+    public void constructor_should_set_id_field() {
+        ItemSaleEntity itemSaleEntity = new ItemSaleEntity("itemId");
+        assertEquals("itemId", itemSaleEntity.getItemId());
+    }
+
     @Test
     public void getItemId_should_return_item_itemId() {
         ItemEntity item = new ItemEntity();
