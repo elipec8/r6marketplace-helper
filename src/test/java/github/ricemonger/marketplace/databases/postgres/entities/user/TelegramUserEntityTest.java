@@ -20,6 +20,13 @@ class TelegramUserEntityTest {
     private ItemFilterEntityMapper itemFilterEntityMapper;
 
     @Test
+    public void constructor_should_set_id_fields(){
+        TelegramUserEntity telegramUser = new TelegramUserEntity("chatId", 2L);
+        assertEquals("chatId", telegramUser.getChatId());
+        assertEquals(2L, telegramUser.getUserId());
+    }
+
+    @Test
     public void getUserId_should_return_user_id() {
         UserEntity user = new UserEntity();
         user.setId(1L);
