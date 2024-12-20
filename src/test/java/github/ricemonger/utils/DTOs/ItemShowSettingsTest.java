@@ -15,14 +15,14 @@ class ItemShowSettingsTest {
     public void constructor_should_properly_set_fields() {
         ItemShowSettings itemShowSettings = new ItemShowSettings(1, true, true, true, true, true, true, true, true, List.of());
         assertEquals(1, itemShowSettings.getItemShowMessagesLimit());
-        assertTrue(itemShowSettings.isItemShowFewInMessageFlag());
-        assertTrue(itemShowSettings.getShownFieldsSettings().isItemShowNameFlag());
-        assertTrue(itemShowSettings.getShownFieldsSettings().isItemShowItemTypeFlag());
-        assertTrue(itemShowSettings.getShownFieldsSettings().isItemShowMaxBuyPrice());
-        assertTrue(itemShowSettings.getShownFieldsSettings().isItemShowBuyOrdersCountFlag());
-        assertTrue(itemShowSettings.getShownFieldsSettings().isItemShowMinSellPriceFlag());
-        assertTrue(itemShowSettings.getShownFieldsSettings().isItemsShowSellOrdersCountFlag());
-        assertTrue(itemShowSettings.getShownFieldsSettings().isItemShowPictureFlag());
+        assertTrue(itemShowSettings.getItemShowFewInMessageFlag());
+        assertTrue(itemShowSettings.getShownFieldsSettings().getItemShowNameFlag());
+        assertTrue(itemShowSettings.getShownFieldsSettings().getItemShowItemTypeFlag());
+        assertTrue(itemShowSettings.getShownFieldsSettings().getItemShowMaxBuyPrice());
+        assertTrue(itemShowSettings.getShownFieldsSettings().getItemShowBuyOrdersCountFlag());
+        assertTrue(itemShowSettings.getShownFieldsSettings().getItemShowMinSellPriceFlag());
+        assertTrue(itemShowSettings.getShownFieldsSettings().getItemsShowSellOrdersCountFlag());
+        assertTrue(itemShowSettings.getShownFieldsSettings().getItemShowPictureFlag());
         assertTrue(itemShowSettings.getItemShowAppliedFilters().isEmpty());
     }
 
@@ -30,10 +30,10 @@ class ItemShowSettingsTest {
     public void setItemShowNameFlag_should_set_name_flag() {
         ItemShowSettings itemShowSettings = new ItemShowSettings();
         itemShowSettings.setItemShowNameFlag(true);
-        assertTrue(itemShowSettings.getShownFieldsSettings().isItemShowNameFlag());
+        assertTrue(itemShowSettings.getShownFieldsSettings().getItemShowNameFlag());
 
         itemShowSettings.setItemShowNameFlag(false);
-        assertFalse(itemShowSettings.getShownFieldsSettings().isItemShowNameFlag());
+        assertFalse(itemShowSettings.getShownFieldsSettings().getItemShowNameFlag());
     }
 
     @Test

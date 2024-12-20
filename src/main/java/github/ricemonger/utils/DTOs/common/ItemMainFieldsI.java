@@ -141,25 +141,25 @@ public interface ItemMainFieldsI extends SoldItemDetails {
 
         sb.append("Id: ").append(this.getItemId()).append("\n");
 
-        if (shownFieldsSettings.isItemShowNameFlag()) {
+        if (shownFieldsSettings.getItemShowNameFlag()) {
             sb.append("Name: ").append(this.getName()).append("\n");
         }
-        if (shownFieldsSettings.isItemShowItemTypeFlag()) {
+        if (shownFieldsSettings.getItemShowItemTypeFlag()) {
             sb.append("Type: ").append(this.getType()).append("\n");
         }
-        if (shownFieldsSettings.isItemShowMaxBuyPrice()) {
+        if (shownFieldsSettings.getItemShowMaxBuyPrice()) {
             sb.append("Max buy price: ").append(this.getMaxBuyPrice()).append("\n");
         }
-        if (shownFieldsSettings.isItemShowBuyOrdersCountFlag()) {
+        if (shownFieldsSettings.getItemShowBuyOrdersCountFlag()) {
             sb.append("Buy orders: ").append(this.getBuyOrdersCount()).append("\n");
         }
-        if (shownFieldsSettings.isItemShowMinSellPriceFlag()) {
+        if (shownFieldsSettings.getItemShowMinSellPriceFlag()) {
             sb.append("Min sell price: ").append(this.getMinSellPrice()).append("\n");
         }
-        if (shownFieldsSettings.isItemsShowSellOrdersCountFlag()) {
+        if (shownFieldsSettings.getItemsShowSellOrdersCountFlag()) {
             sb.append("Sell orders: ").append(this.getSellOrdersCount()).append("\n");
         }
-        if (shownFieldsSettings.isItemShowPictureFlag()) {
+        if (shownFieldsSettings.getItemShowPictureFlag()) {
             sb.append("Picture: ").append(this.getAssetUrl()).append("\n");
         }
         return sb.toString();

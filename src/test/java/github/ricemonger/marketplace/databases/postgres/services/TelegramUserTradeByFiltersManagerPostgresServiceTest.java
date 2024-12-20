@@ -59,7 +59,7 @@ class TelegramUserTradeByFiltersManagerPostgresServiceTest {
 
         telegramUserTradeByFiltersManagerService.invertEnabledFlagById("chatId", "name");
 
-        assertFalse(manager.isEnabled());
+        assertFalse(manager.getEnabled());
         verify(tradeByFiltersManagerRepository).save(same(manager));
     }
 

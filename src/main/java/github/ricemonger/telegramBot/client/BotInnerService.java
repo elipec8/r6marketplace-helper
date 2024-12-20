@@ -88,7 +88,7 @@ public class BotInnerService {
             return;
         }
 
-        int maxItemsInMessage = settings.isItemShowFewInMessageFlag() ? commonValuesService.getMaximumTelegramMessageHeight() / settings.getActiveFieldsCount() : 1;
+        int maxItemsInMessage = settings.getItemShowFewInMessageFlag() ? commonValuesService.getMaximumTelegramMessageHeight() / settings.getActiveFieldsCount() : 1;
         int messageLimit = settings.getItemShowMessagesLimit();
         int messageCount = 0;
 
@@ -292,7 +292,7 @@ public class BotInnerService {
                 inputs,
                 tradeOperationType,
                 getItemByUserInputItemId(chatId),
-                telegramUserService.getTradeManagersSettings(chatId).isNewManagersAreActiveFlag());
+                telegramUserService.getTradeManagersSettings(chatId).getNewManagersAreActiveFlag());
     }
 
     public TradeByFiltersManager generateTradeByFiltersManagerByUserInput(Long chatId) throws TelegramUserDoesntExistException,
@@ -311,7 +311,7 @@ public class BotInnerService {
         return tradeManagerFromInputsMapper.mapToTradeByFiltersManager(inputs,
                 commonValuesService.getMaximumMarketplacePrice(),
                 appliedFilters,
-                telegramUserService.getTradeManagersSettings(chatId).isNewManagersAreActiveFlag());
+                telegramUserService.getTradeManagersSettings(chatId).getNewManagersAreActiveFlag());
     }
 
     public Item getItemByUserInputItemId(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {

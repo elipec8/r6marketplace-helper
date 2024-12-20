@@ -95,42 +95,42 @@ public class CentralTradeManager {
         switch (command.getCommandType()) {
             case BUY_ORDER_CANCEL -> {
                 graphQlClientService.cancelOrderForUser(command.getAuthorizationDTO(), command.getTradeId());
-                if (command.isPrivateNotificationsEnabledFlag()) {
+                if (command.getPrivateNotificationsEnabledFlag()) {
                     telegramBotService.sendNotificationToUser(command.getChatId(), String.format("Your buy order for item %s with price %d has been" +
                                                                                                  " cancelled", command.getItemName(), command.getOldPrice()));
                 }
             }
             case BUY_ORDER_UPDATE -> {
                 graphQlClientService.updateBuyOrderForUser(command.getAuthorizationDTO(), command.getTradeId(), command.getNewPrice());
-                if (command.isPrivateNotificationsEnabledFlag()) {
+                if (command.getPrivateNotificationsEnabledFlag()) {
                     telegramBotService.sendNotificationToUser(command.getChatId(), String.format("Your buy order price for item %s has been updated" +
                                                                                                  "from %d to %d", command.getItemName(), command.getOldPrice(), command.getNewPrice()));
                 }
             }
             case BUY_ORDER_CREATE -> {
                 graphQlClientService.createBuyOrderForUser(command.getAuthorizationDTO(), command.getItemId(), command.getNewPrice());
-                if (command.isPrivateNotificationsEnabledFlag()) {
+                if (command.getPrivateNotificationsEnabledFlag()) {
                     telegramBotService.sendNotificationToUser(command.getChatId(), String.format("Your buy order for item %s with price %d has been" +
                                                                                                  " created", command.getItemName(), command.getNewPrice()));
                 }
             }
             case SELL_ORDER_CANCEL -> {
                 graphQlClientService.cancelOrderForUser(command.getAuthorizationDTO(), command.getTradeId());
-                if (command.isPrivateNotificationsEnabledFlag()) {
+                if (command.getPrivateNotificationsEnabledFlag()) {
                     telegramBotService.sendNotificationToUser(command.getChatId(), String.format("Your sell order for item %s with price %d has been" +
                                                                                                  " cancelled", command.getItemName(), command.getOldPrice()));
                 }
             }
             case SELL_ORDER_UPDATE -> {
                 graphQlClientService.updateSellOrderForUser(command.getAuthorizationDTO(), command.getTradeId(), command.getNewPrice());
-                if (command.isPrivateNotificationsEnabledFlag()) {
+                if (command.getPrivateNotificationsEnabledFlag()) {
                     telegramBotService.sendNotificationToUser(command.getChatId(), String.format("Your sell order price for item %s has been updated" +
                                                                                                  "from %d to %d", command.getItemName(), command.getOldPrice(), command.getNewPrice()));
                 }
             }
             case SELL_ORDER_CREATE -> {
                 graphQlClientService.createSellOrderForUser(command.getAuthorizationDTO(), command.getItemId(), command.getNewPrice());
-                if (command.isPrivateNotificationsEnabledFlag()) {
+                if (command.getPrivateNotificationsEnabledFlag()) {
                     telegramBotService.sendNotificationToUser(command.getChatId(), String.format("Your sell order for item %s with price %d has been" +
                                                                                                  " created", command.getItemName(), command.getNewPrice()));
                 }

@@ -49,7 +49,7 @@ public class TelegramUserTradeByItemIdManagerPostgresService implements Telegram
                         (new TradeByItemIdManagerEntityId(telegramUser.getUser(), item))
                 .orElseThrow(() -> new TradeByItemIdManagerDoesntExistException(String.format("Trade manager by chatId %s and itemId %s not found", chatId, itemId)));
 
-        manager.setEnabled(!manager.isEnabled());
+        manager.setEnabled(!manager.getEnabled());
 
         tradeByItemIdManagerRepository.save(manager);
     }

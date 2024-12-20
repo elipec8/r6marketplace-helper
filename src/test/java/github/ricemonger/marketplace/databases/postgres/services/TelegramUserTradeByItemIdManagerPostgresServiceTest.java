@@ -66,7 +66,7 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
 
         telegramUserTradeManagerByItemIdService.invertEnabledFlagById("chatId", "itemId");
 
-        assertFalse(manager.isEnabled());
+        assertFalse(manager.getEnabled());
         verify(tradeByItemIdManagerRepository).save(same(manager));
     }
 

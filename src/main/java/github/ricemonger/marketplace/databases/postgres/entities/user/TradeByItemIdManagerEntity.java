@@ -29,7 +29,7 @@ public class TradeByItemIdManagerEntity {
     @JoinColumn(name = "itemId", referencedColumnName = "itemId")
     private ItemEntity item;
 
-    private boolean enabled;
+    private Boolean enabled;
 
     @Enumerated(EnumType.ORDINAL)
     private TradeOperationType tradeOperationType;

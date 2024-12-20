@@ -21,7 +21,7 @@ public class TradeByFiltersManagerEntityMapper {
         UserEntity user = userPostgresRepository.findByTelegramUserChatId(chatId);
         return new TradeByFiltersManagerEntity(user,
                 dto.getName(),
-                dto.isEnabled(),
+                dto.getEnabled(),
                 dto.getTradeOperationType(),
                 dto.getAppliedFilters().stream().map(filter -> itemFilterEntityMapper.createEntityForUser(user, filter)).toList(),
                 dto.getMinDifferenceFromMedianPrice(),
@@ -31,7 +31,7 @@ public class TradeByFiltersManagerEntityMapper {
 
     public TradeByFiltersManager createDTO(TradeByFiltersManagerEntity entity) {
         return new TradeByFiltersManager(entity.getName(),
-                entity.isEnabled(),
+                entity.getEnabled(),
                 entity.getTradeOperationType(),
                 entity.getAppliedFilters().stream().map(itemFilterEntityMapper::createDTO).toList(),
                 entity.getMinDifferenceFromMedianPrice(),

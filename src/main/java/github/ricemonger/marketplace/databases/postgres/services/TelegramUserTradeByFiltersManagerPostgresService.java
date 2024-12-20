@@ -44,7 +44,7 @@ public class TelegramUserTradeByFiltersManagerPostgresService implements Telegra
                 .orElseThrow(() -> new TradeByFiltersManagerDoesntExistException(String.format("Trade manager by chatId %s and itemId %s not found",
                         chatId, name)));
 
-        manager.setEnabled(!manager.isEnabled());
+        manager.setEnabled(!manager.getEnabled());
 
         tradeByFiltersManagerRepository.save(manager);
     }

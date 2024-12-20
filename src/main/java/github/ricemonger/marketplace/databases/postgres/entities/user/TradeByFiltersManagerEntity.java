@@ -25,7 +25,7 @@ public class TradeByFiltersManagerEntity {
     @Id
     private String name;
 
-    private boolean enabled;
+    private Boolean enabled;
 
     @Enumerated(EnumType.ORDINAL)
     private TradeOperationType tradeOperationType;

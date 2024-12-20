@@ -171,7 +171,7 @@ public class TelegramUserService {
 
     public List<String> getAllChatIdsForNotifiableUsers() {
         return telegramUserDatabaseService.findAllUsers().stream()
-                .filter(TelegramUser::isPublicNotificationsEnabledFlag)
+                .filter(TelegramUser::getPublicNotificationsEnabledFlag)
                 .map(TelegramUser::getChatId)
                 .toList();
     }

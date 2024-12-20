@@ -116,15 +116,15 @@ class TelegramUserEntityMapperTest {
 
         TradeManagersSettings tradeManagersSettings = telegramUserEntityMapper.createTradeManagersSettings(entity);
 
-        assertTrue(tradeManagersSettings.isNewManagersAreActiveFlag());
-        assertTrue(tradeManagersSettings.isManagingEnabledFlag());
+        assertTrue(tradeManagersSettings.getNewManagersAreActiveFlag());
+        assertTrue(tradeManagersSettings.getManagingEnabledFlag());
 
         entity.getUser().setNewManagersAreActiveFlag(false);
         entity.getUser().setManagingEnabledFlag(false);
 
         tradeManagersSettings = telegramUserEntityMapper.createTradeManagersSettings(entity);
 
-        assertFalse(tradeManagersSettings.isNewManagersAreActiveFlag());
-        assertFalse(tradeManagersSettings.isManagingEnabledFlag());
+        assertFalse(tradeManagersSettings.getNewManagersAreActiveFlag());
+        assertFalse(tradeManagersSettings.getManagingEnabledFlag());
     }
 }

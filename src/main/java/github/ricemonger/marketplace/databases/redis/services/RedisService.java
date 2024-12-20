@@ -66,8 +66,8 @@ public class RedisService implements CommonValuesDatabaseService {
         redisTemplate.opsForValue().set("resaleLockDurationInMinutes", String.valueOf(configTrades.getResaleLockDurationInMinutes()));
         redisTemplate.opsForValue().set("paymentItemId", configTrades.getPaymentItemId());
         redisTemplate.opsForValue().set("feePercentage", String.valueOf(configTrades.getFeePercentage()));
-        redisTemplate.opsForValue().set("twoFactorAuthenticationRule", String.valueOf(configTrades.isTwoFactorAuthenticationRule()));
-        redisTemplate.opsForValue().set("gameOwnershipRule", String.valueOf(configTrades.isGameOwnershipRule()));
+        redisTemplate.opsForValue().set("twoFactorAuthenticationRule", String.valueOf(configTrades.getTwoFactorAuthenticationRule()));
+        redisTemplate.opsForValue().set("gameOwnershipRule", String.valueOf(configTrades.getGameOwnershipRule()));
     }
 
     public String getPaymentItemId() {

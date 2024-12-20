@@ -27,8 +27,8 @@ class ConfigQueryTradeMapperTest {
         assertEquals(2, result.getBuySlots());
         assertEquals(3, result.getSellSlots());
         assertEquals(4, result.getResaleLockDurationInMinutes());
-        assertTrue(result.isTwoFactorAuthenticationRule());
-        assertFalse(result.isGameOwnershipRule());
+        assertTrue(result.getTwoFactorAuthenticationRule());
+        assertFalse(result.getGameOwnershipRule());
         assertEquals(5, result.getBuyLimit());
         assertEquals(6, result.getSellLimit());
         assertEquals("paymentItemId", result.getPaymentItemId());
@@ -39,8 +39,8 @@ class ConfigQueryTradeMapperTest {
 
         result = configQueryTradeMapper.mapConfigTrades(tradesConfig);
 
-        assertFalse(result.isTwoFactorAuthenticationRule());
-        assertTrue(result.isGameOwnershipRule());
+        assertFalse(result.getTwoFactorAuthenticationRule());
+        assertTrue(result.getGameOwnershipRule());
     }
 
     @Test

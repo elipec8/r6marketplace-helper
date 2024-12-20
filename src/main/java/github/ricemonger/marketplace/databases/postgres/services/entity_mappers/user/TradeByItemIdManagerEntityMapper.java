@@ -22,7 +22,7 @@ public class TradeByItemIdManagerEntityMapper {
         return new TradeByItemIdManagerEntity(
                 userRepository.findByTelegramUserChatId(chatId),
                 itemRepository.findById(tradeManager.getItemId()).orElseThrow(() -> new ItemDoesntExistException("Item with id " + tradeManager.getItemId() + " doesn't exist")),
-                tradeManager.isEnabled(),
+                tradeManager.getEnabled(),
                 tradeManager.getTradeOperationType(),
                 tradeManager.getSellBoundaryPrice(),
                 tradeManager.getBuyBoundaryPrice(),
@@ -33,7 +33,7 @@ public class TradeByItemIdManagerEntityMapper {
     public TradeByItemIdManager createDTO(TradeByItemIdManagerEntity entity) {
         return new TradeByItemIdManager(
                 entity.getItemId(),
-                entity.isEnabled(),
+                entity.getEnabled(),
                 entity.getTradeOperationType(),
                 entity.getSellBoundaryPrice(),
                 entity.getBuyBoundaryPrice(),
