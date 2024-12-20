@@ -1,181 +1,115 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
+import github.ricemonger.marketplace.databases.postgres.entities.user.ItemFilterEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.user.ItemFilterEntityId;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemFilterPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.ItemFilterEntityMapper;
 import github.ricemonger.utils.DTOs.ItemFilter;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.exceptions.client.ItemFilterDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
-import org.junit.jupiter.api.BeforeEach;
+import org.apache.catalina.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class TelegramUserItemFilterPostgresServiceTest {
-    private final static String CHAT_ID = "1";
-    private final static String ANOTHER_CHAT_ID = "2";
-
     @Autowired
-    private TelegramUserItemFilterPostgresService itemFilterService;
-    @Autowired
+    private TelegramUserItemFilterPostgresService telegramUserItemFilterService;
+    @MockBean
     private ItemFilterPostgresRepository itemFilterRepository;
-    @Autowired
+    @MockBean
     private TelegramUserPostgresRepository telegramUserRepository;
-    @Autowired
-    private UserPostgresRepository userRepository;
+    @MockBean
+    private ItemFilterEntityMapper itemFilterEntityMapper;
 
-    @BeforeEach
-    public void setUp() {
-        itemFilterRepository.deleteAll();
-        telegramUserRepository.deleteAll();
-        userRepository.deleteAll();
+    @Test
+    public void save_should_map_and_save_dto() throws TelegramUserDoesntExistException {
+        ItemFilter filter = new ItemFilter();
+        ItemFilterEntity entity = new ItemFilterEntity();
+        String chatId = "chatId";
+        when(itemFilterEntityMapper.createEntityForTelegramUserChatId(same(chatId), same(filter))).thenReturn(entity);
 
-        createTelegramUser(CHAT_ID);
-    }
+        itemFilterRepository.save(entity);
 
-    private TelegramUserEntity createTelegramUser(String chatId) {
-        UserEntity user = userRepository.save(new UserEntity());
-        return telegramUserRepository.save(new TelegramUserEntity(chatId, user));
+        verify(itemFilterRepository).save(same(entity));
     }
 
     @Test
-    public void save_should_create_new_filter() {
-        ItemFilter itemFilter1 = new ItemFilter();
-        itemFilter1.setName("filter1");
-        itemFilterService.save(CHAT_ID, itemFilter1);
+    public void deleteAllByChatId_should_clear_and_save_user() throws TelegramUserDoesntExistException {
+        TelegramUserEntity telegramUser = new TelegramUserEntity();
+        telegramUser.setUser(new UserEntity(1L));
+        ItemFilterEntity filterEntity1 = new ItemFilterEntity();
+        filterEntity1.setName("name");
+        ItemFilterEntity filterEntity2 = new ItemFilterEntity();
+        filterEntity2.setName("name2");
+        List<ItemFilterEntity> filtersEntities = List.of(filterEntity1, filterEntity2);
+        telegramUser.getUser().setItemFilters(filtersEntities);
 
-        ItemFilter itemFilter2 = new ItemFilter();
-        itemFilter2.setName("filter2");
-        itemFilterService.save(CHAT_ID, itemFilter2);
+        when(telegramUserRepository.findById("chatId")).thenReturn(Optional.of(telegramUser));
 
-        assertEquals(2, itemFilterRepository.findAll().size());
-        assertEquals(2, telegramUserRepository.findAll().get(0).getUser().getItemFilters().size());
+        telegramUserItemFilterService.deleteById("chatId", "name");
+
+        assertEquals(1, telegramUser.getUser().getItemFilters().size());
+        assertTrue(telegramUser.getUser().getItemFilters().stream().allMatch(filter -> filter.getName().equals("name2")));
+        verify(telegramUserRepository).save(same(telegramUser));
     }
 
     @Test
-    public void save_should_update_existing_filter() {
-        ItemFilter itemFilter = new ItemFilter();
-        itemFilter.setName("filter1");
-        itemFilter.setFilterType(FilterType.ALLOW);
-        itemFilterService.save(CHAT_ID, itemFilter);
+    public void findById_should_return_mapped_dto() throws TelegramUserDoesntExistException, ItemFilterDoesntExistException {
+        TelegramUserEntity telegramUser = new TelegramUserEntity();
+        UserEntity userEntity = new UserEntity(1L);
+        telegramUser.setUser(userEntity);
+        ItemFilterEntity entity = new ItemFilterEntity();
+        ItemFilter filter = new ItemFilter();
+        filter.setName("name");
 
-        itemFilter.setFilterType(FilterType.DENY);
-        itemFilterService.save(CHAT_ID, itemFilter);
+        when(telegramUserRepository.findById("chatId")).thenReturn(Optional.of(telegramUser));
+        when(itemFilterRepository.findById(new ItemFilterEntityId(userEntity, "name"))).thenReturn(Optional.of(entity));
+        when(itemFilterEntityMapper.createDTO(same(entity))).thenReturn(filter);
 
-        assertEquals(1, itemFilterRepository.findAll().size());
-        assertEquals(1, telegramUserRepository.findById(CHAT_ID).get().getUser().getItemFilters().size());
-        assertEquals(FilterType.DENY, itemFilterRepository.findAll().get(0).getFilterType());
+        ItemFilter result = telegramUserItemFilterService.findById("chatId", "name");
+
+        assertEquals(filter, result);
     }
 
     @Test
-    public void save_should_throw_if_telegram_user_does_not_exist() {
-        ItemFilter itemFilter = new ItemFilter();
-        itemFilter.setName("filter1");
+    public void findAllByChatId_should_return_mapped_dtos() throws TelegramUserDoesntExistException {
+        TelegramUserEntity telegramUser = new TelegramUserEntity();
+        telegramUser.setUser(new UserEntity(1L));
+        List<ItemFilterEntity> entities = new ArrayList<>();
+        ItemFilterEntity entity1 = new ItemFilterEntity();
+        ItemFilterEntity entity2 = new ItemFilterEntity();
+        entities.add(entity1);
+        entities.add(entity2);
+        telegramUser.getUser().setItemFilters(entities);
+        ItemFilter filter1 = new ItemFilter();
+        filter1.setName("name1");
+        ItemFilter filter2 = new ItemFilter();
+        filter2.setName("name2");
+        when(telegramUserRepository.findById("chatId")).thenReturn(Optional.of(telegramUser));
+        when(itemFilterEntityMapper.createDTO(same(entity1))).thenReturn(filter1);
+        when(itemFilterEntityMapper.createDTO(same(entity2))).thenReturn(filter2);
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> itemFilterService.save(ANOTHER_CHAT_ID, itemFilter));
-    }
+        List<ItemFilter> expected = List.of(filter1, filter2);
 
-    @Test
-    public void deleteById_should_remove_proper_filter() {
-        Long mainUserId = userRepository.findAll().get(0).getId();
+        List<ItemFilter> result = telegramUserItemFilterService.findAllByChatId("chatId");
 
-        createTelegramUser(ANOTHER_CHAT_ID);
-
-        ItemFilter itemFilter1 = new ItemFilter();
-        itemFilter1.setName("filter1");
-        itemFilterService.save(CHAT_ID, itemFilter1);
-        itemFilterService.save(ANOTHER_CHAT_ID, itemFilter1);
-
-        ItemFilter itemFilter2 = new ItemFilter();
-        itemFilter2.setName("filter2");
-        itemFilterService.save(CHAT_ID, itemFilter2);
-        itemFilterService.save(ANOTHER_CHAT_ID, itemFilter2);
-
-        itemFilterService.deleteById(CHAT_ID, "filter1");
-
-        assertEquals(telegramUserRepository.count(), 2);
-        assertEquals(3, itemFilterRepository.count());
-        assertEquals(1, telegramUserRepository.findById(CHAT_ID).get().getUser().getItemFilters().size());
-        assertEquals("filter2", itemFilterRepository.findAllByUserId(mainUserId).get(0).getName());
-    }
-
-    @Test
-    public void deleteById_should_throw_if_telegram_user_does_not_exist() {
-        assertThrows(TelegramUserDoesntExistException.class, () -> itemFilterService.deleteById(ANOTHER_CHAT_ID, "filter1"));
-    }
-
-    @Test
-    public void findById_should_return_proper_filter() {
-        createTelegramUser(ANOTHER_CHAT_ID);
-
-        ItemFilter itemFilter1 = new ItemFilter();
-        itemFilter1.setName("filter1");
-        itemFilter1.setFilterType(FilterType.ALLOW);
-        itemFilterService.save(CHAT_ID, itemFilter1);
-        itemFilter1.setFilterType(FilterType.DENY);
-        itemFilterService.save(ANOTHER_CHAT_ID, itemFilter1);
-
-        ItemFilter itemFilter2 = new ItemFilter();
-        itemFilter2.setName("filter2");
-        itemFilter2.setFilterType(FilterType.DENY);
-        itemFilterService.save(CHAT_ID, itemFilter2);
-        itemFilter2.setFilterType(FilterType.ALLOW);
-        itemFilterService.save(ANOTHER_CHAT_ID, itemFilter2);
-
-        assertEquals(FilterType.ALLOW, itemFilterService.findById(CHAT_ID, "filter1").getFilterType());
-        assertEquals(FilterType.DENY, itemFilterService.findById(ANOTHER_CHAT_ID, "filter1").getFilterType());
-
-        assertEquals(FilterType.DENY, itemFilterService.findById(CHAT_ID, "filter2").getFilterType());
-        assertEquals(FilterType.ALLOW, itemFilterService.findById(ANOTHER_CHAT_ID, "filter2").getFilterType());
-    }
-
-    @Test
-    public void findById_should_throw_if_telegram_user_does_not_exist() {
-        assertThrows(TelegramUserDoesntExistException.class, () -> itemFilterService.findById(ANOTHER_CHAT_ID, "filter1"));
-    }
-
-    @Test
-    public void findById_should_throw_if_item_filter_does_not_exist() {
-        assertThrows(ItemFilterDoesntExistException.class, () -> itemFilterService.findById(CHAT_ID, "filter1"));
-    }
-
-    @Test
-    public void findAllByChatId_should_return_all_filters_for_user() {
-        createTelegramUser(ANOTHER_CHAT_ID);
-
-        ItemFilter itemFilter1 = new ItemFilter();
-        itemFilter1.setName("filter1");
-        itemFilter1.setFilterType(FilterType.ALLOW);
-        itemFilterService.save(CHAT_ID, itemFilter1);
-        itemFilter1.setFilterType(FilterType.DENY);
-        itemFilterService.save(ANOTHER_CHAT_ID, itemFilter1);
-
-        ItemFilter itemFilter2 = new ItemFilter();
-        itemFilter2.setName("filter2");
-        itemFilter2.setFilterType(FilterType.DENY);
-        itemFilterService.save(CHAT_ID, itemFilter2);
-        itemFilter2.setFilterType(FilterType.ALLOW);
-        itemFilterService.save(ANOTHER_CHAT_ID, itemFilter2);
-
-        assertEquals(2, itemFilterService.findAllByChatId(CHAT_ID).size());
-
-        assertEquals(2, itemFilterService.findAllByChatId(ANOTHER_CHAT_ID).size());
-    }
-
-    @Test
-    public void findAllByChatId_should_return_empty_list_if_no_filters() {
-        assertEquals(0, itemFilterService.findAllByChatId(CHAT_ID).size());
-    }
-
-    @Test
-    public void findAllByChatId_should_throw_if_telegram_user_does_not_exist() {
-        assertThrows(TelegramUserDoesntExistException.class, () -> itemFilterService.findAllByChatId(ANOTHER_CHAT_ID));
+        assertTrue(result.size() == 2 && result.stream().allMatch(res -> expected.stream().anyMatch(ex -> ex == res)));
     }
 }
