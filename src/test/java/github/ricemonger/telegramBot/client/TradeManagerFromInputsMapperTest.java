@@ -1,7 +1,6 @@
 package github.ricemonger.telegramBot.client;
 
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.marketplace.services.PotentialTradeStatsService;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.utils.DTOs.ItemFilter;
@@ -26,8 +25,6 @@ import static org.mockito.Mockito.when;
 class TradeManagerFromInputsMapperTest {
     @Autowired
     private TradeManagerFromInputsMapper tradeManagerFromInputsMapper;
-    @MockBean
-    private PotentialTradeStatsService potentialTradeStatsService;
     @MockBean
     private CommonValuesService commonValuesService;
 
@@ -84,9 +81,6 @@ class TradeManagerFromInputsMapperTest {
         when(commonValuesService.getMinimumPriceByRarity(item.getRarity())).thenReturn(120);
         when(commonValuesService.getMaximumPriceByRarity(item.getRarity())).thenReturn(100000);
 
-
-        when(potentialTradeStatsService.getNextFancyBuyPriceByCurrentPrices(item)).thenReturn(120);
-
         TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeByItemIdManager(inputs, TradeOperationType.SELL, item, false);
 
         assertEquals(expected, actual);
@@ -116,8 +110,6 @@ class TradeManagerFromInputsMapperTest {
         item.setRarity(ItemRarity.UNCOMMON);
         when(commonValuesService.getMinimumPriceByRarity(item.getRarity())).thenReturn(0);
         when(commonValuesService.getMaximumPriceByRarity(item.getRarity())).thenReturn(360);
-
-        when(potentialTradeStatsService.getNextFancyBuyPriceByCurrentPrices(item)).thenReturn(120);
 
         TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeByItemIdManager(inputs, TradeOperationType.BUY_AND_SELL, item, false);
 
@@ -149,8 +141,6 @@ class TradeManagerFromInputsMapperTest {
         when(commonValuesService.getMinimumPriceByRarity(item.getRarity())).thenReturn(120);
         when(commonValuesService.getMaximumPriceByRarity(item.getRarity())).thenReturn(360);
 
-        when(potentialTradeStatsService.getNextFancyBuyPriceByCurrentPrices(item)).thenReturn(120);
-
         TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeByItemIdManager(inputs, TradeOperationType.BUY_AND_SELL, item, true);
 
         assertEquals(expected, actual);
@@ -180,8 +170,6 @@ class TradeManagerFromInputsMapperTest {
         item.setRarity(ItemRarity.UNCOMMON);
         when(commonValuesService.getMinimumPriceByRarity(item.getRarity())).thenReturn(0);
         when(commonValuesService.getMaximumPriceByRarity(item.getRarity())).thenReturn(150_000);
-
-        when(potentialTradeStatsService.getNextFancyBuyPriceByCurrentPrices(item)).thenReturn(120);
 
         TradeByItemIdManager actual = tradeManagerFromInputsMapper.mapToTradeByItemIdManager(inputs, TradeOperationType.BUY_AND_SELL, item, true);
 

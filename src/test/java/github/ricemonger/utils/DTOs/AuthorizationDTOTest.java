@@ -11,14 +11,13 @@ class AuthorizationDTOTest {
     public void userForCentralTradeManager_constructor_sets_fields_correctly() {
         UserForCentralTradeManager userForCentralTradeManager = new UserForCentralTradeManager();
 
-        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO = new UbiAccountStatsEntityDTO();
+        UbiAccountStats ubiAccountStatsEntityDTO = new UbiAccountStats();
         ubiAccountStatsEntityDTO.setUbiProfileId("ubiProfileId");
         userForCentralTradeManager.setUbiAccountStats(ubiAccountStatsEntityDTO);
 
         userForCentralTradeManager.setUbiSessionId("ubiSessionId");
         userForCentralTradeManager.setUbiSpaceId("ubiSpaceId");
         userForCentralTradeManager.setUbiAuthTicket("ubiAuthTicket");
-        userForCentralTradeManager.setUbiTwoFactorAuthTicket("ubiTwoFactorAuthTicket");
         userForCentralTradeManager.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
         userForCentralTradeManager.setUbiRememberMeTicket("ubiRememberMeTicket");
 
@@ -28,7 +27,6 @@ class AuthorizationDTOTest {
         assertEquals("ubiProfileId", authorizationDTO.getProfileId());
         assertEquals("ubiSpaceId", authorizationDTO.getSpaceId());
         assertEquals("ubiSessionId", authorizationDTO.getSessionId());
-        assertEquals("ubiTwoFactorAuthTicket", authorizationDTO.getTwoFactorAuthenticationTicket());
         assertEquals("ubiRememberDeviceTicket", authorizationDTO.getRememberDeviceTicket());
         assertEquals("ubiRememberMeTicket", authorizationDTO.getRememberMeTicket());
     }
@@ -43,7 +41,6 @@ class AuthorizationDTOTest {
         ubiAccountAuthorizationEntryEntityDTO.setUbiSessionId("ubiSessionId");
         ubiAccountAuthorizationEntryEntityDTO.setUbiSpaceId("ubiSpaceId");
         ubiAccountAuthorizationEntryEntityDTO.setUbiAuthTicket("ubiAuthTicket");
-        ubiAccountAuthorizationEntryEntityDTO.setUbiTwoFactorAuthTicket("ubiTwoFactorAuthTicket");
         ubiAccountAuthorizationEntryEntityDTO.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
         ubiAccountAuthorizationEntryEntityDTO.setUbiRememberMeTicket("ubiRememberMeTicket");
         UbiAccountEntry ubiAccountEntryEntityDTO = new UbiAccountEntry();
@@ -57,7 +54,6 @@ class AuthorizationDTOTest {
         assertEquals("ubiProfileId", authorizationDTO.getProfileId());
         assertEquals("ubiSpaceId", authorizationDTO.getSpaceId());
         assertEquals("ubiSessionId", authorizationDTO.getSessionId());
-        assertEquals("ubiTwoFactorAuthTicket", authorizationDTO.getTwoFactorAuthenticationTicket());
         assertEquals("ubiRememberDeviceTicket", authorizationDTO.getRememberDeviceTicket());
         assertEquals("ubiRememberMeTicket", authorizationDTO.getRememberMeTicket());
     }

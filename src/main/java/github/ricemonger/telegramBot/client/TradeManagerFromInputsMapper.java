@@ -22,8 +22,6 @@ public class TradeManagerFromInputsMapper {
 
     private final CommonValuesService commonValuesService;
 
-    private final PotentialTradeStatsService potentialTradeStatsService;
-
     public TradeByItemIdManager mapToTradeByItemIdManager(Collection<TelegramUserInput> inputs,
                                                           TradeOperationType tradeOperationType,
                                                           Item item,

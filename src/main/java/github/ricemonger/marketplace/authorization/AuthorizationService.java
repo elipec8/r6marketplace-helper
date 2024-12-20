@@ -54,88 +54,75 @@ public class AuthorizationService {
                 .defaultHeader("Ubi-RememberDeviceTicket", rememberDeviceTicket)
                 .build();
 
-        AuthorizationDTO dto = new AuthorizationDTO();
+        AuthorizationDTO dto = webClient
+                .post()
+                .bodyValue(new TwoFaAuthorizationBodyValue(true, new TwoFaAuthorizationBodyValueTrustedDevice(commonValuesService.getTrustedDeviceId(), commonValuesService.getTrustedDeviceFriendlyName())))
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,
+                        clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
+                            @Override
+                            public Throwable apply(String s) {
+                                log.info("Client error during ubi 2fa reauthorization for email {}, rememberDeviceTicket: {} : {}", email, rememberDeviceTicket,s);
+                                return new UbiUserAuthorizationClientErrorException(s);
+                            }
+                        }))
+                .onStatus(HttpStatusCode::is5xxServerError,
+                        clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
+                            @Override
+                            public Throwable apply(String s) {
+                                log.error("Server error during ubi 2fa reauthorization for email {}, rememberDeviceTicket: {} : {}", email, rememberDeviceTicket,s);
+                                return new UbiUserAuthorizationServerErrorException(s);
+                            }
+                        }))
+                .bodyToMono(AuthorizationDTO.class)
+                .block();
 
-        try {
-
-            dto = webClient
-                    .post()
-                    .bodyValue(new TwoFaAuthorizationBodyValue(true, new TwoFaAuthorizationBodyValueTrustedDevice(commonValuesService.getTrustedDeviceId(), commonValuesService.getTrustedDeviceFriendlyName())))
-                    .retrieve()
-                    .onStatus(HttpStatusCode::is4xxClientError,
-                            clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
-                                @Override
-                                public Throwable apply(String s) {
-                                    return new UbiUserAuthorizationClientErrorException(s);
-                                }
-                            }))
-                    .onStatus(HttpStatusCode::is5xxServerError,
-                            clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
-                                @Override
-                                public Throwable apply(String s) {
-                                    return new UbiUserAuthorizationServerErrorException(s);
-                                }
-                            }))
-                    .bodyToMono(AuthorizationDTO.class)
-                    .block();
-
-            if (dto != null) {
-                dto.setTicket(AUTH_TICKET_PREFIX + dto.getTicket());
-            }
-
-
-        } catch (UbiUserAuthorizationServerErrorException e) {
-            log.error("Server error during ubi 2fa reauthorization for email, rememberDeviceTicket {}:{}" + e, email, rememberDeviceTicket);
+        if (dto != null) {
+            dto.setTicket(AUTH_TICKET_PREFIX + dto.getTicket());
         }
-
         return dto;
     }
 
     public AuthorizationDTO reauthorizeAndGet2FaAuthorizedDTOWithAuthorizeTicket(String ticket) throws UbiUserAuthorizationClientErrorException,
             UbiUserAuthorizationServerErrorException {
-
-        if (!ticket.startsWith(AUTH_TICKET_PREFIX)) {
-            ticket = AUTH_TICKET_PREFIX + ticket;
+        String ticketWithPrefix = ticket;
+        if (!ticketWithPrefix.startsWith(AUTH_TICKET_PREFIX)) {
+            ticketWithPrefix = AUTH_TICKET_PREFIX + ticket;
         }
 
         WebClient webClient = WebClient.builder()
                 .baseUrl(commonValuesService.getAuthorizationUrl())
                 .defaultHeader("Content-Type", commonValuesService.getContentType())
                 .defaultHeader("User-Agent", commonValuesService.getUserAgent())
-                .defaultHeader("Authorization", ticket)
+                .defaultHeader("Authorization", ticketWithPrefix)
                 .defaultHeader("Ubi-Appid", commonValuesService.getUbiTwoFaAppId())
                 .build();
 
-        AuthorizationDTO dto = new AuthorizationDTO();
+        AuthorizationDTO dto = webClient
+                .post()
+                .bodyValue(new TwoFaAuthorizationBodyValue(true, new TwoFaAuthorizationBodyValueTrustedDevice(commonValuesService.getTrustedDeviceId(), commonValuesService.getTrustedDeviceFriendlyName())))
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,
+                        clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
+                            @Override
+                            public Throwable apply(String s) {
+                                log.info("Client error during ubi 2fa reauthorization for ticket {} : {}", ticket, s);
+                                return new UbiUserAuthorizationClientErrorException(s);
+                            }
+                        }))
+                .onStatus(HttpStatusCode::is5xxServerError,
+                        clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
+                            @Override
+                            public Throwable apply(String s) {
+                                log.error("Server error during ubi 2fa reauthorization for ticket {} : {}", ticket, s);
+                                return new UbiUserAuthorizationServerErrorException(s);
+                            }
+                        }))
+                .bodyToMono(AuthorizationDTO.class)
+                .block();
 
-        try {
-
-            dto = webClient
-                    .post()
-                    .bodyValue(new TwoFaAuthorizationBodyValue(true, new TwoFaAuthorizationBodyValueTrustedDevice(commonValuesService.getTrustedDeviceId(), commonValuesService.getTrustedDeviceFriendlyName())))
-                    .retrieve()
-                    .onStatus(HttpStatusCode::is4xxClientError,
-                            clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
-                                @Override
-                                public Throwable apply(String s) {
-                                    return new UbiUserAuthorizationClientErrorException(s);
-                                }
-                            }))
-                    .onStatus(HttpStatusCode::is5xxServerError,
-                            clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
-                                @Override
-                                public Throwable apply(String s) {
-                                    return new UbiUserAuthorizationServerErrorException(s);
-                                }
-                            }))
-                    .bodyToMono(AuthorizationDTO.class)
-                    .block();
-
-            if (dto != null) {
-                dto.setTicket(AUTH_TICKET_PREFIX + dto.getTicket());
-            }
-        } catch (UbiUserAuthorizationServerErrorException e) {
-            log.error("Server error during ubi 2fa reauthorization for {}:" + e, ticket);
+        if (dto != null) {
+            dto.setTicket(AUTH_TICKET_PREFIX + dto.getTicket());
         }
 
         return dto;
@@ -144,51 +131,46 @@ public class AuthorizationService {
     public AuthorizationDTO authorizeAndGet2FaAuthorizedDTO(String twoFaCode, String twoFaToken) throws UbiUserAuthorizationClientErrorException,
             UbiUserAuthorizationServerErrorException {
 
-        if (!twoFaToken.startsWith(AUTH_TICKET_PREFIX_2FA)) {
-            twoFaToken = AUTH_TICKET_PREFIX_2FA + twoFaToken;
+        String twoFaTokenWithPrefix = twoFaToken;
+        if (!twoFaTokenWithPrefix.startsWith(AUTH_TICKET_PREFIX_2FA)) {
+            twoFaTokenWithPrefix = AUTH_TICKET_PREFIX_2FA + twoFaToken;
         }
 
         WebClient webClient = WebClient.builder()
                 .baseUrl(commonValuesService.getAuthorizationUrl())
                 .defaultHeader("Content-Type", commonValuesService.getContentType())
                 .defaultHeader("User-Agent", commonValuesService.getUserAgent())
-                .defaultHeader("Authorization", twoFaToken)
+                .defaultHeader("Authorization", twoFaTokenWithPrefix)
                 .defaultHeader("Ubi-Appid", commonValuesService.getUbiTwoFaAppId())
                 .defaultHeader("Ubi-2FaCode", twoFaCode)
                 .build();
 
-        AuthorizationDTO dto = new AuthorizationDTO();
+        AuthorizationDTO dto = webClient
+                .post()
+                .bodyValue(new TwoFaAuthorizationBodyValue(true, new TwoFaAuthorizationBodyValueTrustedDevice(commonValuesService.getTrustedDeviceId(), commonValuesService.getTrustedDeviceFriendlyName())))
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,
+                        clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
+                            @Override
+                            public Throwable apply(String s) {
+                                log.info("Client error during ubi 2fa authorization for twoFaCode: {}, twoFaToken:{} :  {}", twoFaCode, twoFaToken, s);
+                                return new UbiUserAuthorizationClientErrorException(s);
+                            }
+                        }))
+                .onStatus(HttpStatusCode::is5xxServerError,
+                        clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
+                            @Override
+                            public Throwable apply(String s) {
+                                log.error("Server error during ubi 2fa authorization for twoFaCode: {}, twoFaToken:{} :  {}", twoFaCode, twoFaToken, s);
+                                return new UbiUserAuthorizationServerErrorException(s);
+                            }
+                        }))
+                .bodyToMono(AuthorizationDTO.class)
+                .block();
 
-        try {
-
-            dto = webClient
-                    .post()
-                    .bodyValue(new TwoFaAuthorizationBodyValue(true, new TwoFaAuthorizationBodyValueTrustedDevice(commonValuesService.getTrustedDeviceId(), commonValuesService.getTrustedDeviceFriendlyName())))
-                    .retrieve()
-                    .onStatus(HttpStatusCode::is4xxClientError,
-                            clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
-                                @Override
-                                public Throwable apply(String s) {
-                                    return new UbiUserAuthorizationClientErrorException(s);
-                                }
-                            }))
-                    .onStatus(HttpStatusCode::is5xxServerError,
-                            clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
-                                @Override
-                                public Throwable apply(String s) {
-                                    return new UbiUserAuthorizationServerErrorException(s);
-                                }
-                            }))
-                    .bodyToMono(AuthorizationDTO.class)
-                    .block();
-
-            if (dto != null) {
-                dto.setTicket(AUTH_TICKET_PREFIX + dto.getTicket());
-            }
-        } catch (UbiUserAuthorizationServerErrorException e) {
-            log.error("Server error during ubi 2fa authorization for {}:{} :" + e, twoFaCode, twoFaToken);
+        if (dto != null) {
+            dto.setTicket(AUTH_TICKET_PREFIX + dto.getTicket());
         }
-
         return dto;
     }
 
@@ -207,36 +189,31 @@ public class AuthorizationService {
                 .defaultHeader("Ubi-Appid", commonValuesService.getUbiTwoFaAppId())
                 .build();
 
-        TwoFaBaseAuthDTO dto = new TwoFaBaseAuthDTO();
+        TwoFaBaseAuthDTO dto = webClient
+                .post()
+                .bodyValue(new BasicAuthorizationBodyValue(true))
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,
+                        clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
+                            @Override
+                            public Throwable apply(String s) {
+                                log.info("Client error during ubi base 2Fa authorization for email {}:{} :", email, s);
+                                return new UbiUserAuthorizationClientErrorException(s);
+                            }
+                        }))
+                .onStatus(HttpStatusCode::is5xxServerError,
+                        clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
+                            @Override
+                            public Throwable apply(String s) {
+                                log.error("Server error during ubi base 2Fa authorization for email {}:{} :", email, s);
+                                return new UbiUserAuthorizationServerErrorException(s);
+                            }
+                        }))
+                .bodyToMono(TwoFaBaseAuthDTO.class)
+                .block();
 
-        try {
-
-            dto = webClient
-                    .post()
-                    .bodyValue(new BasicAuthorizationBodyValue(true))
-                    .retrieve()
-                    .onStatus(HttpStatusCode::is4xxClientError,
-                            clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
-                                @Override
-                                public Throwable apply(String s) {
-                                    return new UbiUserAuthorizationClientErrorException(s);
-                                }
-                            }))
-                    .onStatus(HttpStatusCode::is5xxServerError,
-                            clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
-                                @Override
-                                public Throwable apply(String s) {
-                                    return new UbiUserAuthorizationServerErrorException(s);
-                                }
-                            }))
-                    .bodyToMono(TwoFaBaseAuthDTO.class)
-                    .block();
-
-            if (dto != null) {
-                dto.setTwoFactorAuthenticationTicket(AUTH_TICKET_PREFIX_2FA + dto.getTwoFactorAuthenticationTicket());
-            }
-        } catch (UbiUserAuthorizationServerErrorException e) {
-            log.error("Server error during ubi base 2Fa authorization for {}:{} :" + e, email, password);
+        if (dto != null) {
+            dto.setTwoFactorAuthenticationTicket(AUTH_TICKET_PREFIX_2FA + dto.getTwoFactorAuthenticationTicket());
         }
 
         return dto;
@@ -255,38 +232,32 @@ public class AuthorizationService {
                 .defaultHeader("Ubi-Appid", commonValuesService.getUbiBaseAppId())
                 .build();
 
-        AuthorizationDTO dto = new AuthorizationDTO();
+        AuthorizationDTO dto = webClient
+                .post()
+                .bodyValue(new BasicAuthorizationBodyValue(true))
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,
+                        clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
+                            @Override
+                            public Throwable apply(String s) {
+                                log.info("Client error during ubi base authorization for email {}:{} :", email, s);
+                                return new UbiUserAuthorizationClientErrorException(s);
+                            }
+                        }))
+                .onStatus(HttpStatusCode::is5xxServerError,
+                        clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
+                            @Override
+                            public Throwable apply(String s) {
+                                log.error("Server error during ubi base authorization for email {}:{} :", email, s);
+                                return new UbiUserAuthorizationServerErrorException(s);
+                            }
+                        }))
+                .bodyToMono(AuthorizationDTO.class)
+                .block();
 
-        try {
-
-            dto = webClient
-                    .post()
-                    .bodyValue(new BasicAuthorizationBodyValue(true))
-                    .retrieve()
-                    .onStatus(HttpStatusCode::is4xxClientError,
-                            clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
-                                @Override
-                                public Throwable apply(String s) {
-                                    return new UbiUserAuthorizationClientErrorException(s);
-                                }
-                            }))
-                    .onStatus(HttpStatusCode::is5xxServerError,
-                            clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
-                                @Override
-                                public Throwable apply(String s) {
-                                    return new UbiUserAuthorizationServerErrorException(s);
-                                }
-                            }))
-                    .bodyToMono(AuthorizationDTO.class)
-                    .block();
-
-            if (dto != null) {
-                dto.setTicket(AUTH_TICKET_PREFIX + dto.getTicket());
-            }
-        } catch (UbiUserAuthorizationServerErrorException e) {
-            log.error("Server error during ubi base authorization for {}:{} :" + e, email, password);
+        if (dto != null) {
+            dto.setTicket(AUTH_TICKET_PREFIX + dto.getTicket());
         }
-
         return dto;
     }
 

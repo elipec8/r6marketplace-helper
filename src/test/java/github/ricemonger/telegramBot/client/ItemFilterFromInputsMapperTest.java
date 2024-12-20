@@ -62,8 +62,6 @@ class ItemFilterFromInputsMapperTest {
         inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_TAGS_OTHER, Callbacks.EMPTY));
         inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MIN_PRICE, "125"));
         inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MAX_PRICE, "1250"));
-        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MIN_LAST_SOLD_PRICE, "126"));
-        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MAX_LAST_SOLD_PRICE, "1260"));
 
         ItemFilter expectedFilter = getDefaultFilter(tags);
 
@@ -96,16 +94,12 @@ class ItemFilterFromInputsMapperTest {
         inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_TAGS_SEASONS, seasons));
         inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MIN_PRICE, "150001"));
         inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MAX_PRICE, "150001"));
-        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MIN_LAST_SOLD_PRICE, "150001"));
-        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MAX_LAST_SOLD_PRICE, "150001"));
 
         ItemFilter expectedFilter = getDefaultFilter(tags);
         expectedFilter.setFilterType(FilterType.ALLOW);
         expectedFilter.setIsOwned(IsOwnedFilter.NOT_OWNED);
         expectedFilter.setMinSellPrice(150_000);
         expectedFilter.setMaxBuyPrice(150_000);
-        expectedFilter.setMinLastSoldPrice(150_000);
-        expectedFilter.setMaxLastSoldPrice(150_000);
 
         ItemFilter actualFilter = itemFilterFromInputsMapper.mapToItemFilter(inputs);
 
@@ -133,8 +127,6 @@ class ItemFilterFromInputsMapperTest {
         inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_TAGS_OPERATORS, operators));
         inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MIN_PRICE, "119"));
         inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MAX_PRICE, "119"));
-        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MIN_LAST_SOLD_PRICE, "119"));
-        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_MAX_LAST_SOLD_PRICE, "119"));
 
         ItemFilter expectedFilter = getDefaultFilter(tags);
         expectedFilter.setName("");
@@ -143,8 +135,6 @@ class ItemFilterFromInputsMapperTest {
         expectedFilter.setItemNamePatternsFromString("pattern1");
         expectedFilter.setMinSellPrice(120);
         expectedFilter.setMaxBuyPrice(120);
-        expectedFilter.setMinLastSoldPrice(120);
-        expectedFilter.setMaxLastSoldPrice(120);
 
         ItemFilter actualFilter = itemFilterFromInputsMapper.mapToItemFilter(inputs);
 
@@ -161,8 +151,6 @@ class ItemFilterFromInputsMapperTest {
         itemFilter.addTags(tags);
         itemFilter.setMinSellPrice(125);
         itemFilter.setMaxBuyPrice(1250);
-        itemFilter.setMinLastSoldPrice(126);
-        itemFilter.setMaxLastSoldPrice(1260);
 
         return itemFilter;
     }

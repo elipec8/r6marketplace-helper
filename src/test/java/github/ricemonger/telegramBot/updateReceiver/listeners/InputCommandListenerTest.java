@@ -196,30 +196,6 @@ class InputCommandListenerTest {
     }
 
     @Test
-    public void handleUpdate_should_item_filter_edit_max_price() {
-        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_MAX_PRICE);
-        inputCommandListener.handleUpdate(updateInfo);
-
-        verify(executorsService).execute(FilterEditStage15AskMinLastSoldPriceInput.class, updateInfo);
-    }
-
-    @Test
-    public void handleUpdate_should_item_filter_edit_min_last_sold_price() {
-        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_MIN_LAST_SOLD_PRICE);
-        inputCommandListener.handleUpdate(updateInfo);
-
-        verify(executorsService).execute(FilterEditStage16AskMaxLastSoldPriceInput.class, updateInfo);
-    }
-
-    @Test
-    public void handleUpdate_should_item_filter_edit_max_last_sold_price() {
-        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_MAX_LAST_SOLD_PRICE);
-        inputCommandListener.handleUpdate(updateInfo);
-
-        verify(executorsService).execute(FilterEditStage15FinishRequestInput.class, updateInfo);
-    }
-
-    @Test
     public void handleUpdate_should_item_filter_edit_throw() {
         assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
             UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
