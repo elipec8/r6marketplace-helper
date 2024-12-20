@@ -38,9 +38,9 @@ public class TelegramUserUbiAccountPostgresService implements TelegramUserUbiAcc
     @Override
     @Transactional
     public void saveAuthorizationInfo(String chatId, UbiAccountAuthorizationEntry account) throws TelegramUserDoesntExistException, UbiAccountEntryAlreadyExistsException {
-        UbiAccountEntryEntity ubiAccountAuthorizationEntry = ubiAccountAuthorizationEntryRepository.findByUserTelegramUserChatId(chatId).orElse(null);
+        UbiAccountEntryEntity ubiAccountEntryEntity = ubiAccountAuthorizationEntryRepository.findByUserTelegramUserChatId(chatId).orElse(null);
 
-        if (ubiAccountAuthorizationEntry != null && !ubiAccountAuthorizationEntry.getUbiAccountStats().getUbiProfileId().equals(account.getUbiProfileId())) {
+        if (ubiAccountEntryEntity != null && !ubiAccountEntryEntity.getUbiAccountStats().getUbiProfileId().equals(account.getUbiProfileId())) {
             throw new UbiAccountEntryAlreadyExistsException("User with chatId " + chatId + " already has another Ubi account");
         } else {
             ubiAccountAuthorizationEntryRepository.save(ubiAccountEntryEntityMapper.createEntityForTelegramUser(chatId, account));
@@ -64,9 +64,7 @@ public class TelegramUserUbiAccountPostgresService implements TelegramUserUbiAcc
 
     @Override
     public UbiAccountAuthorizationEntry findAuthorizationInfoByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
-        TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
-
-        return ubiAccountEntryEntityMapper.createUbiAccountAuthorizationEntry(ubiAccountAuthorizationEntryRepository.findByUserTelegramUserChatId(telegramUser.getChatId())
+        return ubiAccountEntryEntityMapper.createUbiAccountAuthorizationEntry(ubiAccountAuthorizationEntryRepository.findByUserTelegramUserChatId(chatId)
                 .orElseThrow(() -> new UbiAccountEntryDoesntExistException("User with chatId " + chatId + " doesn't have ubi account entry")));
     }
 
