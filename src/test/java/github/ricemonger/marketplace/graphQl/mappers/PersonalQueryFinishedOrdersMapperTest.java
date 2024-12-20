@@ -9,7 +9,7 @@ import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.trades.nodes.TradeItems;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.trades.nodes.tradeItems.Item;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.DTOs.items.UbiTrade;
+import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalFinishedOrdersMappingException;
@@ -83,7 +83,7 @@ class PersonalQueryFinishedOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItem(new github.ricemonger.utils.DTOs.items.Item("1"));
+        expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
 
         expected.setSuccessPaymentPrice(1000);
         expected.setSuccessPaymentFee(100);
@@ -110,7 +110,7 @@ class PersonalQueryFinishedOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItem(new github.ricemonger.utils.DTOs.items.Item("1"));
+        expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
 
         expected.setSuccessPaymentPrice(1000);
         expected.setSuccessPaymentFee(100);
@@ -138,7 +138,7 @@ class PersonalQueryFinishedOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItem(new github.ricemonger.utils.DTOs.items.Item("1"));
+        expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
 
         expected.setSuccessPaymentPrice(0);
         expected.setSuccessPaymentFee(0);
@@ -166,7 +166,7 @@ class PersonalQueryFinishedOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItem(new github.ricemonger.utils.DTOs.items.Item("1"));
+        expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
 
         expected.setSuccessPaymentPrice(1000);
         expected.setSuccessPaymentFee(100);
@@ -194,7 +194,7 @@ class PersonalQueryFinishedOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItem(new github.ricemonger.utils.DTOs.items.Item("1"));
+        expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
 
         expected.setSuccessPaymentPrice(1000);
         expected.setSuccessPaymentFee(100);

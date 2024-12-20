@@ -1,7 +1,8 @@
 package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.utils.DTOs.items.Item;
-import github.ricemonger.utils.DTOs.items.Tag;
+import github.ricemonger.utils.DTOs.common.Item;
+import github.ricemonger.utils.DTOs.common.Tag;
+import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TagGroup;
@@ -18,24 +19,23 @@ class ItemFilterTest {
     @Test
     public void static_filterItems_should_properly_filter_items_by_multiple_filters() {
         Collection<Item> expected = new ArrayList<>();
-        expected.add(createItem("test11", ItemType.WeaponSkin, List.of("value1"), 110, 190, 150));
-        expected.add(createItem("test2", ItemType.WeaponSkin, List.of("value1", "value3"), 110, 190, 100));
-        expected.add(createItem("test3", ItemType.WeaponSkin, List.of("value1", "value3"), 110, 190, 100));
-        expected.add(createItem("test33", ItemType.WeaponSkin, List.of("value1", "value3"), 110, 190, 100));
+        expected.add(createItem("test11", ItemType.WeaponSkin, List.of("value1"), 110, 190, 0));
+        expected.add(createItem("test2", ItemType.WeaponSkin, List.of("value1", "value3"), 110, 190, 0));
+        expected.add(createItem("test3", ItemType.WeaponSkin, List.of("value1", "value3"), 110, 190, 0));
+        expected.add(createItem("test33", ItemType.WeaponSkin, List.of("value1", "value3"), 110, 190, 0));
+        expected.add(createItem("test1", ItemType.Charm, List.of("value2"), 100, 200, 0));
 
         Collection<Item> allItemMainFields = new ArrayList<>(expected);
-        allItemMainFields.add(createItem("test1", ItemType.Charm, List.of("value1", "value2"), 100, 200, 50));
-        allItemMainFields.add(createItem("test1", ItemType.CharacterHeadgear, List.of("value1", "value2"), 100, 200, 50));
-        allItemMainFields.add(createItem("test1", ItemType.Charm, List.of(), 100, 200, 50));
-        allItemMainFields.add(createItem("test1", ItemType.Charm, List.of("value1", "value2"), 90, 200, 50));
-        allItemMainFields.add(createItem("test1", ItemType.Charm, List.of("value1", "value2"), 100, 210, 50));
-        allItemMainFields.add(createItem("test1", ItemType.Charm, List.of("value1", "value2"), 100, 200, 40));
-        allItemMainFields.add(createItem("test1", ItemType.Charm, List.of("value1", "value2"), 100, 200, 160));
-        allItemMainFields.add(createItem("test5", ItemType.WeaponSkin, List.of("value1"), 110, 190, 150));
-        allItemMainFields.add(createItem("test6", ItemType.WeaponSkin, List.of("value1"), 110, 190, 150));
-        allItemMainFields.add(createItem("test9", ItemType.Charm, List.of("value1", "value2"), 100, 200, 50));
-        allItemMainFields.add(createItem("test3", ItemType.WeaponSkin, List.of("value1", "value2"), 100, 200, 50));
-        allItemMainFields.add(createItem("test7", ItemType.WeaponSkin, List.of("value1"), 110, 190, 150));
+        allItemMainFields.add(createItem("test1", ItemType.WeaponSkin, List.of("value2"), 100, 210, 0));
+        allItemMainFields.add(createItem("test1", ItemType.CharacterHeadgear, List.of("value2"), 100, 200, 0));
+        allItemMainFields.add(createItem("test1", ItemType.WeaponSkin, List.of(), 100, 200, 0));
+        allItemMainFields.add(createItem("test1", ItemType.WeaponSkin, List.of("value2"), 90, 200, 0));
+        allItemMainFields.add(createItem("test1", ItemType.Charm, List.of("value1", "value2"), 100, 200, 0));
+        allItemMainFields.add(createItem("test5", ItemType.WeaponSkin, List.of("value1"), 110, 190, 0));
+        allItemMainFields.add(createItem("test6", ItemType.WeaponSkin, List.of("value1"), 110, 190, 0));
+        allItemMainFields.add(createItem("test9", ItemType.Charm, List.of("value1", "value2"), 100, 200, 0));
+        allItemMainFields.add(createItem("test3", ItemType.WeaponSkin, List.of("value1", "value2"), 100, 200, 0));
+        allItemMainFields.add(createItem("test7", ItemType.WeaponSkin, List.of("value1"), 110, 190, 0));
 
         ItemFilter allowFilter1 = new ItemFilter();
         allowFilter1.setFilterType(FilterType.ALLOW);
@@ -93,18 +93,16 @@ class ItemFilterTest {
     @Test
     public void filterItems_should_return_list_by_filter_parameters() {
         Collection<Item> expected = new ArrayList<>();
-        expected.add(createItem("test1", ItemType.Charm, List.of("value1", "value2"), 100, 200, 50));
-        expected.add(createItem("test1111", ItemType.WeaponSkin, List.of("value1"), 110, 190, 150));
-        expected.add(createItem("test2", ItemType.WeaponSkin, List.of("value1", "value3"), 110, 190, 100));
+        expected.add(createItem("test1", ItemType.Charm, List.of("value1", "value2"), 100, 200, 0));
+        expected.add(createItem("test1111", ItemType.WeaponSkin, List.of("value1"), 110, 190, 0));
+        expected.add(createItem("test2", ItemType.WeaponSkin, List.of("value1", "value3"), 110, 190, 0));
 
         Collection<Item> allItemMainFields = new ArrayList<>(expected);
-        allItemMainFields.add(createItem("test3", ItemType.WeaponSkin, List.of("value1", "value2"), 100, 200, 50));
-        allItemMainFields.add(createItem("test1", ItemType.CharacterHeadgear, List.of("value1", "value2"), 100, 200, 50));
-        allItemMainFields.add(createItem("test1", ItemType.Charm, List.of(), 100, 200, 50));
-        allItemMainFields.add(createItem("test1", ItemType.Charm, List.of("value1", "value2"), 90, 200, 50));
-        allItemMainFields.add(createItem("test1", ItemType.Charm, List.of("value1", "value2"), 100, 210, 50));
-        allItemMainFields.add(createItem("test1", ItemType.Charm, List.of("value1", "value2"), 100, 200, 40));
-        allItemMainFields.add(createItem("test1", ItemType.Charm, List.of("value1", "value2"), 100, 200, 160));
+        allItemMainFields.add(createItem("test3", ItemType.WeaponSkin, List.of("value1", "value2"), 100, 200, 0));
+        allItemMainFields.add(createItem("test1", ItemType.CharacterHeadgear, List.of("value1", "value2"), 100, 200, 0));
+        allItemMainFields.add(createItem("test1", ItemType.Charm, List.of(), 100, 200, 0));
+        allItemMainFields.add(createItem("test1", ItemType.Charm, List.of("value1", "value2"), 90, 200, 0));
+        allItemMainFields.add(createItem("test1", ItemType.Charm, List.of("value1", "value2"), 100, 210, 0));
 
         ItemFilter filter = new ItemFilter();
         filter.setItemNamePatterns(List.of("test1", "test2"));

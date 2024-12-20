@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.databases.postgres.services.entity_mappers
 
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserInputEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
-import github.ricemonger.utils.DTOs.TelegramUserInput;
+import github.ricemonger.utils.DTOs.personal.TelegramUserInput;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

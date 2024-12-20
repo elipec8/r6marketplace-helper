@@ -5,10 +5,10 @@ import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccount
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountStatsEntityPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
-import github.ricemonger.utils.DTOs.UbiAccountEntry;
-import github.ricemonger.utils.DTOs.UbiAccountEntryWithTelegram;
+import github.ricemonger.utils.DTOs.personal.UbiAccountAuthorizationEntry;
+import github.ricemonger.utils.DTOs.personal.UbiAccountAuthorizationEntryWithTelegram;
+import github.ricemonger.utils.DTOs.personal.UbiAccountEntry;
+import github.ricemonger.utils.DTOs.personal.UbiAccountEntryWithTelegram;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

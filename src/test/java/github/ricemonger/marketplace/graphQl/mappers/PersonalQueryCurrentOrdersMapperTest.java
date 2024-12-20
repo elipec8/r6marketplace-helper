@@ -7,7 +7,7 @@ import github.ricemonger.marketplace.graphQl.DTOs.personal_query_current_orders.
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_current_orders.trades.nodes.TradeItems;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_current_orders.trades.nodes.tradeItems.Item;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.DTOs.items.UbiTrade;
+import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalCurrentOrderMappingException;
@@ -81,7 +81,7 @@ class PersonalQueryCurrentOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItem(new github.ricemonger.utils.DTOs.items.Item("1"));
+        expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
 
         expected.setSuccessPaymentPrice(0);
         expected.setSuccessPaymentFee(0);
@@ -108,7 +108,7 @@ class PersonalQueryCurrentOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItem(new github.ricemonger.utils.DTOs.items.Item("1"));
+        expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
 
         expected.setSuccessPaymentPrice(0);
         expected.setSuccessPaymentFee(0);
@@ -136,7 +136,7 @@ class PersonalQueryCurrentOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItem(new github.ricemonger.utils.DTOs.items.Item("1"));
+        expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
 
         expected.setSuccessPaymentPrice(0);
         expected.setSuccessPaymentFee(0);
@@ -164,7 +164,7 @@ class PersonalQueryCurrentOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItem(new github.ricemonger.utils.DTOs.items.Item("1"));
+        expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
 
         expected.setSuccessPaymentPrice(0);
         expected.setSuccessPaymentFee(0);

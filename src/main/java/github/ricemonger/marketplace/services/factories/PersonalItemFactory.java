@@ -1,11 +1,11 @@
 package github.ricemonger.marketplace.services.factories;
 
-import github.ricemonger.utils.DTOs.ItemFilter;
-import github.ricemonger.utils.DTOs.PersonalItem;
-import github.ricemonger.utils.DTOs.TradeByFiltersManager;
-import github.ricemonger.utils.DTOs.TradeByItemIdManager;
-import github.ricemonger.utils.DTOs.items.Item;
-import github.ricemonger.utils.DTOs.items.UbiTrade;
+import github.ricemonger.utils.DTOs.personal.ItemFilter;
+import github.ricemonger.utils.DTOs.personal.PersonalItem;
+import github.ricemonger.utils.DTOs.personal.TradeByFiltersManager;
+import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
+import github.ricemonger.utils.DTOs.common.Item;
+import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

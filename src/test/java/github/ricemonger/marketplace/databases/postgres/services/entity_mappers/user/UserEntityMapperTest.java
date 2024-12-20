@@ -3,10 +3,10 @@ package github.ricemonger.marketplace.databases.postgres.services.entity_mappers
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountEntryEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
-import github.ricemonger.utils.DTOs.ManageableUser;
-import github.ricemonger.utils.DTOs.TradeByFiltersManager;
-import github.ricemonger.utils.DTOs.TradeByItemIdManager;
-import github.ricemonger.utils.DTOs.UbiAccountStatsEntityDTO;
+import github.ricemonger.utils.DTOs.personal.ManageableUser;
+import github.ricemonger.utils.DTOs.personal.TradeByFiltersManager;
+import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
+import github.ricemonger.utils.DTOs.personal.UbiAccountStatsEntityDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

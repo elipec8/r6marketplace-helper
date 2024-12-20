@@ -3,7 +3,7 @@ package github.ricemonger.marketplace.databases.postgres.services.entity_mappers
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.TagPostgresRepository;
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.common.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;

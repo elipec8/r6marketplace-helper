@@ -3,7 +3,7 @@ package github.ricemonger.marketplace.databases.postgres.services;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.UserEntityMapper;
 import github.ricemonger.marketplace.services.abstractions.UserDatabaseService;
-import github.ricemonger.utils.DTOs.ManageableUser;
+import github.ricemonger.utils.DTOs.personal.ManageableUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

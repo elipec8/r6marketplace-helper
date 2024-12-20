@@ -5,10 +5,10 @@ import github.ricemonger.marketplace.services.factories.CommandForCentralTradeMa
 import github.ricemonger.marketplace.services.factories.PersonalItemFactory;
 import github.ricemonger.marketplace.services.factories.PotentialTradeFactory;
 import github.ricemonger.telegramBot.TelegramBotService;
-import github.ricemonger.utils.DTOs.*;
-import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
-import github.ricemonger.utils.DTOs.items.Item;
-import github.ricemonger.utils.DTOs.items.UbiTrade;
+import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.common.ConfigTrades;
+import github.ricemonger.utils.DTOs.common.Item;
+import github.ricemonger.utils.DTOs.personal.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -4,9 +4,9 @@ import github.ricemonger.marketplace.services.abstractions.CommonValuesDatabaseS
 import github.ricemonger.marketplace.services.configurations.MainUserConfiguration;
 import github.ricemonger.marketplace.services.configurations.TelegramBotConfiguration;
 import github.ricemonger.marketplace.services.configurations.UbiServiceConfiguration;
-import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
-import github.ricemonger.utils.DTOs.ConfigTrades;
-import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.common.ConfigResolvedTransactionPeriod;
+import github.ricemonger.utils.DTOs.common.ConfigTrades;
+import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.ItemRarity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,9 +1,9 @@
 package github.ricemonger.marketplace.services;
 
-import github.ricemonger.utils.DTOs.items.Item;
-import github.ricemonger.utils.DTOs.items.ItemDaySalesStatsByItemId;
-import github.ricemonger.utils.DTOs.items.PotentialTradeStats;
-import github.ricemonger.utils.DTOs.items.UbiTrade;
+import github.ricemonger.utils.DTOs.common.Item;
+import github.ricemonger.utils.DTOs.common.ItemDaySalesStatsByItemId;
+import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
+import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

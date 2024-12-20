@@ -5,7 +5,7 @@ import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.client.CallbackButton;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
-import github.ricemonger.utils.DTOs.ItemFilter;
+import github.ricemonger.utils.DTOs.personal.ItemFilter;
 
 import java.util.ArrayList;
 import java.util.List;

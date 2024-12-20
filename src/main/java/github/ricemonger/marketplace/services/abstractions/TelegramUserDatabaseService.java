@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.services.abstractions;
 
 
-import github.ricemonger.utils.DTOs.*;
+import github.ricemonger.utils.DTOs.personal.*;
 import github.ricemonger.utils.exceptions.client.TelegramUserAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 

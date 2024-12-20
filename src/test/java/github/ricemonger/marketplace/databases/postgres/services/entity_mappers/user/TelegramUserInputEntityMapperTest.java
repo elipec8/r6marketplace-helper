@@ -4,7 +4,7 @@ import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUs
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserInputEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.utils.DTOs.TelegramUserInput;
+import github.ricemonger.utils.DTOs.personal.TelegramUserInput;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

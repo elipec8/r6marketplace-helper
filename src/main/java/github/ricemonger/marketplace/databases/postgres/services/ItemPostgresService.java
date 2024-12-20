@@ -3,7 +3,7 @@ package github.ricemonger.marketplace.databases.postgres.services;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item.ItemEntityMapper;
 import github.ricemonger.marketplace.services.abstractions.ItemDatabaseService;
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -3,8 +3,8 @@ package github.ricemonger.marketplace.databases.postgres.services.entity_mappers
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemDaySalesUbiStatsEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
-import github.ricemonger.utils.DTOs.items.GroupedItemDaySalesUbiStats;
-import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStats;
+import github.ricemonger.utils.DTOs.common.GroupedItemDaySalesUbiStats;
+import github.ricemonger.utils.DTOs.common.ItemDaySalesUbiStats;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

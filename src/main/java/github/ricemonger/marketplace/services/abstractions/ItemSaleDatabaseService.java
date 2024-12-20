@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.services.abstractions;
 
-import github.ricemonger.utils.DTOs.items.ItemSale;
-import github.ricemonger.utils.DTOs.items.SoldItemDetails;
+import github.ricemonger.utils.DTOs.common.ItemSale;
+import github.ricemonger.utils.DTOs.common.SoldItemDetails;
 
 import java.util.Collection;
 import java.util.List;

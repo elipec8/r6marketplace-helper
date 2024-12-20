@@ -2,7 +2,7 @@ package github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEn
 
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
-import github.ricemonger.utils.DTOs.TradeByItemIdManager;
+import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
 
 import java.util.Collection;
 

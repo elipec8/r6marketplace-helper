@@ -6,7 +6,7 @@ import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableI
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.LastSoldAt;
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.SellStats;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.exceptions.server.GraphQlCommonItemMappingException;
 import org.junit.jupiter.api.Test;
@@ -80,7 +80,7 @@ class CommonQueryItemsMapperTest {
 
         Item resultItem = commonQueryItemsMapper.mapItem(node);
 
-        assertTrue(expectedItem.isFullyEqualTo(resultItem));
+        assertTrue(expectedItem.isFullyEquals(resultItem));
     }
 
     @Test
@@ -106,7 +106,7 @@ class CommonQueryItemsMapperTest {
 
         Item resultItem = commonQueryItemsMapper.mapItem(node);
 
-        assertTrue(expectedItem.isFullyEqualTo(resultItem));
+        assertTrue(expectedItem.isFullyEquals(resultItem));
     }
 
     @Test
@@ -132,7 +132,7 @@ class CommonQueryItemsMapperTest {
 
         Item resultItem = commonQueryItemsMapper.mapItem(node);
 
-        assertTrue(expectedItem.isFullyEqualTo(resultItem));
+        assertTrue(expectedItem.isFullyEquals(resultItem));
     }
 
     @Test
@@ -158,7 +158,7 @@ class CommonQueryItemsMapperTest {
 
         Item resultItem = commonQueryItemsMapper.mapItem(node);
 
-        assertTrue(expectedItem.isFullyEqualTo(resultItem));
+        assertTrue(expectedItem.isFullyEquals(resultItem));
     }
 
     @Test
@@ -184,7 +184,7 @@ class CommonQueryItemsMapperTest {
 
         Item resultItem = commonQueryItemsMapper.mapItem(node);
 
-        assertTrue(expectedItem.isFullyEqualTo(resultItem));
+        assertTrue(expectedItem.isFullyEquals(resultItem));
     }
 
     @Test

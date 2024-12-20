@@ -3,8 +3,8 @@ package github.ricemonger.marketplace.services;
 import github.ricemonger.marketplace.services.abstractions.ItemDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleUbiStatsService;
-import github.ricemonger.utils.DTOs.ItemFilter;
-import github.ricemonger.utils.DTOs.items.*;
+import github.ricemonger.utils.DTOs.personal.ItemFilter;
+import github.ricemonger.utils.DTOs.common.*;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TagGroup;
@@ -256,7 +256,7 @@ class ItemServiceTest {
         verify(itemDatabaseService).saveAll(argThat(arg -> arg.size() == updatedItems.size() &&
                                                            updatedItems.stream().allMatch(updatedItem ->
                                                                    arg.stream().anyMatch(actualItem ->
-                                                                           actualItem.isFullyEqualTo(updatedItem)
+                                                                           actualItem.isFullyEquals(updatedItem)
                                                                    )
                                                            )));
     }
@@ -540,7 +540,7 @@ class ItemServiceTest {
                 arg.size() == expectedResult.size() &&
                 expectedResult.stream().allMatch(expectedItem ->
                         arg.stream().anyMatch(actualItem ->
-                                actualItem.isFullyEqualTo(expectedItem)
+                                actualItem.isFullyEquals(expectedItem)
                         )
                 )
         ));

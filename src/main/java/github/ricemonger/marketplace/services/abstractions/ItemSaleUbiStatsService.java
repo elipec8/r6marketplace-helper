@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.services.abstractions;
 
-import github.ricemonger.utils.DTOs.items.GroupedItemDaySalesUbiStats;
-import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStats;
+import github.ricemonger.utils.DTOs.common.GroupedItemDaySalesUbiStats;
+import github.ricemonger.utils.DTOs.common.ItemDaySalesUbiStats;
 
 import java.util.Collection;
 import java.util.List;

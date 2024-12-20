@@ -8,10 +8,10 @@ import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountS
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.UbiAccountEntryEntityMapper;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.UbiAccountStatsEntityMapper;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
-import github.ricemonger.utils.DTOs.UbiAccountEntryWithTelegram;
-import github.ricemonger.utils.DTOs.UbiAccountStatsEntityDTO;
+import github.ricemonger.utils.DTOs.personal.UbiAccountAuthorizationEntry;
+import github.ricemonger.utils.DTOs.personal.UbiAccountAuthorizationEntryWithTelegram;
+import github.ricemonger.utils.DTOs.personal.UbiAccountEntryWithTelegram;
+import github.ricemonger.utils.DTOs.personal.UbiAccountStatsEntityDTO;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;

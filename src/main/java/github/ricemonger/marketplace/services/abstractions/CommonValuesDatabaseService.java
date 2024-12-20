@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.services.abstractions;
 
-import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
-import github.ricemonger.utils.DTOs.ConfigTrades;
-import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.common.ConfigResolvedTransactionPeriod;
+import github.ricemonger.utils.DTOs.common.ConfigTrades;
+import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 
 public interface CommonValuesDatabaseService {
     int getExpectedItemCount();

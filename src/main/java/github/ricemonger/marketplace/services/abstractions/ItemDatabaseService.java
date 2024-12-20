@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.services.abstractions;
 
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 
 import java.util.Collection;

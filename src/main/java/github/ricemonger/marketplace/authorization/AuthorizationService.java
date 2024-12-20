@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.authorization;
 
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.DTOs.auth.AuthorizationDTO;
-import github.ricemonger.utils.DTOs.auth.TwoFaBaseAuthDTO;
+import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.personal.auth.TwoFaBaseAuthDTO;
 import github.ricemonger.utils.exceptions.client.UbiUserAuthorizationClientErrorException;
 import github.ricemonger.utils.exceptions.server.UbiUserAuthorizationServerErrorException;
 import lombok.RequiredArgsConstructor;

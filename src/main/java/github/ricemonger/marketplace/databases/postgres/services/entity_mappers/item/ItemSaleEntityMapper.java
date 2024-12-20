@@ -2,8 +2,8 @@ package github.ricemonger.marketplace.databases.postgres.services.entity_mappers
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemSaleEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
-import github.ricemonger.utils.DTOs.items.ItemSale;
-import github.ricemonger.utils.DTOs.items.SoldItemDetails;
+import github.ricemonger.utils.DTOs.common.ItemSale;
+import github.ricemonger.utils.DTOs.common.SoldItemDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

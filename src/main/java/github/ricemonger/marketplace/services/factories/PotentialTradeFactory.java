@@ -1,11 +1,11 @@
 package github.ricemonger.marketplace.services.factories;
 
 import github.ricemonger.marketplace.services.PotentialTradeStatsService;
-import github.ricemonger.utils.DTOs.PersonalItem;
-import github.ricemonger.utils.DTOs.PotentialPersonalBuyTrade;
-import github.ricemonger.utils.DTOs.PotentialPersonalSellTrade;
-import github.ricemonger.utils.DTOs.items.ItemResaleLock;
-import github.ricemonger.utils.DTOs.items.PotentialTradeStats;
+import github.ricemonger.utils.DTOs.personal.PersonalItem;
+import github.ricemonger.utils.DTOs.personal.PotentialPersonalBuyTrade;
+import github.ricemonger.utils.DTOs.personal.PotentialPersonalSellTrade;
+import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
+import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
 import github.ricemonger.utils.enums.TradeOperationType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

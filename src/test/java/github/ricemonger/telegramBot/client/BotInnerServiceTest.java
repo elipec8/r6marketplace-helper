@@ -6,18 +6,16 @@ import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.utils.DTOs.*;
-import github.ricemonger.utils.DTOs.items.Item;
-import github.ricemonger.utils.DTOs.items.Tag;
+import github.ricemonger.utils.DTOs.common.Item;
+import github.ricemonger.utils.DTOs.common.Tag;
+import github.ricemonger.utils.DTOs.personal.*;
 import github.ricemonger.utils.enums.TagGroup;
 import github.ricemonger.utils.enums.TradeOperationType;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
-import github.ricemonger.utils.exceptions.client.UbiUserAuthorizationClientErrorException;
 import github.ricemonger.utils.exceptions.server.InvalidTelegramUserInputException;
 import github.ricemonger.utils.exceptions.server.MissingCallbackPrefixInUserInputException;
 import github.ricemonger.utils.exceptions.server.TelegramUserInputDoesntExistException;
-import github.ricemonger.utils.exceptions.server.UbiUserAuthorizationServerErrorException;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -1062,7 +1060,7 @@ public class BotInnerServiceTest {
         when(telegramUserService.getUserInputByState(1L, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID)).thenReturn("item_id");
         when(itemService.getItemById("item_id")).thenReturn(item);
 
-        assertTrue(botInnerService.getItemByUserInputItemId(1L).isFullyEqualTo(item));
+        assertTrue(botInnerService.getItemByUserInputItemId(1L).isFullyEquals(item));
     }
 
     @Test

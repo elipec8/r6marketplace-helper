@@ -5,10 +5,10 @@ import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.utils.DTOs.ItemFilter;
-import github.ricemonger.utils.DTOs.ItemShowSettings;
-import github.ricemonger.utils.DTOs.TelegramUser;
-import github.ricemonger.utils.DTOs.TradeManagersSettings;
+import github.ricemonger.utils.DTOs.personal.ItemFilter;
+import github.ricemonger.utils.DTOs.personal.ItemShowSettings;
+import github.ricemonger.utils.DTOs.personal.TelegramUser;
+import github.ricemonger.utils.DTOs.personal.TradeManagersSettings;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
