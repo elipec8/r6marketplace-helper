@@ -139,8 +139,8 @@ public class PersonalItemFactory {
                                                                  Collection<Item> existingItems) {
         Item item = existingItems.stream().filter(i -> i.getItemId().equals(tradeByItemIdManager.getItemId())).findFirst().orElse(null);
         if (item != null) {
-            int minBuySellProfit = Integer.MIN_VALUE;
-            int minBuySellProfitPercent = Integer.MIN_VALUE;
+            int minMedianPriceDifference = Integer.MIN_VALUE;
+            int minMedianPriceDifferencePercent = Integer.MIN_VALUE;
 
             boolean isOwned = ownedItemsIds.contains(item.getItemId());
             UbiTrade existingTrade;
@@ -155,8 +155,8 @@ public class PersonalItemFactory {
                     item,
                     tradeByItemIdManager.getSellBoundaryPrice(),
                     tradeByItemIdManager.getBuyBoundaryPrice(),
-                    minBuySellProfit,
-                    minBuySellProfitPercent,
+                    minMedianPriceDifference,
+                    minMedianPriceDifferencePercent,
                     tradeByItemIdManager.getTradeOperationType(),
                     tradeByItemIdManager.getPriorityMultiplier(),
                     ownedItemsIds.contains(item.getItemId()),

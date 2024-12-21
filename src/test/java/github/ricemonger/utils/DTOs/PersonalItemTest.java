@@ -6,10 +6,13 @@ import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.TradeOperationType;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 class PersonalItemTest {
 
@@ -239,5 +242,110 @@ class PersonalItemTest {
         personalItem1.setExistingTrade(new UbiTrade());
 
         assertFalse(personalItem1.equals(null));
+    }
+
+    @Test
+    public void isFullyEqual_should_return_true_for_equal_objects() {
+        Item item = Mockito.mock(Item.class);
+        UbiTrade ubiTrade = Mockito.mock(UbiTrade.class);
+
+        when(item.isFullyEquals(any())).thenReturn(true);
+        when(ubiTrade.isFullyEqualExceptItem(any())).thenReturn(true);
+
+        PersonalItem personalItem1 = new PersonalItem();
+        personalItem1.setItem(item);
+        personalItem1.setTradeOperationType(TradeOperationType.BUY);
+        personalItem1.setSellBoundaryPrice(100);
+        personalItem1.setBuyBoundaryPrice(200);
+        personalItem1.setMinMedianPriceDifference(300);
+        personalItem1.setMinMedianPriceDifferencePercent(400);
+        personalItem1.setPriorityMultiplier(500);
+        personalItem1.setIsOwned(true);
+        personalItem1.setTradeAlreadyExists(true);
+        personalItem1.setExistingTrade(ubiTrade);
+
+        PersonalItem personalItem2 = new PersonalItem();
+        personalItem2.setItem(item);
+        personalItem2.setTradeOperationType(TradeOperationType.BUY);
+        personalItem2.setSellBoundaryPrice(100);
+        personalItem2.setBuyBoundaryPrice(200);
+        personalItem2.setMinMedianPriceDifference(300);
+        personalItem2.setMinMedianPriceDifferencePercent(400);
+        personalItem2.setPriorityMultiplier(500);
+        personalItem2.setIsOwned(true);
+        personalItem2.setTradeAlreadyExists(true);
+        personalItem2.setExistingTrade(ubiTrade);
+
+        assertTrue(personalItem1.isFullyEqual(personalItem2));
+    }
+
+    @Test
+    public void isFullyEqual_should_return_false_for_different_objects() {
+        Item item = Mockito.mock(Item.class);
+        UbiTrade ubiTrade = Mockito.mock(UbiTrade.class);
+
+        when(item.isFullyEquals(any())).thenReturn(true);
+        when(ubiTrade.isFullyEqualExceptItem(any())).thenReturn(true);
+
+        PersonalItem personalItem1 = new PersonalItem();
+        personalItem1.setItem(item);
+        personalItem1.setTradeOperationType(TradeOperationType.BUY);
+        personalItem1.setSellBoundaryPrice(100);
+        personalItem1.setBuyBoundaryPrice(200);
+        personalItem1.setMinMedianPriceDifference(300);
+        personalItem1.setMinMedianPriceDifferencePercent(400);
+        personalItem1.setPriorityMultiplier(500);
+        personalItem1.setIsOwned(true);
+        personalItem1.setTradeAlreadyExists(true);
+        personalItem1.setExistingTrade(ubiTrade);
+
+        PersonalItem personalItem2 = new PersonalItem();
+        personalItem2.setItem(item);
+        personalItem2.setTradeOperationType(TradeOperationType.BUY);
+        personalItem2.setSellBoundaryPrice(100);
+        personalItem2.setBuyBoundaryPrice(200);
+        personalItem2.setMinMedianPriceDifference(300);
+        personalItem2.setMinMedianPriceDifferencePercent(400);
+        personalItem2.setPriorityMultiplier(500);
+        personalItem2.setIsOwned(true);
+        personalItem2.setTradeAlreadyExists(true);
+        personalItem2.setExistingTrade(ubiTrade);
+
+        when(item.isFullyEquals(any())).thenReturn(false);
+        assertFalse(personalItem1.isFullyEqual(personalItem2));
+        when(item.isFullyEquals(any())).thenReturn(true);
+        personalItem1.setTradeOperationType(TradeOperationType.SELL);
+        assertFalse(personalItem1.isFullyEqual(personalItem2));
+        personalItem1.setTradeOperationType(TradeOperationType.BUY);
+        personalItem1.setSellBoundaryPrice(1000);
+        assertFalse(personalItem1.isFullyEqual(personalItem2));
+        personalItem1.setSellBoundaryPrice(100);
+        personalItem1.setBuyBoundaryPrice(2000);
+        assertFalse(personalItem1.isFullyEqual(personalItem2));
+        personalItem1.setBuyBoundaryPrice(200);
+        personalItem1.setMinMedianPriceDifference(3000);
+        assertFalse(personalItem1.isFullyEqual(personalItem2));
+        personalItem1.setMinMedianPriceDifference(300);
+        personalItem1.setMinMedianPriceDifferencePercent(4000);
+        assertFalse(personalItem1.isFullyEqual(personalItem2));
+        personalItem1.setMinMedianPriceDifferencePercent(400);
+        personalItem1.setPriorityMultiplier(5000);
+        assertFalse(personalItem1.isFullyEqual(personalItem2));
+        personalItem1.setPriorityMultiplier(500);
+        personalItem1.setIsOwned(false);
+        assertFalse(personalItem1.isFullyEqual(personalItem2));
+        personalItem1.setIsOwned(true);
+        personalItem1.setTradeAlreadyExists(false);
+        assertFalse(personalItem1.isFullyEqual(personalItem2));
+        personalItem1.setTradeAlreadyExists(true);
+        when(ubiTrade.isFullyEqualExceptItem(any())).thenReturn(false);
+        assertFalse(personalItem1.isFullyEqual(personalItem2));
+    }
+
+    @Test
+    public void isFullyEqual_should_return_false_for_null(){
+        PersonalItem personalItem1 = new PersonalItem();
+
+        assertFalse(personalItem1.isFullyEqual(null));
     }
 }

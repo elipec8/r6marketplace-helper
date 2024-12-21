@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -33,5 +34,23 @@ public class UbiTrade {
 
     public String getItemName() {
         return item == null ? null : item.getName();
+    }
+
+    public boolean isFullyEqualExceptItem(UbiTrade other) {
+        if(other == null) {
+            return false;
+        }
+        boolean itemsAreEqual = item == null ? other.item == null : Objects.equals(item.getItemId(), other.item.getItemId());
+
+        return tradeId.equals(other.tradeId) &&
+               state == other.state &&
+               category == other.category &&
+               expiresAt.equals(other.expiresAt) &&
+               lastModifiedAt.equals(other.lastModifiedAt) &&
+               itemsAreEqual &&
+               successPaymentPrice.equals(other.successPaymentPrice) &&
+               successPaymentFee.equals(other.successPaymentFee) &&
+               proposedPaymentPrice.equals(other.proposedPaymentPrice) &&
+               proposedPaymentFee.equals(other.proposedPaymentFee);
     }
 }

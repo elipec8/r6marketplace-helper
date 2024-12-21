@@ -68,4 +68,27 @@ public class PersonalItem {
         }
         return Objects.equals(item, itemForTradeDTO.item) && Objects.equals(tradeOperationType, itemForTradeDTO.tradeOperationType);
     }
+
+    public boolean isFullyEqual(PersonalItem other) {
+        if(other == null) {
+            return false;
+        }
+
+        boolean itemsAreEqual = item == null && other.item == null || item != null && item.isFullyEquals(other.item);
+
+        boolean existingTradesAreEqual =
+                existingTrade == null && other.existingTrade == null || existingTrade != null && existingTrade.isFullyEqualExceptItem(other.existingTrade);
+
+
+        return itemsAreEqual &&
+               Objects.equals(sellBoundaryPrice, other.sellBoundaryPrice) &&
+               Objects.equals(buyBoundaryPrice, other.buyBoundaryPrice) &&
+               Objects.equals(minMedianPriceDifference, other.minMedianPriceDifference) &&
+               Objects.equals(minMedianPriceDifferencePercent, other.minMedianPriceDifferencePercent) &&
+               Objects.equals(tradeOperationType, other.tradeOperationType) &&
+               Objects.equals(priorityMultiplier, other.priorityMultiplier) &&
+               Objects.equals(isOwned, other.isOwned) &&
+               Objects.equals(tradeAlreadyExists, other.tradeAlreadyExists) &&
+               existingTradesAreEqual;
+    }
 }
