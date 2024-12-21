@@ -40,19 +40,19 @@ class PotentialTradeFactoryTest {
         noAlreadyExistingTradePersonalItem.setItem(new Item("5"));
 
         List<PotentialTradeStats> alreadyExistingTradeWithWrongCategoryPotentialTradeStats = List.of(new PotentialTradeStats());
-        when(potentialTradeStatsService.getPotentialBuyTradesStats(wrongOperationTypePersonalItem.getItem())).thenReturn(alreadyExistingTradeWithWrongCategoryPotentialTradeStats);
+        when(potentialTradeStatsService.getPotentialBuyTradesStatsOfItem(wrongOperationTypePersonalItem.getItem())).thenReturn(alreadyExistingTradeWithWrongCategoryPotentialTradeStats);
 
         List<PotentialTradeStats> alreadyExistingTradeWithProperCategoryPotentialTradeStats = List.of(new PotentialTradeStats());
-        when(potentialTradeStatsService.getPotentialBuyTradesStats(alreadyExistingTradeWithProperCategoryPersonalItem.getItem())).thenReturn(alreadyExistingTradeWithProperCategoryPotentialTradeStats);
+        when(potentialTradeStatsService.getPotentialBuyTradesStatsOfItem(alreadyExistingTradeWithProperCategoryPersonalItem.getItem())).thenReturn(alreadyExistingTradeWithProperCategoryPotentialTradeStats);
 
         List<PotentialTradeStats> noAlreadyExistingTradePotentialTradeStats = List.of(new PotentialTradeStats());
-        when(potentialTradeStatsService.getPotentialBuyTradesStats(noAlreadyExistingTradePersonalItem.getItem())).thenReturn(noAlreadyExistingTradePotentialTradeStats);
+        when(potentialTradeStatsService.getPotentialBuyTradesStatsOfItem(noAlreadyExistingTradePersonalItem.getItem())).thenReturn(noAlreadyExistingTradePotentialTradeStats);
 
         List<PotentialPersonalBuyTrade> result = potentialTradeFactory.getFilteredPotentialBuyTradesForUser(
                 List.of(ownedPersonalItem, wrongOperationTypePersonalItem, alreadyExistingTradeWithWrongCategoryPersonalItem, alreadyExistingTradeWithProperCategoryPersonalItem, noAlreadyExistingTradePersonalItem));
 
-        verify(potentialTradeStatsService).getPotentialBuyTradesStats(ownedPersonalItem.getItem());
-        verify(potentialTradeStatsService).getPotentialBuyTradesStats(wrongOperationTypePersonalItem.getItem());
+        verify(potentialTradeStatsService).getPotentialBuyTradesStatsOfItem(ownedPersonalItem.getItem());
+        verify(potentialTradeStatsService).getPotentialBuyTradesStatsOfItem(wrongOperationTypePersonalItem.getItem());
     }
 
 }
