@@ -203,6 +203,36 @@ class TelegramUserServiceTest {
     }
 
     @Test
+    public void reauthorizeAndSaveExistingUserBy2FACode_should_create_and_authorize_user_and_clear_user_inputsCredentials() {
+        telegramUserService.reauthorizeAndSaveExistingUserBy2FACode(123L, "twoFactorCode");
+
+        verify(telegramUserInputDatabaseService).deleteAllByChatId("123");
+
+        verify(telegramUserUbiAccountEntryDatabaseService).reauthorizeAndSaveExistingUserBy2FACode("123", "twoFactorCode");
+    }
+
+    @Test
+    public void reauthorizeAndSaveExistingUserBy2FACode_should_throw_if_user_doesnt_existCredentials() {
+        when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.reauthorizeAndSaveExistingUserBy2FACode(123L, "twoFactorCode"));
+    }
+
+    @Test
+    public void reauthorizeAndSaveExistingUserBy2FACode_should_throw_if_invalid_user_credentials() {
+        doThrow(UbiUserAuthorizationClientErrorException.class).when(telegramUserUbiAccountEntryDatabaseService).reauthorizeAndSaveExistingUserBy2FACode("123", "twoFactorCode");
+
+        assertThrows(UbiUserAuthorizationClientErrorException.class, () -> telegramUserService.reauthorizeAndSaveExistingUserBy2FACode(123L, "twoFactorCode"));
+    }
+
+    @Test
+    public void reauthorizeAndSaveExistingUserBy2FACode_should_throw_if_ubiAccountEntry_server_errorCredentials() {
+        doThrow(UbiUserAuthorizationServerErrorException.class).when(telegramUserUbiAccountEntryDatabaseService).reauthorizeAndSaveExistingUserBy2FACode("123", "twoFactorCode");
+
+        assertThrows(UbiUserAuthorizationServerErrorException.class, () -> telegramUserService.reauthorizeAndSaveExistingUserBy2FACode(123L, "twoFactorCode"));
+    }
+
+    @Test
     public void removeUserUbiAccountEntry_should_handle_to_service() {
         telegramUserService.removeUserUbiAccountEntry(123L);
 

@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
-import github.ricemonger.marketplace.services.factories.CommandForCentralTradeManagerFactory;
+import github.ricemonger.marketplace.services.factories.CentralTradeManagerCommandFactory;
 import github.ricemonger.marketplace.services.factories.PersonalItemFactory;
 import github.ricemonger.marketplace.services.factories.PotentialTradeFactory;
 import github.ricemonger.telegramBot.TelegramBotService;
@@ -29,7 +29,7 @@ class CentralTradeManagerTest {
     @MockBean
     private PotentialTradeFactory potentialTradeFactory;
     @MockBean
-    private CommandForCentralTradeManagerFactory commandForCentralTradeManagerFactory;
+    private CentralTradeManagerCommandFactory centralTradeManagerCommandFactory;
 
     @Test
     public void manageAllUsersTrades_should_create_and_execute_commands_for_all_manageable_users() {

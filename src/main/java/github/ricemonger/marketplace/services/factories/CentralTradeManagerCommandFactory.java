@@ -16,7 +16,7 @@ import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
-public class CommandForCentralTradeManagerFactory {
+public class CentralTradeManagerCommandFactory {
 
     public List<CentralTradeManagerCommand> createCommandsForCentralTradeManagerForUser(Collection<PotentialPersonalSellTrade> resultingSellTrades,
                                                                                         Collection<UbiTrade> currentSellTrades,
@@ -25,12 +25,12 @@ public class CommandForCentralTradeManagerFactory {
                                                                                         Long userId,
                                                                                         AuthorizationDTO authorizationDTO,
                                                                                         String chatId,
-                                                                                        boolean privateNotificationsEnabledFlag) {
+                                                                                        Boolean privateNotificationsEnabledFlag) {
         List<CentralTradeManagerCommand> commands = new LinkedList<>();
 
         for (PotentialPersonalSellTrade sellTrade : resultingSellTrades) {
             if (sellTrade.tradeForItemAlreadyExists()) {
-                if (sellTrade.getOldPrice() != sellTrade.getNewPrice()) {
+                if (!Objects.equals(sellTrade.getOldPrice(), sellTrade.getNewPrice())) {
                     commands.add(new CentralTradeManagerCommand(userId, authorizationDTO, chatId, privateNotificationsEnabledFlag,
                             CentralTradeManagerCommandType.SELL_ORDER_UPDATE, sellTrade.getItemId(), sellTrade.getItemName(),
                             sellTrade.getTradeId(), sellTrade.getOldPrice(), sellTrade.getNewPrice()));
@@ -53,7 +53,7 @@ public class CommandForCentralTradeManagerFactory {
 
         for (PotentialPersonalBuyTrade buyTrade : resultingBuyTrades) {
             if (buyTrade.tradeForItemAlreadyExists()) {
-                if (buyTrade.getOldPrice() != buyTrade.getNewPrice()) {
+                if (!Objects.equals(buyTrade.getOldPrice(), buyTrade.getNewPrice())) {
                     commands.add(new CentralTradeManagerCommand(userId, authorizationDTO, chatId, privateNotificationsEnabledFlag,
                             CentralTradeManagerCommandType.BUY_ORDER_UPDATE, buyTrade.getItemId(), buyTrade.getItemName(),
                             buyTrade.getTradeId(), buyTrade.getOldPrice(), buyTrade.getNewPrice()));

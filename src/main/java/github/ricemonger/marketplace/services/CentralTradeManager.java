@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
-import github.ricemonger.marketplace.services.factories.CommandForCentralTradeManagerFactory;
+import github.ricemonger.marketplace.services.factories.CentralTradeManagerCommandFactory;
 import github.ricemonger.marketplace.services.factories.PersonalItemFactory;
 import github.ricemonger.marketplace.services.factories.PotentialTradeFactory;
 import github.ricemonger.telegramBot.TelegramBotService;
@@ -24,7 +24,7 @@ public class CentralTradeManager {
     private final UserService userService;
     private final PersonalItemFactory personalItemFactory;
     private final PotentialTradeFactory potentialTradeFactory;
-    private final CommandForCentralTradeManagerFactory commandForCentralTradeManagerFactory;
+    private final CentralTradeManagerCommandFactory centralTradeManagerCommandFactory;
 
     public void manageAllUsersTrades(Collection<UbiAccountStats> updatedUbiAccountStats) {
         ConfigTrades configTrades = commonValuesService.getConfigTrades();
@@ -76,7 +76,7 @@ public class CentralTradeManager {
                 configTrades.getBuySlots(),
                 configTrades.getBuyLimit());
 
-        List<CentralTradeManagerCommand> commands = new ArrayList<>(commandForCentralTradeManagerFactory.createCommandsForCentralTradeManagerForUser(
+        List<CentralTradeManagerCommand> commands = new ArrayList<>(centralTradeManagerCommandFactory.createCommandsForCentralTradeManagerForUser(
                 resultingSellTrades,
                 currentSellTrades,
                 resultingBuyTrades,
