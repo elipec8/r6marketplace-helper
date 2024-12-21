@@ -25,7 +25,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class TelegramUserUbiAccountEntryEntityDTOServiceTest {
+class TelegramUserUbiAccountEntryServiceTest {
     @Autowired
     private TelegramUserUbiAccountEntryService telegramUserUbiAccountEntryService;
     @MockBean
@@ -41,12 +41,12 @@ class TelegramUserUbiAccountEntryEntityDTOServiceTest {
         String encodedPassword = "encodedPassword";
         AuthorizationDTO dto = new AuthorizationDTO();
         dto.setTicket("ticket");
-        when(authorizationService.authorizeAndGetBaseAuthorizedDTO(email, password)).thenReturn(dto);
+        when(authorizationService.authorizeAndGet2FaAuthorizedDTO(email, password, twoFaCode)).thenReturn(dto);
         when(authorizationService.encodePassword(password)).thenReturn(encodedPassword);
 
         telegramUserUbiAccountEntryService.authorizeAndSaveUser("chatId", email, password, twoFaCode);
 
-        verify(authorizationService).authorizeAndGetBaseAuthorizedDTO(email, password);
+        verify(authorizationService).authorizeAndGet2FaAuthorizedDTO(email, password, twoFaCode);
 
         verify(telegramUserUbiAccountEntryDatabaseService).saveAuthorizationInfo("chatId", buildUbiAccount(email, encodedPassword, dto));
     }
@@ -82,6 +82,55 @@ class TelegramUserUbiAccountEntryEntityDTOServiceTest {
     }
 
     @Test
+    public void reauthorizeAndSaveExistingUserBy2FACode_should_reauthorize_using_email_and_encodedPassword_from_db_and_twoFaCode() {
+        String email = "email";
+        String password = "password";
+        String twoFaCode = "twoFaCode";
+        String encodedPassword = "encodedPassword";
+        AuthorizationDTO dto = new AuthorizationDTO();
+        dto.setTicket("ticket");
+        UbiAccountAuthorizationEntry authEntry = new UbiAccountAuthorizationEntry();
+        authEntry.setEmail(email);
+        authEntry.setEncodedPassword(encodedPassword);
+        when(telegramUserUbiAccountEntryDatabaseService.findAuthorizationInfoByChatId(any())).thenReturn(authEntry);
+        when(authorizationService.authorizeAndGet2FaAuthorizedDTOForEncodedPassword(email, encodedPassword, twoFaCode)).thenReturn(dto);
+
+        telegramUserUbiAccountEntryService.reauthorizeAndSaveExistingUserBy2FACode("chatId", twoFaCode);
+
+        verify(telegramUserUbiAccountEntryDatabaseService).saveAuthorizationInfo("chatId", buildUbiAccount(email, encodedPassword, dto));
+    }
+
+    @Test
+    public void reauthorizeAndSaveExistingUserBy2FACode_should_throw_if_user_doesnt_exist() {
+        doThrow(TelegramUserDoesntExistException.class).when(telegramUserUbiAccountEntryDatabaseService).saveAuthorizationInfo(any(), any());
+        when(authorizationService.authorizeAndGetBaseAuthorizedDTO(any(), any())).thenReturn(new AuthorizationDTO());
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserUbiAccountEntryService.reauthorizeAndSaveExistingUserBy2FACode("chatId", "twoFaCode"));
+    }
+
+    @Test
+    public void reauthorizeAndSaveExistingUserBy2FACode_should_throw_if_user_already_have_another_ubi_account_entry() {
+        doThrow(UbiAccountEntryAlreadyExistsException.class).when(telegramUserUbiAccountEntryDatabaseService).saveAuthorizationInfo(any(), any());
+        when(authorizationService.authorizeAndGetBaseAuthorizedDTO(any(), any())).thenReturn(new AuthorizationDTO());
+
+        assertThrows(UbiAccountEntryAlreadyExistsException.class, () -> telegramUserUbiAccountEntryService.reauthorizeAndSaveExistingUserBy2FACode("chatId", "twoFaCode"));
+    }
+
+    @Test
+    public void reauthorizeAndSaveExistingUserBy2FACode_should_throw_if_client_authorization_exception_was_thrown() {
+        doThrow(UbiUserAuthorizationClientErrorException.class).when(authorizationService).authorizeAndGetBaseAuthorizedDTO(any(), any());
+
+        assertThrows(UbiUserAuthorizationClientErrorException.class, () -> telegramUserUbiAccountEntryService.reauthorizeAndSaveExistingUserBy2FACode("chatId", "twoFaCode"));
+    }
+
+    @Test
+    public void reauthorizeAndSaveExistingUserBy2FACode_should_throw_if_server_authorization_exception_was_thrown() {
+        doThrow(UbiUserAuthorizationServerErrorException.class).when(authorizationService).authorizeAndGetBaseAuthorizedDTO(any(), any());
+
+        assertThrows(UbiUserAuthorizationServerErrorException.class, () -> telegramUserUbiAccountEntryService.reauthorizeAndSaveExistingUserBy2FACode("chatId", "twoFaCode"));
+    }
+
+    @Test
     public void saveAll_UbiAccountStats_should_handle_to_service() {
         List<UbiAccountStatsEntityDTO> updatedUbiAccounts = new ArrayList<>();
         telegramUserUbiAccountEntryService.saveAllUbiAccountStats(updatedUbiAccounts);
@@ -108,14 +157,17 @@ class TelegramUserUbiAccountEntryEntityDTOServiceTest {
         UbiAccountAuthorizationEntry authorizedEntry = new UbiAccountAuthorizationEntry();
         authorizedEntry.setEmail("email");
         authorizedEntry.setEncodedPassword("encodedPassword");
+        authorizedEntry.setUbiRememberDeviceTicket("rememberDeviceTicket");
 
         UbiAccountAuthorizationEntry clientErrorEntry = new UbiAccountAuthorizationEntry();
-        authorizedEntry.setEmail("email1");
-        authorizedEntry.setEncodedPassword("encodedPassword1");
+        clientErrorEntry.setEmail("email1");
+        clientErrorEntry.setEncodedPassword("encodedPassword1");
+        clientErrorEntry.setUbiRememberDeviceTicket("rememberDeviceTicket1");
 
         UbiAccountAuthorizationEntry serverErrorEntry = new UbiAccountAuthorizationEntry();
-        authorizedEntry.setEmail("email2");
-        authorizedEntry.setEncodedPassword("encodedPassword2");
+        serverErrorEntry.setEmail("email2");
+        serverErrorEntry.setEncodedPassword("encodedPassword2");
+        serverErrorEntry.setUbiRememberDeviceTicket("rememberDeviceTicket2");
 
         List<UbiAccountAuthorizationEntryWithTelegram> authUsers = new ArrayList<>();
 
@@ -128,7 +180,8 @@ class TelegramUserUbiAccountEntryEntityDTOServiceTest {
         authUsersWithDatabaseExceptions.add(new UbiAccountAuthorizationEntryWithTelegram("6", true, authorizedEntry));
         authUsersWithDatabaseExceptions.add(new UbiAccountAuthorizationEntryWithTelegram("7", false, authorizedEntry));
 
-        when(authorizationService.authorizeAndGetBaseAuthorizedDtoForEncodedPassword(authorizedEntry.getEmail(), authorizedEntry.getEncodedPassword())).thenReturn(new AuthorizationDTO());
+        when(authorizationService.reauthorizeAndGet2FaAuthorizedDtoForEncodedPasswordWithRememberDeviceTicket(authorizedEntry.getEmail(),
+                authorizedEntry.getEncodedPassword(),authorizedEntry.getUbiRememberDeviceTicket())).thenReturn(new AuthorizationDTO());
         doThrow(TelegramUserDoesntExistException.class).when(telegramUserUbiAccountEntryDatabaseService).saveAuthorizationInfo(eq("6"), eq(authorizedEntry));
         doThrow(UbiAccountEntryAlreadyExistsException.class).when(telegramUserUbiAccountEntryDatabaseService).saveAuthorizationInfo(eq("7"), eq(authorizedEntry));
 
@@ -136,8 +189,8 @@ class TelegramUserUbiAccountEntryEntityDTOServiceTest {
         unAuthUsers.add(new UbiAccountAuthorizationEntryWithTelegram("4", null, clientErrorEntry));
         unAuthUsers.add(new UbiAccountAuthorizationEntryWithTelegram("5", true, serverErrorEntry));
 
-        doThrow(UbiUserAuthorizationClientErrorException.class).when(authorizationService).authorizeAndGetBaseAuthorizedDtoForEncodedPassword(clientErrorEntry.getEmail(), clientErrorEntry.getEncodedPassword());
-        doThrow(UbiUserAuthorizationServerErrorException.class).when(authorizationService).authorizeAndGetBaseAuthorizedDtoForEncodedPassword(serverErrorEntry.getEmail(), serverErrorEntry.getEncodedPassword());
+        doThrow(UbiUserAuthorizationClientErrorException.class).when(authorizationService).reauthorizeAndGet2FaAuthorizedDtoForEncodedPasswordWithRememberDeviceTicket(clientErrorEntry.getEmail(), clientErrorEntry.getEncodedPassword(), clientErrorEntry.getUbiRememberDeviceTicket());
+        doThrow(UbiUserAuthorizationServerErrorException.class).when(authorizationService).reauthorizeAndGet2FaAuthorizedDtoForEncodedPasswordWithRememberDeviceTicket(serverErrorEntry.getEmail(), serverErrorEntry.getEncodedPassword(), serverErrorEntry.getUbiRememberDeviceTicket());
 
         List<UbiAccountAuthorizationEntryWithTelegram> allUsers = new ArrayList<>();
         allUsers.addAll(authUsers);

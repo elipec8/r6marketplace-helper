@@ -22,13 +22,13 @@ public class PersonalItemFactory {
                                                      Collection<String> ownedItemsId,
                                                      Collection<Item> existingItems) {
         Set<PersonalItem> personalItems = new HashSet<>();
-        personalItems.addAll(getItemsForCentralTradeManagerFromTradeByFiltersManagersByPriority(
+        personalItems.addAll(getPersonalItemsFromTradeByFiltersManagersByPriority(
                 tradeByFiltersManagers,
                 existingSellTrades,
                 existingBuyTrades,
                 ownedItemsId,
                 existingItems));
-        personalItems.addAll(getItemsForCentralTradeManagerFromTradeByItemIdManagersByPriority(
+        personalItems.addAll(getPersonalItemsFromTradeByItemIdManagersByPriority(
                 tradeByItemIdManagers,
                 existingSellTrades,
                 existingBuyTrades,
@@ -38,11 +38,11 @@ public class PersonalItemFactory {
         return personalItems;
     }
 
-    private Set<PersonalItem> getItemsForCentralTradeManagerFromTradeByFiltersManagersByPriority(Collection<TradeByFiltersManager> tradeByFiltersManagers,
-                                                                                                 Collection<UbiTrade> existingSellTrades,
-                                                                                                 Collection<UbiTrade> existingBuyTrades,
-                                                                                                 Collection<String> ownedItemsIds,
-                                                                                                 Collection<Item> existingItems) {
+    public Set<PersonalItem> getPersonalItemsFromTradeByFiltersManagersByPriority(Collection<TradeByFiltersManager> tradeByFiltersManagers,
+                                                                                   Collection<UbiTrade> existingSellTrades,
+                                                                                   Collection<UbiTrade> existingBuyTrades,
+                                                                                   Collection<String> ownedItemsIds,
+                                                                                   Collection<Item> existingItems) {
         Set<PersonalItem> personalItems = new HashSet<>();
 
         if (tradeByFiltersManagers == null || tradeByFiltersManagers.isEmpty() || existingItems == null || existingItems.isEmpty()) {
@@ -53,7 +53,7 @@ public class PersonalItemFactory {
                 tradeByFiltersManagers.stream().filter(m -> m.getPriorityMultiplier() != null).sorted(Comparator.comparingInt(TradeByFiltersManager::getPriorityMultiplier)).toList();
 
         for (TradeByFiltersManager tradeByFiltersManager : sortedTradeByFiltersManagers) {
-            personalItems.addAll(getItemsForCentralTradeManagerFromTradeByFiltersManager(
+            personalItems.addAll(getPersonalItemsFromTradeByFiltersManager(
                     tradeByFiltersManager,
                     existingSellTrades,
                     existingBuyTrades,
@@ -63,11 +63,11 @@ public class PersonalItemFactory {
         return personalItems;
     }
 
-    private Set<PersonalItem> getItemsForCentralTradeManagerFromTradeByFiltersManager(TradeByFiltersManager tradeByFiltersManager,
-                                                                                      Collection<UbiTrade> existingSellTrades,
-                                                                                      Collection<UbiTrade> existingBuyTrades,
-                                                                                      Collection<String> ownedItemsIds,
-                                                                                      Collection<Item> existingItems) {
+    public Set<PersonalItem> getPersonalItemsFromTradeByFiltersManager(TradeByFiltersManager tradeByFiltersManager,
+                                                                        Collection<UbiTrade> existingSellTrades,
+                                                                        Collection<UbiTrade> existingBuyTrades,
+                                                                        Collection<String> ownedItemsIds,
+                                                                        Collection<Item> existingItems) {
         if (tradeByFiltersManager.getAppliedFilters() == null || tradeByFiltersManager.getAppliedFilters().isEmpty()) {
             return new HashSet<>();
         } else {
@@ -104,11 +104,11 @@ public class PersonalItemFactory {
         }
     }
 
-    private Set<PersonalItem> getItemsForCentralTradeManagerFromTradeByItemIdManagersByPriority(Collection<TradeByItemIdManager> tradeByItemIdManagers,
-                                                                                                Collection<UbiTrade> existingSellTrades,
-                                                                                                Collection<UbiTrade> existingBuyTrades,
-                                                                                                Collection<String> ownedItemsIds,
-                                                                                                Collection<Item> existingItems) {
+    public Set<PersonalItem> getPersonalItemsFromTradeByItemIdManagersByPriority(Collection<TradeByItemIdManager> tradeByItemIdManagers,
+                                                                                  Collection<UbiTrade> existingSellTrades,
+                                                                                  Collection<UbiTrade> existingBuyTrades,
+                                                                                  Collection<String> ownedItemsIds,
+                                                                                  Collection<Item> existingItems) {
         Set<PersonalItem> personalItems = new HashSet<>();
 
         if (tradeByItemIdManagers == null || tradeByItemIdManagers.isEmpty() || existingItems == null || existingItems.isEmpty()) {
@@ -119,7 +119,7 @@ public class PersonalItemFactory {
                 tradeByItemIdManagers.stream().filter(m -> m.getPriorityMultiplier() != null).sorted(Comparator.comparingInt(TradeByItemIdManager::getPriorityMultiplier)).toList();
 
         for (TradeByItemIdManager tradeByItemIdManager : sortedTradeByItemIdManagers) {
-            PersonalItem personalItem = getItemForCentralTradeManagerFromTradeByItemIdManager(
+            PersonalItem personalItem = getPersonalItemFromTradeByItemIdManager(
                     tradeByItemIdManager,
                     existingSellTrades,
                     existingBuyTrades,
@@ -132,11 +132,11 @@ public class PersonalItemFactory {
         return personalItems;
     }
 
-    private PersonalItem getItemForCentralTradeManagerFromTradeByItemIdManager(TradeByItemIdManager tradeByItemIdManager,
-                                                                               Collection<UbiTrade> existingSellTrades,
-                                                                               Collection<UbiTrade> existingBuyTrades,
-                                                                               Collection<String> ownedItemsIds,
-                                                                               Collection<Item> existingItems) {
+    public PersonalItem getPersonalItemFromTradeByItemIdManager(TradeByItemIdManager tradeByItemIdManager,
+                                                                 Collection<UbiTrade> existingSellTrades,
+                                                                 Collection<UbiTrade> existingBuyTrades,
+                                                                 Collection<String> ownedItemsIds,
+                                                                 Collection<Item> existingItems) {
         Item item = existingItems.stream().filter(i -> i.getItemId().equals(tradeByItemIdManager.getItemId())).findFirst().orElse(null);
         if (item != null) {
             int minBuySellProfit = Integer.MIN_VALUE;

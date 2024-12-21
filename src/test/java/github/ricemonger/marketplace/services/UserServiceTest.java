@@ -1,6 +1,7 @@
 package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.abstractions.UserDatabaseService;
+import github.ricemonger.utils.DTOs.personal.ManageableUser;
 import github.ricemonger.utils.DTOs.personal.UserForCentralTradeManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ class UserServiceTest {
 
     @Test
     public void getAllManageableUsers_should_return_service_result() {
-        List expected = List.of(new UserForCentralTradeManager());
+        List<ManageableUser> expected = List.of();
         when(userDatabaseService.getAllManageableUsers()).thenReturn(expected);
 
         assertSame(expected, userService.getAllManageableUsers());

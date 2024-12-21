@@ -31,7 +31,6 @@ class ScheduledAllItemsUbiStatsFetcherTest {
 
         scheduledAllItemsUbiStatsFetcher.fetchAllItemUbiStats();
 
-        verify(graphQlClientService).fetchAllItemsUbiStats();
         verify(itemService).saveAllItemSaleUbiStats(same(stats));
     }
 }

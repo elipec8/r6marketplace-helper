@@ -17,8 +17,7 @@ public class ScheduledMainUserReauthorization {
 
     @Scheduled(fixedRate = 150 * 60 * 1000) // every 2.5h
     public void reauthorizeMainUserAndSave() {
-        AuthorizationDTO authorizationDTO = authorizationService.authorizeAndGetBaseAuthorizedDTO(commonValuesService.getMainUserEmail(),
-                commonValuesService.getMainUserPassword());
+        AuthorizationDTO authorizationDTO = authorizationService.authorizeAndGetBaseAuthorizedDTO(commonValuesService.getMainUserEmail(), commonValuesService.getMainUserPassword());
 
         commonValuesService.setMainUserAuthorization(authorizationDTO);
     }

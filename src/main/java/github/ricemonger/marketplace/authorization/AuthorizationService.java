@@ -41,8 +41,8 @@ public class AuthorizationService {
         return authorizeAndGet2FaAuthorizedDTO(twoFaCode, twoFaBaseAuthDTO.getTwoFactorAuthenticationTicket());
     }
 
-    public AuthorizationDTO reauthorizeAndGet2FaAuthorizedDTOWithRememberDeviceTicket(String email, String encodedPassword,
-                                                                                      String rememberDeviceTicket) throws UbiUserAuthorizationClientErrorException,
+    public AuthorizationDTO reauthorizeAndGet2FaAuthorizedDtoForEncodedPasswordWithRememberDeviceTicket(String email, String encodedPassword,
+                                                                                                        String rememberDeviceTicket) throws UbiUserAuthorizationClientErrorException,
             UbiUserAuthorizationServerErrorException {
 
         WebClient webClient = WebClient.builder()

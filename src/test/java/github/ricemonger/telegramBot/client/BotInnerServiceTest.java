@@ -13,9 +13,11 @@ import github.ricemonger.utils.enums.TagGroup;
 import github.ricemonger.utils.enums.TradeOperationType;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
+import github.ricemonger.utils.exceptions.client.UbiUserAuthorizationClientErrorException;
 import github.ricemonger.utils.exceptions.server.InvalidTelegramUserInputException;
 import github.ricemonger.utils.exceptions.server.MissingCallbackPrefixInUserInputException;
 import github.ricemonger.utils.exceptions.server.TelegramUserInputDoesntExistException;
+import github.ricemonger.utils.exceptions.server.UbiUserAuthorizationServerErrorException;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -401,6 +403,15 @@ public class BotInnerServiceTest {
         doThrow(new Exception("")).when(telegramUserService).authorizeAndSaveUser(1L, "email", "password", "twoFaCode");
 
         assertThrows(Exception.class, () -> botInnerService.addUserUbiAccountEntryByUserInput(1L));
+    }
+
+    @Test
+    public void reauthorizeUbiAccountEntryBy2FACode_should_handle_to_service() {
+        String twoFaCode = "twoFaCode";
+        when(telegramUserService.getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_2FA_CODE)).thenReturn(twoFaCode);
+        botInnerService.reauthorizeUbiAccountEntryBy2FACode(1L);
+
+        verify(telegramUserService).reauthorizeAndSaveExistingUserBy2FACode(1L, twoFaCode);
     }
 
     @Test

@@ -61,7 +61,7 @@ public class TelegramUserUbiAccountEntryService {
 
         for (UbiAccountAuthorizationEntryWithTelegram user : users) {
             try {
-                AuthorizationDTO dto = authorizationService.reauthorizeAndGet2FaAuthorizedDTOWithRememberDeviceTicket(user.getEmail(), user.getEncodedPassword(), user.getUbiRememberDeviceTicket());
+                AuthorizationDTO dto = authorizationService.reauthorizeAndGet2FaAuthorizedDtoForEncodedPasswordWithRememberDeviceTicket(user.getEmail(), user.getEncodedPassword(), user.getUbiRememberDeviceTicket());
                 saveAuthorizationInfo(user.getChatId(), user.getEmail(), user.getEncodedPassword(), dto);
             } catch (UbiUserAuthorizationClientErrorException | UbiUserAuthorizationServerErrorException e) {
                 unauthorizedUsers.add(user);

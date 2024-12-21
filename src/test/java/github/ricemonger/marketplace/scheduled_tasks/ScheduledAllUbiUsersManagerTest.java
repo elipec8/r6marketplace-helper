@@ -137,6 +137,11 @@ class ScheduledAllUbiUsersManagerTest {
 
         scheduledAllUbiUsersManager.fetchAllUbiUsersStatsAndManageTrades();
 
+        UbiAccountStats ubiAccountStats1 = new UbiAccountStats("ubiProfileId1", 1, 1, creditAmount1, List.of("itemId3", "itemId4"), List.of(itemResaleLockWithUbiAccount1, itemResaleLockWithUbiAccount2), List.of(currentSellTrade1), List.of(currentBuyTrade1));
+        UbiAccountStats ubiAccountStats2 = new UbiAccountStats("ubiProfileId2", 0, 1, creditAmount2, List.of("itemId5", "itemId6"), List.of(itemResaleLockWithUbiAccount3), List.of(), List.of(currentBuyTrade2));
+        UbiAccountStats ubiAccountStats3 = new UbiAccountStats("ubiProfileId3", 1, 0, creditAmount3, List.of(), List.of(), List.of(currentSellTrade3), List.of());
+        List<UbiAccountStats> expectedUbiAccountStats = List.of(ubiAccountStats1, ubiAccountStats2, ubiAccountStats3);
+
         UbiAccountStatsEntityDTO expectedUbiAccountStatsEntityDTO1 = new UbiAccountStatsEntityDTO("ubiProfileId1", creditAmount1, List.of("itemId3", "itemId4"));
         UbiAccountStatsEntityDTO expectedUbiAccountStatsEntityDTO2 = new UbiAccountStatsEntityDTO("ubiProfileId2", creditAmount2, List.of("itemId5", "itemId6"));
         UbiAccountStatsEntityDTO expectedUbiAccountStatsEntityDTO3 = new UbiAccountStatsEntityDTO("ubiProfileId3", creditAmount3, List.of());
@@ -162,7 +167,20 @@ class ScheduledAllUbiUsersManagerTest {
             return true;
         }));
 
-        verify(centralTradeManager).manageAllUsersTrades(any());
+        verify(centralTradeManager).manageAllUsersTrades(argThat(arg -> {
+            for (UbiAccountStats actual : arg) {
+                System.out.println(actual);
+            }
+            for (UbiAccountStats actual : arg) {
+                UbiAccountStats expected = expectedUbiAccountStats.stream()
+                        .filter(e -> e.getUbiProfileId().equals(actual.getUbiProfileId()))
+                        .findFirst().orElse(null);
+                if (expected == null || !expected.isFullyEqual(actual)) {
+                    return false;
+                }
+            }
+            return true;
+        }));
     }
 
     @Test
