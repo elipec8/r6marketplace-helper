@@ -1,17 +1,19 @@
 package github.ricemonger.marketplace.services.factories;
 
 import github.ricemonger.marketplace.services.PotentialTradeStatsService;
+import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
+import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
 import github.ricemonger.utils.DTOs.personal.PersonalItem;
 import github.ricemonger.utils.DTOs.personal.PotentialPersonalBuyTrade;
 import github.ricemonger.utils.DTOs.personal.PotentialPersonalSellTrade;
-import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
-import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
 import github.ricemonger.utils.enums.TradeOperationType;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+import static github.ricemonger.utils.enums.TradeCategory.Buy;
 import static github.ricemonger.utils.enums.TradeCategory.Sell;
 
 @Component
@@ -53,24 +55,26 @@ public class PotentialTradeFactory {
         return resultingPersonalSellTrades;
     }
 
-    private List<PotentialPersonalSellTrade> getFilteredPotentialSellTradesForUser(Set<PersonalItem> personalItems, Collection<? extends ItemResaleLock> resaleLocks) {
+    public List<PotentialPersonalSellTrade> getFilteredPotentialSellTradesForUser(@NotNull Set<PersonalItem> personalItems,
+                                                                                  Collection<? extends ItemResaleLock> resaleLocks) {
         List<PotentialPersonalSellTrade> potentialPersonalSellTrades = new ArrayList<>();
         for (PersonalItem personalItem : personalItems) {
 
-            if (personalItem.getTradeAlreadyExists() && personalItem.getExistingTrade().getCategory() == Sell) {
-
-                PotentialTradeStats potentialTradeStats = potentialTradeStatsService.calculatePotentialSellTradeStatsForExistingTrade(personalItem.getItem(), personalItem.getExistingTrade());
-
-                if (potentialTradeStats.getPrice() != null && potentialTradeStats.getTradePriority() != null && potentialTradeStats.getPrognosedTradeSuccessMinutes() != null) {
-                    potentialPersonalSellTrades.add(new PotentialPersonalSellTrade(personalItem, potentialTradeStats));
-                }
-            }
-
-            boolean itemResaleNotLocked = resaleLocks.stream().noneMatch(resaleLock -> resaleLock.getItemId().equals(personalItem.getItemId()));
             boolean itemIsOwned = personalItem.getIsOwned();
+            boolean itemResaleNotLocked = resaleLocks.stream().noneMatch(resaleLock -> resaleLock.getItemId().equals(personalItem.getItemId()));
             boolean properTradeOperationType = personalItem.getTradeOperationType() == TradeOperationType.SELL || personalItem.getTradeOperationType() == TradeOperationType.BUY_AND_SELL;
 
-            if (itemResaleNotLocked && itemIsOwned && properTradeOperationType) {
+            if (itemIsOwned && itemResaleNotLocked && properTradeOperationType) {
+
+                if (personalItem.getTradeAlreadyExists() && personalItem.getExistingTrade().getCategory() == Sell) {
+
+                    PotentialTradeStats potentialTradeStats = potentialTradeStatsService.calculatePotentialSellTradeStatsForExistingTrade(personalItem.getItem(), personalItem.getExistingTrade());
+
+                    if (potentialTradeStats.getPrice() != null && potentialTradeStats.getTradePriority() != null && potentialTradeStats.getPrognosedTradeSuccessMinutes() != null) {
+                        potentialPersonalSellTrades.add(new PotentialPersonalSellTrade(personalItem, potentialTradeStats));
+                    }
+                }
+
                 List<PotentialTradeStats> potentialSellTradesStats = potentialTradeStatsService.getPotentialSellTradesStats(personalItem.getItem());
                 for (PotentialTradeStats potentialTradeStats : potentialSellTradesStats) {
                     boolean sellBoundaryPriceIsNotExceeded = personalItem.getSellBoundaryPrice() == null || potentialTradeStats.getPrice() >= personalItem.getSellBoundaryPrice();
@@ -78,15 +82,11 @@ public class PotentialTradeFactory {
                     int medianPriceDifference;
                     int monthMedianPrice;
                     if (personalItem.getMonthMedianPrice() == null) {
-                        monthMedianPrice = 0;
+                        monthMedianPrice = 1;
                         medianPriceDifference = potentialTradeStats.getPrice();
                     } else {
-                        monthMedianPrice = personalItem.getMonthMedianPrice();
+                        monthMedianPrice = Math.max(personalItem.getMonthMedianPrice(), 1);
                         medianPriceDifference = (potentialTradeStats.getPrice() - monthMedianPrice);
-                    }
-
-                    if (monthMedianPrice == 0) {
-                        monthMedianPrice = 1;
                     }
 
                     boolean minMedianPriceDifferenceIsNotExceeded =
@@ -148,23 +148,23 @@ public class PotentialTradeFactory {
         return resultingPersonalBuyTrades;
     }
 
-    private List<PotentialPersonalBuyTrade> getFilteredPotentialBuyTradesForUser(Collection<PersonalItem> personalItems) {
+    public List<PotentialPersonalBuyTrade> getFilteredPotentialBuyTradesForUser(@NotNull Collection<PersonalItem> personalItems) {
         List<PotentialPersonalBuyTrade> potentialPersonalBuyTrades = new ArrayList<>();
         for (PersonalItem personalItem : personalItems) {
-
-            if (personalItem.getTradeAlreadyExists() && personalItem.getExistingTrade().getCategory() == Sell) {
-
-                PotentialTradeStats potentialTradeStats = potentialTradeStatsService.calculatePotentialBuyTradeStatsForExistingTrade(personalItem.getItem(), personalItem.getExistingTrade());
-
-                if (potentialTradeStats.getPrice() != null && potentialTradeStats.getTradePriority() != null && potentialTradeStats.getPrognosedTradeSuccessMinutes() != null) {
-                    potentialPersonalBuyTrades.add(new PotentialPersonalBuyTrade(personalItem, potentialTradeStats));
-                }
-            }
-
             boolean itemIsNotOwned = !personalItem.getIsOwned();
             boolean properTradeOperationType = personalItem.getTradeOperationType() == TradeOperationType.BUY || personalItem.getTradeOperationType() == TradeOperationType.BUY_AND_SELL;
 
             if (itemIsNotOwned && properTradeOperationType) {
+
+                if (personalItem.getTradeAlreadyExists() && personalItem.getExistingTrade().getCategory() == Buy) {
+
+                    PotentialTradeStats potentialTradeStats = potentialTradeStatsService.calculatePotentialBuyTradeStatsForExistingTrade(personalItem.getItem(), personalItem.getExistingTrade());
+
+                    if (potentialTradeStats.getPrice() != null && potentialTradeStats.getTradePriority() != null && potentialTradeStats.getPrognosedTradeSuccessMinutes() != null) {
+                        potentialPersonalBuyTrades.add(new PotentialPersonalBuyTrade(personalItem, potentialTradeStats));
+                    }
+                }
+
                 List<PotentialTradeStats> potentialBuyTradesStats = potentialTradeStatsService.getPotentialBuyTradesStats(personalItem.getItem());
                 for (PotentialTradeStats potentialTradeStats : potentialBuyTradesStats) {
                     boolean buyBoundaryPriceIsNotExceeded = personalItem.getBuyBoundaryPrice() == null || potentialTradeStats.getPrice() <= personalItem.getBuyBoundaryPrice();
@@ -172,15 +172,11 @@ public class PotentialTradeFactory {
                     int medianPriceDifference;
                     int monthMedianPrice;
                     if (personalItem.getMonthMedianPrice() == null) {
-                        monthMedianPrice = 0;
+                        monthMedianPrice = 1;
                         medianPriceDifference = potentialTradeStats.getPrice();
                     } else {
-                        monthMedianPrice = personalItem.getMonthMedianPrice();
+                        monthMedianPrice = Math.max(personalItem.getMonthMedianPrice(), 1);
                         medianPriceDifference = (monthMedianPrice - potentialTradeStats.getPrice());
-                    }
-
-                    if (monthMedianPrice == 0) {
-                        monthMedianPrice = 1;
                     }
 
                     boolean minMedianPriceDifferenceIsNotExceeded =
