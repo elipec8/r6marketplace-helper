@@ -100,10 +100,10 @@ public class PersonalQueryCurrentOrdersMapper {
             throw new GraphQlPersonalCurrentOrderMappingException("Node have both paymentOptions and paymentProposal-" + node);
         } else if (!paymentOptionsIsNull) {
             result.setProposedPaymentPrice(paymentOptions[0].getPrice());
-            result.setProposedPaymentFee((int) Math.ceil(paymentOptions[0].getPrice() / 10.));
+            result.setProposedPaymentFee((int) Math.ceil((double) (paymentOptions[0].getPrice() * commonValuesService.getConfigTrades().getFeePercentage()) / 100));
         } else if (!paymentProposalIsNull) {
             result.setProposedPaymentPrice(paymentProposal.getPrice());
-            result.setProposedPaymentFee(0);
+            result.setProposedPaymentFee((int) Math.ceil((double) (paymentProposal.getPrice() * commonValuesService.getConfigTrades().getFeePercentage()) / 100));
         } else {
             throw new GraphQlPersonalCurrentOrderMappingException("Node doesnt have neither paymentOptions, neither paymentProposal-" + node);
         }

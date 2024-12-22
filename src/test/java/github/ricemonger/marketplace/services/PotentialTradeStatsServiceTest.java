@@ -23,7 +23,7 @@ import static github.ricemonger.marketplace.services.PotentialTradeStatsService.
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -34,7 +34,7 @@ class PotentialTradeStatsServiceTest {
     private CommonValuesService commonValuesService;
 
     @Test
-    public void getPotentialBuyTradesStatsOfItem_should_return_expected_result(){
+    public void getPotentialBuyTradesStatsOfItem_should_return_expected_result() {
         Item item = new Item();
         item.setRarity(ItemRarity.UNCOMMON);
 
@@ -96,7 +96,7 @@ class PotentialTradeStatsServiceTest {
 
         item.setPriorityToSellByNextFancySellPrice(3L);
         PotentialTradeStats fancyStats = new PotentialTradeStats(1, 2, item.getPriorityToSellByNextFancySellPrice());
-        when(potentialTradeStatsService.calculatePriceAndTimeForNextFancySellPriceSale(same(item))).thenReturn(new PotentialTradePriceAndTimeStats(fancyStats.getPrice(), fancyStats.getPrognosedTradeSuccessMinutes()));
+        doReturn(new PotentialTradePriceAndTimeStats(fancyStats.getPrice(), fancyStats.getPrognosedTradeSuccessMinutes())).when(potentialTradeStatsService).calculatePriceAndTimeForNextFancySellPriceSale(same(item));
 
         List<PotentialTradeStats> result = potentialTradeStatsService.getPotentialSellTradesStatsOfItem(item);
         assertEquals(1, result.size());
@@ -131,7 +131,7 @@ class PotentialTradeStatsServiceTest {
         Item item = new Item();
         item.setMaxBuyPrice(1000);
 
-        when(potentialTradeStatsService.calculateSellTradeStats(same(item), same(item.getMaxBuyPrice()), eq(TRADE_MANAGER_FIXED_RATE_MINUTES))).thenReturn(new PotentialTradeStats(1, 2, 3L));
+        doReturn(new PotentialTradeStats(1, 2, 3L)).when(potentialTradeStatsService).calculateSellTradeStats(same(item), same(item.getMaxBuyPrice()), eq(TRADE_MANAGER_FIXED_RATE_MINUTES));
 
         assertEquals(new PotentialTradeStats(1, 2, 3L), potentialTradeStatsService.calculatePotentialSellTradeStatsByMaxBuyPrice(item));
     }
@@ -141,9 +141,9 @@ class PotentialTradeStatsServiceTest {
         Item item = new Item();
 
         PotentialTradePriceAndTimeStats priceAndTime = new PotentialTradePriceAndTimeStats(1000, 100);
-        when(potentialTradeStatsService.calculatePriceAndTimeForNextFancySellPriceSale(same(item))).thenReturn(priceAndTime);
+        doReturn(priceAndTime).when(potentialTradeStatsService).calculatePriceAndTimeForNextFancySellPriceSale(same(item));
 
-        when(potentialTradeStatsService.calculateSellTradeStats(same(item), eq(priceAndTime.price()), eq(priceAndTime.time()))).thenReturn(new PotentialTradeStats(1, 2, 3L));
+        doReturn(new PotentialTradeStats(1, 2, 3L)).when(potentialTradeStatsService).calculateSellTradeStats(same(item), eq(priceAndTime.price()), eq(priceAndTime.time()));
 
         assertEquals(new PotentialTradeStats(1, 2, 3L), potentialTradeStatsService.calculatePotentialSellTradeStatsByNextFancySellPrice(item));
     }
@@ -153,7 +153,7 @@ class PotentialTradeStatsServiceTest {
         Item item = new Item();
         item.setMinSellPrice(1000);
 
-        when(potentialTradeStatsService.calculateBuyTradeStats(same(item), same(item.getMinSellPrice()), eq(TRADE_MANAGER_FIXED_RATE_MINUTES))).thenReturn(new PotentialTradeStats(1, 2, 3L));
+        doReturn(new PotentialTradeStats(1, 2, 3L)).when(potentialTradeStatsService).calculateBuyTradeStats(same(item), same(item.getMinSellPrice()), eq(TRADE_MANAGER_FIXED_RATE_MINUTES));
 
         assertEquals(new PotentialTradeStats(1, 2, 3L), potentialTradeStatsService.calculatePotentialBuyTradeStatsByMinSellPrice(item));
     }
@@ -176,29 +176,29 @@ class PotentialTradeStatsServiceTest {
 
         Item item = new Item();
 
-        when(potentialTradeStatsService.getSameOrHigherPricesBuyOrdersAmount(item, 1000)).thenReturn(280);
+        doReturn(280).when(potentialTradeStatsService).getSameOrHigherPricesBuyOrdersAmount(item, 1000);
         PotentialTradeStats expected = new PotentialTradeStats(1000, MINUTES_IN_AN_HOUR, 1000L);
-        when(potentialTradeStatsService.calculateBuyTradeStats(item, expected.getPrice(), MINUTES_IN_AN_HOUR)).thenReturn(expected);
+        doReturn(expected).when(potentialTradeStatsService).calculateBuyTradeStats(item, expected.getPrice(), MINUTES_IN_AN_HOUR);
         assertEquals(expected, potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item, List.of(itemDaySalesStatsByItemId1, itemDaySalesStatsByItemId2), MINUTES_IN_AN_HOUR));
 
-        when(potentialTradeStatsService.getSameOrHigherPricesBuyOrdersAmount(item, 1000)).thenReturn(281);
+        doReturn(281).when(potentialTradeStatsService).getSameOrHigherPricesBuyOrdersAmount(item, 1000);
         expected = new PotentialTradeStats(1500, MINUTES_IN_AN_HOUR, 1000L);
-        when(potentialTradeStatsService.calculateBuyTradeStats(item, expected.getPrice(), MINUTES_IN_AN_HOUR)).thenReturn(expected);
+        doReturn(expected).when(potentialTradeStatsService).calculateBuyTradeStats(item, expected.getPrice(), MINUTES_IN_AN_HOUR);
         assertEquals(expected, potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item, List.of(itemDaySalesStatsByItemId1, itemDaySalesStatsByItemId2), MINUTES_IN_AN_HOUR));
 
-        when(potentialTradeStatsService.getSameOrHigherPricesBuyOrdersAmount(item, 500)).thenReturn(470);
+        doReturn(470).when(potentialTradeStatsService).getSameOrHigherPricesBuyOrdersAmount(item, 500);
         expected = new PotentialTradeStats(500, MINUTES_IN_A_DAY, 1000L);
-        when(potentialTradeStatsService.calculateBuyTradeStats(item, expected.getPrice(), MINUTES_IN_A_DAY)).thenReturn(expected);
+        doReturn(expected).when(potentialTradeStatsService).calculateBuyTradeStats(item, expected.getPrice(), MINUTES_IN_A_DAY);
         assertEquals(expected, potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item, List.of(itemDaySalesStatsByItemId1, itemDaySalesStatsByItemId2), MINUTES_IN_A_DAY));
 
-        when(potentialTradeStatsService.getSameOrHigherPricesBuyOrdersAmount(item, 500)).thenReturn(471);
+        doReturn(471).when(potentialTradeStatsService).getSameOrHigherPricesBuyOrdersAmount(item, 500);
         expected = new PotentialTradeStats(1000, MINUTES_IN_A_DAY, 1000L);
-        when(potentialTradeStatsService.calculateBuyTradeStats(item, expected.getPrice(), MINUTES_IN_A_DAY)).thenReturn(expected);
+        doReturn(expected).when(potentialTradeStatsService).calculateBuyTradeStats(item, expected.getPrice(), MINUTES_IN_A_DAY);
         assertEquals(expected, potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item, List.of(itemDaySalesStatsByItemId1, itemDaySalesStatsByItemId2), MINUTES_IN_A_DAY));
 
-        when(potentialTradeStatsService.getSameOrHigherPricesBuyOrdersAmount(item, 1500)).thenReturn(0);
+        doReturn(0).when(potentialTradeStatsService).getSameOrHigherPricesBuyOrdersAmount(item, 1500);
         expected = new PotentialTradeStats(null, 1, 1000L);
-        when(potentialTradeStatsService.calculateBuyTradeStats(item, expected.getPrice(), 1)).thenReturn(expected);
+        doReturn(expected).when(potentialTradeStatsService.calculateBuyTradeStats(item, expected.getPrice(), 1));
         assertEquals(expected, potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item, List.of(itemDaySalesStatsByItemId1, itemDaySalesStatsByItemId2), 1));
     }
 
@@ -209,8 +209,8 @@ class PotentialTradeStatsServiceTest {
 
         Item item = new Item();
 
-        when(potentialTradeStatsService.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(existingTrade)).thenReturn(10000);
-        when(potentialTradeStatsService.calculateSellTradeStats(same(item), eq(1000), eq(10000))).thenReturn(new PotentialTradeStats(2, 3, 4L));
+        doReturn(10000).when(potentialTradeStatsService).getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(existingTrade);
+        doReturn(new PotentialTradeStats(2, 3, 4L)).when(potentialTradeStatsService).calculateSellTradeStats(same(item), eq(1000), eq(10000));
 
         assertEquals(new PotentialTradeStats(2, 3, 4L), potentialTradeStatsService.calculatePotentialSellTradeStatsForExistingTrade(item, existingTrade));
     }
@@ -222,8 +222,8 @@ class PotentialTradeStatsServiceTest {
 
         Item item = new Item();
 
-        when(potentialTradeStatsService.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(existingTrade)).thenReturn(10000);
-        when(potentialTradeStatsService.calculateBuyTradeStats(same(item), eq(1000), eq(10000))).thenReturn(new PotentialTradeStats(2, 3, 4L));
+        doReturn(10000).when(potentialTradeStatsService).getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(existingTrade);
+        doReturn(new PotentialTradeStats(2, 3, 4L)).when(potentialTradeStatsService).calculateBuyTradeStats(same(item), eq(1000), eq(10000));
 
         assertEquals(new PotentialTradeStats(2, 3, 4L), potentialTradeStatsService.calculatePotentialBuyTradeStatsForExistingTrade(item, existingTrade));
     }
@@ -235,14 +235,14 @@ class PotentialTradeStatsServiceTest {
         ubiTrade.setExpiresAt(LocalDateTime.of(2021, 1, 2, 0, 0, 0));
 
         Integer prognosedTradeSuccessMinutes = 10000;
-        when(potentialTradeStatsService.getPrognosedTradeSuccessMinutesByPriceOrNull(any(), anyInt(), any())).thenReturn(prognosedTradeSuccessMinutes);
+        doReturn(prognosedTradeSuccessMinutes).when(potentialTradeStatsService).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), anyInt(), any());
 
         assertEquals(prognosedTradeSuccessMinutes - (int) Duration.between(ubiTrade.getLastModifiedAt(), ubiTrade.getExpiresAt()).toMinutes(), potentialTradeStatsService.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
 
-        when(potentialTradeStatsService.getPrognosedTradeSuccessMinutesByPriceOrNull(any(), anyInt(), any())).thenReturn(10);
+        doReturn(10).when(potentialTradeStatsService).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), anyInt(), any());
         assertEquals(TRADE_MANAGER_FIXED_RATE_MINUTES, potentialTradeStatsService.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
 
-        when(potentialTradeStatsService.getPrognosedTradeSuccessMinutesByPriceOrNull(any(), anyInt(), any())).thenReturn(null);
+        doReturn(null).when(potentialTradeStatsService).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), anyInt(), any());
         assertNull(potentialTradeStatsService.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
     }
 

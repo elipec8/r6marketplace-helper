@@ -52,7 +52,7 @@ public class TelegramUserInputPostgresService implements TelegramUserInputDataba
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
         return telegramUserInputEntityMapper.createDTO(telegramUserInputRepository.findById(new TelegramUserInputEntityId(telegramUser, inputState))
-                .orElseThrow(() -> new TelegramUserInputDoesntExistException("Input with chatId" + chatId + " and inputState " + inputState + " not found")));
+                .orElseThrow(() -> new TelegramUserInputDoesntExistException("Input with chatId " + chatId + " and inputState " + inputState + " " + "not found")));
     }
 
     @Override

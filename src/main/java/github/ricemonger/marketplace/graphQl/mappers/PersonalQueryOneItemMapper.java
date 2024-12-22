@@ -16,7 +16,6 @@ import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
-import github.ricemonger.utils.exceptions.server.GraphQlPersonalCurrentOrderMappingException;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalOneItemMappingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -189,15 +188,15 @@ public class PersonalQueryOneItemMapper {
         boolean paymentProposalIsNull = paymentProposal == null || paymentProposal.getPrice() == null;
 
         if (!paymentOptionsIsNull && !paymentProposalIsNull) {
-            throw new GraphQlPersonalCurrentOrderMappingException("Node have both paymentOptions and paymentProposal-" + node);
+            throw new GraphQlPersonalOneItemMappingException("Node have both paymentOptions and paymentProposal-" + node);
         } else if (!paymentOptionsIsNull) {
             result.setProposedPaymentPrice(paymentOptions[0].getPrice());
-            result.setProposedPaymentFee((int) Math.ceil(paymentOptions[0].getPrice() / 10.));
+            result.setProposedPaymentFee((int) Math.ceil((double) (paymentOptions[0].getPrice() * commonValuesService.getConfigTrades().getFeePercentage()) / 100));
         } else if (!paymentProposalIsNull) {
             result.setProposedPaymentPrice(paymentProposal.getPrice());
-            result.setProposedPaymentFee(0);
+            result.setProposedPaymentFee((int) Math.ceil((double) (paymentProposal.getPrice() * commonValuesService.getConfigTrades().getFeePercentage()) / 100));
         } else {
-            throw new GraphQlPersonalCurrentOrderMappingException("Node doesnt have neither paymentOptions, neither paymentProposal-" + node);
+            throw new GraphQlPersonalOneItemMappingException("Node doesnt have neither paymentOptions, neither paymentProposal-" + node);
         }
 
         return result;

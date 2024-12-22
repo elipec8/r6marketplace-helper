@@ -24,6 +24,7 @@ class ItemFilterEntityTest {
     @Test
     public void isFullyEqualExceptUser_should_return_true_if_equal_except_user() {
         ItemFilterEntity filter1 = new ItemFilterEntity();
+        filter1.setUser(new UserEntity(1L));
         filter1.setName("filterName");
         filter1.setFilterType(FilterType.ALLOW);
         filter1.setIsOwned(IsOwnedFilter.OWNED);
@@ -34,6 +35,7 @@ class ItemFilterEntityTest {
         filter1.setMaxBuyPrice(200);
 
         ItemFilterEntity filter2 = new ItemFilterEntity();
+        filter2.setUser(new UserEntity(1L));
         filter2.setName("filterName");
         filter2.setFilterType(FilterType.ALLOW);
         filter2.setIsOwned(IsOwnedFilter.OWNED);
@@ -49,6 +51,7 @@ class ItemFilterEntityTest {
     @Test
     public void isFullyEqualExceptUser_should_return_false_if_not_equal_except_user() {
         ItemFilterEntity filter1 = new ItemFilterEntity();
+        filter1.setUser(new UserEntity(1L));
         filter1.setName("filterName1");
         filter1.setFilterType(FilterType.ALLOW);
         filter1.setIsOwned(IsOwnedFilter.OWNED);
@@ -59,6 +62,7 @@ class ItemFilterEntityTest {
         filter1.setMaxBuyPrice(200);
 
         ItemFilterEntity filter2 = new ItemFilterEntity();
+        filter2.setUser(new UserEntity(1L));
         filter2.setName("filterName1");
         filter2.setFilterType(FilterType.ALLOW);
         filter2.setIsOwned(IsOwnedFilter.OWNED);

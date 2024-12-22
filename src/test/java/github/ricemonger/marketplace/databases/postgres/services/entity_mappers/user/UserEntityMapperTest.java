@@ -1,8 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
-import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountEntryEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.user.*;
 import github.ricemonger.utils.DTOs.personal.ManageableUser;
 import github.ricemonger.utils.DTOs.personal.TradeByFiltersManager;
 import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
@@ -41,8 +39,8 @@ class UserEntityMapperTest {
         entity.getUbiAccountEntry().setUbiRememberMeTicket("ubiRememberMeTicket");
         entity.setTelegramUser(new TelegramUserEntity("chatId", 1L));
         entity.setPrivateNotificationsEnabledFlag(true);
-        entity.setTradeByItemIdManagers(List.of());
-        entity.setTradeByFiltersManagers(List.of());
+        entity.setTradeByItemIdManagers(List.of(new TradeByItemIdManagerEntity()));
+        entity.setTradeByFiltersManagers(List.of(new TradeByFiltersManagerEntity()));
 
         when(tradeByFiltersManagerEntityMapper.createDTO(any())).thenReturn(new TradeByFiltersManager());
         when(tradeByItemIdManagerEntityMapper.createDTO(any())).thenReturn(new TradeByItemIdManager());

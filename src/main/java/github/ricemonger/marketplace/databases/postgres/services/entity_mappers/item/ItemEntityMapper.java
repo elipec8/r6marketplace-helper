@@ -23,7 +23,7 @@ public class ItemEntityMapper {
     public Item createDTO(@NotNull ItemEntity itemEntity) {
         List<String> tags = new ArrayList<>();
         if (itemEntity.getTags() != null && !itemEntity.getTags().isEmpty()) {
-            tags = List.of(itemEntity.getTags().stream().map(TagEntity::getValue).toArray(String[]::new));
+            tags = itemEntity.getTags().stream().map(TagEntity::getValue).toList();
         }
         return new Item(
                 itemEntity.getItemId(),

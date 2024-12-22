@@ -31,7 +31,9 @@ class TradeByFiltersManagerEntityMapperTest {
     @Test
     public void createEntityForTelegramUser_should_properly_map_entity() {
         when(userPostgresRepository.findByTelegramUserChatId("chatId")).thenReturn(new UserEntity(1L));
-        when(itemFilterEntityMapper.createEntityForUser(any(), any())).thenReturn(new ItemFilterEntity());
+        ItemFilterEntity itemFilterEntity = new ItemFilterEntity();
+        itemFilterEntity.setUser(new UserEntity(1L));
+        when(itemFilterEntityMapper.createEntityForUser(any(), any())).thenReturn(itemFilterEntity);
 
         TradeByFiltersManager dto = new TradeByFiltersManager();
         dto.setName("name");
@@ -47,7 +49,7 @@ class TradeByFiltersManagerEntityMapperTest {
         expected.setName("name");
         expected.setEnabled(true);
         expected.setTradeOperationType(TradeOperationType.BUY);
-        expected.setAppliedFilters(List.of(new ItemFilterEntity()));
+        expected.setAppliedFilters(List.of(itemFilterEntity));
         expected.setMinDifferenceFromMedianPrice(10);
         expected.setMinDifferenceFromMedianPricePercent(11);
         expected.setPriorityMultiplier(12);

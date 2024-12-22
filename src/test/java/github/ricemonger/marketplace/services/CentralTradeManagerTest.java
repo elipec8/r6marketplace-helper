@@ -54,9 +54,9 @@ class CentralTradeManagerTest {
         List tradeByFiltersManagers1 = Mockito.mock(List.class);
         List tradeByItemIdManagers1 = Mockito.mock(List.class);
         List resaleLocks1 = Mockito.mock(List.class);
-        Integer creditAmount1 = Mockito.mock(Integer.class);
-        Integer soldIn24h1 = Mockito.mock(Integer.class);
-        Integer boughtIn24h1 = Mockito.mock(Integer.class);
+        Integer creditAmount1 = 1000;
+        Integer soldIn24h1 = 500;
+        Integer boughtIn24h1 = 200;
 
         List currentSellTrades2 = Mockito.mock(List.class);
         List currentBuyTrades2 = Mockito.mock(List.class);
@@ -64,9 +64,9 @@ class CentralTradeManagerTest {
         List tradeByFiltersManagers2 = Mockito.mock(List.class);
         List tradeByItemIdManagers2 = Mockito.mock(List.class);
         List resaleLocks2 = Mockito.mock(List.class);
-        Integer creditAmount2 = Mockito.mock(Integer.class);
-        Integer soldIn24h2 = Mockito.mock(Integer.class);
-        Integer boughtIn24h2 = Mockito.mock(Integer.class);
+        Integer creditAmount2 = 10000;
+        Integer soldIn24h2 = 5000;
+        Integer boughtIn24h2 = 2000;
 
         UbiAccountStats validUbiAccountStats1 = new UbiAccountStats();
         validUbiAccountStats1.setUbiProfileId("profileId1");

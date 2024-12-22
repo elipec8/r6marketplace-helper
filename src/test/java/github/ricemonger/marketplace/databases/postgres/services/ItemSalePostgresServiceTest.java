@@ -73,6 +73,16 @@ class ItemSalePostgresServiceTest {
 
         List<ItemSale> result = itemSaleService.findAllForLastMonth();
 
+        System.out.println("sales:");
+        for (ItemSale sale : sales) {
+            System.out.println(sale);
+        }
+
+        System.out.println("result:");
+        for (ItemSale itemSale : result) {
+            System.out.println(itemSale);
+        }
+
         assertTrue(result.size() == sales.size() && result.stream().allMatch(res -> sales.stream().anyMatch(sale -> sale == res)));
     }
 }

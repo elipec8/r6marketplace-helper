@@ -44,12 +44,15 @@ class TradeByFiltersManagerEntityTest {
 
     @Test
     public void isFullyEqualExceptUser_should_return_false_if_not_equal_except_user() {
+        ItemFilterEntity filter = new ItemFilterEntity();
+        filter.setUser(new UserEntity(1L));
+
         TradeByFiltersManagerEntity manager1 = new TradeByFiltersManagerEntity();
         manager1.setUser(new UserEntity(1L));
         manager1.setName("managerName1");
         manager1.setEnabled(true);
         manager1.setTradeOperationType(TradeOperationType.BUY);
-        manager1.setAppliedFilters(List.of(new ItemFilterEntity()));
+        manager1.setAppliedFilters(List.of(filter));
         manager1.setMinDifferenceFromMedianPrice(10);
         manager1.setMinDifferenceFromMedianPricePercent(5);
         manager1.setPriorityMultiplier(2);
@@ -59,7 +62,7 @@ class TradeByFiltersManagerEntityTest {
         manager2.setName("managerName1");
         manager2.setEnabled(true);
         manager2.setTradeOperationType(TradeOperationType.BUY);
-        manager2.setAppliedFilters(List.of(new ItemFilterEntity()));
+        manager2.setAppliedFilters(List.of(filter));
         manager2.setMinDifferenceFromMedianPrice(10);
         manager2.setMinDifferenceFromMedianPricePercent(5);
         manager2.setPriorityMultiplier(2);
@@ -80,7 +83,7 @@ class TradeByFiltersManagerEntityTest {
         assertFalse(manager1.isFullyEqualExceptUser(manager2));
         manager1.setAppliedFilters(null);
         assertFalse(manager1.isFullyEqualExceptUser(manager2));
-        manager1.setAppliedFilters(List.of(new ItemFilterEntity()));
+        manager1.setAppliedFilters(List.of(filter));
         manager1.setMinDifferenceFromMedianPrice(20);
         assertFalse(manager1.isFullyEqualExceptUser(manager2));
         manager1.setMinDifferenceFromMedianPrice(10);

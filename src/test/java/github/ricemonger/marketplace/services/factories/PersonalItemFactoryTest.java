@@ -75,7 +75,7 @@ class PersonalItemFactoryTest {
         Set<PersonalItem> byItemIdSet = Set.of(personalItem1SellLowerPriority, personalItem2SellLowerPriority, personalItem3Sell, personalItem4Sell);
 
         doReturn(byFiltersSet).when(personalItemFactory).getPersonalItemsFromTradeByFiltersManagersByPriority(same(tradeByFiltersManagers),
-            same(existingSellTrades), same(existingBuyTrades), same(ownedItemsId), same(existingItems));
+                same(existingSellTrades), same(existingBuyTrades), same(ownedItemsId), same(existingItems));
         doReturn(byItemIdSet).when(personalItemFactory).getPersonalItemsFromTradeByItemIdManagersByPriority(same(tradeByItemIdManagers),
                 same(existingSellTrades), same(existingBuyTrades), same(ownedItemsId), same(existingItems));
 
@@ -109,100 +109,99 @@ class PersonalItemFactoryTest {
 
     @Test
     public void getPersonalItemsFromTradeByFiltersManagersByPriority_should_create_set_of_non_null_personal_items_from_tradeByFiltersManagers_skip_lower_priority_dupes() {
-        MockedStatic<ItemFilter> mockedStaticFilter = Mockito.mockStatic(ItemFilter.class);
-        Collection<UbiTrade> existingSellTrades = Mockito.mock(Collection.class);
-        Collection<UbiTrade> existingBuyTrades = Mockito.mock(Collection.class);
-        Collection<String> ownedItemsId = Mockito.mock(Collection.class);
-        Collection<Item> existingItems = Mockito.mock(Collection.class);
-        when(existingItems.isEmpty()).thenReturn(false);
+        try (MockedStatic<ItemFilter> mockedStaticFilter = Mockito.mockStatic(ItemFilter.class)) {
+            Collection<UbiTrade> existingSellTrades = Mockito.mock(Collection.class);
+            Collection<UbiTrade> existingBuyTrades = Mockito.mock(Collection.class);
+            Collection<String> ownedItemsId = Mockito.mock(Collection.class);
+            Collection<Item> existingItems = Mockito.mock(Collection.class);
+            when(existingItems.isEmpty()).thenReturn(false);
 
-        TradeByFiltersManager tradeByFiltersManagerItemSet1 = Mockito.mock(TradeByFiltersManager.class);
-        TradeByFiltersManager tradeByFiltersManagerItemSet1LowerPriority = Mockito.mock(TradeByFiltersManager.class);
-        TradeByFiltersManager tradeByFiltersManagerItemSet1OtherOperation = Mockito.mock(TradeByFiltersManager.class);
-        TradeByFiltersManager tradeByFiltersManagerItemSet2 = Mockito.mock(TradeByFiltersManager.class);
+            TradeByFiltersManager tradeByFiltersManagerItemSet1 = Mockito.mock(TradeByFiltersManager.class);
+            TradeByFiltersManager tradeByFiltersManagerItemSet1LowerPriority = Mockito.mock(TradeByFiltersManager.class);
+            TradeByFiltersManager tradeByFiltersManagerItemSet1OtherOperation = Mockito.mock(TradeByFiltersManager.class);
+            TradeByFiltersManager tradeByFiltersManagerItemSet2 = Mockito.mock(TradeByFiltersManager.class);
 
-        List itemSet1Filters = Mockito.mock(List.class);
-        List itemSet2Filters = Mockito.mock(List.class);
+            List itemSet1Filters = Mockito.mock(List.class);
+            List itemSet2Filters = Mockito.mock(List.class);
 
-        when(tradeByFiltersManagerItemSet1.getAppliedFilters()).thenReturn(itemSet1Filters);
-        when(tradeByFiltersManagerItemSet1LowerPriority.getAppliedFilters()).thenReturn(itemSet1Filters);
-        when(tradeByFiltersManagerItemSet1OtherOperation.getAppliedFilters()).thenReturn(itemSet1Filters);
-        when(tradeByFiltersManagerItemSet2.getAppliedFilters()).thenReturn(itemSet2Filters);
+            when(tradeByFiltersManagerItemSet1.getAppliedFilters()).thenReturn(itemSet1Filters);
+            when(tradeByFiltersManagerItemSet1LowerPriority.getAppliedFilters()).thenReturn(itemSet1Filters);
+            when(tradeByFiltersManagerItemSet1OtherOperation.getAppliedFilters()).thenReturn(itemSet1Filters);
+            when(tradeByFiltersManagerItemSet2.getAppliedFilters()).thenReturn(itemSet2Filters);
 
-        when(tradeByFiltersManagerItemSet1LowerPriority.getPriorityMultiplier()).thenReturn(1);
-        when(tradeByFiltersManagerItemSet1OtherOperation.getPriorityMultiplier()).thenReturn(5);
-        when(tradeByFiltersManagerItemSet1.getPriorityMultiplier()).thenReturn(2);
-        when(tradeByFiltersManagerItemSet2.getPriorityMultiplier()).thenReturn(2);
+            when(tradeByFiltersManagerItemSet1LowerPriority.getPriorityMultiplier()).thenReturn(1);
+            when(tradeByFiltersManagerItemSet1OtherOperation.getPriorityMultiplier()).thenReturn(5);
+            when(tradeByFiltersManagerItemSet1.getPriorityMultiplier()).thenReturn(2);
+            when(tradeByFiltersManagerItemSet2.getPriorityMultiplier()).thenReturn(2);
 
-        mockedStaticFilter.when(() -> ItemFilter.filterItems(Mockito.any(), same(itemSet1Filters))).thenReturn(Set.of(new Item("1"), new Item("2")));
-        mockedStaticFilter.when(() -> ItemFilter.filterItems(Mockito.any(), same(itemSet2Filters))).thenReturn(Set.of(new Item("3"), new Item("4")));
+            mockedStaticFilter.when(() -> ItemFilter.filterItems(Mockito.any(), same(itemSet1Filters))).thenReturn(Set.of(new Item("1"), new Item("2")));
+            mockedStaticFilter.when(() -> ItemFilter.filterItems(Mockito.any(), same(itemSet2Filters))).thenReturn(Set.of(new Item("3"), new Item("4")));
 
-        PersonalItem personalItem1Sell = new PersonalItem();
-        personalItem1Sell.setItem(new Item("1"));
-        personalItem1Sell.setTradeOperationType(TradeOperationType.SELL);
-        personalItem1Sell.setPriorityMultiplier(2);
+            PersonalItem personalItem1Sell = new PersonalItem();
+            personalItem1Sell.setItem(new Item("1"));
+            personalItem1Sell.setTradeOperationType(TradeOperationType.SELL);
+            personalItem1Sell.setPriorityMultiplier(2);
 
-        PersonalItem personalItem2Sell = new PersonalItem();
-        personalItem2Sell.setItem(new Item("2"));
-        personalItem2Sell.setTradeOperationType(TradeOperationType.SELL);
-        personalItem2Sell.setPriorityMultiplier(2);
+            PersonalItem personalItem2Sell = new PersonalItem();
+            personalItem2Sell.setItem(new Item("2"));
+            personalItem2Sell.setTradeOperationType(TradeOperationType.SELL);
+            personalItem2Sell.setPriorityMultiplier(2);
 
-        when(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(same(tradeByFiltersManagerItemSet1), same(existingSellTrades),
-                same(existingBuyTrades), same(ownedItemsId), same(existingItems))).thenReturn(Set.of(personalItem1Sell, personalItem2Sell));
+            doReturn(Set.of(personalItem1Sell, personalItem2Sell)).when(personalItemFactory).getPersonalItemsFromTradeByFiltersManager(same(tradeByFiltersManagerItemSet1), same(existingSellTrades), same(existingBuyTrades), same(ownedItemsId), same(existingItems));
 
-        PersonalItem personalItem1SellLowerPriority = new PersonalItem();
-        personalItem1SellLowerPriority.setItem(new Item("1"));
-        personalItem1SellLowerPriority.setTradeOperationType(TradeOperationType.SELL);
-        personalItem1SellLowerPriority.setPriorityMultiplier(1);
+            PersonalItem personalItem1SellLowerPriority = new PersonalItem();
+            personalItem1SellLowerPriority.setItem(new Item("1"));
+            personalItem1SellLowerPriority.setTradeOperationType(TradeOperationType.SELL);
+            personalItem1SellLowerPriority.setPriorityMultiplier(1);
 
-        PersonalItem personalItem2SellLowerPriority = new PersonalItem();
-        personalItem2SellLowerPriority.setItem(new Item("2"));
-        personalItem2SellLowerPriority.setTradeOperationType(TradeOperationType.SELL);
-        personalItem2SellLowerPriority.setPriorityMultiplier(2);
+            PersonalItem personalItem2SellLowerPriority = new PersonalItem();
+            personalItem2SellLowerPriority.setItem(new Item("2"));
+            personalItem2SellLowerPriority.setTradeOperationType(TradeOperationType.SELL);
+            personalItem2SellLowerPriority.setPriorityMultiplier(2);
 
-        when(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(same(tradeByFiltersManagerItemSet1LowerPriority), same(existingSellTrades),
-                same(existingBuyTrades), same(ownedItemsId), same(existingItems))).thenReturn(Set.of(personalItem1SellLowerPriority, personalItem2SellLowerPriority));
+            doReturn(Set.of(personalItem1SellLowerPriority, personalItem2SellLowerPriority)).when(personalItemFactory).getPersonalItemsFromTradeByFiltersManager(same(tradeByFiltersManagerItemSet1LowerPriority), same(existingSellTrades), same(existingBuyTrades), same(ownedItemsId), same(existingItems));
 
-        PersonalItem personalItem1Buy = new PersonalItem();
-        personalItem1Buy.setItem(new Item("1"));
-        personalItem1Buy.setTradeOperationType(TradeOperationType.BUY);
-        personalItem1Buy.setPriorityMultiplier(2);
+            PersonalItem personalItem1Buy = new PersonalItem();
+            personalItem1Buy.setItem(new Item("1"));
+            personalItem1Buy.setTradeOperationType(TradeOperationType.BUY);
+            personalItem1Buy.setPriorityMultiplier(2);
 
-        PersonalItem personalItem2Buy = new PersonalItem();
-        personalItem2Buy.setItem(new Item("2"));
-        personalItem2Buy.setTradeOperationType(TradeOperationType.BUY);
-        personalItem2Buy.setPriorityMultiplier(2);
+            PersonalItem personalItem2Buy = new PersonalItem();
+            personalItem2Buy.setItem(new Item("2"));
+            personalItem2Buy.setTradeOperationType(TradeOperationType.BUY);
+            personalItem2Buy.setPriorityMultiplier(2);
 
-        when(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(same(tradeByFiltersManagerItemSet1OtherOperation), same(existingSellTrades),
-                same(existingBuyTrades), same(ownedItemsId), same(existingItems))).thenReturn(Set.of(personalItem1Buy, personalItem2Buy));
+            doReturn(Set.of(personalItem1Buy, personalItem2Buy)).when(personalItemFactory).getPersonalItemsFromTradeByFiltersManager(same(tradeByFiltersManagerItemSet1OtherOperation), same(existingSellTrades), same(existingBuyTrades), same(ownedItemsId), same(existingItems));
 
-        PersonalItem personalItem3Sell = new PersonalItem();
-        personalItem3Sell.setItem(new Item("3"));
-        personalItem3Sell.setTradeOperationType(TradeOperationType.SELL);
-        personalItem3Sell.setPriorityMultiplier(2);
+            PersonalItem personalItem3Sell = new PersonalItem();
+            personalItem3Sell.setItem(new Item("3"));
+            personalItem3Sell.setTradeOperationType(TradeOperationType.SELL);
+            personalItem3Sell.setPriorityMultiplier(2);
 
-        PersonalItem personalItem4Sell = new PersonalItem();
-        personalItem4Sell.setItem(new Item("4"));
-        personalItem4Sell.setTradeOperationType(TradeOperationType.SELL);
-        personalItem4Sell.setPriorityMultiplier(2);
+            PersonalItem personalItem4Sell = new PersonalItem();
+            personalItem4Sell.setItem(new Item("4"));
+            personalItem4Sell.setTradeOperationType(TradeOperationType.SELL);
+            personalItem4Sell.setPriorityMultiplier(2);
 
-        when(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(same(tradeByFiltersManagerItemSet2), same(existingSellTrades),
-                same(existingBuyTrades), same(ownedItemsId), same(existingItems))).thenReturn(Set.of(personalItem3Sell, personalItem4Sell));
+            doReturn(Set.of(personalItem3Sell, personalItem4Sell)).when(personalItemFactory).getPersonalItemsFromTradeByFiltersManager(same(tradeByFiltersManagerItemSet2), same(existingSellTrades),
+                    same(existingBuyTrades), same(ownedItemsId), same(existingItems));
 
-        Set<PersonalItem> result = personalItemFactory.getPersonalItemsFromTradeByFiltersManagersByPriority(
-                Set.of(tradeByFiltersManagerItemSet1, tradeByFiltersManagerItemSet1LowerPriority, tradeByFiltersManagerItemSet1OtherOperation, tradeByFiltersManagerItemSet2),
-                existingSellTrades,
-                existingBuyTrades,
-                ownedItemsId,
-                existingItems);
+            Set<PersonalItem> result = personalItemFactory.getPersonalItemsFromTradeByFiltersManagersByPriority(
+                    Set.of(tradeByFiltersManagerItemSet1, tradeByFiltersManagerItemSet1LowerPriority, tradeByFiltersManagerItemSet1OtherOperation, tradeByFiltersManagerItemSet2),
+                    existingSellTrades,
+                    existingBuyTrades,
+                    ownedItemsId,
+                    existingItems);
 
-        assertEquals(6, result.size());
-        assertTrue(result.stream().filter(p -> p.equals(personalItem1Sell)).findFirst().get().isFullyEqual(personalItem1Sell));
-        assertTrue(result.stream().filter(p -> p.equals(personalItem2Sell)).findFirst().get().isFullyEqual(personalItem2Sell));
-        assertTrue(result.stream().filter(p -> p.equals(personalItem1SellLowerPriority)).findFirst().get().isFullyEqual(personalItem1SellLowerPriority));
-        assertTrue(result.stream().filter(p -> p.equals(personalItem2SellLowerPriority)).findFirst().get().isFullyEqual(personalItem2SellLowerPriority));
-        assertTrue(result.stream().filter(p -> p.equals(personalItem1Buy)).findFirst().get().isFullyEqual(personalItem1Buy));
-        assertTrue(result.stream().filter(p -> p.equals(personalItem2Buy)).findFirst().get().isFullyEqual(personalItem2Buy));
+            assertEquals(6, result.size());
+            assertTrue(result.stream().filter(p -> p.equals(personalItem1Sell)).findFirst().get().isFullyEqual(personalItem1Sell));
+            assertTrue(result.stream().filter(p -> p.equals(personalItem2Sell)).findFirst().get().isFullyEqual(personalItem2Sell));
+            assertTrue(result.stream().filter(p -> p.equals(personalItem1SellLowerPriority)).findFirst().get().isFullyEqual(personalItem1SellLowerPriority));
+            assertTrue(result.stream().filter(p -> p.equals(personalItem2SellLowerPriority)).findFirst().get().isFullyEqual(personalItem2SellLowerPriority));
+            assertTrue(result.stream().filter(p -> p.equals(personalItem1Buy)).findFirst().get().isFullyEqual(personalItem1Buy));
+            assertTrue(result.stream().filter(p -> p.equals(personalItem2Buy)).findFirst().get().isFullyEqual(personalItem2Buy));
+
+        }
     }
 
     @Test
@@ -227,118 +226,122 @@ class PersonalItemFactoryTest {
 
     @Test
     public void getPersonalItemsFromTradeByFiltersManager_should_return_personalItems_by_filters_manager_trades_dont_exist() {
-        MockedStatic<ItemFilter> mockedStaticFilter = Mockito.mockStatic(ItemFilter.class);
-        mockedStaticFilter.when(() -> ItemFilter.filterItems(Mockito.any(), Mockito.any())).thenReturn(Set.of(new Item("1"), new Item("2")));
+        try (
+                MockedStatic<ItemFilter> mockedStaticFilter = Mockito.mockStatic(ItemFilter.class)) {
+            mockedStaticFilter.when(() -> ItemFilter.filterItems(Mockito.any(), Mockito.any())).thenReturn(Set.of(new Item("1"), new Item("2")));
 
-        TradeByFiltersManager manager = new TradeByFiltersManager();
-        manager.setAppliedFilters(List.of(new ItemFilter()));
-        manager.setMinDifferenceFromMedianPrice(100);
-        manager.setMinDifferenceFromMedianPricePercent(200);
-        manager.setTradeOperationType(TradeOperationType.SELL);
-        manager.setPriorityMultiplier(3);
+            TradeByFiltersManager manager = new TradeByFiltersManager();
+            manager.setAppliedFilters(List.of(new ItemFilter()));
+            manager.setMinDifferenceFromMedianPrice(100);
+            manager.setMinDifferenceFromMedianPricePercent(200);
+            manager.setTradeOperationType(TradeOperationType.SELL);
+            manager.setPriorityMultiplier(3);
 
-        UbiTrade sellTrade = new UbiTrade();
-        sellTrade.setTradeId("sellTradeId1");
-        sellTrade.setItem(new Item("2"));
-        Collection<UbiTrade> existingSellTrades = Set.of(sellTrade);
+            UbiTrade sellTrade = new UbiTrade();
+            sellTrade.setTradeId("sellTradeId1");
+            sellTrade.setItem(new Item("2"));
+            Collection<UbiTrade> existingSellTrades = Set.of(sellTrade);
 
-        UbiTrade buyTrade = new UbiTrade();
-        buyTrade.setTradeId("buyTradeId2");
-        buyTrade.setItem(new Item("1"));
-        Collection<UbiTrade> existingBuyTrades = Set.of(buyTrade);
+            UbiTrade buyTrade = new UbiTrade();
+            buyTrade.setTradeId("buyTradeId2");
+            buyTrade.setItem(new Item("1"));
+            Collection<UbiTrade> existingBuyTrades = Set.of(buyTrade);
 
-        Collection<String> ownedItemsId = Set.of("1", "3");
+            Collection<String> ownedItemsId = Set.of("1", "3");
 
-        Collection<Item> existingItems = Set.of(new Item("1"), new Item("2"), new Item("3"));
+            Collection<Item> existingItems = Set.of(new Item("1"), new Item("2"), new Item("3"));
 
-        PersonalItem personalItem1 = new PersonalItem();
-        personalItem1.setItem(new Item("1"));
-        personalItem1.setSellBoundaryPrice(Integer.MIN_VALUE);
-        personalItem1.setBuyBoundaryPrice(Integer.MAX_VALUE);
-        personalItem1.setMinMedianPriceDifference(100);
-        personalItem1.setMinMedianPriceDifferencePercent(200);
-        personalItem1.setTradeOperationType(TradeOperationType.SELL);
-        personalItem1.setPriorityMultiplier(3);
-        personalItem1.setIsOwned(true);
-        personalItem1.setTradeAlreadyExists(false);
-        personalItem1.setExistingTrade(null);
+            PersonalItem personalItem1 = new PersonalItem();
+            personalItem1.setItem(new Item("1"));
+            personalItem1.setSellBoundaryPrice(Integer.MIN_VALUE);
+            personalItem1.setBuyBoundaryPrice(Integer.MAX_VALUE);
+            personalItem1.setMinMedianPriceDifference(100);
+            personalItem1.setMinMedianPriceDifferencePercent(200);
+            personalItem1.setTradeOperationType(TradeOperationType.SELL);
+            personalItem1.setPriorityMultiplier(3);
+            personalItem1.setIsOwned(true);
+            personalItem1.setTradeAlreadyExists(false);
+            personalItem1.setExistingTrade(null);
 
-        PersonalItem personalItem2 = new PersonalItem();
-        personalItem2.setItem(new Item("2"));
-        personalItem2.setSellBoundaryPrice(Integer.MIN_VALUE);
-        personalItem2.setBuyBoundaryPrice(Integer.MAX_VALUE);
-        personalItem2.setMinMedianPriceDifference(100);
-        personalItem2.setMinMedianPriceDifferencePercent(200);
-        personalItem2.setTradeOperationType(TradeOperationType.SELL);
-        personalItem2.setPriorityMultiplier(3);
-        personalItem2.setIsOwned(false);
-        personalItem2.setTradeAlreadyExists(false);
-        personalItem2.setExistingTrade(null);
+            PersonalItem personalItem2 = new PersonalItem();
+            personalItem2.setItem(new Item("2"));
+            personalItem2.setSellBoundaryPrice(Integer.MIN_VALUE);
+            personalItem2.setBuyBoundaryPrice(Integer.MAX_VALUE);
+            personalItem2.setMinMedianPriceDifference(100);
+            personalItem2.setMinMedianPriceDifferencePercent(200);
+            personalItem2.setTradeOperationType(TradeOperationType.SELL);
+            personalItem2.setPriorityMultiplier(3);
+            personalItem2.setIsOwned(false);
+            personalItem2.setTradeAlreadyExists(false);
+            personalItem2.setExistingTrade(null);
 
 
-        Set<PersonalItem> result = personalItemFactory.getPersonalItemsFromTradeByFiltersManager(manager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems);
+            Set<PersonalItem> result = personalItemFactory.getPersonalItemsFromTradeByFiltersManager(manager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems);
 
-        assertEquals(2, result.size());
-        assertTrue(result.stream().filter(p -> p.equals(personalItem1)).findFirst().get().isFullyEqual(personalItem1));
-        assertTrue(result.stream().filter(p -> p.equals(personalItem2)).findFirst().get().isFullyEqual(personalItem2));
+            assertEquals(2, result.size());
+            assertTrue(result.stream().filter(p -> p.equals(personalItem1)).findFirst().get().isFullyEqual(personalItem1));
+            assertTrue(result.stream().filter(p -> p.equals(personalItem2)).findFirst().get().isFullyEqual(personalItem2));
+        }
     }
 
     @Test
     public void getPersonalItemsFromTradeByFiltersManager_should_return_personalItems_by_filters_manager_trades_exist() {
-        MockedStatic<ItemFilter> mockedStaticFilter = Mockito.mockStatic(ItemFilter.class);
-        mockedStaticFilter.when(() -> ItemFilter.filterItems(Mockito.any(), Mockito.any())).thenReturn(Set.of(new Item("1"), new Item("2")));
+        try (
+                MockedStatic<ItemFilter> mockedStaticFilter = Mockito.mockStatic(ItemFilter.class)) {
+            mockedStaticFilter.when(() -> ItemFilter.filterItems(Mockito.any(), Mockito.any())).thenReturn(Set.of(new Item("1"), new Item("2")));
 
-        TradeByFiltersManager manager = new TradeByFiltersManager();
-        manager.setAppliedFilters(List.of(new ItemFilter()));
-        manager.setMinDifferenceFromMedianPrice(100);
-        manager.setMinDifferenceFromMedianPricePercent(200);
-        manager.setTradeOperationType(TradeOperationType.SELL);
-        manager.setPriorityMultiplier(3);
+            TradeByFiltersManager manager = new TradeByFiltersManager();
+            manager.setAppliedFilters(List.of(new ItemFilter()));
+            manager.setMinDifferenceFromMedianPrice(100);
+            manager.setMinDifferenceFromMedianPricePercent(200);
+            manager.setTradeOperationType(TradeOperationType.SELL);
+            manager.setPriorityMultiplier(3);
 
-        UbiTrade sellTrade = new UbiTrade();
-        sellTrade.setTradeId("sellTradeId1");
-        sellTrade.setItem(new Item("1"));
-        Collection<UbiTrade> existingSellTrades = Set.of(sellTrade);
+            UbiTrade sellTrade = new UbiTrade();
+            sellTrade.setTradeId("sellTradeId1");
+            sellTrade.setItem(new Item("1"));
+            Collection<UbiTrade> existingSellTrades = Set.of(sellTrade);
 
-        UbiTrade buyTrade = new UbiTrade();
-        buyTrade.setTradeId("buyTradeId2");
-        buyTrade.setItem(new Item("2"));
-        Collection<UbiTrade> existingBuyTrades = Set.of(buyTrade);
+            UbiTrade buyTrade = new UbiTrade();
+            buyTrade.setTradeId("buyTradeId2");
+            buyTrade.setItem(new Item("2"));
+            Collection<UbiTrade> existingBuyTrades = Set.of(buyTrade);
 
-        Collection<String> ownedItemsId = Set.of("1", "3");
+            Collection<String> ownedItemsId = Set.of("1", "3");
 
-        Collection<Item> existingItems = Set.of(new Item("1"), new Item("2"), new Item("3"));
+            Collection<Item> existingItems = Set.of(new Item("1"), new Item("2"), new Item("3"));
 
-        PersonalItem personalItem1 = new PersonalItem();
-        personalItem1.setItem(new Item("1"));
-        personalItem1.setSellBoundaryPrice(Integer.MIN_VALUE);
-        personalItem1.setBuyBoundaryPrice(Integer.MAX_VALUE);
-        personalItem1.setMinMedianPriceDifference(100);
-        personalItem1.setMinMedianPriceDifferencePercent(200);
-        personalItem1.setTradeOperationType(TradeOperationType.SELL);
-        personalItem1.setPriorityMultiplier(3);
-        personalItem1.setIsOwned(true);
-        personalItem1.setTradeAlreadyExists(true);
-        personalItem1.setExistingTrade(sellTrade);
+            PersonalItem personalItem1 = new PersonalItem();
+            personalItem1.setItem(new Item("1"));
+            personalItem1.setSellBoundaryPrice(Integer.MIN_VALUE);
+            personalItem1.setBuyBoundaryPrice(Integer.MAX_VALUE);
+            personalItem1.setMinMedianPriceDifference(100);
+            personalItem1.setMinMedianPriceDifferencePercent(200);
+            personalItem1.setTradeOperationType(TradeOperationType.SELL);
+            personalItem1.setPriorityMultiplier(3);
+            personalItem1.setIsOwned(true);
+            personalItem1.setTradeAlreadyExists(true);
+            personalItem1.setExistingTrade(sellTrade);
 
-        PersonalItem personalItem2 = new PersonalItem();
-        personalItem2.setItem(new Item("2"));
-        personalItem2.setSellBoundaryPrice(Integer.MIN_VALUE);
-        personalItem2.setBuyBoundaryPrice(Integer.MAX_VALUE);
-        personalItem2.setMinMedianPriceDifference(100);
-        personalItem2.setMinMedianPriceDifferencePercent(200);
-        personalItem2.setTradeOperationType(TradeOperationType.SELL);
-        personalItem2.setPriorityMultiplier(3);
-        personalItem2.setIsOwned(false);
-        personalItem2.setTradeAlreadyExists(true);
-        personalItem2.setExistingTrade(buyTrade);
+            PersonalItem personalItem2 = new PersonalItem();
+            personalItem2.setItem(new Item("2"));
+            personalItem2.setSellBoundaryPrice(Integer.MIN_VALUE);
+            personalItem2.setBuyBoundaryPrice(Integer.MAX_VALUE);
+            personalItem2.setMinMedianPriceDifference(100);
+            personalItem2.setMinMedianPriceDifferencePercent(200);
+            personalItem2.setTradeOperationType(TradeOperationType.SELL);
+            personalItem2.setPriorityMultiplier(3);
+            personalItem2.setIsOwned(false);
+            personalItem2.setTradeAlreadyExists(true);
+            personalItem2.setExistingTrade(buyTrade);
 
 
-        Set<PersonalItem> result = personalItemFactory.getPersonalItemsFromTradeByFiltersManager(manager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems);
+            Set<PersonalItem> result = personalItemFactory.getPersonalItemsFromTradeByFiltersManager(manager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems);
 
-        assertEquals(2, result.size());
-        assertTrue(result.stream().filter(p -> p.equals(personalItem1)).findFirst().get().isFullyEqual(personalItem1));
-        assertTrue(result.stream().filter(p -> p.equals(personalItem2)).findFirst().get().isFullyEqual(personalItem2));
+            assertEquals(2, result.size());
+            assertTrue(result.stream().filter(p -> p.equals(personalItem1)).findFirst().get().isFullyEqual(personalItem1));
+            assertTrue(result.stream().filter(p -> p.equals(personalItem2)).findFirst().get().isFullyEqual(personalItem2));
+        }
     }
 
     @Test
@@ -397,15 +400,19 @@ class PersonalItemFactoryTest {
         personalItem2.setItem(new Item("2"));
         personalItem2.setTradeOperationType(TradeOperationType.SELL);
 
-        when(personalItemFactory.getPersonalItemFromTradeByItemIdManager(tradeByItemIdManagerItem1, existingSellTrades, existingBuyTrades,
-                ownedItemsId, existingItems)).thenReturn(personalItem1);
-        when(personalItemFactory.getPersonalItemFromTradeByItemIdManager(tradeByItemIdManagerItem1OtherOperation, existingSellTrades,
-                existingBuyTrades, ownedItemsId, existingItems)).thenReturn(personalItem1OtherOperation);
-        when(personalItemFactory.getPersonalItemFromTradeByItemIdManager(tradeByItemIdManagerItem1LowerPriority, existingSellTrades,
-                existingBuyTrades, ownedItemsId, existingItems)).thenReturn(personalItem1LowerPriority);
-        when(personalItemFactory.getPersonalItemFromTradeByItemIdManager(tradeByItemIdManagerItem2, existingSellTrades, existingBuyTrades,
-                ownedItemsId, existingItems)).thenReturn(personalItem2);
-        when(personalItemFactory.getPersonalItemFromTradeByItemIdManager(tradeByItemIdManagerNull, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems)).thenReturn(null);
+        doReturn(personalItem1).when(personalItemFactory).getPersonalItemFromTradeByItemIdManager(tradeByItemIdManagerItem1, existingSellTrades,
+                existingBuyTrades,
+                ownedItemsId, existingItems);
+        doReturn(personalItem1OtherOperation).when(personalItemFactory).getPersonalItemFromTradeByItemIdManager(tradeByItemIdManagerItem1OtherOperation, existingSellTrades,
+                existingBuyTrades, ownedItemsId, existingItems);
+        doReturn(personalItem1LowerPriority).when(personalItemFactory).getPersonalItemFromTradeByItemIdManager(tradeByItemIdManagerItem1LowerPriority, existingSellTrades,
+                existingBuyTrades, ownedItemsId, existingItems);
+        doReturn(personalItem2).when(personalItemFactory).getPersonalItemFromTradeByItemIdManager(tradeByItemIdManagerItem2, existingSellTrades,
+                existingBuyTrades,
+                ownedItemsId, existingItems);
+        doReturn(null).when(personalItemFactory).getPersonalItemFromTradeByItemIdManager(tradeByItemIdManagerNull, existingSellTrades,
+                existingBuyTrades,
+                ownedItemsId, existingItems);
 
         Set<PersonalItem> result = personalItemFactory.getPersonalItemsFromTradeByItemIdManagersByPriority(
                 Set.of(tradeByItemIdManagerItem1, tradeByItemIdManagerItem1OtherOperation, tradeByItemIdManagerItem1LowerPriority, tradeByItemIdManagerItem2, tradeByItemIdManagerNull),

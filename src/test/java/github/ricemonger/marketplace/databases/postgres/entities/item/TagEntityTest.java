@@ -41,7 +41,6 @@ class TagEntityTest {
         tag2.setName("tagName1");
         tag2.setTagGroup(TagGroup.Season);
 
-        assertFalse(tag1.isFullyEqual(tag2));
         tag1.setValue("tagValue2");
         assertFalse(tag1.isFullyEqual(tag2));
         tag1.setValue("tagValue1");

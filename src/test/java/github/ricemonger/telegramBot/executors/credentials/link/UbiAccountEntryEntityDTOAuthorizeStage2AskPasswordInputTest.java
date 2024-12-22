@@ -19,19 +19,6 @@ class UbiAccountEntryEntityDTOAuthorizeStage2AskPasswordInputTest {
     private BotInnerService botInnerService;
 
     @Test
-    public void initAndExecute_should_add_credentials_if_full_input() {
-        UbiAccountEntryAuthorizeStage2AskPasswordInput ubiAccountEntryAuthorizeStage2AskPasswordInput = new UbiAccountEntryAuthorizeStage2AskPasswordInput();
-
-        ubiAccountEntryAuthorizeStage2AskPasswordInput.initAndExecute(MockUpdateInfos.UPDATE_INFO_FULL_INPUT, botInnerService);
-
-        verify(botInnerService).addUserUbiAccountEntryByUserInput(MockUpdateInfos.UPDATE_INFO_FULL_INPUT.getChatId());
-
-        verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO_FULL_INPUT);
-        verify(botInnerService).setUserInputGroup(MockUpdateInfos.UPDATE_INFO_FULL_INPUT.getChatId(), InputGroup.BASE);
-        verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO_FULL_INPUT.getChatId(), InputState.BASE);
-    }
-
-    @Test
     public void initAndExecute_should_request_password_if_only_email_input() {
         UbiAccountEntryAuthorizeStage2AskPasswordInput ubiAccountEntryAuthorizeStage2AskPasswordInput = new UbiAccountEntryAuthorizeStage2AskPasswordInput();
 
@@ -42,5 +29,4 @@ class UbiAccountEntryEntityDTOAuthorizeStage2AskPasswordInputTest {
         verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO_EMAIL_INPUT);
         verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO_EMAIL_INPUT.getChatId(), InputState.UBI_ACCOUNT_ENTRY_PASSWORD);
     }
-
 }

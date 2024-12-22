@@ -151,6 +151,8 @@ class TelegramUserPostgresServiceTest {
         ItemFilterEntity filterEntity = new ItemFilterEntity();
         when(itemFilterEntityMapper.createEntityForUser(same(userEntity), same(filter))).thenReturn(filterEntity);
 
+        telegramUserService.addItemShowAppliedFilter("chatId", filter);
+
         verify(filtersMock).add(filterEntity);
 
         verify(telegramUserRepository).save(same(telegramUserEntity));
@@ -174,9 +176,11 @@ class TelegramUserPostgresServiceTest {
         ItemFilterEntity filterEntity = new ItemFilterEntity();
         filterEntity.setName("filterName");
 
+        when(filtersMock.size()).thenReturn(1);
         when(filtersMock.get(anyInt())).thenReturn(filterEntity);
 
         telegramUserService.removeItemShowAppliedFilter("chatId", "filterName");
+
         verify(filtersMock).remove(anyInt());
 
         verify(telegramUserRepository).save(same(telegramUserEntity));

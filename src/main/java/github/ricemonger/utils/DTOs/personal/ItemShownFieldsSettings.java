@@ -18,13 +18,13 @@ public class ItemShownFieldsSettings {
 
     public int getActiveFieldsCount() {
         int count = 1;
-        if (itemShowNameFlag) count++;
-        if (itemShowItemTypeFlag) count++;
-        if (itemShowMaxBuyPrice) count++;
-        if (itemShowBuyOrdersCountFlag) count++;
-        if (itemShowMinSellPriceFlag) count++;
-        if (itemsShowSellOrdersCountFlag) count++;
-        if (itemShowPictureFlag) count++;
+        if (itemShowNameFlag != null && itemShowNameFlag) count++;
+        if (itemShowItemTypeFlag != null && itemShowItemTypeFlag) count++;
+        if (itemShowMaxBuyPrice != null && itemShowMaxBuyPrice) count++;
+        if (itemShowBuyOrdersCountFlag != null && itemShowBuyOrdersCountFlag) count++;
+        if (itemShowMinSellPriceFlag != null && itemShowMinSellPriceFlag) count++;
+        if (itemsShowSellOrdersCountFlag != null && itemsShowSellOrdersCountFlag) count++;
+        if (itemShowPictureFlag != null && itemShowPictureFlag) count++;
         return count;
     }
 

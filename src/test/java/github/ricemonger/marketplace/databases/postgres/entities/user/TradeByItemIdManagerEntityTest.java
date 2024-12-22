@@ -43,7 +43,7 @@ class TradeByItemIdManagerEntityTest {
         manager1.setPriorityMultiplier(2);
 
         TradeByItemIdManagerEntity manager2 = new TradeByItemIdManagerEntity();
-        manager1.setUser(new UserEntity(1L));
+        manager2.setUser(new UserEntity(1L));
         manager2.setItem(new ItemEntity("itemId"));
         manager2.setEnabled(true);
         manager2.setTradeOperationType(TradeOperationType.BUY);

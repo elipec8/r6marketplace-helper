@@ -3,8 +3,8 @@ package github.ricemonger.marketplace.services;
 import github.ricemonger.marketplace.services.abstractions.ItemDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleUbiStatsService;
-import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.DTOs.common.*;
+import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TagGroup;
@@ -207,42 +207,74 @@ class ItemServiceTest {
         updatedItem1.setSellOrdersCount(4);
         updatedItem1.setLastSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
         updatedItem1.setLastSoldPrice(5);
-        existingItem1.setMonthAveragePrice(1);
-        existingItem1.setMonthMedianPrice(2);
-        existingItem1.setMonthMaxPrice(3);
-        existingItem1.setMonthMinPrice(4);
-        existingItem1.setMonthSalesPerDay(5);
-        existingItem1.setMonthSales(6);
-        existingItem1.setDayAveragePrice(7);
-        existingItem1.setDayMedianPrice(8);
-        existingItem1.setDayMaxPrice(9);
-        existingItem1.setDayMinPrice(10);
-        existingItem1.setDaySales(11);
-        existingItem1.setPriorityToSellByMaxBuyPrice(12L);
-        existingItem1.setPriorityToSellByNextFancySellPrice(13L);
-        existingItem1.setPriorityToBuyByMinSellPrice(14L);
-        existingItem1.setPriorityToBuyIn1Hour(15L);
-        existingItem1.setPriorityToBuyIn6Hours(16L);
-        existingItem1.setPriorityToBuyIn24Hours(17L);
-        existingItem1.setPriorityToBuyIn168Hours(18L);
-        existingItem1.setPriorityToBuyIn720Hours(19L);
-        existingItem1.setPriceToBuyIn1Hour(20);
-        existingItem1.setPriceToBuyIn6Hours(21);
-        existingItem1.setPriceToBuyIn24Hours(22);
-        existingItem1.setPriceToBuyIn168Hours(23);
-        existingItem1.setPriceToBuyIn720Hours(24);
+        updatedItem1.setMonthAveragePrice(1);
+        updatedItem1.setMonthMedianPrice(2);
+        updatedItem1.setMonthMaxPrice(3);
+        updatedItem1.setMonthMinPrice(4);
+        updatedItem1.setMonthSalesPerDay(5);
+        updatedItem1.setMonthSales(6);
+        updatedItem1.setDayAveragePrice(7);
+        updatedItem1.setDayMedianPrice(8);
+        updatedItem1.setDayMaxPrice(9);
+        updatedItem1.setDayMinPrice(10);
+        updatedItem1.setDaySales(11);
+        updatedItem1.setPriorityToSellByMaxBuyPrice(12L);
+        updatedItem1.setPriorityToSellByNextFancySellPrice(13L);
+        updatedItem1.setPriorityToBuyByMinSellPrice(14L);
+        updatedItem1.setPriorityToBuyIn1Hour(15L);
+        updatedItem1.setPriorityToBuyIn6Hours(16L);
+        updatedItem1.setPriorityToBuyIn24Hours(17L);
+        updatedItem1.setPriorityToBuyIn168Hours(18L);
+        updatedItem1.setPriorityToBuyIn720Hours(19L);
+        updatedItem1.setPriceToBuyIn1Hour(20);
+        updatedItem1.setPriceToBuyIn6Hours(21);
+        updatedItem1.setPriceToBuyIn24Hours(22);
+        updatedItem1.setPriceToBuyIn168Hours(23);
+        updatedItem1.setPriceToBuyIn720Hours(24);
+
+        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByMaxBuyPrice(updatedItem1)).thenReturn(new PotentialTradeStats(0, 0, 12L));
+        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByNextFancySellPrice(updatedItem1)).thenReturn(new PotentialTradeStats(0, 0, 13L));
+        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsByMinSellPrice(updatedItem1)).thenReturn(new PotentialTradeStats(0, 0, 14L));
 
         Item updatedItem2 = new Item(item2);
         updatedItem2.setRarity(ItemRarity.LEGENDARY);
+        updatedItem2.setPriorityToSellByMaxBuyPrice(1L);
+        updatedItem2.setPriorityToSellByNextFancySellPrice(2L);
+        updatedItem2.setPriorityToBuyByMinSellPrice(3L);
+
+        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByMaxBuyPrice(updatedItem2)).thenReturn(new PotentialTradeStats(0, 0, 1L));
+        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByNextFancySellPrice(updatedItem2)).thenReturn(new PotentialTradeStats(0, 0, 2L));
+        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsByMinSellPrice(updatedItem2)).thenReturn(new PotentialTradeStats(0, 0, 3L));
 
         Item updatedItem3 = new Item(item3);
         updatedItem3.setRarity(ItemRarity.EPIC);
+        updatedItem3.setPriorityToSellByMaxBuyPrice(4L);
+        updatedItem3.setPriorityToSellByNextFancySellPrice(5L);
+        updatedItem3.setPriorityToBuyByMinSellPrice(6L);
+
+        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByMaxBuyPrice(updatedItem3)).thenReturn(new PotentialTradeStats(0, 0, 4L));
+        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByNextFancySellPrice(updatedItem3)).thenReturn(new PotentialTradeStats(0, 0, 5L));
+        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsByMinSellPrice(updatedItem3)).thenReturn(new PotentialTradeStats(0, 0, 6L));
 
         Item updatedItem4 = new Item(item4);
         updatedItem4.setRarity(ItemRarity.RARE);
+        updatedItem4.setPriorityToSellByMaxBuyPrice(7L);
+        updatedItem4.setPriorityToSellByNextFancySellPrice(8L);
+        updatedItem4.setPriorityToBuyByMinSellPrice(9L);
+
+        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByMaxBuyPrice(updatedItem4)).thenReturn(new PotentialTradeStats(0, 0, 7L));
+        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByNextFancySellPrice(updatedItem4)).thenReturn(new PotentialTradeStats(0, 0, 8L));
+        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsByMinSellPrice(updatedItem4)).thenReturn(new PotentialTradeStats(0, 0, 9L));
 
         Item updatedItem5 = new Item(item5);
         updatedItem5.setRarity(ItemRarity.UNCOMMON);
+        updatedItem5.setPriorityToSellByMaxBuyPrice(10L);
+        updatedItem5.setPriorityToSellByNextFancySellPrice(11L);
+        updatedItem5.setPriorityToBuyByMinSellPrice(12L);
+
+        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByMaxBuyPrice(updatedItem5)).thenReturn(new PotentialTradeStats(0, 0, 10L));
+        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByNextFancySellPrice(updatedItem5)).thenReturn(new PotentialTradeStats(0, 0, 11L));
+        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsByMinSellPrice(updatedItem5)).thenReturn(new PotentialTradeStats(0, 0, 12L));
 
         List<Item> updatedItems = new ArrayList<>();
         updatedItems.add(updatedItem1);
@@ -558,23 +590,25 @@ class ItemServiceTest {
 
     @Test
     public void getAllItemsByFilter_should_return_service_result_after_filtering() {
-        Item item1 = new Item();
-        item1.setItemId("1");
-        Item item2 = new Item();
-        item2.setItemId("2");
+        try (MockedStatic<ItemFilter> itemFilterMock = mockStatic(ItemFilter.class)) {
+            Item item1 = new Item();
+            item1.setItemId("1");
+            Item item2 = new Item();
+            item2.setItemId("2");
 
-        List<Item> items = List.of(item1, item2);
-        List<Item> filteredItems = List.of(item1);
+            List<Item> items = List.of(item1, item2);
+            List<Item> filteredItems = List.of(item1);
 
-        ItemFilter itemFilter = new ItemFilter();
-        List<ItemFilter> filters = List.of(itemFilter);
+            ItemFilter itemFilter = new ItemFilter();
+            List<ItemFilter> filters = List.of(itemFilter);
 
-        when(itemDatabaseService.findAll()).thenReturn(items);
+            when(itemDatabaseService.findAll()).thenReturn(items);
 
-        MockedStatic<ItemFilter> itemFilterMock = mockStatic(ItemFilter.class);
-        itemFilterMock.when(() -> ItemFilter.filterItems(same(items), same(filters))).thenReturn(filteredItems);
 
-        assertSame(filteredItems, itemService.getAllItemsByFilters(filters));
+            itemFilterMock.when(() -> ItemFilter.filterItems(same(items), same(filters))).thenReturn(filteredItems);
+
+            assertSame(filteredItems, itemService.getAllItemsByFilters(filters));
+        }
     }
 
     @Test

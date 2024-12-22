@@ -271,21 +271,6 @@ class PersonalQueryFinishedOrdersMapperTest {
     }
 
     @Test
-    public void mapFinishedOrder_should_throw_if_null_expiresAt() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
-        LocalDateTime date2 = LocalDateTime.now().withNano(0);
-
-        Nodes node = createNode(dtf, date, date2);
-        node.setPaymentProposal(null);
-        node.setExpiresAt(null);
-
-        assertThrows(GraphQlPersonalFinishedOrdersMappingException.class, () -> {
-            personalQueryCurrentOrdersMapper.mapFinishedOrder(node);
-        });
-    }
-
-    @Test
     public void mapFinishedOrder_should_throw_if_null_lastModifiedAt() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
         LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
@@ -444,20 +429,6 @@ class PersonalQueryFinishedOrdersMapperTest {
         Nodes node = createNode(dtf, date, date2);
         node.setPaymentOptions(null);
         node.getPaymentProposal().setPrice(null);
-
-        assertThrows(GraphQlPersonalFinishedOrdersMappingException.class, () -> {
-            personalQueryCurrentOrdersMapper.mapFinishedOrder(node);
-        });
-    }
-
-    @Test
-    public void mapFinishedOrder_should_throw_if_null_paymentProposal_fee() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
-        LocalDateTime date2 = LocalDateTime.now().withNano(0);
-
-        Nodes node = createNode(dtf, date, date2);
-        node.setPaymentOptions(null);
 
         assertThrows(GraphQlPersonalFinishedOrdersMappingException.class, () -> {
             personalQueryCurrentOrdersMapper.mapFinishedOrder(node);

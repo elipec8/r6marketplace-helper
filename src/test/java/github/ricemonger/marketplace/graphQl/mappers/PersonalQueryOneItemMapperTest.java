@@ -447,14 +447,6 @@ class PersonalQueryOneItemMapperTest {
         assertThrows(GraphQlPersonalOneItemMappingException.class, () -> personalQueryOneItemMapper.mapItem(game));
     }
 
-    @Test
-    public void mapItem_should_throw_exception_when_game_viewer_meta_trades_nodes_paymentProposal_transaction_fee_is_null() {
-        Game game = createGame();
-        game.getViewer().getMeta().getTrades().getNodes().get(0).getPaymentProposal();
-
-        assertThrows(GraphQlPersonalOneItemMappingException.class, () -> personalQueryOneItemMapper.mapItem(game));
-    }
-
     private Game createGame() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
         LocalDateTime date = LocalDateTime.now().withNano(0);

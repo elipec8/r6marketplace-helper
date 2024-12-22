@@ -72,7 +72,7 @@ class TelegramUserInputPostgresServiceTest {
         TelegramUserInput input = new TelegramUserInput("chatId", InputState.UBI_ACCOUNT_ENTRY_2FA_CODE, "value");
 
         when(telegramUserRepository.findById("chatId")).thenReturn(Optional.of(user));
-        when(telegramUserInputRepository.findById(same(id))).thenReturn(Optional.of(entity));
+        when(telegramUserInputRepository.findById(eq(id))).thenReturn(Optional.of(entity));
         when(telegramUserInputEntityMapper.createDTO(same(entity))).thenReturn(input);
 
         TelegramUserInput result = inputService.findById("chatId", InputState.UBI_ACCOUNT_ENTRY_2FA_CODE);

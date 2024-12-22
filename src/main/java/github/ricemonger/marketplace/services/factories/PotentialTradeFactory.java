@@ -8,10 +8,12 @@ import github.ricemonger.utils.DTOs.personal.PotentialPersonalBuyTrade;
 import github.ricemonger.utils.DTOs.personal.PotentialPersonalSellTrade;
 import github.ricemonger.utils.enums.TradeOperationType;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 import static github.ricemonger.utils.enums.TradeCategory.Buy;
 import static github.ricemonger.utils.enums.TradeCategory.Sell;
@@ -65,7 +67,7 @@ public class PotentialTradeFactory {
             }
             boolean itemResaleIsLocked = resaleLocks.stream().anyMatch(resaleLock -> resaleLock.getItemId().equals(personalItem.getItemId()));
             if (itemResaleIsLocked) {
-                 continue;
+                continue;
             }
             boolean wrongTradeOperationType = personalItem.getTradeOperationType() == null || personalItem.getTradeOperationType() == TradeOperationType.BUY;
             if (wrongTradeOperationType) {

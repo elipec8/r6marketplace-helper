@@ -22,9 +22,10 @@ class TradeByItemIdManagerRemoveStage2AskConfirmationFinishInputTest {
 
     @Test
     public void initAndExecute_should_process_last_input_and_show_manager_ask_if_remove() {
-        when(botInnerService.getAllUserTradeByItemIdManagers(any())).thenReturn(new ArrayList<>());
-        when(botInnerService.getUserTradeByItemIdManagerByUserInputItemId(MockUpdateInfos.UPDATE_INFO.getChatId()))
-                .thenReturn(new TradeByItemIdManager());
+        TradeByItemIdManager manager = new TradeByItemIdManager();
+        manager.setEnabled(true);
+
+        when(botInnerService.getUserTradeByItemIdManagerByUserInputItemId(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(manager);
 
         TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput commandExecutor = new TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput();
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);

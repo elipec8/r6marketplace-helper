@@ -20,8 +20,10 @@ class TradeByFiltersManagerRemoveStage2AskConfirmationFinishInputTest {
 
     @Test
     public void initAndExecute_should_process_last_input_and_ask_confirmation() {
-        when(botInnerService.getUserTradeByFiltersManagerByUserInputName(MockUpdateInfos.UPDATE_INFO.getChatId()))
-                .thenReturn(new TradeByFiltersManager());
+        TradeByFiltersManager manager = new TradeByFiltersManager();
+        manager.setEnabled(true);
+
+        when(botInnerService.getUserTradeByFiltersManagerByUserInputName(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(manager);
 
         TradeByFiltersManagerRemoveStage2AskConfirmationFinishInput commandExecutor = new TradeByFiltersManagerRemoveStage2AskConfirmationFinishInput();
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);

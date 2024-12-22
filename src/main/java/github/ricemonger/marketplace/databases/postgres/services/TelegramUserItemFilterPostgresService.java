@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -40,12 +41,9 @@ public class TelegramUserItemFilterPostgresService implements TelegramUserItemFi
 
         List<ItemFilterEntity> filters = telegramUser.getUser().getItemFilters();
 
-        Iterator<ItemFilterEntity> iterator = filters.iterator();
-
-        while (iterator.hasNext()) {
-            ItemFilterEntity filter = iterator.next();
-            if (filter.getName().equals(name)) {
-                iterator.remove();
+        for (int i = 0; i < filters.size(); i++) {
+            if (filters.get(i).getName().equals(name)) {
+               filters.remove(i);
                 break;
             }
         }

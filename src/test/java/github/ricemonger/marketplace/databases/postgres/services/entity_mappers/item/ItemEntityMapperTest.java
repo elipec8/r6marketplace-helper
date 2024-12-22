@@ -31,7 +31,11 @@ class ItemEntityMapperTest {
         entity.setItemId("itemId");
         entity.setAssetUrl("assetUrl");
         entity.setName("name");
-        entity.setTags(List.of(new TagEntity()));
+        TagEntity tagEntity1 = new TagEntity();
+        tagEntity1.setValue("tag1");
+        TagEntity tagEntity2 = new TagEntity();
+        tagEntity2.setValue("tag2");
+        entity.setTags(List.of(tagEntity1, tagEntity2));
         entity.setRarity(ItemRarity.RARE);
         entity.setType(ItemType.WeaponSkin);
         entity.setMaxBuyPrice(1);
@@ -70,7 +74,7 @@ class ItemEntityMapperTest {
         assertEquals(entity.getItemId(), item.getItemId());
         assertEquals(entity.getAssetUrl(), item.getAssetUrl());
         assertEquals(entity.getName(), item.getName());
-        assertEquals(entity.getTags().stream().map(TagEntity::getValue).toList(), item.getTags());
+        assertTrue(item.getTags().contains("tag1") && item.getTags().contains("tag2"));
         assertEquals(entity.getRarity(), item.getRarity());
         assertEquals(entity.getType(), item.getType());
         assertEquals(entity.getMaxBuyPrice(), item.getMaxBuyPrice());
@@ -183,44 +187,6 @@ class ItemEntityMapperTest {
         item2.setPriceToBuyIn168Hours(29);
         item2.setPriceToBuyIn720Hours(30);
 
-        Item item3 = new Item();
-        item3.setItemId("itemId2");
-        item3.setAssetUrl("assetUrl2");
-        item3.setName("name2");
-        item3.setTags(List.of("tag2"));
-        item3.setRarity(ItemRarity.EPIC);
-        item3.setType(ItemType.Charm);
-        item3.setMaxBuyPrice(2);
-        item3.setBuyOrdersCount(3);
-        item3.setMinSellPrice(4);
-        item3.setSellOrdersCount(5);
-        item3.setLastSoldAt(LocalDateTime.of(2022, 1, 1, 1, 1));
-        item3.setLastSoldPrice(6);
-        item3.setMonthAveragePrice(7);
-        item3.setMonthMedianPrice(8);
-        item3.setMonthMaxPrice(9);
-        item3.setMonthMinPrice(10);
-        item3.setMonthSalesPerDay(11);
-        item3.setMonthSales(12);
-        item3.setDayAveragePrice(13);
-        item3.setDayMedianPrice(14);
-        item3.setDayMaxPrice(15);
-        item3.setDayMinPrice(16);
-        item3.setDaySales(17);
-        item3.setPriorityToSellByMaxBuyPrice(18L);
-        item3.setPriorityToSellByNextFancySellPrice(19L);
-        item3.setPriorityToBuyByMinSellPrice(20L);
-        item3.setPriorityToBuyIn1Hour(21L);
-        item3.setPriorityToBuyIn6Hours(22L);
-        item3.setPriorityToBuyIn24Hours(23L);
-        item3.setPriorityToBuyIn168Hours(24L);
-        item3.setPriorityToBuyIn720Hours(25L);
-        item3.setPriceToBuyIn1Hour(26);
-        item3.setPriceToBuyIn6Hours(27);
-        item3.setPriceToBuyIn24Hours(28);
-        item3.setPriceToBuyIn168Hours(29);
-        item3.setPriceToBuyIn720Hours(30);
-
         TagEntity tagEntity1 = new TagEntity();
         tagEntity1.setValue("tag");
         TagEntity tagEntity2 = new TagEntity();
@@ -306,7 +272,7 @@ class ItemEntityMapperTest {
 
         List<ItemEntity> expected = List.of(entity1, entity2);
 
-        List<ItemEntity> actual = itemEntityMapper.createEntities(List.of(item1, item3));
+        List<ItemEntity> actual = itemEntityMapper.createEntities(List.of(item1, item2));
 
         assertTrue(expected.stream().allMatch(ex -> actual.stream().anyMatch(ac -> ac.isFullyEqual(ex))) && expected.size() == actual.size());
     }

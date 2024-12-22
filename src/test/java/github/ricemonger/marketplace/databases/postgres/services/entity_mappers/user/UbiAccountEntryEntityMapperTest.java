@@ -217,8 +217,6 @@ class UbiAccountEntryEntityMapperTest {
         authorizationEntry.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
         authorizationEntry.setUbiRememberMeTicket("ubiRememberMeTicket");
 
-        UbiAccountAuthorizationEntry expected = new UbiAccountAuthorizationEntry();
-
-        assertEquals(expected, ubiAccountEntryEntityMapper.createUbiAccountAuthorizationEntry(entity));
+        assertEquals(authorizationEntry, ubiAccountEntryEntityMapper.createUbiAccountAuthorizationEntry(entity));
     }
 }

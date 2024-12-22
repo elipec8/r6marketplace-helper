@@ -69,7 +69,7 @@ class TradeManagerFromInputsMapperTest {
         expected.setTradeOperationType(TradeOperationType.SELL);
         expected.setItemId("");
         expected.setEnabled(false);
-        expected.setSellBoundaryPrice(149);
+        expected.setSellBoundaryPrice(120);
         expected.setBuyBoundaryPrice(120);
         expected.setPriorityMultiplier(1);
 

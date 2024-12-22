@@ -78,6 +78,16 @@ class ItemDaySalesUbiStatsEntityMapperTest {
 
         List<ItemDaySalesUbiStatsEntity> actual = itemDaySalesUbiStatsEntityMapper.createEntities(groupedItemDaySalesUbiStatsList);
 
+        System.out.println("Actual:");
+        for (ItemDaySalesUbiStatsEntity entity : actual) {
+            System.out.println(entity);
+        }
+
+        System.out.println("Expected:");
+        for (ItemDaySalesUbiStatsEntity entity : expected) {
+            System.out.println(entity);
+        }
+
         assertTrue(expected.stream().allMatch(ex -> actual.stream().anyMatch(ac -> ac.isFullyEqual(ex))) && expected.size() == actual.size());
     }
 }

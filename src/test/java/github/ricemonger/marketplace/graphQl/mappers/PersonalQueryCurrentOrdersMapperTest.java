@@ -389,20 +389,6 @@ class PersonalQueryCurrentOrdersMapperTest {
         });
     }
 
-    @Test
-    public void mapCurrentOrder_should_throw_if_null_paymentProposal_fee() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
-        LocalDateTime date2 = LocalDateTime.now().withNano(0);
-
-        Nodes node = createNode(dtf, date, date2);
-        node.setPaymentOptions(null);
-
-        assertThrows(GraphQlPersonalCurrentOrderMappingException.class, () -> {
-            personalQueryCurrentOrdersMapper.mapCurrentOrder(node);
-        });
-    }
-
     private Nodes createNode(DateTimeFormatter dtf, LocalDateTime date1, LocalDateTime date2) {
         Item item = new Item();
         item.setItemId("1");
