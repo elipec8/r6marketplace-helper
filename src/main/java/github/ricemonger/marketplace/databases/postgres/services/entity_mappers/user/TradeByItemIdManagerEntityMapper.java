@@ -32,7 +32,7 @@ public class TradeByItemIdManagerEntityMapper {
 
     public TradeByItemIdManager createDTO(TradeByItemIdManagerEntity entity) {
         return new TradeByItemIdManager(
-                entity.getItemId(),
+                entity.getItemId_(),
                 entity.getEnabled(),
                 entity.getTradeOperationType(),
                 entity.getSellBoundaryPrice(),

@@ -16,7 +16,7 @@ public class ItemFilterEntityId {
         this.name = name;
     }
 
-    public long getUserId() {
+    public long getUserId_() {
         return user.getId();
     }
 

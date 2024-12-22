@@ -8,12 +8,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TradeByItemIdManagerEntityTest {
     @Test
-    public void getUserId_should_return_user_id() {
+    public void getUserId_should_return_user_idField() {
         UserEntity user = new UserEntity();
         user.setId(1L);
         TradeByItemIdManagerEntity manager = new TradeByItemIdManagerEntity();
         manager.setUser(user);
-        assertEquals(1L, manager.getUserId());
+        assertEquals(1L, manager.getUserId_());
     }
 
     @Test
@@ -22,7 +22,7 @@ class TradeByItemIdManagerEntityTest {
         item.setItemId("itemId");
         TradeByItemIdManagerEntity manager = new TradeByItemIdManagerEntity();
         manager.setItem(item);
-        assertEquals("itemId", manager.getItemId());
+        assertEquals("itemId", manager.getItemId_());
     }
 
     @Test

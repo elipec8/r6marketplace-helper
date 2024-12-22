@@ -16,7 +16,7 @@ class ItemDaySalesUbiStatsEntityIdTest {
 
         ItemDaySalesUbiStatsEntityId id = new ItemDaySalesUbiStatsEntityId(item, LocalDate.of(2023, 1, 1));
 
-        assertEquals("itemId", id.getItemId());
+        assertEquals("itemId", id.getItemId_());
     }
 
     @Test
@@ -25,7 +25,7 @@ class ItemDaySalesUbiStatsEntityIdTest {
 
         ItemDaySalesUbiStatsEntityId id = new ItemDaySalesUbiStatsEntityId("itemId", date);
 
-        assertEquals("itemId", id.getItemId());
+        assertEquals("itemId", id.getItemId_());
         assertEquals(date, id.getDate());
     }
 

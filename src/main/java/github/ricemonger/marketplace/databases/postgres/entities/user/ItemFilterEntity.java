@@ -42,7 +42,7 @@ public class ItemFilterEntity {
     @Column(columnDefinition = "TEXT")
     private String itemTypes;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "item_filter_tags",
             joinColumns = {@JoinColumn(name = "itemFilterUserId", referencedColumnName = "userId"),
                     @JoinColumn(name = "itemFilterName", referencedColumnName = "name")},
@@ -52,7 +52,8 @@ public class ItemFilterEntity {
     private Integer minSellPrice;
     private Integer maxBuyPrice;
 
-    public Long getUserId() {
+
+    public Long getUserId_() {
         return user.getId();
     }
 
@@ -65,7 +66,7 @@ public class ItemFilterEntity {
                     this.tags.size() == entity.tags.size() &&
                     this.tags.stream().allMatch(tag -> entity.tags.stream().anyMatch(tag::isFullyEqual)));
 
-            return Objects.equals(getUserId(), entity.getUserId()) &&
+            return Objects.equals(getUserId_(), entity.getUserId_()) &&
                    Objects.equals(name, entity.name) &&
                    filterType == entity.filterType &&
                    isOwned == entity.isOwned &&

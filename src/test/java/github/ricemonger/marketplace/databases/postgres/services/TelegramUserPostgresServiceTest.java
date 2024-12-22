@@ -196,7 +196,7 @@ class TelegramUserPostgresServiceTest {
 
         telegramUserService.setTradeManagersSettingsNewManagersAreActiveFlag("chatId", true);
 
-        verify(telegramUserEntity).setNewManagersAreActiveFlag(true);
+        verify(telegramUserEntity).setNewManagersAreActiveFlag_(true);
 
         verify(telegramUserRepository).save(same(telegramUserEntity));
     }
@@ -215,7 +215,7 @@ class TelegramUserPostgresServiceTest {
 
         telegramUserService.setTradeManagersSettingsManagingEnabledFlag("chatId", true);
 
-        verify(telegramUserEntity).setManagingEnabledFlag(true);
+        verify(telegramUserEntity).setManagingEnabledFlag_(true);
 
         verify(telegramUserRepository).save(same(telegramUserEntity));
     }

@@ -48,7 +48,7 @@ public class TelegramUserEntity {
         this.user = userEntity;
     }
 
-    public Long getUserId() {
+    public Long getUserId_() {
         return user.getId();
     }
 
@@ -75,11 +75,11 @@ public class TelegramUserEntity {
         }
     }
 
-    public void setNewManagersAreActiveFlag(boolean flag) {
+    public void setNewManagersAreActiveFlag_(boolean flag) {
         this.user.setNewManagersAreActiveFlag(flag);
     }
 
-    public void setManagingEnabledFlag(boolean flag) {
+    public void setManagingEnabledFlag_(boolean flag) {
         this.user.setManagingEnabledFlag(flag);
     }
 
@@ -115,7 +115,7 @@ public class TelegramUserEntity {
                     telegramUserInputs.stream().allMatch(input -> entity.telegramUserInputs.stream().anyMatch(input::isFullyEqualExceptTelegramUser)));
 
             return Objects.equals(this.chatId, entity.chatId) &&
-                   Objects.equals(getUserId(), entity.getUserId()) &&
+                   Objects.equals(getUserId_(), entity.getUserId_()) &&
                    inputsAreEqual &&
                    inputState == entity.inputState &&
                    inputGroup == entity.inputGroup &&

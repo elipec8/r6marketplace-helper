@@ -50,18 +50,18 @@ public class UbiAccountEntryEntity {
         this.ubiAccountStats = ubiAccountStats;
     }
 
-    public Long getUserId() {
+    public Long getUserId_() {
         return user.getId();
     }
 
-    public String getProfileId() {
+    public String getProfileId_() {
         return this.ubiAccountStats.getUbiProfileId();
     }
 
     public boolean isFullyEqualExceptUser(Object o) {
         if (this == o) return true;
         if (o instanceof UbiAccountEntryEntity entity) {
-            return Objects.equals(getUserId(), entity.getUserId()) &&
+            return Objects.equals(getUserId_(), entity.getUserId_()) &&
                    Objects.equals(email, entity.getEmail()) &&
                    Objects.equals(encodedPassword, entity.getEncodedPassword()) &&
                    Objects.equals(ubiSessionId, entity.getUbiSessionId()) &&

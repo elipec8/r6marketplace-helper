@@ -111,7 +111,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     public void setTradeManagersSettingsNewManagersAreActiveFlag(String chatId, boolean flag) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
-        telegramUser.setNewManagersAreActiveFlag(flag);
+        telegramUser.setNewManagersAreActiveFlag_(flag);
 
         telegramUserRepository.save(telegramUser);
     }
@@ -121,7 +121,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     public void setTradeManagersSettingsManagingEnabledFlag(String chatId, boolean flag) throws TelegramUserDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
-        telegramUser.setManagingEnabledFlag(flag);
+        telegramUser.setManagingEnabledFlag_(flag);
 
         telegramUserRepository.save(telegramUser);
     }

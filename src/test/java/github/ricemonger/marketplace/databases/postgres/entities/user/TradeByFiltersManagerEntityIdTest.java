@@ -14,7 +14,7 @@ class TradeByFiltersManagerEntityIdTest {
 
         TradeByFiltersManagerEntityId id = new TradeByFiltersManagerEntityId(user, "filterName");
 
-        assertEquals(1L, id.getUserId());
+        assertEquals(1L, id.getUserId_());
     }
 
     @Test
@@ -24,7 +24,7 @@ class TradeByFiltersManagerEntityIdTest {
 
         TradeByFiltersManagerEntityId id = new TradeByFiltersManagerEntityId(1L, "filterName");
 
-        assertEquals(1L, id.getUserId());
+        assertEquals(1L, id.getUserId_());
         assertEquals("filterName", id.getName());
     }
 

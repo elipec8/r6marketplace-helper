@@ -13,14 +13,14 @@ class ItemFilterEntityIdTest {
         user.setId(1L);
         ItemFilterEntityId id = new ItemFilterEntityId(user, "filterName");
 
-        assertEquals(1L, id.getUserId());
+        assertEquals(1L, id.getUserId_());
     }
 
     @Test
     public void constructor_should_set_id_fields() {
         ItemFilterEntityId id = new ItemFilterEntityId(1L, "filterName");
 
-        assertEquals(1L, id.getUserId());
+        assertEquals(1L, id.getUserId_());
     }
 
     @Test

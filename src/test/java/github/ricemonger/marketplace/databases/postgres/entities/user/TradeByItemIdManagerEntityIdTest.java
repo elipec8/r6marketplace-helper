@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 class TradeByItemIdManagerEntityIdTest {
 
     @Test
-    public void getUserId_should_return_user_id() {
+    public void getUserId_should_return_user_idField() {
         UserEntity user = new UserEntity();
         user.setId(1L);
         ItemEntity item = new ItemEntity();
@@ -17,7 +17,7 @@ class TradeByItemIdManagerEntityIdTest {
 
         TradeByItemIdManagerEntityId id = new TradeByItemIdManagerEntityId(user, item);
 
-        assertEquals(1L, id.getUserId());
+        assertEquals(1L, id.getUserId_());
     }
 
     @Test
@@ -29,15 +29,15 @@ class TradeByItemIdManagerEntityIdTest {
 
         TradeByItemIdManagerEntityId id = new TradeByItemIdManagerEntityId(user, item);
 
-        assertEquals("item1", id.getItemId());
+        assertEquals("item1", id.getItemId_());
     }
 
     @Test
     public void constructor_should_create_object_with_id_fields() {
         TradeByItemIdManagerEntityId id = new TradeByItemIdManagerEntityId(1L, "item1");
 
-        assertEquals(1L, id.getUserId());
-        assertEquals("item1", id.getItemId());
+        assertEquals(1L, id.getUserId_());
+        assertEquals("item1", id.getItemId_());
     }
 
     @Test

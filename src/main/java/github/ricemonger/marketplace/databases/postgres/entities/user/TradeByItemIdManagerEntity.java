@@ -39,18 +39,18 @@ public class TradeByItemIdManagerEntity {
 
     private Integer priorityMultiplier;
 
-    public Long getUserId() {
+    public Long getUserId_() {
         return user.getId();
     }
 
-    public String getItemId() {
+    public String getItemId_() {
         return item.getItemId();
     }
 
     public boolean isFullyEqualExceptUser(Object o) {
         if (this == o) return true;
         if (o instanceof TradeByItemIdManagerEntity entity) {
-            return Objects.equals(getUserId(), entity.getUserId()) &&
+            return Objects.equals(getUserId_(), entity.getUserId_()) &&
                    Objects.equals(item.getItemId(), entity.item.getItemId()) &&
                    enabled == entity.enabled &&
                    tradeOperationType == entity.tradeOperationType &&

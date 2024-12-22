@@ -23,16 +23,16 @@ class TelegramUserEntityTest {
     public void constructor_should_set_id_fields() {
         TelegramUserEntity telegramUser = new TelegramUserEntity("chatId", 2L);
         assertEquals("chatId", telegramUser.getChatId());
-        assertEquals(2L, telegramUser.getUserId());
+        assertEquals(2L, telegramUser.getUserId_());
     }
 
     @Test
-    public void getUserId_should_return_user_id() {
+    public void getUserId_should_return_user_idField() {
         UserEntity user = new UserEntity();
         user.setId(1L);
         TelegramUserEntity telegramUser = new TelegramUserEntity();
         telegramUser.setUser(user);
-        assertEquals(1L, telegramUser.getUserId());
+        assertEquals(1L, telegramUser.getUserId_());
     }
 
     @Test
@@ -93,7 +93,7 @@ class TelegramUserEntityTest {
         user.setNewManagersAreActiveFlag(false);
         TelegramUserEntity telegramUser = new TelegramUserEntity();
         telegramUser.setUser(user);
-        telegramUser.setNewManagersAreActiveFlag(true);
+        telegramUser.setNewManagersAreActiveFlag_(true);
         assertTrue(telegramUser.getUser().getNewManagersAreActiveFlag());
     }
 
@@ -103,7 +103,7 @@ class TelegramUserEntityTest {
         user.setManagingEnabledFlag(false);
         TelegramUserEntity telegramUser = new TelegramUserEntity();
         telegramUser.setUser(user);
-        telegramUser.setManagingEnabledFlag(true);
+        telegramUser.setManagingEnabledFlag_(true);
         assertTrue(telegramUser.getUser().getManagingEnabledFlag());
     }
 

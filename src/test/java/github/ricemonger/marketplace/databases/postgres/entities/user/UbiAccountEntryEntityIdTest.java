@@ -11,14 +11,14 @@ class UbiAccountEntryEntityIdTest {
     public void getUserId_should_return_user_id() {
         UbiAccountEntryEntityId id = new UbiAccountEntryEntityId(new UserEntity(1L), "email");
 
-        assertEquals(1L, id.getUserId());
+        assertEquals(1L, id.getUserId_());
     }
 
     @Test
     public void constructor_should_set_user_and_email() {
         UbiAccountEntryEntityId id = new UbiAccountEntryEntityId(1L, "email");
 
-        assertEquals(1L, id.getUserId());
+        assertEquals(1L, id.getUserId_());
         assertEquals("email", id.getEmail());
     }
 

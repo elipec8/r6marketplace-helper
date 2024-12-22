@@ -16,14 +16,14 @@ class ItemSaleEntityIdTest {
 
         ItemSaleEntityId id = new ItemSaleEntityId(item, LocalDateTime.of(2023, 1, 1, 1, 1));
 
-        assertEquals("itemId", id.getItemId());
+        assertEquals("itemId", id.getItemId_());
     }
 
     @Test
     public void constructor_should_set_id_fields() {
         ItemSaleEntityId id = new ItemSaleEntityId("itemId", LocalDateTime.of(2023, 1, 1, 1, 1));
 
-        assertEquals("itemId", id.getItemId());
+        assertEquals("itemId", id.getItemId_());
         assertEquals(LocalDateTime.of(2023, 1, 1, 1, 1), id.getSoldAt());
     }
 

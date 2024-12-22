@@ -12,7 +12,7 @@ class TelegramUserInputEntityTest {
         telegramUser.setChatId("12345");
         TelegramUserInputEntity input = new TelegramUserInputEntity();
         input.setTelegramUser(telegramUser);
-        assertEquals("12345", input.getChatId());
+        assertEquals("12345", input.getChatId_());
     }
 
     @Test

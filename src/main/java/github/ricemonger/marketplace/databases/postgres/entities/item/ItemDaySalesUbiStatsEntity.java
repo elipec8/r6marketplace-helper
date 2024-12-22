@@ -29,7 +29,7 @@ public class ItemDaySalesUbiStatsEntity {
     private Integer highestPrice;
     private Integer itemsCount;
 
-    public String getItemId() {
+    public String getItemId_() {
         return item.getItemId();
     }
 

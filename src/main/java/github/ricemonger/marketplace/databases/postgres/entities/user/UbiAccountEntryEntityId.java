@@ -16,7 +16,7 @@ public class UbiAccountEntryEntityId {
         this.email = email;
     }
 
-    public Long getUserId() {
+    public Long getUserId_() {
         return user.getId();
     }
 

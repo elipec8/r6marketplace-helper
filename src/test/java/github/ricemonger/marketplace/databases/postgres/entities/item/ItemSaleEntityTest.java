@@ -11,7 +11,7 @@ class ItemSaleEntityTest {
     @Test
     public void constructor_should_set_id_field() {
         ItemSaleEntity itemSaleEntity = new ItemSaleEntity("itemId");
-        assertEquals("itemId", itemSaleEntity.getItemId());
+        assertEquals("itemId", itemSaleEntity.getItemId_());
     }
 
     @Test
@@ -20,7 +20,7 @@ class ItemSaleEntityTest {
         item.setItemId("itemId");
         ItemSaleEntity itemSaleEntity = new ItemSaleEntity();
         itemSaleEntity.setItem(item);
-        assertEquals("itemId", itemSaleEntity.getItemId());
+        assertEquals("itemId", itemSaleEntity.getItemId_());
     }
 
     @Test

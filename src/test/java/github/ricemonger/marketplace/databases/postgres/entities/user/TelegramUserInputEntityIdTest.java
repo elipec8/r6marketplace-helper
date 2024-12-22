@@ -17,7 +17,7 @@ class TelegramUserInputEntityIdTest {
 
         TelegramUserInputEntityId id = new TelegramUserInputEntityId(user, state);
 
-        assertEquals("chat1", id.getChatId());
+        assertEquals("chat1", id.getChatId_());
     }
 
     @Test
@@ -28,15 +28,15 @@ class TelegramUserInputEntityIdTest {
 
         TelegramUserInputEntityId id = new TelegramUserInputEntityId(user, state);
 
-        assertEquals(1L, id.getUserId());
+        assertEquals(1L, id.getUserId_());
     }
 
     @Test
     public void constructor_with_usedId_should_set_id_fields() {
         TelegramUserInputEntityId id = new TelegramUserInputEntityId("chatId", 1L, InputState.BASE);
 
-        assertEquals("chatId", id.getChatId());
-        assertEquals(1L, id.getUserId());
+        assertEquals("chatId", id.getChatId_());
+        assertEquals(1L, id.getUserId_());
         assertEquals(InputState.BASE, id.getInputState());
     }
 
@@ -44,8 +44,8 @@ class TelegramUserInputEntityIdTest {
     public void constructor_with_usedEntity_should_set_id_fields() {
         TelegramUserInputEntityId id = new TelegramUserInputEntityId("chatId", new UserEntity(1L), InputState.BASE);
 
-        assertEquals("chatId", id.getChatId());
-        assertEquals(1L, id.getUserId());
+        assertEquals("chatId", id.getChatId_());
+        assertEquals(1L, id.getUserId_());
         assertEquals(InputState.BASE, id.getInputState());
     }
 

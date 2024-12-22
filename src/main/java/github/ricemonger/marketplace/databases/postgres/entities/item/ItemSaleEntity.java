@@ -28,7 +28,7 @@ public class ItemSaleEntity {
         this.item = new ItemEntity(itemId);
     }
 
-    public String getItemId() {
+    public String getItemId_() {
         return item.getItemId();
     }
 

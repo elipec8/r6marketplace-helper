@@ -14,7 +14,7 @@ class ItemDaySalesUbiStatsEntityTest {
         item.setItemId("itemId");
         ItemDaySalesUbiStatsEntity itemDaySalesUbiStatsEntity = new ItemDaySalesUbiStatsEntity();
         itemDaySalesUbiStatsEntity.setItem(item);
-        assertEquals("itemId", itemDaySalesUbiStatsEntity.getItemId());
+        assertEquals("itemId", itemDaySalesUbiStatsEntity.getItemId_());
     }
 
     @Test

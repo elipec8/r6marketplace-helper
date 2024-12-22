@@ -18,7 +18,7 @@ class ItemFilterEntityTest {
         user.setId(1L);
         ItemFilterEntity filter = new ItemFilterEntity();
         filter.setUser(user);
-        assertEquals(1L, filter.getUserId());
+        assertEquals(1L, filter.getUserId_());
     }
 
     @Test

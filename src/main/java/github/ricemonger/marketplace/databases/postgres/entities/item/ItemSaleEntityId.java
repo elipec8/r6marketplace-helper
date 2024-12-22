@@ -20,7 +20,7 @@ public class ItemSaleEntityId implements Serializable {
         this.soldAt = soldAt;
     }
 
-    public String getItemId() {
+    public String getItemId_() {
         return item.getItemId();
     }
 

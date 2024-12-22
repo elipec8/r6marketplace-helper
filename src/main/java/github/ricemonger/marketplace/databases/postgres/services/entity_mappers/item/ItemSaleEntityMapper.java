@@ -21,7 +21,7 @@ public class ItemSaleEntityMapper {
     private final ItemPostgresRepository itemRepository;
 
     public ItemSale createDTO(ItemSaleEntity entity) {
-        return new ItemSale(entity.getItemId(), entity.getSoldAt(), entity.getPrice());
+        return new ItemSale(entity.getItemId_(), entity.getSoldAt(), entity.getPrice());
     }
 
     public List<ItemSaleEntity> createEntities(Collection<? extends SoldItemDetails> soldItems) {

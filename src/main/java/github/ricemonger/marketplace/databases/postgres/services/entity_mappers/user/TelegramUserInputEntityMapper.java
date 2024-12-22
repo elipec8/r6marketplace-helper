@@ -22,6 +22,6 @@ public class TelegramUserInputEntityMapper {
     }
 
     public TelegramUserInput createDTO(TelegramUserInputEntity entity) {
-        return new TelegramUserInput(entity.getChatId(), entity.getInputState(), entity.getValue());
+        return new TelegramUserInput(entity.getChatId_(), entity.getInputState(), entity.getValue());
     }
 }

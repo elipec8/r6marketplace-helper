@@ -13,9 +13,9 @@ class UbiAccountEntryEntityTest {
     public void constructor_should_set_id_fields() {
         UbiAccountEntryEntity accountEntry = new UbiAccountEntryEntity(1L, "email", "profileId");
 
-        assertEquals(1L, accountEntry.getUserId());
+        assertEquals(1L, accountEntry.getUserId_());
         assertEquals("email", accountEntry.getEmail());
-        assertEquals("profileId", accountEntry.getProfileId());
+        assertEquals("profileId", accountEntry.getProfileId_());
     }
 
     @Test
@@ -24,7 +24,7 @@ class UbiAccountEntryEntityTest {
         user.setId(1L);
         UbiAccountEntryEntity accountEntry = new UbiAccountEntryEntity();
         accountEntry.setUser(user);
-        assertEquals(1L, accountEntry.getUserId());
+        assertEquals(1L, accountEntry.getUserId_());
     }
 
     @Test
@@ -33,7 +33,7 @@ class UbiAccountEntryEntityTest {
         stats.setUbiProfileId("profileId");
         UbiAccountEntryEntity accountEntry = new UbiAccountEntryEntity();
         accountEntry.setUbiAccountStats(stats);
-        assertEquals("profileId", accountEntry.getProfileId());
+        assertEquals("profileId", accountEntry.getProfileId_());
     }
 
     @Test

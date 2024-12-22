@@ -88,19 +88,16 @@ class TelegramUserItemFilterPostgresServiceTest {
 
     @Test
     public void findAllByChatId_should_return_mapped_dtos() throws TelegramUserDoesntExistException {
-        TelegramUserEntity telegramUser = new TelegramUserEntity();
-        telegramUser.setUser(new UserEntity(1L));
         List<ItemFilterEntity> entities = new ArrayList<>();
         ItemFilterEntity entity1 = new ItemFilterEntity();
         ItemFilterEntity entity2 = new ItemFilterEntity();
         entities.add(entity1);
         entities.add(entity2);
-        telegramUser.getUser().setItemFilters(entities);
         ItemFilter filter1 = new ItemFilter();
         filter1.setName("name1");
         ItemFilter filter2 = new ItemFilter();
         filter2.setName("name2");
-        when(telegramUserRepository.findById("chatId")).thenReturn(Optional.of(telegramUser));
+        when(itemFilterRepository.findAllByUserTelegramUserChatId("chatId")).thenReturn(entities);
         when(itemFilterEntityMapper.createDTO(same(entity1))).thenReturn(filter1);
         when(itemFilterEntityMapper.createDTO(same(entity2))).thenReturn(filter2);
 

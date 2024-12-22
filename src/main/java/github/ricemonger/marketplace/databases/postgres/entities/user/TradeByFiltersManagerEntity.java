@@ -42,7 +42,7 @@ public class TradeByFiltersManagerEntity {
 
     private Integer priorityMultiplier;
 
-    public Long getUserId() {
+    public Long getUserId_() {
         return user.getId();
     }
 
@@ -55,7 +55,7 @@ public class TradeByFiltersManagerEntity {
                     this.appliedFilters.size() == entity.appliedFilters.size() &&
                     this.appliedFilters.stream().allMatch(filterEntity -> entity.appliedFilters.stream().anyMatch(filterEntity::isFullyEqualExceptUser)));
 
-            return Objects.equals(getUserId(), entity.getUserId()) &&
+            return Objects.equals(getUserId_(), entity.getUserId_()) &&
                    Objects.equals(name, entity.name) &&
                    enabled == entity.enabled &&
                    tradeOperationType == entity.tradeOperationType &&

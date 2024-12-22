@@ -19,11 +19,11 @@ public class TradeByItemIdManagerEntityId {
         this.item = new ItemEntity(itemId);
     }
 
-    public Long getUserId() {
+    public Long getUserId_() {
         return user.getId();
     }
 
-    public String getItemId() {
+    public String getItemId_() {
         return item.getItemId();
     }
 

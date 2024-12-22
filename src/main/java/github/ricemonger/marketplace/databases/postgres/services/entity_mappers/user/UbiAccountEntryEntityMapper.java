@@ -73,7 +73,7 @@ public class UbiAccountEntryEntityMapper {
 
     public UbiAccountAuthorizationEntry createUbiAccountAuthorizationEntry(UbiAccountEntryEntity entity) {
         return new UbiAccountAuthorizationEntry(
-                entity.getProfileId(),
+                entity.getProfileId_(),
                 entity.getEmail(),
                 entity.getEncodedPassword(),
                 entity.getUbiSessionId(),

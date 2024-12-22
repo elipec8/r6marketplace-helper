@@ -62,9 +62,7 @@ public class TelegramUserItemFilterPostgresService implements TelegramUserItemFi
 
     @Override
     public List<ItemFilter> findAllByChatId(String chatId) throws TelegramUserDoesntExistException {
-        TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
-
-        return itemFilterRepository.findAllByUserId(telegramUser.getUser().getId()).stream().map(itemFilterEntityMapper::createDTO).toList();
+        return itemFilterRepository.findAllByUserTelegramUserChatId(chatId).stream().map(itemFilterEntityMapper::createDTO).toList();
     }
 
     private TelegramUserEntity getTelegramUserEntityByIdOrThrow(String chatId) throws TelegramUserDoesntExistException {

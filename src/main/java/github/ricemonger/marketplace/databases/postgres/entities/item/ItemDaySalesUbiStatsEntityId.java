@@ -21,7 +21,7 @@ public class ItemDaySalesUbiStatsEntityId {
         this.date = date;
     }
 
-    public String getItemId() {
+    public String getItemId_() {
         return item.getItemId();
     }
 

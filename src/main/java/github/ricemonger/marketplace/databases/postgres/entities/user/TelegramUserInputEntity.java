@@ -30,14 +30,14 @@ public class TelegramUserInputEntity {
     @Column(name = "input_value") // "value" column name conflicts with H2
     private String value;
 
-    public String getChatId() {
+    public String getChatId_() {
         return telegramUser.getChatId();
     }
 
     public boolean isFullyEqualExceptTelegramUser(Object o) {
         if (this == o) return true;
         if (o instanceof TelegramUserInputEntity entity) {
-            return Objects.equals(getChatId(), entity.getChatId()) &&
+            return Objects.equals(getChatId_(), entity.getChatId_()) &&
                    inputState == entity.inputState &&
                    Objects.equals(value, entity.value);
         }

@@ -22,7 +22,7 @@ public class ItemDaySalesUbiStatsEntityMapper {
     private final ItemPostgresRepository itemPostgresRepository;
 
     public ItemDaySalesUbiStats createDTO(ItemDaySalesUbiStatsEntity itemDaySalesUbiStatsEntity) {
-        return new ItemDaySalesUbiStats(itemDaySalesUbiStatsEntity.getItemId(),
+        return new ItemDaySalesUbiStats(itemDaySalesUbiStatsEntity.getItemId_(),
                 itemDaySalesUbiStatsEntity.getDate(),
                 itemDaySalesUbiStatsEntity.getLowestPrice(),
                 itemDaySalesUbiStatsEntity.getAveragePrice(),
