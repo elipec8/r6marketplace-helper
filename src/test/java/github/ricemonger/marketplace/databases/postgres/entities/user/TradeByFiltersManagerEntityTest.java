@@ -14,7 +14,7 @@ class TradeByFiltersManagerEntityTest {
         user.setId(1L);
         TradeByFiltersManagerEntity manager = new TradeByFiltersManagerEntity();
         manager.setUser(user);
-        assertEquals(1L, manager.getUserId());
+        assertEquals(1L, manager.getUserId_());
     }
 
     @Test

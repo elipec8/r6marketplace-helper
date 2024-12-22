@@ -22,7 +22,7 @@ public class PotentialTradeFactory {
 
     private final PotentialTradeStatsService potentialTradeStatsService;
 
-    public List<PotentialPersonalSellTrade> getResultingPersonalSellTrades(Set<PersonalItem> personalItems, Collection<? extends ItemResaleLock> resaleLocks, Integer soldIn24h, int sellSlots, int sellLimit) {
+    public List<PotentialPersonalSellTrade> getResultingPersonalSellTrades(Collection<PersonalItem> personalItems, Collection<? extends ItemResaleLock> resaleLocks, Integer soldIn24h, int sellSlots, int sellLimit) {
 
         List<PotentialPersonalSellTrade> filteredPersonalSellTrades = getFilteredPotentialSellTradesForUser(personalItems, resaleLocks);
 
@@ -55,50 +55,56 @@ public class PotentialTradeFactory {
         return resultingPersonalSellTrades;
     }
 
-    public List<PotentialPersonalSellTrade> getFilteredPotentialSellTradesForUser(@NotNull Set<PersonalItem> personalItems,
+    public List<PotentialPersonalSellTrade> getFilteredPotentialSellTradesForUser(Collection<PersonalItem> personalItems,
                                                                                   Collection<? extends ItemResaleLock> resaleLocks) {
         List<PotentialPersonalSellTrade> potentialPersonalSellTrades = new ArrayList<>();
         for (PersonalItem personalItem : personalItems) {
+            boolean itemIsNotOwned = !personalItem.getIsOwned();
+            if (itemIsNotOwned) {
+                continue;
+            }
+            boolean itemResaleIsLocked = resaleLocks.stream().anyMatch(resaleLock -> resaleLock.getItemId().equals(personalItem.getItemId()));
+            if (itemResaleIsLocked) {
+                 continue;
+            }
+            boolean wrongTradeOperationType = personalItem.getTradeOperationType() == null || personalItem.getTradeOperationType() == TradeOperationType.BUY;
+            if (wrongTradeOperationType) {
+                continue;
+            }
 
-            boolean itemIsOwned = personalItem.getIsOwned();
-            boolean itemResaleNotLocked = resaleLocks.stream().noneMatch(resaleLock -> resaleLock.getItemId().equals(personalItem.getItemId()));
-            boolean properTradeOperationType = personalItem.getTradeOperationType() == TradeOperationType.SELL || personalItem.getTradeOperationType() == TradeOperationType.BUY_AND_SELL;
-
-            if (itemIsOwned && itemResaleNotLocked && properTradeOperationType) {
-
-                if (personalItem.getTradeAlreadyExists() && personalItem.getExistingTrade().getCategory() == Sell) {
-
-                    PotentialTradeStats potentialTradeStats = potentialTradeStatsService.calculatePotentialSellTradeStatsForExistingTrade(personalItem.getItem(), personalItem.getExistingTrade());
-
-                    if (potentialTradeStats.isValid()) {
-                        potentialPersonalSellTrades.add(new PotentialPersonalSellTrade(personalItem, potentialTradeStats));
-                    }
+            List<PotentialTradeStats> potentialSellTradesStats = potentialTradeStatsService.getPotentialSellTradesStatsOfItem(personalItem.getItem());
+            for (PotentialTradeStats potentialTradeStats : potentialSellTradesStats) {
+                boolean sellBoundaryPriceIsExceeded = personalItem.getSellBoundaryPrice() != null && potentialTradeStats.getPrice() < personalItem.getSellBoundaryPrice();
+                if (sellBoundaryPriceIsExceeded) {
+                    continue;
                 }
 
-                List<PotentialTradeStats> potentialSellTradesStats = potentialTradeStatsService.getPotentialSellTradesStatsOfItem(personalItem.getItem());
-                for (PotentialTradeStats potentialTradeStats : potentialSellTradesStats) {
-                    if (personalItem.getSellBoundaryPrice() != null && potentialTradeStats.getPrice() < personalItem.getSellBoundaryPrice()) {
-                        continue;
-                    }
+                int medianPriceDifference;
+                int monthMedianPrice;
+                if (personalItem.getMonthMedianPrice() == null || personalItem.getMonthMedianPrice() <= 0) {
+                    monthMedianPrice = 1;
+                    medianPriceDifference = potentialTradeStats.getPrice();
+                } else {
+                    monthMedianPrice = personalItem.getMonthMedianPrice();
+                    medianPriceDifference = (potentialTradeStats.getPrice() - monthMedianPrice);
+                }
 
-                    int medianPriceDifference;
-                    int monthMedianPrice;
-                    if (personalItem.getMonthMedianPrice() == null || personalItem.getMonthMedianPrice() <= 0) {
-                        monthMedianPrice = 1;
-                        medianPriceDifference = potentialTradeStats.getPrice();
-                    } else {
-                        monthMedianPrice = personalItem.getMonthMedianPrice();
-                        medianPriceDifference = (potentialTradeStats.getPrice() - monthMedianPrice);
-                    }
+                boolean minMedianPriceDifferenceIsExceeded = personalItem.getMinMedianPriceDifference() != null && medianPriceDifference < personalItem.getMinMedianPriceDifference();
+                if (minMedianPriceDifferenceIsExceeded) {
+                    continue;
+                }
 
-                    if (personalItem.getMinMedianPriceDifference() != null && medianPriceDifference < personalItem.getMinMedianPriceDifference()) {
-                        continue;
-                    }
+                boolean minMedianPriceDifferencePercentIsExceeded = personalItem.getMinMedianPriceDifferencePercent() != null && (medianPriceDifference * 100) / monthMedianPrice < personalItem.getMinMedianPriceDifferencePercent();
+                if (minMedianPriceDifferencePercentIsExceeded) {
+                    continue;
+                }
 
-                    if (personalItem.getMinMedianPriceDifferencePercent() != null && (medianPriceDifference * 100) / monthMedianPrice < personalItem.getMinMedianPriceDifferencePercent()) {
-                        continue;
-                    }
+                potentialPersonalSellTrades.add(new PotentialPersonalSellTrade(personalItem, potentialTradeStats));
+            }
 
+            if (personalItem.getTradeAlreadyExists() && personalItem.getExistingTrade().getCategory() == Sell) {
+                PotentialTradeStats potentialTradeStats = potentialTradeStatsService.calculatePotentialSellTradeStatsForExistingTrade(personalItem.getItem(), personalItem.getExistingTrade());
+                if (potentialTradeStats.isValid()) {
                     potentialPersonalSellTrades.add(new PotentialPersonalSellTrade(personalItem, potentialTradeStats));
                 }
             }
@@ -150,44 +156,47 @@ public class PotentialTradeFactory {
         return resultingPersonalBuyTrades;
     }
 
-    public List<PotentialPersonalBuyTrade> getFilteredPotentialBuyTradesForUser(@NotNull Collection<PersonalItem> personalItems) {
+    public List<PotentialPersonalBuyTrade> getFilteredPotentialBuyTradesForUser(Collection<PersonalItem> personalItems) {
         List<PotentialPersonalBuyTrade> potentialPersonalBuyTrades = new ArrayList<>();
         for (PersonalItem personalItem : personalItems) {
-            boolean itemIsNotOwned = !personalItem.getIsOwned();
-            boolean properTradeOperationType = personalItem.getTradeOperationType() == TradeOperationType.BUY || personalItem.getTradeOperationType() == TradeOperationType.BUY_AND_SELL;
+            boolean itemIsOwned = personalItem.getIsOwned();
+            if (itemIsOwned) {
+                continue;
+            }
+            boolean wrongTradeOperationType = personalItem.getTradeOperationType() == null || personalItem.getTradeOperationType() == TradeOperationType.SELL;
+            if (wrongTradeOperationType) {
+                continue;
+            }
 
-            if (itemIsNotOwned && properTradeOperationType) {
-
-                if (personalItem.getTradeAlreadyExists() && personalItem.getExistingTrade().getCategory() == Buy) {
-                    PotentialTradeStats potentialTradeStats = potentialTradeStatsService.calculatePotentialBuyTradeStatsForExistingTrade(personalItem.getItem(), personalItem.getExistingTrade());
-                    if (potentialTradeStats.isValid()) {
-                        potentialPersonalBuyTrades.add(new PotentialPersonalBuyTrade(personalItem, potentialTradeStats));
-                    }
+            List<PotentialTradeStats> potentialBuyTradesStats = potentialTradeStatsService.getPotentialBuyTradesStatsOfItem(personalItem.getItem());
+            for (PotentialTradeStats potentialTradeStats : potentialBuyTradesStats) {
+                if (personalItem.getBuyBoundaryPrice() != null && potentialTradeStats.getPrice() > personalItem.getBuyBoundaryPrice()) {
+                    continue;
                 }
 
-                List<PotentialTradeStats> potentialBuyTradesStats = potentialTradeStatsService.getPotentialBuyTradesStatsOfItem(personalItem.getItem());
-                for (PotentialTradeStats potentialTradeStats : potentialBuyTradesStats) {
-                    if (personalItem.getBuyBoundaryPrice() != null && potentialTradeStats.getPrice() > personalItem.getBuyBoundaryPrice()) {
-                        continue;
-                    }
+                int medianPriceDifference;
+                int monthMedianPrice;
+                if (personalItem.getMonthMedianPrice() == null || personalItem.getMonthMedianPrice() <= 0) {
+                    monthMedianPrice = 1;
+                    medianPriceDifference = potentialTradeStats.getPrice();
+                } else {
+                    monthMedianPrice = personalItem.getMonthMedianPrice();
+                    medianPriceDifference = (monthMedianPrice - potentialTradeStats.getPrice());
+                }
 
-                    int medianPriceDifference;
-                    int monthMedianPrice;
-                    if (personalItem.getMonthMedianPrice() == null || personalItem.getMonthMedianPrice() <= 0) {
-                        monthMedianPrice = 1;
-                        medianPriceDifference = potentialTradeStats.getPrice();
-                    } else {
-                        monthMedianPrice = personalItem.getMonthMedianPrice();
-                        medianPriceDifference = (monthMedianPrice - potentialTradeStats.getPrice());
-                    }
+                if (personalItem.getMinMedianPriceDifference() != null && medianPriceDifference < personalItem.getMinMedianPriceDifference()) {
+                    continue;
+                }
+                if (personalItem.getMinMedianPriceDifferencePercent() != null && (medianPriceDifference * 100) / monthMedianPrice < personalItem.getMinMedianPriceDifferencePercent()) {
+                    continue;
+                }
 
-                    if (personalItem.getMinMedianPriceDifference() != null && medianPriceDifference < personalItem.getMinMedianPriceDifference()) {
-                        continue;
-                    }
-                    if (personalItem.getMinMedianPriceDifferencePercent() != null && (medianPriceDifference * 100) / monthMedianPrice < personalItem.getMinMedianPriceDifferencePercent()) {
-                        continue;
-                    }
+                potentialPersonalBuyTrades.add(new PotentialPersonalBuyTrade(personalItem, potentialTradeStats));
+            }
 
+            if (personalItem.getTradeAlreadyExists() && personalItem.getExistingTrade().getCategory() == Buy) {
+                PotentialTradeStats potentialTradeStats = potentialTradeStatsService.calculatePotentialBuyTradeStatsForExistingTrade(personalItem.getItem(), personalItem.getExistingTrade());
+                if (potentialTradeStats.isValid()) {
                     potentialPersonalBuyTrades.add(new PotentialPersonalBuyTrade(personalItem, potentialTradeStats));
                 }
             }

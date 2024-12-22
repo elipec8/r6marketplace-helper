@@ -13,6 +13,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -73,20 +74,20 @@ class PersonalItemFactoryTest {
 
         Set<PersonalItem> byItemIdSet = Set.of(personalItem1SellLowerPriority, personalItem2SellLowerPriority, personalItem3Sell, personalItem4Sell);
 
-        when(personalItemFactory.getPersonalItemsFromTradeByFiltersManagersByPriority(same(tradeByFiltersManagers), same(existingSellTrades),
-                same(existingBuyTrades), same(ownedItemsId), same(existingItems))).thenReturn(byFiltersSet);
-        when(personalItemFactory.getPersonalItemsFromTradeByItemIdManagersByPriority(same(tradeByItemIdManagers), same(existingSellTrades),
-                same(existingBuyTrades), same(ownedItemsId), same(existingItems))).thenReturn(byItemIdSet);
+        doReturn(byFiltersSet).when(personalItemFactory).getPersonalItemsFromTradeByFiltersManagersByPriority(same(tradeByFiltersManagers),
+            same(existingSellTrades), same(existingBuyTrades), same(ownedItemsId), same(existingItems));
+        doReturn(byItemIdSet).when(personalItemFactory).getPersonalItemsFromTradeByItemIdManagersByPriority(same(tradeByItemIdManagers),
+                same(existingSellTrades), same(existingBuyTrades), same(ownedItemsId), same(existingItems));
 
         Set<PersonalItem> result = personalItemFactory.getPersonalItemsForUser(tradeByFiltersManagers, tradeByItemIdManagers, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems);
 
         assertEquals(6, result.size());
-        assertTrue(result.stream().filter(p -> p.equals(personalItem1SellLowerPriority)).findFirst().get().isFullyEqual(personalItem1SellLowerPriority));
-        assertTrue(result.stream().filter(p -> p.equals(personalItem2SellLowerPriority)).findFirst().get().isFullyEqual(personalItem2SellLowerPriority));
-        assertTrue(result.stream().filter(p -> p.equals(personalItem3Sell)).findFirst().get().isFullyEqual(personalItem3Sell));
-        assertTrue(result.stream().filter(p -> p.equals(personalItem4Sell)).findFirst().get().isFullyEqual(personalItem4Sell));
-        assertTrue(result.stream().filter(p -> p.equals(personalItem1Buy)).findFirst().get().isFullyEqual(personalItem1Buy));
-        assertTrue(result.stream().filter(p -> p.equals(personalItem2Buy)).findFirst().get().isFullyEqual(personalItem2Buy));
+        assertTrue(result.stream().filter(p -> p.equals(personalItem1SellLowerPriority)).anyMatch(p -> p.isFullyEqual(personalItem1SellLowerPriority)));
+        assertTrue(result.stream().filter(p -> p.equals(personalItem2SellLowerPriority)).anyMatch(p -> p.isFullyEqual(personalItem2SellLowerPriority)));
+        assertTrue(result.stream().filter(p -> p.equals(personalItem3Sell)).anyMatch(p -> p.isFullyEqual(personalItem3Sell)));
+        assertTrue(result.stream().filter(p -> p.equals(personalItem4Sell)).anyMatch(p -> p.isFullyEqual(personalItem4Sell)));
+        assertTrue(result.stream().filter(p -> p.equals(personalItem1Buy)).anyMatch(p -> p.isFullyEqual(personalItem1Buy)));
+        assertTrue(result.stream().filter(p -> p.equals(personalItem2Buy)).anyMatch(p -> p.isFullyEqual(personalItem2Buy)));
     }
 
     @Test
