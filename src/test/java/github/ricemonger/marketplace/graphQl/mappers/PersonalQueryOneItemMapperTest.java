@@ -157,7 +157,7 @@ class PersonalQueryOneItemMapperTest {
         ItemDetails result = personalQueryOneItemMapper.mapItem(game);
 
         ItemDetails expected = createItemDetails(date);
-        expected.getTrades().get(0).setLastModifiedAt(LocalDateTime.MIN);
+        expected.getTrades().get(0).setLastModifiedAt(LocalDateTime.of(1970, 1, 1, 0, 0, 0));
 
         assertEquals(expected, result);
     }

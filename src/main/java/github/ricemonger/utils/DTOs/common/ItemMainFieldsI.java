@@ -141,25 +141,25 @@ public interface ItemMainFieldsI extends SoldItemDetails {
 
         sb.append("Id: ").append(this.getItemId()).append("\n");
 
-        if (shownFieldsSettings.getItemShowNameFlag()) {
+        if (shownFieldsSettings.getItemShowNameFlag() != null && shownFieldsSettings.getItemShowNameFlag()) {
             sb.append("Name: ").append(this.getName()).append("\n");
         }
-        if (shownFieldsSettings.getItemShowItemTypeFlag()) {
+        if (shownFieldsSettings.getItemShowItemTypeFlag() != null && shownFieldsSettings.getItemShowItemTypeFlag()) {
             sb.append("Type: ").append(this.getType()).append("\n");
         }
-        if (shownFieldsSettings.getItemShowMaxBuyPrice()) {
+        if (shownFieldsSettings.getItemShowMaxBuyPrice() != null && shownFieldsSettings.getItemShowMaxBuyPrice()) {
             sb.append("Max buy price: ").append(this.getMaxBuyPrice()).append("\n");
         }
-        if (shownFieldsSettings.getItemShowBuyOrdersCountFlag()) {
+        if (shownFieldsSettings.getItemShowBuyOrdersCountFlag() != null && shownFieldsSettings.getItemShowBuyOrdersCountFlag()) {
             sb.append("Buy orders: ").append(this.getBuyOrdersCount()).append("\n");
         }
-        if (shownFieldsSettings.getItemShowMinSellPriceFlag()) {
+        if (shownFieldsSettings.getItemShowMinSellPriceFlag() != null && shownFieldsSettings.getItemShowMinSellPriceFlag()) {
             sb.append("Min sell price: ").append(this.getMinSellPrice()).append("\n");
         }
-        if (shownFieldsSettings.getItemsShowSellOrdersCountFlag()) {
+        if (shownFieldsSettings.getItemsShowSellOrdersCountFlag() != null && shownFieldsSettings.getItemsShowSellOrdersCountFlag()) {
             sb.append("Sell orders: ").append(this.getSellOrdersCount()).append("\n");
         }
-        if (shownFieldsSettings.getItemShowPictureFlag()) {
+        if (shownFieldsSettings.getItemShowPictureFlag() != null && shownFieldsSettings.getItemShowPictureFlag()) {
             sb.append("Picture: ").append(this.getAssetUrl()).append("\n");
         }
         return sb.toString();

@@ -81,6 +81,10 @@ class PersonalItemFactoryTest {
 
         Set<PersonalItem> result = personalItemFactory.getPersonalItemsForUser(tradeByFiltersManagers, tradeByItemIdManagers, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems);
 
+        for (PersonalItem personalItem :result) {
+            System.out.println(personalItem);
+        }
+
         assertEquals(6, result.size());
         assertTrue(result.stream().filter(p -> p.equals(personalItem1SellLowerPriority)).anyMatch(p -> p.isFullyEqual(personalItem1SellLowerPriority)));
         assertTrue(result.stream().filter(p -> p.equals(personalItem2SellLowerPriority)).anyMatch(p -> p.isFullyEqual(personalItem2SellLowerPriority)));
@@ -194,6 +198,10 @@ class PersonalItemFactoryTest {
                     existingBuyTrades,
                     ownedItemsId,
                     existingItems);
+
+            for (PersonalItem personalItem :result) {
+                System.out.println(personalItem);
+            }
 
             assertEquals(6, result.size());
             assertTrue(result.stream().filter(p -> p.equals(personalItem1Sell)).findFirst().get().isFullyEqual(personalItem1Sell));

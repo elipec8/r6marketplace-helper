@@ -6,8 +6,9 @@ import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.ItemService;
 import github.ricemonger.marketplace.services.TelegramUserUbiAccountEntryService;
 import github.ricemonger.telegramBot.TelegramBotService;
-import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.personal.*;
+import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.TradeCategory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -267,6 +268,7 @@ class ScheduledAllUbiUsersManagerTest {
         when(telegramUserUbiAccountEntryService.findAllFUbiAccountEntriesWithTelegram()).thenReturn(ubiAccountAuthorizationEntriesWithTelegram);
 
         UbiTrade finishedSellTradeValid = new UbiTrade();
+        finishedSellTradeValid.setItem(new Item());
         finishedSellTradeValid.setCategory(TradeCategory.Sell);
         finishedSellTradeValid.setLastModifiedAt(LocalDateTime.now().minusHours(3));
         finishedSellTradeValid.setTradeId("finishedSellTradeValid");
@@ -274,6 +276,7 @@ class ScheduledAllUbiUsersManagerTest {
         finishedSellTradeValid.setSuccessPaymentFee(10);
 
         UbiTrade finishedSellTradeInvalid = new UbiTrade();
+        finishedSellTradeInvalid.setItem(new Item());
         finishedSellTradeInvalid.setCategory(TradeCategory.Sell);
         finishedSellTradeInvalid.setLastModifiedAt(LocalDateTime.now().minusHours(6));
         finishedSellTradeInvalid.setTradeId("finishedSellTradeInvalid");
@@ -338,12 +341,14 @@ class ScheduledAllUbiUsersManagerTest {
         when(telegramUserUbiAccountEntryService.findAllFUbiAccountEntriesWithTelegram()).thenReturn(ubiAccountAuthorizationEntriesWithTelegram);
 
         UbiTrade finishedSellTradeValid = new UbiTrade();
+        finishedSellTradeValid.setItem(new Item());
         finishedSellTradeValid.setCategory(TradeCategory.Buy);
         finishedSellTradeValid.setLastModifiedAt(LocalDateTime.now().minusHours(3));
         finishedSellTradeValid.setTradeId("finishedSellTradeValid");
         finishedSellTradeValid.setSuccessPaymentPrice(100);
 
         UbiTrade finishedSellTradeInvalid = new UbiTrade();
+        finishedSellTradeInvalid.setItem(new Item());
         finishedSellTradeInvalid.setCategory(TradeCategory.Buy);
         finishedSellTradeInvalid.setLastModifiedAt(LocalDateTime.now().minusHours(6));
         finishedSellTradeInvalid.setTradeId("finishedSellTradeInvalid");

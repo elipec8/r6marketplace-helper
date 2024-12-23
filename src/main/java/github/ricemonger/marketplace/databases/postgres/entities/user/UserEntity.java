@@ -93,8 +93,8 @@ public class UserEntity {
                     itemShowAppliedFilters.stream().allMatch(itemFilter -> entity.itemShowAppliedFilters.stream().anyMatch(itemFilter::isEqual)));
 
             return isEqual(entity) &&
-                   telegramUser.isFullyEqual(entity.telegramUser) &&
-                   ubiAccountEntry.isFullyEqual(entity.ubiAccountEntry) &&
+                   telegramUser.isEqual(entity.telegramUser) &&
+                   ubiAccountEntry.isEqual(entity.ubiAccountEntry) &&
                    itemFiltersAreEqual &&
                    tradeByFiltersManagersAreEqual &&
                    tradeByItemIdManagersAreEqual &&

@@ -138,29 +138,63 @@ class UserEntityTest {
 
     @Test
     public void isFullyEqual_should_return_false_if_not_equal() {
-        TradeByFiltersManagerEntity tradeByFiltersManagerEntity = new TradeByFiltersManagerEntity();
-        tradeByFiltersManagerEntity.setUser(new UserEntity(1L));
-        tradeByFiltersManagerEntity.setName("name");
+        TradeByFiltersManagerEntity tradeByFiltersManagerEntity1 = new TradeByFiltersManagerEntity();
+        tradeByFiltersManagerEntity1.setUser(new UserEntity(1L));
+        tradeByFiltersManagerEntity1.setName("name");
 
-        TradeByItemIdManagerEntity tradeByItemIdManagerEntity = new TradeByItemIdManagerEntity();
-        tradeByItemIdManagerEntity.setUser(new UserEntity(1L));
-        tradeByItemIdManagerEntity.setItem(new ItemEntity("itemId1"));
+        TradeByItemIdManagerEntity tradeByItemIdManagerEntity1 = new TradeByItemIdManagerEntity();
+        tradeByItemIdManagerEntity1.setUser(new UserEntity(1L));
+        tradeByItemIdManagerEntity1.setItem(new ItemEntity("itemId1"));
 
-        ItemFilterEntity itemFilterEntity = new ItemFilterEntity();
-        itemFilterEntity.setUser(new UserEntity(1L));
-        itemFilterEntity.setName("name");
+        ItemFilterEntity itemFilterEntity1 = new ItemFilterEntity();
+        itemFilterEntity1.setUser(new UserEntity(1L));
+        itemFilterEntity1.setName("name");
 
-        TelegramUserEntity telegramUser = new TelegramUserEntity("chatId", 1L);
+        TelegramUserEntity telegramUser1 = new TelegramUserEntity("chatId", 1L);
 
-        UbiAccountEntryEntity ubiAccountEntryEntity = new UbiAccountEntryEntity(1L, "email", "ubiProfileId");
+        UbiAccountEntryEntity ubiAccountEntryEntity1 = new UbiAccountEntryEntity(1L, "email", "ubiProfileId");
+
+
+        TradeByFiltersManagerEntity tradeByFiltersManagerEntity2 = new TradeByFiltersManagerEntity();
+        tradeByFiltersManagerEntity2.setUser(new UserEntity(2L));
+        tradeByFiltersManagerEntity2.setName("name");
+
+        TradeByItemIdManagerEntity tradeByItemIdManagerEntity2 = new TradeByItemIdManagerEntity();
+        tradeByItemIdManagerEntity2.setUser(new UserEntity(2L));
+        tradeByItemIdManagerEntity2.setItem(new ItemEntity("itemId1"));
+
+        ItemFilterEntity itemFilterEntity2 = new ItemFilterEntity();
+        itemFilterEntity2.setUser(new UserEntity(2L));
+        itemFilterEntity2.setName("name");
+
+        TelegramUserEntity telegramUser2 = new TelegramUserEntity("chatId", 2L);
+
+        UbiAccountEntryEntity ubiAccountEntryEntity2 = new UbiAccountEntryEntity(2L, "email", "ubiProfileId");
+
+
+        TradeByFiltersManagerEntity tradeByFiltersManagerEntity3 = new TradeByFiltersManagerEntity();
+        tradeByFiltersManagerEntity3.setUser(new UserEntity(1L));
+        tradeByFiltersManagerEntity3.setName("name1");
+
+        TradeByItemIdManagerEntity tradeByItemIdManagerEntity3 = new TradeByItemIdManagerEntity();
+        tradeByItemIdManagerEntity3.setUser(new UserEntity(1L));
+        tradeByItemIdManagerEntity3.setItem(new ItemEntity("itemId2"));
+
+        ItemFilterEntity itemFilterEntity3 = new ItemFilterEntity();
+        itemFilterEntity3.setUser(new UserEntity(1L));
+        itemFilterEntity3.setName("name2");
+
+        TelegramUserEntity telegramUser3 = new TelegramUserEntity("chatId2", 1L);
+
+        UbiAccountEntryEntity ubiAccountEntryEntity3 = new UbiAccountEntryEntity(1L, "email2", "ubiProfileId");
 
         UserEntity user1 = new UserEntity();
         user1.setId(1L);
-        user1.setTelegramUser(telegramUser);
-        user1.setUbiAccountEntry(ubiAccountEntryEntity);
-        user1.setItemFilters(List.of(itemFilterEntity));
-        user1.setTradeByFiltersManagers(List.of(tradeByFiltersManagerEntity));
-        user1.setTradeByItemIdManagers(List.of(tradeByItemIdManagerEntity));
+        user1.setTelegramUser(telegramUser1);
+        user1.setUbiAccountEntry(ubiAccountEntryEntity1);
+        user1.setItemFilters(List.of(itemFilterEntity1));
+        user1.setTradeByFiltersManagers(List.of(tradeByFiltersManagerEntity1));
+        user1.setTradeByItemIdManagers(List.of(tradeByItemIdManagerEntity1));
         user1.setPublicNotificationsEnabledFlag(true);
         user1.setPrivateNotificationsEnabledFlag(true);
         user1.setItemShowNameFlag(true);
@@ -170,17 +204,17 @@ class UserEntityTest {
         user1.setItemShowMinSellPriceFlag(true);
         user1.setItemsShowSellOrdersCountFlag(true);
         user1.setItemShowPictureFlag(true);
-        user1.setItemShowAppliedFilters(List.of(itemFilterEntity));
+        user1.setItemShowAppliedFilters(List.of(itemFilterEntity1));
         user1.setNewManagersAreActiveFlag(true);
         user1.setManagingEnabledFlag(true);
 
         UserEntity user2 = new UserEntity();
         user2.setId(1L);
-        user2.setTelegramUser(telegramUser);
-        user2.setUbiAccountEntry(ubiAccountEntryEntity);
-        user2.setItemFilters(List.of(itemFilterEntity));
-        user2.setTradeByFiltersManagers(List.of(tradeByFiltersManagerEntity));
-        user2.setTradeByItemIdManagers(List.of(tradeByItemIdManagerEntity));
+        user2.setTelegramUser(telegramUser1);
+        user2.setUbiAccountEntry(ubiAccountEntryEntity1);
+        user2.setItemFilters(List.of(itemFilterEntity1));
+        user2.setTradeByFiltersManagers(List.of(tradeByFiltersManagerEntity1));
+        user2.setTradeByItemIdManagers(List.of(tradeByItemIdManagerEntity1));
         user2.setPublicNotificationsEnabledFlag(true);
         user2.setPrivateNotificationsEnabledFlag(true);
         user2.setItemShowNameFlag(true);
@@ -190,34 +224,44 @@ class UserEntityTest {
         user2.setItemShowMinSellPriceFlag(true);
         user2.setItemsShowSellOrdersCountFlag(true);
         user2.setItemShowPictureFlag(true);
-        user2.setItemShowAppliedFilters(List.of(itemFilterEntity));
+        user2.setItemShowAppliedFilters(List.of(itemFilterEntity1));
         user2.setNewManagersAreActiveFlag(true);
         user2.setManagingEnabledFlag(true);
 
         user1.setId(2L);
         assertFalse(user1.isFullyEqual(user2));
         user1.setId(1L);
-        user1.setTelegramUser(null);
+        user1.setTelegramUser(telegramUser2);
         assertFalse(user1.isFullyEqual(user2));
-        user1.setTelegramUser(telegramUser);
-        user1.setUbiAccountEntry(null);
+        user1.setTelegramUser(telegramUser3);
         assertFalse(user1.isFullyEqual(user2));
-        user1.setUbiAccountEntry(ubiAccountEntryEntity);
-        user1.setItemFilters(null);
+        user1.setTelegramUser(telegramUser1);
+        user1.setUbiAccountEntry(ubiAccountEntryEntity2);
+        assertFalse(user1.isFullyEqual(user2));
+        user1.setUbiAccountEntry(ubiAccountEntryEntity3);
+        assertFalse(user1.isFullyEqual(user2));
+        user1.setUbiAccountEntry(ubiAccountEntryEntity1);
+        user1.setItemFilters(List.of(itemFilterEntity2));
+        assertFalse(user1.isFullyEqual(user2));
+        user1.setItemFilters(List.of(itemFilterEntity3));
         assertFalse(user1.isFullyEqual(user2));
         user1.setItemFilters(List.of());
         assertFalse(user1.isFullyEqual(user2));
-        user1.setItemFilters(List.of(itemFilterEntity));
-        user1.setTradeByFiltersManagers(null);
+        user1.setItemFilters(List.of(itemFilterEntity1));
+        user1.setTradeByFiltersManagers(List.of(tradeByFiltersManagerEntity2));
+        assertFalse(user1.isFullyEqual(user2));
+        user1.setTradeByFiltersManagers(List.of(tradeByFiltersManagerEntity3));
         assertFalse(user1.isFullyEqual(user2));
         user1.setTradeByFiltersManagers(List.of());
         assertFalse(user1.isFullyEqual(user2));
-        user1.setTradeByFiltersManagers(List.of(tradeByFiltersManagerEntity));
-        user1.setTradeByItemIdManagers(null);
+        user1.setTradeByFiltersManagers(List.of(tradeByFiltersManagerEntity1));
+        user1.setTradeByItemIdManagers(List.of(tradeByItemIdManagerEntity2));
+        assertFalse(user1.isFullyEqual(user2));
+        user1.setTradeByItemIdManagers(List.of(tradeByItemIdManagerEntity3));
         assertFalse(user1.isFullyEqual(user2));
         user1.setTradeByItemIdManagers(List.of());
         assertFalse(user1.isFullyEqual(user2));
-        user1.setTradeByItemIdManagers(List.of(tradeByItemIdManagerEntity));
+        user1.setTradeByItemIdManagers(List.of(tradeByItemIdManagerEntity1));
         user1.setPublicNotificationsEnabledFlag(false);
         assertFalse(user1.isFullyEqual(user2));
         user1.setPublicNotificationsEnabledFlag(true);
@@ -245,11 +289,13 @@ class UserEntityTest {
         user1.setItemShowPictureFlag(false);
         assertFalse(user1.isFullyEqual(user2));
         user1.setItemShowPictureFlag(true);
-        user1.setItemShowAppliedFilters(null);
+        user1.setItemShowAppliedFilters(List.of(itemFilterEntity2));
+        assertFalse(user1.isFullyEqual(user2));
+        user1.setItemShowAppliedFilters(List.of(itemFilterEntity3));
         assertFalse(user1.isFullyEqual(user2));
         user1.setItemShowAppliedFilters(List.of());
         assertFalse(user1.isFullyEqual(user2));
-        user1.setItemShowAppliedFilters(List.of(itemFilterEntity));
+        user1.setItemShowAppliedFilters(List.of(itemFilterEntity1));
         user1.setNewManagersAreActiveFlag(false);
         assertFalse(user1.isFullyEqual(user2));
         user1.setNewManagersAreActiveFlag(true);

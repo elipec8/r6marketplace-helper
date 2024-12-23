@@ -23,9 +23,9 @@ class ItemFilterTest {
         expected.add(createItem("test2", ItemType.WeaponSkin, List.of("value1", "value3"), 110, 190, 0));
         expected.add(createItem("test3", ItemType.WeaponSkin, List.of("value1", "value3"), 110, 190, 0));
         expected.add(createItem("test33", ItemType.WeaponSkin, List.of("value1", "value3"), 110, 190, 0));
-        expected.add(createItem("test1", ItemType.Charm, List.of("value2"), 100, 200, 0));
 
         Collection<Item> allItemMainFields = new ArrayList<>(expected);
+        allItemMainFields.add(createItem("test1", ItemType.Charm, List.of("value2"), 100, 200, 0));
         allItemMainFields.add(createItem("test1", ItemType.WeaponSkin, List.of("value2"), 100, 210, 0));
         allItemMainFields.add(createItem("test1", ItemType.CharacterHeadgear, List.of("value2"), 100, 200, 0));
         allItemMainFields.add(createItem("test1", ItemType.WeaponSkin, List.of(), 100, 200, 0));

@@ -21,6 +21,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -104,13 +105,15 @@ class ItemFilterEntityMapperTest {
 
     @Test
     public void createDTO_should_properly_map_dto() {
+        TagEntity tagEntity = new TagEntity("value", "name", TagGroup.Rarity);
+
         ItemFilterEntity entity = new ItemFilterEntity();
         entity.setName("name");
         entity.setFilterType(FilterType.ALLOW);
         entity.setIsOwned(IsOwnedFilter.OWNED);
         entity.setItemNamePatterns("pattern1,pattern2");
         entity.setItemTypes("Charm,CharacterHeadgear");
-        entity.setTags(Set.of(new TagEntity("value", "name", TagGroup.Rarity)));
+        entity.setTags(Set.of(tagEntity));
         entity.setMinSellPrice(1);
         entity.setMaxBuyPrice(2);
 
@@ -124,7 +127,7 @@ class ItemFilterEntityMapperTest {
         expected.setMinSellPrice(1);
         expected.setMaxBuyPrice(2);
 
-        when(tagEntityMapper.createDTO(new TagEntity("value", "name", TagGroup.Rarity))).thenReturn(new Tag("value", "name", TagGroup.Rarity));
+        when(tagEntityMapper.createDTO(same(tagEntity))).thenReturn(new Tag("value", "name", TagGroup.Rarity));
 
         ItemFilter result = itemFilterEntityMapper.createDTO(entity);
 

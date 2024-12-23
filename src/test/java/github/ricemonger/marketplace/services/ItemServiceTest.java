@@ -285,12 +285,20 @@ class ItemServiceTest {
 
         itemService.saveAllItemsMainFields(itemsMainFields);
 
-        verify(itemDatabaseService).saveAll(argThat(arg -> arg.size() == updatedItems.size() &&
-                                                           updatedItems.stream().allMatch(updatedItem ->
-                                                                   arg.stream().anyMatch(actualItem ->
-                                                                           actualItem.isFullyEquals(updatedItem)
-                                                                   )
-                                                           )));
+        System.out.println("Updated items: ");
+        updatedItems.forEach(System.out::println);
+
+        System.out.println("Saved items: ");
+
+        verify(itemDatabaseService).saveAll(argThat(arg -> {
+            arg.forEach(System.out::println);
+            return arg.size() == updatedItems.size() &&
+                   updatedItems.stream().allMatch(updatedItem ->
+                           arg.stream().anyMatch(actualItem ->
+                                   actualItem.isFullyEquals(updatedItem)
+                           )
+                   );
+        }));
     }
 
     @Test

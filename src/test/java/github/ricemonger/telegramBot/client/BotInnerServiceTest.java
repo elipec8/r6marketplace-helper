@@ -400,9 +400,9 @@ public class BotInnerServiceTest {
         verify(telegramUserService, times(1)).getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_PASSWORD);
         verify(telegramUserService, times(1)).getUserInputByState(1L, InputState.UBI_ACCOUNT_ENTRY_2FA_CODE);
 
-        doThrow(new Exception("")).when(telegramUserService).authorizeAndSaveUser(1L, "email", "password", "twoFaCode");
+        doThrow(new RuntimeException("")).when(telegramUserService).authorizeAndSaveUser(1L, "email", "password", "twoFaCode");
 
-        assertThrows(Exception.class, () -> botInnerService.addUserUbiAccountEntryByUserInput(1L));
+        assertThrows(RuntimeException.class, () -> botInnerService.addUserUbiAccountEntryByUserInput(1L));
     }
 
     @Test

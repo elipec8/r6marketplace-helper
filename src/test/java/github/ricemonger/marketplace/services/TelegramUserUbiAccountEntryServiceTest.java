@@ -145,9 +145,13 @@ class TelegramUserUbiAccountEntryServiceTest {
 
         verify(telegramUserUbiAccountEntryDatabaseService).findAllAuthorizationInfoForTelegram();
 
-        verify(authorizationService, times(7)).authorizeAndGet2FaAuthorizedDTOForEncodedPassword(any(), any(),any());
+        verify(authorizationService, times(7)).reauthorizeAndGet2FaAuthorizedDtoForEncodedPasswordWithRememberDeviceTicket(any(), any(),any());
 
-        verify(telegramUserUbiAccountEntryDatabaseService, times(5)).saveAuthorizationInfo(any(), eq(authorizedEntry));
+        UbiAccountAuthorizationEntry authorizedEntryNoRememberDevice = new UbiAccountAuthorizationEntry();
+        authorizedEntryNoRememberDevice.setEmail("email");
+        authorizedEntryNoRememberDevice.setEncodedPassword("encodedPassword");
+
+        verify(telegramUserUbiAccountEntryDatabaseService, times(5)).saveAuthorizationInfo(any(), eq(authorizedEntryNoRememberDevice));
         verify(telegramUserUbiAccountEntryDatabaseService, times(0)).saveAuthorizationInfo(any(), eq(clientErrorEntry));
         verify(telegramUserUbiAccountEntryDatabaseService, times(0)).saveAuthorizationInfo(any(), eq(serverErrorEntry));
     }

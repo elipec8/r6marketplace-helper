@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static reactor.core.publisher.Mono.when;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class TelegramUserEntityMapperTest {
@@ -42,6 +42,7 @@ class TelegramUserEntityMapperTest {
     @Test
     public void createTelegramUser_should_return_telegram_user() {
         TelegramUserEntity entity = new TelegramUserEntity();
+        entity.setUser(new UserEntity(1L));
         entity.setChatId("chatId");
         entity.setInputState(InputState.ITEM_FILTER_NAME);
         entity.setInputGroup(InputGroup.ITEMS_SHOW);
@@ -77,6 +78,8 @@ class TelegramUserEntityMapperTest {
         expected.setNewManagersAreActiveFlag(true);
         expected.setManagingEnabledFlag(false);
 
+        when(itemFilterEntityMapper.createDTO(any())).thenReturn(new ItemFilter());
+
         TelegramUser actual = telegramUserEntityMapper.createTelegramUser(entity);
 
         assertEquals(expected, actual);
@@ -95,13 +98,13 @@ class TelegramUserEntityMapperTest {
         entity.getUser().setItemShowPictureFlag(true);
         entity.setItemShowMessagesLimit(1);
         entity.setItemShowFewInMessageFlag(true);
-        entity.getUser().setItemShowAppliedFilters(List.of(new ItemFilterEntity()));
+        entity.getUser().setItemShowAppliedFilters(List.of());
 
         ItemShowSettings expected = new ItemShowSettings();
         expected.setItemShowMessagesLimit(1);
         expected.setItemShowFewInMessageFlag(true);
         expected.setShownFieldsSettings(new ItemShownFieldsSettings(true, false, true, false, true, false, true));
-        expected.setItemShowAppliedFilters(List.of(new ItemFilter()));
+        expected.setItemShowAppliedFilters(List.of());
 
         ItemShowSettings itemShowSettings = telegramUserEntityMapper.createItemShowSettings(entity);
 
