@@ -175,6 +175,8 @@ class PotentialTradeStatsServiceTest {
         itemDaySalesStatsByItemId2.setPriceAndQuantity(priceAndQuantity2);
 
         Item item = new Item();
+        item.setBuyOrdersCount(5);
+        item.setMaxBuyPrice(5);
 
         doReturn(280).when(potentialTradeStatsService).getSameOrHigherPricesBuyOrdersAmount(item, 1000);
         PotentialTradeStats expected = new PotentialTradeStats(1000, MINUTES_IN_AN_HOUR, 1000L);
@@ -198,7 +200,7 @@ class PotentialTradeStatsServiceTest {
 
         doReturn(0).when(potentialTradeStatsService).getSameOrHigherPricesBuyOrdersAmount(item, 1500);
         expected = new PotentialTradeStats(null, 1, 1000L);
-        doReturn(expected).when(potentialTradeStatsService.calculateBuyTradeStats(item, expected.getPrice(), 1));
+        doReturn(expected).when(potentialTradeStatsService).calculateBuyTradeStats(item, expected.getPrice(), 1);
         assertEquals(expected, potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item, List.of(itemDaySalesStatsByItemId1, itemDaySalesStatsByItemId2), 1));
     }
 
@@ -235,14 +237,14 @@ class PotentialTradeStatsServiceTest {
         ubiTrade.setExpiresAt(LocalDateTime.of(2021, 1, 2, 0, 0, 0));
 
         Integer prognosedTradeSuccessMinutes = 10000;
-        doReturn(prognosedTradeSuccessMinutes).when(potentialTradeStatsService).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), anyInt(), any());
+        doReturn(prognosedTradeSuccessMinutes).when(potentialTradeStatsService).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), any(), any());
 
         assertEquals(prognosedTradeSuccessMinutes - (int) Duration.between(ubiTrade.getLastModifiedAt(), ubiTrade.getExpiresAt()).toMinutes(), potentialTradeStatsService.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
 
-        doReturn(10).when(potentialTradeStatsService).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), anyInt(), any());
+        doReturn(10).when(potentialTradeStatsService).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), any(), any());
         assertEquals(TRADE_MANAGER_FIXED_RATE_MINUTES, potentialTradeStatsService.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
 
-        doReturn(null).when(potentialTradeStatsService).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), anyInt(), any());
+        doReturn(null).when(potentialTradeStatsService).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), any(), any());
         assertNull(potentialTradeStatsService.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
     }
 
@@ -302,7 +304,7 @@ class PotentialTradeStatsServiceTest {
         int price = 1500;
         int minutesToTrade = 432;
 
-        long expectedPriority = 38L * 500L * 50L * 787L;
+        long expectedPriority = 38L * 500L * 50L * 800L;
 
         assertEquals(new PotentialTradeStats(price, minutesToTrade, expectedPriority), potentialTradeStatsService.calculateSellTradeStats(item, price, minutesToTrade));
     }
@@ -317,7 +319,7 @@ class PotentialTradeStatsServiceTest {
         int price = 500;
         int minutesToTrade = 432;
 
-        long expectedPriority = -1L * 22L * 500L * 50L * 787L;
+        long expectedPriority = -1L * 22L * 500L * 50L * 800L;
 
         assertEquals(new PotentialTradeStats(price, minutesToTrade, expectedPriority), potentialTradeStatsService.calculateSellTradeStats(item, price, minutesToTrade));
     }
@@ -332,7 +334,7 @@ class PotentialTradeStatsServiceTest {
         int price = 500;
         int minutesToTrade = 432;
 
-        long expectedPriority = 22L * 1L * 1L * 787L;
+        long expectedPriority = 22L * 1L * 1L * 800L;
 
         assertEquals(new PotentialTradeStats(price, minutesToTrade, expectedPriority), potentialTradeStatsService.calculateSellTradeStats(item, price, minutesToTrade));
     }
@@ -366,7 +368,7 @@ class PotentialTradeStatsServiceTest {
         int price = 500;
         int minutesToTrade = 432;
 
-        long expectedPriority = 100_000L / price * 500L * 50L * 100L * 3813L;
+        long expectedPriority = 100_000L / price * 500L * 50L * 100L * 3927L;
 
         assertEquals(new PotentialTradeStats(price, minutesToTrade, expectedPriority), potentialTradeStatsService.calculateBuyTradeStats(item, price, minutesToTrade));
     }
@@ -382,7 +384,7 @@ class PotentialTradeStatsServiceTest {
         int price = 1500;
         int minutesToTrade = 432;
 
-        long expectedPriority = -1L * 100_000L / price * 500L * 50L * 100L * 3813L;
+        long expectedPriority = -1L * 100_000L / price * 500L * 50L * 100L * 3927L;
 
         assertEquals(new PotentialTradeStats(price, minutesToTrade, expectedPriority), potentialTradeStatsService.calculateBuyTradeStats(item, price, minutesToTrade));
     }
@@ -398,7 +400,7 @@ class PotentialTradeStatsServiceTest {
         int price = 1500;
         int minutesToTrade = 432;
 
-        long expectedPriority = -1L * 100_000L / price * 500L * 50L * 1L * 3813L;
+        long expectedPriority = 0;
 
         assertEquals(new PotentialTradeStats(price, minutesToTrade, expectedPriority), potentialTradeStatsService.calculateBuyTradeStats(item, price, minutesToTrade));
     }
@@ -414,7 +416,7 @@ class PotentialTradeStatsServiceTest {
         int price = 500;
         int minutesToTrade = 432;
 
-        long expectedPriority = 100_000L / price * 1L * 1L * 100L * 3813L;
+        long expectedPriority = -100_000L / price * 1L * 1L * 100L * 3927L;
 
         assertEquals(new PotentialTradeStats(price, minutesToTrade, expectedPriority), potentialTradeStatsService.calculateBuyTradeStats(item, price, minutesToTrade));
     }

@@ -92,6 +92,8 @@ class ScheduledAllUbiUsersManagerTest {
         itemResaleLockWithUbiAccount2.setItemId("itemId2");
 
         UserTradesLimitations userTradesLimitations1 = new UserTradesLimitations();
+        userTradesLimitations1.setResolvedBuyTransactionCount(1);
+        userTradesLimitations1.setResolvedSellTransactionCount(1);
         userTradesLimitations1.setResaleLocks(List.of(itemResaleLockWithUbiAccount1, itemResaleLockWithUbiAccount2));
 
         when(graphQlClientService.fetchTradesLimitationsForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram1))).thenReturn(userTradesLimitations1);
@@ -113,6 +115,8 @@ class ScheduledAllUbiUsersManagerTest {
         itemResaleLockWithUbiAccount3.setItemId("itemId3");
 
         UserTradesLimitations userTradesLimitations2 = new UserTradesLimitations();
+        userTradesLimitations2.setResolvedBuyTransactionCount(1);
+        userTradesLimitations2.setResolvedSellTransactionCount(0);
         userTradesLimitations2.setResaleLocks(List.of(itemResaleLockWithUbiAccount3));
 
         when(graphQlClientService.fetchTradesLimitationsForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram2))).thenReturn(userTradesLimitations2);
@@ -129,8 +133,13 @@ class ScheduledAllUbiUsersManagerTest {
         finishedSellTrade3.setCategory(TradeCategory.Sell);
         finishedSellTrade3.setLastModifiedAt(LocalDateTime.now().minusDays(2));
         finishedSellTrade3.setTradeId("finishedSellTrade3");
+
+        UserTradesLimitations userTradesLimitations3 = new UserTradesLimitations();
+        userTradesLimitations3.setResolvedBuyTransactionCount(0);
+        userTradesLimitations3.setResolvedSellTransactionCount(1);
+
         when(graphQlClientService.fetchLastFinishedOrdersForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram3))).thenReturn(List.of(finishedSellTrade3));
-        when(graphQlClientService.fetchTradesLimitationsForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram3))).thenReturn(new UserTradesLimitations());
+        when(graphQlClientService.fetchTradesLimitationsForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram3))).thenReturn(userTradesLimitations3);
         when(graphQlClientService.fetchAllOwnedItemsIdsForUser(new AuthorizationDTO(ubiAccountEntryEntityDTOWithTelegram3))).thenReturn(List.of());
 
 
