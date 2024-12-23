@@ -19,6 +19,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -31,6 +32,16 @@ class UbiAccountEntryEntityMapperTest {
     private UbiAccountStatsEntityPostgresRepository ubiAccountStatsEntityPostgresRepository;
     @MockBean
     private UbiAccountStatsEntityMapper ubiAccountStatsEntityMapper;
+
+    @Test
+    public void createEntityForTelegramUser_should_save_new_ubi_stats_entity_if_doesnt_exist() {
+        when(userPostgresRepository.findByTelegramUserChatId("chatId")).thenReturn(new UserEntity(1L));
+        when(ubiAccountStatsEntityPostgresRepository.findById("ubiProfileId")).thenReturn(Optional.empty());
+
+        ubiAccountEntryEntityMapper.createEntityForTelegramUser("chatId", new UbiAccountAuthorizationEntry());
+
+        verify(ubiAccountStatsEntityPostgresRepository).save(any(UbiAccountStatsEntity.class));
+    }
 
     @Test
     public void createEntityForTelegramUser_should_properly_map_entity_for_existing_ubi_stats() {
