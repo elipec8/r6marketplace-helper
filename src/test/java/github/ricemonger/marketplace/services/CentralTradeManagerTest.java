@@ -69,7 +69,7 @@ class CentralTradeManagerTest {
         Integer boughtIn24h2 = 2000;
 
         UbiAccountStats validUbiAccountStats1 = new UbiAccountStats();
-        validUbiAccountStats1.setUbiProfileId("profileId1");
+        validUbiAccountStats1.setUbiProfileId("ubiProfiledId1");
         validUbiAccountStats1.setCreditAmount(creditAmount1);
         validUbiAccountStats1.setSoldIn24h(soldIn24h1);
         validUbiAccountStats1.setBoughtIn24h(boughtIn24h1);
@@ -79,7 +79,7 @@ class CentralTradeManagerTest {
         validUbiAccountStats1.setOwnedItemsIds(ownedItemsIds1);
 
         UbiAccountStats validUbiAccountStats2 = new UbiAccountStats();
-        validUbiAccountStats2.setUbiProfileId("profileId2");
+        validUbiAccountStats2.setUbiProfileId("ubiProfiledId2");
         validUbiAccountStats2.setCreditAmount(creditAmount2);
         validUbiAccountStats2.setSoldIn24h(soldIn24h2);
         validUbiAccountStats2.setBoughtIn24h(boughtIn24h2);
@@ -89,7 +89,7 @@ class CentralTradeManagerTest {
         validUbiAccountStats2.setOwnedItemsIds(ownedItemsIds2);
 
         UbiAccountStats nullManageableUserUbiAccount = new UbiAccountStats();
-        nullManageableUserUbiAccount.setUbiProfileId("3");
+        nullManageableUserUbiAccount.setUbiProfileId("ubiProfiledId3");
 
         UbiAccountStats nullUbiAccountStats = null;
 
@@ -121,7 +121,7 @@ class CentralTradeManagerTest {
         validManageableUserTrueNotifications1.setChatId("chatId1");
         validManageableUserTrueNotifications1.setPrivateNotificationsEnabledFlag(true);
         validManageableUserTrueNotifications1.setUbiAccountStatsEntityDTO(new UbiAccountStatsEntityDTO());
-        validManageableUserTrueNotifications1.getUbiAccountStatsEntityDTO().setUbiProfileId("1");
+        validManageableUserTrueNotifications1.getUbiAccountStatsEntityDTO().setUbiProfileId("ubiProfiledId1");
         validManageableUserTrueNotifications1.getUbiAccountStatsEntityDTO().setCreditAmount(1000);
         validManageableUserTrueNotifications1.setTradeByFiltersManagers(tradeByFiltersManagers1);
         validManageableUserTrueNotifications1.setTradeByItemIdManagers(tradeByItemIdManagers1);
@@ -137,7 +137,7 @@ class CentralTradeManagerTest {
         validManageableUserFalseNotifications2.setChatId("chatId2");
         validManageableUserFalseNotifications2.setPrivateNotificationsEnabledFlag(false);
         validManageableUserFalseNotifications2.setUbiAccountStatsEntityDTO(new UbiAccountStatsEntityDTO());
-        validManageableUserFalseNotifications2.getUbiAccountStatsEntityDTO().setUbiProfileId("2");
+        validManageableUserFalseNotifications2.getUbiAccountStatsEntityDTO().setUbiProfileId("ubiProfiledId2");
         validManageableUserFalseNotifications2.getUbiAccountStatsEntityDTO().setCreditAmount(2000);
         validManageableUserFalseNotifications2.setTradeByFiltersManagers(tradeByFiltersManagers2);
         validManageableUserFalseNotifications2.setTradeByItemIdManagers(tradeByItemIdManagers2);
@@ -146,7 +146,7 @@ class CentralTradeManagerTest {
 
         ManageableUser nullLinkedUbiAccountUser = new ManageableUser();
         nullLinkedUbiAccountUser.setUbiAccountStatsEntityDTO(new UbiAccountStatsEntityDTO());
-        nullLinkedUbiAccountUser.getUbiAccountStatsEntityDTO().setUbiProfileId("4");
+        nullLinkedUbiAccountUser.getUbiAccountStatsEntityDTO().setUbiProfileId("ubiProfiledId4");
 
         List<ManageableUser> manageableUsers = new ArrayList<>();
         manageableUsers.add(validManageableUserTrueNotifications1);
@@ -164,7 +164,7 @@ class CentralTradeManagerTest {
                 eq(configTrades.getSellSlots()), same(configTrades.getSellLimit()))).thenReturn(resultingSellTrades1);
 
         List resultingBuyTrades1 = Mockito.mock(List.class);
-        when(potentialTradeFactory.getResultingPersonalBuyTrades(same(personalItems1), same(creditAmount1), same(boughtIn24h2),
+        when(potentialTradeFactory.getResultingPersonalBuyTrades(same(personalItems1), eq(creditAmount1), eq(boughtIn24h1),
                 eq(configTrades.getBuySlots()), eq(configTrades.getBuyLimit()))).thenReturn(resultingBuyTrades1);
 
         CentralTradeManagerCommand buyCancelCommand1 = Mockito.mock(CentralTradeManagerCommand.class);
@@ -172,12 +172,14 @@ class CentralTradeManagerTest {
         when(buyCancelCommand1.getAuthorizationDTO()).thenReturn(authDTO1);
         when(buyCancelCommand1.getTradeId()).thenReturn("buyCancelTradeId1");
         when(buyCancelCommand1.getChatId()).thenReturn("chatId1");
+        when(buyCancelCommand1.getPrivateNotificationsEnabledFlag()).thenReturn(true);
 
         CentralTradeManagerCommand buyCancelCommand12 = Mockito.mock(CentralTradeManagerCommand.class);
         when(buyCancelCommand12.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_CANCEL);
         when(buyCancelCommand12.getAuthorizationDTO()).thenReturn(authDTO1);
         when(buyCancelCommand12.getTradeId()).thenReturn("buyCancelTradeId12");
         when(buyCancelCommand12.getChatId()).thenReturn("chatId1");
+        when(buyCancelCommand12.getPrivateNotificationsEnabledFlag()).thenReturn(true);
 
         CentralTradeManagerCommand buyUpdateCommand1 = Mockito.mock(CentralTradeManagerCommand.class);
         when(buyUpdateCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_UPDATE);
@@ -185,6 +187,7 @@ class CentralTradeManagerTest {
         when(buyUpdateCommand1.getTradeId()).thenReturn("buyUpdateTradeId1");
         when(buyUpdateCommand1.getNewPrice()).thenReturn(1);
         when(buyUpdateCommand1.getChatId()).thenReturn("chatId1");
+        when(buyUpdateCommand1.getPrivateNotificationsEnabledFlag()).thenReturn(true);
 
         CentralTradeManagerCommand buyUpdateCommand12 = Mockito.mock(CentralTradeManagerCommand.class);
         when(buyUpdateCommand12.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_UPDATE);
@@ -192,6 +195,7 @@ class CentralTradeManagerTest {
         when(buyUpdateCommand12.getTradeId()).thenReturn("buyUpdateTradeId12");
         when(buyUpdateCommand12.getNewPrice()).thenReturn(1);
         when(buyUpdateCommand12.getChatId()).thenReturn("chatId1");
+        when(buyUpdateCommand12.getPrivateNotificationsEnabledFlag()).thenReturn(true);
 
         CentralTradeManagerCommand buyCreateCommand1 = Mockito.mock(CentralTradeManagerCommand.class);
         when(buyCreateCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_CREATE);
@@ -199,6 +203,7 @@ class CentralTradeManagerTest {
         when(buyCreateCommand1.getItemId()).thenReturn("buyCreateItemId1");
         when(buyCreateCommand1.getNewPrice()).thenReturn(1);
         when(buyCreateCommand1.getChatId()).thenReturn("chatId1");
+        when(buyCreateCommand1.getPrivateNotificationsEnabledFlag()).thenReturn(true);
 
         CentralTradeManagerCommand buyCreateCommand12 = Mockito.mock(CentralTradeManagerCommand.class);
         when(buyCreateCommand12.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_CREATE);
@@ -206,18 +211,21 @@ class CentralTradeManagerTest {
         when(buyCreateCommand12.getItemId()).thenReturn("buyCreateItemId12");
         when(buyCreateCommand12.getNewPrice()).thenReturn(1);
         when(buyCreateCommand12.getChatId()).thenReturn("chatId1");
+        when(buyCreateCommand12.getPrivateNotificationsEnabledFlag()).thenReturn(true);
 
         CentralTradeManagerCommand sellCancelCommand1 = Mockito.mock(CentralTradeManagerCommand.class);
         when(sellCancelCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_CANCEL);
         when(sellCancelCommand1.getAuthorizationDTO()).thenReturn(authDTO1);
         when(sellCancelCommand1.getTradeId()).thenReturn("sellCancelTradeId1");
         when(sellCancelCommand1.getChatId()).thenReturn("chatId1");
+        when(sellCancelCommand1.getPrivateNotificationsEnabledFlag()).thenReturn(true);
 
         CentralTradeManagerCommand sellCancelCommand12 = Mockito.mock(CentralTradeManagerCommand.class);
         when(sellCancelCommand12.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_CANCEL);
         when(sellCancelCommand12.getAuthorizationDTO()).thenReturn(authDTO1);
         when(sellCancelCommand12.getTradeId()).thenReturn("sellCancelTradeId12");
         when(sellCancelCommand12.getChatId()).thenReturn("chatId1");
+        when(sellCancelCommand12.getPrivateNotificationsEnabledFlag()).thenReturn(true);
 
         CentralTradeManagerCommand sellUpdateCommand1 = Mockito.mock(CentralTradeManagerCommand.class);
         when(sellUpdateCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_UPDATE);
@@ -225,6 +233,7 @@ class CentralTradeManagerTest {
         when(sellUpdateCommand1.getTradeId()).thenReturn("sellUpdateTradeId1");
         when(sellUpdateCommand1.getNewPrice()).thenReturn(1);
         when(sellUpdateCommand1.getChatId()).thenReturn("chatId1");
+        when(sellUpdateCommand1.getPrivateNotificationsEnabledFlag()).thenReturn(true);
 
         CentralTradeManagerCommand sellUpdateCommand12 = Mockito.mock(CentralTradeManagerCommand.class);
         when(sellUpdateCommand12.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_UPDATE);
@@ -232,6 +241,7 @@ class CentralTradeManagerTest {
         when(sellUpdateCommand12.getTradeId()).thenReturn("sellUpdateTradeId12");
         when(sellUpdateCommand12.getNewPrice()).thenReturn(1);
         when(sellUpdateCommand12.getChatId()).thenReturn("chatId1");
+        when(sellUpdateCommand12.getPrivateNotificationsEnabledFlag()).thenReturn(true);
 
         CentralTradeManagerCommand sellCreateCommand1 = Mockito.mock(CentralTradeManagerCommand.class);
         when(sellCreateCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_CREATE);
@@ -239,6 +249,7 @@ class CentralTradeManagerTest {
         when(sellCreateCommand1.getItemId()).thenReturn("sellCreateItemId1");
         when(sellCreateCommand1.getNewPrice()).thenReturn(1);
         when(sellCreateCommand1.getChatId()).thenReturn("chatId1");
+        when(sellCreateCommand1.getPrivateNotificationsEnabledFlag()).thenReturn(true);
 
         CentralTradeManagerCommand sellCreateCommand12 = Mockito.mock(CentralTradeManagerCommand.class);
         when(sellCreateCommand12.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_CREATE);
@@ -246,11 +257,16 @@ class CentralTradeManagerTest {
         when(sellCreateCommand12.getItemId()).thenReturn("sellCreateItemId12");
         when(sellCreateCommand12.getNewPrice()).thenReturn(1);
         when(sellCreateCommand12.getChatId()).thenReturn("chatId1");
+        when(sellCreateCommand12.getPrivateNotificationsEnabledFlag()).thenReturn(true);
 
-        List<CentralTradeManagerCommand> commands1 = List.of(buyCancelCommand1,buyCancelCommand12,  buyUpdateCommand1,buyUpdateCommand12,
-                buyCreateCommand1,buyCreateCommand12, sellCancelCommand1, sellCancelCommand12, sellUpdateCommand1, sellUpdateCommand12,
-                sellCreateCommand1,sellCreateCommand12);
-        when(centralTradeManagerCommandFactory.createCommandsForCentralTradeManagerForUser(same(resultingSellTrades1), same(currentSellTrades1), same(resultingBuyTrades1), same(currentBuyTrades1),eq(1L), eq(authDTO1), eq("chatId1"), eq(true))).thenReturn(commands1);
+        List<CentralTradeManagerCommand> commands1 = List.of(buyCancelCommand1, buyCancelCommand12, buyUpdateCommand1, buyUpdateCommand12,
+                buyCreateCommand1, buyCreateCommand12, sellCancelCommand1, sellCancelCommand12, sellUpdateCommand1, sellUpdateCommand12,
+                sellCreateCommand1, sellCreateCommand12);
+
+        AuthorizationDTO updatedAuthDTO1 = new AuthorizationDTO(authDTO1.getTicket(), validManageableUserTrueNotifications1.getUbiProfileId(), authDTO1.getSpaceId(), authDTO1.getSessionId(), authDTO1.getRememberDeviceTicket(), authDTO1.getRememberMeTicket());
+
+        when(centralTradeManagerCommandFactory.createCommandsForCentralTradeManagerForUser(same(resultingSellTrades1), same(currentSellTrades1),
+                same(resultingBuyTrades1), same(currentBuyTrades1), eq(1L), eq(updatedAuthDTO1), eq("chatId1"), eq(true))).thenReturn(commands1);
 
         Set personalItems2 = Mockito.mock(Set.class);
         when(personalItemFactory.getPersonalItemsForUser(same(tradeByFiltersManagers2), same(tradeByItemIdManagers2), same(currentSellTrades2), same(currentBuyTrades2), same(ownedItemsIds2), same(items))).thenReturn(personalItems2);
@@ -259,13 +275,15 @@ class CentralTradeManagerTest {
         when(potentialTradeFactory.getResultingPersonalSellTrades(same(personalItems2), same(resaleLocks2), same(soldIn24h2), same(configTrades.getSellSlots()), same(configTrades.getSellLimit()))).thenReturn(resultingSellTrades2);
 
         List resultingBuyTrades2 = Mockito.mock(List.class);
-        when(potentialTradeFactory.getResultingPersonalBuyTrades(same(personalItems2), same(creditAmount1), same(boughtIn24h2), same(configTrades.getBuySlots()), same(configTrades.getBuyLimit()))).thenReturn(resultingBuyTrades2);
+        when(potentialTradeFactory.getResultingPersonalBuyTrades(same(personalItems2), eq(creditAmount2), eq(boughtIn24h2),
+                eq(configTrades.getBuySlots()), eq(configTrades.getBuyLimit()))).thenReturn(resultingBuyTrades2);
 
         CentralTradeManagerCommand buyCancelCommand2 = Mockito.mock(CentralTradeManagerCommand.class);
         when(buyCancelCommand2.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_CANCEL);
         when(buyCancelCommand2.getAuthorizationDTO()).thenReturn(authDTO2);
         when(buyCancelCommand2.getTradeId()).thenReturn("buyCancelTradeId2");
         when(buyCancelCommand2.getChatId()).thenReturn("chatId2");
+        when(buyCancelCommand2.getPrivateNotificationsEnabledFlag()).thenReturn(false);
 
         CentralTradeManagerCommand buyUpdateCommand2 = Mockito.mock(CentralTradeManagerCommand.class);
         when(buyUpdateCommand2.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_UPDATE);
@@ -273,6 +291,7 @@ class CentralTradeManagerTest {
         when(buyUpdateCommand2.getTradeId()).thenReturn("buyUpdateTradeId2");
         when(buyUpdateCommand2.getNewPrice()).thenReturn(1);
         when(buyUpdateCommand2.getChatId()).thenReturn("chatId2");
+        when(buyUpdateCommand2.getPrivateNotificationsEnabledFlag()).thenReturn(false);
 
         CentralTradeManagerCommand buyCreateCommand2 = Mockito.mock(CentralTradeManagerCommand.class);
         when(buyCreateCommand2.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_CREATE);
@@ -280,12 +299,14 @@ class CentralTradeManagerTest {
         when(buyCreateCommand2.getItemId()).thenReturn("buyCreateItemId2");
         when(buyCreateCommand2.getNewPrice()).thenReturn(1);
         when(buyCreateCommand2.getChatId()).thenReturn("chatId2");
+        when(buyCreateCommand2.getPrivateNotificationsEnabledFlag()).thenReturn(false);
 
         CentralTradeManagerCommand sellCancelCommand2 = Mockito.mock(CentralTradeManagerCommand.class);
         when(sellCancelCommand2.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_CANCEL);
         when(sellCancelCommand2.getAuthorizationDTO()).thenReturn(authDTO2);
         when(sellCancelCommand2.getTradeId()).thenReturn("sellCancelTradeId2");
         when(sellCancelCommand2.getChatId()).thenReturn("chatId2");
+        when(sellCancelCommand2.getPrivateNotificationsEnabledFlag()).thenReturn(false);
 
         CentralTradeManagerCommand sellUpdateCommand2 = Mockito.mock(CentralTradeManagerCommand.class);
         when(sellUpdateCommand2.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_UPDATE);
@@ -293,6 +314,7 @@ class CentralTradeManagerTest {
         when(sellUpdateCommand2.getTradeId()).thenReturn("sellUpdateTradeId2");
         when(sellUpdateCommand2.getNewPrice()).thenReturn(1);
         when(sellUpdateCommand2.getChatId()).thenReturn("chatId2");
+        when(sellUpdateCommand2.getPrivateNotificationsEnabledFlag()).thenReturn(false);
 
         CentralTradeManagerCommand sellCreateCommand2 = Mockito.mock(CentralTradeManagerCommand.class);
         when(sellCreateCommand2.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_CREATE);
@@ -300,9 +322,13 @@ class CentralTradeManagerTest {
         when(sellCreateCommand2.getItemId()).thenReturn("sellCreateItemId2");
         when(sellCreateCommand2.getNewPrice()).thenReturn(1);
         when(sellCreateCommand2.getChatId()).thenReturn("chatId2");
+        when(sellCreateCommand2.getPrivateNotificationsEnabledFlag()).thenReturn(false);
 
-        List<CentralTradeManagerCommand> commands2 = List.of(buyCancelCommand2,  buyUpdateCommand2, buyCreateCommand2, sellCancelCommand2, sellUpdateCommand2, sellCreateCommand2);
-        when(centralTradeManagerCommandFactory.createCommandsForCentralTradeManagerForUser(same(resultingSellTrades2), same(currentSellTrades2), same(resultingBuyTrades2), same(currentBuyTrades2),eq(2L), eq(authDTO2), eq("chatId2"), eq(false))).thenReturn(commands2);
+        AuthorizationDTO updatedAuthDTO2 = new AuthorizationDTO(authDTO2.getTicket(), validManageableUserFalseNotifications2.getUbiProfileId(), authDTO2.getSpaceId(), authDTO2.getSessionId(), authDTO2.getRememberDeviceTicket(), authDTO2.getRememberMeTicket());
+
+        List<CentralTradeManagerCommand> commands2 = List.of(buyCancelCommand2, buyUpdateCommand2, buyCreateCommand2, sellCancelCommand2, sellUpdateCommand2, sellCreateCommand2);
+        when(centralTradeManagerCommandFactory.createCommandsForCentralTradeManagerForUser(same(resultingSellTrades2), same(currentSellTrades2),
+                same(resultingBuyTrades2), same(currentBuyTrades2), eq(2L), eq(updatedAuthDTO2), eq("chatId2"), eq(false))).thenReturn(commands2);
 
         centralTradeManager.manageAllUsersTrades(updateUbiAccount);
 
@@ -326,8 +352,8 @@ class CentralTradeManagerTest {
         verify(graphQlClientService).updateSellOrderForUser(authDTO2, "sellUpdateTradeId2", 1);
         verify(graphQlClientService).createSellOrderForUser(authDTO2, "sellCreateItemId2", 1);
 
-        verify(telegramBotService,times(12)).sendNotificationToUser(eq("chatId1"), anyString());
+        verify(telegramBotService, times(12)).sendNotificationToUser(eq("chatId1"), anyString());
 
-        verify(telegramBotService,times(0)).sendNotificationToUser(eq("chatId2"), anyString());
+        verify(telegramBotService, times(0)).sendNotificationToUser(eq("chatId2"), anyString());
     }
 }

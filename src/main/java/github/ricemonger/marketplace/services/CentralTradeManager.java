@@ -40,6 +40,7 @@ public class CentralTradeManager {
             UbiAccountStats linkedUbiAccount =
                     updatedUbiAccountStats.stream().filter(u -> u != null && manageableUser != null && Objects.equals(u.getUbiProfileId(),
                             manageableUser.getUbiProfileId())).findFirst().orElse(null);
+
             if (manageableUser != null && linkedUbiAccount != null) {
                 usersForCentralTradeManager.add(new UserForCentralTradeManager(manageableUser, linkedUbiAccount));
             }
@@ -53,7 +54,6 @@ public class CentralTradeManager {
     private void createAndExecuteCentralTradeManagerCommandsForUser(@NotNull UserForCentralTradeManager userForCentralTradeManager,
                                                                     @NotNull ConfigTrades configTrades,
                                                                     Collection<Item> existingItems) {
-
         List<UbiTrade> currentSellTrades = userForCentralTradeManager.getCurrentSellTrades();
         List<UbiTrade> currentBuyTrades = userForCentralTradeManager.getCurrentBuyTrades();
 
