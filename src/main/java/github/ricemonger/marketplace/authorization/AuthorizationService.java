@@ -62,7 +62,8 @@ public class AuthorizationService {
                         clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
                             @Override
                             public Throwable apply(String s) {
-                                log.info("Client error during ubi 2fa reauthorization for email {}, rememberDeviceTicket: {} : {}", email, rememberDeviceTicket,s);
+                                log.error("Client error during ubi 2fa reauthorization for email {}, rememberDeviceTicket: {} : {}", email,
+                                        rememberDeviceTicket,s);
                                 return new UbiUserAuthorizationClientErrorException(s);
                             }
                         }))
@@ -106,7 +107,7 @@ public class AuthorizationService {
                         clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
                             @Override
                             public Throwable apply(String s) {
-                                log.info("Client error during ubi 2fa reauthorization for ticket {} : {}", ticket, s);
+                                log.error("Client error during ubi 2fa reauthorization for ticket {} : {}", ticket, s);
                                 return new UbiUserAuthorizationClientErrorException(s);
                             }
                         }))
@@ -153,7 +154,7 @@ public class AuthorizationService {
                         clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
                             @Override
                             public Throwable apply(String s) {
-                                log.info("Client error during ubi 2fa authorization for twoFaCode: {}, twoFaToken:{} :  {}", twoFaCode, twoFaToken, s);
+                                log.error("Client error during ubi 2fa authorization for twoFaCode: {}, twoFaToken:{} :  {}", twoFaCode, twoFaToken, s);
                                 return new UbiUserAuthorizationClientErrorException(s);
                             }
                         }))
@@ -197,7 +198,7 @@ public class AuthorizationService {
                         clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
                             @Override
                             public Throwable apply(String s) {
-                                log.info("Client error during ubi base 2Fa authorization for email {}:{} :", email, s);
+                                log.error("Client error during ubi base 2Fa authorization for email {}:{} :", email, s);
                                 return new UbiUserAuthorizationClientErrorException(s);
                             }
                         }))

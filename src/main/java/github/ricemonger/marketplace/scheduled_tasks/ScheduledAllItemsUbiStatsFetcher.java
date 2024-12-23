@@ -20,8 +20,8 @@ public class ScheduledAllItemsUbiStatsFetcher {
     private final ItemService itemService;
 
     @Scheduled(fixedRate = 24 * 60 * 60 * 1000, initialDelay = 15 * 60 * 1000) // every 24h after 15m of delay
-    public void fetchAllItemUbiStats() {
-        List<GroupedItemDaySalesUbiStats> ubiStats = graphQlClientService.fetchAllItemsUbiStats();
+    public void fetchAllItemSalesUbiStats() {
+        List<GroupedItemDaySalesUbiStats> ubiStats = graphQlClientService.fetchAllItemSalesUbiStats();
 
         itemService.saveAllItemSaleUbiStats(ubiStats);
     }

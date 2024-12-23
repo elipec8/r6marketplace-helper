@@ -72,7 +72,7 @@ public class GraphQlClientService {
         return commonQueryItemsMapper.mapItems(nodes);
     }
 
-    public List<GroupedItemDaySalesUbiStats> fetchAllItemsUbiStats() throws GraphQlCommonItemsSaleStatsMappingException {
+    public List<GroupedItemDaySalesUbiStats> fetchAllItemSalesUbiStats() throws GraphQlCommonItemsSaleStatsMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
         github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems marketableItems;
         List<github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node> nodes = new ArrayList<>();

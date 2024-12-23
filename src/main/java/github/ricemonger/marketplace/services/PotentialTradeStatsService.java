@@ -179,6 +179,10 @@ public class PotentialTradeStatsService {
             } else {
                 int monthMedianPrice = item.getMonthMedianPrice() == null ? 0 : item.getMonthMedianPrice();
 
+                if (minutesToTrade == null){
+                    return new PotentialTradeStats(price, null, null);
+                }
+
                 long tradePriority = getPriceFactor(price, 0.5) *
                                      getPriceDifferenceFactor(price, monthMedianPrice, 1) *
                                      getPriceRatioFactorPercent(price, monthMedianPrice, 1) *
@@ -201,6 +205,10 @@ public class PotentialTradeStatsService {
         if (price != null && price > 0) {
 
             int monthMedianPrice = item.getMonthMedianPrice() == null ? 0 : item.getMonthMedianPrice();
+
+            if (minutesToTrade == null){
+                return new PotentialTradeStats(price, null, null);
+            }
 
             long tradePriority = (constant / getPriceFactor(price, 1.0)) *
                                  getPriceDifferenceFactor(price, monthMedianPrice, 1) *

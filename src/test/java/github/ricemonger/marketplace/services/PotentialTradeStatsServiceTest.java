@@ -310,6 +310,18 @@ class PotentialTradeStatsServiceTest {
     }
 
     @Test
+    public void calculateSellTradeStats_should_return_nulls_if_minutes_to_trade_is_null() {
+        when(commonValuesService.getMaximumMarketplacePrice()).thenReturn(100_000);
+
+        Item item = new Item();
+        item.setMonthMedianPrice(1000);
+
+        int price = 1500;
+
+        assertEquals(new PotentialTradeStats(price, null, null), potentialTradeStatsService.calculateSellTradeStats(item, price, null));
+    }
+
+    @Test
     public void calculateSellTradeStats_should_return_expected_object_for_non_profitable_trade() {
         when(commonValuesService.getMaximumMarketplacePrice()).thenReturn(100_000);
 
@@ -419,6 +431,19 @@ class PotentialTradeStatsServiceTest {
         long expectedPriority = -100_000L / price * 1L * 1L * 100L * 3927L;
 
         assertEquals(new PotentialTradeStats(price, minutesToTrade, expectedPriority), potentialTradeStatsService.calculateBuyTradeStats(item, price, minutesToTrade));
+    }
+
+    @Test
+    public void calculateBuyTradeStats_should_return_nulls_for_null_time() {
+        when(commonValuesService.getMaximumMarketplacePrice()).thenReturn(100_000);
+
+        Item item = new Item();
+        item.setMonthMedianPrice(1000);
+        item.setMonthSales(100);
+
+        int price = 500;
+
+        assertEquals(new PotentialTradeStats(price,null, null), potentialTradeStatsService.calculateBuyTradeStats(item, price, null));
     }
 
     @Test
