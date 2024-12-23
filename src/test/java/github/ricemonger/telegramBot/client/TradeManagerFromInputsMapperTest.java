@@ -70,7 +70,7 @@ class TradeManagerFromInputsMapperTest {
         expected.setItemId("");
         expected.setEnabled(false);
         expected.setSellBoundaryPrice(120);
-        expected.setBuyBoundaryPrice(120);
+        expected.setBuyBoundaryPrice(100000);
         expected.setPriorityMultiplier(1);
 
         Item item = new Item();

@@ -72,6 +72,7 @@ class TelegramUserTradeByFiltersManagerPostgresServiceTest {
     @Test
     public void deleteById_should_remove_manager_and_save_user() throws TelegramUserDoesntExistException {
         TelegramUserEntity user = new TelegramUserEntity();
+        user.setUser(new UserEntity(1L));
         TradeByFiltersManagerEntity manager1 = new TradeByFiltersManagerEntity();
         manager1.setName("name");
         TradeByFiltersManagerEntity manager2 = new TradeByFiltersManagerEntity();
@@ -117,6 +118,7 @@ class TelegramUserTradeByFiltersManagerPostgresServiceTest {
     @Test
     public void findAllByChatId_should_return_all_mapped_dtos() throws TelegramUserDoesntExistException {
         TelegramUserEntity user = new TelegramUserEntity();
+        user.setUser(new UserEntity(1L));
         TradeByFiltersManagerEntity manager1 = new TradeByFiltersManagerEntity();
         TradeByFiltersManagerEntity manager2 = new TradeByFiltersManagerEntity();
         user.getUser().getTradeByFiltersManagers().add(manager1);

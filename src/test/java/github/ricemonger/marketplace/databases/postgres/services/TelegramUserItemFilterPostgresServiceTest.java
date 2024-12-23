@@ -56,7 +56,9 @@ class TelegramUserItemFilterPostgresServiceTest {
         filterEntity1.setName("name");
         ItemFilterEntity filterEntity2 = new ItemFilterEntity();
         filterEntity2.setName("name2");
-        List<ItemFilterEntity> filtersEntities = List.of(filterEntity1, filterEntity2);
+        List<ItemFilterEntity> filtersEntities = new ArrayList<>();
+        filtersEntities.add(filterEntity1);
+        filtersEntities.add(filterEntity2);
         telegramUser.getUser().setItemFilters(filtersEntities);
 
         when(telegramUserRepository.findById("chatId")).thenReturn(Optional.of(telegramUser));

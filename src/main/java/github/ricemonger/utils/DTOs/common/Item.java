@@ -69,46 +69,8 @@ public class Item implements ItemMainFieldsI, ItemHistoryFieldsI {
     }
 
     public Item(Item item) {
-        this.itemId = item.getItemId();
-        this.assetUrl = item.getAssetUrl();
-        this.name = item.getName();
-        if (item.getTags() == null) {
-            this.tags = null;
-        } else {
-            this.tags = item.getTags().subList(0, item.getTags().size());
-        }
-        this.rarity = item.getRarity();
-        this.type = item.getType();
-        this.maxBuyPrice = item.getMaxBuyPrice();
-        this.buyOrdersCount = item.getBuyOrdersCount();
-        this.minSellPrice = item.getMinSellPrice();
-        this.sellOrdersCount = item.getSellOrdersCount();
-        this.lastSoldAt = item.getLastSoldAt();
-        this.lastSoldPrice = item.getLastSoldPrice();
-        this.monthAveragePrice = item.getMonthAveragePrice();
-        this.monthMedianPrice = item.getMonthMedianPrice();
-        this.monthMaxPrice = item.getMonthMaxPrice();
-        this.monthMinPrice = item.getMonthMinPrice();
-        this.monthSalesPerDay = item.getMonthSalesPerDay();
-        this.monthSales = item.getMonthSales();
-        this.dayAveragePrice = item.getDayAveragePrice();
-        this.dayMedianPrice = item.getDayMedianPrice();
-        this.dayMaxPrice = item.getDayMaxPrice();
-        this.dayMinPrice = item.getDayMinPrice();
-        this.daySales = item.getDaySales();
-        this.priorityToSellByMaxBuyPrice = item.getPriorityToSellByMaxBuyPrice();
-        this.priorityToSellByNextFancySellPrice = item.getPriorityToSellByNextFancySellPrice();
-        this.priorityToBuyByMinSellPrice = item.getPriorityToBuyByMinSellPrice();
-        this.priorityToBuyIn1Hour = item.getPriorityToBuyIn1Hour();
-        this.priorityToBuyIn6Hours = item.getPriorityToBuyIn6Hours();
-        this.priorityToBuyIn24Hours = item.getPriorityToBuyIn24Hours();
-        this.priorityToBuyIn168Hours = item.getPriorityToBuyIn168Hours();
-        this.priorityToBuyIn720Hours = item.getPriorityToBuyIn720Hours();
-        this.priceToBuyIn1Hour = item.getPriceToBuyIn1Hour();
-        this.priceToBuyIn6Hours = item.getPriceToBuyIn6Hours();
-        this.priceToBuyIn24Hours = item.getPriceToBuyIn24Hours();
-        this.priceToBuyIn168Hours = item.getPriceToBuyIn168Hours();
-        this.priceToBuyIn720Hours = item.getPriceToBuyIn720Hours();
+        setMainFields(item);
+        setHistoryFields(item);
     }
 
     public Item(ItemMainFieldsI mainFields) {

@@ -65,7 +65,7 @@ class ItemDaySalesUbiStatsEntityMapperTest {
 
         ItemDaySalesUbiStats daySales31 = new ItemDaySalesUbiStats("itemId3", LocalDate.of(2022, 1, 1), 2, 3, 4, 5);
         ItemDaySalesUbiStats daySales32 = new ItemDaySalesUbiStats("itemId3", LocalDate.of(2022, 1, 2), 6, 7, 8, 9);
-        GroupedItemDaySalesUbiStats groupedItemDaySalesUbiStats3 = new GroupedItemDaySalesUbiStats("itemId2", List.of(daySales31, daySales32));
+        GroupedItemDaySalesUbiStats groupedItemDaySalesUbiStats3 = new GroupedItemDaySalesUbiStats("itemId3", List.of(daySales31, daySales32));
 
         Collection<GroupedItemDaySalesUbiStats> groupedItemDaySalesUbiStatsList = List.of(groupedItemDaySalesUbiStats1, groupedItemDaySalesUbiStats2, groupedItemDaySalesUbiStats3);
 
@@ -77,16 +77,6 @@ class ItemDaySalesUbiStatsEntityMapperTest {
         List<ItemDaySalesUbiStatsEntity> expected = List.of(expected1, expected2, expected3, expected4);
 
         List<ItemDaySalesUbiStatsEntity> actual = itemDaySalesUbiStatsEntityMapper.createEntities(groupedItemDaySalesUbiStatsList);
-
-        System.out.println("Actual:");
-        for (ItemDaySalesUbiStatsEntity entity : actual) {
-            System.out.println(entity);
-        }
-
-        System.out.println("Expected:");
-        for (ItemDaySalesUbiStatsEntity entity : expected) {
-            System.out.println(entity);
-        }
 
         assertTrue(expected.stream().allMatch(ex -> actual.stream().anyMatch(ac -> ac.isFullyEqual(ex))) && expected.size() == actual.size());
     }

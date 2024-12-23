@@ -9,6 +9,7 @@ import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.trades.nodes.TradeItems;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.trades.nodes.tradeItems.Item;
 import github.ricemonger.marketplace.services.CommonValuesService;
+import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
@@ -25,14 +26,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class PersonalQueryFinishedOrdersMapperTest {
     @SpyBean
     private PersonalQueryFinishedOrdersMapper personalQueryCurrentOrdersMapper;
-    @Autowired
+    @SpyBean
     private CommonValuesService commonValuesService;
 
     @Test
@@ -85,6 +85,10 @@ class PersonalQueryFinishedOrdersMapperTest {
 
         expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
 
+        ConfigTrades configTrades = new ConfigTrades();
+        configTrades.setFeePercentage(10);
+        when(commonValuesService.getConfigTrades()).thenReturn(configTrades);
+
         expected.setSuccessPaymentPrice(1000);
         expected.setSuccessPaymentFee(100);
 
@@ -111,6 +115,10 @@ class PersonalQueryFinishedOrdersMapperTest {
         expected.setLastModifiedAt(date2);
 
         expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
+
+        ConfigTrades configTrades = new ConfigTrades();
+        configTrades.setFeePercentage(10);
+        when(commonValuesService.getConfigTrades()).thenReturn(configTrades);
 
         expected.setSuccessPaymentPrice(1000);
         expected.setSuccessPaymentFee(100);
@@ -140,6 +148,10 @@ class PersonalQueryFinishedOrdersMapperTest {
 
         expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
 
+        ConfigTrades configTrades = new ConfigTrades();
+        configTrades.setFeePercentage(10);
+        when(commonValuesService.getConfigTrades()).thenReturn(configTrades);
+
         expected.setSuccessPaymentPrice(0);
         expected.setSuccessPaymentFee(0);
 
@@ -168,6 +180,10 @@ class PersonalQueryFinishedOrdersMapperTest {
 
         expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
 
+        ConfigTrades configTrades = new ConfigTrades();
+        configTrades.setFeePercentage(10);
+        when(commonValuesService.getConfigTrades()).thenReturn(configTrades);
+
         expected.setSuccessPaymentPrice(1000);
         expected.setSuccessPaymentFee(100);
 
@@ -195,6 +211,10 @@ class PersonalQueryFinishedOrdersMapperTest {
         expected.setLastModifiedAt(date2);
 
         expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
+
+        ConfigTrades configTrades = new ConfigTrades();
+        configTrades.setFeePercentage(10);
+        when(commonValuesService.getConfigTrades()).thenReturn(configTrades);
 
         expected.setSuccessPaymentPrice(1000);
         expected.setSuccessPaymentFee(100);

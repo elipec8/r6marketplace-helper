@@ -71,7 +71,7 @@ class TelegramUserEntityTest {
     public void getItemShowAppliedFilters_should_return_item_show_applied_filters() {
         UserEntity user = new UserEntity();
         ItemFilterEntity itemFilterEntity = new ItemFilterEntity();
-        user.setItemFilters(List.of(itemFilterEntity));
+        user.setItemShowAppliedFilters(List.of(itemFilterEntity));
         TelegramUserEntity telegramUser = new TelegramUserEntity();
         telegramUser.setUser(user);
         assertEquals(List.of(itemFilterEntity), telegramUser.getItemShowAppliedFilters());
@@ -84,7 +84,7 @@ class TelegramUserEntityTest {
         TelegramUserEntity telegramUser = new TelegramUserEntity();
         telegramUser.setUser(user);
         telegramUser.setItemShowAppliedFilters(List.of(itemFilterEntity));
-        assertEquals(List.of(itemFilterEntity), user.getItemFilters());
+        assertEquals(List.of(itemFilterEntity), user.getItemShowAppliedFilters());
     }
 
     @Test
@@ -158,7 +158,7 @@ class TelegramUserEntityTest {
         telegramUser1.setInputGroup(InputGroup.BASE);
         telegramUser1.setItemShowMessagesLimit(50);
         telegramUser1.setItemShowFewInMessageFlag(false);
-        telegramUser1.setTelegramUserInputs(List.of(new TelegramUserInputEntity()));
+        telegramUser1.setTelegramUserInputs(List.of(new TelegramUserInputEntity(telegramUser1, InputState.BASE, "value")));
 
         TelegramUserEntity telegramUser2 = new TelegramUserEntity();
         telegramUser2.setUser(new UserEntity(1L));
@@ -167,7 +167,7 @@ class TelegramUserEntityTest {
         telegramUser2.setInputGroup(InputGroup.BASE);
         telegramUser2.setItemShowMessagesLimit(50);
         telegramUser2.setItemShowFewInMessageFlag(false);
-        telegramUser2.setTelegramUserInputs(List.of(new TelegramUserInputEntity()));
+        telegramUser2.setTelegramUserInputs(List.of(new TelegramUserInputEntity(telegramUser2, InputState.BASE, "value")));
 
         assertTrue(telegramUser1.isFullyEqualExceptUser(telegramUser2));
     }
@@ -181,7 +181,7 @@ class TelegramUserEntityTest {
         telegramUser1.setInputGroup(InputGroup.BASE);
         telegramUser1.setItemShowMessagesLimit(50);
         telegramUser1.setItemShowFewInMessageFlag(false);
-        telegramUser1.setTelegramUserInputs(List.of(new TelegramUserInputEntity()));
+        telegramUser1.setTelegramUserInputs(List.of(new TelegramUserInputEntity(telegramUser1, InputState.BASE, "value")));
 
         TelegramUserEntity telegramUser2 = new TelegramUserEntity();
         telegramUser2.setUser(new UserEntity(1L));
@@ -190,7 +190,7 @@ class TelegramUserEntityTest {
         telegramUser2.setInputGroup(InputGroup.BASE);
         telegramUser2.setItemShowMessagesLimit(50);
         telegramUser2.setItemShowFewInMessageFlag(false);
-        telegramUser2.setTelegramUserInputs(List.of(new TelegramUserInputEntity()));
+        telegramUser2.setTelegramUserInputs(List.of(new TelegramUserInputEntity(telegramUser2, InputState.BASE, "value")));
 
         telegramUser1.setUser(new UserEntity(2L));
         assertFalse(telegramUser1.isFullyEqualExceptUser(telegramUser2));

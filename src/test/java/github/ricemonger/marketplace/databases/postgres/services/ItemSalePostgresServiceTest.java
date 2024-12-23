@@ -63,7 +63,7 @@ class ItemSalePostgresServiceTest {
         ItemSaleEntity entity1 = new ItemSaleEntity();
         ItemSaleEntity entity2 = new ItemSaleEntity();
         List<ItemSaleEntity> entities = List.of(entity1, entity2);
-        when(itemSaleRepository.findAll()).thenReturn(entities);
+        when(itemSaleRepository.findAllForLastMonth()).thenReturn(entities);
 
         ItemSale sale1 = new ItemSale();
         ItemSale sale2 = new ItemSale();

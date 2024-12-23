@@ -30,7 +30,7 @@ class TradeByFiltersManagerEntityTest {
         manager1.setPriorityMultiplier(2);
 
         TradeByFiltersManagerEntity manager2 = new TradeByFiltersManagerEntity();
-        manager1.setUser(new UserEntity(1L));
+        manager2.setUser(new UserEntity(1L));
         manager2.setName("managerName");
         manager2.setEnabled(true);
         manager2.setTradeOperationType(TradeOperationType.BUY);
@@ -58,7 +58,7 @@ class TradeByFiltersManagerEntityTest {
         manager1.setPriorityMultiplier(2);
 
         TradeByFiltersManagerEntity manager2 = new TradeByFiltersManagerEntity();
-        manager1.setUser(new UserEntity(1L));
+        manager2.setUser(new UserEntity(1L));
         manager2.setName("managerName1");
         manager2.setEnabled(true);
         manager2.setTradeOperationType(TradeOperationType.BUY);

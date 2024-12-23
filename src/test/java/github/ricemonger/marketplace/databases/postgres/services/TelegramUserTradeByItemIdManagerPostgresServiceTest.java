@@ -126,15 +126,16 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
     public void findAllByChatId_should_return_all_mapped_dtos() throws TelegramUserDoesntExistException {
         TelegramUserEntity user = new TelegramUserEntity();
         user.setUser(new UserEntity(1L));
-        TradeByItemIdManagerEntity manager1 = new TradeByItemIdManagerEntity();
-        TradeByItemIdManagerEntity manager2 = new TradeByItemIdManagerEntity();
-        user.getUser().getTradeByItemIdManagers().add(manager1);
-        user.getUser().getTradeByItemIdManagers().add(manager2);
+        TradeByItemIdManagerEntity entity1 = new TradeByItemIdManagerEntity();
+        TradeByItemIdManagerEntity entity2 = new TradeByItemIdManagerEntity();
+        user.getUser().getTradeByItemIdManagers().add(entity1);
+        user.getUser().getTradeByItemIdManagers().add(entity2);
         TradeByItemIdManager dto1 = new TradeByItemIdManager();
         TradeByItemIdManager dto2 = new TradeByItemIdManager();
         when(telegramUserRepository.findById("chatId")).thenReturn(Optional.of(user));
-        when(tradeByItemIdManagerEntityMapper.createDTO(same(manager1))).thenReturn(dto1);
-        when(tradeByItemIdManagerEntityMapper.createDTO(same(manager2))).thenReturn(dto2);
+        when(tradeByItemIdManagerRepository.findAllByUserId(1L)).thenReturn(List.of(entity1, entity2));
+        when(tradeByItemIdManagerEntityMapper.createDTO(same(entity1))).thenReturn(dto1);
+        when(tradeByItemIdManagerEntityMapper.createDTO(same(entity2))).thenReturn(dto2);
 
         List<TradeByItemIdManager> result = telegramUserTradeManagerByItemIdService.findAllByChatId("chatId");
 

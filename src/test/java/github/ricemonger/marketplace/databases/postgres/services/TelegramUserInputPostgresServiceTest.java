@@ -7,6 +7,7 @@ import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUse
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TelegramUserInputEntityMapper;
 import github.ricemonger.telegramBot.InputState;
+import github.ricemonger.utils.DTOs.personal.TelegramUser;
 import github.ricemonger.utils.DTOs.personal.TelegramUserInput;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.server.TelegramUserInputDoesntExistException;
@@ -54,7 +55,11 @@ class TelegramUserInputPostgresServiceTest {
     @Test
     public void deleteAllByChatId_should_clear_and_save_user() throws TelegramUserDoesntExistException {
         TelegramUserEntity user = new TelegramUserEntity();
-        user.setTelegramUserInputs(List.of(new TelegramUserInputEntity()));
+        user.setChatId("chatId");
+        List<TelegramUserInputEntity> inputs = new ArrayList<>();
+        inputs.add(new TelegramUserInputEntity(user, InputState.UBI_ACCOUNT_ENTRY_2FA_CODE, "value"));
+        inputs.add(new TelegramUserInputEntity(user, InputState.ITEM_FILTER_ITEM_NAME_PATTERNS, "value1"));
+        user.setTelegramUserInputs(inputs);
 
         when(telegramUserRepository.findById("chatId")).thenReturn(Optional.of(user));
 
@@ -67,6 +72,7 @@ class TelegramUserInputPostgresServiceTest {
     @Test
     public void findById_should_return_mapped_dto() throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         TelegramUserEntity user = new TelegramUserEntity();
+        user.setChatId("chatId");
         TelegramUserInputEntityId id = new TelegramUserInputEntityId(user, InputState.UBI_ACCOUNT_ENTRY_2FA_CODE);
         TelegramUserInputEntity entity = new TelegramUserInputEntity();
         TelegramUserInput input = new TelegramUserInput("chatId", InputState.UBI_ACCOUNT_ENTRY_2FA_CODE, "value");

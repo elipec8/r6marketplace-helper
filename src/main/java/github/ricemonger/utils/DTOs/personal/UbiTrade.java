@@ -42,15 +42,15 @@ public class UbiTrade {
         }
         boolean itemsAreEqual = item == null ? other.item == null : Objects.equals(item.getItemId(), other.item.getItemId());
 
-        return tradeId.equals(other.tradeId) &&
+        return Objects.equals(tradeId, other.tradeId) &&
                state == other.state &&
                category == other.category &&
-               expiresAt.equals(other.expiresAt) &&
-               lastModifiedAt.equals(other.lastModifiedAt) &&
+               Objects.equals(expiresAt, other.expiresAt) &&
+               Objects.equals(lastModifiedAt, other.lastModifiedAt) &&
                itemsAreEqual &&
-               successPaymentPrice.equals(other.successPaymentPrice) &&
-               successPaymentFee.equals(other.successPaymentFee) &&
-               proposedPaymentPrice.equals(other.proposedPaymentPrice) &&
-               proposedPaymentFee.equals(other.proposedPaymentFee);
+               Objects.equals(successPaymentPrice, other.successPaymentPrice) &&
+               Objects.equals(successPaymentFee, other.successPaymentFee) &&
+               Objects.equals(proposedPaymentPrice, other.proposedPaymentPrice) &&
+               Objects.equals(proposedPaymentFee, other.proposedPaymentFee);
     }
 }

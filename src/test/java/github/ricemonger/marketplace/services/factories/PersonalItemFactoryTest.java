@@ -134,8 +134,10 @@ class PersonalItemFactoryTest {
             when(tradeByFiltersManagerItemSet1.getPriorityMultiplier()).thenReturn(2);
             when(tradeByFiltersManagerItemSet2.getPriorityMultiplier()).thenReturn(2);
 
-            mockedStaticFilter.when(() -> ItemFilter.filterItems(Mockito.any(), same(itemSet1Filters))).thenReturn(Set.of(new Item("1"), new Item("2")));
-            mockedStaticFilter.when(() -> ItemFilter.filterItems(Mockito.any(), same(itemSet2Filters))).thenReturn(Set.of(new Item("3"), new Item("4")));
+            mockedStaticFilter.when(() -> ItemFilter.filterItems(Mockito.any(), same(itemSet1Filters))).thenReturn(List.of(new Item("1"),
+                    new Item("2")));
+            mockedStaticFilter.when(() -> ItemFilter.filterItems(Mockito.any(), same(itemSet2Filters))).thenReturn(List.of(new Item("3"),
+                    new Item("4")));
 
             PersonalItem personalItem1Sell = new PersonalItem();
             personalItem1Sell.setItem(new Item("1"));
@@ -228,7 +230,7 @@ class PersonalItemFactoryTest {
     public void getPersonalItemsFromTradeByFiltersManager_should_return_personalItems_by_filters_manager_trades_dont_exist() {
         try (
                 MockedStatic<ItemFilter> mockedStaticFilter = Mockito.mockStatic(ItemFilter.class)) {
-            mockedStaticFilter.when(() -> ItemFilter.filterItems(Mockito.any(), Mockito.any())).thenReturn(Set.of(new Item("1"), new Item("2")));
+            mockedStaticFilter.when(() -> ItemFilter.filterItems(Mockito.any(), Mockito.any())).thenReturn(List.of(new Item("1"), new Item("2")));
 
             TradeByFiltersManager manager = new TradeByFiltersManager();
             manager.setAppliedFilters(List.of(new ItemFilter()));
@@ -288,7 +290,7 @@ class PersonalItemFactoryTest {
     public void getPersonalItemsFromTradeByFiltersManager_should_return_personalItems_by_filters_manager_trades_exist() {
         try (
                 MockedStatic<ItemFilter> mockedStaticFilter = Mockito.mockStatic(ItemFilter.class)) {
-            mockedStaticFilter.when(() -> ItemFilter.filterItems(Mockito.any(), Mockito.any())).thenReturn(Set.of(new Item("1"), new Item("2")));
+            mockedStaticFilter.when(() -> ItemFilter.filterItems(Mockito.any(), Mockito.any())).thenReturn(List.of(new Item("1"), new Item("2")));
 
             TradeByFiltersManager manager = new TradeByFiltersManager();
             manager.setAppliedFilters(List.of(new ItemFilter()));
@@ -420,6 +422,12 @@ class PersonalItemFactoryTest {
                 existingBuyTrades,
                 ownedItemsId,
                 existingItems);
+
+        System.out.println("Result:");
+
+        for (PersonalItem item : result) {
+            System.out.println(item);
+        }
 
         assertTrue(result.contains(personalItem1));
         assertTrue(result.contains(personalItem1OtherOperation));

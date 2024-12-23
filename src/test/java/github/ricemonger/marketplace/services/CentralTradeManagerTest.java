@@ -117,7 +117,7 @@ class CentralTradeManagerTest {
         validManageableUserTrueNotifications1.setPrivateNotificationsEnabledFlag(true);
         validManageableUserTrueNotifications1.setUbiAccountStatsEntityDTO(new UbiAccountStatsEntityDTO());
         validManageableUserTrueNotifications1.getUbiAccountStatsEntityDTO().setUbiProfileId("1");
-        validManageableUserTrueNotifications1.getUbiAccountStatsEntityDTO().setCreditAmount(Mockito.mock(Integer.class));
+        validManageableUserTrueNotifications1.getUbiAccountStatsEntityDTO().setCreditAmount(1000);
         validManageableUserTrueNotifications1.setTradeByFiltersManagers(tradeByFiltersManagers1);
         validManageableUserTrueNotifications1.setTradeByItemIdManagers(tradeByItemIdManagers1);
 
@@ -133,7 +133,7 @@ class CentralTradeManagerTest {
         validManageableUserFalseNotifications2.setPrivateNotificationsEnabledFlag(false);
         validManageableUserFalseNotifications2.setUbiAccountStatsEntityDTO(new UbiAccountStatsEntityDTO());
         validManageableUserFalseNotifications2.getUbiAccountStatsEntityDTO().setUbiProfileId("2");
-        validManageableUserFalseNotifications2.getUbiAccountStatsEntityDTO().setCreditAmount(Mockito.mock(Integer.class));
+        validManageableUserFalseNotifications2.getUbiAccountStatsEntityDTO().setCreditAmount(2000);
         validManageableUserFalseNotifications2.setTradeByFiltersManagers(tradeByFiltersManagers2);
         validManageableUserFalseNotifications2.setTradeByItemIdManagers(tradeByItemIdManagers2);
 
