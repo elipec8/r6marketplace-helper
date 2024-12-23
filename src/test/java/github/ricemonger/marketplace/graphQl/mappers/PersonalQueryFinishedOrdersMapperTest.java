@@ -9,7 +9,8 @@ import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.trades.nodes.TradeItems;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.trades.nodes.tradeItems.Item;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.DTOs.UbiTrade;
+import github.ricemonger.utils.DTOs.common.ConfigTrades;
+import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalFinishedOrdersMappingException;
@@ -25,14 +26,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class PersonalQueryFinishedOrdersMapperTest {
     @SpyBean
     private PersonalQueryFinishedOrdersMapper personalQueryCurrentOrdersMapper;
-    @Autowired
+    @SpyBean
     private CommonValuesService commonValuesService;
 
     @Test
@@ -83,7 +83,11 @@ class PersonalQueryFinishedOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItemId("1");
+        expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
+
+        ConfigTrades configTrades = new ConfigTrades();
+        configTrades.setFeePercentage(10);
+        when(commonValuesService.getConfigTrades()).thenReturn(configTrades);
 
         expected.setSuccessPaymentPrice(1000);
         expected.setSuccessPaymentFee(100);
@@ -110,7 +114,11 @@ class PersonalQueryFinishedOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItemId("1");
+        expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
+
+        ConfigTrades configTrades = new ConfigTrades();
+        configTrades.setFeePercentage(10);
+        when(commonValuesService.getConfigTrades()).thenReturn(configTrades);
 
         expected.setSuccessPaymentPrice(1000);
         expected.setSuccessPaymentFee(100);
@@ -138,7 +146,11 @@ class PersonalQueryFinishedOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItemId("1");
+        expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
+
+        ConfigTrades configTrades = new ConfigTrades();
+        configTrades.setFeePercentage(10);
+        when(commonValuesService.getConfigTrades()).thenReturn(configTrades);
 
         expected.setSuccessPaymentPrice(0);
         expected.setSuccessPaymentFee(0);
@@ -166,7 +178,11 @@ class PersonalQueryFinishedOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItemId("1");
+        expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
+
+        ConfigTrades configTrades = new ConfigTrades();
+        configTrades.setFeePercentage(10);
+        when(commonValuesService.getConfigTrades()).thenReturn(configTrades);
 
         expected.setSuccessPaymentPrice(1000);
         expected.setSuccessPaymentFee(100);
@@ -194,7 +210,11 @@ class PersonalQueryFinishedOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItemId("1");
+        expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
+
+        ConfigTrades configTrades = new ConfigTrades();
+        configTrades.setFeePercentage(10);
+        when(commonValuesService.getConfigTrades()).thenReturn(configTrades);
 
         expected.setSuccessPaymentPrice(1000);
         expected.setSuccessPaymentFee(100);
@@ -264,21 +284,6 @@ class PersonalQueryFinishedOrdersMapperTest {
         Nodes node = createNode(dtf, date, date2);
         node.setPaymentProposal(null);
         node.setCategory(null);
-
-        assertThrows(GraphQlPersonalFinishedOrdersMappingException.class, () -> {
-            personalQueryCurrentOrdersMapper.mapFinishedOrder(node);
-        });
-    }
-
-    @Test
-    public void mapFinishedOrder_should_throw_if_null_expiresAt() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
-        LocalDateTime date2 = LocalDateTime.now().withNano(0);
-
-        Nodes node = createNode(dtf, date, date2);
-        node.setPaymentProposal(null);
-        node.setExpiresAt(null);
 
         assertThrows(GraphQlPersonalFinishedOrdersMappingException.class, () -> {
             personalQueryCurrentOrdersMapper.mapFinishedOrder(node);
@@ -450,21 +455,6 @@ class PersonalQueryFinishedOrdersMapperTest {
         });
     }
 
-    @Test
-    public void mapFinishedOrder_should_throw_if_null_paymentProposal_fee() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
-        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
-        LocalDateTime date2 = LocalDateTime.now().withNano(0);
-
-        Nodes node = createNode(dtf, date, date2);
-        node.setPaymentOptions(null);
-        node.getPaymentProposal().setTransactionFee(null);
-
-        assertThrows(GraphQlPersonalFinishedOrdersMappingException.class, () -> {
-            personalQueryCurrentOrdersMapper.mapFinishedOrder(node);
-        });
-    }
-
     private Nodes createNode(DateTimeFormatter dtf, LocalDateTime date1, LocalDateTime date2) {
         Item item = new Item();
         item.setItemId("1");
@@ -473,10 +463,9 @@ class PersonalQueryFinishedOrdersMapperTest {
 
         Payment payment = new Payment(1000, 100);
 
-        PaymentOptions paymentOption = new PaymentOptions();
-        paymentOption.setPrice(100);
+        PaymentOptions paymentOption = new PaymentOptions(100);
 
-        PaymentProposal paymentProposal = new PaymentProposal(100, 10);
+        PaymentProposal paymentProposal = new PaymentProposal(100);
 
         return new Nodes("tradeId",
                 TradeState.Created.name(),

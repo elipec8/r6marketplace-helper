@@ -1,9 +1,9 @@
 package github.ricemonger.marketplace.databases.redis.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationService;
-import github.ricemonger.utils.DTOs.AuthorizationDTO;
-import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
-import github.ricemonger.utils.DTOs.ConfigTrades;
+import github.ricemonger.utils.DTOs.common.ConfigResolvedTransactionPeriod;
+import github.ricemonger.utils.DTOs.common.ConfigTrades;
+import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,8 +37,7 @@ public class RedisServiceTest {
     public void setUp() {
         cleanUp();
 
-        when(authorizationService.authorizeAndGetDTO(any(), any())).thenReturn(new AuthorizationDTO("ticket", "profileId"
-                , "spaceId", "sessionId", "twoFactorAuthTicket", "rememberDeviceTicket", "rememberMeTicket"));
+        when(authorizationService.authorizeAndGetBaseAuthorizedDTO(any(), any())).thenReturn(new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "rememberDeviceTicket", "rememberMeTicket"));
     }
 
     @AfterEach
@@ -249,9 +248,8 @@ public class RedisServiceTest {
         ValueOperations mock = mock(ValueOperations.class);
         when(redisTemplate.opsForValue()).thenReturn(mock);
 
-        AuthorizationDTO dto = new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "twoFactorAuthTicket", "rememberDeviceTicket",
-                "rememberMeTicket");
-        when(authorizationService.authorizeAndGetDTO(any(), any())).thenReturn(dto);
+        AuthorizationDTO dto = new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "rememberDeviceTicket", "rememberMeTicket");
+        when(authorizationService.authorizeAndGetBaseAuthorizedDTO(any(), any())).thenReturn(dto);
 
         redisService.setMainUserAuthorization(dto, EXPIRE_TIMEOUT);
 
@@ -273,9 +271,8 @@ public class RedisServiceTest {
         ValueOperations mock = mock(ValueOperations.class);
         when(redisTemplate.opsForValue()).thenReturn(mock);
 
-        AuthorizationDTO dto = new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "twoFactorAuthTicket", "rememberDeviceTicket",
-                null);
-        when(authorizationService.authorizeAndGetDTO(any(), any())).thenReturn(dto);
+        AuthorizationDTO dto = new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "rememberDeviceTicket", null);
+        when(authorizationService.authorizeAndGetBaseAuthorizedDTO(any(), any())).thenReturn(dto);
 
         redisService.setMainUserAuthorization(dto, EXPIRE_TIMEOUT);
 

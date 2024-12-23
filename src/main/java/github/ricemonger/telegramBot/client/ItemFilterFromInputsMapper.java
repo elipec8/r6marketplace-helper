@@ -4,9 +4,9 @@ import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.TagService;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.utils.DTOs.TelegramUserInput;
-import github.ricemonger.utils.DTOs.items.ItemFilter;
-import github.ricemonger.utils.DTOs.items.Tag;
+import github.ricemonger.utils.DTOs.personal.ItemFilter;
+import github.ricemonger.utils.DTOs.personal.TelegramUserInput;
+import github.ricemonger.utils.DTOs.common.Tag;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.IsOwnedFilter;
 import lombok.RequiredArgsConstructor;
@@ -44,8 +44,6 @@ public class ItemFilterFromInputsMapper {
         String otherTagsString = getValueByState(inputs, InputState.ITEM_FILTER_ITEM_TAGS_OTHER);
         String minPriceString = getValueByState(inputs, InputState.ITEM_FILTER_MIN_PRICE);
         String maxPriceString = getValueByState(inputs, InputState.ITEM_FILTER_MAX_PRICE);
-        String minLastSoldPriceString = getValueByState(inputs, InputState.ITEM_FILTER_MIN_LAST_SOLD_PRICE);
-        String maxLastSoldPriceString = getValueByState(inputs, InputState.ITEM_FILTER_MAX_LAST_SOLD_PRICE);
 
         ItemFilter itemFilter = new ItemFilter();
 
@@ -87,8 +85,6 @@ public class ItemFilterFromInputsMapper {
 
         itemFilter.setMinSellPrice(parsePrice(minPriceString, commonValuesService.getMinimumMarketplacePrice()));
         itemFilter.setMaxBuyPrice(parsePrice(maxPriceString, commonValuesService.getMaximumMarketplacePrice()));
-        itemFilter.setMinLastSoldPrice(parsePrice(minLastSoldPriceString, commonValuesService.getMinimumMarketplacePrice()));
-        itemFilter.setMaxLastSoldPrice(parsePrice(maxLastSoldPriceString, commonValuesService.getMaximumMarketplacePrice()));
 
         return itemFilter;
     }

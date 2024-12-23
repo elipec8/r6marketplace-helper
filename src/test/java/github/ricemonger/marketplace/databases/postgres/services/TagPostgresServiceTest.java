@@ -2,74 +2,84 @@ package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.TagPostgresRepository;
-import github.ricemonger.utils.DTOs.items.Tag;
-import github.ricemonger.utils.enums.TagGroup;
-import org.junit.jupiter.api.BeforeEach;
+import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item.TagEntityMapper;
+import github.ricemonger.utils.DTOs.common.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.annotation.DirtiesContext;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.StreamSupport;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class TagPostgresServiceTest {
     @SpyBean
     private TagPostgresService tagService;
-    @SpyBean
+    @MockBean
     private TagPostgresRepository tagRepository;
+    @MockBean
+    private TagEntityMapper tagEntityMapper;
 
-    @BeforeEach
-    void setUp() {
-        tagRepository.deleteAll();
+    @Test
+    public void saveAll_should_map_and_save_all_dtos() {
+        Tag tag1 = new Tag();
+        Tag tag2 = new Tag();
+        List<Tag> tags = List.of(tag1, tag2);
+        TagEntity tagEntity1 = new TagEntity();
+        TagEntity tagEntity2 = new TagEntity();
+        List<TagEntity> entities = List.of(tagEntity1, tagEntity2);
+
+        when(tagEntityMapper.createEntity(same(tag1))).thenReturn(tagEntity1);
+        when(tagEntityMapper.createEntity(same(tag2))).thenReturn(tagEntity2);
+
+        tagService.saveAll(tags);
+
+        verify(tagRepository).saveAll(argThat((a -> StreamSupport.stream(a.spliterator(), false).toList().size() == entities.size() && StreamSupport.stream(a.spliterator(), false).toList().stream().allMatch(ar -> entities.stream().anyMatch(en -> en.isFullyEqual(ar))))));
     }
 
     @Test
-    public void saveAll_should_create_new_tags_if_doesnt_exist() {
-        Tag tag1 = new Tag("value1", "name", TagGroup.Unknown);
-        Tag tag2 = new Tag("value2", "name", TagGroup.Unknown);
+    public void findAllByNames_should_map_and_return_filtered_entities() {
+        TagEntity entity1 = new TagEntity();
+        TagEntity entity2 = new TagEntity();
+        List<TagEntity> entities = List.of(entity1, entity2);
+        when(tagRepository.findAllByNames(Set.of("tag1", "tag2"))).thenReturn(entities);
 
-        tagService.saveAll(Set.of(tag1, tag2));
+        Tag tag1 = new Tag();
+        Tag tag2 = new Tag();
+        List<Tag> tags = List.of(tag1, tag2);
+        when(tagEntityMapper.createDTO(same(entity1))).thenReturn(tag1);
+        when(tagEntityMapper.createDTO(same(entity2))).thenReturn(tag2);
 
-        assertEquals(2, tagRepository.count());
+        List<Tag> result = tagService.findAllByNames(Set.of("tag1", "tag2"));
+
+        assertTrue(result.size() == tags.size() && result.stream().allMatch(res -> tags.stream().anyMatch(tag -> tag == res)));
     }
 
     @Test
-    public void saveAll_should_update_tag_if_exists() {
-        Tag tag1 = new Tag("value1", "name", TagGroup.Unknown);
-        tagService.saveAll(Set.of(tag1));
+    public void findAll_should_map_and_return_all_entities() {
+        TagEntity entity1 = new TagEntity();
+        TagEntity entity2 = new TagEntity();
+        List<TagEntity> entities = List.of(entity1, entity2);
+        when(tagRepository.findAll()).thenReturn(entities);
 
-        tag1.setName("name name");
-        tag1.setTagGroup(TagGroup.Season);
-        tagService.saveAll(Set.of(tag1));
+        Tag tag1 = new Tag();
+        Tag tag2 = new Tag();
+        List<Tag> tags = List.of(tag1, tag2);
+        when(tagEntityMapper.createDTO(same(entity1))).thenReturn(tag1);
+        when(tagEntityMapper.createDTO(same(entity2))).thenReturn(tag2);
 
-        assertEquals(1, tagRepository.count());
-        assertEquals("name name", tagRepository.findAll().get(0).getName());
-        assertEquals(TagGroup.Season, tagRepository.findAll().get(0).getTagGroup());
-    }
+        List<Tag> result = tagService.findAll();
 
-    @Test
-    public void findAllByNames_should_return_tags_by_names() {
-        Tag tag1 = new Tag("value1", "name1", TagGroup.Unknown);
-        Tag tag2 = new Tag("value2", "name2", TagGroup.Unknown);
-
-        tagRepository.saveAll(Set.of(new TagEntity(tag1), new TagEntity(tag2)));
-
-        assertEquals(0, tagService.findAllByNames(Set.of("new name", "name")).size());
-        assertEquals(1, tagService.findAllByNames(Set.of("name1")).size());
-        assertEquals(2, tagService.findAllByNames(Set.of("name1", "name2")).size());
-    }
-
-    @Test
-    public void findAll_should_return_all_tags() {
-        Tag tag1 = new Tag("value1", "name1", TagGroup.Unknown);
-        Tag tag2 = new Tag("value2", "name2", TagGroup.Unknown);
-
-        tagRepository.saveAll(Set.of(new TagEntity(tag1), new TagEntity(tag2)));
-
-        assertEquals(2, tagService.findAll().size());
+        assertTrue(result.size() == tags.size() && result.stream().allMatch(res -> tags.stream().anyMatch(tag -> tag == res)));
     }
 }

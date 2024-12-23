@@ -2,11 +2,11 @@ package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
-import github.ricemonger.utils.DTOs.AuthorizationDTO;
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
-import github.ricemonger.utils.DTOs.UbiAccountStats;
-import github.ricemonger.utils.UbiAccountEntryWithTelegram;
+import github.ricemonger.utils.DTOs.personal.UbiAccountAuthorizationEntry;
+import github.ricemonger.utils.DTOs.personal.UbiAccountAuthorizationEntryWithTelegram;
+import github.ricemonger.utils.DTOs.personal.UbiAccountEntryWithTelegram;
+import github.ricemonger.utils.DTOs.personal.UbiAccountStatsEntityDTO;
+import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
@@ -28,17 +28,25 @@ public class TelegramUserUbiAccountEntryService {
 
     private final TelegramUserUbiAccountEntryDatabaseService telegramUserUbiAccountEntryDatabaseService;
 
-    public void authorizeAndSaveUser(String chatId, String email, String password) throws
+    public void authorizeAndSaveUser(String chatId, String email, String password, String twoFACode) throws
             TelegramUserDoesntExistException,
             UbiAccountEntryAlreadyExistsException,
             UbiUserAuthorizationClientErrorException,
             UbiUserAuthorizationServerErrorException {
-        AuthorizationDTO userAuthorizationDTO = authorizationService.authorizeAndGetDTO(email, password);
+        AuthorizationDTO userAuthorizationDTO = authorizationService.authorizeAndGet2FaAuthorizedDTO(email, password, twoFACode);
 
-        telegramUserUbiAccountEntryDatabaseService.saveAuthorizationInfo(chatId, buildUbiAccount(email, authorizationService.getEncodedPassword(password), userAuthorizationDTO));
+        saveAuthorizationInfo(chatId, email, authorizationService.encodePassword(password), userAuthorizationDTO);
     }
 
-    public void saveAllUbiAccountStats(List<UbiAccountStats> ubiAccounts) {
+    public void reauthorizeAndSaveExistingUserBy2FACode(String chatId, String twoFACode) {
+        UbiAccountAuthorizationEntry user = telegramUserUbiAccountEntryDatabaseService.findAuthorizationInfoByChatId(chatId);
+
+        AuthorizationDTO userAuthorizationDTO = authorizationService.authorizeAndGet2FaAuthorizedDTOForEncodedPassword(user.getEmail(), user.getEncodedPassword(), twoFACode);
+
+        saveAuthorizationInfo(chatId, user.getEmail(), user.getEncodedPassword(), userAuthorizationDTO);
+    }
+
+    public void saveAllUbiAccountStats(List<UbiAccountStatsEntityDTO> ubiAccounts) {
         telegramUserUbiAccountEntryDatabaseService.saveAllUbiAccountStats(ubiAccounts);
     }
 
@@ -53,7 +61,8 @@ public class TelegramUserUbiAccountEntryService {
 
         for (UbiAccountAuthorizationEntryWithTelegram user : users) {
             try {
-                reauthorizeAndSaveUser(user.getChatId(), user.getEmail(), user.getEncodedPassword());
+                AuthorizationDTO dto = authorizationService.reauthorizeAndGet2FaAuthorizedDtoForEncodedPasswordWithRememberDeviceTicket(user.getEmail(), user.getEncodedPassword(), user.getUbiRememberDeviceTicket());
+                saveAuthorizationInfo(user.getChatId(), user.getEmail(), user.getEncodedPassword(), dto);
             } catch (UbiUserAuthorizationClientErrorException | UbiUserAuthorizationServerErrorException e) {
                 unauthorizedUsers.add(user);
             }
@@ -66,19 +75,17 @@ public class TelegramUserUbiAccountEntryService {
         return telegramUserUbiAccountEntryDatabaseService.findAuthorizationInfoByChatId(chatId);
     }
 
-    public List<UbiAccountEntryWithTelegram> findAllForTelegram() {
+    public List<UbiAccountEntryWithTelegram> findAllFUbiAccountEntriesWithTelegram() {
         return telegramUserUbiAccountEntryDatabaseService.findAllForTelegram();
     }
 
-    private void reauthorizeAndSaveUser(String chatId, String email, String encodedPassword) throws UbiUserAuthorizationClientErrorException, UbiUserAuthorizationServerErrorException {
-        AuthorizationDTO dto = authorizationService.authorizeAndGetDtoForEncodedPassword(email, encodedPassword);
-
+    private void saveAuthorizationInfo(String chatId, String email, String encodedPassword, AuthorizationDTO authorizationDTO) throws TelegramUserDoesntExistException, UbiAccountEntryAlreadyExistsException {
         try {
-            telegramUserUbiAccountEntryDatabaseService.saveAuthorizationInfo(chatId, buildUbiAccount(email, encodedPassword, dto));
+            telegramUserUbiAccountEntryDatabaseService.saveAuthorizationInfo(chatId, buildUbiAccount(email, encodedPassword, authorizationDTO));
         } catch (TelegramUserDoesntExistException e) {
-            log.error("Telegram user with chatId {} doesn't exist, but reauthorize ubi user was called fir him with authorizationDto-{}", chatId, dto);
+            log.error("Telegram user with chatId {} doesn't exist, but reauthorize ubi user was called fir him with authorizationDto-{}", chatId, authorizationDTO);
         } catch (UbiAccountEntryAlreadyExistsException e) {
-            log.error("User with chatId {} already has another Ubi account, but reauthorize ubi user was called for him with authorizationDto-{}", chatId, dto);
+            log.error("User with chatId {} already has another Ubi account, but reauthorize ubi user was called for him with authorizationDto-{}", chatId, authorizationDTO);
         }
     }
 
@@ -93,7 +100,6 @@ public class TelegramUserUbiAccountEntryService {
         user.setUbiSpaceId(authorizationDTO.getSpaceId());
         user.setUbiRememberMeTicket(authorizationDTO.getRememberMeTicket());
         user.setUbiRememberDeviceTicket(authorizationDTO.getRememberDeviceTicket());
-        user.setUbiTwoFactorAuthTicket(authorizationDTO.getTwoFactorAuthenticationTicket());
         return user;
     }
 }

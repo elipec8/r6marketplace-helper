@@ -1,16 +1,13 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
-import github.ricemonger.utils.UbiAccountEntry;
-import github.ricemonger.utils.UbiAccountEntryWithTelegram;
-import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Objects;
 
 @Slf4j
 @Entity(name = "ubi_account_authorization_entry")
@@ -20,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @IdClass(UbiAccountEntryEntityId.class)
 public class UbiAccountEntryEntity {
-
     @Id
     @OneToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "userId", referencedColumnName = "id")
@@ -36,69 +32,58 @@ public class UbiAccountEntryEntity {
     @Column(columnDefinition = "TEXT")
     private String ubiAuthTicket;
     @Column(columnDefinition = "TEXT")
-    private String ubiTwoFactorAuthTicket;
-    @Column(columnDefinition = "TEXT")
     private String ubiRememberDeviceTicket;
     @Column(columnDefinition = "TEXT")
     private String ubiRememberMeTicket;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ubiProfileId", referencedColumnName = "ubiProfileId")
     private UbiAccountStatsEntity ubiAccountStats;
 
-    public UbiAccountEntryEntity(UserEntity user, UbiAccountStatsEntity ubiAccountStats, UbiAccountAuthorizationEntry account) {
+    public UbiAccountEntryEntity(Long userId, String email, String ubiProfileId) {
+        this(new UserEntity(userId), email, new UbiAccountStatsEntity(ubiProfileId));
+    }
+
+    public UbiAccountEntryEntity(UserEntity user, String email, UbiAccountStatsEntity ubiAccountStats) {
         this.user = user;
-        this.email = account.getEmail();
-        this.encodedPassword = account.getEncodedPassword();
+        this.email = email;
         this.ubiAccountStats = ubiAccountStats;
-        this.ubiSessionId = account.getUbiSessionId();
-        this.ubiSpaceId = account.getUbiSpaceId();
-        this.ubiAuthTicket = account.getUbiAuthTicket();
-        this.ubiTwoFactorAuthTicket = account.getUbiTwoFactorAuthTicket();
-        this.ubiRememberDeviceTicket = account.getUbiRememberDeviceTicket();
-        this.ubiRememberMeTicket = account.getUbiRememberMeTicket();
     }
 
-    public UbiAccountAuthorizationEntryWithTelegram toUbiAccountAuthorizationEntryWithTelegram() {
-        UbiAccountAuthorizationEntryWithTelegram ubiAccountWithTelegram = new UbiAccountAuthorizationEntryWithTelegram();
-        ubiAccountWithTelegram.setUbiAccountAuthorizationEntry(this.toUbiAccountAuthorizationEntry());
-        try {
-            ubiAccountWithTelegram.setChatId(this.user.getTelegramUser().getChatId());
-            ubiAccountWithTelegram.setPrivateNotificationsEnabledFlag(this.user.getPrivateNotificationsEnabledFlag());
-        } catch (NullPointerException e) {
-            log.error("Telegram user not found for user with id: " + this.user.getId());
-            throw new TelegramUserDoesntExistException("Telegram user not found for user with id: " + this.user.getId());
+    public Long getUserId_() {
+        return user.getId();
+    }
+
+    public String getProfileId_() {
+        return this.ubiAccountStats.getUbiProfileId();
+    }
+
+    public boolean isEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof UbiAccountEntryEntity entity) {
+            return user.isEqual(entity.user) &&
+                   Objects.equals(email, entity.getEmail());
         }
-        return ubiAccountWithTelegram;
+        return false;
     }
 
-    public UbiAccountAuthorizationEntry toUbiAccountAuthorizationEntry() {
-        UbiAccountAuthorizationEntry ubiAccountEntry = new UbiAccountAuthorizationEntry();
-        ubiAccountEntry.setUbiProfileId(this.ubiAccountStats.getUbiProfileId());
-        ubiAccountEntry.setEmail(this.email);
-        ubiAccountEntry.setEncodedPassword(this.encodedPassword);
-        ubiAccountEntry.setUbiSessionId(this.ubiSessionId);
-        ubiAccountEntry.setUbiSpaceId(this.ubiSpaceId);
-        ubiAccountEntry.setUbiAuthTicket(this.ubiAuthTicket);
-        ubiAccountEntry.setUbiTwoFactorAuthTicket(this.ubiTwoFactorAuthTicket);
-        ubiAccountEntry.setUbiRememberDeviceTicket(this.ubiRememberDeviceTicket);
-        ubiAccountEntry.setUbiRememberMeTicket(this.ubiRememberMeTicket);
-        return ubiAccountEntry;
-    }
-
-    public UbiAccountEntryWithTelegram toUbiAccountEntryWithTelegram() {
-        UbiAccountEntry ubiAccountEntry = new UbiAccountEntry();
-        ubiAccountEntry.setUbiAccountAuthorizationEntry(this.toUbiAccountAuthorizationEntry());
-        ubiAccountEntry.setUbiAccountStats(this.ubiAccountStats.toUbiAccountStats());
-        UbiAccountEntryWithTelegram ubiAccountEntryWithTelegram = new UbiAccountEntryWithTelegram();
-        ubiAccountEntryWithTelegram.setUbiAccountEntry(ubiAccountEntry);
-        try {
-            ubiAccountEntryWithTelegram.setChatId(this.user.getTelegramUser().getChatId());
-            ubiAccountEntryWithTelegram.setPrivateNotificationsEnabledFlag(this.user.getPrivateNotificationsEnabledFlag());
-        } catch (NullPointerException e) {
-            log.error("Telegram user not found for user with id: " + this.user.getId());
-            throw new TelegramUserDoesntExistException("Telegram user not found for user with id: " + this.user.getId());
+    public boolean isFullyEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof UbiAccountEntryEntity entity) {
+            return isEqual(entity) &&
+                   Objects.equals(encodedPassword, entity.getEncodedPassword()) &&
+                   Objects.equals(ubiSessionId, entity.getUbiSessionId()) &&
+                   Objects.equals(ubiSpaceId, entity.getUbiSpaceId()) &&
+                   Objects.equals(ubiAuthTicket, entity.getUbiAuthTicket()) &&
+                   Objects.equals(ubiRememberDeviceTicket, entity.getUbiRememberDeviceTicket()) &&
+                   Objects.equals(ubiRememberMeTicket, entity.getUbiRememberMeTicket()) &&
+                   ubiAccountStats.isFullyEqual(entity.getUbiAccountStats());
         }
-        return ubiAccountEntryWithTelegram;
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "UbiAccountEntryEntity(userId=" + getUserId_() + ", email=" + email + ", encodedPassword=" + encodedPassword + ", ubiSessionId=" + ubiSessionId + ", ubiSpaceId=" + ubiSpaceId + ", ubiAuthTicket=" + ubiAuthTicket + ", ubiRememberDeviceTicket=" + ubiRememberDeviceTicket + ", ubiRememberMeTicket=" + ubiRememberMeTicket + ", ubiAccountStats=" + ubiAccountStats + ")";
     }
 }

@@ -2,42 +2,46 @@ package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
-import github.ricemonger.utils.DTOs.UserForCentralTradeManager;
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.UserEntityMapper;
+import github.ricemonger.utils.DTOs.personal.ManageableUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.Collection;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class UserPostgresServiceTest {
     @Autowired
     private UserPostgresService userPostgresService;
     @MockBean
-    private UserPostgresRepository userPostgresRepository;
+    private UserPostgresRepository userRepository;
+    @MockBean
+    private UserEntityMapper userEntityMapper;
 
     @Test
-    public void getAllUsers_ForCentralTradeManager_should_return_mapped_repository_result() {
-        Collection<Item> existingItems = List.of();
+    public void getAllManageableUsers_should_return_all_mapped_entities() {
+        UserEntity userEntity1 = new UserEntity();
+        UserEntity userEntity2 = new UserEntity();
+        List<UserEntity> userEntities = List.of(userEntity1, userEntity2);
+        when(userRepository.findAllManageableUsers()).thenReturn(userEntities);
+        ManageableUser manageableUser1 = new ManageableUser();
+        ManageableUser manageableUser2 = new ManageableUser();
+        when(userEntityMapper.createManageableUser(same(userEntity1))).thenReturn(manageableUser1);
+        when(userEntityMapper.createManageableUser(same(userEntity2))).thenReturn(manageableUser2);
 
-        UserEntity user1 = mock(UserEntity.class);
-        UserEntity user2 = mock(UserEntity.class);
-        UserEntity user3 = mock(UserEntity.class);
+        List<ManageableUser> result = userPostgresService.getAllManageableUsers();
 
-        when(userPostgresRepository.findAllManageableUsers()).thenReturn(List.of(user1, user2, user3));
+        List<ManageableUser> expected = List.of(manageableUser1, manageableUser2);
 
-        UserForCentralTradeManager userForCentralTradeManager1 = new UserForCentralTradeManager();
-
-        userPostgresService.getAllUsersForCentralTradeManager(existingItems);
-
-        verify(userPostgresRepository, times(1)).findAllManageableUsers();
-        verify(user1).toUserForCentralTradeManagerDTO(same(existingItems));
-        verify(user2).toUserForCentralTradeManagerDTO(same(existingItems));
-        verify(user3).toUserForCentralTradeManagerDTO(same(existingItems));
+        assertEquals(expected.size(), result.size());
+        assertTrue(result.stream().allMatch(res -> expected.stream().anyMatch(exp -> exp == res)));
     }
 }

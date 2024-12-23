@@ -1,14 +1,13 @@
 package github.ricemonger.telegramBot.client;
 
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.marketplace.services.PriceCalculator;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.utils.DTOs.TelegramUserInput;
-import github.ricemonger.utils.DTOs.TradeByFiltersManager;
-import github.ricemonger.utils.DTOs.TradeByItemIdManager;
-import github.ricemonger.utils.DTOs.items.Item;
-import github.ricemonger.utils.DTOs.items.ItemFilter;
+import github.ricemonger.utils.DTOs.personal.ItemFilter;
+import github.ricemonger.utils.DTOs.personal.TelegramUserInput;
+import github.ricemonger.utils.DTOs.personal.TradeByFiltersManager;
+import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
+import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.enums.TradeOperationType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -22,8 +21,6 @@ public class TradeManagerFromInputsMapper {
 
     private final CommonValuesService commonValuesService;
 
-    private final PriceCalculator priceCalculator;
-
     public TradeByItemIdManager mapToTradeByItemIdManager(Collection<TelegramUserInput> inputs,
                                                           TradeOperationType tradeOperationType,
                                                           Item item,
@@ -35,10 +32,9 @@ public class TradeManagerFromInputsMapper {
 
         int limitMinPrice = commonValuesService.getMinimumPriceByRarity(item.getRarity());
         int limitMaxPrice = commonValuesService.getMaximumPriceByRarity(item.getRarity());
-        int minSellPrice = item.getMinSellPrice() <= limitMinPrice ? limitMinPrice : item.getMinSellPrice() - 1;
 
-        int boundSellPrice = parseIntValue(boundarySellPrice, limitMinPrice, limitMaxPrice, minSellPrice);
-        int boundBuyPrice = parseIntValue(boundaryBuyPrice, limitMinPrice, limitMaxPrice, priceCalculator.getNextFancyBuyPriceByCurrentPrices(item));
+        int boundSellPrice = parseIntValue(boundarySellPrice, limitMinPrice, limitMaxPrice, limitMinPrice);
+        int boundBuyPrice = parseIntValue(boundaryBuyPrice, limitMinPrice, limitMaxPrice, limitMaxPrice);
 
         int prior;
         try {
@@ -53,7 +49,7 @@ public class TradeManagerFromInputsMapper {
         tradeByItemIdManager.setEnabled(enabledFlag);
         tradeByItemIdManager.setSellBoundaryPrice(boundSellPrice);
         tradeByItemIdManager.setBuyBoundaryPrice(boundBuyPrice);
-        tradeByItemIdManager.setPriority(prior);
+        tradeByItemIdManager.setPriorityMultiplier(prior);
 
         return tradeByItemIdManager;
     }
@@ -81,10 +77,10 @@ public class TradeManagerFromInputsMapper {
         }
 
         tradeByFiltersManager.setAppliedFilters(itemFilters);
-        tradeByFiltersManager.setMinBuySellProfit(parseIntValue(minBuySellProfit, -1 * maxMarketplacePrice,
+        tradeByFiltersManager.setMinDifferenceFromMedianPrice(parseIntValue(minBuySellProfit, -1 * maxMarketplacePrice,
                 maxMarketplacePrice, 50));
-        tradeByFiltersManager.setMinProfitPercent(parseIntValue(minProfitPercent, Integer.MIN_VALUE, Integer.MAX_VALUE, 20));
-        tradeByFiltersManager.setPriority(parseIntValue(priority, 1, Integer.MAX_VALUE, 1));
+        tradeByFiltersManager.setMinDifferenceFromMedianPricePercent(parseIntValue(minProfitPercent, Integer.MIN_VALUE, Integer.MAX_VALUE, 20));
+        tradeByFiltersManager.setPriorityMultiplier(parseIntValue(priority, 1, Integer.MAX_VALUE, 1));
 
         return tradeByFiltersManager;
     }

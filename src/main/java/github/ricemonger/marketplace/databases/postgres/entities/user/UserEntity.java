@@ -1,19 +1,15 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 
-import github.ricemonger.utils.DTOs.UserForCentralTradeManager;
-import github.ricemonger.utils.DTOs.items.Item;
-import github.ricemonger.utils.DTOs.items.ItemForCentralTradeManager;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.*;
-
-import static github.ricemonger.utils.DTOs.TradeByFiltersManager.getItemsForCentralTradeManagerFromTradeByFiltersManagersByPriority;
-import static github.ricemonger.utils.DTOs.TradeByItemIdManager.getItemsForCentralTradeManagerFromTradeByItemIdManagersByPriority;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity(name = "helper_user")
 @Getter
@@ -30,7 +26,7 @@ public class UserEntity {
     private TelegramUserEntity telegramUser;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, optional = true)
-    private UbiAccountEntryEntity ubiAccountAuthorizationEntry;
+    private UbiAccountEntryEntity ubiAccountEntry;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ItemFilterEntity> itemFilters = new ArrayList<>();
@@ -42,7 +38,7 @@ public class UserEntity {
     private List<TradeByItemIdManagerEntity> tradeByItemIdManagers = new ArrayList<>();
 
     private Boolean publicNotificationsEnabledFlag = true;
-    private Boolean privateNotificationsEnabledFlag = true;
+    private Boolean privateNotificationsEnabledFlag = false;
 
     private Boolean itemShowNameFlag = true;
     private Boolean itemShowItemTypeFlag = true;
@@ -61,35 +57,60 @@ public class UserEntity {
     private Boolean newManagersAreActiveFlag = true;
     private Boolean managingEnabledFlag = true;
 
-    public UserForCentralTradeManager toUserForCentralTradeManagerDTO(Collection<Item> existingItems) {
-        UserForCentralTradeManager userForCentralTradeManager = new UserForCentralTradeManager();
-
-        userForCentralTradeManager.setId(id);
-
-        userForCentralTradeManager.setUbiAccountStats(ubiAccountAuthorizationEntry.getUbiAccountStats().toUbiAccountStats());
-
-        userForCentralTradeManager.setUbiSessionId(ubiAccountAuthorizationEntry.getUbiSessionId());
-        userForCentralTradeManager.setUbiSpaceId(ubiAccountAuthorizationEntry.getUbiSpaceId());
-        userForCentralTradeManager.setUbiAuthTicket(ubiAccountAuthorizationEntry.getUbiAuthTicket());
-        userForCentralTradeManager.setUbiTwoFactorAuthTicket(ubiAccountAuthorizationEntry.getUbiTwoFactorAuthTicket());
-        userForCentralTradeManager.setUbiRememberDeviceTicket(ubiAccountAuthorizationEntry.getUbiRememberDeviceTicket());
-        userForCentralTradeManager.setUbiRememberMeTicket(ubiAccountAuthorizationEntry.getUbiRememberMeTicket());
-
-        userForCentralTradeManager.setChatId(telegramUser.getChatId());
-        userForCentralTradeManager.setPrivateNotificationsEnabledFlag(privateNotificationsEnabledFlag);
-
-        userForCentralTradeManager.setItemsForCentralTradeManager(getItemForCentralTradeManagerFromTradeManagersByPriority(existingItems));
-
-        return userForCentralTradeManager;
+    public UserEntity(Long userId) {
+        this.id = userId;
     }
 
-    private Set<ItemForCentralTradeManager> getItemForCentralTradeManagerFromTradeManagersByPriority(Collection<Item> existingItems) {
-        Set<ItemForCentralTradeManager> itemForCentralTradeManagers = new HashSet<>();
-        itemForCentralTradeManagers.addAll(getItemsForCentralTradeManagerFromTradeByFiltersManagersByPriority(tradeByFiltersManagers.stream().map(TradeByFiltersManagerEntity::toTradeByFiltersManager).toList(),
-                existingItems));
-        itemForCentralTradeManagers.addAll(getItemsForCentralTradeManagerFromTradeByItemIdManagersByPriority(tradeByItemIdManagers.stream().map(TradeByItemIdManagerEntity::toTradeByItemIdManager).toList(),
-                existingItems));
+    public boolean isEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof UserEntity entity) {
+            return Objects.equals(id, entity.id);
+        }
+        return false;
+    }
 
-        return itemForCentralTradeManagers;
+    public boolean isFullyEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof UserEntity entity) {
+            boolean itemFiltersAreEqual = itemFilters == null && entity.itemFilters == null || (
+                    itemFilters != null && entity.itemFilters != null &&
+                    itemFilters.size() == entity.itemFilters.size() &&
+                    itemFilters.stream().allMatch(itemFilter -> entity.itemFilters.stream().anyMatch(itemFilter::isEqual)));
+
+            boolean tradeByFiltersManagersAreEqual = tradeByFiltersManagers == null && entity.tradeByFiltersManagers == null || (
+                    tradeByFiltersManagers != null && entity.tradeByFiltersManagers != null &&
+                    tradeByFiltersManagers.size() == entity.tradeByFiltersManagers.size() &&
+                    tradeByFiltersManagers.stream().allMatch(tradeByFiltersManager -> entity.tradeByFiltersManagers.stream().anyMatch(tradeByFiltersManager::isEqual)));
+
+            boolean tradeByItemIdManagersAreEqual = tradeByItemIdManagers == null && entity.tradeByItemIdManagers == null || (
+                    tradeByItemIdManagers != null && entity.tradeByItemIdManagers != null &&
+                    tradeByItemIdManagers.size() == entity.tradeByItemIdManagers.size() &&
+                    tradeByItemIdManagers.stream().allMatch(tradeByItemIdManager -> entity.tradeByItemIdManagers.stream().anyMatch(tradeByItemIdManager::isEqual)));
+
+            boolean itemShowAppliedFiltersAreEqual = itemShowAppliedFilters == null && entity.itemShowAppliedFilters == null || (
+                    itemShowAppliedFilters != null && entity.itemShowAppliedFilters != null &&
+                    itemShowAppliedFilters.size() == entity.itemShowAppliedFilters.size() &&
+                    itemShowAppliedFilters.stream().allMatch(itemFilter -> entity.itemShowAppliedFilters.stream().anyMatch(itemFilter::isEqual)));
+
+            return isEqual(entity) &&
+                   telegramUser.isEqual(entity.telegramUser) &&
+                   ubiAccountEntry.isEqual(entity.ubiAccountEntry) &&
+                   itemFiltersAreEqual &&
+                   tradeByFiltersManagersAreEqual &&
+                   tradeByItemIdManagersAreEqual &&
+                   Objects.equals(publicNotificationsEnabledFlag, entity.publicNotificationsEnabledFlag) &&
+                   Objects.equals(privateNotificationsEnabledFlag, entity.privateNotificationsEnabledFlag) &&
+                   Objects.equals(itemShowNameFlag, entity.itemShowNameFlag) &&
+                   Objects.equals(itemShowItemTypeFlag, entity.itemShowItemTypeFlag) &&
+                   Objects.equals(itemShowMaxBuyPrice, entity.itemShowMaxBuyPrice) &&
+                   Objects.equals(itemShowBuyOrdersCountFlag, entity.itemShowBuyOrdersCountFlag) &&
+                   Objects.equals(itemShowMinSellPriceFlag, entity.itemShowMinSellPriceFlag) &&
+                   Objects.equals(itemsShowSellOrdersCountFlag, entity.itemsShowSellOrdersCountFlag) &&
+                   Objects.equals(itemShowPictureFlag, entity.itemShowPictureFlag) &&
+                   itemShowAppliedFiltersAreEqual &&
+                   Objects.equals(newManagersAreActiveFlag, entity.newManagersAreActiveFlag) &&
+                   Objects.equals(managingEnabledFlag, entity.managingEnabledFlag);
+        }
+        return false;
     }
 }

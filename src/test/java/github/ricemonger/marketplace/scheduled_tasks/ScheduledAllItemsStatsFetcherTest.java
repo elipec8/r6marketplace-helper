@@ -4,7 +4,7 @@ import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.ItemService;
 import github.ricemonger.telegramBot.TelegramBotService;
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.common.Item;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -3,363 +3,317 @@ package github.ricemonger.marketplace.databases.postgres.services;
 import github.ricemonger.marketplace.databases.postgres.entities.user.ItemFilterEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
-import github.ricemonger.marketplace.databases.postgres.repositories.ItemFilterPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
-import github.ricemonger.telegramBot.InputGroup;
-import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.utils.DTOs.ItemShownFieldsSettings;
-import github.ricemonger.utils.DTOs.TelegramUser;
-import github.ricemonger.utils.DTOs.items.ItemFilter;
+import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.ItemFilterEntityMapper;
+import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TelegramUserEntityMapper;
+import github.ricemonger.utils.DTOs.personal.*;
 import github.ricemonger.utils.exceptions.client.TelegramUserAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
-import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class TelegramUserPostgresServiceTest {
-    private final static String CHAT_ID = "1";
-    private final static String ANOTHER_CHAT_ID = "2";
-
     @Autowired
     private TelegramUserPostgresService telegramUserService;
-    @Autowired
-    private ItemFilterPostgresRepository itemFilterRepository;
-    @Autowired
+    @MockBean
     private TelegramUserPostgresRepository telegramUserRepository;
-    @Autowired
-    private UserPostgresRepository userRepository;
-
-    @BeforeEach
-    public void setUp() {
-        telegramUserRepository.deleteAll();
-        userRepository.deleteAll();
-        itemFilterRepository.deleteAll();
-    }
-
-    private TelegramUserEntity createTelegramUser(String chatId) {
-        UserEntity user = userRepository.save(new UserEntity());
-        return telegramUserRepository.save(new TelegramUserEntity(chatId, user));
-    }
+    @MockBean
+    private TelegramUserEntityMapper telegramUserEntityMapper;
+    @MockBean
+    private ItemFilterEntityMapper itemFilterEntityMapper;
 
     @Test
-    public void create_should_create_new_user_with_default_settings() {
-        telegramUserService.create(CHAT_ID);
+    public void create_should_create_new_telegram_user_if_doesnt_exist() {
+        String chatId = "123";
+        TelegramUserEntity entity = new TelegramUserEntity();
+        when(telegramUserRepository.existsById(same(chatId))).thenReturn(false);
+        when(telegramUserEntityMapper.createNewEntityForNewUser(same(chatId))).thenReturn(entity);
 
-        assertEquals(1, userRepository.count());
+        telegramUserService.create(chatId);
 
-        TelegramUserEntity telegramUser = telegramUserRepository.findById(CHAT_ID).get();
-
-        TelegramUser expected = new TelegramUser();
-        expected.setChatId(CHAT_ID);
-
-        expected.setInputState(InputState.BASE);
-        expected.setInputGroup(InputGroup.BASE);
-
-        expected.setItemShowMessagesLimit(50);
-        expected.setItemShowFewInMessageFlag(false);
-
-        expected.setPublicNotificationsEnabledFlag(true);
-        expected.setItemShowNameFlag(true);
-        expected.setItemShowItemTypeFlag(true);
-        expected.setItemShowMaxBuyPrice(true);
-        expected.setItemShowBuyOrdersCountFlag(true);
-        expected.setItemShowMinSellPriceFlag(true);
-        expected.setItemsShowSellOrdersCountFlag(true);
-        expected.setItemShowPictureFlag(true);
-        expected.setItemShowAppliedFilters(new ArrayList<>());
-        expected.setManagingEnabledFlag(true);
-        expected.setNewManagersAreActiveFlag(true);
-
-        assertEquals(telegramUser.toTelegramUser(), expected);
+        verify(telegramUserRepository).save(same(entity));
     }
 
     @Test
     public void create_should_throw_if_telegram_user_already_exists() {
-        createTelegramUser(CHAT_ID);
+        String chatId = "123";
+        when(telegramUserRepository.existsById(same(chatId))).thenReturn(true);
 
-        assertThrows(TelegramUserAlreadyExistsException.class, () -> telegramUserService.create(CHAT_ID));
+        assertThrows(TelegramUserAlreadyExistsException.class, () -> telegramUserService.create(chatId));
     }
 
     @Test
-    @Transactional
-    public void applied_filters_clear_should_not_remove_item_filter_from_db() {
-        UserEntity user = userRepository.save(new UserEntity());
-        TelegramUserEntity telegramUser = telegramUserRepository.save(new TelegramUserEntity(CHAT_ID, user));
+    public void update_should_set_fields_and_save_telegram_user_from_db() {
+        TelegramUserEntity telegramUserEntity = Mockito.mock(TelegramUserEntity.class);
+        when(telegramUserRepository.findById("chatId")).thenReturn(java.util.Optional.of(telegramUserEntity));
 
-        ItemFilter filter = new ItemFilter();
-        filter.setName("filter1");
+        TelegramUser telegramUser = new TelegramUser();
+        telegramUser.setChatId("chatId");
+        telegramUserService.update(telegramUser);
 
-        ItemFilterEntity filterEntity = itemFilterRepository.save(new ItemFilterEntity(user, filter));
+        verify(telegramUserEntity).setFields(same(telegramUser), same(itemFilterEntityMapper));
 
-        telegramUser.getItemShowAppliedFilters().add(filterEntity);
-        telegramUserRepository.save(telegramUser);
-
-        telegramUser.getItemShowAppliedFilters().clear();
-        telegramUserRepository.save(telegramUser);
-
-        assertEquals(1, itemFilterRepository.count());
-        assertEquals(0, telegramUserRepository.findById(CHAT_ID).get().getItemShowAppliedFilters().size());
+        verify(telegramUserRepository).save(same(telegramUserEntity));
     }
 
     @Test
-    public void update_should_update_fields_of_existing_telegram_user() {
-        createTelegramUser(CHAT_ID);
+    public void update_should_throw_if_user_doesnt_exist() {
+        when(telegramUserRepository.findById(any())).thenReturn(java.util.Optional.empty());
 
-        TelegramUser updated = new TelegramUser();
-        updated.setChatId(CHAT_ID);
-
-        updated.setInputState(InputState.UBI_ACCOUNT_ENTRY_PASSWORD);
-        updated.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
-
-        updated.setItemShowMessagesLimit(5);
-        updated.setItemShowFewInMessageFlag(true);
-
-        updated.setPublicNotificationsEnabledFlag(true);
-        updated.setItemShowNameFlag(false);
-        updated.setItemShowItemTypeFlag(false);
-        updated.setItemShowMaxBuyPrice(false);
-        updated.setItemShowBuyOrdersCountFlag(false);
-        updated.setItemShowMinSellPriceFlag(false);
-        updated.setItemsShowSellOrdersCountFlag(false);
-        updated.setItemShowPictureFlag(false);
-        updated.setItemShowAppliedFilters(new ArrayList<>());
-        updated.setManagingEnabledFlag(false);
-        updated.setNewManagersAreActiveFlag(false);
-
-        telegramUserService.update(updated);
-
-        assertEquals(1, telegramUserRepository.count());
-        assertEquals(updated, telegramUserRepository.findById(CHAT_ID).get().toTelegramUser());
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.update(new TelegramUser()));
     }
 
     @Test
-    public void update_should_throw_if_telegram_user_doesnt_exist() {
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.update(new TelegramUser(1L)));
+    public void setItemShowFewItemsInMessageFlag_should_set_flag_and_save_telegram_user_from_db() {
+        TelegramUserEntity telegramUserEntity = Mockito.mock(TelegramUserEntity.class);
+        when(telegramUserRepository.findById("chatId")).thenReturn(java.util.Optional.of(telegramUserEntity));
+
+        telegramUserService.setItemShowFewItemsInMessageFlag("chatId", true);
+
+        verify(telegramUserEntity).setItemShowFewInMessageFlag(true);
+
+        verify(telegramUserRepository).save(same(telegramUserEntity));
     }
 
     @Test
-    public void setItemShowFewItemsInMessageFlag_should_update_flag() {
-        createTelegramUser(CHAT_ID);
+    public void setItemShowFewItemsInMessageFlag_should_throw_if_user_doesnt_exist() {
+        when(telegramUserRepository.findById(any())).thenReturn(java.util.Optional.empty());
 
-        telegramUserService.setItemShowFewItemsInMessageFlag(CHAT_ID, false);
-        assertEquals(false, telegramUserRepository.findById(CHAT_ID).get().getItemShowFewInMessageFlag());
-
-        telegramUserService.setItemShowFewItemsInMessageFlag(CHAT_ID, true);
-        assertEquals(true, telegramUserRepository.findById(CHAT_ID).get().getItemShowFewInMessageFlag());
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setItemShowFewItemsInMessageFlag("chatId", true));
     }
 
     @Test
-    public void setItemShowFewItemsInMessageFlag_should_throw_if_telegram_user_doesnt_exist() {
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setItemShowFewItemsInMessageFlag(CHAT_ID, false));
+    public void setItemShowMessagesLimit_should_set_limit_and_save_telegram_user_from_db() {
+        TelegramUserEntity telegramUserEntity = Mockito.mock(TelegramUserEntity.class);
+        when(telegramUserRepository.findById("chatId")).thenReturn(java.util.Optional.of(telegramUserEntity));
+
+        telegramUserService.setItemShowMessagesLimit("chatId", 5);
+
+        verify(telegramUserEntity).setItemShowMessagesLimit(5);
+
+        verify(telegramUserRepository).save(same(telegramUserEntity));
     }
 
     @Test
-    public void setItemShowMessagesLimit_should_update_limit() {
-        createTelegramUser(CHAT_ID);
+    public void setItemShowMessagesLimit_should_throw_if_user_doesnt_exist() {
+        when(telegramUserRepository.findById(any())).thenReturn(java.util.Optional.empty());
 
-        telegramUserService.setItemShowMessagesLimit(CHAT_ID, 5);
-        assertEquals(5, telegramUserRepository.findById(CHAT_ID).get().getItemShowMessagesLimit());
-
-        telegramUserService.setItemShowMessagesLimit(CHAT_ID, 10);
-        assertEquals(10, telegramUserRepository.findById(CHAT_ID).get().getItemShowMessagesLimit());
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setItemShowMessagesLimit("chatId", 5));
     }
 
     @Test
-    public void setItemShowMessagesLimit_should_throw_if_telegram_user_doesnt_exist() {
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setItemShowMessagesLimit(CHAT_ID, 5));
-    }
-
-    @Test
-    public void setItemShowFieldsSettings_should_update_settings() {
-        createTelegramUser(CHAT_ID);
+    public void setItemShowFieldsSettings_should_set_settings_and_save_telegram_user_from_db() {
+        TelegramUserEntity telegramUserEntity = Mockito.mock(TelegramUserEntity.class);
+        when(telegramUserRepository.findById("chatId")).thenReturn(java.util.Optional.of(telegramUserEntity));
 
         ItemShownFieldsSettings settings = new ItemShownFieldsSettings();
-        settings.setItemShowNameFlag(false);
-        settings.setItemShowItemTypeFlag(false);
-        settings.setItemShowMaxBuyPrice(false);
-        settings.setItemShowBuyOrdersCountFlag(false);
-        settings.setItemShowMinSellPriceFlag(false);
-        settings.setItemsShowSellOrdersCountFlag(false);
-        settings.setItemShowPictureFlag(false);
 
-        telegramUserService.setItemShowFieldsSettings(CHAT_ID, settings);
-        assertEquals(settings, telegramUserRepository.findById(CHAT_ID).get().toItemShowSettings().getShownFieldsSettings());
+        telegramUserService.setItemShowFieldsSettings("chatId", settings);
 
-        settings = new ItemShownFieldsSettings();
-        settings.setItemShowNameFlag(true);
-        settings.setItemShowItemTypeFlag(true);
-        settings.setItemShowMaxBuyPrice(true);
-        settings.setItemShowBuyOrdersCountFlag(true);
-        settings.setItemShowMinSellPriceFlag(true);
-        settings.setItemsShowSellOrdersCountFlag(true);
-        settings.setItemShowPictureFlag(true);
+        verify(telegramUserEntity).setShowItemFieldsSettings(same(settings));
 
-        telegramUserService.setItemShowFieldsSettings(CHAT_ID, settings);
-        assertEquals(settings, telegramUserRepository.findById(CHAT_ID).get().toItemShowSettings().getShownFieldsSettings());
+        verify(telegramUserRepository).save(same(telegramUserEntity));
     }
 
     @Test
-    public void setItemShowFieldsSettings_should_throw_if_telegram_user_doesnt_exist() {
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setItemShowFieldsSettings(CHAT_ID, new ItemShownFieldsSettings()));
+    public void setItemShowFieldsSettings_should_throw_if_user_doesnt_exist() {
+        when(telegramUserRepository.findById(any())).thenReturn(java.util.Optional.empty());
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setItemShowFieldsSettings("chatId", new ItemShownFieldsSettings()));
     }
 
     @Test
-    public void addItemShowAppliedFilter_should_add_filter() {
-        createTelegramUser(CHAT_ID);
+    public void addItemShowAppliedFilter_should_add_filter_to_user_itemShowAppliedFilters_list_and_save_to_db() {
+        TelegramUserEntity telegramUserEntity = Mockito.mock(TelegramUserEntity.class);
+        UserEntity userEntity = Mockito.mock(UserEntity.class);
+        when(telegramUserRepository.findById("chatId")).thenReturn(java.util.Optional.of(telegramUserEntity));
+        when(telegramUserEntity.getUser()).thenReturn(userEntity);
+
+        List filtersMock = Mockito.mock(List.class);
+
+        when(telegramUserEntity.getItemShowAppliedFilters()).thenReturn(filtersMock);
 
         ItemFilter filter = new ItemFilter();
-        filter.setName("filter1");
 
-        telegramUserService.addItemShowAppliedFilter(CHAT_ID, filter);
-        assertEquals(1, telegramUserRepository.findById(CHAT_ID).get().getItemShowAppliedFilters().size());
+        ItemFilterEntity filterEntity = new ItemFilterEntity();
+        when(itemFilterEntityMapper.createEntityForUser(same(userEntity), same(filter))).thenReturn(filterEntity);
 
-        filter = new ItemFilter();
-        filter.setName("filter2");
+        telegramUserService.addItemShowAppliedFilter("chatId", filter);
 
-        telegramUserService.addItemShowAppliedFilter(CHAT_ID, filter);
-        assertEquals(2, telegramUserRepository.findById(CHAT_ID).get().getItemShowAppliedFilters().size());
+        verify(filtersMock).add(filterEntity);
+
+        verify(telegramUserRepository).save(same(telegramUserEntity));
     }
 
     @Test
-    public void addItemShowAppliedFilter_should_throw_if_telegram_user_doesnt_exist() {
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.addItemShowAppliedFilter(CHAT_ID, new ItemFilter()));
+    public void addItemShowAppliedFilter_should_throw_if_user_doesnt_exist() {
+        when(telegramUserRepository.findById(any())).thenReturn(java.util.Optional.empty());
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.addItemShowAppliedFilter("chatId", new ItemFilter()));
     }
 
     @Test
-    public void removeItemShowAppliedFilter_should_remove_filter_and_remove_from_db_if_orphaned() {
-        createTelegramUser(CHAT_ID);
+    public void removeItemShowAppliedFilter_should_remove_filter_from_user_itemShowAppliedFilters_list_and_save_to_db() {
+        TelegramUserEntity telegramUserEntity = Mockito.mock(TelegramUserEntity.class);
+        when(telegramUserRepository.findById("chatId")).thenReturn(java.util.Optional.of(telegramUserEntity));
 
-        ItemFilter filter = new ItemFilter();
-        filter.setName("filter1");
+        List filtersMock = Mockito.mock(List.class);
+        when(telegramUserEntity.getItemShowAppliedFilters()).thenReturn(filtersMock);
 
-        telegramUserService.addItemShowAppliedFilter(CHAT_ID, filter);
-        assertEquals(1, telegramUserRepository.findById(CHAT_ID).get().getItemShowAppliedFilters().size());
-        assertEquals(1, itemFilterRepository.count());
+        ItemFilterEntity filterEntity = new ItemFilterEntity();
+        filterEntity.setName("filterName");
 
-        telegramUserService.removeItemShowAppliedFilter(CHAT_ID, "filter1");
-        assertEquals(0, telegramUserRepository.findById(CHAT_ID).get().getItemShowAppliedFilters().size());
-        assertEquals(0, itemFilterRepository.count());
+        when(filtersMock.size()).thenReturn(1);
+        when(filtersMock.get(anyInt())).thenReturn(filterEntity);
+
+        telegramUserService.removeItemShowAppliedFilter("chatId", "filterName");
+
+        verify(filtersMock).remove(anyInt());
+
+        verify(telegramUserRepository).save(same(telegramUserEntity));
     }
 
     @Test
-    public void removeItemShowAppliedFilter_should_throw_if_telegram_user_doesnt_exist() {
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.removeItemShowAppliedFilter(CHAT_ID, "filter1"));
+    public void removeItemShowAppliedFilter_should_throw_if_user_doesnt_exist() {
+        when(telegramUserRepository.findById(any())).thenReturn(java.util.Optional.empty());
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.removeItemShowAppliedFilter("chatId", "filterName"));
     }
 
     @Test
-    public void removeItemShowAppliedFilter_should_not_remove_filter_if_it_doesnt_exist() {
-        createTelegramUser(CHAT_ID);
+    public void setTradeManagersSettingsNewManagersAreActiveFlag_should_set_flag_and_save_telegram_user_from_db() {
+        TelegramUserEntity telegramUserEntity = Mockito.mock(TelegramUserEntity.class);
+        when(telegramUserRepository.findById("chatId")).thenReturn(java.util.Optional.of(telegramUserEntity));
 
-        ItemFilter filter = new ItemFilter();
-        filter.setName("filter1");
+        telegramUserService.setTradeManagersSettingsNewManagersAreActiveFlag("chatId", true);
 
-        telegramUserService.addItemShowAppliedFilter(CHAT_ID, filter);
-        assertEquals(1, telegramUserRepository.findById(CHAT_ID).get().getItemShowAppliedFilters().size());
+        verify(telegramUserEntity).setNewManagersAreActiveFlag_(true);
 
-        telegramUserService.removeItemShowAppliedFilter(CHAT_ID, "filter2");
-        assertEquals(1, telegramUserRepository.findById(CHAT_ID).get().getItemShowAppliedFilters().size());
+        verify(telegramUserRepository).save(same(telegramUserEntity));
     }
 
     @Test
-    public void setTradeManagersSettingsNewManagersAreActiveFlag_should_update_flag() {
-        createTelegramUser(CHAT_ID);
+    public void setTradeManagersSettingsNewManagersAreActiveFlag_should_throw_if_user_doesnt_exist() {
+        when(telegramUserRepository.findById(any())).thenReturn(java.util.Optional.empty());
 
-        telegramUserService.setTradeManagersSettingsNewManagersAreActiveFlag(CHAT_ID, false);
-        assertFalse(telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isNewManagersAreActiveFlag());
-
-        telegramUserService.setTradeManagersSettingsNewManagersAreActiveFlag(CHAT_ID, true);
-        assertTrue(telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isNewManagersAreActiveFlag());
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setTradeManagersSettingsNewManagersAreActiveFlag("chatId", true));
     }
 
     @Test
-    public void setTradeManagersSettingsNewManagersAreActiveFlag_should_throw_if_telegram_user_doesnt_exist() {
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setTradeManagersSettingsNewManagersAreActiveFlag(CHAT_ID, false));
+    public void get_should_return_telegram_user_from_db() {
+        TelegramUserEntity telegramUserEntity = Mockito.mock(TelegramUserEntity.class);
+        when(telegramUserRepository.findById("chatId")).thenReturn(java.util.Optional.of(telegramUserEntity));
+
+        telegramUserService.setTradeManagersSettingsManagingEnabledFlag("chatId", true);
+
+        verify(telegramUserEntity).setManagingEnabledFlag_(true);
+
+        verify(telegramUserRepository).save(same(telegramUserEntity));
     }
 
     @Test
-    public void setTradeManagersSettingsManagingEnabledFlag_should_update_flag() {
-        createTelegramUser(CHAT_ID);
+    public void setTradeManagersSettingsManagingEnabledFlag_should_throw_if_user_doesnt_exist() {
+        when(telegramUserRepository.findById(any())).thenReturn(java.util.Optional.empty());
 
-        telegramUserService.setTradeManagersSettingsManagingEnabledFlag(CHAT_ID, false);
-        assertFalse(telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isManagingEnabledFlag());
-
-        telegramUserService.setTradeManagersSettingsManagingEnabledFlag(CHAT_ID, true);
-        assertTrue(telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings().isManagingEnabledFlag());
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setTradeManagersSettingsManagingEnabledFlag("chatId", true));
     }
 
     @Test
-    public void setTradeManagersSettingsManagingEnabledFlag_should_throw_if_telegram_user_doesnt_exist() {
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.setTradeManagersSettingsManagingEnabledFlag(CHAT_ID, false));
+    public void existsById_should_return_true_if_user_exists() {
+        when(telegramUserRepository.existsById("chatId")).thenReturn(true);
+
+        assertTrue(telegramUserService.existsById("chatId"));
     }
 
     @Test
-    public void existsById_should_return_true_if_telegram_user_exists() {
-        createTelegramUser(CHAT_ID);
+    public void existsById_should_return_true_if_user_doesnt_exist() {
+        when(telegramUserRepository.existsById("chatId")).thenReturn(false);
 
-        assertTrue(telegramUserService.existsById(CHAT_ID));
-    }
-
-    @Test
-    public void existsById_should_return_false_if_telegram_user_doesnt_exist() {
-        assertFalse(telegramUserService.existsById(CHAT_ID));
+        assertFalse(telegramUserService.existsById("chatId"));
     }
 
     @Test
     public void findUserById_should_return_telegram_user() {
-        createTelegramUser(CHAT_ID);
+        TelegramUserEntity telegramUserEntity = Mockito.mock(TelegramUserEntity.class);
+        when(telegramUserRepository.findById("chatId")).thenReturn(java.util.Optional.of(telegramUserEntity));
 
-        assertEquals(telegramUserRepository.findById(CHAT_ID).get().toTelegramUser(), telegramUserService.findUserById(CHAT_ID));
+        TelegramUser telegramUser = new TelegramUser();
+        when(telegramUserEntityMapper.createTelegramUser(same(telegramUserEntity))).thenReturn(telegramUser);
+
+        assertSame(telegramUser, telegramUserService.findUserById("chatId"));
     }
 
     @Test
-    public void findUserById_should_throw_if_telegram_user_doesnt_exist() {
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.findUserById(CHAT_ID));
+    public void findUserById_should_throw_if_user_doesnt_exist() {
+        when(telegramUserRepository.findById(any())).thenReturn(java.util.Optional.empty());
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.findUserById("chatId"));
     }
 
     @Test
-    public void findUserItemShowSettingsById_should_return_item_show_ItemShow_settings() {
-        createTelegramUser(CHAT_ID);
+    public void findUserItemShowSettingsById_should_return_telegram_user_entity() {
+        TelegramUserEntity telegramUserEntity = Mockito.mock(TelegramUserEntity.class);
+        when(telegramUserRepository.findById("chatId")).thenReturn(java.util.Optional.of(telegramUserEntity));
 
-        assertEquals(telegramUserRepository.findById(CHAT_ID).get().toItemShowSettings(), telegramUserService.findUserItemShowSettingsById(CHAT_ID));
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        when(telegramUserEntityMapper.createItemShowSettings(same(telegramUserEntity))).thenReturn(itemShowSettings);
+
+        assertSame(itemShowSettings, telegramUserService.findUserItemShowSettingsById("chatId"));
     }
 
     @Test
-    public void findUserItemShowSettingsById_should_throw_if_telegram_user_ItemShow_doesnt_exist() {
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.findUserItemShowSettingsById(CHAT_ID));
+    public void findUserItemShowSettingsById_should_throw_if_user_doesnt_exist() {
+        when(telegramUserRepository.findById(any())).thenReturn(java.util.Optional.empty());
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.findUserItemShowSettingsById("chatId"));
     }
 
     @Test
-    public void findUserTradeManagersSettingsById_should_return_user_trade_managers_settings() {
-        createTelegramUser(CHAT_ID);
+    public void findUserTradeManagersSettingsById_should_return_telegram_user_entity() {
+        TelegramUserEntity telegramUserEntity = Mockito.mock(TelegramUserEntity.class);
+        when(telegramUserRepository.findById("chatId")).thenReturn(java.util.Optional.of(telegramUserEntity));
 
-        assertEquals(telegramUserRepository.findById(CHAT_ID).get().toTradeManagersSettings(), telegramUserService.findUserTradeManagersSettingsById(CHAT_ID));
+        TradeManagersSettings tradeManagersSettings = new TradeManagersSettings();
+        when(telegramUserEntityMapper.createTradeManagersSettings(same(telegramUserEntity))).thenReturn(tradeManagersSettings);
+
+        assertSame(tradeManagersSettings, telegramUserService.findUserTradeManagersSettingsById("chatId"));
     }
 
     @Test
-    public void findUserTradeManagersSettingsById_should_throw_if_telegram_user_ItemShow_doesnt_exist() {
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.findUserTradeManagersSettingsById(CHAT_ID));
+    public void findUserTradeManagersSettingsById_should_throw_if_user_doesnt_exist() {
+        when(telegramUserRepository.findById(any())).thenReturn(java.util.Optional.empty());
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.findUserTradeManagersSettingsById("chatId"));
     }
 
     @Test
-    public void finAllUsers_should_return_all_telegram_users() {
-        createTelegramUser(CHAT_ID);
-        createTelegramUser(ANOTHER_CHAT_ID);
+    public void findAllUsers_should_return_all_mapped_telegram_users() {
+        TelegramUserEntity telegramUserEntity1 = Mockito.mock(TelegramUserEntity.class);
+        TelegramUserEntity telegramUserEntity2 = Mockito.mock(TelegramUserEntity.class);
+        List<TelegramUserEntity> telegramUserEntities = List.of(telegramUserEntity1, telegramUserEntity2);
+        when(telegramUserRepository.findAll()).thenReturn(telegramUserEntities);
 
-        assertEquals(2, telegramUserService.findAllUsers().size());
-    }
+        TelegramUser telegramUser1 = new TelegramUser();
+        TelegramUser telegramUser2 = new TelegramUser();
+        List<TelegramUser> expected = List.of(telegramUser1, telegramUser2);
+        when(telegramUserEntityMapper.createTelegramUser(same(telegramUserEntity1))).thenReturn(telegramUser1);
+        when(telegramUserEntityMapper.createTelegramUser(same(telegramUserEntity2))).thenReturn(telegramUser2);
 
-    @Test
-    public void finAllUsers_should_return_empty_list_if_no_telegram_users() {
-        assertEquals(0, telegramUserService.findAllUsers().size());
+        List<TelegramUser> result = telegramUserService.findAllUsers();
+
+        assertTrue(result.size() == expected.size() && result.stream().allMatch(res -> expected.stream().anyMatch(ex -> ex == res)));
     }
 }

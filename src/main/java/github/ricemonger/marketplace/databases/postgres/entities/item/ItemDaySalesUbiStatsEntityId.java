@@ -16,6 +16,15 @@ public class ItemDaySalesUbiStatsEntityId {
 
     private LocalDate date;
 
+    public ItemDaySalesUbiStatsEntityId(String itemId, LocalDate date) {
+        this.item = new ItemEntity(itemId);
+        this.date = date;
+    }
+
+    public String getItemId_() {
+        return item.getItemId();
+    }
+
     public int hashCode() {
         return Objects.hash(item.getItemId(), date);
     }

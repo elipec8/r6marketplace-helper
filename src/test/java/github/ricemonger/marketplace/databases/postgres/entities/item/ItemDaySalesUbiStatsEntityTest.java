@@ -1,67 +1,130 @@
 package github.ricemonger.marketplace.databases.postgres.entities.item;
 
-import github.ricemonger.utils.DTOs.items.ItemDaySalesUbiStats;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.junit.jupiter.api.Assertions.*;
 
 class ItemDaySalesUbiStatsEntityTest {
+
     @Test
-    public void toItemDaySalesUbiStats_should_properly_map_with_all_fields() {
-        ItemEntity item = new ItemEntity();
-        item.setItemId("1");
-
+    public void isEqual_should_return_true_if_same() {
         ItemDaySalesUbiStatsEntity entity = new ItemDaySalesUbiStatsEntity();
-        entity.setItem(item);
-        entity.setDate(LocalDate.of(2023, 1, 1));
-        entity.setLowestPrice(100);
-        entity.setAveragePrice(200);
-        entity.setHighestPrice(300);
-        entity.setItemsCount(10);
-
-        ItemDaySalesUbiStats expected = new ItemDaySalesUbiStats();
-        expected.setItemId("1");
-        expected.setDate(LocalDate.of(2023, 1, 1));
-        expected.setLowestPrice(100);
-        expected.setAveragePrice(200);
-        expected.setHighestPrice(300);
-        expected.setItemsCount(10);
-
-        ItemDaySalesUbiStats actual = entity.toItemDaySalesUbiStats();
-
-        assertEquals(expected, actual);
+        assertTrue(entity.isEqual(entity));
     }
 
     @Test
-    public void constructor_should_properly_map_with_all_fields() {
+    public void isEqual_should_return_true_if_equal_id_fields() {
+        ItemDaySalesUbiStatsEntity entity1 = new ItemDaySalesUbiStatsEntity();
+        entity1.setItem(new ItemEntity("itemId"));
+        entity1.setDate(LocalDate.of(2021, 1, 1));
+        entity1.setLowestPrice(1);
+        entity1.setAveragePrice(2);
+        entity1.setHighestPrice(3);
+        entity1.setItemsCount(4);
+
+        ItemDaySalesUbiStatsEntity entity2 = new ItemDaySalesUbiStatsEntity();
+        entity2.setItem(new ItemEntity("itemId"));
+        entity2.setDate(LocalDate.of(2021, 1, 1));
+        entity2.setLowestPrice(5);
+        entity2.setAveragePrice(6);
+        entity2.setHighestPrice(7);
+        entity2.setItemsCount(8);
+
+        assertTrue(entity1.isEqual(entity2));
+    }
+
+    @Test
+    public void isEqual_should_return_false_for_null() {
+        ItemDaySalesUbiStatsEntity entity = new ItemDaySalesUbiStatsEntity();
+        assertFalse(entity.isEqual(null));
+    }
+
+    @Test
+    public void isEqual_should_return_false_for_different_ids() {
+        ItemDaySalesUbiStatsEntity entity1 = new ItemDaySalesUbiStatsEntity();
+        entity1.setItem(new ItemEntity("itemId"));
+        entity1.setDate(LocalDate.of(2021, 1, 1));
+
+        ItemDaySalesUbiStatsEntity entity2 = new ItemDaySalesUbiStatsEntity();
+        entity2.setItem(new ItemEntity("itemId"));
+        entity2.setDate(LocalDate.of(2021, 1, 1));
+
+        entity1.setItem(new ItemEntity("itemId1"));
+        assertFalse(entity1.isEqual(entity2));
+        entity1.setItem(new ItemEntity("itemId"));
+        entity1.setDate(LocalDate.of(2021, 1, 2));
+        assertFalse(entity1.isEqual(entity2));
+    }
+
+    @Test
+    public void getItemId_should_return_item_itemId() {
         ItemEntity item = new ItemEntity();
-        item.setItemId("1");
+        item.setItemId("itemId");
+        ItemDaySalesUbiStatsEntity itemDaySalesUbiStatsEntity = new ItemDaySalesUbiStatsEntity();
+        itemDaySalesUbiStatsEntity.setItem(item);
+        assertEquals("itemId", itemDaySalesUbiStatsEntity.getItemId_());
+    }
 
-        ItemDaySalesUbiStats itemDaySalesUbiStats = new ItemDaySalesUbiStats();
-        itemDaySalesUbiStats.setDate(LocalDate.of(2023, 2, 1));
-        itemDaySalesUbiStats.setLowestPrice(100);
-        itemDaySalesUbiStats.setAveragePrice(200);
-        itemDaySalesUbiStats.setHighestPrice(300);
-        itemDaySalesUbiStats.setItemsCount(10);
+    @Test
+    public void isFullyEqual_should_return_true_if_same() {
+        ItemDaySalesUbiStatsEntity entity = new ItemDaySalesUbiStatsEntity();
+        assertTrue(entity.isFullyEqual(entity));
+    }
 
-        ItemDaySalesUbiStatsEntity expected = new ItemDaySalesUbiStatsEntity();
-        expected.setItem(item);
-        expected.setDate(LocalDate.of(2023, 2, 1));
-        expected.setLowestPrice(100);
-        expected.setAveragePrice(200);
-        expected.setHighestPrice(300);
-        expected.setItemsCount(10);
+    @Test
+    public void is_FullyEqual_should_return_true_if_equal() {
+        ItemDaySalesUbiStatsEntity entity1 = new ItemDaySalesUbiStatsEntity();
+        entity1.setItem(new ItemEntity("itemId"));
+        entity1.setDate(LocalDate.of(2021, 1, 1));
+        entity1.setLowestPrice(1);
+        entity1.setAveragePrice(2);
+        entity1.setHighestPrice(3);
+        entity1.setItemsCount(4);
+        ItemDaySalesUbiStatsEntity entity2 = new ItemDaySalesUbiStatsEntity();
+        entity2.setItem(new ItemEntity("itemId"));
+        entity2.setDate(LocalDate.of(2021, 1, 1));
+        entity2.setLowestPrice(1);
+        entity2.setAveragePrice(2);
+        entity2.setHighestPrice(3);
+        entity2.setItemsCount(4);
 
-        ItemDaySalesUbiStatsEntity actual = new ItemDaySalesUbiStatsEntity(item, itemDaySalesUbiStats);
+        assertTrue(entity1.isFullyEqual(entity2));
+    }
 
-        assertEquals(expected.getItem().getItemId(), actual.getItem().getItemId());
-        assertEquals(expected.getDate(), actual.getDate());
-        assertEquals(expected.getLowestPrice(), actual.getLowestPrice());
-        assertEquals(expected.getAveragePrice(), actual.getAveragePrice());
-        assertEquals(expected.getHighestPrice(), actual.getHighestPrice());
-        assertEquals(expected.getItemsCount(), actual.getItemsCount());
+    @Test
+    public void isFullyEqual_should_return_false_if_not_equal() {
+        ItemDaySalesUbiStatsEntity entity1 = new ItemDaySalesUbiStatsEntity();
+        entity1.setItem(new ItemEntity("itemId1"));
+        entity1.setDate(LocalDate.of(2021, 1, 1));
+        entity1.setLowestPrice(1);
+        entity1.setAveragePrice(2);
+        entity1.setHighestPrice(3);
+        entity1.setItemsCount(4);
+        ItemDaySalesUbiStatsEntity entity2 = new ItemDaySalesUbiStatsEntity();
+        entity2.setItem(new ItemEntity("itemId"));
+        entity2.setDate(LocalDate.of(2021, 1, 1));
+        entity2.setLowestPrice(1);
+        entity2.setAveragePrice(2);
+        entity2.setHighestPrice(3);
+        entity2.setItemsCount(4);
+
+        assertFalse(entity1.isFullyEqual(entity2));
+        entity1.setItem(new ItemEntity("itemId"));
+        entity1.setDate(LocalDate.of(2021, 1, 2));
+        assertFalse(entity1.isFullyEqual(entity2));
+        entity1.setDate(LocalDate.of(2021, 1, 1));
+        entity1.setLowestPrice(2);
+        assertFalse(entity1.isFullyEqual(entity2));
+        entity1.setLowestPrice(1);
+        entity1.setAveragePrice(3);
+        assertFalse(entity1.isFullyEqual(entity2));
+        entity1.setAveragePrice(2);
+        entity1.setHighestPrice(4);
+        assertFalse(entity1.isFullyEqual(entity2));
+        entity1.setHighestPrice(3);
+        entity1.setItemsCount(5);
+        assertFalse(entity1.isFullyEqual(entity2));
     }
 }

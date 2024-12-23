@@ -1,17 +1,18 @@
 package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.abstractions.CommonValuesDatabaseService;
-import github.ricemonger.telegramBot.TelegramBotConfiguration;
-import github.ricemonger.utils.DTOs.AuthorizationDTO;
-import github.ricemonger.utils.DTOs.ConfigResolvedTransactionPeriod;
-import github.ricemonger.utils.DTOs.ConfigTrades;
+import github.ricemonger.marketplace.services.configurations.MainUserConfiguration;
+import github.ricemonger.marketplace.services.configurations.TelegramBotConfiguration;
+import github.ricemonger.marketplace.services.configurations.UbiServiceConfiguration;
+import github.ricemonger.utils.DTOs.common.ConfigResolvedTransactionPeriod;
+import github.ricemonger.utils.DTOs.common.ConfigTrades;
+import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.ItemRarity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -89,12 +90,24 @@ public class CommonValuesService {
         return mainUserConfiguration.getPlatform();
     }
 
+    public String getTrustedDeviceId() {
+        return ubiServiceConfiguration.getTrustedDeviceId();
+    }
+
+    public String getTrustedDeviceFriendlyName() {
+        return ubiServiceConfiguration.getTrustedDeviceFriendlyName();
+    }
+
     public String getGraphqlUrl() {
         return ubiServiceConfiguration.getGraphqlUrl();
     }
 
     public String getAuthorizationUrl() {
         return ubiServiceConfiguration.getAuthorizationUrl();
+    }
+
+    public String getTwoFaCodeToSmsUrl() {
+        return ubiServiceConfiguration.getTwoFaCodeToSmsUrl();
     }
 
     public String getContentType() {
@@ -105,8 +118,12 @@ public class CommonValuesService {
         return ubiServiceConfiguration.getUserAgent();
     }
 
-    public String getUbiAppId() {
-        return ubiServiceConfiguration.getUbiAppId();
+    public String getUbiBaseAppId() {
+        return ubiServiceConfiguration.getUbiBaseAppId();
+    }
+
+    public String getUbiTwoFaAppId() {
+        return ubiServiceConfiguration.getUbiTwoFaAppId();
     }
 
     public String getUbiGameSpaceId() {
@@ -134,6 +151,9 @@ public class CommonValuesService {
     }
 
     public int getMinimumPriceByRarity(ItemRarity rarity) {
+        if (rarity == null) {
+            return getMinimumMarketplacePrice();
+        }
         return switch (rarity) {
             case UNCOMMON -> getMinimumUncommonPrice();
             case RARE -> getMinimumRarePrice();
@@ -144,6 +164,9 @@ public class CommonValuesService {
     }
 
     public int getMaximumPriceByRarity(ItemRarity rarity) {
+        if (rarity == null) {
+            return getMaximumMarketplacePrice();
+        }
         return switch (rarity) {
             case UNCOMMON -> getMaximumUncommonPrice();
             case RARE -> getMaximumRarePrice();
@@ -208,10 +231,9 @@ public class CommonValuesService {
 
     public LocalDateTime getLastUbiUsersStatsFetchTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ubiServiceConfiguration.getDateFormat());
-        try{
+        try {
             return LocalDateTime.parse(commonValuesDatabaseService.getLastUbiUsersStatsFetchTime(), formatter);
-        }
-        catch(DateTimeParseException e) {
+        } catch (DateTimeParseException e) {
             return LocalDateTime.now().minusDays(1).withNano(0);
         }
     }

@@ -4,7 +4,7 @@ import github.ricemonger.marketplace.services.TelegramUserService;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.utils.DTOs.TelegramUser;
+import github.ricemonger.utils.DTOs.personal.TelegramUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;

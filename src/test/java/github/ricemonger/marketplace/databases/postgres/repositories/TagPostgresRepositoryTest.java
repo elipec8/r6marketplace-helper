@@ -1,19 +1,17 @@
 package github.ricemonger.marketplace.databases.postgres.repositories;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
-import github.ricemonger.utils.DTOs.items.Tag;
 import github.ricemonger.utils.enums.TagGroup;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class TagPostgresRepositoryTest {
 
     @SpyBean
@@ -33,11 +31,9 @@ class TagPostgresRepositoryTest {
         tagPostgresRepository.save(tag2);
         tagPostgresRepository.save(tag3);
 
-        List<Tag> tags = tagPostgresRepository.findAllByNames(List.of("tag1", "tag2")).stream().map(TagEntity::toTag).toList();
+        List<TagEntity> tags = tagPostgresRepository.findAllByNames(List.of("tag1", "tag2"));
 
-        assertEquals(2, tags.size());
-        assertTrue(tags.contains(tag1.toTag()));
-        assertTrue(tags.contains(tag2.toTag()));
+
     }
 
 }

@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.services.abstractions;
 
-import github.ricemonger.utils.DTOs.items.Tag;
+import github.ricemonger.utils.DTOs.common.Tag;
 
 import java.util.Collection;
 import java.util.List;

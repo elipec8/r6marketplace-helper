@@ -4,7 +4,7 @@ import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
-import github.ricemonger.utils.DTOs.TradeByFiltersManager;
+import github.ricemonger.utils.DTOs.personal.TradeByFiltersManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -20,8 +20,10 @@ class TradeByFiltersManagerRemoveStage2AskConfirmationFinishInputTest {
 
     @Test
     public void initAndExecute_should_process_last_input_and_ask_confirmation() {
-        when(botInnerService.getUserTradeByFiltersManagerByUserInputName(MockUpdateInfos.UPDATE_INFO.getChatId()))
-                .thenReturn(new TradeByFiltersManager());
+        TradeByFiltersManager manager = new TradeByFiltersManager();
+        manager.setEnabled(true);
+
+        when(botInnerService.getUserTradeByFiltersManagerByUserInputName(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(manager);
 
         TradeByFiltersManagerRemoveStage2AskConfirmationFinishInput commandExecutor = new TradeByFiltersManagerRemoveStage2AskConfirmationFinishInput();
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);

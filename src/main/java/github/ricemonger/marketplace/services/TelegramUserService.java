@@ -4,8 +4,7 @@ import github.ricemonger.marketplace.services.abstractions.TelegramUserDatabaseS
 import github.ricemonger.marketplace.services.abstractions.TelegramUserInputDatabaseService;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.utils.DTOs.*;
-import github.ricemonger.utils.DTOs.items.ItemFilter;
+import github.ricemonger.utils.DTOs.personal.*;
 import github.ricemonger.utils.exceptions.client.TelegramUserAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
@@ -82,7 +81,7 @@ public class TelegramUserService {
         telegramUserDatabaseService.removeItemShowAppliedFilter(String.valueOf(chatId), filterName);
     }
 
-    public void addUserUbiAccountEntryIfValidCredentialsOrThrow(Long chatId, String email, String password)
+    public void authorizeAndSaveUser(Long chatId, String email, String password, String twoFACode)
             throws TelegramUserDoesntExistException,
             UbiUserAuthorizationClientErrorException,
             UbiUserAuthorizationServerErrorException {
@@ -90,7 +89,18 @@ public class TelegramUserService {
 
         inputDatabaseService.deleteAllByChatId(String.valueOf(chatId));
 
-        credentialsService.authorizeAndSaveUser(String.valueOf(chatId), email, password);
+        credentialsService.authorizeAndSaveUser(String.valueOf(chatId), email, password, twoFACode);
+    }
+
+    public void reauthorizeAndSaveExistingUserBy2FACode(Long chatId, String twoFACode)
+            throws TelegramUserDoesntExistException,
+            UbiUserAuthorizationClientErrorException,
+            UbiUserAuthorizationServerErrorException {
+        getTelegramUserOrThrow(chatId);
+
+        inputDatabaseService.deleteAllByChatId(String.valueOf(chatId));
+
+        credentialsService.reauthorizeAndSaveExistingUserBy2FACode(String.valueOf(chatId), twoFACode);
     }
 
     public void removeUserUbiAccountEntry(Long chatId) throws TelegramUserDoesntExistException {
@@ -161,7 +171,7 @@ public class TelegramUserService {
 
     public List<String> getAllChatIdsForNotifiableUsers() {
         return telegramUserDatabaseService.findAllUsers().stream()
-                .filter(TelegramUser::isPublicNotificationsEnabledFlag)
+                .filter(TelegramUser::getPublicNotificationsEnabledFlag)
                 .map(TelegramUser::getChatId)
                 .toList();
     }

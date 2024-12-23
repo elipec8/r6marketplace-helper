@@ -5,7 +5,7 @@ import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
 import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buyAndSell.TradeByItemIdManagerBuyAndSellEditStage2AskBoundarySellPriceInput;
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

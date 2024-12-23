@@ -1,7 +1,5 @@
 package github.ricemonger.marketplace.databases.postgres.entities.item;
 
-import github.ricemonger.utils.DTOs.items.ItemSale;
-import github.ricemonger.utils.DTOs.items.SoldItemDetails;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity(name = "item_sale")
 @Getter
@@ -23,21 +22,34 @@ public class ItemSaleEntity {
     private ItemEntity item;
     @Id
     private LocalDateTime soldAt;
-    private int price;
+    private Integer price;
 
-    public ItemSaleEntity(SoldItemDetails item) {
-        this.item = new ItemEntity(item.getItemId());
-        this.soldAt = item.getLastSoldAt();
-        this.price = item.getLastSoldPrice();
+    public ItemSaleEntity(String itemId) {
+        this.item = new ItemEntity(itemId);
     }
 
-    public ItemSale toItemSale() {
-        ItemSale item = new ItemSale();
-        if (this.item != null) {
-            item.setItemId(this.item.getItemId());
+    public String getItemId_() {
+        return item.getItemId();
+    }
+
+    public boolean isEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof ItemSaleEntity entity) {
+            return item.isEqual(entity.item) && Objects.equals(soldAt, entity.soldAt);
         }
-        item.setSoldAt(this.soldAt);
-        item.setPrice(this.price);
-        return item;
+        return false;
+    }
+
+    public boolean isFullyEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof ItemSaleEntity entity) {
+            return isEqual(entity) && Objects.equals(price, entity.price);
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemSaleEntity(itemId=" + getItemId_() + ", soldAt=" + soldAt + ", price=" + price + ")";
     }
 }

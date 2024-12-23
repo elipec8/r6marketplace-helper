@@ -1,5 +1,6 @@
 package github.ricemonger.telegramBot;
 
+import github.ricemonger.marketplace.services.configurations.TelegramBotConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

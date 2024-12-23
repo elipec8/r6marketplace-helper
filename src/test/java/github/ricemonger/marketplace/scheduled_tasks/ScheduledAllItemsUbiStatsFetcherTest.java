@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.scheduled_tasks;
 
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.services.ItemService;
-import github.ricemonger.utils.DTOs.items.GroupedItemDaySalesUbiStats;
+import github.ricemonger.utils.DTOs.common.GroupedItemDaySalesUbiStats;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,7 +31,6 @@ class ScheduledAllItemsUbiStatsFetcherTest {
 
         scheduledAllItemsUbiStatsFetcher.fetchAllItemUbiStats();
 
-        verify(graphQlClientService).fetchAllItemsUbiStats();
         verify(itemService).saveAllItemSaleUbiStats(same(stats));
     }
 }

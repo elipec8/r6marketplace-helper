@@ -11,6 +11,15 @@ public class UbiAccountEntryEntityId {
     private UserEntity user;
     private String email;
 
+    public UbiAccountEntryEntityId(Long userId, String email) {
+        this.user = new UserEntity(userId);
+        this.email = email;
+    }
+
+    public Long getUserId_() {
+        return user.getId();
+    }
+
     public int hashCode() {
         return user.getId().hashCode() + email.hashCode();
     }

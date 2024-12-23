@@ -8,6 +8,25 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class ItemSaleEntityIdTest {
+
+    @Test
+    public void getItemId_should_return_item_id() {
+        ItemEntity item = new ItemEntity();
+        item.setItemId("itemId");
+
+        ItemSaleEntityId id = new ItemSaleEntityId(item, LocalDateTime.of(2023, 1, 1, 1, 1));
+
+        assertEquals("itemId", id.getItemId_());
+    }
+
+    @Test
+    public void constructor_should_set_id_fields() {
+        ItemSaleEntityId id = new ItemSaleEntityId("itemId", LocalDateTime.of(2023, 1, 1, 1, 1));
+
+        assertEquals("itemId", id.getItemId_());
+        assertEquals(LocalDateTime.of(2023, 1, 1, 1, 1), id.getSoldAt());
+    }
+
     @Test
     public void hashCode_should_return_same_hash_for_equal_objects() {
         ItemEntity item1 = new ItemEntity();

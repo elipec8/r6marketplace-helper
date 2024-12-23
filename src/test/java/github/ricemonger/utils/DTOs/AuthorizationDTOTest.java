@@ -1,7 +1,7 @@
 package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.utils.UbiAccountEntry;
-import github.ricemonger.utils.UbiAccountEntryWithTelegram;
+import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.personal.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,14 +12,13 @@ class AuthorizationDTOTest {
     public void userForCentralTradeManager_constructor_sets_fields_correctly() {
         UserForCentralTradeManager userForCentralTradeManager = new UserForCentralTradeManager();
 
-        UbiAccountStats ubiAccountStats = new UbiAccountStats();
-        ubiAccountStats.setUbiProfileId("ubiProfileId");
-        userForCentralTradeManager.setUbiAccountStats(ubiAccountStats);
+        UbiAccountStats ubiAccountStatsEntityDTO = new UbiAccountStats();
+        ubiAccountStatsEntityDTO.setUbiProfileId("ubiProfileId");
+        userForCentralTradeManager.setUbiAccountStats(ubiAccountStatsEntityDTO);
 
         userForCentralTradeManager.setUbiSessionId("ubiSessionId");
         userForCentralTradeManager.setUbiSpaceId("ubiSpaceId");
         userForCentralTradeManager.setUbiAuthTicket("ubiAuthTicket");
-        userForCentralTradeManager.setUbiTwoFactorAuthTicket("ubiTwoFactorAuthTicket");
         userForCentralTradeManager.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
         userForCentralTradeManager.setUbiRememberMeTicket("ubiRememberMeTicket");
 
@@ -29,28 +28,26 @@ class AuthorizationDTOTest {
         assertEquals("ubiProfileId", authorizationDTO.getProfileId());
         assertEquals("ubiSpaceId", authorizationDTO.getSpaceId());
         assertEquals("ubiSessionId", authorizationDTO.getSessionId());
-        assertEquals("ubiTwoFactorAuthTicket", authorizationDTO.getTwoFactorAuthenticationTicket());
         assertEquals("ubiRememberDeviceTicket", authorizationDTO.getRememberDeviceTicket());
         assertEquals("ubiRememberMeTicket", authorizationDTO.getRememberMeTicket());
     }
 
     @Test
     public void ubiAccountEntryWithTelegram_constructor_sets_fields_correctly() {
-        UbiAccountStats ubiAccountStats = new UbiAccountStats();
-        ubiAccountStats.setUbiProfileId("ubiProfileIdAccountStats");
+        UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO = new UbiAccountStatsEntityDTO();
+        ubiAccountStatsEntityDTO.setUbiProfileId("ubiProfileIdAccountStats");
         UbiAccountEntryWithTelegram ubiAccountWithTelegram = new UbiAccountEntryWithTelegram();
-        UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry = new UbiAccountAuthorizationEntry();
-        ubiAccountAuthorizationEntry.setUbiProfileId("ubiProfileId");
-        ubiAccountAuthorizationEntry.setUbiSessionId("ubiSessionId");
-        ubiAccountAuthorizationEntry.setUbiSpaceId("ubiSpaceId");
-        ubiAccountAuthorizationEntry.setUbiAuthTicket("ubiAuthTicket");
-        ubiAccountAuthorizationEntry.setUbiTwoFactorAuthTicket("ubiTwoFactorAuthTicket");
-        ubiAccountAuthorizationEntry.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
-        ubiAccountAuthorizationEntry.setUbiRememberMeTicket("ubiRememberMeTicket");
-        UbiAccountEntry ubiAccountEntry = new UbiAccountEntry();
-        ubiAccountEntry.setUbiAccountAuthorizationEntry(ubiAccountAuthorizationEntry);
-        ubiAccountEntry.setUbiAccountStats(ubiAccountStats);
-        ubiAccountWithTelegram.setUbiAccountEntry(ubiAccountEntry);
+        UbiAccountAuthorizationEntry ubiAccountAuthorizationEntryEntityDTO = new UbiAccountAuthorizationEntry();
+        ubiAccountAuthorizationEntryEntityDTO.setUbiProfileId("ubiProfileId");
+        ubiAccountAuthorizationEntryEntityDTO.setUbiSessionId("ubiSessionId");
+        ubiAccountAuthorizationEntryEntityDTO.setUbiSpaceId("ubiSpaceId");
+        ubiAccountAuthorizationEntryEntityDTO.setUbiAuthTicket("ubiAuthTicket");
+        ubiAccountAuthorizationEntryEntityDTO.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
+        ubiAccountAuthorizationEntryEntityDTO.setUbiRememberMeTicket("ubiRememberMeTicket");
+        UbiAccountEntry ubiAccountEntryEntityDTO = new UbiAccountEntry();
+        ubiAccountEntryEntityDTO.setUbiAccountAuthorizationEntry(ubiAccountAuthorizationEntryEntityDTO);
+        ubiAccountEntryEntityDTO.setUbiAccountStatsEntityDTO(ubiAccountStatsEntityDTO);
+        ubiAccountWithTelegram.setUbiAccountEntry(ubiAccountEntryEntityDTO);
 
         AuthorizationDTO authorizationDTO = new AuthorizationDTO(ubiAccountWithTelegram);
 
@@ -58,7 +55,6 @@ class AuthorizationDTOTest {
         assertEquals("ubiProfileId", authorizationDTO.getProfileId());
         assertEquals("ubiSpaceId", authorizationDTO.getSpaceId());
         assertEquals("ubiSessionId", authorizationDTO.getSessionId());
-        assertEquals("ubiTwoFactorAuthTicket", authorizationDTO.getTwoFactorAuthenticationTicket());
         assertEquals("ubiRememberDeviceTicket", authorizationDTO.getRememberDeviceTicket());
         assertEquals("ubiRememberMeTicket", authorizationDTO.getRememberMeTicket());
     }

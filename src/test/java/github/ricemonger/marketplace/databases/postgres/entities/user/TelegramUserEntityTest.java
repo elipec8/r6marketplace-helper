@@ -1,139 +1,95 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
+import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.ItemFilterEntityMapper;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.utils.DTOs.ItemShowSettings;
-import github.ricemonger.utils.DTOs.ItemShownFieldsSettings;
-import github.ricemonger.utils.DTOs.TelegramUser;
-import github.ricemonger.utils.DTOs.TradeManagersSettings;
+import github.ricemonger.utils.DTOs.personal.ItemShownFieldsSettings;
+import github.ricemonger.utils.DTOs.personal.TelegramUser;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class TelegramUserEntityTest {
+
+    @MockBean
+    private ItemFilterEntityMapper itemFilterEntityMapper;
+
     @Test
-    public void toTelegramUser_should_properly_map_with_all_default_fields() {
-        UserEntity user = new UserEntity();
-        user.setPublicNotificationsEnabledFlag(true);
-        user.setItemShowNameFlag(true);
-        user.setItemShowItemTypeFlag(true);
-        user.setItemShowMaxBuyPrice(true);
-        user.setItemShowBuyOrdersCountFlag(true);
-        user.setItemShowMinSellPriceFlag(true);
-        user.setItemsShowSellOrdersCountFlag(true);
-        user.setItemShowPictureFlag(true);
-        user.setItemShowAppliedFilters(List.of(new ItemFilterEntity()));
-        user.setNewManagersAreActiveFlag(true);
-        user.setManagingEnabledFlag(true);
-
-        TelegramUserEntity entity = new TelegramUserEntity("chatId", user);
-        entity.setInputState(InputState.BASE);
-        entity.setInputGroup(InputGroup.BASE);
-        entity.setItemShowMessagesLimit(50);
-        entity.setItemShowFewInMessageFlag(false);
-
-        TelegramUser expected = new TelegramUser();
-        expected.setChatId("chatId");
-        expected.setInputState(InputState.BASE);
-        expected.setInputGroup(InputGroup.BASE);
-        expected.setPublicNotificationsEnabledFlag(true);
-        expected.setItemShowMessagesLimit(50);
-        expected.setItemShowFewInMessageFlag(false);
-        expected.setItemShowNameFlag(true);
-        expected.setItemShowItemTypeFlag(true);
-        expected.setItemShowMaxBuyPrice(true);
-        expected.setItemShowBuyOrdersCountFlag(true);
-        expected.setItemShowMinSellPriceFlag(true);
-        expected.setItemsShowSellOrdersCountFlag(true);
-        expected.setItemShowPictureFlag(true);
-        expected.setItemShowAppliedFilters(List.of(new ItemFilterEntity().toItemFilter()));
-        expected.setNewManagersAreActiveFlag(true);
-        expected.setManagingEnabledFlag(true);
-
-        TelegramUser actual = entity.toTelegramUser();
-
-        assertEquals(expected, actual);
+    public void isEqual_should_return_true_if_same() {
+        TelegramUserEntity telegramUser = new TelegramUserEntity();
+        assertTrue(telegramUser.isEqual(telegramUser));
     }
 
     @Test
-    public void toTelegramUser_should_properly_map_with_altered_fields() {
-        ItemFilterEntity filter = new ItemFilterEntity();
+    public void isEqual_should_return_true_if_equal_ids() {
+        TelegramUserEntity telegramUser1 = new TelegramUserEntity();
+        telegramUser1.setUser(new UserEntity(1L));
+        telegramUser1.setChatId("chatId");
+        telegramUser1.setInputState(InputState.BASE);
+        telegramUser1.setInputGroup(InputGroup.BASE);
+        telegramUser1.setItemShowMessagesLimit(50);
+        telegramUser1.setItemShowFewInMessageFlag(false);
+        telegramUser1.setTelegramUserInputs(List.of(new TelegramUserInputEntity(telegramUser1, InputState.BASE, "value")));
 
-        UserEntity user = new UserEntity();
-        user.setPublicNotificationsEnabledFlag(false);
-        user.setItemShowNameFlag(false);
-        user.setItemShowItemTypeFlag(false);
-        user.setItemShowMaxBuyPrice(false);
-        user.setItemShowBuyOrdersCountFlag(false);
-        user.setItemShowMinSellPriceFlag(false);
-        user.setItemsShowSellOrdersCountFlag(false);
-        user.setItemShowPictureFlag(false);
-        user.setItemShowAppliedFilters(List.of(filter));
-        user.setNewManagersAreActiveFlag(false);
-        user.setManagingEnabledFlag(false);
+        TelegramUserEntity telegramUser2 = new TelegramUserEntity();
+        telegramUser2.setUser(new UserEntity(1L));
+        telegramUser2.setChatId("chatId");
+        telegramUser2.setInputState(InputState.UBI_ACCOUNT_ENTRY_2FA_CODE);
+        telegramUser2.setInputGroup(InputGroup.ITEM_FILTER_EDIT);
+        telegramUser2.setItemShowMessagesLimit(51);
+        telegramUser2.setItemShowFewInMessageFlag(true);
+        telegramUser2.setTelegramUserInputs(List.of());
 
-        TelegramUserEntity entity = new TelegramUserEntity("chatId", user);
-        entity.setInputState(InputState.ITEM_FILTER_IS_OWNED);
-        entity.setInputGroup(InputGroup.ITEM_FILTER_EDIT);
-        entity.setItemShowMessagesLimit(25);
-        entity.setItemShowFewInMessageFlag(true);
-
-        TelegramUser expected = new TelegramUser();
-        expected.setChatId("chatId");
-        expected.setInputState(InputState.ITEM_FILTER_IS_OWNED);
-        expected.setInputGroup(InputGroup.ITEM_FILTER_EDIT);
-        expected.setPublicNotificationsEnabledFlag(false);
-        expected.setItemShowMessagesLimit(25);
-        expected.setItemShowFewInMessageFlag(true);
-        expected.setItemShowNameFlag(false);
-        expected.setItemShowItemTypeFlag(false);
-        expected.setItemShowMaxBuyPrice(false);
-        expected.setItemShowBuyOrdersCountFlag(false);
-        expected.setItemShowMinSellPriceFlag(false);
-        expected.setItemsShowSellOrdersCountFlag(false);
-        expected.setItemShowPictureFlag(false);
-        expected.setItemShowAppliedFilters(List.of(filter.toItemFilter()));
-        expected.setNewManagersAreActiveFlag(false);
-        expected.setManagingEnabledFlag(false);
-
-        TelegramUser actual = entity.toTelegramUser();
-
-        assertEquals(expected, actual);
+        assertTrue(telegramUser1.isEqual(telegramUser2));
     }
 
     @Test
-    public void setShowItemFieldsSettings_should_update_false_fields() {
-        UserEntity user = new UserEntity();
-        TelegramUserEntity entity = new TelegramUserEntity("chatId", user);
-
-        ItemShownFieldsSettings settings = new ItemShownFieldsSettings();
-        settings.setItemShowNameFlag(false);
-        settings.setItemShowItemTypeFlag(false);
-        settings.setItemShowMaxBuyPrice(false);
-        settings.setItemShowBuyOrdersCountFlag(false);
-        settings.setItemShowMinSellPriceFlag(false);
-        settings.setItemsShowSellOrdersCountFlag(false);
-        settings.setItemShowPictureFlag(false);
-
-        entity.setShowItemFieldsSettings(settings);
-
-        assertFalse(user.getItemShowNameFlag());
-        assertFalse(user.getItemShowItemTypeFlag());
-        assertFalse(user.getItemShowMaxBuyPrice());
-        assertFalse(user.getItemShowBuyOrdersCountFlag());
-        assertFalse(user.getItemShowMinSellPriceFlag());
-        assertFalse(user.getItemsShowSellOrdersCountFlag());
-        assertFalse(user.getItemShowPictureFlag());
+    public void isEqual_should_return_false_for_null() {
+        TelegramUserEntity telegramUser = new TelegramUserEntity();
+        assertFalse(telegramUser.isEqual(null));
     }
 
     @Test
-    public void setShowItemFieldsSettings_should_update_true_fields() {
-        UserEntity user = new UserEntity();
-        TelegramUserEntity entity = new TelegramUserEntity("chatId", user);
+    public void isEqual_should_return_false_if_different_ids() {
+        TelegramUserEntity telegramUser1 = new TelegramUserEntity();
+        telegramUser1.setUser(new UserEntity(1L));
+        telegramUser1.setChatId("chatId");
 
+        TelegramUserEntity telegramUser2 = new TelegramUserEntity();
+        telegramUser2.setUser(new UserEntity(1L));
+        telegramUser2.setChatId("chatId");
+
+
+        telegramUser1.setUser(new UserEntity(2L));
+        assertFalse(telegramUser1.isEqual(telegramUser2));
+        telegramUser1.setUser(new UserEntity(1L));
+        telegramUser1.setChatId("chatId2");
+        assertFalse(telegramUser1.isEqual(telegramUser2));
+    }
+
+    @Test
+    public void constructor_should_set_id_fields() {
+        TelegramUserEntity telegramUser = new TelegramUserEntity("chatId", 2L);
+        assertEquals("chatId", telegramUser.getChatId());
+        assertEquals(2L, telegramUser.getUserId_());
+    }
+
+    @Test
+    public void getUserId_should_return_user_idField() {
+        UserEntity user = new UserEntity();
+        user.setId(1L);
+        TelegramUserEntity telegramUser = new TelegramUserEntity();
+        telegramUser.setUser(user);
+        assertEquals(1L, telegramUser.getUserId_());
+    }
+
+    @Test
+    public void setShowItemFieldsSettings_should_set_fields_from_dto() {
         ItemShownFieldsSettings settings = new ItemShownFieldsSettings();
         settings.setItemShowNameFlag(true);
         settings.setItemShowItemTypeFlag(true);
@@ -143,54 +99,6 @@ class TelegramUserEntityTest {
         settings.setItemsShowSellOrdersCountFlag(true);
         settings.setItemShowPictureFlag(true);
 
-        entity.setShowItemFieldsSettings(settings);
-
-        assertTrue(user.getItemShowNameFlag());
-        assertTrue(user.getItemShowItemTypeFlag());
-        assertTrue(user.getItemShowMaxBuyPrice());
-        assertTrue(user.getItemShowBuyOrdersCountFlag());
-        assertTrue(user.getItemShowMinSellPriceFlag());
-        assertTrue(user.getItemsShowSellOrdersCountFlag());
-        assertTrue(user.getItemShowPictureFlag());
-    }
-
-    @Test
-    public void toItemShowSettings_should_properly_map_with_default_fields() {
-        UserEntity user = new UserEntity();
-        user.setItemShowNameFlag(true);
-        user.setItemShowItemTypeFlag(true);
-        user.setItemShowMaxBuyPrice(true);
-        user.setItemShowBuyOrdersCountFlag(true);
-        user.setItemShowMinSellPriceFlag(true);
-        user.setItemsShowSellOrdersCountFlag(true);
-        user.setItemShowPictureFlag(true);
-        user.setItemShowAppliedFilters(List.of(new ItemFilterEntity()));
-
-        TelegramUserEntity entity = new TelegramUserEntity("chatId", user);
-        entity.setItemShowMessagesLimit(50);
-        entity.setItemShowFewInMessageFlag(false);
-
-        ItemShowSettings expected = new ItemShowSettings();
-        expected.setItemShowMessagesLimit(50);
-        expected.setItemShowFewInMessageFlag(false);
-        expected.setItemShowNameFlag(true);
-        expected.setItemShowItemTypeFlag(true);
-        expected.setItemShowMaxBuyPrice(true);
-        expected.setItemShowBuyOrdersCountFlag(true);
-        expected.setItemShowMinSellPriceFlag(true);
-        expected.setItemsShowSellOrdersCountFlag(true);
-        expected.setItemShowPictureFlag(true);
-        expected.setItemShowAppliedFilters(List.of(new ItemFilterEntity().toItemFilter()));
-
-        ItemShowSettings actual = entity.toItemShowSettings();
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void toItemShowSettings_should_properly_map_with_altered_fields() {
-        ItemFilterEntity filter = new ItemFilterEntity();
-
         UserEntity user = new UserEntity();
         user.setItemShowNameFlag(false);
         user.setItemShowItemTypeFlag(false);
@@ -199,146 +107,10 @@ class TelegramUserEntityTest {
         user.setItemShowMinSellPriceFlag(false);
         user.setItemsShowSellOrdersCountFlag(false);
         user.setItemShowPictureFlag(false);
-        user.setItemShowAppliedFilters(List.of(filter));
+        TelegramUserEntity telegramUser = new TelegramUserEntity();
+        telegramUser.setUser(user);
+        telegramUser.setShowItemFieldsSettings(settings);
 
-        TelegramUserEntity entity = new TelegramUserEntity("chatId", user);
-        entity.setItemShowMessagesLimit(25);
-        entity.setItemShowFewInMessageFlag(true);
-
-        ItemShowSettings expected = new ItemShowSettings();
-        expected.setItemShowMessagesLimit(25);
-        expected.setItemShowFewInMessageFlag(true);
-        expected.setItemShowNameFlag(false);
-        expected.setItemShowItemTypeFlag(false);
-        expected.setItemShowMaxBuyPrice(false);
-        expected.setItemShowBuyOrdersCountFlag(false);
-        expected.setItemShowMinSellPriceFlag(false);
-        expected.setItemsShowSellOrdersCountFlag(false);
-        expected.setItemShowPictureFlag(false);
-        expected.setItemShowAppliedFilters(List.of(filter.toItemFilter()));
-
-        ItemShowSettings actual = entity.toItemShowSettings();
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void setItemShowAppliedFilters_should_update_user_filters() {
-        UserEntity user = new UserEntity();
-        TelegramUserEntity entity = new TelegramUserEntity("chatId", user);
-
-        List<ItemFilterEntity> filters = List.of(new ItemFilterEntity());
-
-        entity.setItemShowAppliedFilters(filters);
-
-        assertEquals(filters, user.getItemShowAppliedFilters());
-    }
-
-    @Test
-    public void toTradeManagersSettings_should_properly_map_with_default_fields() {
-        UserEntity user = new UserEntity();
-        user.setNewManagersAreActiveFlag(true);
-        user.setManagingEnabledFlag(true);
-
-        TelegramUserEntity entity = new TelegramUserEntity("chatId", user);
-
-        TradeManagersSettings expected = new TradeManagersSettings();
-        expected.setNewManagersAreActiveFlag(true);
-        expected.setManagingEnabledFlag(true);
-
-        TradeManagersSettings actual = entity.toTradeManagersSettings();
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void toTradeManagersSettings_should_properly_map_with_altered_fields() {
-        UserEntity user = new UserEntity();
-        user.setNewManagersAreActiveFlag(false);
-        user.setManagingEnabledFlag(false);
-
-        TelegramUserEntity entity = new TelegramUserEntity("chatId", user);
-
-        TradeManagersSettings expected = new TradeManagersSettings();
-        expected.setNewManagersAreActiveFlag(false);
-        expected.setManagingEnabledFlag(false);
-
-        TradeManagersSettings actual = entity.toTradeManagersSettings();
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void setNewManagersAreActiveFlag_should_update_true_flag() {
-        UserEntity user = new UserEntity();
-        TelegramUserEntity entity = new TelegramUserEntity("chatId", user);
-
-        entity.setNewManagersAreActiveFlag(true);
-
-        assertTrue(user.getNewManagersAreActiveFlag());
-    }
-
-    @Test
-    public void setNewManagersAreActiveFlag_should_update_false_flag() {
-        UserEntity user = new UserEntity();
-        TelegramUserEntity entity = new TelegramUserEntity("chatId", user);
-
-        entity.setNewManagersAreActiveFlag(false);
-
-        assertFalse(user.getNewManagersAreActiveFlag());
-    }
-
-    @Test
-    public void setManagingEnabledFlag_should_update_true_flag() {
-        UserEntity user = new UserEntity();
-        TelegramUserEntity entity = new TelegramUserEntity("chatId", user);
-
-        entity.setManagingEnabledFlag(true);
-
-        assertTrue(user.getManagingEnabledFlag());
-    }
-
-    @Test
-    public void setManagingEnabledFlag_should_update_false_flag() {
-        UserEntity user = new UserEntity();
-        TelegramUserEntity entity = new TelegramUserEntity("chatId", user);
-
-        entity.setManagingEnabledFlag(false);
-
-        assertFalse(user.getManagingEnabledFlag());
-    }
-
-    @Test
-    public void setFields_should_update_default_fields() {
-        UserEntity user = new UserEntity();
-        TelegramUserEntity entity = new TelegramUserEntity("chatId", user);
-
-        TelegramUser telegramUser = new TelegramUser();
-        telegramUser.setChatId("newChatId");
-        telegramUser.setInputState(InputState.BASE);
-        telegramUser.setInputGroup(InputGroup.BASE);
-        telegramUser.setPublicNotificationsEnabledFlag(true);
-        telegramUser.setItemShowMessagesLimit(50);
-        telegramUser.setItemShowFewInMessageFlag(false);
-        telegramUser.setItemShowNameFlag(true);
-        telegramUser.setItemShowItemTypeFlag(true);
-        telegramUser.setItemShowMaxBuyPrice(true);
-        telegramUser.setItemShowBuyOrdersCountFlag(true);
-        telegramUser.setItemShowMinSellPriceFlag(true);
-        telegramUser.setItemsShowSellOrdersCountFlag(true);
-        telegramUser.setItemShowPictureFlag(true);
-        telegramUser.setItemShowAppliedFilters(List.of(new ItemFilterEntity().toItemFilter()));
-        telegramUser.setNewManagersAreActiveFlag(true);
-        telegramUser.setManagingEnabledFlag(true);
-
-        entity.setFields(telegramUser);
-
-        assertEquals("newChatId", entity.getChatId());
-        assertEquals(InputState.BASE, entity.getInputState());
-        assertEquals(InputGroup.BASE, entity.getInputGroup());
-        assertTrue(user.getPublicNotificationsEnabledFlag());
-        assertEquals(50, entity.getItemShowMessagesLimit());
-        assertFalse(entity.getItemShowFewInMessageFlag());
         assertTrue(user.getItemShowNameFlag());
         assertTrue(user.getItemShowItemTypeFlag());
         assertTrue(user.getItemShowMaxBuyPrice());
@@ -346,26 +118,56 @@ class TelegramUserEntityTest {
         assertTrue(user.getItemShowMinSellPriceFlag());
         assertTrue(user.getItemsShowSellOrdersCountFlag());
         assertTrue(user.getItemShowPictureFlag());
-        assertEquals(user.getItemShowAppliedFilters().stream().map(ItemFilterEntity::toItemFilter).toList(), telegramUser.getItemShowAppliedFilters());
-        assertTrue(user.getNewManagersAreActiveFlag());
-        assertTrue(user.getManagingEnabledFlag());
     }
 
     @Test
-    public void setFields_should_update_altered_fields() {
+    public void getItemShowAppliedFilters_should_return_item_show_applied_filters() {
         UserEntity user = new UserEntity();
-        ItemFilterEntity filter = new ItemFilterEntity();
-        List<ItemFilterEntity> filters = new ArrayList<>();
-        filters.add(filter);
-        user.setItemShowAppliedFilters(filters);
-        TelegramUserEntity entity = new TelegramUserEntity("chatId", user);
+        ItemFilterEntity itemFilterEntity = new ItemFilterEntity();
+        user.setItemShowAppliedFilters(List.of(itemFilterEntity));
+        TelegramUserEntity telegramUser = new TelegramUserEntity();
+        telegramUser.setUser(user);
+        assertEquals(List.of(itemFilterEntity), telegramUser.getItemShowAppliedFilters());
+    }
 
+    @Test
+    public void setItemShowAppliedFilters_should_set_item_show_applied_filters() {
+        UserEntity user = new UserEntity();
+        ItemFilterEntity itemFilterEntity = new ItemFilterEntity();
+        TelegramUserEntity telegramUser = new TelegramUserEntity();
+        telegramUser.setUser(user);
+        telegramUser.setItemShowAppliedFilters(List.of(itemFilterEntity));
+        assertEquals(List.of(itemFilterEntity), user.getItemShowAppliedFilters());
+    }
+
+    @Test
+    public void setNewManagersAreActiveFlag_should_set_new_managers_are_active_flag() {
+        UserEntity user = new UserEntity();
+        user.setNewManagersAreActiveFlag(false);
+        TelegramUserEntity telegramUser = new TelegramUserEntity();
+        telegramUser.setUser(user);
+        telegramUser.setNewManagersAreActiveFlag_(true);
+        assertTrue(telegramUser.getUser().getNewManagersAreActiveFlag());
+    }
+
+    @Test
+    public void setManagingEnabledFlag_should_set_managing_enabled_flag() {
+        UserEntity user = new UserEntity();
+        user.setManagingEnabledFlag(false);
+        TelegramUserEntity telegramUser = new TelegramUserEntity();
+        telegramUser.setUser(user);
+        telegramUser.setManagingEnabledFlag_(true);
+        assertTrue(telegramUser.getUser().getManagingEnabledFlag());
+    }
+
+    @Test
+    public void setFields_should_set_fields() {
         TelegramUser telegramUser = new TelegramUser();
-        telegramUser.setChatId("newChatId");
-        telegramUser.setInputState(InputState.ITEM_FILTER_IS_OWNED);
+        telegramUser.setChatId("chatId");
+        telegramUser.setInputState(InputState.UBI_ACCOUNT_ENTRY_2FA_CODE);
         telegramUser.setInputGroup(InputGroup.ITEMS_SHOW);
         telegramUser.setPublicNotificationsEnabledFlag(false);
-        telegramUser.setItemShowMessagesLimit(25);
+        telegramUser.setItemShowMessagesLimit(51);
         telegramUser.setItemShowFewInMessageFlag(true);
         telegramUser.setItemShowNameFlag(false);
         telegramUser.setItemShowItemTypeFlag(false);
@@ -378,23 +180,92 @@ class TelegramUserEntityTest {
         telegramUser.setNewManagersAreActiveFlag(false);
         telegramUser.setManagingEnabledFlag(false);
 
-        entity.setFields(telegramUser);
+        TelegramUserEntity telegramUserEntity = new TelegramUserEntity();
+        telegramUserEntity.setUser(new UserEntity());
+        telegramUserEntity.setFields(telegramUser, itemFilterEntityMapper);
 
-        assertEquals("newChatId", entity.getChatId());
-        assertEquals(InputState.ITEM_FILTER_IS_OWNED, entity.getInputState());
-        assertEquals(InputGroup.ITEMS_SHOW, entity.getInputGroup());
-        assertFalse(user.getPublicNotificationsEnabledFlag());
-        assertEquals(25, entity.getItemShowMessagesLimit());
-        assertTrue(entity.getItemShowFewInMessageFlag());
-        assertFalse(user.getItemShowNameFlag());
-        assertFalse(user.getItemShowItemTypeFlag());
-        assertFalse(user.getItemShowMaxBuyPrice());
-        assertFalse(user.getItemShowBuyOrdersCountFlag());
-        assertFalse(user.getItemShowMinSellPriceFlag());
-        assertFalse(user.getItemsShowSellOrdersCountFlag());
-        assertFalse(user.getItemShowPictureFlag());
-        assertEquals(user.getItemShowAppliedFilters(), telegramUser.getItemShowAppliedFilters().stream().map(ItemFilterEntity::new).toList());
-        assertFalse(user.getNewManagersAreActiveFlag());
-        assertFalse(user.getManagingEnabledFlag());
+        assertEquals("chatId", telegramUserEntity.getChatId());
+        assertEquals(InputState.UBI_ACCOUNT_ENTRY_2FA_CODE, telegramUserEntity.getInputState());
+        assertEquals(InputGroup.ITEMS_SHOW, telegramUserEntity.getInputGroup());
+        assertFalse(telegramUserEntity.getUser().getPublicNotificationsEnabledFlag());
+        assertEquals(51, telegramUserEntity.getItemShowMessagesLimit());
+        assertTrue(telegramUserEntity.getItemShowFewInMessageFlag());
+        assertFalse(telegramUserEntity.getUser().getItemShowNameFlag());
+        assertFalse(telegramUserEntity.getUser().getItemShowItemTypeFlag());
+        assertFalse(telegramUserEntity.getUser().getItemShowMaxBuyPrice());
+        assertFalse(telegramUserEntity.getUser().getItemShowBuyOrdersCountFlag());
+        assertFalse(telegramUserEntity.getUser().getItemShowMinSellPriceFlag());
+        assertFalse(telegramUserEntity.getUser().getItemsShowSellOrdersCountFlag());
+        assertFalse(telegramUserEntity.getUser().getItemShowPictureFlag());
+        assertTrue(telegramUserEntity.getUser().getItemShowAppliedFilters().isEmpty());
+        assertFalse(telegramUserEntity.getUser().getNewManagersAreActiveFlag());
+        assertFalse(telegramUserEntity.getUser().getManagingEnabledFlag());
+    }
+
+    @Test
+    public void isFullyEqualExceptUser_should_return_true_if_equal_() {
+        TelegramUserEntity telegramUser1 = new TelegramUserEntity();
+        telegramUser1.setUser(new UserEntity(1L));
+        telegramUser1.setChatId("chatId");
+        telegramUser1.setInputState(InputState.BASE);
+        telegramUser1.setInputGroup(InputGroup.BASE);
+        telegramUser1.setItemShowMessagesLimit(50);
+        telegramUser1.setItemShowFewInMessageFlag(false);
+        telegramUser1.setTelegramUserInputs(List.of(new TelegramUserInputEntity(telegramUser1, InputState.BASE, "value")));
+
+        TelegramUserEntity telegramUser2 = new TelegramUserEntity();
+        telegramUser2.setUser(new UserEntity(1L));
+        telegramUser2.setChatId("chatId");
+        telegramUser2.setInputState(InputState.BASE);
+        telegramUser2.setInputGroup(InputGroup.BASE);
+        telegramUser2.setItemShowMessagesLimit(50);
+        telegramUser2.setItemShowFewInMessageFlag(false);
+        telegramUser2.setTelegramUserInputs(List.of(new TelegramUserInputEntity(telegramUser2, InputState.BASE, "value")));
+
+        assertTrue(telegramUser1.isFullyEqual(telegramUser2));
+    }
+
+    @Test
+    public void isFullyEqualExceptUser_should_return_false_if_not_equal_() {
+        TelegramUserEntity telegramUser1 = new TelegramUserEntity();
+        telegramUser1.setUser(new UserEntity(1L));
+        telegramUser1.setChatId("chatId");
+        telegramUser1.setInputState(InputState.BASE);
+        telegramUser1.setInputGroup(InputGroup.BASE);
+        telegramUser1.setItemShowMessagesLimit(50);
+        telegramUser1.setItemShowFewInMessageFlag(false);
+        telegramUser1.setTelegramUserInputs(List.of(new TelegramUserInputEntity(telegramUser1, InputState.BASE, "value")));
+
+        TelegramUserEntity telegramUser2 = new TelegramUserEntity();
+        telegramUser2.setUser(new UserEntity(1L));
+        telegramUser2.setChatId("chatId");
+        telegramUser2.setInputState(InputState.BASE);
+        telegramUser2.setInputGroup(InputGroup.BASE);
+        telegramUser2.setItemShowMessagesLimit(50);
+        telegramUser2.setItemShowFewInMessageFlag(false);
+        telegramUser2.setTelegramUserInputs(List.of(new TelegramUserInputEntity(telegramUser2, InputState.BASE, "value")));
+
+        telegramUser1.setUser(new UserEntity(2L));
+        assertFalse(telegramUser1.isFullyEqual(telegramUser2));
+        telegramUser1.setUser(new UserEntity(1L));
+        telegramUser1.setChatId("chatId2");
+        assertFalse(telegramUser1.isFullyEqual(telegramUser2));
+        telegramUser1.setChatId("chatId");
+        telegramUser1.setInputState(InputState.UBI_ACCOUNT_ENTRY_2FA_CODE);
+        assertFalse(telegramUser1.isFullyEqual(telegramUser2));
+        telegramUser1.setInputState(InputState.BASE);
+        telegramUser1.setInputGroup(InputGroup.ITEM_FILTER_EDIT);
+        assertFalse(telegramUser1.isFullyEqual(telegramUser2));
+        telegramUser1.setInputGroup(InputGroup.BASE);
+        telegramUser1.setItemShowMessagesLimit(51);
+        assertFalse(telegramUser1.isFullyEqual(telegramUser2));
+        telegramUser1.setItemShowMessagesLimit(50);
+        telegramUser1.setItemShowFewInMessageFlag(true);
+        assertFalse(telegramUser1.isFullyEqual(telegramUser2));
+        telegramUser1.setItemShowFewInMessageFlag(false);
+        telegramUser1.setTelegramUserInputs(List.of());
+        assertFalse(telegramUser1.isFullyEqual(telegramUser2));
+        telegramUser1.setTelegramUserInputs(null);
+        assertFalse(telegramUser1.isFullyEqual(telegramUser2));
     }
 }

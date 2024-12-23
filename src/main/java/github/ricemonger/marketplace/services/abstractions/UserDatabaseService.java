@@ -1,11 +1,9 @@
 package github.ricemonger.marketplace.services.abstractions;
 
-import github.ricemonger.utils.DTOs.UserForCentralTradeManager;
-import github.ricemonger.utils.DTOs.items.Item;
+import github.ricemonger.utils.DTOs.personal.ManageableUser;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface UserDatabaseService {
-    List<UserForCentralTradeManager> getAllUsersForCentralTradeManager(Collection<Item> existingItems);
+    List<ManageableUser> getAllManageableUsers();
 }

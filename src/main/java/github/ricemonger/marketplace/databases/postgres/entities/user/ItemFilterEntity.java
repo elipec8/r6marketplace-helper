@@ -1,11 +1,8 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
-import github.ricemonger.utils.DTOs.items.ItemFilter;
-import github.ricemonger.utils.DTOs.items.Tag;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.IsOwnedFilter;
-import github.ricemonger.utils.enums.ItemType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,8 +10,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Slf4j
 @Entity(name = "item_filter")
@@ -38,11 +36,13 @@ public class ItemFilterEntity {
     @Enumerated(EnumType.ORDINAL)
     private IsOwnedFilter isOwned;
 
+    @Column(columnDefinition = "TEXT")
     private String itemNamePatterns;
 
+    @Column(columnDefinition = "TEXT")
     private String itemTypes;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "item_filter_tags",
             joinColumns = {@JoinColumn(name = "itemFilterUserId", referencedColumnName = "userId"),
                     @JoinColumn(name = "itemFilterName", referencedColumnName = "name")},
@@ -52,78 +52,43 @@ public class ItemFilterEntity {
     private Integer minSellPrice;
     private Integer maxBuyPrice;
 
-    private Integer minLastSoldPrice;
-    private Integer maxLastSoldPrice;
 
-    public ItemFilterEntity(UserEntity user, ItemFilter filter) {
-        this(filter);
-        this.user = user;
+    public Long getUserId_() {
+        return user.getId();
     }
 
-    public ItemFilterEntity(ItemFilter filter) {
-        this.name = filter.getName();
-        this.filterType = filter.getFilterType();
-        this.isOwned = filter.getIsOwned();
-
-        if (filter.getItemNamePatterns() == null || filter.getItemNamePatterns().isEmpty()) {
-            this.itemNamePatterns = "";
-        } else {
-            this.itemNamePatterns = String.join(",", filter.getItemNamePatterns());
+    public boolean isEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof ItemFilterEntity entity) {
+            return user.isEqual(entity.user) &&
+                   Objects.equals(name, entity.name);
         }
-
-        if (filter.getItemTypes() == null || filter.getItemTypes().isEmpty()) {
-            this.itemTypes = "";
-        } else {
-            this.itemTypes = filter.getItemTypes().stream().map(Enum::name).collect(Collectors.joining(","));
-        }
-
-        if (filter.getTags() == null || filter.getTags().isEmpty()) {
-            this.tags = Set.of();
-        } else {
-            this.tags = filter.getTags().stream().map(TagEntity::new).collect(Collectors.toSet());
-        }
-
-        this.minSellPrice = filter.getMinSellPrice();
-        this.maxBuyPrice = filter.getMaxBuyPrice();
-        this.minLastSoldPrice = filter.getMinLastSoldPrice();
-        this.maxLastSoldPrice = filter.getMaxLastSoldPrice();
+        return false;
     }
 
-    public ItemFilter toItemFilter() {
-        ItemFilter filter = new ItemFilter();
-        filter.setName(this.name);
-        filter.setFilterType(this.filterType);
-        filter.setIsOwned(this.isOwned);
+    public boolean isFullyEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof ItemFilterEntity entity) {
 
-        List<String> namePatterns = new ArrayList<>();
-        if (this.itemNamePatterns != null && !this.itemNamePatterns.isEmpty()) {
-            namePatterns = Arrays.stream(this.itemNamePatterns.split("[,|]")).map(String::trim).toList();
+            boolean tagsAreEqual = this.tags == null && entity.tags == null || (
+                    this.tags != null && entity.tags != null &&
+                    this.tags.size() == entity.tags.size() &&
+                    this.tags.stream().allMatch(tag -> entity.tags.stream().anyMatch(tag::isEqual)));
+
+            return isEqual(entity) &&
+                   filterType == entity.filterType &&
+                   isOwned == entity.isOwned &&
+                   Objects.equals(itemNamePatterns, entity.itemNamePatterns) &&
+                   Objects.equals(itemTypes, entity.itemTypes) &&
+                   tagsAreEqual &&
+                   Objects.equals(minSellPrice, entity.minSellPrice) &&
+                   Objects.equals(maxBuyPrice, entity.maxBuyPrice);
         }
-        filter.setItemNamePatterns(namePatterns);
+        return false;
+    }
 
-        List<ItemType> itemTypes = new ArrayList<>();
-        if (this.itemTypes != null && !this.itemTypes.isEmpty()) {
-            String[] split = this.itemTypes.split("[,|]");
-            for (String s : split) {
-                try {
-                    itemTypes.add(ItemType.valueOf(s));
-                } catch (IllegalArgumentException e) {
-                    log.error("Unknown item type: " + s);
-                }
-            }
-        }
-        filter.setItemTypes(itemTypes);
-
-        List<Tag> tagList = new ArrayList<>();
-        if (this.tags != null && !this.tags.isEmpty()) {
-            tagList = this.tags.stream().map(TagEntity::toTag).toList();
-        }
-        filter.setTags(tagList);
-
-        filter.setMinSellPrice(this.minSellPrice);
-        filter.setMaxBuyPrice(this.maxBuyPrice);
-        filter.setMinLastSoldPrice(this.minLastSoldPrice);
-        filter.setMaxLastSoldPrice(this.maxLastSoldPrice);
-        return filter;
+    @Override
+    public String toString() {
+        return "ItemFilterEntity(userId=" + getUserId_() + ", name=" + name + ", filterType=" + filterType + ", isOwned=" + isOwned + ", itemNamePatterns=" + itemNamePatterns + ", itemTypes=" + itemTypes + ", tags=" + tags + ", minSellPrice=" + minSellPrice + ", maxBuyPrice=" + maxBuyPrice + ")";
     }
 }

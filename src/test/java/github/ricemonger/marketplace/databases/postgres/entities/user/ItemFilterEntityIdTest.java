@@ -6,6 +6,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class ItemFilterEntityIdTest {
+
+    @Test
+    public void getUserId_should_return_user_id() {
+        UserEntity user = new UserEntity();
+        user.setId(1L);
+        ItemFilterEntityId id = new ItemFilterEntityId(user, "filterName");
+
+        assertEquals(1L, id.getUserId_());
+    }
+
+    @Test
+    public void constructor_should_set_id_fields() {
+        ItemFilterEntityId id = new ItemFilterEntityId(1L, "filterName");
+
+        assertEquals(1L, id.getUserId_());
+    }
+
     @Test
     public void hashCode_should_return_same_hash_for_equal_objects() {
         UserEntity user1 = new UserEntity();
@@ -104,4 +121,5 @@ class ItemFilterEntityIdTest {
 
         assertNotEquals(id1, id2);
     }
+
 }

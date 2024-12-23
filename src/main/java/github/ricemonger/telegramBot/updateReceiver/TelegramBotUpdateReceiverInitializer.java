@@ -1,6 +1,6 @@
 package github.ricemonger.telegramBot.updateReceiver;
 
-import github.ricemonger.telegramBot.TelegramBotConfiguration;
+import github.ricemonger.marketplace.services.configurations.TelegramBotConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.longpolling.TelegramBotsLongPollingApplication;

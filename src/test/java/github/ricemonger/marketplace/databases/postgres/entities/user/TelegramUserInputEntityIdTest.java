@@ -8,6 +8,47 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class TelegramUserInputEntityIdTest {
+
+    @Test
+    public void geChatId_should_return_chat_id() {
+        TelegramUserEntity user = new TelegramUserEntity();
+        user.setChatId("chat1");
+        InputState state = InputState.BASE;
+
+        TelegramUserInputEntityId id = new TelegramUserInputEntityId(user, state);
+
+        assertEquals("chat1", id.getChatId_());
+    }
+
+    @Test
+    public void getUserId_should_return_user_id() {
+        TelegramUserEntity user = new TelegramUserEntity();
+        user.setUser(new UserEntity(1L));
+        InputState state = InputState.BASE;
+
+        TelegramUserInputEntityId id = new TelegramUserInputEntityId(user, state);
+
+        assertEquals(1L, id.getUserId_());
+    }
+
+    @Test
+    public void constructor_with_usedId_should_set_id_fields() {
+        TelegramUserInputEntityId id = new TelegramUserInputEntityId("chatId", 1L, InputState.BASE);
+
+        assertEquals("chatId", id.getChatId_());
+        assertEquals(1L, id.getUserId_());
+        assertEquals(InputState.BASE, id.getInputState());
+    }
+
+    @Test
+    public void constructor_with_usedEntity_should_set_id_fields() {
+        TelegramUserInputEntityId id = new TelegramUserInputEntityId("chatId", new UserEntity(1L), InputState.BASE);
+
+        assertEquals("chatId", id.getChatId_());
+        assertEquals(1L, id.getUserId_());
+        assertEquals(InputState.BASE, id.getInputState());
+    }
+
     @Test
     public void hashCode_should_return_same_hash_for_equal_objects() {
         TelegramUserEntity user1 = new TelegramUserEntity();

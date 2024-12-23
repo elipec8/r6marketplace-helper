@@ -1,118 +1,150 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
-import github.ricemonger.utils.DTOs.TradeByFiltersManager;
 import github.ricemonger.utils.enums.TradeOperationType;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TradeByFiltersManagerEntityTest {
+
     @Test
-    public void toTradeByFiltersManager_should_properly_map_with_all_fields() {
-        UserEntity user = new UserEntity();
-        user.setId(1L);
+    public void isEqual_should_return_true_if_same() {
+        TradeByFiltersManagerEntity manager1 = new TradeByFiltersManagerEntity();
 
-        ItemFilterEntity filter1 = new ItemFilterEntity();
-        filter1.setName("filter1");
-        ItemFilterEntity filter2 = new ItemFilterEntity();
-        filter2.setName("filter2");
-
-        TradeByFiltersManagerEntity entity = new TradeByFiltersManagerEntity();
-        entity.setUser(user);
-        entity.setName("managerName");
-        entity.setEnabled(true);
-        entity.setTradeOperationType(TradeOperationType.BUY);
-        entity.setAppliedFilters(List.of(filter1, filter2));
-        entity.setMinBuySellProfit(100);
-        entity.setMinProfitPercent(10);
-        entity.setPriority(1);
-
-        TradeByFiltersManager expected = new TradeByFiltersManager();
-        expected.setName("managerName");
-        expected.setEnabled(true);
-        expected.setTradeOperationType(TradeOperationType.BUY);
-        expected.setAppliedFilters(List.of(filter1.toItemFilter(), filter2.toItemFilter()));
-        expected.setMinBuySellProfit(100);
-        expected.setMinProfitPercent(10);
-        expected.setPriority(1);
-
-        TradeByFiltersManager actual = entity.toTradeByFiltersManager();
-
-        assertEquals(expected, actual);
+        assertTrue(manager1.isEqual(manager1));
     }
 
     @Test
-    public void toTradeByFiltersManager_should_handle_null_appliedFilters_and_alt_fields() {
-        UserEntity user = new UserEntity();
-        user.setId(1L);
+    public void isEqual_should_return_true_if_equal_ids() {
+        TradeByFiltersManagerEntity manager1 = new TradeByFiltersManagerEntity();
+        manager1.setUser(new UserEntity(1L));
+        manager1.setName("name");
+        manager1.setEnabled(true);
+        manager1.setAppliedFilters(List.of());
+        manager1.setTradeOperationType(TradeOperationType.BUY);
+        manager1.setMinDifferenceFromMedianPrice(10);
+        manager1.setMinDifferenceFromMedianPricePercent(5);
+        manager1.setPriorityMultiplier(2);
 
-        TradeByFiltersManagerEntity entity = new TradeByFiltersManagerEntity();
-        entity.setUser(user);
-        entity.setName("managerName");
-        entity.setEnabled(false);
-        entity.setTradeOperationType(TradeOperationType.SELL);
-        entity.setAppliedFilters(null);
-        entity.setMinBuySellProfit(10_000);
-        entity.setMinProfitPercent(100);
-        entity.setPriority(2);
+        TradeByFiltersManagerEntity manager2 = new TradeByFiltersManagerEntity();
+        manager2.setUser(new UserEntity(1L));
+        manager2.setName("name");
 
-        TradeByFiltersManager expected = new TradeByFiltersManager();
-        expected.setName("managerName");
-        expected.setEnabled(false);
-        expected.setTradeOperationType(TradeOperationType.SELL);
-        expected.setAppliedFilters(null);
-        expected.setMinBuySellProfit(10_000);
-        expected.setMinProfitPercent(100);
-        expected.setPriority(2);
-
-        TradeByFiltersManager actual = entity.toTradeByFiltersManager();
-
-        assertEquals(expected, actual);
+        assertTrue(manager1.isEqual(manager2));
     }
 
     @Test
-    public void constructor_should_properly_map_with_all_fields() {
-        UserEntity user = new UserEntity();
-        user.setId(1L);
+    public void isEqual_should_return_false_if_null() {
+        TradeByFiltersManagerEntity manager1 = new TradeByFiltersManagerEntity();
 
-        ItemFilterEntity filter1 = new ItemFilterEntity();
-        filter1.setName("filter1");
-        ItemFilterEntity filter2 = new ItemFilterEntity();
-        filter2.setName("filter2");
-
-        TradeByFiltersManager tradeManager = new TradeByFiltersManager();
-        tradeManager.setName("managerName");
-        tradeManager.setEnabled(true);
-        tradeManager.setTradeOperationType(TradeOperationType.BUY);
-        tradeManager.setAppliedFilters(List.of(filter1.toItemFilter(), filter2.toItemFilter()));
-        tradeManager.setMinBuySellProfit(100);
-        tradeManager.setMinProfitPercent(10);
-        tradeManager.setPriority(1);
-
-        TradeByFiltersManagerEntity expected = new TradeByFiltersManagerEntity();
-        expected.setUser(user);
-        expected.setName("managerName");
-        expected.setEnabled(true);
-        expected.setTradeOperationType(TradeOperationType.BUY);
-        expected.setAppliedFilters(List.of(filter1, filter2));
-        expected.setMinBuySellProfit(100);
-        expected.setMinProfitPercent(10);
-        expected.setPriority(1);
-
-        TradeByFiltersManagerEntity actual = new TradeByFiltersManagerEntity(user, tradeManager);
-
-        entitiesAreEqual(expected, actual);
+        assertFalse(manager1.isEqual(null));
     }
 
-    private void entitiesAreEqual(TradeByFiltersManagerEntity expected, TradeByFiltersManagerEntity actual) {
-        assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.isEnabled(), actual.isEnabled());
-        assertEquals(expected.getTradeOperationType(), actual.getTradeOperationType());
-        assertEquals(expected.getAppliedFilters().stream().map(ItemFilterEntity::toItemFilter).toList(), actual.getAppliedFilters().stream().map(ItemFilterEntity::toItemFilter).toList());
-        assertEquals(expected.getMinBuySellProfit(), actual.getMinBuySellProfit());
-        assertEquals(expected.getMinProfitPercent(), actual.getMinProfitPercent());
-        assertEquals(expected.getPriority(), actual.getPriority());
+    @Test
+    public void isEqual_should_return_false_if_different_ids() {
+        TradeByFiltersManagerEntity manager1 = new TradeByFiltersManagerEntity();
+        manager1.setUser(new UserEntity(1L));
+        manager1.setName("name");
+
+        TradeByFiltersManagerEntity manager2 = new TradeByFiltersManagerEntity();
+        manager2.setUser(new UserEntity(1L));
+        manager2.setName("name");
+
+        manager1.setUser(new UserEntity(2L));
+        assertFalse(manager1.isEqual(manager2));
+        manager1.setUser(new UserEntity(1L));
+        manager1.setName("name2");
+        assertFalse(manager1.isEqual(manager2));
+    }
+
+    @Test
+    public void getUserId_should_return_user_id() {
+        UserEntity user = new UserEntity();
+        user.setId(1L);
+        TradeByFiltersManagerEntity manager = new TradeByFiltersManagerEntity();
+        manager.setUser(user);
+        assertEquals(1L, manager.getUserId_());
+    }
+
+    @Test
+    public void isFullyEqualExceptUser_should_return_true_if_equal_() {
+        ItemFilterEntity filter = new ItemFilterEntity();
+        filter.setUser(new UserEntity(1L));
+
+        TradeByFiltersManagerEntity manager1 = new TradeByFiltersManagerEntity();
+        manager1.setUser(new UserEntity(1L));
+        manager1.setName("managerName");
+        manager1.setEnabled(true);
+        manager1.setTradeOperationType(TradeOperationType.BUY);
+        manager1.setAppliedFilters(List.of(filter));
+        manager1.setMinDifferenceFromMedianPrice(10);
+        manager1.setMinDifferenceFromMedianPricePercent(5);
+        manager1.setPriorityMultiplier(2);
+
+        TradeByFiltersManagerEntity manager2 = new TradeByFiltersManagerEntity();
+        manager2.setUser(new UserEntity(1L));
+        manager2.setName("managerName");
+        manager2.setEnabled(true);
+        manager2.setTradeOperationType(TradeOperationType.BUY);
+        manager2.setAppliedFilters(List.of(filter));
+        manager2.setMinDifferenceFromMedianPrice(10);
+        manager2.setMinDifferenceFromMedianPricePercent(5);
+        manager2.setPriorityMultiplier(2);
+
+        assertTrue(manager1.isFullyEqual(manager2));
+    }
+
+    @Test
+    public void isFullyEqualExceptUser_should_return_false_if_not_equal_() {
+        ItemFilterEntity filter = new ItemFilterEntity();
+        filter.setUser(new UserEntity(1L));
+
+        TradeByFiltersManagerEntity manager1 = new TradeByFiltersManagerEntity();
+        manager1.setUser(new UserEntity(1L));
+        manager1.setName("managerName1");
+        manager1.setEnabled(true);
+        manager1.setTradeOperationType(TradeOperationType.BUY);
+        manager1.setAppliedFilters(List.of(filter));
+        manager1.setMinDifferenceFromMedianPrice(10);
+        manager1.setMinDifferenceFromMedianPricePercent(5);
+        manager1.setPriorityMultiplier(2);
+
+        TradeByFiltersManagerEntity manager2 = new TradeByFiltersManagerEntity();
+        manager2.setUser(new UserEntity(1L));
+        manager2.setName("managerName1");
+        manager2.setEnabled(true);
+        manager2.setTradeOperationType(TradeOperationType.BUY);
+        manager2.setAppliedFilters(List.of(filter));
+        manager2.setMinDifferenceFromMedianPrice(10);
+        manager2.setMinDifferenceFromMedianPricePercent(5);
+        manager2.setPriorityMultiplier(2);
+
+        manager1.setUser(new UserEntity(2L));
+        assertFalse(manager1.isFullyEqual(manager2));
+        manager1.setUser(new UserEntity(1L));
+        manager1.setName("managerName2");
+        assertFalse(manager1.isFullyEqual(manager2));
+        manager1.setName("managerName1");
+        manager1.setEnabled(false);
+        assertFalse(manager1.isFullyEqual(manager2));
+        manager1.setEnabled(true);
+        manager1.setTradeOperationType(TradeOperationType.SELL);
+        assertFalse(manager1.isFullyEqual(manager2));
+        manager1.setTradeOperationType(TradeOperationType.BUY);
+        manager1.setAppliedFilters(List.of());
+        assertFalse(manager1.isFullyEqual(manager2));
+        manager1.setAppliedFilters(null);
+        assertFalse(manager1.isFullyEqual(manager2));
+        manager1.setAppliedFilters(List.of(filter));
+        manager1.setMinDifferenceFromMedianPrice(20);
+        assertFalse(manager1.isFullyEqual(manager2));
+        manager1.setMinDifferenceFromMedianPrice(10);
+        manager1.setMinDifferenceFromMedianPricePercent(10);
+        assertFalse(manager1.isFullyEqual(manager2));
+        manager1.setMinDifferenceFromMedianPricePercent(5);
+        manager1.setPriorityMultiplier(3);
+        assertFalse(manager1.isFullyEqual(manager2));
     }
 }

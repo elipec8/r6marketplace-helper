@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.scheduled_tasks;
 
 import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.DTOs.AuthorizationDTO;
+import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,17 +33,16 @@ class ScheduledMainUserReauthorizationTest {
         authorizationDTO.setSessionId("sessionId");
         authorizationDTO.setRememberMeTicket("rememberMeTicket");
         authorizationDTO.setRememberDeviceTicket("rememberDeviceTicket");
-        authorizationDTO.setTwoFactorAuthenticationTicket("twoFactorAuthenticationTicket");
 
         when(commonValuesService.getMainUserEmail()).thenReturn("email");
         when(commonValuesService.getMainUserPassword()).thenReturn("password");
         when(commonValuesService.getExpireTimeout()).thenReturn(1000);
 
-        when(authorizationService.authorizeAndGetDTO("email", "password")).thenReturn(authorizationDTO);
+        when(authorizationService.authorizeAndGetBaseAuthorizedDTO("email", "password")).thenReturn(authorizationDTO);
 
         scheduledMainUserReauthorization.reauthorizeMainUserAndSave();
 
-        verify(authorizationService).authorizeAndGetDTO("email", "password");
+        verify(authorizationService).authorizeAndGetBaseAuthorizedDTO("email", "password");
 
         verify(commonValuesService).setMainUserAuthorization(same(authorizationDTO));
     }

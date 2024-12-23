@@ -1,15 +1,14 @@
-mutation UpdateSellOrder($spaceId: String!, $tradeId: String!, $paymentOptions: [PaymentItem!]!) {
+mutation UpdateBuyOrder($spaceId: String!, $tradeId: String!, $paymentProposal: PaymentItem!) {
     updateBuyOrder(
         spaceId: $spaceId
         tradeId: $tradeId
-        paymentOptions: $paymentOptions
-    ) {
-        trade {
-            ...TradeFragment
-            __typename
-        }
+        paymentProposal: $paymentProposal )
+    trade {
+        ...TradeFragment
         __typename
     }
+    __typename
+}
 }
 
 fragment TradeFragment on Trade {

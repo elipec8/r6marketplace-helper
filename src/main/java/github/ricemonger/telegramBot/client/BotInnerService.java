@@ -5,10 +5,9 @@ import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.utils.DTOs.*;
-import github.ricemonger.utils.DTOs.items.Item;
-import github.ricemonger.utils.DTOs.items.ItemFilter;
-import github.ricemonger.utils.DTOs.items.Tag;
+import github.ricemonger.utils.DTOs.common.Item;
+import github.ricemonger.utils.DTOs.common.Tag;
+import github.ricemonger.utils.DTOs.personal.*;
 import github.ricemonger.utils.enums.TagGroup;
 import github.ricemonger.utils.enums.TradeOperationType;
 import github.ricemonger.utils.exceptions.client.*;
@@ -38,6 +37,8 @@ public class BotInnerService {
     private final TelegramUserItemFilterService telegramUserItemFilterService;
 
     private final TelegramUserTradeManagerService telegramUserTradeManagerService;
+
+    private final TelegramUserUbiAccountEntryService telegramUserUbiAccountEntryService;
 
     private final ItemFilterFromInputsMapper itemFilterFromInputsMapper;
 
@@ -87,7 +88,7 @@ public class BotInnerService {
             return;
         }
 
-        int maxItemsInMessage = settings.isItemShowFewInMessageFlag() ? commonValuesService.getMaximumTelegramMessageHeight() / settings.getActiveFieldsCount() : 1;
+        int maxItemsInMessage = settings.getItemShowFewInMessageFlag() ? commonValuesService.getMaximumTelegramMessageHeight() / settings.getActiveFieldsCount() : 1;
         int messageLimit = settings.getItemShowMessagesLimit();
         int messageCount = 0;
 
@@ -155,16 +156,21 @@ public class BotInnerService {
             throws TelegramUserDoesntExistException,
             UbiUserAuthorizationClientErrorException,
             UbiUserAuthorizationServerErrorException {
-        String fullOrEmail = getUserInputByState(chatId, InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
+        String email = getUserInputByState(chatId, InputState.UBI_ACCOUNT_ENTRY_EMAIL);
 
-        if (fullOrEmail.contains(":")) {
-            String email = fullOrEmail.substring(0, fullOrEmail.indexOf(":"));
-            String password = fullOrEmail.substring(fullOrEmail.indexOf(":") + 1);
-            telegramUserService.addUserUbiAccountEntryIfValidCredentialsOrThrow(chatId, email, password);
-        } else {
-            String password = getUserInputByState(chatId, InputState.UBI_ACCOUNT_ENTRY_PASSWORD);
-            telegramUserService.addUserUbiAccountEntryIfValidCredentialsOrThrow(chatId, fullOrEmail, password);
-        }
+        String password = getUserInputByState(chatId, InputState.UBI_ACCOUNT_ENTRY_PASSWORD);
+
+        String twoFaCode = getUserInputByState(chatId, InputState.UBI_ACCOUNT_ENTRY_2FA_CODE);
+
+        telegramUserService.authorizeAndSaveUser(chatId, email, password, twoFaCode);
+
+    }
+
+    public void reauthorizeUbiAccountEntryBy2FACode(Long chatId) throws TelegramUserDoesntExistException,
+            UbiUserAuthorizationServerErrorException, UbiUserAuthorizationClientErrorException {
+        String twoFaCode = getUserInputByState(chatId, InputState.UBI_ACCOUNT_ENTRY_2FA_CODE);
+
+        telegramUserService.reauthorizeAndSaveExistingUserBy2FACode(chatId, twoFaCode);
     }
 
     public void removeUserUbiAccountEntry(Long chatId) throws TelegramUserDoesntExistException {
@@ -286,7 +292,7 @@ public class BotInnerService {
                 inputs,
                 tradeOperationType,
                 getItemByUserInputItemId(chatId),
-                telegramUserService.getTradeManagersSettings(chatId).isNewManagersAreActiveFlag());
+                telegramUserService.getTradeManagersSettings(chatId).getNewManagersAreActiveFlag());
     }
 
     public TradeByFiltersManager generateTradeByFiltersManagerByUserInput(Long chatId) throws TelegramUserDoesntExistException,
@@ -305,7 +311,7 @@ public class BotInnerService {
         return tradeManagerFromInputsMapper.mapToTradeByFiltersManager(inputs,
                 commonValuesService.getMaximumMarketplacePrice(),
                 appliedFilters,
-                telegramUserService.getTradeManagersSettings(chatId).isNewManagersAreActiveFlag());
+                telegramUserService.getTradeManagersSettings(chatId).getNewManagersAreActiveFlag());
     }
 
     public Item getItemByUserInputItemId(Long chatId) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {

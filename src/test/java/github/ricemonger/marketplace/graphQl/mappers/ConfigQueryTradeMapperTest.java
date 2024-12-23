@@ -4,7 +4,7 @@ import github.ricemonger.marketplace.graphQl.DTOs.config_query_trade.TradesConfi
 import github.ricemonger.marketplace.graphQl.DTOs.config_query_trade.tradesConfig.BuyLimit;
 import github.ricemonger.marketplace.graphQl.DTOs.config_query_trade.tradesConfig.SellLimit;
 import github.ricemonger.marketplace.graphQl.DTOs.config_query_trade.tradesConfig.TransactionFeesConfig;
-import github.ricemonger.utils.DTOs.ConfigTrades;
+import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.exceptions.server.GraphQlConfigTradeMappingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +27,8 @@ class ConfigQueryTradeMapperTest {
         assertEquals(2, result.getBuySlots());
         assertEquals(3, result.getSellSlots());
         assertEquals(4, result.getResaleLockDurationInMinutes());
-        assertTrue(result.isTwoFactorAuthenticationRule());
-        assertFalse(result.isGameOwnershipRule());
+        assertTrue(result.getTwoFactorAuthenticationRule());
+        assertFalse(result.getGameOwnershipRule());
         assertEquals(5, result.getBuyLimit());
         assertEquals(6, result.getSellLimit());
         assertEquals("paymentItemId", result.getPaymentItemId());
@@ -39,8 +39,8 @@ class ConfigQueryTradeMapperTest {
 
         result = configQueryTradeMapper.mapConfigTrades(tradesConfig);
 
-        assertFalse(result.isTwoFactorAuthenticationRule());
-        assertTrue(result.isGameOwnershipRule());
+        assertFalse(result.getTwoFactorAuthenticationRule());
+        assertTrue(result.getGameOwnershipRule());
     }
 
     @Test

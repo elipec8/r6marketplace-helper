@@ -1,10 +1,11 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.TradeLimitations;
+import github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.TradesLimitations;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.tradeLimitations.sell.ResaleLocks;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.utils.DTOs.UserTransactionsCount;
-import github.ricemonger.utils.DTOs.items.ItemResaleLock;
+import github.ricemonger.utils.DTOs.personal.UserTradesLimitations;
+import github.ricemonger.utils.DTOs.personal.UserTransactionsCount;
+import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalLockedItemsMappingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.List;
 
 @Slf4j
 @Component
@@ -22,16 +22,26 @@ public class PersonalQueryLockedItemsMapper {
 
     private final CommonValuesService commonValuesService;
 
-    public List<ItemResaleLock> mapLockedItems(TradeLimitations tradeLimitations) throws GraphQlPersonalLockedItemsMappingException {
-        if (tradeLimitations == null) {
+    public UserTradesLimitations mapTradesLimitationsForUser(TradesLimitations tradesLimitations, String ubiProfileId) throws GraphQlPersonalLockedItemsMappingException {
+        if (tradesLimitations == null) {
             throw new GraphQlPersonalLockedItemsMappingException("Trade limitations is null");
         }
 
-        if (tradeLimitations.getSell() == null || tradeLimitations.getSell().getResaleLocks() == null) {
-            throw new GraphQlPersonalLockedItemsMappingException("Sell or resale locks is null in trade limitations-" + tradeLimitations);
+        UserTradesLimitations userTradesLimitations = new UserTradesLimitations();
+        userTradesLimitations.setUbiProfileId(ubiProfileId);
+
+        if (tradesLimitations.getSell() == null || tradesLimitations.getSell().getResaleLocks() == null) {
+            throw new GraphQlPersonalLockedItemsMappingException("Sell or resale locks is null in trade limitations-" + tradesLimitations);
         } else {
-            return tradeLimitations.getSell().getResaleLocks().stream().map(this::mapLockedItem).toList();
+            userTradesLimitations.setResaleLocks(tradesLimitations.getSell().getResaleLocks().stream()
+                    .map(this::mapLockedItem)
+                    .toList());
         }
+
+        UserTransactionsCount userTransactionsCount = mapUserTransactionsCount(tradesLimitations);
+        userTradesLimitations.setUserTransactionsCount(userTransactionsCount);
+
+        return userTradesLimitations;
     }
 
     public ItemResaleLock mapLockedItem(ResaleLocks resaleLocks) throws GraphQlPersonalLockedItemsMappingException {
@@ -52,20 +62,20 @@ public class PersonalQueryLockedItemsMapper {
         return result;
     }
 
-    public UserTransactionsCount mapUserTransactionsCount(TradeLimitations tradeLimitations) throws GraphQlPersonalLockedItemsMappingException {
-        if (tradeLimitations == null
-            || tradeLimitations.getBuy() == null
-            || tradeLimitations.getSell() == null
-            || tradeLimitations.getBuy().getActiveTransactionCount() == null || tradeLimitations.getBuy().getResolvedTransactionCount() == null
-            || tradeLimitations.getSell().getActiveTransactionCount() == null || tradeLimitations.getSell().getResolvedTransactionCount() == null) {
-            throw new GraphQlPersonalLockedItemsMappingException("Trade limitation or one of its fields is null:" + tradeLimitations);
+    public UserTransactionsCount mapUserTransactionsCount(TradesLimitations tradesLimitations) throws GraphQlPersonalLockedItemsMappingException {
+        if (tradesLimitations == null
+            || tradesLimitations.getBuy() == null
+            || tradesLimitations.getSell() == null
+            || tradesLimitations.getBuy().getActiveTransactionCount() == null || tradesLimitations.getBuy().getResolvedTransactionCount() == null
+            || tradesLimitations.getSell().getActiveTransactionCount() == null || tradesLimitations.getSell().getResolvedTransactionCount() == null) {
+            throw new GraphQlPersonalLockedItemsMappingException("Trade limitation or one of its fields is null:" + tradesLimitations);
         }
 
         UserTransactionsCount result = new UserTransactionsCount();
-        result.setBuyResolvedTransactionCount(tradeLimitations.getBuy().getResolvedTransactionCount());
-        result.setBuyActiveTransactionCount(tradeLimitations.getBuy().getActiveTransactionCount());
-        result.setSellResolvedTransactionCount(tradeLimitations.getSell().getResolvedTransactionCount());
-        result.setSellActiveTransactionCount(tradeLimitations.getSell().getActiveTransactionCount());
+        result.setBuyResolvedTransactionCount(tradesLimitations.getBuy().getResolvedTransactionCount());
+        result.setBuyActiveTransactionCount(tradesLimitations.getBuy().getActiveTransactionCount());
+        result.setSellResolvedTransactionCount(tradesLimitations.getSell().getResolvedTransactionCount());
+        result.setSellActiveTransactionCount(tradesLimitations.getSell().getActiveTransactionCount());
 
         return result;
     }

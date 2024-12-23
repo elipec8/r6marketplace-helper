@@ -1,86 +1,115 @@
 package github.ricemonger.marketplace.databases.postgres.entities.item;
 
-import github.ricemonger.utils.DTOs.items.ItemSale;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ItemSaleEntityTest {
 
     @Test
-    public void toItemSaleEntity_should_properly_map_with_valid_fields() {
-        ItemSale sale = new ItemSale();
-        sale.setItemId("1");
-        sale.setLastSoldAt(LocalDateTime.MIN);
-        sale.setLastSoldPrice(2);
-
-        ItemSaleEntity expected = new ItemSaleEntity();
-        expected.setItem(new ItemEntity("1"));
-        expected.setSoldAt(LocalDateTime.MIN);
-        expected.setPrice(2);
-
-        ItemSaleEntity actual = new ItemSaleEntity(sale);
-
-        assertTrue(entitiesAreEqual(expected, actual));
-    }
-
-    @Test
-    public void toItemSaleEntity_should_properly_map_with_null_fields() {
-        ItemSale sale = new ItemSale();
-        sale.setItemId(null);
-        sale.setLastSoldAt(null);
-
-        ItemSaleEntity expected = new ItemSaleEntity();
-        expected.setItem(new ItemEntity());
-        expected.setSoldAt(null);
-        expected.setPrice(0);
-
-        ItemSaleEntity actual = new ItemSaleEntity(sale);
-
-        assertTrue(entitiesAreEqual(expected, actual));
-    }
-
-    @Test
-    public void toItemSale_should_properly_map_with_valid_fields() {
+    public void isEqual_should_return_true_if_same() {
         ItemSaleEntity entity = new ItemSaleEntity();
-        entity.setItem(new ItemEntity("1"));
-        entity.setSoldAt(LocalDateTime.MAX);
-        entity.setPrice(2);
-
-        ItemSale expected = new ItemSale();
-        expected.setItemId("1");
-        expected.setSoldAt(LocalDateTime.MAX);
-        expected.setPrice(2);
-
-        ItemSale actual = entity.toItemSale();
-
-        assertEquals(expected, actual);
+        assertTrue(entity.isEqual(entity));
     }
 
     @Test
-    public void toItemSale_should_properly_map_with_null_fields() {
-        ItemSaleEntity entity = new ItemSaleEntity();
-        entity.setItem(null);
-        entity.setSoldAt(null);
+    public void isEqual_should_return_true_if_equal_ids() {
+        ItemSaleEntity entity1 = new ItemSaleEntity("itemId");
+        entity1.setSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
+        entity1.setPrice(100);
+        ItemSaleEntity entity2 = new ItemSaleEntity("itemId");
+        entity2.setSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
+        entity2.setPrice(200);
 
-        ItemSale expected = new ItemSale();
-        expected.setItemId(null);
-        expected.setSoldAt(null);
-        expected.setPrice(0);
-
-        ItemSale actual = entity.toItemSale();
-
-        assertEquals(expected, actual);
+        assertTrue(entity1.isEqual(entity2));
     }
 
-    private boolean entitiesAreEqual(ItemSaleEntity entity1, ItemSaleEntity entity2) {
-        return (entity1.getItem() == entity2.getItem() || (entity1.getItem() != null &&
-                                                           Objects.equals(entity1.getItem().getItemId(), entity2.getItem().getItemId()))) &&
-               Objects.equals(entity1.getSoldAt(), entity2.getSoldAt()) &&
-               entity1.getPrice() == entity2.getPrice();
+    @Test
+    public void isEqual_should_return_false_if_null() {
+        ItemSaleEntity entity = new ItemSaleEntity();
+        assertFalse(entity.isEqual(null));
+    }
+
+    @Test
+    public void isEqual_should_return_false_if_different_id_field() {
+        ItemSaleEntity entity1 = new ItemSaleEntity("itemId");
+        entity1.setSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
+
+        ItemSaleEntity entity2 = new ItemSaleEntity("itemId");
+        entity2.setSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
+
+        entity1.setItem(new ItemEntity("itemId1"));
+        assertFalse(entity1.isEqual(entity2));
+        entity1.setItem(new ItemEntity("itemId"));
+        entity1.setSoldAt(LocalDateTime.of(2021, 1, 2, 0, 0));
+        assertFalse(entity1.isEqual(entity2));
+    }
+
+    @Test
+    public void constructor_should_set_id_field() {
+        ItemSaleEntity itemSaleEntity = new ItemSaleEntity("itemId");
+        assertEquals("itemId", itemSaleEntity.getItemId_());
+    }
+
+    @Test
+    public void getItemId_should_return_item_itemId() {
+        ItemEntity item = new ItemEntity();
+        item.setItemId("itemId");
+        ItemSaleEntity itemSaleEntity = new ItemSaleEntity();
+        itemSaleEntity.setItem(item);
+        assertEquals("itemId", itemSaleEntity.getItemId_());
+    }
+
+    @Test
+    public void isFullyEqual_should_return_true_if_same() {
+        ItemSaleEntity entity = new ItemSaleEntity();
+        assertTrue(entity.isFullyEqual(entity));
+    }
+
+    @Test
+    public void isFullyEqual_should_return_true_if_equal() {
+        ItemEntity item = new ItemEntity();
+        item.setItemId("itemId");
+
+        ItemSaleEntity entity1 = new ItemSaleEntity();
+        entity1.setItem(item);
+        entity1.setSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
+        entity1.setPrice(100);
+
+        ItemSaleEntity entity2 = new ItemSaleEntity();
+        entity2.setItem(item);
+        entity2.setSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
+        entity2.setPrice(100);
+
+        assertTrue(entity1.isFullyEqual(entity2));
+    }
+
+    @Test
+    public void isFullyEqual_should_return_false_if_not_equal() {
+        ItemEntity item1 = new ItemEntity();
+        item1.setItemId("itemId1");
+
+        ItemEntity item2 = new ItemEntity();
+        item2.setItemId("itemId");
+
+        ItemSaleEntity entity1 = new ItemSaleEntity();
+        entity1.setItem(item1);
+        entity1.setSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
+        entity1.setPrice(100);
+
+        ItemSaleEntity entity2 = new ItemSaleEntity();
+        entity2.setItem(item2);
+        entity2.setSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
+        entity2.setPrice(100);
+
+        assertFalse(entity1.isFullyEqual(entity2));
+        entity1.setItem(item2);
+        entity1.setSoldAt(LocalDateTime.of(2021, 1, 2, 0, 0));
+        assertFalse(entity1.isFullyEqual(entity2));
+        entity1.setSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
+        entity1.setPrice(101);
+        assertFalse(entity1.isFullyEqual(entity2));
     }
 }

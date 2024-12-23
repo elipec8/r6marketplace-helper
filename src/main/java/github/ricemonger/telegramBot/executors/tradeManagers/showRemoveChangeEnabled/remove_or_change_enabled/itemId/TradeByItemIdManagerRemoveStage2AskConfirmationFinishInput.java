@@ -3,7 +3,7 @@ package github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEn
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.client.CallbackButton;
 import github.ricemonger.telegramBot.executors.AbstractBotCommandExecutor;
-import github.ricemonger.utils.DTOs.TradeByItemIdManager;
+import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
 
 public class TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput extends AbstractBotCommandExecutor {
     @Override
@@ -12,7 +12,7 @@ public class TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput extends 
 
         TradeByItemIdManager tradeManager = botInnerService.getUserTradeByItemIdManagerByUserInputItemId(updateInfo.getChatId());
 
-        String activateText = tradeManager.isEnabled() ? "Deactivate" : "Activate";
+        String activateText = tradeManager.getEnabled() ? "Deactivate" : "Activate";
 
         CallbackButton removeButton = new CallbackButton("Remove", Callbacks.TRADE_BY_ITEM_ID_MANAGER_REMOVE_FINISH_CONFIRMED);
         CallbackButton changeButton = new CallbackButton(activateText, Callbacks.TRADE_BY_ITEM_ID_MANAGER_CHANGE_ENABLED_FINISH_CONFIRMED);

@@ -1,11 +1,10 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
+import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.ItemFilterEntityMapper;
 import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
-import github.ricemonger.utils.DTOs.ItemShowSettings;
-import github.ricemonger.utils.DTOs.ItemShownFieldsSettings;
-import github.ricemonger.utils.DTOs.TelegramUser;
-import github.ricemonger.utils.DTOs.TradeManagersSettings;
+import github.ricemonger.utils.DTOs.personal.ItemShownFieldsSettings;
+import github.ricemonger.utils.DTOs.personal.TelegramUser;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +13,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity(name = "telegram_user")
 @Getter
@@ -39,61 +39,27 @@ public class TelegramUserEntity {
     private Integer itemShowMessagesLimit = 50;
     private Boolean itemShowFewInMessageFlag = false;
 
-    public TelegramUserEntity(String chatId, UserEntity user) {
-        this.chatId = chatId;
-        this.user = user;
+    public TelegramUserEntity(String chatId, Long userId) {
+        this(chatId, new UserEntity(userId));
     }
 
-    public TelegramUser toTelegramUser() {
-        TelegramUser telegramUser = new TelegramUser();
-        telegramUser.setChatId(this.chatId);
-        telegramUser.setInputState(this.inputState);
-        telegramUser.setInputGroup(this.inputGroup);
-        telegramUser.setPublicNotificationsEnabledFlag(this.user.getPublicNotificationsEnabledFlag());
-        telegramUser.setItemShowMessagesLimit(this.itemShowMessagesLimit);
-        telegramUser.setItemShowFewInMessageFlag(this.itemShowFewInMessageFlag);
-        telegramUser.setItemShowNameFlag(this.user.getItemShowNameFlag());
-        telegramUser.setItemShowItemTypeFlag(this.user.getItemShowItemTypeFlag());
-        telegramUser.setItemShowMaxBuyPrice(this.user.getItemShowMaxBuyPrice());
-        telegramUser.setItemShowBuyOrdersCountFlag(this.user.getItemShowBuyOrdersCountFlag());
-        telegramUser.setItemShowMinSellPriceFlag(this.user.getItemShowMinSellPriceFlag());
-        telegramUser.setItemsShowSellOrdersCountFlag(this.user.getItemsShowSellOrdersCountFlag());
-        telegramUser.setItemShowPictureFlag(this.user.getItemShowPictureFlag());
-        if (this.user.getItemShowAppliedFilters() != null) {
-            telegramUser.setItemShowAppliedFilters(this.user.getItemShowAppliedFilters().stream().map(ItemFilterEntity::toItemFilter).toList());
-        }
-        telegramUser.setNewManagersAreActiveFlag(this.user.getNewManagersAreActiveFlag());
-        telegramUser.setManagingEnabledFlag(this.user.getManagingEnabledFlag());
-        return telegramUser;
+    public TelegramUserEntity(String chatId, UserEntity userEntity) {
+        this.chatId = chatId;
+        this.user = userEntity;
+    }
+
+    public Long getUserId_() {
+        return user.getId();
     }
 
     public void setShowItemFieldsSettings(ItemShownFieldsSettings settings) {
-        this.user.setItemShowNameFlag(settings.isItemShowNameFlag());
-        this.user.setItemShowItemTypeFlag(settings.isItemShowItemTypeFlag());
-        this.user.setItemShowMaxBuyPrice(settings.isItemShowMaxBuyPrice());
-        this.user.setItemShowBuyOrdersCountFlag(settings.isItemShowBuyOrdersCountFlag());
-        this.user.setItemShowMinSellPriceFlag(settings.isItemShowMinSellPriceFlag());
-        this.user.setItemsShowSellOrdersCountFlag(settings.isItemsShowSellOrdersCountFlag());
-        this.user.setItemShowPictureFlag(settings.isItemShowPictureFlag());
-    }
-
-    public ItemShowSettings toItemShowSettings() {
-        ItemShowSettings itemShowSettings = new ItemShowSettings();
-        itemShowSettings.setItemShowMessagesLimit(this.itemShowMessagesLimit);
-        itemShowSettings.setItemShowFewInMessageFlag(this.itemShowFewInMessageFlag);
-        itemShowSettings.setItemShowNameFlag(this.user.getItemShowNameFlag());
-        itemShowSettings.setItemShowItemTypeFlag(this.user.getItemShowItemTypeFlag());
-        itemShowSettings.setItemShowMaxBuyPrice(this.user.getItemShowMaxBuyPrice());
-        itemShowSettings.setItemShowBuyOrdersCountFlag(this.user.getItemShowBuyOrdersCountFlag());
-        itemShowSettings.setItemShowMinSellPriceFlag(this.user.getItemShowMinSellPriceFlag());
-        itemShowSettings.setItemsShowSellOrdersCountFlag(this.user.getItemsShowSellOrdersCountFlag());
-        itemShowSettings.setItemShowPictureFlag(this.user.getItemShowPictureFlag());
-        if (this.user.getItemShowAppliedFilters() != null) {
-            itemShowSettings.setItemShowAppliedFilters(this.user.getItemShowAppliedFilters().stream().map(ItemFilterEntity::toItemFilter).toList());
-        } else {
-            itemShowSettings.setItemShowAppliedFilters(new ArrayList<>());
-        }
-        return itemShowSettings;
+        this.user.setItemShowNameFlag(settings.getItemShowNameFlag());
+        this.user.setItemShowItemTypeFlag(settings.getItemShowItemTypeFlag());
+        this.user.setItemShowMaxBuyPrice(settings.getItemShowMaxBuyPrice());
+        this.user.setItemShowBuyOrdersCountFlag(settings.getItemShowBuyOrdersCountFlag());
+        this.user.setItemShowMinSellPriceFlag(settings.getItemShowMinSellPriceFlag());
+        this.user.setItemsShowSellOrdersCountFlag(settings.getItemsShowSellOrdersCountFlag());
+        this.user.setItemShowPictureFlag(settings.getItemShowPictureFlag());
     }
 
     public List<ItemFilterEntity> getItemShowAppliedFilters() {
@@ -109,40 +75,66 @@ public class TelegramUserEntity {
         }
     }
 
-    public TradeManagersSettings toTradeManagersSettings() {
-        TradeManagersSettings tradeManagersSettings = new TradeManagersSettings();
-        tradeManagersSettings.setNewManagersAreActiveFlag(this.user.getNewManagersAreActiveFlag());
-        tradeManagersSettings.setManagingEnabledFlag(this.user.getManagingEnabledFlag());
-        return tradeManagersSettings;
-    }
-
-    public void setNewManagersAreActiveFlag(boolean flag) {
+    public void setNewManagersAreActiveFlag_(boolean flag) {
         this.user.setNewManagersAreActiveFlag(flag);
     }
 
-    public void setManagingEnabledFlag(boolean flag) {
+    public void setManagingEnabledFlag_(boolean flag) {
         this.user.setManagingEnabledFlag(flag);
     }
 
-    public void setFields(TelegramUser telegramUser) {
+    public void setFields(TelegramUser telegramUser, ItemFilterEntityMapper itemFilterEntityMapper) {
         this.chatId = telegramUser.getChatId();
         this.inputState = telegramUser.getInputState();
         this.inputGroup = telegramUser.getInputGroup();
-        this.user.setPublicNotificationsEnabledFlag(telegramUser.isPublicNotificationsEnabledFlag());
+        this.user.setPublicNotificationsEnabledFlag(telegramUser.getPublicNotificationsEnabledFlag());
         this.itemShowMessagesLimit = telegramUser.getItemShowMessagesLimit();
-        this.itemShowFewInMessageFlag = telegramUser.isItemShowFewInMessageFlag();
-        this.user.setItemShowNameFlag(telegramUser.isItemShowNameFlag());
-        this.user.setItemShowItemTypeFlag(telegramUser.isItemShowItemTypeFlag());
-        this.user.setItemShowMaxBuyPrice(telegramUser.isItemShowMaxBuyPrice());
-        this.user.setItemShowBuyOrdersCountFlag(telegramUser.isItemShowBuyOrdersCountFlag());
-        this.user.setItemShowMinSellPriceFlag(telegramUser.isItemShowMinSellPriceFlag());
-        this.user.setItemsShowSellOrdersCountFlag(telegramUser.isItemsShowSellOrdersCountFlag());
-        this.user.setItemShowPictureFlag(telegramUser.isItemShowPictureFlag());
+        this.itemShowFewInMessageFlag = telegramUser.getItemShowFewInMessageFlag();
+        this.user.setItemShowNameFlag(telegramUser.getItemShowNameFlag());
+        this.user.setItemShowItemTypeFlag(telegramUser.getItemShowItemTypeFlag());
+        this.user.setItemShowMaxBuyPrice(telegramUser.getItemShowMaxBuyPrice());
+        this.user.setItemShowBuyOrdersCountFlag(telegramUser.getItemShowBuyOrdersCountFlag());
+        this.user.setItemShowMinSellPriceFlag(telegramUser.getItemShowMinSellPriceFlag());
+        this.user.setItemsShowSellOrdersCountFlag(telegramUser.getItemsShowSellOrdersCountFlag());
+        this.user.setItemShowPictureFlag(telegramUser.getItemShowPictureFlag());
         if (telegramUser.getItemShowAppliedFilters() != null) {
             this.user.getItemShowAppliedFilters().clear();
-            this.user.getItemShowAppliedFilters().addAll(telegramUser.getItemShowAppliedFilters().stream().map(ItemFilterEntity::new).toList());
+            this.user.getItemShowAppliedFilters().addAll(telegramUser.getItemShowAppliedFilters().stream().map(itemFilter -> itemFilterEntityMapper.createEntityForTelegramUserChatId(telegramUser.getChatId(), itemFilter)).toList());
         }
-        this.user.setNewManagersAreActiveFlag(telegramUser.isNewManagersAreActiveFlag());
-        this.user.setManagingEnabledFlag(telegramUser.isManagingEnabledFlag());
+        this.user.setNewManagersAreActiveFlag(telegramUser.getNewManagersAreActiveFlag());
+        this.user.setManagingEnabledFlag(telegramUser.getManagingEnabledFlag());
+    }
+
+    public boolean isEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof TelegramUserEntity entity) {
+            return Objects.equals(this.chatId, entity.chatId) &&
+                   this.user.isEqual(entity.user);
+        }
+        return false;
+    }
+
+    public boolean isFullyEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof TelegramUserEntity entity) {
+
+            boolean inputsAreEqual = telegramUserInputs == null && entity.telegramUserInputs == null || (
+                    telegramUserInputs != null && entity.telegramUserInputs != null &&
+                    telegramUserInputs.size() == entity.telegramUserInputs.size() &&
+                    telegramUserInputs.stream().allMatch(input -> entity.telegramUserInputs.stream().anyMatch(input::isEqual)));
+
+            return isEqual(entity) &&
+                   inputsAreEqual &&
+                   inputState == entity.inputState &&
+                   inputGroup == entity.inputGroup &&
+                   Objects.equals(itemShowMessagesLimit, entity.itemShowMessagesLimit) &&
+                   Objects.equals(itemShowFewInMessageFlag, entity.itemShowFewInMessageFlag);
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "TelegramUserEntity(chatId=" + chatId + ", user=" + user + ", telegramUserInputs=" + telegramUserInputs + ", inputState=" + inputState + ", inputGroup=" + inputGroup + ", itemShowMessagesLimit=" + itemShowMessagesLimit + ", itemShowFewInMessageFlag=" + itemShowFewInMessageFlag + ")";
     }
 }

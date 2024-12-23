@@ -1,109 +1,189 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntry;
-import github.ricemonger.utils.DTOs.UbiAccountAuthorizationEntryWithTelegram;
+import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class UbiAccountEntryEntityTest {
 
     @Test
-    public void constructor_should_set_fields_correctly() {
-        UserEntity user = new UserEntity();
-        user.setId(1L);
-        UbiAccountStatsEntity ubiAccount = new UbiAccountStatsEntity();
-        ubiAccount.setUbiProfileId("profile1");
-        UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
-        account.setEmail("email@example.com");
-        account.setEncodedPassword("encodedPassword");
-        account.setUbiSessionId("sessionId");
-        account.setUbiSpaceId("spaceId");
-        account.setUbiAuthTicket("authTicket");
-        account.setUbiTwoFactorAuthTicket("twoFactorAuthTicket");
-        account.setUbiRememberDeviceTicket("rememberDeviceTicket");
-        account.setUbiRememberMeTicket("rememberMeTicket");
-
-        UbiAccountEntryEntity result = new UbiAccountEntryEntity(user, ubiAccount, account);
-
-        assertEquals(1L, result.getUser().getId());
-        assertEquals("profile1", result.getUbiAccountStats().getUbiProfileId());
-        assertEquals("email@example.com", result.getEmail());
-        assertEquals("encodedPassword", result.getEncodedPassword());
-        assertEquals("sessionId", result.getUbiSessionId());
-        assertEquals("spaceId", result.getUbiSpaceId());
-        assertEquals("authTicket", result.getUbiAuthTicket());
-        assertEquals("twoFactorAuthTicket", result.getUbiTwoFactorAuthTicket());
-        assertEquals("rememberDeviceTicket", result.getUbiRememberDeviceTicket());
-        assertEquals("rememberMeTicket", result.getUbiRememberMeTicket());
+    public void isEqual_should_return_true_if_same() {
+        UbiAccountEntryEntity accountEntry = new UbiAccountEntryEntity();
+        assertTrue(accountEntry.isEqual(accountEntry));
     }
 
     @Test
-    public void toUbiAccountAuthorizationEntryWithTelegram_should_return_correct_dto() {
-        TelegramUserEntity telegramUserEntity = new TelegramUserEntity();
-        telegramUserEntity.setChatId("chat1");
-        UserEntity user = new UserEntity();
-        user.setId(1L);
-        user.setPrivateNotificationsEnabledFlag(true);
-        user.setTelegramUser(telegramUserEntity);
-        UbiAccountStatsEntity ubiAccount = new UbiAccountStatsEntity();
-        ubiAccount.setUbiProfileId("profile1");
-        UbiAccountEntryEntity entity = new UbiAccountEntryEntity();
-        entity.setUser(user);
-        entity.setUbiAccountStats(ubiAccount);
-        entity.setEmail("email@example.com");
-        entity.setEncodedPassword("encodedPassword");
-        entity.setUbiSessionId("sessionId");
-        entity.setUbiSpaceId("spaceId");
-        entity.setUbiAuthTicket("authTicket");
-        entity.setUbiTwoFactorAuthTicket("twoFactorAuthTicket");
-        entity.setUbiRememberDeviceTicket("rememberDeviceTicket");
-        entity.setUbiRememberMeTicket("rememberMeTicket");
+    public void isEqual_should_return_true_if_equal_ids() {
+        UbiAccountEntryEntity accountEntry1 = new UbiAccountEntryEntity();
+        accountEntry1.setUser(new UserEntity(1L));
+        accountEntry1.setEmail("email");
+        accountEntry1.setUbiAccountStats(new UbiAccountStatsEntity("profileId"));
+        accountEntry1.setEncodedPassword("encodedPassword");
+        accountEntry1.setUbiSessionId("sessionId");
+        accountEntry1.setUbiSpaceId("spaceId");
+        accountEntry1.setUbiAuthTicket("authTicket");
+        accountEntry1.setUbiRememberDeviceTicket("rememberDeviceTicket");
+        accountEntry1.setUbiRememberMeTicket("rememberMeTicket");
 
-        UbiAccountAuthorizationEntryWithTelegram result = entity.toUbiAccountAuthorizationEntryWithTelegram();
+        UbiAccountEntryEntity accountEntry2 = new UbiAccountEntryEntity();
+        accountEntry2.setUser(new UserEntity(1L));
+        accountEntry2.setEmail("email");
 
-        assertEquals("chat1", result.getChatId());
-        assertTrue(result.getPrivateNotificationsEnabledFlag());
-        assertEquals("email@example.com", result.getUbiAccountAuthorizationEntry().getEmail());
-        assertEquals("encodedPassword", result.getUbiAccountAuthorizationEntry().getEncodedPassword());
-        assertEquals("profile1", result.getUbiAccountAuthorizationEntry().getUbiProfileId());
-        assertEquals("sessionId", result.getUbiAccountAuthorizationEntry().getUbiSessionId());
-        assertEquals("spaceId", result.getUbiAccountAuthorizationEntry().getUbiSpaceId());
-        assertEquals("authTicket", result.getUbiAccountAuthorizationEntry().getUbiAuthTicket());
-        assertEquals("twoFactorAuthTicket", result.getUbiAccountAuthorizationEntry().getUbiTwoFactorAuthTicket());
-        assertEquals("rememberDeviceTicket", result.getUbiAccountAuthorizationEntry().getUbiRememberDeviceTicket());
-        assertEquals("rememberMeTicket", result.getUbiAccountAuthorizationEntry().getUbiRememberMeTicket());
+        assertTrue(accountEntry1.isEqual(accountEntry2));
     }
 
     @Test
-    public void toUbiAccountAuthorizationEntry_should_return_correct_dto() {
+    public void isEqual_should_return_false_for_null() {
+        UbiAccountEntryEntity accountEntry = new UbiAccountEntryEntity();
+        assertFalse(accountEntry.isEqual(null));
+    }
+
+    @Test
+    public void isEqual_should_return_false_if_different_ids() {
+        UbiAccountEntryEntity accountEntry1 = new UbiAccountEntryEntity();
+        accountEntry1.setUser(new UserEntity(1L));
+        accountEntry1.setEmail("email");
+
+        UbiAccountEntryEntity accountEntry2 = new UbiAccountEntryEntity();
+        accountEntry2.setUser(new UserEntity(1L));
+        accountEntry2.setEmail("email");
+
+        accountEntry1.setUser(new UserEntity(2L));
+        assertFalse(accountEntry1.isEqual(accountEntry2));
+        accountEntry1.setUser(new UserEntity(1L));
+        accountEntry1.setEmail("email1");
+        assertFalse(accountEntry1.isEqual(accountEntry2));
+    }
+
+    @Test
+    public void constructor_should_set_id_fields() {
+        UbiAccountEntryEntity accountEntry = new UbiAccountEntryEntity(1L, "email", "profileId");
+
+        assertEquals(1L, accountEntry.getUserId_());
+        assertEquals("email", accountEntry.getEmail());
+        assertEquals("profileId", accountEntry.getProfileId_());
+    }
+
+    @Test
+    public void getUserId_should_return_user_id() {
         UserEntity user = new UserEntity();
         user.setId(1L);
-        UbiAccountStatsEntity ubiAccount = new UbiAccountStatsEntity();
-        ubiAccount.setUbiProfileId("profile1");
-        UbiAccountEntryEntity entity = new UbiAccountEntryEntity();
-        entity.setUser(user);
-        entity.setUbiAccountStats(ubiAccount);
-        entity.setEmail("email@example.com");
-        entity.setEncodedPassword("encodedPassword");
-        entity.setUbiSessionId("sessionId");
-        entity.setUbiSpaceId("spaceId");
-        entity.setUbiAuthTicket("authTicket");
-        entity.setUbiTwoFactorAuthTicket("twoFactorAuthTicket");
-        entity.setUbiRememberDeviceTicket("rememberDeviceTicket");
-        entity.setUbiRememberMeTicket("rememberMeTicket");
+        UbiAccountEntryEntity accountEntry = new UbiAccountEntryEntity();
+        accountEntry.setUser(user);
+        assertEquals(1L, accountEntry.getUserId_());
+    }
 
-        UbiAccountAuthorizationEntry result = entity.toUbiAccountAuthorizationEntry();
+    @Test
+    public void getProfileId_should_return_profile_id() {
+        UbiAccountStatsEntity stats = new UbiAccountStatsEntity();
+        stats.setUbiProfileId("profileId");
+        UbiAccountEntryEntity accountEntry = new UbiAccountEntryEntity();
+        accountEntry.setUbiAccountStats(stats);
+        assertEquals("profileId", accountEntry.getProfileId_());
+    }
 
-        assertEquals("email@example.com", result.getEmail());
-        assertEquals("encodedPassword", result.getEncodedPassword());
-        assertEquals("profile1", result.getUbiProfileId());
-        assertEquals("sessionId", result.getUbiSessionId());
-        assertEquals("spaceId", result.getUbiSpaceId());
-        assertEquals("authTicket", result.getUbiAuthTicket());
-        assertEquals("twoFactorAuthTicket", result.getUbiTwoFactorAuthTicket());
-        assertEquals("rememberDeviceTicket", result.getUbiRememberDeviceTicket());
-        assertEquals("rememberMeTicket", result.getUbiRememberMeTicket());
+    @Test
+    public void isFullyEqualExceptUser_should_return_true_if_equal_() {
+        UbiAccountStatsEntity stats = new UbiAccountStatsEntity();
+        stats.setUbiProfileId("profileId");
+        stats.setCreditAmount(100);
+        stats.setOwnedItems(List.of());
+
+        UbiAccountEntryEntity accountEntry1 = new UbiAccountEntryEntity();
+        accountEntry1.setUser(new UserEntity(1L));
+        accountEntry1.setEmail("email@example.com");
+        accountEntry1.setEncodedPassword("encodedPassword");
+        accountEntry1.setUbiSessionId("sessionId");
+        accountEntry1.setUbiSpaceId("spaceId");
+        accountEntry1.setUbiAuthTicket("authTicket");
+        accountEntry1.setUbiRememberDeviceTicket("rememberDeviceTicket");
+        accountEntry1.setUbiRememberMeTicket("rememberMeTicket");
+        accountEntry1.setUbiAccountStats(stats);
+
+        UbiAccountEntryEntity accountEntry2 = new UbiAccountEntryEntity();
+        accountEntry2.setUser(new UserEntity(1L));
+        accountEntry2.setEmail("email@example.com");
+        accountEntry2.setEncodedPassword("encodedPassword");
+        accountEntry2.setUbiSessionId("sessionId");
+        accountEntry2.setUbiSpaceId("spaceId");
+        accountEntry2.setUbiAuthTicket("authTicket");
+        accountEntry2.setUbiRememberDeviceTicket("rememberDeviceTicket");
+        accountEntry2.setUbiRememberMeTicket("rememberMeTicket");
+        accountEntry2.setUbiAccountStats(stats);
+
+        assertTrue(accountEntry1.isFullyEqual(accountEntry2));
+    }
+
+    @Test
+    public void isFullyEqualExceptUser_should_return_false_if_not_equal_() {
+        UbiAccountStatsEntity stats1 = new UbiAccountStatsEntity();
+        stats1.setUbiProfileId("profileId");
+        stats1.setCreditAmount(100);
+        stats1.setOwnedItems(List.of());
+
+        UbiAccountEntryEntity accountEntry1 = new UbiAccountEntryEntity();
+        accountEntry1.setUser(new UserEntity(1L));
+        accountEntry1.setEmail("email@example.com");
+        accountEntry1.setEncodedPassword("encodedPassword");
+        accountEntry1.setUbiSessionId("sessionId");
+        accountEntry1.setUbiSpaceId("spaceId");
+        accountEntry1.setUbiAuthTicket("authTicket");
+        accountEntry1.setUbiRememberDeviceTicket("rememberDeviceTicket");
+        accountEntry1.setUbiRememberMeTicket("rememberMeTicket");
+        accountEntry1.setUbiAccountStats(stats1);
+
+        UbiAccountStatsEntity stats2 = new UbiAccountStatsEntity();
+        stats2.setUbiProfileId("profileId");
+        stats2.setCreditAmount(100);
+        stats2.setOwnedItems(List.of());
+
+        UbiAccountEntryEntity accountEntry2 = new UbiAccountEntryEntity();
+        accountEntry2.setUser(new UserEntity(1L));
+        accountEntry2.setEmail("email@example.com");
+        accountEntry2.setEncodedPassword("encodedPassword");
+        accountEntry2.setUbiSessionId("sessionId");
+        accountEntry2.setUbiSpaceId("spaceId");
+        accountEntry2.setUbiAuthTicket("authTicket");
+        accountEntry2.setUbiRememberDeviceTicket("rememberDeviceTicket");
+        accountEntry2.setUbiRememberMeTicket("rememberMeTicket");
+        accountEntry2.setUbiAccountStats(stats2);
+
+        accountEntry1.setUser(new UserEntity(2L));
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
+        accountEntry1.setUser(new UserEntity(1L));
+        accountEntry1.setEmail("email1@example.com");
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
+        accountEntry1.setEmail("email@example.com");
+        accountEntry1.setEncodedPassword("encodedPassword1");
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
+        accountEntry1.setEncodedPassword("encodedPassword");
+        accountEntry1.setUbiSessionId("sessionId1");
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
+        accountEntry1.setUbiSessionId("sessionId");
+        accountEntry1.setUbiSpaceId("spaceId1");
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
+        accountEntry1.setUbiSpaceId("spaceId");
+        accountEntry1.setUbiAuthTicket("authTicket1");
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
+        accountEntry1.setUbiAuthTicket("authTicket");
+        accountEntry1.setUbiRememberDeviceTicket("rememberDeviceTicket1");
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
+        accountEntry1.setUbiRememberDeviceTicket("rememberDeviceTicket");
+        accountEntry1.setUbiRememberMeTicket("rememberMeTicket1");
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
+        accountEntry1.setUbiRememberMeTicket("rememberMeTicket");
+        accountEntry1.getUbiAccountStats().setUbiProfileId("profileId1");
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
+        accountEntry1.getUbiAccountStats().setUbiProfileId("profileId");
+        accountEntry1.getUbiAccountStats().setCreditAmount(101);
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
+        accountEntry1.getUbiAccountStats().setCreditAmount(100);
+        accountEntry1.getUbiAccountStats().setOwnedItems(List.of(new ItemEntity()));
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
+        accountEntry1.getUbiAccountStats().setOwnedItems(null);
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
     }
 }

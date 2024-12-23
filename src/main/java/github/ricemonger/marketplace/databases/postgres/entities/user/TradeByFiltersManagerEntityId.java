@@ -11,6 +11,15 @@ public class TradeByFiltersManagerEntityId {
     private UserEntity user;
     private String name;
 
+    public TradeByFiltersManagerEntityId(Long userId, String name) {
+        this.user = new UserEntity(userId);
+        this.name = name;
+    }
+
+    public Long getUserId_() {
+        return user.getId();
+    }
+
     public int hashCode() {
         return user.getId().hashCode() + name.hashCode();
     }

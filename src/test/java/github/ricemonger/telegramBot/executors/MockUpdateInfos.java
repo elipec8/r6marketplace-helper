@@ -30,7 +30,7 @@ public class MockUpdateInfos {
         UPDATE_INFO_FULL_INPUT.setMessageText("email:password");
         UPDATE_INFO_FULL_INPUT.setHasCallBackQuery(true);
         UPDATE_INFO_FULL_INPUT.setCallbackQueryData("data");
-        UPDATE_INFO_FULL_INPUT.setInputState(InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
+        UPDATE_INFO_FULL_INPUT.setInputState(InputState.UBI_ACCOUNT_ENTRY_EMAIL);
         UPDATE_INFO_FULL_INPUT.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
     }
 
@@ -43,7 +43,7 @@ public class MockUpdateInfos {
         UPDATE_INFO_EMAIL_INPUT.setMessageText("email");
         UPDATE_INFO_EMAIL_INPUT.setHasCallBackQuery(true);
         UPDATE_INFO_EMAIL_INPUT.setCallbackQueryData("data");
-        UPDATE_INFO_EMAIL_INPUT.setInputState(InputState.UBI_ACCOUNT_ENTRY_FULL_OR_EMAIL);
+        UPDATE_INFO_EMAIL_INPUT.setInputState(InputState.UBI_ACCOUNT_ENTRY_EMAIL);
         UPDATE_INFO_EMAIL_INPUT.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
     }
 

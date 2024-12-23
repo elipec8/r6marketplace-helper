@@ -1,6 +1,5 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
-import github.ricemonger.utils.DTOs.TradeByFiltersManager;
 import github.ricemonger.utils.enums.TradeOperationType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity(name = "trade_manager_by_item_filters")
 @Getter
@@ -25,7 +25,7 @@ public class TradeByFiltersManagerEntity {
     @Id
     private String name;
 
-    private boolean enabled;
+    private Boolean enabled;
 
     @Enumerated(EnumType.ORDINAL)
     private TradeOperationType tradeOperationType;
@@ -37,35 +37,46 @@ public class TradeByFiltersManagerEntity {
             inverseJoinColumns = @JoinColumn(name = "itemFilterName", referencedColumnName = "name"))
     private List<ItemFilterEntity> appliedFilters;
 
-    private Integer minBuySellProfit;
-    private Integer minProfitPercent;
+    private Integer minDifferenceFromMedianPrice;
+    private Integer minDifferenceFromMedianPricePercent;
 
-    private Integer priority;
+    private Integer priorityMultiplier;
 
-    public TradeByFiltersManagerEntity(UserEntity user, TradeByFiltersManager tradeManager) {
-        this.user = user;
-        this.enabled = tradeManager.isEnabled();
-        this.name = tradeManager.getName();
-        this.tradeOperationType = tradeManager.getTradeOperationType();
-        if (tradeManager.getAppliedFilters() != null) {
-            this.appliedFilters = tradeManager.getAppliedFilters().stream().map(filter -> new ItemFilterEntity(user, filter)).toList();
-        }
-        this.minBuySellProfit = tradeManager.getMinBuySellProfit();
-        this.minProfitPercent = tradeManager.getMinProfitPercent();
-        this.priority = tradeManager.getPriority();
+    public Long getUserId_() {
+        return user.getId();
     }
 
-    public TradeByFiltersManager toTradeByFiltersManager() {
-        TradeByFiltersManager tradeManager = new TradeByFiltersManager();
-        tradeManager.setName(this.name);
-        tradeManager.setEnabled(this.enabled);
-        tradeManager.setTradeOperationType(this.tradeOperationType);
-        if (this.appliedFilters != null) {
-            tradeManager.setAppliedFilters(this.appliedFilters.stream().map(ItemFilterEntity::toItemFilter).toList());
+    public boolean isEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof TradeByFiltersManagerEntity entity) {
+            return user.isEqual(entity.user) &&
+                   Objects.equals(name, entity.name);
         }
-        tradeManager.setMinBuySellProfit(this.minBuySellProfit);
-        tradeManager.setMinProfitPercent(this.minProfitPercent);
-        tradeManager.setPriority(this.priority);
-        return tradeManager;
+        return false;
+    }
+
+    public boolean isFullyEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof TradeByFiltersManagerEntity entity) {
+
+            boolean appliedFiltersAreEqual = this.appliedFilters == null && entity.appliedFilters == null || (
+                    this.appliedFilters != null && entity.appliedFilters != null &&
+                    this.appliedFilters.size() == entity.appliedFilters.size() &&
+                    this.appliedFilters.stream().allMatch(filterEntity -> entity.appliedFilters.stream().anyMatch(filterEntity::isEqual)));
+
+            return isEqual(entity) &&
+                   enabled == entity.enabled &&
+                   tradeOperationType == entity.tradeOperationType &&
+                   appliedFiltersAreEqual &&
+                   Objects.equals(minDifferenceFromMedianPrice, entity.minDifferenceFromMedianPrice) &&
+                   Objects.equals(minDifferenceFromMedianPricePercent, entity.minDifferenceFromMedianPricePercent) &&
+                   Objects.equals(priorityMultiplier, entity.priorityMultiplier);
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "TradeByFiltersManagerEntity(userId=" + getUserId_() + ", name=" + name + ", enabled=" + enabled + ", tradeOperationType=" + tradeOperationType + ", appliedFilters=" + appliedFilters + ", minDifferenceFromMedianPrice=" + minDifferenceFromMedianPrice + ", minDifferenceFromMedianPricePercent=" + minDifferenceFromMedianPricePercent + ", priorityMultiplier=" + priorityMultiplier + ")";
     }
 }

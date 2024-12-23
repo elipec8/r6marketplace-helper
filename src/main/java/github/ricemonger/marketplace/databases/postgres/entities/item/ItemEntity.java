@@ -1,19 +1,14 @@
 package github.ricemonger.marketplace.databases.postgres.entities.item;
 
-import github.ricemonger.utils.DTOs.items.Item;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Entity(name = "item")
@@ -21,6 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ItemEntity {
     @Id
     private String itemId;
@@ -53,6 +49,7 @@ public class ItemEntity {
     private Integer monthMaxPrice;
     private Integer monthMinPrice;
     private Integer monthSalesPerDay;
+    private Integer monthSales;
 
     private Integer dayAveragePrice;
     private Integer dayMedianPrice;
@@ -60,14 +57,21 @@ public class ItemEntity {
     private Integer dayMinPrice;
     private Integer daySales;
 
-    @Column(name = "price_to_sell_in_1_hour")
-    private Integer priceToSellIn1Hour;
-    @Column(name = "price_to_sell_in_6_hours")
-    private Integer priceToSellIn6Hours;
-    @Column(name = "price_to_sell_in_24_hours")
-    private Integer priceToSellIn24Hours;
-    @Column(name = "price_to_sell_in_168_hours")
-    private Integer priceToSellIn168Hours;
+    private Long priorityToSellByMaxBuyPrice; //updated with every item stats update, not recalculation
+    private Long priorityToSellByNextFancySellPrice; //updated with every item stats update, not recalculation
+
+    private Long priorityToBuyByMinSellPrice; //updated with every item stats update, not recalculation
+
+    @Column(name = "priority_to_buy_in_1_hour")
+    private Long priorityToBuyIn1Hour;
+    @Column(name = "priority_to_buy_in_6_hours")
+    private Long priorityToBuyIn6Hours;
+    @Column(name = "priority_to_buy_in_24_hours")
+    private Long priorityToBuyIn24Hours;
+    @Column(name = "priority_to_buy_in_168_hours")
+    private Long priorityToBuyIn168Hours;
+    @Column(name = "priority_to_buy_in_720_hours")
+    private Long priorityToBuyIn720Hours;
 
     @Column(name = "price_to_buy_in_1_hour")
     private Integer priceToBuyIn1Hour;
@@ -77,107 +81,67 @@ public class ItemEntity {
     private Integer priceToBuyIn24Hours;
     @Column(name = "price_to_buy_in_168_hours")
     private Integer priceToBuyIn168Hours;
+    @Column(name = "price_to_buy_in_720_hours")
+    private Integer priceToBuyIn720Hours;
 
     public ItemEntity(String itemId) {
         this.itemId = itemId;
     }
 
-    public ItemEntity(Item item, Collection<TagEntity> tageEntities) {
-        this.itemId = item.getItemId();
-        this.assetUrl = item.getAssetUrl();
-        this.name = item.getName();
-
-        List<TagEntity> itemTags = new ArrayList<>();
-        if (item.getTags() != null && tageEntities != null && !tageEntities.isEmpty()) {
-            for (TagEntity tag : tageEntities) {
-                if (item.getTags().contains(tag.getValue())) {
-                    itemTags.add(tag);
-                }
-            }
+    public boolean isEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof ItemEntity itemEntity) {
+            return Objects.equals(itemId, itemEntity.itemId);
         }
-        this.tags = itemTags;
-
-        this.rarity = item.getRarity();
-        this.type = item.getType();
-
-        this.maxBuyPrice = item.getMaxBuyPrice();
-        this.buyOrdersCount = item.getBuyOrdersCount();
-
-        this.minSellPrice = item.getMinSellPrice();
-        this.sellOrdersCount = item.getSellOrdersCount();
-
-        this.lastSoldAt = item.getLastSoldAt();
-        this.lastSoldPrice = item.getLastSoldPrice();
-
-        this.monthAveragePrice = item.getMonthAveragePrice();
-        this.monthMedianPrice = item.getMonthMedianPrice();
-        this.monthMaxPrice = item.getMonthMaxPrice();
-        this.monthMinPrice = item.getMonthMinPrice();
-        this.monthSalesPerDay = item.getMonthSalesPerDay();
-
-        this.dayAveragePrice = item.getDayAveragePrice();
-        this.dayMedianPrice = item.getDayMedianPrice();
-        this.dayMaxPrice = item.getDayMaxPrice();
-        this.dayMinPrice = item.getDayMinPrice();
-        this.daySales = item.getDaySales();
-
-        this.priceToSellIn1Hour = item.getPriceToSellIn1Hour();
-        this.priceToSellIn6Hours = item.getPriceToSellIn6Hours();
-        this.priceToSellIn24Hours = item.getPriceToSellIn24Hours();
-        this.priceToSellIn168Hours = item.getPriceToSellIn168Hours();
-
-        this.priceToBuyIn1Hour = item.getPriceToBuyIn1Hour();
-        this.priceToBuyIn6Hours = item.getPriceToBuyIn6Hours();
-        this.priceToBuyIn24Hours = item.getPriceToBuyIn24Hours();
-        this.priceToBuyIn168Hours = item.getPriceToBuyIn168Hours();
+        return false;
     }
 
-    public Item toItem() {
-        List<String> tags = new ArrayList<>();
-        if (this.tags != null && !this.tags.isEmpty()) {
-            tags = List.of(this.tags.stream().map(TagEntity::getValue).toArray(String[]::new));
+    public boolean isFullyEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof ItemEntity itemEntity) {
+
+            boolean tagsAreEqual = tags == null && itemEntity.tags == null || (
+                    tags != null && itemEntity.tags != null &&
+                    this.tags.size() == itemEntity.tags.size() &&
+                    this.tags.stream().allMatch(tst -> itemEntity.tags.stream().anyMatch(tst::isEqual)));
+
+            return isEqual(itemEntity) &&
+                   Objects.equals(assetUrl, itemEntity.assetUrl) &&
+                   Objects.equals(name, itemEntity.name) &&
+                   tagsAreEqual &&
+                   rarity == itemEntity.rarity &&
+                   type == itemEntity.type &&
+                   Objects.equals(maxBuyPrice, itemEntity.maxBuyPrice) &&
+                   Objects.equals(buyOrdersCount, itemEntity.buyOrdersCount) &&
+                   Objects.equals(minSellPrice, itemEntity.minSellPrice) &&
+                   Objects.equals(sellOrdersCount, itemEntity.sellOrdersCount) &&
+                   Objects.equals(lastSoldAt, itemEntity.lastSoldAt) &&
+                   Objects.equals(lastSoldPrice, itemEntity.lastSoldPrice) &&
+                   Objects.equals(monthAveragePrice, itemEntity.monthAveragePrice) &&
+                   Objects.equals(monthMedianPrice, itemEntity.monthMedianPrice) &&
+                   Objects.equals(monthMaxPrice, itemEntity.monthMaxPrice) &&
+                   Objects.equals(monthMinPrice, itemEntity.monthMinPrice) &&
+                   Objects.equals(monthSalesPerDay, itemEntity.monthSalesPerDay) &&
+                   Objects.equals(monthSales, itemEntity.monthSales) &&
+                   Objects.equals(dayAveragePrice, itemEntity.dayAveragePrice) &&
+                   Objects.equals(dayMedianPrice, itemEntity.dayMedianPrice) &&
+                   Objects.equals(dayMaxPrice, itemEntity.dayMaxPrice) &&
+                   Objects.equals(dayMinPrice, itemEntity.dayMinPrice) &&
+                   Objects.equals(daySales, itemEntity.daySales) &&
+                   Objects.equals(priorityToSellByMaxBuyPrice, itemEntity.priorityToSellByMaxBuyPrice) &&
+                   Objects.equals(priorityToSellByNextFancySellPrice, itemEntity.priorityToSellByNextFancySellPrice) &&
+                   Objects.equals(priorityToBuyByMinSellPrice, itemEntity.priorityToBuyByMinSellPrice) &&
+                   Objects.equals(priorityToBuyIn1Hour, itemEntity.priorityToBuyIn1Hour) &&
+                   Objects.equals(priorityToBuyIn6Hours, itemEntity.priorityToBuyIn6Hours) &&
+                   Objects.equals(priorityToBuyIn24Hours, itemEntity.priorityToBuyIn24Hours) &&
+                   Objects.equals(priorityToBuyIn168Hours, itemEntity.priorityToBuyIn168Hours) &&
+                   Objects.equals(priorityToBuyIn720Hours, itemEntity.priorityToBuyIn720Hours) &&
+                   Objects.equals(priceToBuyIn1Hour, itemEntity.priceToBuyIn1Hour) &&
+                   Objects.equals(priceToBuyIn6Hours, itemEntity.priceToBuyIn6Hours) &&
+                   Objects.equals(priceToBuyIn24Hours, itemEntity.priceToBuyIn24Hours) &&
+                   Objects.equals(priceToBuyIn168Hours, itemEntity.priceToBuyIn168Hours) &&
+                   Objects.equals(priceToBuyIn720Hours, itemEntity.priceToBuyIn720Hours);
         }
-        Item item = new Item();
-
-        item.setItemId(this.itemId);
-        item.setAssetUrl(this.assetUrl);
-        item.setName(this.name);
-
-        item.setTags(tags);
-
-        item.setRarity(this.rarity);
-        item.setType(this.type);
-
-        item.setMaxBuyPrice(this.maxBuyPrice);
-        item.setBuyOrdersCount(this.buyOrdersCount);
-
-        item.setMinSellPrice(this.minSellPrice);
-        item.setSellOrdersCount(this.sellOrdersCount);
-
-        item.setLastSoldAt(this.lastSoldAt);
-        item.setLastSoldPrice(this.lastSoldPrice);
-
-        item.setMonthAveragePrice(this.monthAveragePrice);
-        item.setMonthMedianPrice(this.monthMedianPrice);
-        item.setMonthMaxPrice(this.monthMaxPrice);
-        item.setMonthMinPrice(this.monthMinPrice);
-        item.setMonthSalesPerDay(this.monthSalesPerDay);
-
-        item.setDayAveragePrice(this.dayAveragePrice);
-        item.setDayMedianPrice(this.dayMedianPrice);
-        item.setDayMaxPrice(this.dayMaxPrice);
-        item.setDayMinPrice(this.dayMinPrice);
-        item.setDaySales(this.daySales);
-
-        item.setPriceToSellIn1Hour(this.priceToSellIn1Hour);
-        item.setPriceToSellIn6Hours(this.priceToSellIn6Hours);
-        item.setPriceToSellIn24Hours(this.priceToSellIn24Hours);
-        item.setPriceToSellIn168Hours(this.priceToSellIn168Hours);
-
-        item.setPriceToBuyIn1Hour(this.priceToBuyIn1Hour);
-        item.setPriceToBuyIn6Hours(this.priceToBuyIn6Hours);
-        item.setPriceToBuyIn24Hours(this.priceToBuyIn24Hours);
-        item.setPriceToBuyIn168Hours(this.priceToBuyIn168Hours);
-        return item;
+        return false;
     }
 }

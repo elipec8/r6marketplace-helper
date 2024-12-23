@@ -3,7 +3,8 @@ package github.ricemonger.marketplace.services;
 import github.ricemonger.marketplace.services.abstractions.ItemDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.ItemSaleUbiStatsService;
-import github.ricemonger.utils.DTOs.items.*;
+import github.ricemonger.utils.DTOs.personal.ItemFilter;
+import github.ricemonger.utils.DTOs.common.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,8 @@ public class ItemService {
 
     private final ItemSaleUbiStatsService itemSaleUbiStatsService;
 
+    private final PotentialTradeStatsService potentialTradeStatsService;
+
     public void saveAllItemLastSales(Collection<? extends ItemMainFieldsI> itemMainFields) {
         saleDatabaseService.saveAll(itemMainFields);
     }
@@ -34,7 +37,7 @@ public class ItemService {
     }
 
     public void saveAllItemsMainFields(Collection<? extends ItemMainFieldsI> itemsMainFields) {
-        itemDatabaseService.saveAll(getAllItemsFromDbInConjunctionWithUpdatedMainFields(itemsMainFields));
+        itemDatabaseService.saveAll(getAllItemsFromDbInConjunctionWithUpdatedFields(itemsMainFields));
     }
 
     public void recalculateAndSaveAllItemsHistoryFields() {
@@ -57,30 +60,40 @@ public class ItemService {
             item.setDayMedianPrice(todayStats.medianPrice());
 
             LastMonthPriceStats lastMonthStats = recalculateLastMonthItemPriceStats(resultingPerDayStats);
+            item.setMonthSales(lastMonthStats.sales());
             item.setMonthSalesPerDay(lastMonthStats.salesPerDay());
             item.setMonthAveragePrice(lastMonthStats.averagePrice());
             item.setMonthMaxPrice(lastMonthStats.maxPrice());
             item.setMonthMinPrice(lastMonthStats.minPrice());
             item.setMonthMedianPrice(lastMonthStats.medianPrice());
 
-            TreeMap<Integer, Integer> sortedMonthPricesAndQuantities = new TreeMap<>();
-            for (ItemDaySalesStatsByItemId dayStat : resultingPerDayStats) {
-                for (Map.Entry<Integer, Integer> priceAndQuantity : dayStat.getPriceAndQuantity().entrySet()) {
-                    sortedMonthPricesAndQuantities.put(priceAndQuantity.getKey(), sortedMonthPricesAndQuantities.getOrDefault(priceAndQuantity.getKey(), 0) + priceAndQuantity.getValue());
-                }
-            }
+            PotentialTradeStats potentialTradeToBuyIn1Hour = potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 60);
+            PotentialTradeStats potentialTradeToBuyIn6Hours = potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 360);
+            PotentialTradeStats potentialTradeToBuyIn24Hours = potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 1440);
+            PotentialTradeStats potentialTradeToBuyIn168Hours = potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 10080);
+            PotentialTradeStats potentialTradeToBuyIn720Hours = potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 43200);
 
-            PricesToBuy pricesToBuy = recalculatePricesToBuy(sortedMonthPricesAndQuantities);
-            item.setPriceToBuyIn1Hour(pricesToBuy.priceToBuyIn1Hour());
-            item.setPriceToBuyIn6Hours(pricesToBuy.priceToBuyIn6Hours());
-            item.setPriceToBuyIn24Hours(pricesToBuy.priceToBuyIn24Hours());
-            item.setPriceToBuyIn168Hours(pricesToBuy.priceToBuyIn168Hours());
+            PotentialTradeStats potentialTradeToBuyInstantlyByMinSellPrice = potentialTradeStatsService.calculatePotentialBuyTradeStatsByMinSellPrice(item);
 
-            PricesToSell pricesToSell = recalculatePricesToSell(sortedMonthPricesAndQuantities);
-            item.setPriceToSellIn1Hour(pricesToSell.priceToSellIn1Hour());
-            item.setPriceToSellIn6Hours(pricesToSell.priceToSellIn6Hours());
-            item.setPriceToSellIn24Hours(pricesToSell.priceToSellIn24Hours());
-            item.setPriceToSellIn168Hours(pricesToSell.priceToSellIn168Hours());
+            PotentialTradeStats potentialTradeToSellInstantlyByMaxBuyPrice = potentialTradeStatsService.calculatePotentialSellTradeStatsByMaxBuyPrice(item);
+            PotentialTradeStats potentialTradeToSellByNextFancySellPrice = potentialTradeStatsService.calculatePotentialSellTradeStatsByNextFancySellPrice(item);
+
+            item.setPriorityToSellByMaxBuyPrice(potentialTradeToSellInstantlyByMaxBuyPrice.getTradePriority());
+
+            item.setPriorityToSellByNextFancySellPrice(potentialTradeToSellByNextFancySellPrice.getTradePriority());
+            item.setPriorityToBuyByMinSellPrice(potentialTradeToBuyInstantlyByMinSellPrice.getTradePriority());
+
+            item.setPriorityToBuyIn1Hour(potentialTradeToBuyIn1Hour.getTradePriority());
+            item.setPriorityToBuyIn6Hours(potentialTradeToBuyIn6Hours.getTradePriority());
+            item.setPriorityToBuyIn24Hours(potentialTradeToBuyIn24Hours.getTradePriority());
+            item.setPriorityToBuyIn168Hours(potentialTradeToBuyIn168Hours.getTradePriority());
+            item.setPriorityToBuyIn720Hours(potentialTradeToBuyIn720Hours.getTradePriority());
+
+            item.setPriceToBuyIn1Hour(potentialTradeToBuyIn1Hour.getPrice());
+            item.setPriceToBuyIn6Hours(potentialTradeToBuyIn6Hours.getPrice());
+            item.setPriceToBuyIn24Hours(potentialTradeToBuyIn24Hours.getPrice());
+            item.setPriceToBuyIn168Hours(potentialTradeToBuyIn168Hours.getPrice());
+            item.setPriceToBuyIn720Hours(potentialTradeToBuyIn720Hours.getPrice());
         }
         itemDatabaseService.saveAll(items);
     }
@@ -168,80 +181,10 @@ public class ItemService {
         }
 
 
-        return new LastMonthPriceStats(monthSalesQuantity / 31, monthSalesQuantity == 0 ? 0 : monthSumSales / monthSalesQuantity, monthMaxPrice,
+        return new LastMonthPriceStats(monthSalesQuantity, monthSalesQuantity / 31, monthSalesQuantity == 0 ? 0 : monthSumSales / monthSalesQuantity
+                , monthMaxPrice,
                 monthMinPrice,
                 monthMedianPrice);
-    }
-
-    private PricesToBuy recalculatePricesToBuy(NavigableMap<Integer, Integer> sortedMonthPricesAndQuantities) {
-        Integer priceToBuyIn1Hour = 0;
-        boolean priceToBuyIn1HourFound = false;
-        Integer priceToBuyIn6Hours = 0;
-        boolean priceToBuyIn6HoursFound = false;
-        Integer priceToBuyIn24Hours = 0;
-        boolean priceToBuyIn24HoursFound = false;
-        Integer priceToBuyIn168Hours = 0;
-        boolean priceToBuyIn168HoursFound = false;
-
-        int currentQuantity = 0;
-        for (Map.Entry<Integer, Integer> entry : sortedMonthPricesAndQuantities.entrySet()) {
-            currentQuantity += entry.getValue();
-            if (!priceToBuyIn1HourFound && currentQuantity >= 720) {
-                priceToBuyIn1Hour = entry.getKey();
-                priceToBuyIn1HourFound = true;
-                break;
-            }
-            if (!priceToBuyIn6HoursFound && currentQuantity >= 120) {
-                priceToBuyIn6Hours = entry.getKey();
-                priceToBuyIn6HoursFound = true;
-            }
-            if (!priceToBuyIn24HoursFound && currentQuantity >= 30) {
-                priceToBuyIn24Hours = entry.getKey();
-                priceToBuyIn24HoursFound = true;
-            }
-            if (!priceToBuyIn168HoursFound && currentQuantity >= 4) {
-                priceToBuyIn168Hours = entry.getKey();
-                priceToBuyIn168HoursFound = true;
-            }
-        }
-
-        return new PricesToBuy(priceToBuyIn1Hour, priceToBuyIn6Hours, priceToBuyIn24Hours, priceToBuyIn168Hours);
-    }
-
-    private PricesToSell recalculatePricesToSell(NavigableMap<Integer, Integer> sortedMonthPricesAndQuantities) {
-        Integer priceToSellIn1Hour = 0;
-        boolean priceToSellIn1HourFound = false;
-        Integer priceToSellIn6Hours = 0;
-        boolean priceToSellIn6HoursFound = false;
-        Integer priceToSellIn24Hours = 0;
-        boolean priceToSellIn24HoursFound = false;
-        Integer priceToSellIn168Hours = 0;
-        boolean priceToSellIn168HoursFound = false;
-
-
-        int currentQuantity = 0;
-        for (Map.Entry<Integer, Integer> entry : sortedMonthPricesAndQuantities.descendingMap().entrySet()) {
-            currentQuantity += entry.getValue();
-            if (!priceToSellIn1HourFound && currentQuantity >= 720) {
-                priceToSellIn1Hour = entry.getKey();
-                priceToSellIn1HourFound = true;
-                break;
-            }
-            if (!priceToSellIn6HoursFound && currentQuantity >= 120) {
-                priceToSellIn6Hours = entry.getKey();
-                priceToSellIn6HoursFound = true;
-            }
-            if (!priceToSellIn24HoursFound && currentQuantity >= 30) {
-                priceToSellIn24Hours = entry.getKey();
-                priceToSellIn24HoursFound = true;
-            }
-            if (!priceToSellIn168HoursFound && currentQuantity >= 4) {
-                priceToSellIn168Hours = entry.getKey();
-                priceToSellIn168HoursFound = true;
-            }
-        }
-
-        return new PricesToSell(priceToSellIn1Hour, priceToSellIn6Hours, priceToSellIn24Hours, priceToSellIn168Hours);
     }
 
     private List<ItemDaySalesStatsByItemId> getResultingSaleStatsByPeriodForItem(Collection<ItemSale> saleStats,
@@ -265,11 +208,11 @@ public class ItemService {
         return itemSales.stream().filter(itemSale -> itemSale.getItemId().equals(itemId)).toList();
     }
 
-    private Collection<ItemDaySalesUbiStats> getItemDaySalesUbiStatsForItem(Collection<ItemDaySalesUbiStats> itemDaySalesUbiStats, String itemId) {
-        return itemDaySalesUbiStats.stream().filter(ubiStats -> ubiStats.getItemId().equals(itemId)).toList();
+    private Collection<ItemDaySalesUbiStats> getItemDaySalesUbiStatsForItem(Collection<ItemDaySalesUbiStats> itemDaySalesUbiStatEntityDTOS, String itemId) {
+        return itemDaySalesUbiStatEntityDTOS.stream().filter(ubiStats -> ubiStats.getItemId().equals(itemId)).toList();
     }
 
-    private Set<Item> getAllItemsFromDbInConjunctionWithUpdatedMainFields(Collection<? extends ItemMainFieldsI> itemMainFields) {
+    private Set<Item> getAllItemsFromDbInConjunctionWithUpdatedFields(Collection<? extends ItemMainFieldsI> itemMainFields) {
         Set<Tag> tags = new HashSet<>(tagService.getTagsByNames(Set.of("UNCOMMON", "RARE", "EPIC", "LEGENDARY")));
         String uncommonTag = tags.stream().filter(tag -> tag.getName().equals("UNCOMMON")).findFirst().get().getValue();
         String rareTag = tags.stream().filter(tag -> tag.getName().equals("RARE")).findFirst().get().getValue();
@@ -281,23 +224,28 @@ public class ItemService {
         Set<Item> updatedItems = itemMainFields.stream().map(Item::new).collect(Collectors.toSet());
 
         for (Item updatedItem : updatedItems) {
-            if (existingItems.contains(updatedItem)) {
-                Item existingItem = existingItems.stream().filter(existing -> existing.equals(updatedItem)).findFirst().get();
-                updatedItem.setHistoryFields(existingItem);
-            }
             updatedItem.setRarityByTags(uncommonTag, rareTag, epicTag, legendaryTag);
+            Item existingItem = existingItems.stream().filter(existing -> existing.equals(updatedItem)).findFirst().orElse(null);
+            if (existingItem == null) {
+                log.error("Item with id {} not found, getAllItemsFromDbInConjunctionWithUpdatedFields for this item skipped", updatedItem.getItemId());
+                continue;
+            }
+            updatedItem.setHistoryFields(existingItem);
+
+            boolean itemHistoryFieldsWasCalculatedAtLeastOnce = existingItem.getMonthAveragePrice() != null;
+
+            if (itemHistoryFieldsWasCalculatedAtLeastOnce) {
+                updatedItem.updateCurrentPricesPriorities(
+                        potentialTradeStatsService.calculatePotentialSellTradeStatsByMaxBuyPrice(updatedItem).getTradePriority(),
+                        potentialTradeStatsService.calculatePotentialSellTradeStatsByNextFancySellPrice(updatedItem).getTradePriority(),
+                        potentialTradeStatsService.calculatePotentialBuyTradeStatsByMinSellPrice(updatedItem).getTradePriority());
+            }
         }
         return updatedItems;
     }
 
-    private record LastMonthPriceStats(int salesPerDay, int averagePrice, int maxPrice, int minPrice, int medianPrice) {
-    }
 
-    private record PricesToBuy(Integer priceToBuyIn1Hour, Integer priceToBuyIn6Hours, Integer priceToBuyIn24Hours, Integer priceToBuyIn168Hours) {
-    }
-
-    private record PricesToSell(Integer priceToSellIn1Hour, Integer priceToSellIn6Hours, Integer priceToSellIn24Hours,
-                                Integer priceToSellIn168Hours) {
+    private record LastMonthPriceStats(int sales, int salesPerDay, int averagePrice, int maxPrice, int minPrice, int medianPrice) {
     }
 
     private record TodayPriceStats(int quantity, int averagePrice, int maxPrice, int minPrice, int medianPrice) {

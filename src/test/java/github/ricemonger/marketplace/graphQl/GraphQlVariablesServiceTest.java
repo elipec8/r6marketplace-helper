@@ -34,18 +34,59 @@ public class GraphQlVariablesServiceTest {
     }
 
     @Test
-    public void getCreateUpdateOrderVariables_should_have_provided_variables() {
-        String mainUserSpaceId = "mainUserSpaceId";
+    public void getCreateSellOrderVariables_should_have_provided_variables() {
         String itemId = "itemId";
         int price = 100;
 
-        when(commonValuesService.getUbiGameSpaceId()).thenReturn(mainUserSpaceId);
+        when(commonValuesService.getUbiGameSpaceId()).thenReturn("mainUserSpaceId");
         when(commonValuesService.getPaymentItemId()).thenReturn("paymentItemId");
 
-        Map<String, Object> result = graphQlVariablesService.getCreateUpdateOrderVariables(itemId, price);
+        Map<String, Object> result = graphQlVariablesService.getCreateSellOrderVariables(itemId, price);
 
-        assertTrue(mapContainsEntries(result, Map.entry("spaceId", mainUserSpaceId), Map.entry("tradeItems", List.of(Map.of("itemId", itemId,
-                "quantity", 1))), Map.entry("paymentOptions", List.of(Map.of("paymentItemId", "paymentItemId", "price", price)))));
+        assertTrue(mapContainsEntries(result, Map.entry("spaceId", "mainUserSpaceId"), Map.entry("tradeItems", List.of(Map.of("itemId", itemId, "quantity", 1))),
+                Map.entry("paymentOptions", List.of(Map.of("paymentItemId", "paymentItemId", "price", price)))));
+    }
+
+    @Test
+    public void getUpdateSellOrderVariables_should_have_provided_variables() {
+        String tradeId = "tradeId";
+        int price = 100;
+
+        when(commonValuesService.getUbiGameSpaceId()).thenReturn("mainUserSpaceId");
+        when(commonValuesService.getPaymentItemId()).thenReturn("paymentItemId");
+
+        Map<String, Object> result = graphQlVariablesService.getUpdateSellOrderVariables(tradeId, price);
+
+        assertTrue(mapContainsEntries(result, Map.entry("spaceId", "mainUserSpaceId"), Map.entry("tradeId", tradeId),
+                Map.entry("paymentOptions", List.of(Map.of("paymentItemId", "paymentItemId", "price", price)))));
+    }
+
+    @Test
+    public void getCreateBuyOrderVariables_should_have_provided_variables() {
+        String itemId = "itemId";
+        int price = 100;
+
+        when(commonValuesService.getUbiGameSpaceId()).thenReturn("mainUserSpaceId");
+        when(commonValuesService.getPaymentItemId()).thenReturn("paymentItemId");
+
+        Map<String, Object> result = graphQlVariablesService.getCreateBuyOrderVariables(itemId, price);
+
+        assertTrue(mapContainsEntries(result, Map.entry("spaceId", "mainUserSpaceId"), Map.entry("tradeItems", List.of(Map.of("itemId", itemId, "quantity", 1))),
+                Map.entry("paymentProposal", Map.of("paymentItemId", "paymentItemId", "price", price))));
+    }
+
+    @Test
+    public void getUpdateBuyOrderVariables_should_have_provided_variables() {
+        String tradeId = "tradeId";
+        int price = 100;
+
+        when(commonValuesService.getUbiGameSpaceId()).thenReturn("mainUserSpaceId");
+        when(commonValuesService.getPaymentItemId()).thenReturn("paymentItemId");
+
+        Map<String, Object> result = graphQlVariablesService.getUpdateBuyOrderVariables(tradeId, price);
+
+        assertTrue(mapContainsEntries(result, Map.entry("spaceId", "mainUserSpaceId"), Map.entry("tradeId", tradeId),
+                Map.entry("paymentProposal", Map.of("paymentItemId", "paymentItemId", "price", price))));
     }
 
     @Test

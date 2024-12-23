@@ -7,6 +7,39 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class TradeByItemIdManagerEntityIdTest {
+
+    @Test
+    public void getUserId_should_return_user_idField() {
+        UserEntity user = new UserEntity();
+        user.setId(1L);
+        ItemEntity item = new ItemEntity();
+        item.setItemId("item1");
+
+        TradeByItemIdManagerEntityId id = new TradeByItemIdManagerEntityId(user, item);
+
+        assertEquals(1L, id.getUserId_());
+    }
+
+    @Test
+    public void getItemId_should_return_item_id() {
+        UserEntity user = new UserEntity();
+        user.setId(1L);
+        ItemEntity item = new ItemEntity();
+        item.setItemId("item1");
+
+        TradeByItemIdManagerEntityId id = new TradeByItemIdManagerEntityId(user, item);
+
+        assertEquals("item1", id.getItemId_());
+    }
+
+    @Test
+    public void constructor_should_create_object_with_id_fields() {
+        TradeByItemIdManagerEntityId id = new TradeByItemIdManagerEntityId(1L, "item1");
+
+        assertEquals(1L, id.getUserId_());
+        assertEquals("item1", id.getItemId_());
+    }
+
     @Test
     public void hashCode_should_return_same_hash_for_equal_objects() {
         UserEntity user1 = new UserEntity();
