@@ -54,7 +54,7 @@ class TradeByFiltersManagerEntityMapperTest {
         expected.setMinDifferenceFromMedianPricePercent(11);
         expected.setPriorityMultiplier(12);
 
-        assertTrue(expected.isFullyEqualExceptUser(tradeByFiltersManagerEntityMapper.createEntityForTelegramUser("chatId", dto)));
+        assertTrue(expected.isFullyEqual(tradeByFiltersManagerEntityMapper.createEntityForTelegramUser("chatId", dto)));
     }
 
     @Test

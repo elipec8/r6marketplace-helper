@@ -5,8 +5,8 @@ import github.ricemonger.marketplace.databases.postgres.entities.user.ItemFilter
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item.TagEntityMapper;
-import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.DTOs.common.Tag;
+import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.IsOwnedFilter;
 import github.ricemonger.utils.enums.ItemType;
@@ -34,7 +34,8 @@ class ItemFilterEntityMapperTest {
 
     @Test
     public void createEntityForTelegramUserChatId_should_properly_map_entity() {
-        when(userPostgresRepository.findByTelegramUserChatId("chatId")).thenReturn(new UserEntity(1L));
+        UserEntity userEntity = new UserEntity(1L);
+        when(userPostgresRepository.findByTelegramUserChatId("chatId")).thenReturn(userEntity);
 
         ItemFilter filter = new ItemFilter();
         filter.setName("name");
@@ -45,8 +46,6 @@ class ItemFilterEntityMapperTest {
         filter.setTags(List.of(new Tag("value", "name", TagGroup.Rarity)));
         filter.setMinSellPrice(1);
         filter.setMaxBuyPrice(2);
-
-        UserEntity userEntity = new UserEntity(1L);
 
         ItemFilterEntity expected = new ItemFilterEntity();
         expected.setUser(userEntity);
@@ -59,7 +58,13 @@ class ItemFilterEntityMapperTest {
         expected.setMinSellPrice(1);
         expected.setMaxBuyPrice(2);
 
-        assertTrue(expected.isFullyEqualExceptUser(itemFilterEntityMapper.createEntityForTelegramUserChatId("chatId", filter)));
+        when(tagEntityMapper.createEntity(new Tag("value", "name", TagGroup.Rarity))).thenReturn(new TagEntity("value", "name", TagGroup.Rarity));
+
+        ItemFilterEntity result = itemFilterEntityMapper.createEntityForTelegramUserChatId("chatId", filter);
+
+        System.out.println(result);
+
+        assertTrue(expected.isFullyEqual(result));
     }
 
     @Test
@@ -87,7 +92,14 @@ class ItemFilterEntityMapperTest {
         expected.setMinSellPrice(1);
         expected.setMaxBuyPrice(2);
 
-        assertTrue(expected.isFullyEqualExceptUser(itemFilterEntityMapper.createEntityForUser(userEntity, filter)));
+        when(tagEntityMapper.createEntity(new Tag("value", "name", TagGroup.Rarity))).thenReturn(new TagEntity("value", "name", TagGroup.Rarity));
+
+
+        ItemFilterEntity result = itemFilterEntityMapper.createEntityForUser(userEntity, filter);
+
+        System.out.println(result);
+
+        assertTrue(expected.isFullyEqual(result));
     }
 
     @Test
@@ -112,6 +124,12 @@ class ItemFilterEntityMapperTest {
         expected.setMinSellPrice(1);
         expected.setMaxBuyPrice(2);
 
-        assertEquals(expected, itemFilterEntityMapper.createDTO(entity));
+        when(tagEntityMapper.createDTO(new TagEntity("value", "name", TagGroup.Rarity))).thenReturn(new Tag("value", "name", TagGroup.Rarity));
+
+        ItemFilter result = itemFilterEntityMapper.createDTO(entity);
+
+        System.out.println(result);
+
+        assertEquals(expected, result);
     }
 }

@@ -36,7 +36,7 @@ public class UbiAccountEntryEntity {
     @Column(columnDefinition = "TEXT")
     private String ubiRememberMeTicket;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ubiProfileId", referencedColumnName = "ubiProfileId")
     private UbiAccountStatsEntity ubiAccountStats;
 
@@ -58,11 +58,19 @@ public class UbiAccountEntryEntity {
         return this.ubiAccountStats.getUbiProfileId();
     }
 
-    public boolean isFullyEqualExceptUser(Object o) {
+    public boolean isEqual(Object o) {
         if (this == o) return true;
         if (o instanceof UbiAccountEntryEntity entity) {
-            return Objects.equals(getUserId_(), entity.getUserId_()) &&
-                   Objects.equals(email, entity.getEmail()) &&
+            return user.isEqual(entity.user) &&
+                   Objects.equals(email, entity.getEmail());
+        }
+        return false;
+    }
+
+    public boolean isFullyEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof UbiAccountEntryEntity entity) {
+            return isEqual(entity) &&
                    Objects.equals(encodedPassword, entity.getEncodedPassword()) &&
                    Objects.equals(ubiSessionId, entity.getUbiSessionId()) &&
                    Objects.equals(ubiSpaceId, entity.getUbiSpaceId()) &&
@@ -72,5 +80,10 @@ public class UbiAccountEntryEntity {
                    ubiAccountStats.isFullyEqual(entity.getUbiAccountStats());
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "UbiAccountEntryEntity(userId=" + getUserId_() + ", email=" + email + ", encodedPassword=" + encodedPassword + ", ubiSessionId=" + ubiSessionId + ", ubiSpaceId=" + ubiSpaceId + ", ubiAuthTicket=" + ubiAuthTicket + ", ubiRememberDeviceTicket=" + ubiRememberDeviceTicket + ", ubiRememberMeTicket=" + ubiRememberMeTicket + ", ubiAccountStats=" + ubiAccountStats + ")";
     }
 }

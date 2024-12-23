@@ -29,7 +29,7 @@ class TelegramUserInputEntityMapperTest {
 
         when(telegramUserPostgresRepository.findById("chatId")).thenReturn(Optional.of(new TelegramUserEntity("chatId", 1L)));
 
-        assertTrue(new TelegramUserInputEntity(new TelegramUserEntity("chatId", 1L), InputState.ITEM_FILTER_NAME, "value").isFullyEqualExceptTelegramUser(
+        assertTrue(new TelegramUserInputEntity(new TelegramUserEntity("chatId", 1L), InputState.ITEM_FILTER_NAME, "value").isFullyEqual(
                 telegramUserInputEntityMapper.createEntity(input)));
     }
 

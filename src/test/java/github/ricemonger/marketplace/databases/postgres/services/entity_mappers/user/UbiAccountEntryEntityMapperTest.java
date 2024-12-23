@@ -58,7 +58,7 @@ class UbiAccountEntryEntityMapperTest {
         expected.setUbiRememberMeTicket("ubiRememberMeTicket");
         expected.setUbiAccountStats(new UbiAccountStatsEntity("ubiProfileId"));
 
-        assertTrue(expected.isFullyEqualExceptUser(ubiAccountEntryEntityMapper.createEntityForTelegramUser("chatId", account)));
+        assertTrue(expected.isFullyEqual(ubiAccountEntryEntityMapper.createEntityForTelegramUser("chatId", account)));
     }
 
     @Test
@@ -87,7 +87,7 @@ class UbiAccountEntryEntityMapperTest {
         expected.setUbiRememberMeTicket("ubiRememberMeTicket");
         expected.setUbiAccountStats(new UbiAccountStatsEntity("ubiProfileId"));
 
-        assertTrue(expected.isFullyEqualExceptUser(ubiAccountEntryEntityMapper.createEntityForTelegramUser("chatId", account)));
+        assertTrue(expected.isFullyEqual(ubiAccountEntryEntityMapper.createEntityForTelegramUser("chatId", account)));
     }
 
     @Test
@@ -113,7 +113,7 @@ class UbiAccountEntryEntityMapperTest {
         expected.setUbiRememberMeTicket("ubiRememberMeTicket");
         expected.setUbiAccountStats(new UbiAccountStatsEntity("ubiProfileId"));
 
-        assertTrue(expected.isFullyEqualExceptUser(ubiAccountEntryEntityMapper.createEntity(new UserEntity(1L), new UbiAccountStatsEntity(
+        assertTrue(expected.isFullyEqual(ubiAccountEntryEntityMapper.createEntity(new UserEntity(1L), new UbiAccountStatsEntity(
                 "ubiProfileId"), account)));
     }
 

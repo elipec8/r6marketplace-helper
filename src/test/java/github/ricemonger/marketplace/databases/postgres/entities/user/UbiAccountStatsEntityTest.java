@@ -11,6 +11,42 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class UbiAccountStatsEntityTest {
 
     @Test
+    public void isEqual_should_return_true_if_same() {
+        UbiAccountStatsEntity entity = new UbiAccountStatsEntity();
+        assertTrue(entity.isEqual(entity));
+    }
+
+    @Test
+    public void isEqual_should_return_true_if_equal_ids() {
+        UbiAccountStatsEntity entity1 = new UbiAccountStatsEntity();
+        entity1.setUbiProfileId("ubiProfileId");
+        entity1.setCreditAmount(1);
+        entity1.setOwnedItems(List.of(new ItemEntity("itemId")));
+
+        UbiAccountStatsEntity entity2 = new UbiAccountStatsEntity();
+        entity2.setUbiProfileId("ubiProfileId");
+
+        assertTrue(entity1.isEqual(entity2));
+    }
+
+    @Test
+    public void isEqual_should_return_false_for_null() {
+        UbiAccountStatsEntity entity = new UbiAccountStatsEntity();
+        assertFalse(entity.isEqual(null));
+    }
+
+    @Test
+    public void isEqual_should_return_false_if_not_equal_ids() {
+        UbiAccountStatsEntity entity1 = new UbiAccountStatsEntity();
+        entity1.setUbiProfileId("ubiProfileId");
+
+        UbiAccountStatsEntity entity2 = new UbiAccountStatsEntity();
+        entity2.setUbiProfileId("ubiProfileId2");
+
+        assertFalse(entity1.isEqual(entity2));
+    }
+
+    @Test
     public void isFullyEqualExceptUser_should_return_true_if_same() {
         UbiAccountStatsEntity entity = new UbiAccountStatsEntity();
         assertTrue(entity.isFullyEqual(entity));

@@ -50,7 +50,7 @@ public class PersonalItemFactory {
         }
 
         List<TradeByFiltersManager> sortedTradeByFiltersManagers =
-                tradeByFiltersManagers.stream().filter(m -> m.getPriorityMultiplier() != null).sorted(Comparator.comparingInt(TradeByFiltersManager::getPriorityMultiplier)).toList();
+                tradeByFiltersManagers.stream().filter(m -> m.getPriorityMultiplier() != null).sorted(Comparator.comparingInt(TradeByFiltersManager::getPriorityMultiplier).reversed()).toList();
 
         for (TradeByFiltersManager tradeByFiltersManager : sortedTradeByFiltersManagers) {
             personalItems.addAll(getPersonalItemsFromTradeByFiltersManager(
@@ -116,7 +116,7 @@ public class PersonalItemFactory {
         }
 
         List<TradeByItemIdManager> sortedTradeByItemIdManagers =
-                tradeByItemIdManagers.stream().filter(m -> m.getPriorityMultiplier() != null).sorted(Comparator.comparingInt(TradeByItemIdManager::getPriorityMultiplier)).toList();
+                tradeByItemIdManagers.stream().filter(m -> m.getPriorityMultiplier() != null).sorted(Comparator.comparingInt(TradeByItemIdManager::getPriorityMultiplier).reversed()).toList();
 
         for (TradeByItemIdManager tradeByItemIdManager : sortedTradeByItemIdManagers) {
             PersonalItem personalItem = getPersonalItemFromTradeByItemIdManager(

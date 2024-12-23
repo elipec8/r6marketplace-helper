@@ -9,6 +9,45 @@ import static org.junit.jupiter.api.Assertions.*;
 class ItemSaleEntityTest {
 
     @Test
+    public void isEqual_should_return_true_if_same() {
+        ItemSaleEntity entity = new ItemSaleEntity();
+        assertTrue(entity.isEqual(entity));
+    }
+
+    @Test
+    public void isEqual_should_return_true_if_equal_ids() {
+        ItemSaleEntity entity1 = new ItemSaleEntity("itemId");
+        entity1.setSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
+        entity1.setPrice(100);
+        ItemSaleEntity entity2 = new ItemSaleEntity("itemId");
+        entity2.setSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
+        entity2.setPrice(200);
+
+        assertTrue(entity1.isEqual(entity2));
+    }
+
+    @Test
+    public void isEqual_should_return_false_if_null() {
+        ItemSaleEntity entity = new ItemSaleEntity();
+        assertFalse(entity.isEqual(null));
+    }
+
+    @Test
+    public void isEqual_should_return_false_if_different_id_field() {
+        ItemSaleEntity entity1 = new ItemSaleEntity("itemId");
+        entity1.setSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
+
+        ItemSaleEntity entity2 = new ItemSaleEntity("itemId");
+        entity2.setSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
+
+        entity1.setItem(new ItemEntity("itemId1"));
+        assertFalse(entity1.isEqual(entity2));
+        entity1.setItem(new ItemEntity("itemId"));
+        entity1.setSoldAt(LocalDateTime.of(2021, 1, 2, 0, 0));
+        assertFalse(entity1.isEqual(entity2));
+    }
+
+    @Test
     public void constructor_should_set_id_field() {
         ItemSaleEntity itemSaleEntity = new ItemSaleEntity("itemId");
         assertEquals("itemId", itemSaleEntity.getItemId_());

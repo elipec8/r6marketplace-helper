@@ -7,6 +7,54 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TradeByItemIdManagerEntityTest {
+
+    @Test
+    public void isEqual_should_return_true_if_same_object() {
+        TradeByItemIdManagerEntity manager = new TradeByItemIdManagerEntity();
+        assertTrue(manager.isEqual(manager));
+    }
+
+    @Test
+    public void isEqual_should_return_true_if_equal_ids(){
+        TradeByItemIdManagerEntity manager1 = new TradeByItemIdManagerEntity();
+        manager1.setUser(new UserEntity(1L));
+        manager1.setItem(new ItemEntity("itemId"));
+        manager1.setEnabled(true);
+        manager1.setTradeOperationType(TradeOperationType.BUY);
+        manager1.setSellBoundaryPrice(100);
+        manager1.setBuyBoundaryPrice(200);
+        manager1.setPriorityMultiplier(2);
+
+        TradeByItemIdManagerEntity manager2 = new TradeByItemIdManagerEntity();
+        manager2.setUser(new UserEntity(1L));
+        manager2.setItem(new ItemEntity("itemId"));
+
+        assertTrue(manager1.isEqual(manager2));
+    }
+
+    @Test
+    public void isEqual_should_return_false_if_null(){
+        TradeByItemIdManagerEntity manager = new TradeByItemIdManagerEntity();
+        assertFalse(manager.isEqual(null));
+    }
+
+    @Test
+    public void isEqual_should_return_false_if_different_ids(){
+        TradeByItemIdManagerEntity manager1 = new TradeByItemIdManagerEntity();
+        manager1.setUser(new UserEntity(1L));
+        manager1.setItem(new ItemEntity("itemId"));
+
+        TradeByItemIdManagerEntity manager2 = new TradeByItemIdManagerEntity();
+        manager2.setUser(new UserEntity(1L));
+        manager2.setItem(new ItemEntity("itemId"));
+
+        manager1.setUser(new UserEntity(2L));
+        assertFalse(manager1.isEqual(manager2));
+        manager1.setUser(new UserEntity(1L));
+        manager1.setItem(new ItemEntity("itemId2"));
+        assertFalse(manager1.isEqual(manager2));
+    }
+
     @Test
     public void getUserId_should_return_user_idField() {
         UserEntity user = new UserEntity();
@@ -26,13 +74,13 @@ class TradeByItemIdManagerEntityTest {
     }
 
     @Test
-    public void isFullyEqualExceptUser_should_return_true_if_same_object() {
+    public void isFullyEqual_should_return_true_if_same_object() {
         TradeByItemIdManagerEntity manager = new TradeByItemIdManagerEntity();
-        assertTrue(manager.isFullyEqualExceptUser(manager));
+        assertTrue(manager.isFullyEqual(manager));
     }
 
     @Test
-    public void isFullyEqualExceptUser_should_return_true_if_equal_except_user() {
+    public void isFullyEqualExceptUser_should_return_true_if_equal_() {
         TradeByItemIdManagerEntity manager1 = new TradeByItemIdManagerEntity();
         manager1.setUser(new UserEntity(1L));
         manager1.setItem(new ItemEntity("itemId"));
@@ -51,11 +99,11 @@ class TradeByItemIdManagerEntityTest {
         manager2.setBuyBoundaryPrice(200);
         manager2.setPriorityMultiplier(2);
 
-        assertTrue(manager1.isFullyEqualExceptUser(manager2));
+        assertTrue(manager1.isFullyEqual(manager2));
     }
 
     @Test
-    public void isFullyEqualExceptUser_should_return_false_if_not_equal_except_user() {
+    public void isFullyEqualExceptUser_should_return_false_if_not_equal_() {
         TradeByItemIdManagerEntity manager1 = new TradeByItemIdManagerEntity();
         manager1.setUser(new UserEntity(1L));
         manager1.setItem(new ItemEntity("itemId"));
@@ -75,24 +123,24 @@ class TradeByItemIdManagerEntityTest {
         manager2.setPriorityMultiplier(2);
 
         manager1.setUser(new UserEntity(2L));
-        assertFalse(manager1.isFullyEqualExceptUser(manager2));
+        assertFalse(manager1.isFullyEqual(manager2));
         manager1.setUser(new UserEntity(1L));
         manager1.getItem().setItemId("itemId2");
-        assertFalse(manager1.isFullyEqualExceptUser(manager2));
+        assertFalse(manager1.isFullyEqual(manager2));
         manager1.getItem().setItemId("itemId");
         manager1.setEnabled(false);
-        assertFalse(manager1.isFullyEqualExceptUser(manager2));
+        assertFalse(manager1.isFullyEqual(manager2));
         manager1.setEnabled(true);
         manager1.setTradeOperationType(TradeOperationType.SELL);
-        assertFalse(manager1.isFullyEqualExceptUser(manager2));
+        assertFalse(manager1.isFullyEqual(manager2));
         manager1.setTradeOperationType(TradeOperationType.BUY);
         manager1.setSellBoundaryPrice(101);
-        assertFalse(manager1.isFullyEqualExceptUser(manager2));
+        assertFalse(manager1.isFullyEqual(manager2));
         manager1.setSellBoundaryPrice(100);
         manager1.setBuyBoundaryPrice(201);
-        assertFalse(manager1.isFullyEqualExceptUser(manager2));
+        assertFalse(manager1.isFullyEqual(manager2));
         manager1.setBuyBoundaryPrice(200);
         manager1.setPriorityMultiplier(3);
-        assertFalse(manager1.isFullyEqualExceptUser(manager2));
+        assertFalse(manager1.isFullyEqual(manager2));
     }
 }

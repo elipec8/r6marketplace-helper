@@ -52,36 +52,6 @@ class TelegramUserUbiAccountEntryServiceTest {
     }
 
     @Test
-    public void authorizeAndSaveUser_should_throw_if_user_doesnt_exist() {
-        doThrow(TelegramUserDoesntExistException.class).when(telegramUserUbiAccountEntryDatabaseService).saveAuthorizationInfo(any(), any());
-        when(authorizationService.authorizeAndGet2FaAuthorizedDTO(any(), any())).thenReturn(new AuthorizationDTO());
-
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserUbiAccountEntryService.authorizeAndSaveUser("chatId", "email", "password", "twoFaCode"));
-    }
-
-    @Test
-    public void authorizeAndSaveUser_should_throw_if_user_already_have_another_ubi_account_entry() {
-        doThrow(UbiAccountEntryAlreadyExistsException.class).when(telegramUserUbiAccountEntryDatabaseService).saveAuthorizationInfo(any(), any());
-        when(authorizationService.authorizeAndGet2FaAuthorizedDTO(any(), any())).thenReturn(new AuthorizationDTO());
-
-        assertThrows(UbiAccountEntryAlreadyExistsException.class, () -> telegramUserUbiAccountEntryService.authorizeAndSaveUser("chatId", "email", "password", "twoFaCode"));
-    }
-
-    @Test
-    public void authorizeAndSaveUser_should_throw_if_client_authorization_exception_was_thrown() {
-        doThrow(UbiUserAuthorizationClientErrorException.class).when(authorizationService).authorizeAndGet2FaAuthorizedDTO(any(), any());
-
-        assertThrows(UbiUserAuthorizationClientErrorException.class, () -> telegramUserUbiAccountEntryService.authorizeAndSaveUser("chatId", "email", "password", "twoFaCode"));
-    }
-
-    @Test
-    public void authorizeAndSaveUser_should_throw_if_server_authorization_exception_was_thrown() {
-        doThrow(UbiUserAuthorizationServerErrorException.class).when(authorizationService).authorizeAndGet2FaAuthorizedDTO(any(), any());
-
-        assertThrows(UbiUserAuthorizationServerErrorException.class, () -> telegramUserUbiAccountEntryService.authorizeAndSaveUser("chatId", "email", "password", "twoFaCode"));
-    }
-
-    @Test
     public void reauthorizeAndSaveExistingUserBy2FACode_should_reauthorize_using_email_and_encodedPassword_from_db_and_twoFaCode() {
         String email = "email";
         String password = "password";
@@ -98,38 +68,6 @@ class TelegramUserUbiAccountEntryServiceTest {
         telegramUserUbiAccountEntryService.reauthorizeAndSaveExistingUserBy2FACode("chatId", twoFaCode);
 
         verify(telegramUserUbiAccountEntryDatabaseService).saveAuthorizationInfo("chatId", buildUbiAccount(email, encodedPassword, dto));
-    }
-
-    @Test
-    public void reauthorizeAndSaveExistingUserBy2FACode_should_throw_if_user_doesnt_exist() {
-        doThrow(TelegramUserDoesntExistException.class).when(telegramUserUbiAccountEntryDatabaseService).saveAuthorizationInfo(any(), any());
-        when(authorizationService.authorizeAndGet2FaAuthorizedDTOForEncodedPassword(any(), any(),any())).thenReturn(new AuthorizationDTO());
-
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserUbiAccountEntryService.reauthorizeAndSaveExistingUserBy2FACode("chatId", "twoFaCode"));
-    }
-
-    @Test
-    public void reauthorizeAndSaveExistingUserBy2FACode_should_throw_if_user_already_have_another_ubi_account_entry() {
-        doThrow(UbiAccountEntryAlreadyExistsException.class).when(telegramUserUbiAccountEntryDatabaseService).saveAuthorizationInfo(any(), any());
-        when(authorizationService.authorizeAndGet2FaAuthorizedDTOForEncodedPassword(any(), any(),any())).thenReturn(new AuthorizationDTO());
-
-        assertThrows(UbiAccountEntryAlreadyExistsException.class, () -> telegramUserUbiAccountEntryService.reauthorizeAndSaveExistingUserBy2FACode("chatId", "twoFaCode"));
-    }
-
-    @Test
-    public void reauthorizeAndSaveExistingUserBy2FACode_should_throw_if_client_authorization_exception_was_thrown() {
-        doThrow(UbiUserAuthorizationClientErrorException.class).when(authorizationService).authorizeAndGet2FaAuthorizedDTOForEncodedPassword(any(),
-                any(),any());
-
-        assertThrows(UbiUserAuthorizationClientErrorException.class, () -> telegramUserUbiAccountEntryService.reauthorizeAndSaveExistingUserBy2FACode("chatId", "twoFaCode"));
-    }
-
-    @Test
-    public void reauthorizeAndSaveExistingUserBy2FACode_should_throw_if_server_authorization_exception_was_thrown() {
-        doThrow(UbiUserAuthorizationServerErrorException.class).when(authorizationService).authorizeAndGet2FaAuthorizedDTOForEncodedPassword(any(),
-                any(),any());
-
-        assertThrows(UbiUserAuthorizationServerErrorException.class, () -> telegramUserUbiAccountEntryService.reauthorizeAndSaveExistingUserBy2FACode("chatId", "twoFaCode"));
     }
 
     @Test

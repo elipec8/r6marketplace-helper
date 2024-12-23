@@ -3,10 +3,7 @@ package github.ricemonger.marketplace.databases.postgres.entities.item;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
@@ -19,6 +16,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ItemEntity {
     @Id
     private String itemId;
@@ -90,6 +88,14 @@ public class ItemEntity {
         this.itemId = itemId;
     }
 
+    public boolean isEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof ItemEntity itemEntity) {
+            return Objects.equals(itemId, itemEntity.itemId);
+        }
+        return false;
+    }
+
     public boolean isFullyEqual(Object o) {
         if (this == o) return true;
         if (o instanceof ItemEntity itemEntity) {
@@ -97,9 +103,9 @@ public class ItemEntity {
             boolean tagsAreEqual = tags == null && itemEntity.tags == null || (
                     tags != null && itemEntity.tags != null &&
                     this.tags.size() == itemEntity.tags.size() &&
-                    this.tags.stream().allMatch(tag -> itemEntity.tags.stream().anyMatch(tag::isFullyEqual)));
+                    this.tags.stream().allMatch(tst -> itemEntity.tags.stream().anyMatch(tst::isEqual)));
 
-            return Objects.equals(itemId, itemEntity.itemId) &&
+            return isEqual(itemEntity) &&
                    Objects.equals(assetUrl, itemEntity.assetUrl) &&
                    Objects.equals(name, itemEntity.name) &&
                    tagsAreEqual &&

@@ -52,9 +52,23 @@ public class ItemShowSettings {
     }
 
     public String toString() {
+        String shownFields;
+        if (shownFieldsSettings == null) {
+            shownFields = "null";
+        } else {
+            shownFields = shownFieldsSettings.toString();
+        }
+
+        String appliedFilters;
+        if (itemShowAppliedFilters == null) {
+            appliedFilters = "null";
+        } else {
+            appliedFilters = itemShowAppliedFilters.stream().map(ItemFilter::getName).reduce((s, s2) -> s + "," + s2).orElse("");
+        }
+
         return "Messages limit: " + itemShowMessagesLimit + "\n" +
                "Few items in message: " + itemShowFewInMessageFlag + "\n" +
-               "Shown fields: \n" + shownFieldsSettings.toString() + "\n" +
-               "Applied filters: " + itemShowAppliedFilters.stream().map(ItemFilter::getName).reduce((s, s2) -> s + "," + s2).orElse("");
+               "Shown fields: \n" + shownFields + "\n" +
+               "Applied filters: " + appliedFilters;
     }
 }

@@ -57,17 +57,25 @@ public class ItemFilterEntity {
         return user.getId();
     }
 
-    public boolean isFullyEqualExceptUser(Object o) {
+    public boolean isEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof ItemFilterEntity entity) {
+            return user.isEqual(entity.user) &&
+                   Objects.equals(name, entity.name);
+        }
+        return false;
+    }
+
+    public boolean isFullyEqual(Object o) {
         if (this == o) return true;
         if (o instanceof ItemFilterEntity entity) {
 
             boolean tagsAreEqual = this.tags == null && entity.tags == null || (
                     this.tags != null && entity.tags != null &&
                     this.tags.size() == entity.tags.size() &&
-                    this.tags.stream().allMatch(tag -> entity.tags.stream().anyMatch(tag::isFullyEqual)));
+                    this.tags.stream().allMatch(tag -> entity.tags.stream().anyMatch(tag::isEqual)));
 
-            return Objects.equals(getUserId_(), entity.getUserId_()) &&
-                   Objects.equals(name, entity.name) &&
+            return isEqual(entity) &&
                    filterType == entity.filterType &&
                    isOwned == entity.isOwned &&
                    Objects.equals(itemNamePatterns, entity.itemNamePatterns) &&
@@ -77,5 +85,10 @@ public class ItemFilterEntity {
                    Objects.equals(maxBuyPrice, entity.maxBuyPrice);
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemFilterEntity(userId=" + getUserId_() + ", name=" + name + ", filterType=" + filterType + ", isOwned=" + isOwned + ", itemNamePatterns=" + itemNamePatterns + ", itemTypes=" + itemTypes + ", tags=" + tags + ", minSellPrice=" + minSellPrice + ", maxBuyPrice=" + maxBuyPrice + ")";
     }
 }

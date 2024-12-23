@@ -16,6 +16,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static reactor.core.publisher.Mono.when;
 
 @SpringBootTest
@@ -29,8 +30,8 @@ class TelegramUserEntityMapperTest {
 
     @Test
     public void createNewEntityForNewUser_should_create_and_return_new_entity_and_create_new_user() {
-        UserEntity userEntity = new UserEntity();
-        when(userRepository.save(any())).thenReturn(userEntity);
+        UserEntity userEntity = new UserEntity(1L);
+        doReturn(userEntity).when(userRepository).save(any(UserEntity.class));
 
         TelegramUserEntity entity = telegramUserEntityMapper.createNewEntityForNewUser("chatId");
 

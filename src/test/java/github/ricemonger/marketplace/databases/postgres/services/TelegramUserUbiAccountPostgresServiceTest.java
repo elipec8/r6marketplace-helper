@@ -64,7 +64,8 @@ class TelegramUserUbiAccountPostgresServiceTest {
     @Test
     public void saveAuthorizationInfo_should_throw_exception_if_ubiAccountAuthorizationEntry_for_user_already_exists() {
         UbiAccountEntryEntity entity = new UbiAccountEntryEntity();
-        entity.getUbiAccountStats().setUbiProfileId("ubiProfileId");
+        entity.setUser(new UserEntity(1L));
+        entity.setUbiAccountStats(new UbiAccountStatsEntity("ubiProfileId"));
         when(ubiAccountAuthorizationEntryRepository.findByUserTelegramUserChatId("chatId")).thenReturn(Optional.of(entity));
 
         String chatId = "chatId";

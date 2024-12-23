@@ -34,13 +34,26 @@ public class TelegramUserInputEntity {
         return telegramUser.getChatId();
     }
 
-    public boolean isFullyEqualExceptTelegramUser(Object o) {
+    public boolean isEqual(Object o) {
         if (this == o) return true;
         if (o instanceof TelegramUserInputEntity entity) {
-            return Objects.equals(getChatId_(), entity.getChatId_()) &&
-                   inputState == entity.inputState &&
+            return telegramUser.isEqual(entity.telegramUser) &&
+                   inputState == entity.inputState;
+        }
+        return false;
+    }
+
+    public boolean isFullyEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof TelegramUserInputEntity entity) {
+            return isEqual(entity) &&
                    Objects.equals(value, entity.value);
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "TelegramUserInputEntity(chatId=" + getChatId_() + ", inputState=" + inputState + ", value=" + value + ")";
     }
 }

@@ -47,11 +47,19 @@ public class TradeByItemIdManagerEntity {
         return item.getItemId();
     }
 
-    public boolean isFullyEqualExceptUser(Object o) {
+    public boolean isEqual(Object o) {
         if (this == o) return true;
         if (o instanceof TradeByItemIdManagerEntity entity) {
-            return Objects.equals(getUserId_(), entity.getUserId_()) &&
-                   Objects.equals(item.getItemId(), entity.item.getItemId()) &&
+            return user.isEqual(entity.user) &&
+                   item.isEqual(entity.item);
+        }
+        return false;
+    }
+
+    public boolean isFullyEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof TradeByItemIdManagerEntity entity) {
+            return isEqual(entity) &&
                    enabled == entity.enabled &&
                    tradeOperationType == entity.tradeOperationType &&
                    Objects.equals(sellBoundaryPrice, entity.sellBoundaryPrice) &&
@@ -59,5 +67,11 @@ public class TradeByItemIdManagerEntity {
                    Objects.equals(priorityMultiplier, entity.priorityMultiplier);
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "TradeByItemIdManagerEntity(userId=" + getUserId_() + ", itemId=" + getItemId_() + ", enabled=" + enabled + ", tradeOperationType=" + tradeOperationType +
+               ", sellBoundaryPrice=" + sellBoundaryPrice + ", buyBoundaryPrice=" + buyBoundaryPrice + ", priorityMultiplier=" + priorityMultiplier + ")";
     }
 }

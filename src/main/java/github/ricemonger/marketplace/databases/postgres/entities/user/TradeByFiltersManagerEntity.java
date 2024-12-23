@@ -46,17 +46,25 @@ public class TradeByFiltersManagerEntity {
         return user.getId();
     }
 
-    public boolean isFullyEqualExceptUser(Object o) {
+    public boolean isEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof TradeByFiltersManagerEntity entity) {
+            return user.isEqual(entity.user) &&
+                   Objects.equals(name, entity.name);
+        }
+        return false;
+    }
+
+    public boolean isFullyEqual(Object o) {
         if (this == o) return true;
         if (o instanceof TradeByFiltersManagerEntity entity) {
 
             boolean appliedFiltersAreEqual = this.appliedFilters == null && entity.appliedFilters == null || (
                     this.appliedFilters != null && entity.appliedFilters != null &&
                     this.appliedFilters.size() == entity.appliedFilters.size() &&
-                    this.appliedFilters.stream().allMatch(filterEntity -> entity.appliedFilters.stream().anyMatch(filterEntity::isFullyEqualExceptUser)));
+                    this.appliedFilters.stream().allMatch(filterEntity -> entity.appliedFilters.stream().anyMatch(filterEntity::isEqual)));
 
-            return Objects.equals(getUserId_(), entity.getUserId_()) &&
-                   Objects.equals(name, entity.name) &&
+            return isEqual(entity) &&
                    enabled == entity.enabled &&
                    tradeOperationType == entity.tradeOperationType &&
                    appliedFiltersAreEqual &&
@@ -65,5 +73,10 @@ public class TradeByFiltersManagerEntity {
                    Objects.equals(priorityMultiplier, entity.priorityMultiplier);
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "TradeByFiltersManagerEntity(userId=" + getUserId_() + ", name=" + name + ", enabled=" + enabled + ", tradeOperationType=" + tradeOperationType + ", appliedFilters=" + appliedFilters + ", minDifferenceFromMedianPrice=" + minDifferenceFromMedianPrice + ", minDifferenceFromMedianPricePercent=" + minDifferenceFromMedianPricePercent + ", priorityMultiplier=" + priorityMultiplier + ")";
     }
 }

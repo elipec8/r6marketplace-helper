@@ -87,6 +87,11 @@ class ItemFilterTest {
 
         Collection<Item> result = ItemFilter.filterItems(allItemMainFields, List.of(allowFilter1, allowFilter2, denyFilter1, denyFilter2));
 
+        System.out.println("Result:");
+        for (Item item : result) {
+            System.out.println(item);
+        }
+
         assertTrue(result.containsAll(expected) && expected.containsAll(result));
     }
 

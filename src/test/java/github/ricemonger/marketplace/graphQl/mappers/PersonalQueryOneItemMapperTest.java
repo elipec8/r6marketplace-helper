@@ -27,6 +27,7 @@ import github.ricemonger.utils.exceptions.server.GraphQlPersonalOneItemMappingEx
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -40,7 +41,7 @@ import static org.mockito.Mockito.when;
 class PersonalQueryOneItemMapperTest {
     @Autowired
     private PersonalQueryOneItemMapper personalQueryOneItemMapper;
-    @Autowired
+    @SpyBean
     private CommonValuesService commonValuesService;
 
     @Test
@@ -136,7 +137,7 @@ class PersonalQueryOneItemMapperTest {
         ItemDetails result = personalQueryOneItemMapper.mapItem(game);
 
         ItemDetails expected = createItemDetails(date);
-        expected.getTrades().get(0).setExpiresAt(LocalDateTime.MIN);
+        expected.getTrades().get(0).setExpiresAt(LocalDateTime.of(1970, 1, 1, 0, 0, 0));
 
         assertEquals(expected, result);
     }

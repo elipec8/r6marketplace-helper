@@ -32,11 +32,24 @@ public class ItemSaleEntity {
         return item.getItemId();
     }
 
+    public boolean isEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof ItemSaleEntity entity) {
+            return item.isEqual(entity.item) && Objects.equals(soldAt, entity.soldAt);
+        }
+        return false;
+    }
+
     public boolean isFullyEqual(Object o) {
         if (this == o) return true;
         if (o instanceof ItemSaleEntity entity) {
-            return item.isFullyEqual(entity.getItem()) && Objects.equals(soldAt, entity.soldAt) && Objects.equals(price, entity.price);
+            return isEqual(entity) && Objects.equals(price, entity.price);
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemSaleEntity(itemId=" + getItemId_() + ", soldAt=" + soldAt + ", price=" + price + ")";
     }
 }

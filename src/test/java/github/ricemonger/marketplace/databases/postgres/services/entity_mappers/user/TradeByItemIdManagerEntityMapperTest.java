@@ -49,7 +49,7 @@ class TradeByItemIdManagerEntityMapperTest {
         expected.setBuyBoundaryPrice(10);
         expected.setPriorityMultiplier(2);
 
-        assertTrue(expected.isFullyEqualExceptUser(tradeByItemIdManagerEntityMapper.createEntityForTelegramUser("chatId", dto)));
+        assertTrue(expected.isFullyEqual(tradeByItemIdManagerEntityMapper.createEntityForTelegramUser("chatId", dto)));
     }
 
     @Test

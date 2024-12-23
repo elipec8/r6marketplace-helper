@@ -33,16 +33,30 @@ public class ItemDaySalesUbiStatsEntity {
         return item.getItemId();
     }
 
+    public boolean isEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof ItemDaySalesUbiStatsEntity entity) {
+            return item.isEqual(entity.item) &&
+                   Objects.equals(date, entity.date);
+        }
+        return false;
+    }
+
     public boolean isFullyEqual(Object o) {
         if (this == o) return true;
         if (o instanceof ItemDaySalesUbiStatsEntity entity) {
-            return item.isFullyEqual(entity.item) &&
-                   Objects.equals(date, entity.date) &&
+            return isEqual(entity) &&
                    Objects.equals(lowestPrice, entity.lowestPrice) &&
                    Objects.equals(averagePrice, entity.averagePrice) &&
                    Objects.equals(highestPrice, entity.highestPrice) &&
                    Objects.equals(itemsCount, entity.itemsCount);
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemDaySalesUbiStatsEntity(itemId=" + getItemId_() + ", date=" + date + ", lowestPrice=" + lowestPrice + ", averagePrice=" + averagePrice +
+               ", highestPrice=" + highestPrice + ", itemsCount=" + itemsCount + ")";
     }
 }

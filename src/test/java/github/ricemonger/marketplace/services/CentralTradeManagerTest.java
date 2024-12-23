@@ -99,7 +99,12 @@ class CentralTradeManagerTest {
         updateUbiAccount.add(nullManageableUserUbiAccount);
         updateUbiAccount.add(nullUbiAccountStats);
 
-        ConfigTrades configTrades = Mockito.mock(ConfigTrades.class);
+        ConfigTrades configTrades = new ConfigTrades();
+        configTrades.setBuySlots(1);
+        configTrades.setBuyLimit(2);
+        configTrades.setSellSlots(3);
+        configTrades.setSellLimit(4);
+
         when(commonValuesService.getConfigTrades()).thenReturn(configTrades);
 
         List items = Mockito.mock(List.class);
@@ -155,10 +160,12 @@ class CentralTradeManagerTest {
         when(personalItemFactory.getPersonalItemsForUser(same(tradeByFiltersManagers1), same(tradeByItemIdManagers1), same(currentSellTrades1), same(currentBuyTrades1), same(ownedItemsIds1), same(items))).thenReturn(personalItems1);
 
         List resultingSellTrades1 = Mockito.mock(List.class);
-        when(potentialTradeFactory.getResultingPersonalSellTrades(same(personalItems1), same(resaleLocks1), same(soldIn24h1), same(configTrades.getSellSlots()), same(configTrades.getSellLimit()))).thenReturn(resultingSellTrades1);
+        when(potentialTradeFactory.getResultingPersonalSellTrades(same(personalItems1), same(resaleLocks1), same(soldIn24h1),
+                eq(configTrades.getSellSlots()), same(configTrades.getSellLimit()))).thenReturn(resultingSellTrades1);
 
         List resultingBuyTrades1 = Mockito.mock(List.class);
-        when(potentialTradeFactory.getResultingPersonalBuyTrades(same(personalItems1), same(creditAmount1), same(boughtIn24h2), same(configTrades.getBuySlots()), same(configTrades.getBuyLimit()))).thenReturn(resultingBuyTrades1);
+        when(potentialTradeFactory.getResultingPersonalBuyTrades(same(personalItems1), same(creditAmount1), same(boughtIn24h2),
+                eq(configTrades.getBuySlots()), eq(configTrades.getBuyLimit()))).thenReturn(resultingBuyTrades1);
 
         CentralTradeManagerCommand buyCancelCommand1 = Mockito.mock(CentralTradeManagerCommand.class);
         when(buyCancelCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_CANCEL);

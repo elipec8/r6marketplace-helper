@@ -20,6 +20,59 @@ class TelegramUserEntityTest {
     private ItemFilterEntityMapper itemFilterEntityMapper;
 
     @Test
+    public void isEqual_should_return_true_if_same() {
+        TelegramUserEntity telegramUser = new TelegramUserEntity();
+        assertTrue(telegramUser.isEqual(telegramUser));
+    }
+
+    @Test
+    public void isEqual_should_return_true_if_equal_ids() {
+        TelegramUserEntity telegramUser1 = new TelegramUserEntity();
+        telegramUser1.setUser(new UserEntity(1L));
+        telegramUser1.setChatId("chatId");
+        telegramUser1.setInputState(InputState.BASE);
+        telegramUser1.setInputGroup(InputGroup.BASE);
+        telegramUser1.setItemShowMessagesLimit(50);
+        telegramUser1.setItemShowFewInMessageFlag(false);
+        telegramUser1.setTelegramUserInputs(List.of(new TelegramUserInputEntity(telegramUser1, InputState.BASE, "value")));
+
+        TelegramUserEntity telegramUser2 = new TelegramUserEntity();
+        telegramUser2.setUser(new UserEntity(1L));
+        telegramUser2.setChatId("chatId");
+        telegramUser2.setInputState(InputState.UBI_ACCOUNT_ENTRY_2FA_CODE);
+        telegramUser2.setInputGroup(InputGroup.ITEM_FILTER_EDIT);
+        telegramUser2.setItemShowMessagesLimit(51);
+        telegramUser2.setItemShowFewInMessageFlag(true);
+        telegramUser2.setTelegramUserInputs(List.of());
+
+        assertTrue(telegramUser1.isEqual(telegramUser2));
+    }
+
+    @Test
+    public void isEqual_should_return_false_for_null() {
+        TelegramUserEntity telegramUser = new TelegramUserEntity();
+        assertFalse(telegramUser.isEqual(null));
+    }
+
+    @Test
+    public void isEqual_should_return_false_if_different_ids() {
+        TelegramUserEntity telegramUser1 = new TelegramUserEntity();
+        telegramUser1.setUser(new UserEntity(1L));
+        telegramUser1.setChatId("chatId");
+
+        TelegramUserEntity telegramUser2 = new TelegramUserEntity();
+        telegramUser2.setUser(new UserEntity(1L));
+        telegramUser2.setChatId("chatId");
+
+
+        telegramUser1.setUser(new UserEntity(2L));
+        assertFalse(telegramUser1.isEqual(telegramUser2));
+        telegramUser1.setUser(new UserEntity(1L));
+        telegramUser1.setChatId("chatId2");
+        assertFalse(telegramUser1.isEqual(telegramUser2));
+    }
+
+    @Test
     public void constructor_should_set_id_fields() {
         TelegramUserEntity telegramUser = new TelegramUserEntity("chatId", 2L);
         assertEquals("chatId", telegramUser.getChatId());
@@ -150,7 +203,7 @@ class TelegramUserEntityTest {
     }
 
     @Test
-    public void isFullyEqualExceptUser_should_return_true_if_equal_except_user() {
+    public void isFullyEqualExceptUser_should_return_true_if_equal_() {
         TelegramUserEntity telegramUser1 = new TelegramUserEntity();
         telegramUser1.setUser(new UserEntity(1L));
         telegramUser1.setChatId("chatId");
@@ -169,11 +222,11 @@ class TelegramUserEntityTest {
         telegramUser2.setItemShowFewInMessageFlag(false);
         telegramUser2.setTelegramUserInputs(List.of(new TelegramUserInputEntity(telegramUser2, InputState.BASE, "value")));
 
-        assertTrue(telegramUser1.isFullyEqualExceptUser(telegramUser2));
+        assertTrue(telegramUser1.isFullyEqual(telegramUser2));
     }
 
     @Test
-    public void isFullyEqualExceptUser_should_return_false_if_not_equal_except_user() {
+    public void isFullyEqualExceptUser_should_return_false_if_not_equal_() {
         TelegramUserEntity telegramUser1 = new TelegramUserEntity();
         telegramUser1.setUser(new UserEntity(1L));
         telegramUser1.setChatId("chatId");
@@ -193,26 +246,26 @@ class TelegramUserEntityTest {
         telegramUser2.setTelegramUserInputs(List.of(new TelegramUserInputEntity(telegramUser2, InputState.BASE, "value")));
 
         telegramUser1.setUser(new UserEntity(2L));
-        assertFalse(telegramUser1.isFullyEqualExceptUser(telegramUser2));
+        assertFalse(telegramUser1.isFullyEqual(telegramUser2));
         telegramUser1.setUser(new UserEntity(1L));
         telegramUser1.setChatId("chatId2");
-        assertFalse(telegramUser1.isFullyEqualExceptUser(telegramUser2));
+        assertFalse(telegramUser1.isFullyEqual(telegramUser2));
         telegramUser1.setChatId("chatId");
         telegramUser1.setInputState(InputState.UBI_ACCOUNT_ENTRY_2FA_CODE);
-        assertFalse(telegramUser1.isFullyEqualExceptUser(telegramUser2));
+        assertFalse(telegramUser1.isFullyEqual(telegramUser2));
         telegramUser1.setInputState(InputState.BASE);
         telegramUser1.setInputGroup(InputGroup.ITEM_FILTER_EDIT);
-        assertFalse(telegramUser1.isFullyEqualExceptUser(telegramUser2));
+        assertFalse(telegramUser1.isFullyEqual(telegramUser2));
         telegramUser1.setInputGroup(InputGroup.BASE);
         telegramUser1.setItemShowMessagesLimit(51);
-        assertFalse(telegramUser1.isFullyEqualExceptUser(telegramUser2));
+        assertFalse(telegramUser1.isFullyEqual(telegramUser2));
         telegramUser1.setItemShowMessagesLimit(50);
         telegramUser1.setItemShowFewInMessageFlag(true);
-        assertFalse(telegramUser1.isFullyEqualExceptUser(telegramUser2));
+        assertFalse(telegramUser1.isFullyEqual(telegramUser2));
         telegramUser1.setItemShowFewInMessageFlag(false);
         telegramUser1.setTelegramUserInputs(List.of());
-        assertFalse(telegramUser1.isFullyEqualExceptUser(telegramUser2));
+        assertFalse(telegramUser1.isFullyEqual(telegramUser2));
         telegramUser1.setTelegramUserInputs(null);
-        assertFalse(telegramUser1.isFullyEqualExceptUser(telegramUser2));
+        assertFalse(telegramUser1.isFullyEqual(telegramUser2));
     }
 }

@@ -105,17 +105,25 @@ public class TelegramUserEntity {
         this.user.setManagingEnabledFlag(telegramUser.getManagingEnabledFlag());
     }
 
-    public boolean isFullyEqualExceptUser(Object o) {
+    public boolean isEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof TelegramUserEntity entity) {
+            return Objects.equals(this.chatId, entity.chatId) &&
+                   this.user.isEqual(entity.user);
+        }
+        return false;
+    }
+
+    public boolean isFullyEqual(Object o) {
         if (this == o) return true;
         if (o instanceof TelegramUserEntity entity) {
 
             boolean inputsAreEqual = telegramUserInputs == null && entity.telegramUserInputs == null || (
                     telegramUserInputs != null && entity.telegramUserInputs != null &&
                     telegramUserInputs.size() == entity.telegramUserInputs.size() &&
-                    telegramUserInputs.stream().allMatch(input -> entity.telegramUserInputs.stream().anyMatch(input::isFullyEqualExceptTelegramUser)));
+                    telegramUserInputs.stream().allMatch(input -> entity.telegramUserInputs.stream().anyMatch(input::isEqual)));
 
-            return Objects.equals(this.chatId, entity.chatId) &&
-                   Objects.equals(getUserId_(), entity.getUserId_()) &&
+            return isEqual(entity) &&
                    inputsAreEqual &&
                    inputState == entity.inputState &&
                    inputGroup == entity.inputGroup &&
@@ -123,5 +131,10 @@ public class TelegramUserEntity {
                    Objects.equals(itemShowFewInMessageFlag, entity.itemShowFewInMessageFlag);
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "TelegramUserEntity(chatId=" + chatId + ", user=" + user + ", telegramUserInputs=" + telegramUserInputs + ", inputState=" + inputState + ", inputGroup=" + inputGroup + ", itemShowMessagesLimit=" + itemShowMessagesLimit + ", itemShowFewInMessageFlag=" + itemShowFewInMessageFlag + ")";
     }
 }

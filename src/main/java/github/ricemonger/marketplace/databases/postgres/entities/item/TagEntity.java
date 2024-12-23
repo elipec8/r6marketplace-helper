@@ -2,10 +2,7 @@ package github.ricemonger.marketplace.databases.postgres.entities.item;
 
 import github.ricemonger.utils.enums.TagGroup;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Objects;
 
@@ -14,6 +11,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class TagEntity {
     @Id
     @Column(name = "tag_value") // "value" column name conflicts with H2
@@ -22,10 +20,18 @@ public class TagEntity {
     @Enumerated(EnumType.ORDINAL)
     private TagGroup tagGroup;
 
+    public boolean isEqual(Object o) {
+        if (this == o) return true;
+        if (o instanceof TagEntity tagEntity) {
+            return Objects.equals(value, tagEntity.value);
+        }
+        return false;
+    }
+
     public boolean isFullyEqual(Object o) {
         if (this == o) return true;
         if (o instanceof TagEntity tagEntity) {
-            return Objects.equals(value, tagEntity.value) &&
+            return isEqual(tagEntity) &&
                    Objects.equals(name, tagEntity.name) &&
                    tagGroup == tagEntity.tagGroup;
         }

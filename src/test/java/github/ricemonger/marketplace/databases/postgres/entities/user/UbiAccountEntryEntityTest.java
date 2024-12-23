@@ -10,6 +10,55 @@ import static org.junit.jupiter.api.Assertions.*;
 class UbiAccountEntryEntityTest {
 
     @Test
+    public void isEqual_should_return_true_if_same() {
+        UbiAccountEntryEntity accountEntry = new UbiAccountEntryEntity();
+        assertTrue(accountEntry.isEqual(accountEntry));
+    }
+
+    @Test
+    public void isEqual_should_return_true_if_equal_ids() {
+        UbiAccountEntryEntity accountEntry1 = new UbiAccountEntryEntity();
+        accountEntry1.setUser(new UserEntity(1L));
+        accountEntry1.setEmail("email");
+        accountEntry1.setUbiAccountStats(new UbiAccountStatsEntity("profileId"));
+        accountEntry1.setEncodedPassword("encodedPassword");
+        accountEntry1.setUbiSessionId("sessionId");
+        accountEntry1.setUbiSpaceId("spaceId");
+        accountEntry1.setUbiAuthTicket("authTicket");
+        accountEntry1.setUbiRememberDeviceTicket("rememberDeviceTicket");
+        accountEntry1.setUbiRememberMeTicket("rememberMeTicket");
+
+        UbiAccountEntryEntity accountEntry2 = new UbiAccountEntryEntity();
+        accountEntry2.setUser(new UserEntity(1L));
+        accountEntry2.setEmail("email");
+
+        assertTrue(accountEntry1.isEqual(accountEntry2));
+    }
+
+    @Test
+    public void isEqual_should_return_false_for_null() {
+        UbiAccountEntryEntity accountEntry = new UbiAccountEntryEntity();
+        assertFalse(accountEntry.isEqual(null));
+    }
+
+    @Test
+    public void isEqual_should_return_false_if_different_ids() {
+        UbiAccountEntryEntity accountEntry1 = new UbiAccountEntryEntity();
+        accountEntry1.setUser(new UserEntity(1L));
+        accountEntry1.setEmail("email");
+
+        UbiAccountEntryEntity accountEntry2 = new UbiAccountEntryEntity();
+        accountEntry2.setUser(new UserEntity(1L));
+        accountEntry2.setEmail("email");
+
+        accountEntry1.setUser(new UserEntity(2L));
+        assertFalse(accountEntry1.isEqual(accountEntry2));
+        accountEntry1.setUser(new UserEntity(1L));
+        accountEntry1.setEmail("email1");
+        assertFalse(accountEntry1.isEqual(accountEntry2));
+    }
+
+    @Test
     public void constructor_should_set_id_fields() {
         UbiAccountEntryEntity accountEntry = new UbiAccountEntryEntity(1L, "email", "profileId");
 
@@ -37,7 +86,7 @@ class UbiAccountEntryEntityTest {
     }
 
     @Test
-    public void isFullyEqualExceptUser_should_return_true_if_equal_except_user() {
+    public void isFullyEqualExceptUser_should_return_true_if_equal_() {
         UbiAccountStatsEntity stats = new UbiAccountStatsEntity();
         stats.setUbiProfileId("profileId");
         stats.setCreditAmount(100);
@@ -65,11 +114,11 @@ class UbiAccountEntryEntityTest {
         accountEntry2.setUbiRememberMeTicket("rememberMeTicket");
         accountEntry2.setUbiAccountStats(stats);
 
-        assertTrue(accountEntry1.isFullyEqualExceptUser(accountEntry2));
+        assertTrue(accountEntry1.isFullyEqual(accountEntry2));
     }
 
     @Test
-    public void isFullyEqualExceptUser_should_return_false_if_not_equal_except_user() {
+    public void isFullyEqualExceptUser_should_return_false_if_not_equal_() {
         UbiAccountStatsEntity stats1 = new UbiAccountStatsEntity();
         stats1.setUbiProfileId("profileId");
         stats1.setCreditAmount(100);
@@ -103,38 +152,38 @@ class UbiAccountEntryEntityTest {
         accountEntry2.setUbiAccountStats(stats2);
 
         accountEntry1.setUser(new UserEntity(2L));
-        assertFalse(accountEntry1.isFullyEqualExceptUser(accountEntry2));
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
         accountEntry1.setUser(new UserEntity(1L));
         accountEntry1.setEmail("email1@example.com");
-        assertFalse(accountEntry1.isFullyEqualExceptUser(accountEntry2));
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
         accountEntry1.setEmail("email@example.com");
         accountEntry1.setEncodedPassword("encodedPassword1");
-        assertFalse(accountEntry1.isFullyEqualExceptUser(accountEntry2));
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
         accountEntry1.setEncodedPassword("encodedPassword");
         accountEntry1.setUbiSessionId("sessionId1");
-        assertFalse(accountEntry1.isFullyEqualExceptUser(accountEntry2));
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
         accountEntry1.setUbiSessionId("sessionId");
         accountEntry1.setUbiSpaceId("spaceId1");
-        assertFalse(accountEntry1.isFullyEqualExceptUser(accountEntry2));
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
         accountEntry1.setUbiSpaceId("spaceId");
         accountEntry1.setUbiAuthTicket("authTicket1");
-        assertFalse(accountEntry1.isFullyEqualExceptUser(accountEntry2));
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
         accountEntry1.setUbiAuthTicket("authTicket");
         accountEntry1.setUbiRememberDeviceTicket("rememberDeviceTicket1");
-        assertFalse(accountEntry1.isFullyEqualExceptUser(accountEntry2));
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
         accountEntry1.setUbiRememberDeviceTicket("rememberDeviceTicket");
         accountEntry1.setUbiRememberMeTicket("rememberMeTicket1");
-        assertFalse(accountEntry1.isFullyEqualExceptUser(accountEntry2));
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
         accountEntry1.setUbiRememberMeTicket("rememberMeTicket");
         accountEntry1.getUbiAccountStats().setUbiProfileId("profileId1");
-        assertFalse(accountEntry1.isFullyEqualExceptUser(accountEntry2));
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
         accountEntry1.getUbiAccountStats().setUbiProfileId("profileId");
         accountEntry1.getUbiAccountStats().setCreditAmount(101);
-        assertFalse(accountEntry1.isFullyEqualExceptUser(accountEntry2));
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
         accountEntry1.getUbiAccountStats().setCreditAmount(100);
         accountEntry1.getUbiAccountStats().setOwnedItems(List.of(new ItemEntity()));
-        assertFalse(accountEntry1.isFullyEqualExceptUser(accountEntry2));
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
         accountEntry1.getUbiAccountStats().setOwnedItems(null);
-        assertFalse(accountEntry1.isFullyEqualExceptUser(accountEntry2));
+        assertFalse(accountEntry1.isFullyEqual(accountEntry2));
     }
 }
