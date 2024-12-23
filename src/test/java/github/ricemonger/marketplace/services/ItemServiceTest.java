@@ -238,43 +238,15 @@ class ItemServiceTest {
 
         Item updatedItem2 = new Item(item2);
         updatedItem2.setRarity(ItemRarity.LEGENDARY);
-        updatedItem2.setPriorityToSellByMaxBuyPrice(1L);
-        updatedItem2.setPriorityToSellByNextFancySellPrice(2L);
-        updatedItem2.setPriorityToBuyByMinSellPrice(3L);
-
-        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByMaxBuyPrice(updatedItem2)).thenReturn(new PotentialTradeStats(0, 0, 1L));
-        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByNextFancySellPrice(updatedItem2)).thenReturn(new PotentialTradeStats(0, 0, 2L));
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsByMinSellPrice(updatedItem2)).thenReturn(new PotentialTradeStats(0, 0, 3L));
 
         Item updatedItem3 = new Item(item3);
         updatedItem3.setRarity(ItemRarity.EPIC);
-        updatedItem3.setPriorityToSellByMaxBuyPrice(4L);
-        updatedItem3.setPriorityToSellByNextFancySellPrice(5L);
-        updatedItem3.setPriorityToBuyByMinSellPrice(6L);
-
-        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByMaxBuyPrice(updatedItem3)).thenReturn(new PotentialTradeStats(0, 0, 4L));
-        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByNextFancySellPrice(updatedItem3)).thenReturn(new PotentialTradeStats(0, 0, 5L));
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsByMinSellPrice(updatedItem3)).thenReturn(new PotentialTradeStats(0, 0, 6L));
 
         Item updatedItem4 = new Item(item4);
         updatedItem4.setRarity(ItemRarity.RARE);
-        updatedItem4.setPriorityToSellByMaxBuyPrice(7L);
-        updatedItem4.setPriorityToSellByNextFancySellPrice(8L);
-        updatedItem4.setPriorityToBuyByMinSellPrice(9L);
-
-        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByMaxBuyPrice(updatedItem4)).thenReturn(new PotentialTradeStats(0, 0, 7L));
-        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByNextFancySellPrice(updatedItem4)).thenReturn(new PotentialTradeStats(0, 0, 8L));
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsByMinSellPrice(updatedItem4)).thenReturn(new PotentialTradeStats(0, 0, 9L));
 
         Item updatedItem5 = new Item(item5);
         updatedItem5.setRarity(ItemRarity.UNCOMMON);
-        updatedItem5.setPriorityToSellByMaxBuyPrice(10L);
-        updatedItem5.setPriorityToSellByNextFancySellPrice(11L);
-        updatedItem5.setPriorityToBuyByMinSellPrice(12L);
-
-        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByMaxBuyPrice(updatedItem5)).thenReturn(new PotentialTradeStats(0, 0, 10L));
-        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByNextFancySellPrice(updatedItem5)).thenReturn(new PotentialTradeStats(0, 0, 11L));
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsByMinSellPrice(updatedItem5)).thenReturn(new PotentialTradeStats(0, 0, 12L));
 
         List<Item> updatedItems = new ArrayList<>();
         updatedItems.add(updatedItem1);

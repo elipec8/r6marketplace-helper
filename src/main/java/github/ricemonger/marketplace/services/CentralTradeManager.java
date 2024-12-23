@@ -5,10 +5,10 @@ import github.ricemonger.marketplace.services.factories.CentralTradeManagerComma
 import github.ricemonger.marketplace.services.factories.PersonalItemFactory;
 import github.ricemonger.marketplace.services.factories.PotentialTradeFactory;
 import github.ricemonger.telegramBot.TelegramBotService;
-import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.personal.*;
+import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,8 @@ public class CentralTradeManager {
 
         for (ManageableUser manageableUser : manageableUsers) {
             UbiAccountStats linkedUbiAccount =
-                    updatedUbiAccountStats.stream().filter(u -> Objects.equals(u.getUbiProfileId(), manageableUser.getUbiProfileId())).findFirst().orElse(null);
+                    updatedUbiAccountStats.stream().filter(u -> u != null && manageableUser != null && Objects.equals(u.getUbiProfileId(),
+                            manageableUser.getUbiProfileId())).findFirst().orElse(null);
             if (manageableUser != null && linkedUbiAccount != null) {
                 usersForCentralTradeManager.add(new UserForCentralTradeManager(manageableUser, linkedUbiAccount));
             }

@@ -148,15 +148,7 @@ class ScheduledAllUbiUsersManagerTest {
         UbiAccountStatsEntityDTO expectedUbiAccountStatsEntityDTO3 = new UbiAccountStatsEntityDTO("ubiProfileId3", creditAmount3, List.of());
         List<UbiAccountStatsEntityDTO> expectedUpdatedUbiAccountStatEntityDTOS = List.of(expectedUbiAccountStatsEntityDTO1, expectedUbiAccountStatsEntityDTO2, expectedUbiAccountStatsEntityDTO3);
 
-        System.out.println("Expected:");
-        for (UbiAccountStatsEntityDTO expected : expectedUpdatedUbiAccountStatEntityDTOS) {
-            System.out.println(expected);
-        }
-        System.out.println("Actual:");
         verify(telegramUserUbiAccountEntryService).saveAllUbiAccountStats(argThat(arg -> {
-            for (UbiAccountStatsEntityDTO actual : arg) {
-                System.out.println(actual);
-            }
             for (UbiAccountStatsEntityDTO actual : arg) {
                 UbiAccountStatsEntityDTO expected = expectedUpdatedUbiAccountStatEntityDTOS.stream()
                         .filter(e -> e.getUbiProfileId().equals(actual.getUbiProfileId()))
@@ -167,6 +159,13 @@ class ScheduledAllUbiUsersManagerTest {
             }
             return true;
         }));
+
+        System.out.println("Expected managed:");
+        for (UbiAccountStats expected : expectedUbiAccountStats) {
+            System.out.println(expected);
+        }
+
+        System.out.println("Actual managed:");
 
         verify(centralTradeManager).manageAllUsersTrades(argThat(arg -> {
             for (UbiAccountStats actual : arg) {

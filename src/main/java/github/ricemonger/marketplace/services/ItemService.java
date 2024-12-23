@@ -224,12 +224,12 @@ public class ItemService {
         Set<Item> updatedItems = itemMainFields.stream().map(Item::new).collect(Collectors.toSet());
 
         for (Item updatedItem : updatedItems) {
+            updatedItem.setRarityByTags(uncommonTag, rareTag, epicTag, legendaryTag);
             Item existingItem = existingItems.stream().filter(existing -> existing.equals(updatedItem)).findFirst().orElse(null);
             if (existingItem == null) {
                 log.error("Item with id {} not found, getAllItemsFromDbInConjunctionWithUpdatedFields for this item skipped", updatedItem.getItemId());
                 continue;
             }
-            updatedItem.setRarityByTags(uncommonTag, rareTag, epicTag, legendaryTag);
             updatedItem.setHistoryFields(existingItem);
 
             boolean itemHistoryFieldsWasCalculatedAtLeastOnce = existingItem.getMonthAveragePrice() != null;

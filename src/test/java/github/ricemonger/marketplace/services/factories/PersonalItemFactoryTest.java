@@ -163,7 +163,7 @@ class PersonalItemFactoryTest {
             PersonalItem personalItem2SellLowerPriority = new PersonalItem();
             personalItem2SellLowerPriority.setItem(new Item("2"));
             personalItem2SellLowerPriority.setTradeOperationType(TradeOperationType.SELL);
-            personalItem2SellLowerPriority.setPriorityMultiplier(2);
+            personalItem2SellLowerPriority.setPriorityMultiplier(1);
 
             doReturn(Set.of(personalItem1SellLowerPriority, personalItem2SellLowerPriority)).when(personalItemFactory).getPersonalItemsFromTradeByFiltersManager(same(tradeByFiltersManagerItemSet1LowerPriority), same(existingSellTrades), same(existingBuyTrades), same(ownedItemsId), same(existingItems));
 
@@ -206,8 +206,8 @@ class PersonalItemFactoryTest {
             assertEquals(6, result.size());
             assertTrue(result.stream().filter(p -> p.equals(personalItem1Sell)).findFirst().get().isFullyEqual(personalItem1Sell));
             assertTrue(result.stream().filter(p -> p.equals(personalItem2Sell)).findFirst().get().isFullyEqual(personalItem2Sell));
-            assertTrue(result.stream().filter(p -> p.equals(personalItem1SellLowerPriority)).findFirst().get().isFullyEqual(personalItem1SellLowerPriority));
-            assertTrue(result.stream().filter(p -> p.equals(personalItem2SellLowerPriority)).findFirst().get().isFullyEqual(personalItem2SellLowerPriority));
+            assertTrue(result.stream().filter(p -> p.equals(personalItem3Sell)).findFirst().get().isFullyEqual(personalItem3Sell));
+            assertTrue(result.stream().filter(p -> p.equals(personalItem4Sell)).findFirst().get().isFullyEqual(personalItem4Sell));
             assertTrue(result.stream().filter(p -> p.equals(personalItem1Buy)).findFirst().get().isFullyEqual(personalItem1Buy));
             assertTrue(result.stream().filter(p -> p.equals(personalItem2Buy)).findFirst().get().isFullyEqual(personalItem2Buy));
 

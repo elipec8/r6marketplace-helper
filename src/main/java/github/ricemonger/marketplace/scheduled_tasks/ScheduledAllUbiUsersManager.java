@@ -6,14 +6,9 @@ import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.ItemService;
 import github.ricemonger.marketplace.services.TelegramUserUbiAccountEntryService;
 import github.ricemonger.telegramBot.TelegramBotService;
-import github.ricemonger.utils.DTOs.personal.UbiAccountEntryWithTelegram;
-import github.ricemonger.utils.DTOs.personal.UbiAccountStats;
-import github.ricemonger.utils.DTOs.personal.UbiAccountStatsEntityDTO;
-import github.ricemonger.utils.DTOs.personal.UserTradesLimitations;
-import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.DTOs.common.Item;
-import github.ricemonger.utils.DTOs.personal.ItemResaleLockWithUbiAccount;
-import github.ricemonger.utils.DTOs.personal.UbiTrade;
+import github.ricemonger.utils.DTOs.personal.*;
+import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.TradeCategory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -125,7 +120,15 @@ public class ScheduledAllUbiUsersManager {
     }
 
     private String getFinishedTradeString(UbiTrade trade) {
-        Item item = itemService.getItemById(trade.getItemId());
-        return item.getName() + " : " + item.getAssetUrl() + " for " + (trade.getSuccessPaymentPrice() - trade.getSuccessPaymentFee());
+        Item item = trade.getItem();
+        Integer price;
+
+        if (trade.getSuccessPaymentPrice() == null || trade.getSuccessPaymentFee() == null) {
+            price = trade.getSuccessPaymentPrice();
+        } else {
+            price = trade.getSuccessPaymentPrice() - trade.getSuccessPaymentFee();
+        }
+        
+        return item.getName() + " : " + item.getAssetUrl() + " for " + price;
     }
 }

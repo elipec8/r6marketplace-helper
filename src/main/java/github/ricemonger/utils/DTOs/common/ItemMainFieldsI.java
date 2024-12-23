@@ -66,36 +66,30 @@ public interface ItemMainFieldsI extends SoldItemDetails {
         if (o == this) {
             return true;
         }
-        if (!(o instanceof ItemMainFieldsI item)) {
-            return false;
-        }
+        if (o instanceof ItemMainFieldsI item) {
+            boolean tagsAreEqual = getTags() == null && item.getTags() == null || (
+                    getTags() != null && item.getTags() != null &&
+                    getTags().size() == item.getTags().size() &&
+                    new HashSet<>(getTags()).containsAll(item.getTags()));
 
-        boolean tagsAreEqual;
-        if (getTags() != null && item.getTags() != null) {
-            tagsAreEqual = new HashSet<>(getTags()).containsAll(item.getTags()) && item.getTags().size() == getTags().size();
-        } else {
-            tagsAreEqual = getTags() == null && item.getTags() == null;
-        }
+            boolean lastSoldAtAreEqual = getLastSoldAt() == null && item.getLastSoldAt() == null || (
+                    getLastSoldAt() != null && item.getLastSoldAt() != null &&
+                    getLastSoldAt().withNano(0).equals(item.getLastSoldAt().withNano(0)));
 
-        boolean lastSoldAtAreEqual;
-        if (getLastSoldAt() != null && item.getLastSoldAt() != null) {
-            lastSoldAtAreEqual = getLastSoldAt().withNano(0).equals(item.getLastSoldAt().withNano(0));
-        } else {
-            lastSoldAtAreEqual = getLastSoldAt() == null && item.getLastSoldAt() == null;
+            return Objects.equals(item.getItemId(), this.getItemId()) &&
+                             Objects.equals(item.getName(), this.getName()) &&
+                             Objects.equals(item.getRarity(), this.getRarity()) &&
+                             Objects.equals(item.getType(), this.getType()) &&
+                             Objects.equals(item.getMaxBuyPrice(), this.getMaxBuyPrice()) &&
+                             Objects.equals(item.getBuyOrdersCount(), this.getBuyOrdersCount()) &&
+                             Objects.equals(item.getMinSellPrice(), this.getMinSellPrice()) &&
+                             Objects.equals(item.getSellOrdersCount(), this.getSellOrdersCount()) &&
+                             tagsAreEqual &&
+                             Objects.equals(item.getAssetUrl(), this.getAssetUrl()) &&
+                             lastSoldAtAreEqual &&
+                             Objects.equals(item.getLastSoldPrice(), this.getLastSoldPrice());
         }
-
-        return Objects.equals(item.getItemId(), this.getItemId()) &&
-               Objects.equals(item.getName(), this.getName()) &&
-               Objects.equals(item.getRarity(), this.getRarity()) &&
-               Objects.equals(item.getType(), this.getType()) &&
-               Objects.equals(item.getMaxBuyPrice(), this.getMaxBuyPrice()) &&
-               Objects.equals(item.getBuyOrdersCount(), this.getBuyOrdersCount()) &&
-               Objects.equals(item.getMinSellPrice(), this.getMinSellPrice()) &&
-               Objects.equals(item.getSellOrdersCount(), this.getSellOrdersCount()) &&
-               tagsAreEqual &&
-               Objects.equals(item.getAssetUrl(), this.getAssetUrl()) &&
-               lastSoldAtAreEqual &&
-               Objects.equals(item.getLastSoldPrice(), this.getLastSoldPrice());
+        return false;
     }
 
     default void setMainFields(ItemMainFieldsI mainFields) {
