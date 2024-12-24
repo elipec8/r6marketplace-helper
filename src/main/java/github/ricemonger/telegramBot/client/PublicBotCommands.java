@@ -10,7 +10,6 @@ public class PublicBotCommands {
     public static final String START_COMMAND = "/start";
     public static final String HELP_COMMAND = "/help";
     public static final String ITEMS_COMMAND = "/items";
-    public static final String TRADES_COMMAND = "/trades";
     public static final String MANAGERS_COMMAND = "/managers";
     public static final String FILTERS_COMMAND = "/filters";
     public static final String CREDENTIALS_COMMAND = "/credentials";
@@ -20,7 +19,6 @@ public class PublicBotCommands {
             new BotCommand(START_COMMAND, "Start chatting with bot"),
             new BotCommand(HELP_COMMAND, "Get help with bot interactions"),
             new BotCommand(ITEMS_COMMAND, "Search for items on Marketplace"),
-            new BotCommand(TRADES_COMMAND, "Search for your trades on Marketplace"),
             new BotCommand(MANAGERS_COMMAND, "Operate on your trade managers"),
             new BotCommand(FILTERS_COMMAND, "Manage your item filters"),
             new BotCommand(CREDENTIALS_COMMAND, "Manage your linked Ubisoft account"),
@@ -36,12 +34,6 @@ public class PublicBotCommands {
                             Sorting options for the items and starting offset can be chosen before search.
                             Item properties to be shown, number of items per one message and
                             maximum amount of messages from one request can be specified too.
-                            """ +
-                    TRADES_COMMAND + " - Search for your ongoing or finished Marketplace trades\n" +
-                    """
-                            New trades can be created or existing ones can be updated.
-                            You can look for trades by applied to search filters.
-                            Sorting options for the trades and starting offset can be chosen before search.
                             """ +
                     MANAGERS_COMMAND + " - Operate your trade managers\n" +
                     """
