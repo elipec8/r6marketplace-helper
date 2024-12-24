@@ -27,11 +27,13 @@ public class ItemPostgresService implements ItemDatabaseService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Item findById(String itemId) throws ItemDoesntExistException {
         return itemRepository.findById(itemId).map(itemEntityMapper::createDTO).orElseThrow(() -> new ItemDoesntExistException("Item with id" + itemId + "doesn't exist"));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Item> findAll() {
         return itemRepository.findAll().stream().map(itemEntityMapper::createDTO).toList();
     }

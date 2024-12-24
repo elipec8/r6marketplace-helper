@@ -125,14 +125,14 @@ class TelegramUserUbiAccountEntryServiceTest {
         authUsersWithDatabaseExceptions.add(new UbiAccountAuthorizationEntryWithTelegram("6", true, authorizedEntry));
         authUsersWithDatabaseExceptions.add(new UbiAccountAuthorizationEntryWithTelegram("7", false, authorizedEntry));
 
-        AuthorizationDTO validAuthDTO = new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId","rememberDeviceTicket", "rememberMeTicket");
+        AuthorizationDTO validAuthDTO = new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "rememberDeviceTicket", "rememberMeTicket");
 
         AuthorizationDTO invalidAuthDTO = new AuthorizationDTO("ticket", null, "spaceId", "sessionId", "rememberDeviceTicket", "rememberMeTicket");
 
         when(authorizationService.reauthorizeAndGet2FaAuthorizedDtoForEncodedPasswordWithRememberDeviceTicket(authorizedEntry.getEmail(),
-                authorizedEntry.getEncodedPassword(),authorizedEntry.getUbiRememberDeviceTicket())).thenReturn(validAuthDTO);
+                authorizedEntry.getEncodedPassword(), authorizedEntry.getUbiRememberDeviceTicket())).thenReturn(validAuthDTO);
         when(authorizationService.reauthorizeAndGet2FaAuthorizedDtoForEncodedPasswordWithRememberDeviceTicket(invalidRememberDeviceTicketEntry.getEmail(),
-                invalidRememberDeviceTicketEntry.getEncodedPassword(),invalidRememberDeviceTicketEntry.getUbiRememberDeviceTicket())).thenReturn(invalidAuthDTO);
+                invalidRememberDeviceTicketEntry.getEncodedPassword(), invalidRememberDeviceTicketEntry.getUbiRememberDeviceTicket())).thenReturn(invalidAuthDTO);
 
         doThrow(TelegramUserDoesntExistException.class).when(telegramUserUbiAccountEntryDatabaseService).saveAuthorizationInfo(eq("6"), eq(authorizedEntry));
         doThrow(UbiAccountEntryAlreadyExistsException.class).when(telegramUserUbiAccountEntryDatabaseService).saveAuthorizationInfo(eq("7"), eq(authorizedEntry));

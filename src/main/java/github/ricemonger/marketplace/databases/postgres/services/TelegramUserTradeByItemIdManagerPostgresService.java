@@ -75,6 +75,7 @@ public class TelegramUserTradeByItemIdManagerPostgresService implements Telegram
     }
 
     @Override
+    @Transactional(readOnly = true)
     public TradeByItemIdManager findById(String chatId, String itemId) throws TelegramUserDoesntExistException, TradeByItemIdManagerDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
         ItemEntity item = getItemEntityByIdOrThrow(itemId);
@@ -83,6 +84,7 @@ public class TelegramUserTradeByItemIdManagerPostgresService implements Telegram
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<TradeByItemIdManager> findAllByChatId(String chatId) throws TelegramUserDoesntExistException {
         TelegramUserEntity user = telegramUserRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
 

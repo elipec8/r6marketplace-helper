@@ -189,7 +189,7 @@ class PersonalItemTest {
     }
 
     @Test
-    public void equals_should_return_false_for_different_itemId_or_tradeOperation_Type(){
+    public void equals_should_return_false_for_different_itemId_or_tradeOperation_Type() {
         Item item = new Item();
         item.setItemId("itemId");
 
@@ -225,7 +225,7 @@ class PersonalItemTest {
     }
 
     @Test
-    public void equals_should_return_false_for_null(){
+    public void equals_should_return_false_for_null() {
         Item item = new Item();
         item.setItemId("itemId");
 
@@ -343,7 +343,7 @@ class PersonalItemTest {
     }
 
     @Test
-    public void isFullyEqual_should_return_false_for_null(){
+    public void isFullyEqual_should_return_false_for_null() {
         PersonalItem personalItem1 = new PersonalItem();
 
         assertFalse(personalItem1.isFullyEqual(null));

@@ -70,7 +70,7 @@ public class PersonalItem {
     }
 
     public boolean isFullyEqual(PersonalItem other) {
-        if(other == null) {
+        if (other == null) {
             return false;
         }
 

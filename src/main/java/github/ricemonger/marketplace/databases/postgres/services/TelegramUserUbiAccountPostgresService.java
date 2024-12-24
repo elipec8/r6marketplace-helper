@@ -63,18 +63,20 @@ public class TelegramUserUbiAccountPostgresService implements TelegramUserUbiAcc
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UbiAccountAuthorizationEntry findAuthorizationInfoByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
         return ubiAccountEntryEntityMapper.createUbiAccountAuthorizationEntry(ubiAccountAuthorizationEntryRepository.findByUserTelegramUserChatId(chatId)
                 .orElseThrow(() -> new UbiAccountEntryDoesntExistException("User with chatId " + chatId + " doesn't have ubi account entry")));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UbiAccountAuthorizationEntryWithTelegram> findAllAuthorizationInfoForTelegram() {
         return ubiAccountAuthorizationEntryRepository.findAll().stream().map(ubiAccountEntryEntityMapper::createUbiAccountAuthorizationEntryWithTelegram).toList();
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<UbiAccountEntryWithTelegram> findAllForTelegram() {
         return ubiAccountAuthorizationEntryRepository.findAll().stream().map(ubiAccountEntryEntityMapper::createUbiAccountEntryWithTelegram).toList();
     }

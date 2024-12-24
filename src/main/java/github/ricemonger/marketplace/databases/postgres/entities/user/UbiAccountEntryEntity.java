@@ -18,7 +18,7 @@ import java.util.Objects;
 @IdClass(UbiAccountEntryEntityId.class)
 public class UbiAccountEntryEntity {
     @Id
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @OneToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private UserEntity user;
 
@@ -36,7 +36,7 @@ public class UbiAccountEntryEntity {
     @Column(columnDefinition = "TEXT")
     private String ubiRememberMeTicket;
 
-    @ManyToOne(optional = true, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ubiProfileId", referencedColumnName = "ubiProfileId")
     private UbiAccountStatsEntity ubiAccountStats;
 

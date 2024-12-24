@@ -14,8 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -43,7 +41,7 @@ public class TelegramUserItemFilterPostgresService implements TelegramUserItemFi
 
         for (int i = 0; i < filters.size(); i++) {
             if (filters.get(i).getName().equals(name)) {
-               filters.remove(i);
+                filters.remove(i);
                 break;
             }
         }
@@ -52,6 +50,7 @@ public class TelegramUserItemFilterPostgresService implements TelegramUserItemFi
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ItemFilter findById(String chatId, String name) throws TelegramUserDoesntExistException, ItemFilterDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
@@ -59,6 +58,7 @@ public class TelegramUserItemFilterPostgresService implements TelegramUserItemFi
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ItemFilter> findAllByChatId(String chatId) throws TelegramUserDoesntExistException {
         return itemFilterRepository.findAllByUserTelegramUserChatId(chatId).stream().map(itemFilterEntityMapper::createDTO).toList();
     }

@@ -4,7 +4,8 @@ import github.ricemonger.utils.DTOs.personal.UbiAccountAuthorizationEntry;
 import github.ricemonger.utils.DTOs.personal.UbiAccountAuthorizationEntryWithTelegram;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class UbiAccountAuthorizationEntryWithTelegramTest {
 

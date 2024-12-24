@@ -29,11 +29,13 @@ public class ItemDaySalesUbiStatsPostgresService implements ItemSaleUbiStatsServ
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ItemDaySalesUbiStats> findAllForLastMonth() {
         return itemDaySalesUbiStatsRepository.findAllForLastMonth().stream().map(itemDaySalesUbiStatsEntityMapper::createDTO).toList();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ItemDaySalesUbiStats> findAll() {
         return itemDaySalesUbiStatsRepository.findAll().stream().map(itemDaySalesUbiStatsEntityMapper::createDTO).toList();
     }

@@ -180,7 +180,7 @@ public class PotentialTradeStatsService {
             } else {
                 int monthMedianPrice = item.getMonthMedianPrice() == null ? 0 : item.getMonthMedianPrice();
 
-                if (minutesToTrade == null){
+                if (minutesToTrade == null) {
                     return new PotentialTradeStats(price, null, null);
                 }
 
@@ -207,7 +207,7 @@ public class PotentialTradeStatsService {
 
             int monthMedianPrice = item.getMonthMedianPrice() == null ? 0 : item.getMonthMedianPrice();
 
-            if (minutesToTrade == null){
+            if (minutesToTrade == null) {
                 return new PotentialTradeStats(price, null, null);
             }
 

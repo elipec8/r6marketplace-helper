@@ -42,7 +42,7 @@ public class ItemFilterEntity {
     @Column(columnDefinition = "TEXT")
     private String itemTypes;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "item_filter_tags",
             joinColumns = {@JoinColumn(name = "itemFilterUserId", referencedColumnName = "userId"),
                     @JoinColumn(name = "itemFilterName", referencedColumnName = "name")},

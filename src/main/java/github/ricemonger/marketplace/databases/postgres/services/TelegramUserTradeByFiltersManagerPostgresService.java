@@ -70,6 +70,7 @@ public class TelegramUserTradeByFiltersManagerPostgresService implements Telegra
     }
 
     @Override
+    @Transactional(readOnly = true)
     public TradeByFiltersManager findById(String chatId, String name) throws TelegramUserDoesntExistException, TradeByFiltersManagerDoesntExistException {
         TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
 
@@ -77,6 +78,7 @@ public class TelegramUserTradeByFiltersManagerPostgresService implements Telegra
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<TradeByFiltersManager> findAllByChatId(String chatId) throws TelegramUserDoesntExistException {
         return getTelegramUserEntityByIdOrThrow(chatId).getUser().getTradeByFiltersManagers().stream().map(tradeByFiltersManagerEntityMapper::createDTO).toList();
     }

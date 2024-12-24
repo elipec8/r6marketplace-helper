@@ -112,7 +112,7 @@ public interface ItemHistoryFieldsI extends ItemIdFieldI {
             return true;
         }
         if (o instanceof ItemHistoryFieldsI item) {
-            return   Objects.equals(item.getItemId(), this.getItemId()) &&
+            return Objects.equals(item.getItemId(), this.getItemId()) &&
                    Objects.equals(item.getMonthAveragePrice(), this.getMonthAveragePrice()) &&
                    Objects.equals(item.getMonthMedianPrice(), this.getMonthMedianPrice()) &&
                    Objects.equals(item.getMonthMaxPrice(), this.getMonthMaxPrice()) &&

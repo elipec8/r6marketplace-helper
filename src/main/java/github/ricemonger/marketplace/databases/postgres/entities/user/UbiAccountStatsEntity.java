@@ -24,7 +24,7 @@ public class UbiAccountStatsEntity {
 
     private Integer creditAmount;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "ubi_account_current_owned_items",
             joinColumns = {@JoinColumn(name = "ubiProfileId", referencedColumnName = "ubiProfileId")},
             inverseJoinColumns = @JoinColumn(name = "itemId", referencedColumnName = "itemid"))

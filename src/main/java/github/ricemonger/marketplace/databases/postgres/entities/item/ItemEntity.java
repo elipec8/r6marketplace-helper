@@ -23,7 +23,7 @@ public class ItemEntity {
     private String assetUrl;
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "item_tags",
             joinColumns = {@JoinColumn(name = "itemId", referencedColumnName = "itemId")},
             inverseJoinColumns = @JoinColumn(name = "tagValue", referencedColumnName = "tag_value"))

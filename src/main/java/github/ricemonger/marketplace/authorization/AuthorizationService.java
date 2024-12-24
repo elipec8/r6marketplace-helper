@@ -63,7 +63,7 @@ public class AuthorizationService {
                             @Override
                             public Throwable apply(String s) {
                                 log.error("Client error during ubi 2fa reauthorization for email {}, rememberDeviceTicket: {} : {}", email,
-                                        rememberDeviceTicket,s);
+                                        rememberDeviceTicket, s);
                                 return new UbiUserAuthorizationClientErrorException(s);
                             }
                         }))
@@ -71,7 +71,7 @@ public class AuthorizationService {
                         clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
                             @Override
                             public Throwable apply(String s) {
-                                log.error("Server error during ubi 2fa reauthorization for email {}, rememberDeviceTicket: {} : {}", email, rememberDeviceTicket,s);
+                                log.error("Server error during ubi 2fa reauthorization for email {}, rememberDeviceTicket: {} : {}", email, rememberDeviceTicket, s);
                                 return new UbiUserAuthorizationServerErrorException(s);
                             }
                         }))
