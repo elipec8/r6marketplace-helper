@@ -8,7 +8,6 @@ import github.ricemonger.telegramBot.executors.itemFilters.ItemFiltersDirect;
 import github.ricemonger.telegramBot.executors.items.ItemsDirect;
 import github.ricemonger.telegramBot.executors.start.StartDirect;
 import github.ricemonger.telegramBot.executors.tradeManagers.TradeManagersDirect;
-import github.ricemonger.telegramBot.executors.trades.TradesDirect;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.UbiAccountEntryDirect;
 import github.ricemonger.utils.exceptions.client.UnexpectedDirectCommandException;
 import org.junit.jupiter.api.Test;
@@ -46,13 +45,6 @@ class DirectCommandListenerTest {
         directCommandListener.handleUpdate(updateInfo(ITEMS_COMMAND));
 
         verify(executorsService).execute(ItemsDirect.class, updateInfo(ITEMS_COMMAND));
-    }
-
-    @Test
-    public void handleUpdate_should_trades() {
-        directCommandListener.handleUpdate(updateInfo(TRADES_COMMAND));
-
-        verify(executorsService).execute(TradesDirect.class, updateInfo(TRADES_COMMAND));
     }
 
     @Test

@@ -34,8 +34,6 @@ public class DirectCommandListener {
 
             case ITEMS_COMMAND -> executorsService.execute(ItemsDirect.class, updateInfo);
 
-            case TRADES_COMMAND -> executorsService.execute(TradesDirect.class, updateInfo);
-
             case MANAGERS_COMMAND -> executorsService.execute(TradeManagersDirect.class, updateInfo);
 
             case FILTERS_COMMAND -> executorsService.execute(ItemFiltersDirect.class, updateInfo);
