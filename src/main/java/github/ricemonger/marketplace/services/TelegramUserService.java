@@ -165,7 +165,6 @@ public class TelegramUserService {
     }
 
     public List<TelegramUserInput> getAllUserInputs(Long chatId) throws TelegramUserDoesntExistException {
-        getTelegramUserOrThrow(chatId);
         return inputDatabaseService.findAllByChatId(String.valueOf(chatId));
     }
 
@@ -181,8 +180,6 @@ public class TelegramUserService {
     }
 
     private String getInputValueByState(Long chatId, InputState inputState) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
-        getTelegramUserOrThrow(chatId);
-
         return inputDatabaseService.findById(String.valueOf(chatId), inputState).getValue();
     }
 

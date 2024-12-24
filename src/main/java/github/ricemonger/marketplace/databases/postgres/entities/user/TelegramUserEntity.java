@@ -24,11 +24,11 @@ public class TelegramUserEntity {
     @Id
     private String chatId;
 
-    @OneToOne(optional = false, fetch = FetchType.EAGER)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private UserEntity user;
 
-    @OneToMany(mappedBy = "telegramUser", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "telegramUser", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TelegramUserInputEntity> telegramUserInputs = new ArrayList<>();
 
     @Enumerated(EnumType.ORDINAL)
@@ -38,6 +38,10 @@ public class TelegramUserEntity {
 
     private Integer itemShowMessagesLimit = 50;
     private Boolean itemShowFewInMessageFlag = false;
+
+    public TelegramUserEntity(String chatId) {
+        this.chatId = chatId;
+    }
 
     public TelegramUserEntity(String chatId, Long userId) {
         this(chatId, new UserEntity(userId));

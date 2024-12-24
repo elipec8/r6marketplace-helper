@@ -18,7 +18,7 @@ import java.util.Objects;
 @IdClass(TradeByFiltersManagerEntityId.class)
 public class TradeByFiltersManagerEntity {
     @MapsId
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private UserEntity user;
 
@@ -30,7 +30,7 @@ public class TradeByFiltersManagerEntity {
     @Enumerated(EnumType.ORDINAL)
     private TradeOperationType tradeOperationType;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "trade_manager_by_item_filters_applied_filters",
             joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId"),
                     @JoinColumn(name = "name", referencedColumnName = "name")},

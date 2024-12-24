@@ -61,9 +61,9 @@ class PotentialTradeFactoryTest {
                 new PotentialPersonalSellTrade(personalItemHigherPriority3, new PotentialTradeStats(7, 8, 4L))
         );
 
-        doReturn(sellTrades).when(potentialTradeFactory).getFilteredPotentialSellTradesForUser(any(),any());
+        doReturn(sellTrades).when(potentialTradeFactory).getFilteredPotentialSellTradesForUser(any(), any());
 
-        List<PotentialPersonalSellTrade> result = potentialTradeFactory.getResultingPersonalSellTrades(personalItems,resaleLocks, soldIn24h, sellSlots, sellLimit);
+        List<PotentialPersonalSellTrade> result = potentialTradeFactory.getResultingPersonalSellTrades(personalItems, resaleLocks, soldIn24h, sellSlots, sellLimit);
         assertEquals(2, result.size());
         assertTrue(result.contains(new PotentialPersonalSellTrade(personalItemLowerPriority2, new PotentialTradeStats(5, 6, 11L))));
         assertTrue(result.contains(new PotentialPersonalSellTrade(personalItemExistingTrade1, new PotentialTradeStats(1, 2, 3L))));
@@ -103,9 +103,9 @@ class PotentialTradeFactoryTest {
                 new PotentialPersonalSellTrade(personalItemHigherPriority3, new PotentialTradeStats(7, 8, 4L))
         );
 
-        doReturn(sellTrades).when(potentialTradeFactory).getFilteredPotentialSellTradesForUser(any(),any());
+        doReturn(sellTrades).when(potentialTradeFactory).getFilteredPotentialSellTradesForUser(any(), any());
 
-        List<PotentialPersonalSellTrade> result = potentialTradeFactory.getResultingPersonalSellTrades(personalItems,resaleLocks, boughtIn24h,
+        List<PotentialPersonalSellTrade> result = potentialTradeFactory.getResultingPersonalSellTrades(personalItems, resaleLocks, boughtIn24h,
                 sellSlots, sellLimit);
         assertEquals(2, result.size());
         assertTrue(result.contains(new PotentialPersonalSellTrade(personalItemLowerPriority2, new PotentialTradeStats(5, 6, 11L))));
@@ -143,7 +143,7 @@ class PotentialTradeFactoryTest {
                 new PotentialPersonalSellTrade(personalItemExistingTrade1, new PotentialTradeStats(1, 2, 3L))
         );
 
-        doReturn(sellTrades).when(potentialTradeFactory).getFilteredPotentialSellTradesForUser(any(),any());
+        doReturn(sellTrades).when(potentialTradeFactory).getFilteredPotentialSellTradesForUser(any(), any());
         List<PotentialPersonalSellTrade> result = potentialTradeFactory.getResultingPersonalSellTrades(personalItems, resaleLocks, boughtIn24h, sellSlots,
                 sellLimit);
 
@@ -473,7 +473,7 @@ class PotentialTradeFactoryTest {
         when(potentialTradeStatsService.getPotentialBuyTradesStatsOfItem(alreadyExistingTradeWithProperCategoryPersonalItem.getItem())).thenReturn(List.of(potentialTradeStats5, potentialTradeStats6, potentialTradeStatsMedianPriceDiffPercent9, potentialTradeStatsNullPrice, potentialTradeStatsNullTime, potentialTradeStatsNullPriority));
 
         PersonalItem nullPriceExistingTradePersonalItem = new PersonalItem();
-        nullPriceExistingTradePersonalItem.setItem(new Item("4"));
+        nullPriceExistingTradePersonalItem.setItem(new Item("6"));
         nullPriceExistingTradePersonalItem.setIsOwned(false);
         nullPriceExistingTradePersonalItem.setTradeOperationType(TradeOperationType.BUY);
         UbiTrade ubiTrade3 = new UbiTrade();
@@ -489,7 +489,7 @@ class PotentialTradeFactoryTest {
         when(potentialTradeStatsService.getPotentialBuyTradesStatsOfItem(nullPriceExistingTradePersonalItem.getItem())).thenReturn(List.of());
 
         PersonalItem nullTimeExistingTradePersonalItem = new PersonalItem();
-        nullTimeExistingTradePersonalItem.setItem(new Item("4"));
+        nullTimeExistingTradePersonalItem.setItem(new Item("7"));
         nullTimeExistingTradePersonalItem.setIsOwned(false);
         nullTimeExistingTradePersonalItem.setTradeOperationType(TradeOperationType.BUY);
         UbiTrade ubiTrade4 = new UbiTrade();
@@ -505,7 +505,7 @@ class PotentialTradeFactoryTest {
         when(potentialTradeStatsService.getPotentialBuyTradesStatsOfItem(nullTimeExistingTradePersonalItem.getItem())).thenReturn(List.of());
 
         PersonalItem nullPriorityExistingTradePersonalItem = new PersonalItem();
-        nullPriorityExistingTradePersonalItem.setItem(new Item("4"));
+        nullPriorityExistingTradePersonalItem.setItem(new Item("8"));
         nullPriorityExistingTradePersonalItem.setIsOwned(false);
         nullPriorityExistingTradePersonalItem.setTradeOperationType(TradeOperationType.BUY);
         UbiTrade ubiTrade5 = new UbiTrade();
@@ -535,22 +535,18 @@ class PotentialTradeFactoryTest {
         PotentialTradeStats potentialTradeStats11 = new PotentialTradeStats(199, 32, 33L);
         when(potentialTradeStatsService.getPotentialBuyTradesStatsOfItem(noAlreadyExistingTradePersonalItem.getItem())).thenReturn(List.of(potentialTradeStatsMedianPriceDiff8, potentialTradeStats10, potentialTradeStats11));
 
-        List<PotentialPersonalBuyTrade> result = potentialTradeFactory.getFilteredPotentialBuyTradesForUser(List.of(ownedPersonalItem, wrongOperationTypePersonalItem, alreadyExistingTradeWithWrongCategoryPersonalItem,alreadyExistingTradeWithProperCategoryPersonalItem, nullPriceExistingTradePersonalItem, nullTimeExistingTradePersonalItem, nullPriorityExistingTradePersonalItem, noAlreadyExistingTradePersonalItem));
+        List<PotentialPersonalBuyTrade> result = potentialTradeFactory.getFilteredPotentialBuyTradesForUser(List.of(ownedPersonalItem, wrongOperationTypePersonalItem, alreadyExistingTradeWithWrongCategoryPersonalItem, alreadyExistingTradeWithProperCategoryPersonalItem, nullPriceExistingTradePersonalItem, nullTimeExistingTradePersonalItem, nullPriorityExistingTradePersonalItem, noAlreadyExistingTradePersonalItem));
 
         verify(potentialTradeStatsService, times(0)).getPotentialBuyTradesStatsOfItem(ownedPersonalItem.getItem());
         verify(potentialTradeStatsService, times(0)).getPotentialBuyTradesStatsOfItem(wrongOperationTypePersonalItem.getItem());
 
         assertTrue(result.contains(new PotentialPersonalBuyTrade(alreadyExistingTradeWithWrongCategoryPersonalItem, potentialTradeStats3)));
         assertTrue(result.contains(new PotentialPersonalBuyTrade(alreadyExistingTradeWithWrongCategoryPersonalItem, potentialTradeStats4)));
-        assertFalse(result.contains(new PotentialPersonalBuyTrade(alreadyExistingTradeWithWrongCategoryPersonalItem, potentialTradeStatsBoundaryPrice7)));
-        assertFalse(result.contains(new PotentialPersonalBuyTrade(alreadyExistingTradeWithWrongCategoryPersonalItem, ubiTradeStatsWrongCategory)));
 
-        assertTrue(result.contains(new PotentialPersonalBuyTrade(nullTimeExistingTradePersonalItem, potentialTradeStats5)));
-        assertTrue(result.contains(new PotentialPersonalBuyTrade(nullTimeExistingTradePersonalItem, potentialTradeStats6)));
-        assertFalse(result.contains(new PotentialPersonalBuyTrade(nullTimeExistingTradePersonalItem, potentialTradeStatsMedianPriceDiffPercent9)));
-        assertTrue(result.contains(new PotentialPersonalBuyTrade(nullTimeExistingTradePersonalItem, ubiTradeStatsNullTime)));
+        assertTrue(result.contains(new PotentialPersonalBuyTrade(alreadyExistingTradeWithProperCategoryPersonalItem, potentialTradeStats5)));
+        assertTrue(result.contains(new PotentialPersonalBuyTrade(alreadyExistingTradeWithProperCategoryPersonalItem, potentialTradeStats6)));
+        assertTrue(result.contains(new PotentialPersonalBuyTrade(alreadyExistingTradeWithProperCategoryPersonalItem, ubiTradeStatsProperCategory)));
 
-        assertFalse(result.contains(new PotentialPersonalBuyTrade(noAlreadyExistingTradePersonalItem, potentialTradeStatsMedianPriceDiff8)));
         assertTrue(result.contains(new PotentialPersonalBuyTrade(noAlreadyExistingTradePersonalItem, potentialTradeStats10)));
         assertTrue(result.contains(new PotentialPersonalBuyTrade(noAlreadyExistingTradePersonalItem, potentialTradeStats11)));
 

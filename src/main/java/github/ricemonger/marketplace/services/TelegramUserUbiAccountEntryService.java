@@ -62,6 +62,11 @@ public class TelegramUserUbiAccountEntryService {
         for (UbiAccountAuthorizationEntryWithTelegram user : users) {
             try {
                 AuthorizationDTO dto = authorizationService.reauthorizeAndGet2FaAuthorizedDtoForEncodedPasswordWithRememberDeviceTicket(user.getEmail(), user.getEncodedPassword(), user.getUbiRememberDeviceTicket());
+                if(dto.getProfileId() == null){
+                    log.error("User with chatId {} could not be reauthorized, because of invalid rememberDeviceTicket", user.getChatId());
+                    unauthorizedUsers.add(user);
+                    continue;
+                }
                 saveAuthorizationInfo(user.getChatId(), user.getEmail(), user.getEncodedPassword(), dto);
             } catch (UbiUserAuthorizationClientErrorException | UbiUserAuthorizationServerErrorException e) {
                 unauthorizedUsers.add(user);

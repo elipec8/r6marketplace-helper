@@ -5,6 +5,7 @@ import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.utils.DTOs.personal.TelegramUser;
+import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -34,7 +35,7 @@ public class UpdateInfoMapper {
         InputState inputState;
         InputGroup inputGroup;
 
-        if (telegramUserService.isTelegramUserRegistered(updateInfo.getChatId())) {
+        try {
             TelegramUser telegramUser = telegramUserService.getTelegramUser(updateInfo.getChatId());
 
             inputState = telegramUser.getInputState();
@@ -46,7 +47,8 @@ public class UpdateInfoMapper {
             if (inputGroup == null) {
                 inputGroup = InputGroup.BASE;
             }
-        } else {
+
+        } catch (TelegramUserDoesntExistException doesntExistException) {
             inputState = InputState.BASE;
             inputGroup = InputGroup.BASE;
         }

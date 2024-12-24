@@ -19,7 +19,7 @@ import java.util.Objects;
 @IdClass(TelegramUserInputEntityId.class)
 public class TelegramUserInputEntity {
     @MapsId
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "chatId", referencedColumnName = "chatId")
     private TelegramUserEntity telegramUser;
 

@@ -23,7 +23,7 @@ import java.util.Set;
 @IdClass(ItemFilterEntityId.class)
 public class ItemFilterEntity {
     @MapsId
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private UserEntity user;
 
@@ -42,7 +42,7 @@ public class ItemFilterEntity {
     @Column(columnDefinition = "TEXT")
     private String itemTypes;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "item_filter_tags",
             joinColumns = {@JoinColumn(name = "itemFilterUserId", referencedColumnName = "userId"),
                     @JoinColumn(name = "itemFilterName", referencedColumnName = "name")},

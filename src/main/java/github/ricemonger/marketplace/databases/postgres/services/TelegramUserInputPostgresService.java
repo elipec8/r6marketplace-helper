@@ -49,17 +49,13 @@ public class TelegramUserInputPostgresService implements TelegramUserInputDataba
 
     @Override
     public TelegramUserInput findById(String chatId, InputState inputState) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
-        TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
-
-        return telegramUserInputEntityMapper.createDTO(telegramUserInputRepository.findById(new TelegramUserInputEntityId(telegramUser, inputState))
+        return telegramUserInputEntityMapper.createDTO(telegramUserInputRepository.findById(new TelegramUserInputEntityId(chatId, inputState))
                 .orElseThrow(() -> new TelegramUserInputDoesntExistException("Input with chatId " + chatId + " and inputState " + inputState + " " + "not found")));
     }
 
     @Override
     public List<TelegramUserInput> findAllByChatId(String chatId) throws TelegramUserDoesntExistException {
-        TelegramUserEntity telegramUser = getTelegramUserEntityByIdOrThrow(chatId);
-
-        Collection<TelegramUserInputEntity> entities = telegramUser.getTelegramUserInputs();
+        Collection<TelegramUserInputEntity> entities = telegramUserInputRepository.findAllByTelegramUserChatId(chatId);
 
         if (entities == null || entities.isEmpty()) {
             return new ArrayList<>();
