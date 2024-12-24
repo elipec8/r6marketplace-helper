@@ -26,7 +26,7 @@ public class ScheduledAllItemsStatsFetcher {
 
     private final TelegramBotService telegramBotService;
 
-    @Scheduled(fixedRate = 5 * 60 * 1000, initialDelay = 60 * 1000) // every 5m after 1m of delay
+    @Scheduled(fixedRate = 3 * 60 * 1000, initialDelay = 60 * 1000) // every 3m after 1m of delay
     public void fetchAllItemStats() {
         int expectedItemCount = 0;
         try {

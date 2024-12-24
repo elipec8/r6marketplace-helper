@@ -8,6 +8,7 @@ import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.TradeCategory;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -23,8 +24,7 @@ import static github.ricemonger.marketplace.services.PotentialTradeStatsService.
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class PotentialTradeStatsServiceTest {
@@ -232,20 +232,23 @@ class PotentialTradeStatsServiceTest {
 
     @Test
     public void getExpectedPaymentsSuccessMinutesForExistingTradeOrNull_should_return_expected_result() {
-        UbiTrade ubiTrade = new UbiTrade();
-        ubiTrade.setLastModifiedAt(LocalDateTime.of(2021, 1, 1, 0, 0, 0));
-        ubiTrade.setExpiresAt(LocalDateTime.of(2021, 1, 2, 0, 0, 0));
+        try (MockedStatic<LocalDateTime> mockDateTime = mockStatic(LocalDateTime.class)) {
+            UbiTrade ubiTrade = new UbiTrade();
+            ubiTrade.setLastModifiedAt(LocalDateTime.of(2021, 1, 1, 0, 0, 0));
+            mockDateTime.when(LocalDateTime::now).thenReturn(LocalDateTime.of(2021, 1, 15, 0, 0, 0));
 
-        Integer prognosedTradeSuccessMinutes = 10000;
-        doReturn(prognosedTradeSuccessMinutes).when(potentialTradeStatsService).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), any(), any());
+            Integer prognosedTradeSuccessMinutes = 27000;
+            doReturn(prognosedTradeSuccessMinutes).when(potentialTradeStatsService).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), any(), any());
 
-        assertEquals(prognosedTradeSuccessMinutes - (int) Duration.between(ubiTrade.getLastModifiedAt(), ubiTrade.getExpiresAt()).toMinutes(), potentialTradeStatsService.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
+            assertEquals(prognosedTradeSuccessMinutes - (int) Duration.between(ubiTrade.getLastModifiedAt(), (LocalDateTime.of(2021, 1, 15, 0, 0,
+                    0))).toMinutes(), potentialTradeStatsService.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
 
-        doReturn(10).when(potentialTradeStatsService).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), any(), any());
-        assertEquals(TRADE_MANAGER_FIXED_RATE_MINUTES, potentialTradeStatsService.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
+            doReturn(10).when(potentialTradeStatsService).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), any(), any());
+            assertEquals(TRADE_MANAGER_FIXED_RATE_MINUTES, potentialTradeStatsService.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
 
-        doReturn(null).when(potentialTradeStatsService).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), any(), any());
-        assertNull(potentialTradeStatsService.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
+            doReturn(null).when(potentialTradeStatsService).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), any(), any());
+            assertNull(potentialTradeStatsService.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
+        }
     }
 
     @Test
@@ -443,7 +446,7 @@ class PotentialTradeStatsServiceTest {
 
         int price = 500;
 
-        assertEquals(new PotentialTradeStats(price,null, null), potentialTradeStatsService.calculateBuyTradeStats(item, price, null));
+        assertEquals(new PotentialTradeStats(price, null, null), potentialTradeStatsService.calculateBuyTradeStats(item, price, null));
     }
 
     @Test

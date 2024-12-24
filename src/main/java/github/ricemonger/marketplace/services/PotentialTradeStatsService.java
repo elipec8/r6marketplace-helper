@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static github.ricemonger.marketplace.scheduled_tasks.ScheduledAllUbiUsersManager.TRADE_MANAGER_FIXED_RATE_MINUTES;
@@ -128,7 +129,7 @@ public class PotentialTradeStatsService {
 
     @Nullable
     public Integer getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(@NotNull UbiTrade ubiTrade) {
-        int minutesTradeExists = (int) Duration.between(ubiTrade.getLastModifiedAt(), ubiTrade.getExpiresAt()).toMinutes();
+        int minutesTradeExists = (int) Duration.between(ubiTrade.getLastModifiedAt(), LocalDateTime.now()).toMinutes();
 
         Integer prognosedTradeSuccessMinutes = getPrognosedTradeSuccessMinutesByPriceOrNull(ubiTrade.getItem(), ubiTrade.getProposedPaymentPrice(), ubiTrade.getCategory());
 
