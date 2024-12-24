@@ -225,7 +225,7 @@ public class InputCommandListener {
             case TRADE_BY_FILTERS_MANAGER_MIN_BUY_SELL_PROFIT ->
                     executorsService.execute(TradeByFiltersManagerEditStage5AskMinProfitPercentInput.class, updateInfo);
 
-            case TRADE_BY_FILTERS_MANAGER_MIN_PROFIT_PERCENT ->
+            case TRADE_BY_FILTERS_MANAGER_MIN_MEDIAN_PRICE_DIFFERENCE_PERCENT ->
                     executorsService.execute(TradeByFiltersManagerEditStage6AskPriorityInput.class, updateInfo);
 
             case TRADE_BY_FILTERS_MANAGER_PRIORITY ->

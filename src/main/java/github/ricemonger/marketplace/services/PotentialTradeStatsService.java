@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static github.ricemonger.marketplace.scheduled_tasks.ScheduledAllUbiUsersManager.TRADE_MANAGER_FIXED_RATE_MINUTES;
@@ -128,7 +129,7 @@ public class PotentialTradeStatsService {
 
     @Nullable
     public Integer getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(@NotNull UbiTrade ubiTrade) {
-        int minutesTradeExists = (int) Duration.between(ubiTrade.getLastModifiedAt(), ubiTrade.getExpiresAt()).toMinutes();
+        int minutesTradeExists = (int) Duration.between(ubiTrade.getLastModifiedAt(), LocalDateTime.now()).toMinutes();
 
         Integer prognosedTradeSuccessMinutes = getPrognosedTradeSuccessMinutesByPriceOrNull(ubiTrade.getItem(), ubiTrade.getProposedPaymentPrice(), ubiTrade.getCategory());
 
@@ -179,6 +180,10 @@ public class PotentialTradeStatsService {
             } else {
                 int monthMedianPrice = item.getMonthMedianPrice() == null ? 0 : item.getMonthMedianPrice();
 
+                if (minutesToTrade == null) {
+                    return new PotentialTradeStats(price, null, null);
+                }
+
                 long tradePriority = getPriceFactor(price, 0.5) *
                                      getPriceDifferenceFactor(price, monthMedianPrice, 1) *
                                      getPriceRatioFactorPercent(price, monthMedianPrice, 1) *
@@ -201,6 +206,10 @@ public class PotentialTradeStatsService {
         if (price != null && price > 0) {
 
             int monthMedianPrice = item.getMonthMedianPrice() == null ? 0 : item.getMonthMedianPrice();
+
+            if (minutesToTrade == null) {
+                return new PotentialTradeStats(price, null, null);
+            }
 
             long tradePriority = (constant / getPriceFactor(price, 1.0)) *
                                  getPriceDifferenceFactor(price, monthMedianPrice, 1) *

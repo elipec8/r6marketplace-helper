@@ -3,11 +3,11 @@ package github.ricemonger.telegramBot.client;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputState;
+import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.DTOs.personal.TelegramUserInput;
 import github.ricemonger.utils.DTOs.personal.TradeByFiltersManager;
 import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
-import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.enums.TradeOperationType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -61,7 +61,7 @@ public class TradeManagerFromInputsMapper {
         String name = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_NAME);
         String tradeType = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_TRADE_TYPE);
         String minBuySellProfit = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_MIN_BUY_SELL_PROFIT);
-        String minProfitPercent = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_MIN_PROFIT_PERCENT);
+        String minProfitPercent = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_MIN_MEDIAN_PRICE_DIFFERENCE_PERCENT);
         String priority = getValueByState(inputs, InputState.TRADE_BY_FILTERS_MANAGER_PRIORITY);
 
         TradeByFiltersManager tradeByFiltersManager = new TradeByFiltersManager();
@@ -79,7 +79,7 @@ public class TradeManagerFromInputsMapper {
         tradeByFiltersManager.setAppliedFilters(itemFilters);
         tradeByFiltersManager.setMinDifferenceFromMedianPrice(parseIntValue(minBuySellProfit, -1 * maxMarketplacePrice,
                 maxMarketplacePrice, 50));
-        tradeByFiltersManager.setMinDifferenceFromMedianPricePercent(parseIntValue(minProfitPercent, Integer.MIN_VALUE, Integer.MAX_VALUE, 20));
+        tradeByFiltersManager.setMinDifferenceFromMedianPricePercent(parseIntValue(minProfitPercent, Integer.MIN_VALUE, Integer.MAX_VALUE, 10));
         tradeByFiltersManager.setPriorityMultiplier(parseIntValue(priority, 1, Integer.MAX_VALUE, 1));
 
         return tradeByFiltersManager;

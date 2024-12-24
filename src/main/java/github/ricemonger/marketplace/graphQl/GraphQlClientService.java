@@ -1,11 +1,11 @@
 package github.ricemonger.marketplace.graphQl;
 
 import github.ricemonger.marketplace.graphQl.mappers.*;
-import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.DTOs.common.*;
 import github.ricemonger.utils.DTOs.personal.ItemDetails;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.DTOs.personal.UserTradesLimitations;
+import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.exceptions.server.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.client.HttpGraphQlClient;
@@ -72,7 +72,7 @@ public class GraphQlClientService {
         return commonQueryItemsMapper.mapItems(nodes);
     }
 
-    public List<GroupedItemDaySalesUbiStats> fetchAllItemsUbiStats() throws GraphQlCommonItemsSaleStatsMappingException {
+    public List<GroupedItemDaySalesUbiStats> fetchAllItemSalesUbiStats() throws GraphQlCommonItemsSaleStatsMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
         github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems marketableItems;
         List<github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node> nodes = new ArrayList<>();

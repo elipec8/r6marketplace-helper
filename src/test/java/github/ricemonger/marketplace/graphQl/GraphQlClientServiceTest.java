@@ -213,7 +213,7 @@ class GraphQlClientServiceTest {
 
 
     @Test
-    public void fetchAllItemsUbiStats_should_throw_if_totalCount_or_nodes_is_null() {
+    public void fetchAllItemSalesUbiStats_should_throw_if_totalCount_or_nodes_is_null() {
         github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems marketableItems =
                 new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems(List.of(), null);
 
@@ -243,17 +243,17 @@ class GraphQlClientServiceTest {
         when(mockRequestSpec.retrieve("game.marketableItems")).thenReturn(mockRetrieveSpec);
         when(mockRetrieveSpec.toEntity(github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems.class)).thenReturn(mono);
 
-        assertThrows(GraphQlCommonItemsSaleStatsMappingException.class, () -> graphQlClientService.fetchAllItemsUbiStats());
+        assertThrows(GraphQlCommonItemsSaleStatsMappingException.class, () -> graphQlClientService.fetchAllItemSalesUbiStats());
 
         marketableItems = new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems(null, 15);
         mono = Mono.just(marketableItems);
         when(mockRetrieveSpec.toEntity(github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems.class)).thenReturn(mono);
 
-        assertThrows(GraphQlCommonItemsSaleStatsMappingException.class, () -> graphQlClientService.fetchAllItemsUbiStats());
+        assertThrows(GraphQlCommonItemsSaleStatsMappingException.class, () -> graphQlClientService.fetchAllItemSalesUbiStats());
     }
 
     @Test
-    public void fetchAllItemsUbiStats_should_be_executed_once_if_totalCount_smaller_then_limit() {
+    public void fetchAllItemSalesUbiStats_should_be_executed_once_if_totalCount_smaller_then_limit() {
         List<github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node> resultNodes = new ArrayList<>();
         resultNodes.add(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node(null, null));
         resultNodes.add(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node(null, null));
@@ -310,13 +310,13 @@ class GraphQlClientServiceTest {
         when(mockRequestSpec2.retrieve("game.marketableItems")).thenReturn(mockRetrieveSpec2);
         when(mockRetrieveSpec2.toEntity(github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems.class)).thenReturn(mono2);
 
-        graphQlClientService.fetchAllItemsUbiStats();
+        graphQlClientService.fetchAllItemSalesUbiStats();
 
         verify(commonQueryItemsSaleStatsMapper).mapAllItemsSaleStats(argThat(arg -> arg.contains(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node()) && arg.size() == 1));
     }
 
     @Test
-    public void fetchAllItemsUbiStats_should_be_executed_while_limit_bigger_than_totalCount_and_handle_to_mapper() {
+    public void fetchAllItemSalesUbiStats_should_be_executed_while_limit_bigger_than_totalCount_and_handle_to_mapper() {
         List<github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node> resultNodes = new ArrayList<>();
         resultNodes.add(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node(null, null));
         resultNodes.add(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node(null, null));
@@ -373,7 +373,7 @@ class GraphQlClientServiceTest {
         when(mockRequestSpec2.retrieve("game.marketableItems")).thenReturn(mockRetrieveSpec2);
         when(mockRetrieveSpec2.toEntity(github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems.class)).thenReturn(mono2);
 
-        graphQlClientService.fetchAllItemsUbiStats();
+        graphQlClientService.fetchAllItemSalesUbiStats();
 
         verify(commonQueryItemsSaleStatsMapper).mapAllItemsSaleStats(argThat(arg -> arg.containsAll(resultNodes) && arg.size() == resultNodes.size()));
     }

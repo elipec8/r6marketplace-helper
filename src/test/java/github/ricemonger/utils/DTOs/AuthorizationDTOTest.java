@@ -1,7 +1,7 @@
 package github.ricemonger.utils.DTOs;
 
-import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.DTOs.personal.*;
+import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

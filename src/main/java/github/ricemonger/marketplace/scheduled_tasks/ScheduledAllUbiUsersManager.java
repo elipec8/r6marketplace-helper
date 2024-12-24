@@ -3,7 +3,6 @@ package github.ricemonger.marketplace.scheduled_tasks;
 import github.ricemonger.marketplace.graphQl.GraphQlClientService;
 import github.ricemonger.marketplace.services.CentralTradeManager;
 import github.ricemonger.marketplace.services.CommonValuesService;
-import github.ricemonger.marketplace.services.ItemService;
 import github.ricemonger.marketplace.services.TelegramUserUbiAccountEntryService;
 import github.ricemonger.telegramBot.TelegramBotService;
 import github.ricemonger.utils.DTOs.common.Item;
@@ -24,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScheduledAllUbiUsersManager {
 
-    public static final int TRADE_MANAGER_FIXED_RATE_MINUTES = 1;
+    public static final int TRADE_MANAGER_FIXED_RATE_MINUTES = 2;
 
     private final TelegramUserUbiAccountEntryService telegramUserUbiAccountEntryService;
 
@@ -33,8 +32,6 @@ public class ScheduledAllUbiUsersManager {
     private final GraphQlClientService graphQlClientService;
 
     private final CommonValuesService commonValuesService;
-
-    private final ItemService itemService;
 
     private final CentralTradeManager centralTradeManager;
 
@@ -128,7 +125,7 @@ public class ScheduledAllUbiUsersManager {
         } else {
             price = trade.getSuccessPaymentPrice() - trade.getSuccessPaymentFee();
         }
-        
+
         return item.getName() + " : " + item.getAssetUrl() + " for " + price;
     }
 }

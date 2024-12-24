@@ -19,6 +19,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -31,6 +32,16 @@ class UbiAccountEntryEntityMapperTest {
     private UbiAccountStatsEntityPostgresRepository ubiAccountStatsEntityPostgresRepository;
     @MockBean
     private UbiAccountStatsEntityMapper ubiAccountStatsEntityMapper;
+
+    @Test
+    public void createEntityForTelegramUser_should_save_new_ubi_stats_entity_if_doesnt_exist() {
+        when(userPostgresRepository.findByTelegramUserChatId("chatId")).thenReturn(new UserEntity(1L));
+        when(ubiAccountStatsEntityPostgresRepository.findById("ubiProfileId")).thenReturn(Optional.empty());
+
+        ubiAccountEntryEntityMapper.createEntityForTelegramUser("chatId", new UbiAccountAuthorizationEntry());
+
+        verify(ubiAccountStatsEntityPostgresRepository).save(any(UbiAccountStatsEntity.class));
+    }
 
     @Test
     public void createEntityForTelegramUser_should_properly_map_entity_for_existing_ubi_stats() {
@@ -65,6 +76,8 @@ class UbiAccountEntryEntityMapperTest {
     public void createEntityForTelegramUser_should_properly_map_entity_for_non_existing_ubi_stats() {
         when(userPostgresRepository.findByTelegramUserChatId("chatId")).thenReturn(new UserEntity(1L));
         when(ubiAccountStatsEntityPostgresRepository.findById("ubiProfileId")).thenReturn(Optional.empty());
+        UbiAccountStatsEntity ubiAccountStatsEntity = new UbiAccountStatsEntity("ubiProfileId");
+        when(ubiAccountStatsEntityPostgresRepository.save(any())).thenReturn(ubiAccountStatsEntity);
 
         UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
         account.setUbiProfileId("ubiProfileId");
@@ -87,7 +100,13 @@ class UbiAccountEntryEntityMapperTest {
         expected.setUbiRememberMeTicket("ubiRememberMeTicket");
         expected.setUbiAccountStats(new UbiAccountStatsEntity("ubiProfileId"));
 
-        assertTrue(expected.isFullyEqual(ubiAccountEntryEntityMapper.createEntityForTelegramUser("chatId", account)));
+        UbiAccountEntryEntity actual = ubiAccountEntryEntityMapper.createEntityForTelegramUser("chatId", account);
+        //verify(ubiAccountStatsEntityPostgresRepository).save(same(ubiAccountStatsEntity));
+
+        System.out.println("Expected: " + expected);
+        System.out.println("Actual: " + actual);
+
+        assertTrue(expected.isFullyEqual(actual));
     }
 
     @Test

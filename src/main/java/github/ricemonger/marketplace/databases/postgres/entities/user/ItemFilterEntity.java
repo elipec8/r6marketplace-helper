@@ -23,7 +23,7 @@ import java.util.Set;
 @IdClass(ItemFilterEntityId.class)
 public class ItemFilterEntity {
     @MapsId
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private UserEntity user;
 

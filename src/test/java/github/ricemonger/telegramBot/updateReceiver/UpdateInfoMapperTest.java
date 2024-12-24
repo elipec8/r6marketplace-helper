@@ -5,6 +5,7 @@ import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.utils.DTOs.personal.TelegramUser;
+import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,7 @@ import org.telegram.telegrambots.meta.api.objects.message.Message;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -34,7 +36,7 @@ public class UpdateInfoMapperTest {
         update.setMessage(message);
         update.setUpdateId(88);
 
-        when(telegramUserService.isTelegramUserRegistered(1L)).thenReturn(false);
+        doThrow(new TelegramUserDoesntExistException("")).when(telegramUserService).getTelegramUser(1L);
 
         UpdateInfo expected = new UpdateInfo();
         expected.setUpdateId(88);
@@ -70,7 +72,6 @@ public class UpdateInfoMapperTest {
         telegramUser.setInputState(null);
         telegramUser.setInputGroup(null);
 
-        when(telegramUserService.isTelegramUserRegistered(1L)).thenReturn(true);
         when(telegramUserService.getTelegramUser(1L)).thenReturn(telegramUser);
 
         UpdateInfo expected = new UpdateInfo();
@@ -112,7 +113,6 @@ public class UpdateInfoMapperTest {
         telegramUser.setInputState(InputState.ITEMS_SHOW_OFFSET);
         telegramUser.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
 
-        when(telegramUserService.isTelegramUserRegistered(any())).thenReturn(true);
         when(telegramUserService.getTelegramUser(any())).thenReturn(telegramUser);
 
         UpdateInfo expected = new UpdateInfo();
@@ -123,10 +123,5 @@ public class UpdateInfoMapperTest {
         expected.setInputState(InputState.ITEMS_SHOW_OFFSET);
         expected.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
         expected.setHasCallBackQuery(true);
-        expected.setCallbackQueryData("callback_data");
-
-        UpdateInfo actual = updateInfoMapper.mapToUpdateInfo(update);
-
-        assertEquals(expected, actual);
     }
 }

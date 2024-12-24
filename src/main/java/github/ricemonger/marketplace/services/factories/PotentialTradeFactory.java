@@ -76,6 +76,9 @@ public class PotentialTradeFactory {
 
             List<PotentialTradeStats> potentialSellTradesStats = potentialTradeStatsService.getPotentialSellTradesStatsOfItem(personalItem.getItem());
             for (PotentialTradeStats potentialTradeStats : potentialSellTradesStats) {
+                if (!potentialTradeStats.isValid()) {
+                    continue;
+                }
                 boolean sellBoundaryPriceIsExceeded = personalItem.getSellBoundaryPrice() != null && potentialTradeStats.getPrice() < personalItem.getSellBoundaryPrice();
                 if (sellBoundaryPriceIsExceeded) {
                     continue;
@@ -172,6 +175,9 @@ public class PotentialTradeFactory {
 
             List<PotentialTradeStats> potentialBuyTradesStats = potentialTradeStatsService.getPotentialBuyTradesStatsOfItem(personalItem.getItem());
             for (PotentialTradeStats potentialTradeStats : potentialBuyTradesStats) {
+                if (!potentialTradeStats.isValid()) {
+                    continue;
+                }
                 if (personalItem.getBuyBoundaryPrice() != null && potentialTradeStats.getPrice() > personalItem.getBuyBoundaryPrice()) {
                     continue;
                 }

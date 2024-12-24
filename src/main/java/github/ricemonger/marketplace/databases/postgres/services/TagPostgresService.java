@@ -26,11 +26,13 @@ public class TagPostgresService implements TagDatabaseService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Tag> findAllByNames(Collection<String> tagNames) {
         return tagRepository.findAllByNames(tagNames).stream().map(tagEntityMapper::createDTO).toList();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Tag> findAll() {
         return tagRepository.findAll().stream().map(tagEntityMapper::createDTO).toList();
     }

@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -20,8 +19,7 @@ import java.util.Map;
 
 import static github.ricemonger.marketplace.scheduled_tasks.ScheduledAllUbiUsersManager.TRADE_MANAGER_FIXED_RATE_MINUTES;
 import static github.ricemonger.marketplace.services.PotentialTradeStatsService.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
@@ -233,13 +231,15 @@ class PotentialTradeStatsServiceTest {
     @Test
     public void getExpectedPaymentsSuccessMinutesForExistingTradeOrNull_should_return_expected_result() {
         UbiTrade ubiTrade = new UbiTrade();
-        ubiTrade.setLastModifiedAt(LocalDateTime.of(2021, 1, 1, 0, 0, 0));
-        ubiTrade.setExpiresAt(LocalDateTime.of(2021, 1, 2, 0, 0, 0));
+        LocalDateTime now = LocalDateTime.now();
+        ubiTrade.setLastModifiedAt(now.minusDays(10));
 
-        Integer prognosedTradeSuccessMinutes = 10000;
+        Integer prognosedTradeSuccessMinutes = 27000;
         doReturn(prognosedTradeSuccessMinutes).when(potentialTradeStatsService).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), any(), any());
 
-        assertEquals(prognosedTradeSuccessMinutes - (int) Duration.between(ubiTrade.getLastModifiedAt(), ubiTrade.getExpiresAt()).toMinutes(), potentialTradeStatsService.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
+        int expectedTradeTime = 12600; //27000 - 1440 x 10
+
+        assertTrue(Math.abs(potentialTradeStatsService.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade) - expectedTradeTime) < 5);
 
         doReturn(10).when(potentialTradeStatsService).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), any(), any());
         assertEquals(TRADE_MANAGER_FIXED_RATE_MINUTES, potentialTradeStatsService.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
@@ -307,6 +307,18 @@ class PotentialTradeStatsServiceTest {
         long expectedPriority = 38L * 500L * 50L * 800L;
 
         assertEquals(new PotentialTradeStats(price, minutesToTrade, expectedPriority), potentialTradeStatsService.calculateSellTradeStats(item, price, minutesToTrade));
+    }
+
+    @Test
+    public void calculateSellTradeStats_should_return_nulls_if_minutes_to_trade_is_null() {
+        when(commonValuesService.getMaximumMarketplacePrice()).thenReturn(100_000);
+
+        Item item = new Item();
+        item.setMonthMedianPrice(1000);
+
+        int price = 1500;
+
+        assertEquals(new PotentialTradeStats(price, null, null), potentialTradeStatsService.calculateSellTradeStats(item, price, null));
     }
 
     @Test
@@ -419,6 +431,19 @@ class PotentialTradeStatsServiceTest {
         long expectedPriority = -100_000L / price * 1L * 1L * 100L * 3927L;
 
         assertEquals(new PotentialTradeStats(price, minutesToTrade, expectedPriority), potentialTradeStatsService.calculateBuyTradeStats(item, price, minutesToTrade));
+    }
+
+    @Test
+    public void calculateBuyTradeStats_should_return_nulls_for_null_time() {
+        when(commonValuesService.getMaximumMarketplacePrice()).thenReturn(100_000);
+
+        Item item = new Item();
+        item.setMonthMedianPrice(1000);
+        item.setMonthSales(100);
+
+        int price = 500;
+
+        assertEquals(new PotentialTradeStats(price, null, null), potentialTradeStatsService.calculateBuyTradeStats(item, price, null));
     }
 
     @Test

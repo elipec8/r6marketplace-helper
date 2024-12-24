@@ -81,7 +81,7 @@ class PersonalItemFactoryTest {
 
         Set<PersonalItem> result = personalItemFactory.getPersonalItemsForUser(tradeByFiltersManagers, tradeByItemIdManagers, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems);
 
-        for (PersonalItem personalItem :result) {
+        for (PersonalItem personalItem : result) {
             System.out.println(personalItem);
         }
 
@@ -199,7 +199,7 @@ class PersonalItemFactoryTest {
                     ownedItemsId,
                     existingItems);
 
-            for (PersonalItem personalItem :result) {
+            for (PersonalItem personalItem : result) {
                 System.out.println(personalItem);
             }
 

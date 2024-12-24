@@ -12,7 +12,7 @@ public class TradeByFiltersManagerRemoveStage2AskConfirmationFinishInput extends
 
         TradeByFiltersManager tradeManager = botInnerService.getUserTradeByFiltersManagerByUserInputName(updateInfo.getChatId());
 
-        String activateText = tradeManager.getEnabled()  ? "Deactivate" : "Activate";
+        String activateText = tradeManager.getEnabled() ? "Deactivate" : "Activate";
 
         CallbackButton removeButton = new CallbackButton("Remove", Callbacks.TRADE_BY_FILTERS_MANAGER_REMOVE_FINISH_CONFIRMED);
         CallbackButton changeButton = new CallbackButton(activateText, Callbacks.TRADE_BY_FILTERS_MANAGER_CHANGE_ENABLED_FINISH_CONFIRMED);

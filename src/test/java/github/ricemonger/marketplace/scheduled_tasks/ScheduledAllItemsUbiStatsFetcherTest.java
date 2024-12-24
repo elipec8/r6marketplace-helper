@@ -25,11 +25,11 @@ class ScheduledAllItemsUbiStatsFetcherTest {
     private ItemService itemService;
 
     @Test
-    public void fetchAllItemUbiStats_should_get_stats_from_graphql_and_save_to_stats_service() {
+    public void fetchAllItemSalesUbiStats_should_get_stats_from_graphql_and_save_to_stats_service() {
         List<GroupedItemDaySalesUbiStats> stats = new ArrayList<>();
-        when(graphQlClientService.fetchAllItemsUbiStats()).thenReturn(stats);
+        when(graphQlClientService.fetchAllItemSalesUbiStats()).thenReturn(stats);
 
-        scheduledAllItemsUbiStatsFetcher.fetchAllItemUbiStats();
+        scheduledAllItemsUbiStatsFetcher.fetchAllItemSalesUbiStats();
 
         verify(itemService).saveAllItemSaleUbiStats(same(stats));
     }

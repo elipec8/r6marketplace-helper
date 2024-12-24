@@ -10,11 +10,13 @@ import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.personal.*;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CentralTradeManager {

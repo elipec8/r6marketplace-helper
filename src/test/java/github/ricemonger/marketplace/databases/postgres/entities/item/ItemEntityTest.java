@@ -65,7 +65,7 @@ class ItemEntityTest {
     }
 
     @Test
-    public void isEqual_should_return_false_for_null(){
+    public void isEqual_should_return_false_for_null() {
         ItemEntity entity = new ItemEntity();
         assertFalse(entity.isEqual(null));
     }

@@ -37,7 +37,7 @@ public class UbiTrade {
     }
 
     public boolean isFullyEqualExceptItem(UbiTrade other) {
-        if(other == null) {
+        if (other == null) {
             return false;
         }
         boolean itemsAreEqual = item == null ? other.item == null : Objects.equals(item.getItemId(), other.item.getItemId());

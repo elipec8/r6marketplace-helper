@@ -373,7 +373,7 @@ class InputCommandListenerTest {
 
     @Test
     public void handleUpdate_should_trade_by_filters_manager_edit_min_profit_percent() {
-        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_FILTERS_MANAGER_EDIT, InputState.TRADE_BY_FILTERS_MANAGER_MIN_PROFIT_PERCENT);
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_FILTERS_MANAGER_EDIT, InputState.TRADE_BY_FILTERS_MANAGER_MIN_MEDIAN_PRICE_DIFFERENCE_PERCENT);
         inputCommandListener.handleUpdate(updateInfo);
 
         verify(executorsService).execute(TradeByFiltersManagerEditStage6AskPriorityInput.class, updateInfo);

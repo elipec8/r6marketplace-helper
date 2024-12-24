@@ -18,7 +18,7 @@ import java.util.Objects;
 @IdClass(TradeByFiltersManagerEntityId.class)
 public class TradeByFiltersManagerEntity {
     @MapsId
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private UserEntity user;
 

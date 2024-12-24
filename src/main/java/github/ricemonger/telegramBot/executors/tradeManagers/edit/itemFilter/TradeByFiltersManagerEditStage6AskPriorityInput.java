@@ -8,10 +8,6 @@ public class TradeByFiltersManagerEditStage6AskPriorityInput extends AbstractBot
     protected void executeCommand() {
         processMiddleInput(InputState.TRADE_BY_FILTERS_MANAGER_PRIORITY);
 
-        askFromInlineKeyboardOrSkip("""
-                Please enter priority of trade manager.
-                It's used only to determine this manager's trades priority relatively to other managers' trades.
-                Can be assigned any positive value. Will be assigned 1 if skipped :
-                """, 1);
+        askFromInlineKeyboardOrSkip("Please enter numeral priority of the trade, where the higher the number, the higher the priority. Default is 1:", 1);
     }
 }

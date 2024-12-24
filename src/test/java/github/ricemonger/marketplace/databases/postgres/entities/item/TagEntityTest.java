@@ -15,7 +15,7 @@ class TagEntityTest {
     }
 
     @Test
-    public void isEqual_should_return_true_if_equal_id(){
+    public void isEqual_should_return_true_if_equal_id() {
         TagEntity tag1 = new TagEntity();
         tag1.setValue("tagValue");
         tag1.setName("tagName");
@@ -28,13 +28,13 @@ class TagEntityTest {
     }
 
     @Test
-    public void isEqual_should_return_false_if_null(){
+    public void isEqual_should_return_false_if_null() {
         TagEntity tag = new TagEntity();
         assertFalse(tag.isEqual(null));
     }
 
     @Test
-    public void isEqual_should_return_false_if_different_ids(){
+    public void isEqual_should_return_false_if_different_ids() {
         TagEntity tag1 = new TagEntity();
         tag1.setValue("tagValue1");
 

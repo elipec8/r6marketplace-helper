@@ -3,11 +3,11 @@ package github.ricemonger.telegramBot.client;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.InputState;
+import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.DTOs.personal.TelegramUserInput;
 import github.ricemonger.utils.DTOs.personal.TradeByFiltersManager;
 import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
-import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.TradeOperationType;
 import org.junit.jupiter.api.Test;
@@ -183,7 +183,7 @@ class TradeManagerFromInputsMapperTest {
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_NAME, "name"));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_TRADE_TYPE, Callbacks.TRADE_BY_FILTERS_MANAGER_TYPE_BUY_EDIT));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_MIN_BUY_SELL_PROFIT, "100"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_MIN_PROFIT_PERCENT, "30"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_MIN_MEDIAN_PRICE_DIFFERENCE_PERCENT, "30"));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_PRIORITY, "2"));
 
         TradeByFiltersManager expected = new TradeByFiltersManager();
@@ -206,7 +206,7 @@ class TradeManagerFromInputsMapperTest {
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_TRADE_TYPE, ""));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_FILTERS_NAMES, ""));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_MIN_BUY_SELL_PROFIT, ""));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_MIN_PROFIT_PERCENT, ""));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_MIN_MEDIAN_PRICE_DIFFERENCE_PERCENT, ""));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_PRIORITY, ""));
 
         TradeByFiltersManager expected = new TradeByFiltersManager();
@@ -215,7 +215,7 @@ class TradeManagerFromInputsMapperTest {
         expected.setTradeOperationType(TradeOperationType.BUY_AND_SELL);
         expected.setAppliedFilters(List.of());
         expected.setMinDifferenceFromMedianPrice(50);
-        expected.setMinDifferenceFromMedianPricePercent(20);
+        expected.setMinDifferenceFromMedianPricePercent(10);
         expected.setPriorityMultiplier(1);
 
         assertEquals(expected, tradeManagerFromInputsMapper.mapToTradeByFiltersManager(inputs, 150_000, List.of(), false));
@@ -229,7 +229,7 @@ class TradeManagerFromInputsMapperTest {
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_TRADE_TYPE, Callbacks.TRADE_BY_FILTERS_MANAGER_TYPE_SELL_EDIT));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_FILTERS_NAMES, null));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_MIN_BUY_SELL_PROFIT, "-150001"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_MIN_PROFIT_PERCENT, "-2147483647"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_MIN_MEDIAN_PRICE_DIFFERENCE_PERCENT, "-2147483647"));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_PRIORITY, "-2147483647"));
 
         TradeByFiltersManager expected = new TradeByFiltersManager();
@@ -253,7 +253,7 @@ class TradeManagerFromInputsMapperTest {
                 Callbacks.TRADE_BY_FILTERS_MANAGER_TYPE_BUY_AND_SELL_EDIT));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_FILTERS_NAMES, null));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_MIN_BUY_SELL_PROFIT, "150001"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_MIN_PROFIT_PERCENT, "2147483647"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_MIN_MEDIAN_PRICE_DIFFERENCE_PERCENT, "2147483647"));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_PRIORITY, "2147483647"));
 
         TradeByFiltersManager expected = new TradeByFiltersManager();

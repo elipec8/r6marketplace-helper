@@ -39,6 +39,10 @@ public class TelegramUserEntity {
     private Integer itemShowMessagesLimit = 50;
     private Boolean itemShowFewInMessageFlag = false;
 
+    public TelegramUserEntity(String chatId) {
+        this.chatId = chatId;
+    }
+
     public TelegramUserEntity(String chatId, Long userId) {
         this(chatId, new UserEntity(userId));
     }
