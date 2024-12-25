@@ -1,0 +1,98 @@
+query GetItemDetails($spaceId: String!, $itemId: String!) {
+    game(spaceId: $spaceId) {
+        marketableItem(itemId: $itemId) {
+            item {
+                ...SecondaryStoreItemFragment
+                ...SecondaryStoreItemOwnershipFragment
+                __typename
+            }
+            marketData {
+                ...MarketDataFragment
+                __typename
+            }
+            paymentLimitations {
+                minPrice
+                maxPrice
+                __typename
+            }
+            __typename
+        }
+        viewer {
+            meta {
+                trades(filterBy: {states: [Created,Succeeded, Failed], itemIds: [$itemId]}) {
+                    nodes {
+                        ...TradeFragment
+                        __typename
+                    }
+                    __typename
+                }
+                __typename
+            }
+            __typename
+        }
+        __typename
+    }
+}
+
+fragment SecondaryStoreItemFragment on SecondaryStoreItem {
+    itemId
+    assetUrl
+    name
+    tags
+    type
+    __typename
+}
+
+fragment SecondaryStoreItemOwnershipFragment on SecondaryStoreItem {
+    viewer {
+        meta {
+            isOwned
+            __typename
+        }
+        __typename
+    }
+    __typename
+}
+
+fragment MarketDataFragment on MarketableItemMarketData {
+    sellStats {
+        lowestPrice
+        activeCount
+        __typename
+    }
+    buyStats {
+        highestPrice
+        activeCount
+        __typename
+    }
+    lastSoldAt {
+        price
+        performedAt
+        __typename
+    }
+    __typename
+}
+
+fragment TradeFragment on Trade {
+    tradeId
+    state
+    category
+    expiresAt
+    lastModifiedAt
+    payment {
+        price
+        transactionFee
+        __typename
+    }
+    paymentOptions {
+        price
+        transactionFee
+        __typename
+    }
+    paymentProposal {
+        price
+        __typename
+    }
+    __typename
+}
+

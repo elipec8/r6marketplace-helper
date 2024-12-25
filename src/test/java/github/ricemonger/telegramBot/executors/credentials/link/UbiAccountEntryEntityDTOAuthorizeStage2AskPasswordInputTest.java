@@ -1,6 +1,5 @@
 package github.ricemonger.telegramBot.executors.credentials.link;
 
-import github.ricemonger.telegramBot.InputGroup;
 import github.ricemonger.telegramBot.InputState;
 import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;

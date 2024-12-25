@@ -1,0 +1,131 @@
+mutation CreateBuyOrder($spaceId: String!, $tradeItems: [TradeOrderItem!]!, $paymentProposal: PaymentItem!) {
+    createBuyOrder(
+        spaceId: $spaceId
+        tradeItems: $tradeItems
+        paymentProposal: $paymentProposal
+    ) {
+        trade {
+            ...TradeFragment
+            __typename
+        }
+        __typename
+    }
+}
+
+fragment TradeFragment on Trade {
+    id
+    tradeId
+    state
+    category
+    createdAt
+    expiresAt
+    lastModifiedAt
+    failures
+    tradeItems {
+        id
+        item {
+            ...SecondaryStoreItemFragment
+            ...SecondaryStoreItemOwnershipFragment
+            __typename
+        }
+        __typename
+    }
+    payment {
+        id
+        item {
+            ...SecondaryStoreItemQuantityFragment
+            __typename
+        }
+        price
+        transactionFee
+        __typename
+    }
+    paymentOptions {
+        id
+        item {
+            ...SecondaryStoreItemQuantityFragment
+            __typename
+        }
+        price
+        transactionFee
+        __typename
+    }
+    paymentProposal {
+        id
+        item {
+            ...SecondaryStoreItemQuantityFragment
+            __typename
+        }
+        price
+        __typename
+    }
+    viewer {
+        meta {
+            id
+            tradesLimitations {
+                ...TradesLimitationsFragment
+                __typename
+            }
+            __typename
+        }
+        __typename
+    }
+    __typename
+}
+
+fragment SecondaryStoreItemFragment on SecondaryStoreItem {
+    id
+    assetUrl
+    itemId
+    name
+    tags
+    type
+    __typename
+}
+
+fragment SecondaryStoreItemOwnershipFragment on SecondaryStoreItem {
+    viewer {
+        meta {
+            id
+            isOwned
+            quantity
+            __typename
+        }
+        __typename
+    }
+    __typename
+}
+
+fragment SecondaryStoreItemQuantityFragment on SecondaryStoreItem {
+    viewer {
+        meta {
+            id
+            quantity
+            __typename
+        }
+        __typename
+    }
+    __typename
+}
+
+fragment TradesLimitationsFragment on UserGameTradesLimitations {
+    id
+    buy {
+        resolvedTransactionCount
+        resolvedTransactionPeriodInMinutes
+        activeTransactionCount
+        __typename
+    }
+    sell {
+        resolvedTransactionCount
+        resolvedTransactionPeriodInMinutes
+        activeTransactionCount
+        resaleLocks {
+            itemId
+            expiresAt
+            __typename
+        }
+        __typename
+    }
+    __typename
+}

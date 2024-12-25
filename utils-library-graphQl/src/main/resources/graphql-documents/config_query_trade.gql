@@ -1,0 +1,27 @@
+query GetTradesConfig($spaceId: String!) {
+    game(spaceId: $spaceId) {
+        tradesConfig {
+            saleExpiresAfterMinutes
+            buySlots
+            sellSlots
+            buyLimit {
+                maximumCount
+                __typename
+            }
+            sellLimit {
+                maximumCount
+                __typename
+            }
+            resaleLockDurationInMinutes
+            transactionFeesConfig {
+                paymentItemId
+                feePercentage
+                __typename
+            }
+            twoFactorAuthenticationRule
+            gameOwnershipRule
+            __typename
+        }
+        __typename
+    }
+}

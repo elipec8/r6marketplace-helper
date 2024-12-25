@@ -15,7 +15,7 @@ class TradeByItemIdManagerEntityTest {
     }
 
     @Test
-    public void isEqual_should_return_true_if_equal_ids(){
+    public void isEqual_should_return_true_if_equal_ids() {
         TradeByItemIdManagerEntity manager1 = new TradeByItemIdManagerEntity();
         manager1.setUser(new UserEntity(1L));
         manager1.setItem(new ItemEntity("itemId"));
@@ -33,13 +33,13 @@ class TradeByItemIdManagerEntityTest {
     }
 
     @Test
-    public void isEqual_should_return_false_if_null(){
+    public void isEqual_should_return_false_if_null() {
         TradeByItemIdManagerEntity manager = new TradeByItemIdManagerEntity();
         assertFalse(manager.isEqual(null));
     }
 
     @Test
-    public void isEqual_should_return_false_if_different_ids(){
+    public void isEqual_should_return_false_if_different_ids() {
         TradeByItemIdManagerEntity manager1 = new TradeByItemIdManagerEntity();
         manager1.setUser(new UserEntity(1L));
         manager1.setItem(new ItemEntity("itemId"));
