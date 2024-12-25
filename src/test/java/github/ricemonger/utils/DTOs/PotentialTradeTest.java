@@ -14,6 +14,119 @@ class PotentialTradeTest {
 
 
     @Test
+    public void compareTo_should_compare_by_new_price_if_itemId_priority_and_tradeCategory_are_equal() {
+        PersonalItem personalItem1 = new PersonalItem();
+        personalItem1.setItem(new Item("itemId"));
+        PotentialTradeStats potentialTradeStats1 = new PotentialTradeStats();
+        potentialTradeStats1.setPrice(1);
+        personalItem1.setPriorityMultiplier(1);
+        potentialTradeStats1.setTradePriority(1L);
+        PersonalItem personalItem2 = new PersonalItem();
+        personalItem2.setItem(new Item("itemId"));
+        PotentialTradeStats potentialTradeStats2 = new PotentialTradeStats();
+        potentialTradeStats2.setPrice(5);
+        personalItem2.setPriorityMultiplier(1);
+        potentialTradeStats2.setTradePriority(1L);
+        PotentialTrade potentialTrade1 = new PotentialTrade(personalItem1, potentialTradeStats1) {
+            @Override
+            public TradeCategory getTradeCategory() {
+                return TradeCategory.Sell;
+            }
+        };
+        PotentialTrade potentialTrade2 = new PotentialTrade(personalItem2, potentialTradeStats2) {
+            @Override
+            public TradeCategory getTradeCategory() {
+                return TradeCategory.Sell;
+            }
+        };
+
+        int result = potentialTrade1.compareTo(potentialTrade2);
+
+        assertEquals(-1, result);
+    }
+
+    @Test
+    public void compareTo_should_compare_by_item_Id_if_equal_tradeCategory_and_priority() {
+        PersonalItem personalItem1 = new PersonalItem();
+        personalItem1.setItem(new Item("itemId1"));
+        PersonalItem personalItem2 = new PersonalItem();
+        personalItem2.setItem(new Item("itemId2"));
+        PotentialTradeStats potentialTradeStats1 = new PotentialTradeStats();
+        potentialTradeStats1.setTradePriority(1L);
+        personalItem1.setPriorityMultiplier(1);
+        PotentialTradeStats potentialTradeStats2 = new PotentialTradeStats();
+        potentialTradeStats2.setTradePriority(1L);
+        personalItem2.setPriorityMultiplier(1);
+
+        PotentialTrade potentialTrade1 = new PotentialTrade(personalItem1, potentialTradeStats1) {
+            @Override
+            public TradeCategory getTradeCategory() {
+                return TradeCategory.Sell;
+            }
+        };
+        PotentialTrade potentialTrade2 = new PotentialTrade(personalItem2, potentialTradeStats2) {
+            @Override
+            public TradeCategory getTradeCategory() {
+                return TradeCategory.Sell;
+            }
+        };
+
+        int result = potentialTrade1.compareTo(potentialTrade2);
+
+        assertEquals("itemId1".compareTo("itemId2"), result);
+    }
+
+    @Test
+    public void compareTo_should_compare_by_priority_if_equal_tradeCategory() {
+        PersonalItem personalItem1 = new PersonalItem();
+        PersonalItem personalItem2 = new PersonalItem();
+        PotentialTradeStats potentialTradeStats1 = new PotentialTradeStats();
+        potentialTradeStats1.setTradePriority(10L);
+        personalItem1.setPriorityMultiplier(2);
+        PotentialTradeStats potentialTradeStats2 = new PotentialTradeStats();
+        potentialTradeStats2.setTradePriority(15L);
+        personalItem2.setPriorityMultiplier(1);
+        PotentialTrade potentialTrade1 = new PotentialTrade(personalItem1, potentialTradeStats1) {
+            @Override
+            public TradeCategory getTradeCategory() {
+                return TradeCategory.Sell;
+            }
+        };
+        PotentialTrade potentialTrade2 = new PotentialTrade(personalItem2, potentialTradeStats2) {
+            @Override
+            public TradeCategory getTradeCategory() {
+                return TradeCategory.Sell;
+            }
+        };
+
+        int result = potentialTrade1.compareTo(potentialTrade2);
+
+        assertEquals(-1, result);
+    }
+
+    @Test
+    public void compareTo_should_compare_by_tradeCategory_first() {
+        PersonalItem personalItem1 = new PersonalItem();
+        PersonalItem personalItem2 = new PersonalItem();
+        PotentialTrade potentialTrade1 = new PotentialTrade(personalItem1, null) {
+            @Override
+            public TradeCategory getTradeCategory() {
+                return TradeCategory.Sell;
+            }
+        };
+        PotentialTrade potentialTrade2 = new PotentialTrade(personalItem2, null) {
+            @Override
+            public TradeCategory getTradeCategory() {
+                return TradeCategory.Buy;
+            }
+        };
+
+        int result = potentialTrade1.compareTo(potentialTrade2);
+
+        assertEquals(1, result);
+    }
+
+    @Test
     public void getPriorityMultiplier_should_return_priorityMultiplier() {
         PersonalItem personalItem = new PersonalItem();
         personalItem.setPriorityMultiplier(1);

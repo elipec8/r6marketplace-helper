@@ -8,7 +8,6 @@ import github.ricemonger.telegramBot.executors.itemFilters.ItemFiltersDirect;
 import github.ricemonger.telegramBot.executors.items.ItemsDirect;
 import github.ricemonger.telegramBot.executors.start.StartDirect;
 import github.ricemonger.telegramBot.executors.tradeManagers.TradeManagersDirect;
-import github.ricemonger.telegramBot.executors.trades.TradesDirect;
 import github.ricemonger.telegramBot.executors.ubi_account_entry.UbiAccountEntryDirect;
 import github.ricemonger.utils.exceptions.client.UnexpectedDirectCommandException;
 import lombok.RequiredArgsConstructor;

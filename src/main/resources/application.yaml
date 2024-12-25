@@ -7,7 +7,7 @@ auth:
     platform: ${UBI_PLATFORM:UPLAY}
     email: ${UBI_EMAIL}
     password: ${UBI_PASSWORD}
-    expireTimeout: ${UBI_EXPIRE_TIMEOUT:9000} # seconds, 2.5 hours. Ubisoft's session expires in 3 hours
+    expireTimeout: ${UBI_EXPIRE_TIMEOUT:10500} # seconds, 3 hours - 5min. Ubisoft's session expires in 3 hours
   user_service:
     password:
       encryption:
