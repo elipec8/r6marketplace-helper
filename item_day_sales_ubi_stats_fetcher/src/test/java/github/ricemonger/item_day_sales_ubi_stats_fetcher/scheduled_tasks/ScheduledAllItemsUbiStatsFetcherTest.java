@@ -1,8 +1,7 @@
-package github.ricemonger.marketplace.scheduled_tasks;
+package github.ricemonger.item_day_sales_ubi_stats_fetcher.scheduled_tasks;
 
-
-import github.ricemonger.marketplace.graphQl.GraphQlClientService;
-import github.ricemonger.marketplace.services.ItemService;
+import github.ricemonger.item_day_sales_ubi_stats_fetcher.services.ItemSaleUbiStatsService;
+import github.ricemonger.marketplace.graphQl.common_query_items_sale_stats.CommonQueryItemsSaleStatsGraphQlClientService;
 import github.ricemonger.utils.DTOs.common.GroupedItemDaySalesUbiStats;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +20,18 @@ class ScheduledAllItemsUbiStatsFetcherTest {
     @Autowired
     private ScheduledAllItemsUbiStatsFetcher scheduledAllItemsUbiStatsFetcher;
     @MockBean
-    private GraphQlClientService graphQlClientService;
+    private CommonQueryItemsSaleStatsGraphQlClientService commonQueryItemsSaleStatsGraphQlClientService;
     @MockBean
-    private ItemService itemService;
+    private ItemSaleUbiStatsService itemSaleUbiStatsService;
 
     @Test
     public void fetchAllItemSalesUbiStats_should_get_stats_from_graphql_and_save_to_stats_service() {
         List<GroupedItemDaySalesUbiStats> stats = new ArrayList<>();
-        when(graphQlClientService.fetchAllItemSalesUbiStats()).thenReturn(stats);
+        when(commonQueryItemsSaleStatsGraphQlClientService.fetchAllItemSalesUbiStats()).thenReturn(stats);
 
         scheduledAllItemsUbiStatsFetcher.fetchAllItemSalesUbiStats();
 
-        verify(itemService).saveAllItemSaleUbiStats(same(stats));
+        verify(itemSaleUbiStatsService).saveAllItemSaleUbiStats(same(stats));
     }
+
 }

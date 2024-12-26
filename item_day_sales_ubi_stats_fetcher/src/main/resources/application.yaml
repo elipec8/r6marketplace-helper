@@ -1,0 +1,54 @@
+ubi:
+  urls:
+    graphql: https://public-ubiservices.ubi.com/v1/profiles/me/uplay/graphql
+  session:
+    contentType: application/json
+    userAgent: UbiServices_SDK_2020.Release.58_PC64_ansi_static
+    baseAppId: ${UBI_APP_ID:80a4a0e8-8797-440f-8f4c-eaba87d0fdda}
+    spaceId: ${UBI_SPACE_ID:0d2ae42d-4c27-4cb7-af6c-2099062302bb}
+    regionId: ${UBI_REGION_ID:WW}
+    localeCode: ${UBI_LOCALE_CODE:en-US}
+    dateFormat: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+    itemSaleStatsDateFormat: yyyy-MM-dd
+
+server:
+  port: 8083
+
+app:
+  scheduling:
+    enabled: ${SCHEDULING_ENABLED:true}
+
+logging:
+  level:
+    github: debug
+
+  file:
+    name: ./logs/${LOG_FILE_DIRECTORY:prod}/${spring.application.name}.log
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+spring:
+  application:
+    name: r6s-helper-item_day_sales_ubi_stats_fetcher
+  data:
+    redis:
+      repositories:
+        enabled: false
+      url: ${REDIS_URL:redis://localhost:6379}
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${POSTGRES_SERVER_HOST:localhost}:${POSTGRES_SERVER_PORT:5432}/${POSTGRES_DB:postgres}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:1234}
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+
+  config:
+    import:
+      - test-values.yaml
