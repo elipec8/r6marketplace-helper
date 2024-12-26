@@ -1,12 +1,12 @@
 package github.ricemonger.marketplace.services;
 
-import github.ricemonger.marketplace.services.abstractions.CommonValuesDatabaseService;
 import github.ricemonger.marketplace.services.configurations.MainUserConfiguration;
 import github.ricemonger.marketplace.services.configurations.TelegramBotConfiguration;
 import github.ricemonger.marketplace.services.configurations.UbiServiceConfiguration;
 import github.ricemonger.utils.DTOs.common.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
+import github.ricemonger.utils.abstractions.CommonValuesDatabaseService;
 import github.ricemonger.utils.enums.ItemRarity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -224,11 +224,6 @@ public class CommonValuesService {
         return telegramBotConfiguration.getMessageLimit();
     }
 
-    public void setLastUbiUsersStatsFetchTime(LocalDateTime localDateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ubiServiceConfiguration.getDateFormat());
-        commonValuesDatabaseService.setLastUbiUsersStatsFetchTime(formatter.format(localDateTime));
-    }
-
     public LocalDateTime getLastUbiUsersStatsFetchTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ubiServiceConfiguration.getDateFormat());
         try {
@@ -236,5 +231,10 @@ public class CommonValuesService {
         } catch (DateTimeParseException e) {
             return LocalDateTime.now().minusDays(1).withNano(0);
         }
+    }
+
+    public void setLastUbiUsersStatsFetchTime(LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ubiServiceConfiguration.getDateFormat());
+        commonValuesDatabaseService.setLastUbiUsersStatsFetchTime(formatter.format(localDateTime));
     }
 }

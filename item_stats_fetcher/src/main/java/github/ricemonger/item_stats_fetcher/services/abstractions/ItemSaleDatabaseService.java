@@ -7,9 +7,5 @@ import java.util.Collection;
 import java.util.List;
 
 public interface ItemSaleDatabaseService {
-    void saveAll(Collection<? extends SoldItemDetails> soldItems);
-
-    List<ItemSale> findAllForLastMonth();
-
-    List<ItemSale> findAll();
+    void saveAllItemsLastSales(Collection<? extends SoldItemDetails> items);
 }

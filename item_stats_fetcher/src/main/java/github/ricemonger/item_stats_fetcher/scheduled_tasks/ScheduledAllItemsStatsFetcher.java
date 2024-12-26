@@ -49,7 +49,7 @@ public class ScheduledAllItemsStatsFetcher {
         }
 
         itemService.saveAllItemsMainFields(items);
-        itemService.saveAllItemLastSales(items);
+        itemService.saveAllItemsLastSales(items);
     }
 
     private void onItemsAmountIncrease(int expectedItemCount, int fetchedItemsCount) {
