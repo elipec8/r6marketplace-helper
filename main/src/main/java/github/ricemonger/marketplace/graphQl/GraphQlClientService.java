@@ -1,16 +1,11 @@
 package github.ricemonger.marketplace.graphQl;
 
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems;
-import github.ricemonger.marketplace.graphQl.common_query_items_sale_stats.DTO.marketableItems.Node;
-import github.ricemonger.marketplace.graphQl.DTOs.config_query_marketplace.Marketplace;
-import github.ricemonger.marketplace.graphQl.DTOs.config_query_resolved_transaction_period.TradesLimitations;
-import github.ricemonger.marketplace.graphQl.DTOs.config_query_trade.TradesConfig;
-import github.ricemonger.marketplace.graphQl.personal_query_credits_amount.DTO.personal_query_credits_amount.Meta;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.Trades;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.Game;
+import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node;
 import github.ricemonger.marketplace.graphQl.mappers.*;
-import github.ricemonger.utils.DTOs.common.*;
-import github.ricemonger.utils.DTOs.personal.ItemDetails;
+import github.ricemonger.marketplace.graphQl.personal_query_credits_amount.DTO.personal_query_credits_amount.Meta;
+import github.ricemonger.utils.DTOs.common.GroupedItemDaySalesUbiStats;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.DTOs.personal.UserTradesLimitations;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
@@ -20,7 +15,6 @@ import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -31,15 +25,7 @@ public class GraphQlClientService {
 
     private final GraphQlVariablesService graphQlVariablesService;
 
-    private final CommonQueryItemsMapper commonQueryItemsMapper;
-
     private final CommonQueryItemsSaleStatsMapper commonQueryItemsSaleStatsMapper;
-
-    private final ConfigQueryMarketplaceMapper configQueryMarketplaceMapper;
-
-    private final ConfigQueryResolvedTransactionPeriodMapper configQueryResolvedTransactionPeriodMapper;
-
-    private final ConfigQueryTradeMapper configQueryTradeMapper;
 
     private final PersonalQueryCreditAmountMapper personalQueryCreditAmountMapper;
 
@@ -48,8 +34,6 @@ public class GraphQlClientService {
     private final PersonalQueryFinishedOrdersMapper personalQueryFinishedOrdersMapper;
 
     private final PersonalQueryLockedItemsMapper personalQueryLockedItemsMapper;
-
-    private final PersonalQueryOneItemMapper personalQueryOneItemMapper;
 
     private final PersonalQueryOwnedItemsMapper personalQueryOwnedItemsMapper;
 
@@ -78,31 +62,6 @@ public class GraphQlClientService {
         while (marketableItems.getTotalCount() == GraphQlVariablesService.MAX_LIMIT);
 
         return commonQueryItemsSaleStatsMapper.mapAllItemsSaleStats(nodes);
-    }
-
-    public ConfigResolvedTransactionPeriod fetchConfigResolvedTransactionPeriod() throws GraphQlConfigResolvedTransactionPeriodMappingException {
-        HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
-
-        TradesLimitations tradesLimitations = client
-                .documentName(GraphQlDocuments.QUERY_RESOLVED_TRANSACTION_PERIOD_CONFIG_DOCUMENT_NAME)
-                .variables(graphQlVariablesService.getFetchConfigVariables())
-                .retrieve("game.viewer.meta.tradesLimitations")
-                .toEntity(TradesLimitations.class)
-                .block();
-
-        return configQueryResolvedTransactionPeriodMapper.mapConfigResolvedTransactionPeriod(tradesLimitations);
-    }
-
-    public ConfigTrades fetchConfigTrades() throws GraphQlConfigTradeMappingException {
-        HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
-        TradesConfig tradesConfig = client
-                .documentName(GraphQlDocuments.QUERY_TRADE_CONFIG_DOCUMENT_NAME)
-                .variables(graphQlVariablesService.getFetchConfigVariables())
-                .retrieve("game.tradesConfig")
-                .toEntity(TradesConfig.class)
-                .block();
-
-        return configQueryTradeMapper.mapConfigTrades(tradesConfig);
     }
 
     public int fetchCreditAmountForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalCreditAmountMappingException {
@@ -165,19 +124,6 @@ public class GraphQlClientService {
                 .block();
 
         return personalQueryLockedItemsMapper.mapTradesLimitationsForUser(tradesLimitations, authorizationDTO.getProfileId());
-    }
-
-    public ItemDetails fetchOneItem(AuthorizationDTO authorizationDTO, String itemId) throws GraphQlPersonalOneItemMappingException {
-        HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
-
-        Game game = client
-                .documentName(GraphQlDocuments.QUERY_ONE_ITEM_STATS_DOCUMENT_NAME)
-                .variables(graphQlVariablesService.getFetchOneItemVariables(itemId))
-                .retrieve("game")
-                .toEntity(Game.class)
-                .block();
-
-        return personalQueryOneItemMapper.mapItem(game);
     }
 
     public List<String> fetchAllOwnedItemsIdsForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalOwnedItemsMappingException {
