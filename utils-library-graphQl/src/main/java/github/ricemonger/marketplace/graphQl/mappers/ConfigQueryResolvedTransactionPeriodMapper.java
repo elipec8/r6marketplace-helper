@@ -6,7 +6,6 @@ import github.ricemonger.marketplace.graphQl.DTOs.config_query_resolved_transact
 import github.ricemonger.utils.DTOs.common.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.exceptions.server.GraphQlConfigResolvedTransactionPeriodMappingException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 @Slf4j
 public class ConfigQueryResolvedTransactionPeriodMapper {

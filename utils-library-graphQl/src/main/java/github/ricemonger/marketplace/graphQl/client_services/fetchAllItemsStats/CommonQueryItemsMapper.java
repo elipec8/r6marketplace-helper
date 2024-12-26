@@ -1,11 +1,11 @@
 package github.ricemonger.marketplace.graphQl.client_services.fetchAllItemsStats;
 
-import github.ricemonger.marketplace.graphQl.GraphQlCommonValuesService;
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.Node;
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.MarketData;
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.BuyStats;
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.LastSoldAt;
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.SellStats;
+import github.ricemonger.marketplace.graphQl.GraphQlCommonValuesService;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.exceptions.server.GraphQlCommonItemMappingException;

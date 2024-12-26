@@ -13,8 +13,6 @@ import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalCurrentOrderMappingException;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

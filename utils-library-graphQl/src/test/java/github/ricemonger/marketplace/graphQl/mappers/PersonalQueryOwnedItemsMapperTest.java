@@ -4,8 +4,6 @@ import github.ricemonger.marketplace.graphQl.DTOs.personal_query_owned_items.mar
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_owned_items.marketableItems.node.Item;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalOwnedItemsMappingException;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,6 @@
 package github.ricemonger.item_stats_fetcher.scheduled_tasks;
 
 
-
 import github.ricemonger.item_stats_fetcher.services.CommonValuesService;
 import github.ricemonger.item_stats_fetcher.services.ItemService;
 import github.ricemonger.item_stats_fetcher.services.TelegramBotClientService;

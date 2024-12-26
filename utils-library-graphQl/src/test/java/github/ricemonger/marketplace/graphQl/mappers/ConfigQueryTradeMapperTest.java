@@ -7,8 +7,6 @@ import github.ricemonger.marketplace.graphQl.DTOs.config_query_trade.tradesConfi
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.exceptions.server.GraphQlConfigTradeMappingException;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 

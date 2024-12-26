@@ -1,15 +1,14 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.GraphQlCommonValuesService;
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node;
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.node.Item;
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.node.PriceHistory;
+import github.ricemonger.marketplace.graphQl.GraphQlCommonValuesService;
 import github.ricemonger.utils.DTOs.common.GroupedItemDaySalesUbiStats;
 import github.ricemonger.utils.DTOs.common.ItemDaySalesUbiStats;
 import github.ricemonger.utils.exceptions.server.GraphQlCommonItemsSaleStatsMappingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

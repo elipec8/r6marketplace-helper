@@ -14,15 +14,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class ItemMainFieldsPostgresMapperTest {
-    
+
     @Autowired
     private ItemMainFieldsPostgresMapper itemMainFieldsPostgresMapper;
-    
+
     @MockBean
     private TagValuePostgresRepository tagValueRepository;
 

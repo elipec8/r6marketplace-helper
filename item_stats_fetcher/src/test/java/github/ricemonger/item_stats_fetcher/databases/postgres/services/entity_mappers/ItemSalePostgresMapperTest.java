@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -23,7 +23,7 @@ class ItemSalePostgresMapperTest {
 
     @Autowired
     private ItemSalePostgresMapper itemSalePostgresMapper;
-    
+
     @MockBean
     private ItemMainFieldsPostgresRepository itemMainFieldsRepository;
 

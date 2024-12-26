@@ -1,7 +1,6 @@
 package github.ricemonger.marketplace.databases.redis.services;
 
 
-import github.ricemonger.utils.abstractions.CommonValuesDatabaseService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -20,7 +19,7 @@ public class RedisUtilsConfiguration {
     }
 
     @Bean
-    public CommonValuesDatabaseService commonValuesDatabaseService(RedisTemplate<String, String> redisTemplate) {
+    public RedisService redisService(RedisTemplate<String, String> redisTemplate) {
         return new RedisService(redisTemplate);
     }
 }

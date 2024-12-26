@@ -1,10 +1,10 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.GraphQlCommonValuesService;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.Trades;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.trades.Nodes;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.trades.nodes.PaymentOptions;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.trades.nodes.PaymentProposal;
+import github.ricemonger.marketplace.graphQl.GraphQlCommonValuesService;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
@@ -12,7 +12,6 @@ import github.ricemonger.utils.enums.TradeState;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalFinishedOrdersMappingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

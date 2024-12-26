@@ -6,7 +6,6 @@ import github.ricemonger.marketplace.graphQl.DTOs.config_query_trade.tradesConfi
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.exceptions.server.GraphQlConfigTradeMappingException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 @Slf4j
 public class ConfigQueryTradeMapper {

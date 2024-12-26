@@ -7,8 +7,6 @@ import github.ricemonger.marketplace.graphQl.GraphQlCommonValuesService;
 import github.ricemonger.utils.DTOs.common.GroupedItemDaySalesUbiStats;
 import github.ricemonger.utils.DTOs.common.ItemDaySalesUbiStats;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.text.ParseException;
 import java.time.LocalDate;

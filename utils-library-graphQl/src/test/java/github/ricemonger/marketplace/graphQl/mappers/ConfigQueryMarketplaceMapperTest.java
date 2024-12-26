@@ -7,8 +7,6 @@ import github.ricemonger.marketplace.graphQl.DTOs.config_query_marketplace.marke
 import github.ricemonger.utils.DTOs.common.Tag;
 import github.ricemonger.utils.exceptions.server.GraphQlConfigMarketplaceMappingException;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
