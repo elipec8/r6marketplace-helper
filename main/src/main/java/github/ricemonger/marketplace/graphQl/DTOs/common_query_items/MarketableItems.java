@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.graphQl.DTOs.common_query_items;
 
-import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.Node;
+import github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.Node;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

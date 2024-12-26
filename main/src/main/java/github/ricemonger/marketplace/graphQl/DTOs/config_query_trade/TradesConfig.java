@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.graphQl.DTOs.config_query_trade;
 
-import github.ricemonger.marketplace.graphQl.DTOs.config_query_trade.tradesConfig.BuyLimit;
-import github.ricemonger.marketplace.graphQl.DTOs.config_query_trade.tradesConfig.SellLimit;
-import github.ricemonger.marketplace.graphQl.DTOs.config_query_trade.tradesConfig.TransactionFeesConfig;
+import github.ricemonger.marketplace.graphQl.client_services.config_query_trade.DTO.tradesConfig.BuyLimit;
+import github.ricemonger.marketplace.graphQl.client_services.config_query_trade.DTO.tradesConfig.SellLimit;
+import github.ricemonger.marketplace.graphQl.client_services.config_query_trade.DTO.tradesConfig.TransactionFeesConfig;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

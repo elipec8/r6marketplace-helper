@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node;
-import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.node.Item;
-import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.node.PriceHistory;
+import github.ricemonger.marketplace.graphQl.common_query_items_sale_stats.DTO.marketableItems.Node;
+import github.ricemonger.marketplace.graphQl.common_query_items_sale_stats.DTO.marketableItems.node.Item;
+import github.ricemonger.marketplace.graphQl.common_query_items_sale_stats.DTO.marketableItems.node.PriceHistory;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.DTOs.common.GroupedItemDaySalesUbiStats;
 import github.ricemonger.utils.DTOs.common.ItemDaySalesUbiStats;

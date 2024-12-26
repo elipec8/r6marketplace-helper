@@ -4,7 +4,7 @@ package github.ricemonger.item_stats_fetcher.scheduled_tasks;
 import github.ricemonger.item_stats_fetcher.services.CommonValuesService;
 import github.ricemonger.item_stats_fetcher.services.ItemService;
 import github.ricemonger.item_stats_fetcher.services.TelegramBotClientService;
-import github.ricemonger.marketplace.graphQl.client_services.fetchAllItemsStats.FetchAllItemsStatsGraphQlClientService;
+import github.ricemonger.marketplace.graphQl.common_query_items.CommonQueryItemsGraphQlClientService;
 import github.ricemonger.utils.DTOs.common.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class ScheduledAllItemsStatsFetcher {
 
-    private final FetchAllItemsStatsGraphQlClientService graphQlClientService;
+    private final CommonQueryItemsGraphQlClientService graphQlClientService;
 
     private final ItemService itemService;
 

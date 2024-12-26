@@ -1,10 +1,10 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.Node;
-import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.MarketData;
-import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.BuyStats;
-import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.LastSoldAt;
-import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.SellStats;
+import github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.Node;
+import github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.node.MarketData;
+import github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.node.marketData.BuyStats;
+import github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.node.marketData.LastSoldAt;
+import github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.node.marketData.SellStats;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.enums.ItemType;
@@ -332,8 +332,8 @@ class CommonQueryItemsMapperTest {
     }
 
     private Node createNode(DateTimeFormatter dtf, LocalDateTime date) {
-        github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.Item nodeItem =
-                new github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.Item();
+        github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.node.Item nodeItem =
+                new github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.node.Item();
 
         BuyStats buyStats = new BuyStats();
         buyStats.setHighestPrice(100);

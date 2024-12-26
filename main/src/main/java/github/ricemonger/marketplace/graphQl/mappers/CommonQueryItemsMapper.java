@@ -1,10 +1,10 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.Node;
-import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.MarketData;
-import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.BuyStats;
-import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.LastSoldAt;
-import github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.marketData.SellStats;
+import github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.Node;
+import github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.node.MarketData;
+import github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.node.marketData.BuyStats;
+import github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.node.marketData.LastSoldAt;
+import github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.node.marketData.SellStats;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.enums.ItemType;
@@ -35,7 +35,7 @@ public class CommonQueryItemsMapper {
         if (node == null) {
             throw new GraphQlCommonItemMappingException("Node is null");
         }
-        github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.node.Item item = node.getItem();
+        github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.node.Item item = node.getItem();
 
         if (item == null) {
             throw new GraphQlCommonItemMappingException("Item is null, node-" + node);

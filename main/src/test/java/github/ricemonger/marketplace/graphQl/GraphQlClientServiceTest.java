@@ -90,15 +90,15 @@ class GraphQlClientServiceTest {
 
     @Test
     public void fetchAllItemStats_should_be_executed_once_if_totalCount_smaller_then_limit() {
-        List<github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.Node> resultNodes = new ArrayList<>();
-        resultNodes.add(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.Node(null, null));
-        resultNodes.add(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.Node(null, null));
+        List<github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.Node> resultNodes = new ArrayList<>();
+        resultNodes.add(new github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.Node(null, null));
+        resultNodes.add(new github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.Node(null, null));
 
         HttpGraphQlClient mockClient = mock(HttpGraphQlClient.class);
         GraphQlClient.RequestSpec mockRequestSpec = mock(GraphQlClient.RequestSpec.class);
 
         github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems marketableItems1 =
-                new github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems(List.of(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.Node()), MAX_LIMIT - 1);
+                new github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems(List.of(new github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.Node()), MAX_LIMIT - 1);
         Map<String, Object> variables1 = Map.of(
                 "withOwnership", false,
                 "spaceId", "ubiSpaceId",
@@ -114,7 +114,7 @@ class GraphQlClientServiceTest {
         GraphQlClient.RetrieveSpec mockRetrieveSpec1 = mock(GraphQlClient.RetrieveSpec.class);
         Mono<github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems> mono1 = Mono.just(marketableItems1);
 
-        github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems marketableItems2 = new github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems(List.of(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.Node()), MAX_LIMIT);
+        github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems marketableItems2 = new github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems(List.of(new github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.Node()), MAX_LIMIT);
 
         Map<String, Object> variables2 = Map.of(
                 "withOwnership", false,
@@ -147,19 +147,19 @@ class GraphQlClientServiceTest {
 
         graphQlClientService.fetchAllItemStats();
 
-        verify(commonQueryItemsMapper).mapItems(argThat(arg -> arg.contains(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.Node()) && arg.size() == 1));
+        verify(commonQueryItemsMapper).mapItems(argThat(arg -> arg.contains(new github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.Node()) && arg.size() == 1));
     }
 
     @Test
     public void fetchAllItemStats_should_be_executed_while_limit_bigger_than_totalCount_and_handle_to_mapper() {
-        List<github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.Node> resultNodes = new ArrayList<>();
-        resultNodes.add(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.Node(null, null));
-        resultNodes.add(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.Node(null, null));
+        List<github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.Node> resultNodes = new ArrayList<>();
+        resultNodes.add(new github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.Node(null, null));
+        resultNodes.add(new github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.Node(null, null));
 
         HttpGraphQlClient mockClient = mock(HttpGraphQlClient.class);
         GraphQlClient.RequestSpec mockRequestSpec = mock(GraphQlClient.RequestSpec.class);
 
-        github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems marketableItems1 = new github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems(List.of(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.Node()), MAX_LIMIT);
+        github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems marketableItems1 = new github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems(List.of(new github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.Node()), MAX_LIMIT);
         Map<String, Object> variables1 = Map.of(
                 "withOwnership", false,
                 "spaceId", "ubiSpaceId",
@@ -175,7 +175,7 @@ class GraphQlClientServiceTest {
         GraphQlClient.RetrieveSpec mockRetrieveSpec1 = mock(GraphQlClient.RetrieveSpec.class);
         Mono<github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems> mono1 = Mono.just(marketableItems1);
 
-        github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems marketableItems2 = new github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems(List.of(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.Node()), MAX_LIMIT - 1);
+        github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems marketableItems2 = new github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems(List.of(new github.ricemonger.marketplace.graphQl.client_services.common_query_items.DTO.marketableItems.Node()), MAX_LIMIT - 1);
 
         Map<String, Object> variables2 = Map.of(
                 "withOwnership", false,
@@ -254,14 +254,14 @@ class GraphQlClientServiceTest {
 
     @Test
     public void fetchAllItemSalesUbiStats_should_be_executed_once_if_totalCount_smaller_then_limit() {
-        List<github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node> resultNodes = new ArrayList<>();
-        resultNodes.add(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node(null, null));
-        resultNodes.add(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node(null, null));
+        List<github.ricemonger.marketplace.graphQl.common_query_items_sale_stats.DTO.marketableItems.Node> resultNodes = new ArrayList<>();
+        resultNodes.add(new github.ricemonger.marketplace.graphQl.common_query_items_sale_stats.DTO.marketableItems.Node(null, null));
+        resultNodes.add(new github.ricemonger.marketplace.graphQl.common_query_items_sale_stats.DTO.marketableItems.Node(null, null));
 
         HttpGraphQlClient mockClient = mock(HttpGraphQlClient.class);
         GraphQlClient.RequestSpec mockRequestSpec = mock(GraphQlClient.RequestSpec.class);
 
-        github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems marketableItems1 = new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems(List.of(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node()), MAX_LIMIT - 1);
+        github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems marketableItems1 = new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems(List.of(new github.ricemonger.marketplace.graphQl.common_query_items_sale_stats.DTO.marketableItems.Node()), MAX_LIMIT - 1);
         Map<String, Object> variables1 = Map.of(
                 "withOwnership", false,
                 "spaceId", "ubiSpaceId",
@@ -278,7 +278,7 @@ class GraphQlClientServiceTest {
         GraphQlClient.RetrieveSpec mockRetrieveSpec1 = mock(GraphQlClient.RetrieveSpec.class);
         Mono<github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems> mono1 = Mono.just(marketableItems1);
 
-        github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems marketableItems2 = new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems(List.of(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node()), MAX_LIMIT);
+        github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems marketableItems2 = new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems(List.of(new github.ricemonger.marketplace.graphQl.common_query_items_sale_stats.DTO.marketableItems.Node()), MAX_LIMIT);
 
         Map<String, Object> variables2 = Map.of(
                 "withOwnership", false,
@@ -312,19 +312,19 @@ class GraphQlClientServiceTest {
 
         graphQlClientService.fetchAllItemSalesUbiStats();
 
-        verify(commonQueryItemsSaleStatsMapper).mapAllItemsSaleStats(argThat(arg -> arg.contains(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node()) && arg.size() == 1));
+        verify(commonQueryItemsSaleStatsMapper).mapAllItemsSaleStats(argThat(arg -> arg.contains(new github.ricemonger.marketplace.graphQl.common_query_items_sale_stats.DTO.marketableItems.Node()) && arg.size() == 1));
     }
 
     @Test
     public void fetchAllItemSalesUbiStats_should_be_executed_while_limit_bigger_than_totalCount_and_handle_to_mapper() {
-        List<github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node> resultNodes = new ArrayList<>();
-        resultNodes.add(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node(null, null));
-        resultNodes.add(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node(null, null));
+        List<github.ricemonger.marketplace.graphQl.common_query_items_sale_stats.DTO.marketableItems.Node> resultNodes = new ArrayList<>();
+        resultNodes.add(new github.ricemonger.marketplace.graphQl.common_query_items_sale_stats.DTO.marketableItems.Node(null, null));
+        resultNodes.add(new github.ricemonger.marketplace.graphQl.common_query_items_sale_stats.DTO.marketableItems.Node(null, null));
 
         HttpGraphQlClient mockClient = mock(HttpGraphQlClient.class);
         GraphQlClient.RequestSpec mockRequestSpec = mock(GraphQlClient.RequestSpec.class);
 
-        github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems marketableItems1 = new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems(List.of(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node()), MAX_LIMIT);
+        github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems marketableItems1 = new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems(List.of(new github.ricemonger.marketplace.graphQl.common_query_items_sale_stats.DTO.marketableItems.Node()), MAX_LIMIT);
         Map<String, Object> variables1 = Map.of(
                 "withOwnership", false,
                 "spaceId", "ubiSpaceId",
@@ -341,7 +341,7 @@ class GraphQlClientServiceTest {
         GraphQlClient.RetrieveSpec mockRetrieveSpec1 = mock(GraphQlClient.RetrieveSpec.class);
         Mono<github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems> mono1 = Mono.just(marketableItems1);
 
-        github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems marketableItems2 = new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems(List.of(new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node()), MAX_LIMIT - 1);
+        github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems marketableItems2 = new github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems(List.of(new github.ricemonger.marketplace.graphQl.common_query_items_sale_stats.DTO.marketableItems.Node()), MAX_LIMIT - 1);
 
         Map<String, Object> variables2 = Map.of(
                 "withOwnership", false,

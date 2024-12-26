@@ -1,14 +1,15 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
 
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.Trades;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.trades.Nodes;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.trades.nodes.Payment;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.trades.nodes.PaymentOptions;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.trades.nodes.PaymentProposal;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.trades.nodes.TradeItems;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.trades.nodes.tradeItems.Item;
 import github.ricemonger.marketplace.graphQl.GraphQlCommonValuesService;
+import github.ricemonger.marketplace.graphQl.personal_query_finished_orders.DTO.Trades;
+import github.ricemonger.marketplace.graphQl.personal_query_finished_orders.DTO.trades.Nodes;
+import github.ricemonger.marketplace.graphQl.personal_query_finished_orders.DTO.trades.nodes.Payment;
+import github.ricemonger.marketplace.graphQl.personal_query_finished_orders.DTO.trades.nodes.PaymentOptions;
+import github.ricemonger.marketplace.graphQl.personal_query_finished_orders.DTO.trades.nodes.PaymentProposal;
+import github.ricemonger.marketplace.graphQl.personal_query_finished_orders.DTO.trades.nodes.TradeItems;
+import github.ricemonger.marketplace.graphQl.personal_query_finished_orders.DTO.trades.nodes.tradeItems.Item;
+import github.ricemonger.marketplace.graphQl.personal_query_finished_orders.PersonalQueryFinishedOrdersMapper;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;

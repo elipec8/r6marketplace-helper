@@ -1,21 +1,22 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
 
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.Game;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.MarketableItem;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.Viewer;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.marketableItem.MarketData;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.marketableItem.PaymentLimitations;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.marketableItem.marketData.BuyStats;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.marketableItem.marketData.LastSoldAt;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.marketableItem.marketData.SellStats;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.viewer.Meta;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.viewer.meta.Trades;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.viewer.meta.trades.Nodes;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.viewer.meta.trades.nodes.Payment;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.viewer.meta.trades.nodes.PaymentOptions;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.viewer.meta.trades.nodes.PaymentProposal;
 import github.ricemonger.marketplace.graphQl.GraphQlCommonValuesService;
+import github.ricemonger.marketplace.graphQl.personal_query_one_item.DTO.Game;
+import github.ricemonger.marketplace.graphQl.personal_query_one_item.DTO.game.MarketableItem;
+import github.ricemonger.marketplace.graphQl.personal_query_one_item.DTO.game.Viewer;
+import github.ricemonger.marketplace.graphQl.personal_query_one_item.DTO.game.marketableItem.MarketData;
+import github.ricemonger.marketplace.graphQl.personal_query_one_item.DTO.game.marketableItem.PaymentLimitations;
+import github.ricemonger.marketplace.graphQl.personal_query_one_item.DTO.game.marketableItem.marketData.BuyStats;
+import github.ricemonger.marketplace.graphQl.personal_query_one_item.DTO.game.marketableItem.marketData.LastSoldAt;
+import github.ricemonger.marketplace.graphQl.personal_query_one_item.DTO.game.marketableItem.marketData.SellStats;
+import github.ricemonger.marketplace.graphQl.personal_query_one_item.DTO.game.viewer.Meta;
+import github.ricemonger.marketplace.graphQl.personal_query_one_item.DTO.game.viewer.meta.Trades;
+import github.ricemonger.marketplace.graphQl.personal_query_one_item.DTO.game.viewer.meta.trades.Nodes;
+import github.ricemonger.marketplace.graphQl.personal_query_one_item.DTO.game.viewer.meta.trades.nodes.Payment;
+import github.ricemonger.marketplace.graphQl.personal_query_one_item.DTO.game.viewer.meta.trades.nodes.PaymentOptions;
+import github.ricemonger.marketplace.graphQl.personal_query_one_item.DTO.game.viewer.meta.trades.nodes.PaymentProposal;
+import github.ricemonger.marketplace.graphQl.personal_query_one_item.PersonalQueryOneItemMapper;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.personal.ItemDetails;
@@ -499,15 +500,15 @@ class PersonalQueryOneItemMapperTest {
     }
 
     private Game createGame(DateTimeFormatter dtf, LocalDateTime date) {
-        github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.marketableItem.item.viewer.Meta itemMeta =
-                new github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.marketableItem.item.viewer.Meta();
+        github.ricemonger.marketplace.graphQl.personal_query_one_item.DTO.game.marketableItem.item.viewer.Meta itemMeta =
+                new github.ricemonger.marketplace.graphQl.personal_query_one_item.DTO.game.marketableItem.item.viewer.Meta();
         itemMeta.setIsOwned(true);
 
-        github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.marketableItem.item.Viewer itemViewer =
-                new github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.marketableItem.item.Viewer(itemMeta);
+        github.ricemonger.marketplace.graphQl.personal_query_one_item.DTO.game.marketableItem.item.Viewer itemViewer =
+                new github.ricemonger.marketplace.graphQl.personal_query_one_item.DTO.game.marketableItem.item.Viewer(itemMeta);
 
-        github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.marketableItem.Item item =
-                new github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.game.marketableItem.Item();
+        github.ricemonger.marketplace.graphQl.personal_query_one_item.DTO.game.marketableItem.Item item =
+                new github.ricemonger.marketplace.graphQl.personal_query_one_item.DTO.game.marketableItem.Item();
         item.setItemId("223");
         item.setAssetUrl("https://assetUrl.com");
         item.setName("item name");

@@ -1,11 +1,11 @@
 package github.ricemonger.marketplace.graphQl;
 
 import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems;
-import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node;
+import github.ricemonger.marketplace.graphQl.common_query_items_sale_stats.DTO.marketableItems.Node;
 import github.ricemonger.marketplace.graphQl.DTOs.config_query_marketplace.Marketplace;
 import github.ricemonger.marketplace.graphQl.DTOs.config_query_resolved_transaction_period.TradesLimitations;
 import github.ricemonger.marketplace.graphQl.DTOs.config_query_trade.TradesConfig;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_credits_amount.Meta;
+import github.ricemonger.marketplace.graphQl.personal_query_credits_amount.DTO.personal_query_credits_amount.Meta;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.Trades;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_one_item.Game;
 import github.ricemonger.marketplace.graphQl.mappers.*;
@@ -53,33 +53,6 @@ public class GraphQlClientService {
 
     private final PersonalQueryOwnedItemsMapper personalQueryOwnedItemsMapper;
 
-    public Collection<Item> fetchAllItemStats() throws GraphQlCommonItemMappingException {
-        HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
-        github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems marketableItems;
-        List<github.ricemonger.marketplace.graphQl.DTOs.common_query_items.marketableItems.Node> nodes = new ArrayList<>();
-        int offset = 0;
-
-        do {
-            marketableItems = client
-                    .documentName(GraphQlDocuments.QUERY_ITEMS_STATS_DOCUMENT_NAME)
-                    .variables(graphQlVariablesService.getFetchItemsVariables(offset))
-                    .retrieve("game.marketableItems")
-                    .toEntity(github.ricemonger.marketplace.graphQl.DTOs.common_query_items.MarketableItems.class)
-                    .block();
-
-            if (marketableItems == null || marketableItems.getNodes() == null || marketableItems.getTotalCount() == null) {
-                throw new GraphQlCommonItemMappingException("MarketableItems or it's field is null");
-            }
-
-            nodes.addAll(marketableItems.getNodes());
-
-            offset += marketableItems.getTotalCount();
-        }
-        while (marketableItems.getTotalCount() == GraphQlVariablesService.MAX_LIMIT);
-
-        return commonQueryItemsMapper.mapItems(nodes);
-    }
-
     public List<GroupedItemDaySalesUbiStats> fetchAllItemSalesUbiStats() throws GraphQlCommonItemsSaleStatsMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
         MarketableItems marketableItems;
@@ -105,30 +78,6 @@ public class GraphQlClientService {
         while (marketableItems.getTotalCount() == GraphQlVariablesService.MAX_LIMIT);
 
         return commonQueryItemsSaleStatsMapper.mapAllItemsSaleStats(nodes);
-    }
-
-    public Collection<Tag> fetchAllTags() throws GraphQlConfigMarketplaceMappingException {
-        HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
-        Marketplace marketplace = client
-                .documentName(GraphQlDocuments.QUERY_MARKETPLACE_CONFIG_DOCUMENT_NAME)
-                .variables(graphQlVariablesService.getFetchConfigVariables())
-                .retrieve("game.marketplace")
-                .toEntity(Marketplace.class)
-                .block();
-
-        return configQueryMarketplaceMapper.mapTags(marketplace);
-    }
-
-    public void checkItemTypes() throws GraphQlConfigMarketplaceMappingException {
-        HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
-        Marketplace marketplace = client
-                .documentName(GraphQlDocuments.QUERY_MARKETPLACE_CONFIG_DOCUMENT_NAME)
-                .variables(graphQlVariablesService.getFetchConfigVariables())
-                .retrieve("game.marketplace")
-                .toEntity(Marketplace.class)
-                .block();
-
-        configQueryMarketplaceMapper.checkItemTypes(marketplace);
     }
 
     public ConfigResolvedTransactionPeriod fetchConfigResolvedTransactionPeriod() throws GraphQlConfigResolvedTransactionPeriodMappingException {

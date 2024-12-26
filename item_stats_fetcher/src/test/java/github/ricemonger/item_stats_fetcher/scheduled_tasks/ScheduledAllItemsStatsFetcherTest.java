@@ -3,7 +3,7 @@ package github.ricemonger.item_stats_fetcher.scheduled_tasks;
 import github.ricemonger.item_stats_fetcher.services.CommonValuesService;
 import github.ricemonger.item_stats_fetcher.services.ItemService;
 import github.ricemonger.item_stats_fetcher.services.TelegramBotClientService;
-import github.ricemonger.marketplace.graphQl.client_services.fetchAllItemsStats.FetchAllItemsStatsGraphQlClientService;
+import github.ricemonger.marketplace.graphQl.common_query_items.CommonQueryItemsGraphQlClientService;
 import github.ricemonger.utils.DTOs.common.Item;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 public class ScheduledAllItemsStatsFetcherTest {
 
     @MockBean
-    private FetchAllItemsStatsGraphQlClientService graphQlClientService;
+    private CommonQueryItemsGraphQlClientService graphQlClientService;
 
     @MockBean
     private TelegramBotClientService telegramBotService;

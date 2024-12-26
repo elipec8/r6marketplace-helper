@@ -1,7 +1,8 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_owned_items.marketableItems.Node;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_owned_items.marketableItems.node.Item;
+import github.ricemonger.marketplace.graphQl.personal_query_owned_items.DTO.marketableItems.Node;
+import github.ricemonger.marketplace.graphQl.personal_query_owned_items.DTO.marketableItems.node.Item;
+import github.ricemonger.marketplace.graphQl.personal_query_owned_items.PersonalQueryOwnedItemsMapper;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalOwnedItemsMappingException;
 import org.junit.jupiter.api.Test;
 

@@ -1,10 +1,11 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.TradesLimitations;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.tradeLimitations.Buy;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.tradeLimitations.Sell;
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_locked_items.tradeLimitations.sell.ResaleLocks;
 import github.ricemonger.marketplace.graphQl.GraphQlCommonValuesService;
+import github.ricemonger.marketplace.graphQl.personal_query_locked_items.DTO.TradesLimitations;
+import github.ricemonger.marketplace.graphQl.personal_query_locked_items.DTO.tradeLimitations.Buy;
+import github.ricemonger.marketplace.graphQl.personal_query_locked_items.DTO.tradeLimitations.Sell;
+import github.ricemonger.marketplace.graphQl.personal_query_locked_items.DTO.tradeLimitations.sell.ResaleLocks;
+import github.ricemonger.marketplace.graphQl.personal_query_locked_items.PersonalQueryLockedItemsMapper;
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
 import github.ricemonger.utils.DTOs.personal.UserTradesLimitations;
 import github.ricemonger.utils.DTOs.personal.UserTransactionsCount;

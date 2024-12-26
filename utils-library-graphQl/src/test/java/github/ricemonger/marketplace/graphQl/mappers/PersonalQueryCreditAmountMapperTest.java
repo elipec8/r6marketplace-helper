@@ -1,6 +1,7 @@
 package github.ricemonger.marketplace.graphQl.mappers;
 
-import github.ricemonger.marketplace.graphQl.DTOs.personal_query_credits_amount.Meta;
+import github.ricemonger.marketplace.graphQl.personal_query_credits_amount.DTO.Meta;
+import github.ricemonger.marketplace.graphQl.personal_query_credits_amount.PersonalQueryCreditAmountMapper;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalCreditAmountMappingException;
 import org.junit.jupiter.api.Test;
 
