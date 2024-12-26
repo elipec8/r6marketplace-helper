@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.services.configurations;
+package github.ricemonger.utils;
 
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -9,5 +9,5 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         value = "app.scheduling.enabled", havingValue = "true", matchIfMissing = true)
 @Configuration
 @EnableScheduling
-public class SchedulingConfiguration {
+public class SchedulingUtilsConfiguration {
 }
