@@ -1,6 +1,6 @@
-package github.ricemonger.marketplace.scheduled_tasks;
+package github.ricemonger.item_trade_stats_calculator.scheduled_tasks;
 
-import github.ricemonger.marketplace.services.ItemService;
+import github.ricemonger.item_trade_stats_calculator.services.ItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

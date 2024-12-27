@@ -1,6 +1,6 @@
-package github.ricemonger.marketplace.scheduled_tasks;
+package github.ricemonger.item_trade_stats_calculator.scheduled_tasks;
 
-import github.ricemonger.marketplace.services.ItemService;
+import github.ricemonger.item_trade_stats_calculator.services.ItemService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
