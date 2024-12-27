@@ -1,7 +1,7 @@
-package github.ricemonger.marketplace.scheduled_tasks;
+package github.ricemonger.main_user_reauthorizer.scheduled_tasks;
 
-import github.ricemonger.marketplace.authorization.AuthorizationService;
-import github.ricemonger.marketplace.services.CommonValuesService;
+import github.ricemonger.main_user_reauthorizer.authorization.AuthorizationService;
+import github.ricemonger.main_user_reauthorizer.services.CommonValuesService;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +14,12 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class ScheduledMainUserReauthorizationTest {
-
-    @MockBean
-    private CommonValuesService commonValuesService;
-
-    @MockBean
-    private AuthorizationService authorizationService;
-
     @Autowired
     private ScheduledMainUserReauthorization scheduledMainUserReauthorization;
+    @MockBean
+    private CommonValuesService commonValuesService;
+    @MockBean
+    private AuthorizationService authorizationService;
 
     @Test
     public void reauthorizeMainUserAndSave_should_call_services() {

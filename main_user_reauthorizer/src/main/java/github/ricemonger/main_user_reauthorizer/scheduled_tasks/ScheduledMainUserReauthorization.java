@@ -1,7 +1,8 @@
-package github.ricemonger.marketplace.scheduled_tasks;
+package github.ricemonger.main_user_reauthorizer.scheduled_tasks;
 
-import github.ricemonger.marketplace.authorization.AuthorizationService;
-import github.ricemonger.marketplace.services.CommonValuesService;
+
+import github.ricemonger.main_user_reauthorizer.authorization.AuthorizationService;
+import github.ricemonger.main_user_reauthorizer.services.CommonValuesService;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
