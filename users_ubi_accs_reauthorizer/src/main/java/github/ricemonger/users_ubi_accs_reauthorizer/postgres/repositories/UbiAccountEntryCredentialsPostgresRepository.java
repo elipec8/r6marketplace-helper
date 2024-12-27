@@ -1,0 +1,8 @@
+package github.ricemonger.users_ubi_accs_reauthorizer.postgres.repositories;
+
+import github.ricemonger.users_ubi_accs_reauthorizer.postgres.entities.user.UbiAccountEntryCredentialsEntity;
+import github.ricemonger.users_ubi_accs_reauthorizer.postgres.entities.user.UbiAccountEntryEntityId;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UbiAccountEntryCredentialsPostgresRepository extends JpaRepository<UbiAccountEntryCredentialsEntity, UbiAccountEntryEntityId> {
+}
