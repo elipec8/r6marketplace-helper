@@ -1,11 +1,8 @@
 package github.ricemonger.marketplace.graphQl;
 
-import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.MarketableItems;
 import github.ricemonger.marketplace.graphQl.DTOs.personal_query_finished_orders.Trades;
-import github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.Node;
 import github.ricemonger.marketplace.graphQl.mappers.*;
 import github.ricemonger.marketplace.graphQl.personal_query_credits_amount.DTO.personal_query_credits_amount.Meta;
-import github.ricemonger.utils.DTOs.common.GroupedItemDaySalesUbiStats;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.DTOs.personal.UserTradesLimitations;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
@@ -25,8 +22,6 @@ public class GraphQlClientService {
 
     private final GraphQlVariablesService graphQlVariablesService;
 
-    private final CommonQueryItemsSaleStatsMapper commonQueryItemsSaleStatsMapper;
-
     private final PersonalQueryCreditAmountMapper personalQueryCreditAmountMapper;
 
     private final PersonalQueryCurrentOrdersMapper personalQueryCurrentOrdersMapper;
@@ -36,33 +31,6 @@ public class GraphQlClientService {
     private final PersonalQueryLockedItemsMapper personalQueryLockedItemsMapper;
 
     private final PersonalQueryOwnedItemsMapper personalQueryOwnedItemsMapper;
-
-    public List<GroupedItemDaySalesUbiStats> fetchAllItemSalesUbiStats() throws GraphQlCommonItemsSaleStatsMappingException {
-        HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
-        MarketableItems marketableItems;
-        List<Node> nodes = new ArrayList<>();
-        int offset = 0;
-
-        do {
-            marketableItems = client
-                    .documentName(GraphQlDocuments.QUERY_ITEMS_SALE_STATS_DOCUMENT_NAME)
-                    .variables(graphQlVariablesService.getFetchItemsUbiSaleStats(offset))
-                    .retrieve("game.marketableItems")
-                    .toEntity(MarketableItems.class)
-                    .block();
-
-            if (marketableItems == null || marketableItems.getNodes() == null || marketableItems.getTotalCount() == null) {
-                throw new GraphQlCommonItemsSaleStatsMappingException("MarketableItems or it's field is null");
-            }
-
-            nodes.addAll(marketableItems.getNodes());
-
-            offset += marketableItems.getTotalCount();
-        }
-        while (marketableItems.getTotalCount() == GraphQlVariablesService.MAX_LIMIT);
-
-        return commonQueryItemsSaleStatsMapper.mapAllItemsSaleStats(nodes);
-    }
 
     public int fetchCreditAmountForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalCreditAmountMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);

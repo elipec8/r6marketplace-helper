@@ -16,17 +16,13 @@ public class CentralTradeManagerCommand implements Comparable<CentralTradeManage
     private final CentralTradeManagerCommandType commandType;
     private final String itemId;
     private final String itemName;
-    private final String chatId;
-    private final Boolean privateNotificationsEnabledFlag;
     private final String tradeId;
     private final Integer oldPrice;
     private final Integer newPrice;
 
-    public CentralTradeManagerCommand(Long userId, AuthorizationDTO authorizationDTO, String chatId, Boolean privateNotificationsEnabledFlag, CentralTradeManagerCommandType commandType, String itemId, String itemName, String tradeId, Integer oldPrice) {
+    public CentralTradeManagerCommand(Long userId, AuthorizationDTO authorizationDTO,  CentralTradeManagerCommandType commandType, String itemId, String itemName, String tradeId, Integer oldPrice) {
         this.userId = userId;
         this.authorizationDTO = authorizationDTO;
-        this.chatId = chatId;
-        this.privateNotificationsEnabledFlag = privateNotificationsEnabledFlag;
         this.commandType = commandType;
         this.itemId = itemId;
         this.itemName = itemName;
@@ -35,11 +31,9 @@ public class CentralTradeManagerCommand implements Comparable<CentralTradeManage
         this.newPrice = null;
     }
 
-    public CentralTradeManagerCommand(Long userId, AuthorizationDTO authorizationDTO, String chatId, Boolean privateNotificationsEnabledFlag, CentralTradeManagerCommandType commandType, String itemId, String itemName, String tradeId, Integer oldPrice, Integer newPrice) {
+    public CentralTradeManagerCommand(Long userId, AuthorizationDTO authorizationDTO, CentralTradeManagerCommandType commandType, String itemId, String itemName, String tradeId, Integer oldPrice, Integer newPrice) {
         this.userId = userId;
         this.authorizationDTO = authorizationDTO;
-        this.chatId = chatId;
-        this.privateNotificationsEnabledFlag = privateNotificationsEnabledFlag;
         this.commandType = commandType;
         this.itemId = itemId;
         this.itemName = itemName;
@@ -49,11 +43,10 @@ public class CentralTradeManagerCommand implements Comparable<CentralTradeManage
 
     }
 
-    public CentralTradeManagerCommand(Long userId, AuthorizationDTO authorizationDTO, String chatId, Boolean privateNotificationsEnabledFlag, CentralTradeManagerCommandType commandType, String itemId, String itemName, Integer newPrice) {
+    public CentralTradeManagerCommand(Long userId, AuthorizationDTO authorizationDTO, CentralTradeManagerCommandType commandType, String itemId, String itemName, Integer newPrice) {
         this.userId = userId;
         this.authorizationDTO = authorizationDTO;
-        this.chatId = chatId;
-        this.privateNotificationsEnabledFlag = privateNotificationsEnabledFlag;
+
         this.commandType = commandType;
         this.itemId = itemId;
         this.itemName = itemName;

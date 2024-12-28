@@ -13,7 +13,7 @@ import java.util.List;
 public class ManageableUser {
     private Long id;
 
-    private UbiAccountStatsEntityDTO ubiAccountStatsEntityDTO;
+    private String ubiProfileId;
 
     private String ubiSessionId;
     private String ubiSpaceId;
@@ -21,14 +21,7 @@ public class ManageableUser {
     private String ubiRememberDeviceTicket;
     private String ubiRememberMeTicket;
 
-    private String chatId;
-    private Boolean privateNotificationsEnabledFlag;
-
     private List<TradeByFiltersManager> tradeByFiltersManagers = new ArrayList<>();
 
     private List<TradeByItemIdManager> tradeByItemIdManagers = new ArrayList<>();
-
-    public String getUbiProfileId() {
-        return ubiAccountStatsEntityDTO == null ? null : ubiAccountStatsEntityDTO.getUbiProfileId();
-    }
 }

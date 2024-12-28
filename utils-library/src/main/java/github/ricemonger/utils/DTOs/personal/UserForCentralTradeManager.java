@@ -21,9 +21,6 @@ public class UserForCentralTradeManager {
     private String ubiRememberDeviceTicket;
     private String ubiRememberMeTicket;
 
-    private String chatId;
-    private Boolean privateNotificationsEnabledFlag;
-
     private List<TradeByFiltersManager> tradeByFiltersManagers = new ArrayList<>();
 
     private List<TradeByItemIdManager> tradeByItemIdManagers = new ArrayList<>();
@@ -36,8 +33,6 @@ public class UserForCentralTradeManager {
         this.ubiAuthTicket = manageableUser.getUbiAuthTicket();
         this.ubiRememberDeviceTicket = manageableUser.getUbiRememberDeviceTicket();
         this.ubiRememberMeTicket = manageableUser.getUbiRememberMeTicket();
-        this.chatId = manageableUser.getChatId();
-        this.privateNotificationsEnabledFlag = manageableUser.getPrivateNotificationsEnabledFlag();
         this.tradeByFiltersManagers = manageableUser.getTradeByFiltersManagers();
         this.tradeByItemIdManagers = manageableUser.getTradeByItemIdManagers();
     }
