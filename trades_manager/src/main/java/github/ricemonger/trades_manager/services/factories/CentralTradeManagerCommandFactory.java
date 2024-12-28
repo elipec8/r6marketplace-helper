@@ -1,8 +1,9 @@
 package github.ricemonger.trades_manager.services.factories;
 
-import github.ricemonger.utils.DTOs.personal.CentralTradeManagerCommand;
-import github.ricemonger.utils.DTOs.personal.PotentialPersonalBuyTrade;
-import github.ricemonger.utils.DTOs.personal.PotentialPersonalSellTrade;
+import github.ricemonger.trades_manager.services.DTOs.CentralTradeManagerCommand;
+import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalBuyTrade;
+import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalSellTrade;
+import github.ricemonger.trades_manager.services.DTOs.Trade;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.CentralTradeManagerCommandType;
@@ -19,9 +20,9 @@ import java.util.Objects;
 public class CentralTradeManagerCommandFactory {
 
     public List<CentralTradeManagerCommand> createCommandsForCentralTradeManagerForUser(Collection<PotentialPersonalSellTrade> resultingSellTrades,
-                                                                                        Collection<UbiTrade> currentSellTrades,
+                                                                                        Collection<Trade> currentSellTrades,
                                                                                         Collection<PotentialPersonalBuyTrade> resultingBuyTrades,
-                                                                                        Collection<UbiTrade> currentBuyTrades,
+                                                                                        Collection<Trade> currentBuyTrades,
                                                                                         Long userId,
                                                                                         AuthorizationDTO authorizationDTO) {
         List<CentralTradeManagerCommand> commands = new LinkedList<>();
@@ -40,7 +41,7 @@ public class CentralTradeManagerCommandFactory {
             }
         }
 
-        for (UbiTrade currentSellTrade : currentSellTrades) {
+        for (Trade currentSellTrade : currentSellTrades) {
             if (resultingSellTrades.stream().noneMatch(sellTrade -> sellTrade.getTradeId() != null && Objects.equals(sellTrade.getTradeId(),
                     currentSellTrade.getTradeId()))) {
                 commands.add(new CentralTradeManagerCommand(userId, authorizationDTO,
@@ -63,7 +64,7 @@ public class CentralTradeManagerCommandFactory {
             }
         }
 
-        for (UbiTrade currentBuyTrade : currentBuyTrades) {
+        for (Trade currentBuyTrade : currentBuyTrades) {
             if (resultingBuyTrades.stream().noneMatch(buyTrade -> buyTrade.getTradeId() != null && Objects.equals(buyTrade.getTradeId(),
                     currentBuyTrade.getTradeId()))) {
                 commands.add(new CentralTradeManagerCommand(userId, authorizationDTO,

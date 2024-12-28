@@ -5,13 +5,13 @@ import github.ricemonger.marketplace.graphQl.personal_mutation_buy_update.Person
 import github.ricemonger.marketplace.graphQl.personal_mutation_cancel.PersonalMutationCancelGraphQlClientService;
 import github.ricemonger.marketplace.graphQl.personal_mutation_sell_create.PersonalMutationSellCreateGraphQlClientService;
 import github.ricemonger.marketplace.graphQl.personal_mutation_sell_update.PersonalMutationSellUpdateGraphQlClientService;
+import github.ricemonger.trades_manager.services.DTOs.*;
 import github.ricemonger.trades_manager.services.factories.CentralTradeManagerCommandFactory;
 import github.ricemonger.trades_manager.services.factories.PersonalItemFactory;
 import github.ricemonger.trades_manager.services.factories.PotentialTradeFactory;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.personal.*;
-import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -36,54 +36,43 @@ public class CentralTradeManager {
     private final PotentialTradeFactory potentialTradeFactory;
     private final CentralTradeManagerCommandFactory centralTradeManagerCommandFactory;
 
-    public void manageAllUsersTrades(Collection<UbiAccountStats> updatedUbiAccountStats) {
+    public void manageAllUsersTrades() {
         ConfigTrades configTrades = commonValuesService.getConfigTrades();
 
         List<Item> items = itemService.getAllItems();
 
         List<ManageableUser> manageableUsers = userService.getAllManageableUsers();
 
-        List<UserForCentralTradeManager> usersForCentralTradeManager = new LinkedList<>();
-
         for (ManageableUser manageableUser : manageableUsers) {
-            UbiAccountStats linkedUbiAccount =
-                    updatedUbiAccountStats.stream().filter(u -> u != null && manageableUser != null && Objects.equals(u.getUbiProfileId(),
-                            manageableUser.getUbiProfileId())).findFirst().orElse(null);
-
-            if (manageableUser != null && linkedUbiAccount != null) {
-                usersForCentralTradeManager.add(new UserForCentralTradeManager(manageableUser, linkedUbiAccount));
-            }
-        }
-
-        for (UserForCentralTradeManager userForCentralTradeManager : usersForCentralTradeManager) {
-            createAndExecuteCentralTradeManagerCommandsForUser(userForCentralTradeManager, configTrades, items);
+            createAndExecuteCentralTradeManagerCommandsForUser(manageableUser, configTrades, items);
         }
     }
 
-    private void createAndExecuteCentralTradeManagerCommandsForUser(@NotNull UserForCentralTradeManager userForCentralTradeManager,
+    private void createAndExecuteCentralTradeManagerCommandsForUser(@NotNull ManageableUser manageableUser,
                                                                     @NotNull ConfigTrades configTrades,
                                                                     Collection<Item> existingItems) {
-        List<UbiTrade> currentSellTrades = userForCentralTradeManager.getCurrentSellTrades();
-        List<UbiTrade> currentBuyTrades = userForCentralTradeManager.getCurrentBuyTrades();
+
+        List<Trade> currentSellTrades = manageableUser.getCurrentSellTrades();
+        List<Trade> currentBuyTrades = manageableUser.getCurrentBuyTrades();
 
         Set<PersonalItem> personalItems = personalItemFactory.getPersonalItemsForUser(
-                userForCentralTradeManager.getTradeByFiltersManagers(),
-                userForCentralTradeManager.getTradeByItemIdManagers(),
+                manageableUser.getTradeByFiltersManagers(),
+                manageableUser.getTradeByItemIdManagers(),
                 currentSellTrades,
                 currentBuyTrades,
-                userForCentralTradeManager.getOwnedItemsIds(),
+                manageableUser.getOwnedItemsIds(),
                 existingItems);
 
         List<PotentialPersonalSellTrade> resultingSellTrades = potentialTradeFactory.getResultingPersonalSellTrades(
                 personalItems,
-                userForCentralTradeManager.getResaleLocks(),
-                userForCentralTradeManager.getSoldIn24h(),
+                manageableUser.getResaleLocks(),
+                manageableUser.getSoldIn24h(),
                 configTrades.getSellSlots(),
                 configTrades.getSellLimit());
         List<PotentialPersonalBuyTrade> resultingBuyTrades = potentialTradeFactory.getResultingPersonalBuyTrades(
                 personalItems,
-                userForCentralTradeManager.getCreditAmount(),
-                userForCentralTradeManager.getBoughtIn24h(),
+                manageableUser.getCreditAmount(),
+                manageableUser.getBoughtIn24h(),
                 configTrades.getBuySlots(),
                 configTrades.getBuyLimit());
 
@@ -92,12 +81,12 @@ public class CentralTradeManager {
                 currentSellTrades,
                 resultingBuyTrades,
                 currentBuyTrades,
-                userForCentralTradeManager.getId(),
-                new AuthorizationDTO(userForCentralTradeManager)));
+                manageableUser.getId(),
+                manageableUser.toAuthorizationDTO()));
 
         for (CentralTradeManagerCommand command : commands.stream().sorted().toList()) {
             log.info("Executing command: {}", command);
-            //executeCentralTradeManagerCommand(command);
+            executeCentralTradeManagerCommand(command);
         }
     }
 

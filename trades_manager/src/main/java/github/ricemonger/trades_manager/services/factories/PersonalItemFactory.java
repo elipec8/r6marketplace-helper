@@ -1,5 +1,7 @@
 package github.ricemonger.trades_manager.services.factories;
 
+import github.ricemonger.trades_manager.services.DTOs.Trade;
+import github.ricemonger.trades_manager.services.DTOs.PersonalItem;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.personal.*;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +15,8 @@ public class PersonalItemFactory {
 
     public Set<PersonalItem> getPersonalItemsForUser(Collection<TradeByFiltersManager> tradeByFiltersManagers,
                                                      Collection<TradeByItemIdManager> tradeByItemIdManagers,
-                                                     Collection<UbiTrade> existingSellTrades,
-                                                     Collection<UbiTrade> existingBuyTrades,
+                                                     Collection<Trade> existingSellTrades,
+                                                     Collection<Trade> existingBuyTrades,
                                                      Collection<String> ownedItemsId,
                                                      Collection<Item> existingItems) {
         Set<PersonalItem> personalItems = new HashSet<>();
@@ -35,8 +37,8 @@ public class PersonalItemFactory {
     }
 
     public Set<PersonalItem> getPersonalItemsFromTradeByFiltersManagersByPriority(Collection<TradeByFiltersManager> tradeByFiltersManagers,
-                                                                                  Collection<UbiTrade> existingSellTrades,
-                                                                                  Collection<UbiTrade> existingBuyTrades,
+                                                                                  Collection<Trade> existingSellTrades,
+                                                                                  Collection<Trade> existingBuyTrades,
                                                                                   Collection<String> ownedItemsIds,
                                                                                   Collection<Item> existingItems) {
         Set<PersonalItem> personalItems = new HashSet<>();
@@ -60,8 +62,8 @@ public class PersonalItemFactory {
     }
 
     public Set<PersonalItem> getPersonalItemsFromTradeByFiltersManager(TradeByFiltersManager tradeByFiltersManager,
-                                                                       Collection<UbiTrade> existingSellTrades,
-                                                                       Collection<UbiTrade> existingBuyTrades,
+                                                                       Collection<Trade> existingSellTrades,
+                                                                       Collection<Trade> existingBuyTrades,
                                                                        Collection<String> ownedItemsIds,
                                                                        Collection<Item> existingItems) {
         if (existingItems == null || existingItems.isEmpty() || tradeByFiltersManager.getAppliedFilters() == null || tradeByFiltersManager.getAppliedFilters().isEmpty()) {
@@ -74,7 +76,7 @@ public class PersonalItemFactory {
                                 int buyBoundaryPrice = Integer.MAX_VALUE;
 
                                 boolean isOwned = ownedItemsIds.contains(item.getItemId());
-                                UbiTrade existingTrade;
+                                Trade existingTrade;
 
                                 if (isOwned) {
                                     existingTrade = existingSellTrades.stream().filter(t -> t.getItemId().equals(item.getItemId())).findFirst().orElse(null);
@@ -101,8 +103,8 @@ public class PersonalItemFactory {
     }
 
     public Set<PersonalItem> getPersonalItemsFromTradeByItemIdManagersByPriority(Collection<TradeByItemIdManager> tradeByItemIdManagers,
-                                                                                 Collection<UbiTrade> existingSellTrades,
-                                                                                 Collection<UbiTrade> existingBuyTrades,
+                                                                                 Collection<Trade> existingSellTrades,
+                                                                                 Collection<Trade> existingBuyTrades,
                                                                                  Collection<String> ownedItemsIds,
                                                                                  Collection<Item> existingItems) {
         Set<PersonalItem> personalItems = new HashSet<>();
@@ -129,8 +131,8 @@ public class PersonalItemFactory {
     }
 
     public PersonalItem getPersonalItemFromTradeByItemIdManager(TradeByItemIdManager tradeByItemIdManager,
-                                                                Collection<UbiTrade> existingSellTrades,
-                                                                Collection<UbiTrade> existingBuyTrades,
+                                                                Collection<Trade> existingSellTrades,
+                                                                Collection<Trade> existingBuyTrades,
                                                                 Collection<String> ownedItemsIds,
                                                                 Collection<Item> existingItems) {
         Item item = existingItems.stream().filter(i -> i.getItemId().equals(tradeByItemIdManager.getItemId())).findFirst().orElse(null);
@@ -139,7 +141,7 @@ public class PersonalItemFactory {
             int minMedianPriceDifferencePercent = Integer.MIN_VALUE;
 
             boolean isOwned = ownedItemsIds.contains(item.getItemId());
-            UbiTrade existingTrade;
+            Trade existingTrade;
 
             if (isOwned) {
                 existingTrade = existingSellTrades.stream().filter(t -> t.getItemId().equals(item.getItemId())).findFirst().orElse(null);

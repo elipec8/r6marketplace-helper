@@ -14,10 +14,6 @@ public class TagService {
 
     private final TagDatabaseService tagDatabaseService;
 
-    public void saveAllTags(Collection<Tag> tags) {
-        tagDatabaseService.saveAll(tags);
-    }
-
     public List<Tag> getTagsByNames(Collection<String> tagNames) {
         return tagDatabaseService.findAllByNames(tagNames);
     }

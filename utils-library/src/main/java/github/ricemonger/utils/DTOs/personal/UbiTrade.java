@@ -36,7 +36,7 @@ public class UbiTrade {
         return item == null ? null : item.getName();
     }
 
-    public boolean isFullyEqualExceptItem(UbiTrade other) {
+    public boolean isFullyEqual(UbiTrade other) {
         if (other == null) {
             return false;
         }

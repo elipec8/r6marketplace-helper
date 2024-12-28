@@ -37,7 +37,7 @@ public class ManageableUserUbiAccountEntryEntity {
 
     @ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ubiProfileId", referencedColumnName = "ubiProfileId")
-    private UbiAccountStatsIdEntity ubiAccountStats;
+    private UbiAccountStatsEntity ubiAccountStats;
 
     public Long getUserId_() {
         return user.getId();

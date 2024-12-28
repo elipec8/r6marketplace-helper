@@ -3,7 +3,7 @@ package github.ricemonger.trades_manager.postgres.services;
 import github.ricemonger.trades_manager.postgres.repositories.ManageableUserPostgresRepository;
 import github.ricemonger.trades_manager.postgres.services.entity_mappers.user.UserEntityMapper;
 import github.ricemonger.trades_manager.services.abstractions.UserDatabaseService;
-import github.ricemonger.utils.DTOs.personal.ManageableUser;
+import github.ricemonger.trades_manager.services.DTOs.ManageableUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

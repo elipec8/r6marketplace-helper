@@ -3,9 +3,6 @@ package github.ricemonger.marketplace.services;
 import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
 import github.ricemonger.utils.DTOs.personal.UbiAccountAuthorizationEntry;
-import github.ricemonger.utils.DTOs.personal.UbiAccountAuthorizationEntryWithTelegram;
-import github.ricemonger.utils.DTOs.personal.UbiAccountEntryWithTelegram;
-import github.ricemonger.utils.DTOs.personal.UbiAccountStatsEntityDTO;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
@@ -46,42 +43,12 @@ public class TelegramUserUbiAccountEntryService {
         saveAuthorizationInfo(chatId, user.getEmail(), user.getEncodedPassword(), userAuthorizationDTO);
     }
 
-    public void saveAllUbiAccountStats(List<UbiAccountStatsEntityDTO> ubiAccounts) {
-        telegramUserUbiAccountEntryDatabaseService.saveAllUbiAccountStats(ubiAccounts);
-    }
-
     public void deleteByChatId(String chatId) throws TelegramUserDoesntExistException {
         telegramUserUbiAccountEntryDatabaseService.deleteAuthorizationInfoByChatId(chatId);
     }
 
-    public List<UbiAccountAuthorizationEntryWithTelegram> reauthorizeAllUbiUsersAndGetUnauthorizedList() {
-        List<UbiAccountAuthorizationEntryWithTelegram> users = new ArrayList<>(telegramUserUbiAccountEntryDatabaseService.findAllAuthorizationInfoForTelegram());
-
-        List<UbiAccountAuthorizationEntryWithTelegram> unauthorizedUsers = new ArrayList<>();
-
-        for (UbiAccountAuthorizationEntryWithTelegram user : users) {
-            try {
-                AuthorizationDTO dto = authorizationService.reauthorizeAndGet2FaAuthorizedDtoForEncodedPasswordWithRememberDeviceTicket(user.getEmail(), user.getEncodedPassword(), user.getUbiRememberDeviceTicket());
-                if (dto.getProfileId() == null) {
-                    log.error("User with chatId {} could not be reauthorized, because of invalid rememberDeviceTicket", user.getChatId());
-                    unauthorizedUsers.add(user);
-                    continue;
-                }
-                saveAuthorizationInfo(user.getChatId(), user.getEmail(), user.getEncodedPassword(), dto);
-            } catch (UbiUserAuthorizationClientErrorException | UbiUserAuthorizationServerErrorException e) {
-                unauthorizedUsers.add(user);
-            }
-        }
-
-        return unauthorizedUsers;
-    }
-
     public UbiAccountAuthorizationEntry findByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
         return telegramUserUbiAccountEntryDatabaseService.findAuthorizationInfoByChatId(chatId);
-    }
-
-    public List<UbiAccountEntryWithTelegram> findAllFUbiAccountEntriesWithTelegram() {
-        return telegramUserUbiAccountEntryDatabaseService.findAllForTelegram();
     }
 
     private void saveAuthorizationInfo(String chatId, String email, String encodedPassword, AuthorizationDTO authorizationDTO) throws TelegramUserDoesntExistException, UbiAccountEntryAlreadyExistsException {

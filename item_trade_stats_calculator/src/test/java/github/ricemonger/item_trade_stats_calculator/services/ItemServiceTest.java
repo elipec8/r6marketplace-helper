@@ -34,7 +34,7 @@ class ItemServiceTest {
     @MockBean
     private ItemSaleUbiStatsDatabaseService itemSaleUbiStatsService;
     @MockBean
-    private PotentialTradeStatsService potentialTradeStatsService;
+    private PotentialTradeStatsCalculator potentialTradeStatsCalculator;
 
     @Test
     public void recalculateAndSaveAllItemsHistoryFields_should_recalculate_only_history_fields_and_save_all_items() {
@@ -134,14 +134,14 @@ class ItemServiceTest {
         PotentialTradeStats item1PotentialTradeStatsBuyIn24Hours = new PotentialTradeStats(300, 1, 1300L);
         PotentialTradeStats item1PotentialTradeStatsBuyIn168Hours = new PotentialTradeStats(400, 1, 1400L);
         PotentialTradeStats item1PotentialTradeStatsBuyIn720Hours = new PotentialTradeStats(500, 1, 1500L);
-        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByMaxBuyPrice(new Item("itemId1"))).thenReturn(item1PotentialTradeStatsSellByMaxBuyPrice);
-        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByNextFancySellPrice(new Item("itemId1"))).thenReturn(item1PotentialTradeStatsSellByNextFancySellPrice);
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsByMinSellPrice(new Item("itemId1"))).thenReturn(item1PotentialTradeStatsBuyByMinSellPrice);
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId1")), any(), eq(60))).thenReturn(item1PotentialTradeStatsBuyIn1Hour);
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId1")), any(), eq(360))).thenReturn(item1PotentialTradeStatsBuyIn6Hours);
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId1")), any(), eq(1440))).thenReturn(item1PotentialTradeStatsBuyIn24Hours);
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId1")), any(), eq(10080))).thenReturn(item1PotentialTradeStatsBuyIn168Hours);
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId1")), any(), eq(43200))).thenReturn(item1PotentialTradeStatsBuyIn720Hours);
+        when(potentialTradeStatsCalculator.calculatePotentialSellTradeStatsByMaxBuyPrice(new Item("itemId1"))).thenReturn(item1PotentialTradeStatsSellByMaxBuyPrice);
+        when(potentialTradeStatsCalculator.calculatePotentialSellTradeStatsByNextFancySellPrice(new Item("itemId1"))).thenReturn(item1PotentialTradeStatsSellByNextFancySellPrice);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsByMinSellPrice(new Item("itemId1"))).thenReturn(item1PotentialTradeStatsBuyByMinSellPrice);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId1")), any(), eq(60))).thenReturn(item1PotentialTradeStatsBuyIn1Hour);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId1")), any(), eq(360))).thenReturn(item1PotentialTradeStatsBuyIn6Hours);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId1")), any(), eq(1440))).thenReturn(item1PotentialTradeStatsBuyIn24Hours);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId1")), any(), eq(10080))).thenReturn(item1PotentialTradeStatsBuyIn168Hours);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId1")), any(), eq(43200))).thenReturn(item1PotentialTradeStatsBuyIn720Hours);
         expectedRecalculatedItem1.setPriorityToSellByMaxBuyPrice(12L);
         expectedRecalculatedItem1.setPriorityToSellByNextFancySellPrice(13L);
         expectedRecalculatedItem1.setPriorityToBuyByMinSellPrice(14L);
@@ -188,14 +188,14 @@ class ItemServiceTest {
         PotentialTradeStats item2PotentialTradeStatsBuyIn24Hours = new PotentialTradeStats(400, 1, 1400L);
         PotentialTradeStats item2PotentialTradeStatsBuyIn168Hours = new PotentialTradeStats(500, 1, 1500L);
         PotentialTradeStats item2PotentialTradeStatsBuyIn720Hours = new PotentialTradeStats(600, 1, 1600L);
-        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByMaxBuyPrice(new Item("itemId2"))).thenReturn(item2PotentialTradeStatsSellByMaxBuyPrice);
-        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByNextFancySellPrice(new Item("itemId2"))).thenReturn(item2PotentialTradeStatsSellByNextFancySellPrice);
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsByMinSellPrice(new Item("itemId2"))).thenReturn(item2PotentialTradeStatsBuyByMinSellPrice);
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId2")), any(), eq(60))).thenReturn(item2PotentialTradeStatsBuyIn1Hour);
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId2")), any(), eq(360))).thenReturn(item2PotentialTradeStatsBuyIn6Hours);
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId2")), any(), eq(1440))).thenReturn(item2PotentialTradeStatsBuyIn24Hours);
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId2")), any(), eq(10080))).thenReturn(item2PotentialTradeStatsBuyIn168Hours);
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId2")), any(), eq(43200))).thenReturn(item2PotentialTradeStatsBuyIn720Hours);
+        when(potentialTradeStatsCalculator.calculatePotentialSellTradeStatsByMaxBuyPrice(new Item("itemId2"))).thenReturn(item2PotentialTradeStatsSellByMaxBuyPrice);
+        when(potentialTradeStatsCalculator.calculatePotentialSellTradeStatsByNextFancySellPrice(new Item("itemId2"))).thenReturn(item2PotentialTradeStatsSellByNextFancySellPrice);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsByMinSellPrice(new Item("itemId2"))).thenReturn(item2PotentialTradeStatsBuyByMinSellPrice);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId2")), any(), eq(60))).thenReturn(item2PotentialTradeStatsBuyIn1Hour);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId2")), any(), eq(360))).thenReturn(item2PotentialTradeStatsBuyIn6Hours);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId2")), any(), eq(1440))).thenReturn(item2PotentialTradeStatsBuyIn24Hours);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId2")), any(), eq(10080))).thenReturn(item2PotentialTradeStatsBuyIn168Hours);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId2")), any(), eq(43200))).thenReturn(item2PotentialTradeStatsBuyIn720Hours);
         expectedRecalculatedItem2.setPriorityToSellByMaxBuyPrice(13L);
         expectedRecalculatedItem2.setPriorityToSellByNextFancySellPrice(14L);
         expectedRecalculatedItem2.setPriorityToBuyByMinSellPrice(15L);
@@ -242,14 +242,14 @@ class ItemServiceTest {
         PotentialTradeStats item3PotentialTradeStatsBuyIn24Hours = new PotentialTradeStats(null, 1, null);
         PotentialTradeStats item3PotentialTradeStatsBuyIn168Hours = new PotentialTradeStats(null, 1, null);
         PotentialTradeStats item3PotentialTradeStatsBuyIn720Hours = new PotentialTradeStats(null, 1, null);
-        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByMaxBuyPrice(new Item("itemId3"))).thenReturn(item3PotentialTradeStatsSellByMaxBuyPrice);
-        when(potentialTradeStatsService.calculatePotentialSellTradeStatsByNextFancySellPrice(new Item("itemId3"))).thenReturn(item3PotentialTradeStatsSellByNextFancySellPrice);
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsByMinSellPrice(new Item("itemId3"))).thenReturn(item3PotentialTradeStatsBuyByMinSellPrice);
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId3")), any(), eq(60))).thenReturn(item3PotentialTradeStatsBuyIn1Hour);
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId3")), any(), eq(360))).thenReturn(item3PotentialTradeStatsBuyIn6Hours);
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId3")), any(), eq(1440))).thenReturn(item3PotentialTradeStatsBuyIn24Hours);
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId3")), any(), eq(10080))).thenReturn(item3PotentialTradeStatsBuyIn168Hours);
-        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId3")), any(), eq(43200))).thenReturn(item3PotentialTradeStatsBuyIn720Hours);
+        when(potentialTradeStatsCalculator.calculatePotentialSellTradeStatsByMaxBuyPrice(new Item("itemId3"))).thenReturn(item3PotentialTradeStatsSellByMaxBuyPrice);
+        when(potentialTradeStatsCalculator.calculatePotentialSellTradeStatsByNextFancySellPrice(new Item("itemId3"))).thenReturn(item3PotentialTradeStatsSellByNextFancySellPrice);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsByMinSellPrice(new Item("itemId3"))).thenReturn(item3PotentialTradeStatsBuyByMinSellPrice);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId3")), any(), eq(60))).thenReturn(item3PotentialTradeStatsBuyIn1Hour);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId3")), any(), eq(360))).thenReturn(item3PotentialTradeStatsBuyIn6Hours);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId3")), any(), eq(1440))).thenReturn(item3PotentialTradeStatsBuyIn24Hours);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId3")), any(), eq(10080))).thenReturn(item3PotentialTradeStatsBuyIn168Hours);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(eq(new Item("itemId3")), any(), eq(43200))).thenReturn(item3PotentialTradeStatsBuyIn720Hours);
         expectedItemNoSales.setPriorityToSellByMaxBuyPrice(null);
         expectedItemNoSales.setPriorityToSellByNextFancySellPrice(null);
         expectedItemNoSales.setPriorityToBuyByMinSellPrice(null);

@@ -1,29 +1,33 @@
 package github.ricemonger.trades_manager.postgres.services.entity_mappers.user;
 
 
-import github.ricemonger.trades_manager.postgres.entities.manageable_users.ItemIdEntity;
-import github.ricemonger.trades_manager.postgres.entities.ubi_account_stats.UbiAccountStatsEntity;
-import github.ricemonger.trades_manager.postgres.repositories.ItemIdPostgresRepository;
-import github.ricemonger.utils.DTOs.personal.UbiAccountStatsEntityDTO;
+import github.ricemonger.trades_manager.postgres.entities.items.ItemIdEntity;
+import github.ricemonger.trades_manager.postgres.entities.manageable_users.UbiAccountStatsEntity;
+
+import github.ricemonger.trades_manager.services.DTOs.UbiAccountStats;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class UbiAccountStatsEntityMapper {
 
-    private final ItemIdPostgresRepository itemIdPostgresRepository;
+    private final ItemResaleLockEntityMapper itemResaleLockEntityMapper;
 
-    public List<UbiAccountStatsEntity> createEntities(List<UbiAccountStatsEntityDTO> ubiAccounts) {
-        List<ItemIdEntity> existingItems = itemIdPostgresRepository.findAll();
+    private final TradeEntityMapper tradeEntityMapper;
 
-        return ubiAccounts.stream().map(ubiAccount -> new UbiAccountStatsEntity(
-                ubiAccount.getUbiProfileId(),
-                ubiAccount.getCreditAmount(),
-                existingItems.stream().filter(item -> ubiAccount.getOwnedItemsIds().contains(item.getItemId())).toList())).toList();
+    public UbiAccountStats createDTO(UbiAccountStatsEntity entity) {
+        return new UbiAccountStats(
+                entity.getUbiProfileId(),
+                entity.getSoldIn24h(),
+                entity.getBoughtIn24h(),
+                entity.getCreditAmount(),
+                entity.getOwnedItems().stream().map(ItemIdEntity::getItemId).toList(),
+                entity.getResaleLocks().stream().map(itemResaleLockEntityMapper::createDTO).toList(),
+                entity.getCurrentSellTrades().stream().map(tradeEntityMapper::createDTO).toList(),
+                entity.getCurrentBuyTrades().stream().map(tradeEntityMapper::createDTO).toList()
+        );
     }
 }

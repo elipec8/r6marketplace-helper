@@ -71,14 +71,6 @@ class TelegramUserUbiAccountEntryServiceTest {
     }
 
     @Test
-    public void saveAll_UbiAccountStats_should_handle_to_service() {
-        List<UbiAccountStatsEntityDTO> updatedUbiAccounts = new ArrayList<>();
-        telegramUserUbiAccountEntryService.saveAllUbiAccountStats(updatedUbiAccounts);
-
-        verify(telegramUserUbiAccountEntryDatabaseService).saveAllUbiAccountStats(same(updatedUbiAccounts));
-    }
-
-    @Test
     public void deleteByChatId_should_handle_to_service() {
         telegramUserUbiAccountEntryService.deleteByChatId("chatId");
 

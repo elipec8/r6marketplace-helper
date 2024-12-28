@@ -1,5 +1,6 @@
 package github.ricemonger.trades_manager.postgres.entities.manageable_users;
 
+import github.ricemonger.trades_manager.postgres.entities.items.ItemIdEntity;
 import github.ricemonger.utils.enums.TradeOperationType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

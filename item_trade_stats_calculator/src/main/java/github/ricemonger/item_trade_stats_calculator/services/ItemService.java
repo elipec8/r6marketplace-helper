@@ -1,5 +1,6 @@
 package github.ricemonger.item_trade_stats_calculator.services;
 
+import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemDaySalesStatsByItemId;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemRecalculationRequiredFields;
 import github.ricemonger.item_trade_stats_calculator.services.abstractions.ItemDatabaseService;
 import github.ricemonger.item_trade_stats_calculator.services.abstractions.ItemSaleDatabaseService;
@@ -24,7 +25,7 @@ public class ItemService {
 
     private final ItemSaleUbiStatsDatabaseService itemSaleUbiStatsDatabaseService;
 
-    private final PotentialTradeStatsService potentialTradeStatsService;
+    private final PotentialTradeStatsCalculator potentialTradeStatsCalculator;
 
     public void recalculateAndSaveAllItemsHistoryFields() {
         Set<Item> itemWithRequiredFields = itemDatabaseService.findAllRecalculationRequiredFields().stream().map(ItemRecalculationRequiredFields::toItem).collect(Collectors.toSet());
@@ -53,17 +54,17 @@ public class ItemService {
             item.setMonthMinPrice(lastMonthStats.minPrice());
             item.setMonthMedianPrice(lastMonthStats.medianPrice());
 
-            PotentialTradeStats potentialTradeToBuyIn1Hour = potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item,
+            PotentialTradeStats potentialTradeToBuyIn1Hour = potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(item,
                     resultingPerDayStats, 60);
-            PotentialTradeStats potentialTradeToBuyIn6Hours = potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 360);
-            PotentialTradeStats potentialTradeToBuyIn24Hours = potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 1440);
-            PotentialTradeStats potentialTradeToBuyIn168Hours = potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 10080);
-            PotentialTradeStats potentialTradeToBuyIn720Hours = potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 43200);
+            PotentialTradeStats potentialTradeToBuyIn6Hours = potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 360);
+            PotentialTradeStats potentialTradeToBuyIn24Hours = potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 1440);
+            PotentialTradeStats potentialTradeToBuyIn168Hours = potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 10080);
+            PotentialTradeStats potentialTradeToBuyIn720Hours = potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 43200);
 
-            PotentialTradeStats potentialTradeToBuyInstantlyByMinSellPrice = potentialTradeStatsService.calculatePotentialBuyTradeStatsByMinSellPrice(item);
+            PotentialTradeStats potentialTradeToBuyInstantlyByMinSellPrice = potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsByMinSellPrice(item);
 
-            PotentialTradeStats potentialTradeToSellInstantlyByMaxBuyPrice = potentialTradeStatsService.calculatePotentialSellTradeStatsByMaxBuyPrice(item);
-            PotentialTradeStats potentialTradeToSellByNextFancySellPrice = potentialTradeStatsService.calculatePotentialSellTradeStatsByNextFancySellPrice(item);
+            PotentialTradeStats potentialTradeToSellInstantlyByMaxBuyPrice = potentialTradeStatsCalculator.calculatePotentialSellTradeStatsByMaxBuyPrice(item);
+            PotentialTradeStats potentialTradeToSellByNextFancySellPrice = potentialTradeStatsCalculator.calculatePotentialSellTradeStatsByNextFancySellPrice(item);
 
             item.setPriorityToSellByMaxBuyPrice(potentialTradeToSellInstantlyByMaxBuyPrice.getTradePriority());
 

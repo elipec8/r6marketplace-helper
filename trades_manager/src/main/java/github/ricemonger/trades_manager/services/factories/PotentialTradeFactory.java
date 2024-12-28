@@ -1,11 +1,10 @@
 package github.ricemonger.trades_manager.services.factories;
 
-import github.ricemonger.trades_manager.services.PotentialTradeStatsService;
 import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
-import github.ricemonger.utils.DTOs.personal.PersonalItem;
-import github.ricemonger.utils.DTOs.personal.PotentialPersonalBuyTrade;
-import github.ricemonger.utils.DTOs.personal.PotentialPersonalSellTrade;
+import github.ricemonger.trades_manager.services.DTOs.PersonalItem;
+import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalBuyTrade;
+import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalSellTrade;
 import github.ricemonger.utils.enums.TradeOperationType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -108,7 +107,7 @@ public class PotentialTradeFactory {
             }
 
             if (personalItem.getTradeAlreadyExists() && personalItem.getExistingTrade().getCategory() == Sell) {
-                PotentialTradeStats potentialTradeStats = potentialTradeStatsService.calculatePotentialSellTradeStatsForExistingTrade(personalItem.getItem(), personalItem.getExistingTrade());
+                PotentialTradeStats potentialTradeStats = new PotentialTradeStats(personalItem.getExistingTrade().getProposedPaymentPrice(), personalItem.getExistingTrade().getMinutesToTrade(), personalItem.getExistingTrade().getTradePriority());
                 if (potentialTradeStats.isValid()) {
                     potentialPersonalSellTrades.add(new PotentialPersonalSellTrade(personalItem, potentialTradeStats));
                 }
@@ -203,7 +202,7 @@ public class PotentialTradeFactory {
             }
 
             if (personalItem.getTradeAlreadyExists() && personalItem.getExistingTrade().getCategory() == Buy) {
-                PotentialTradeStats potentialTradeStats = potentialTradeStatsService.calculatePotentialBuyTradeStatsForExistingTrade(personalItem.getItem(), personalItem.getExistingTrade());
+                PotentialTradeStats potentialTradeStats = new PotentialTradeStats(personalItem.getExistingTrade().getProposedPaymentPrice(), personalItem.getExistingTrade().getMinutesToTrade(), personalItem.getExistingTrade().getTradePriority());
                 if (potentialTradeStats.isValid()) {
                     potentialPersonalBuyTrades.add(new PotentialPersonalBuyTrade(personalItem, potentialTradeStats));
                 }

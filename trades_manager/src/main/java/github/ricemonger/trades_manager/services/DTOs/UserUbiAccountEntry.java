@@ -21,7 +21,4 @@ public class UserUbiAccountEntry {
     private String rememberDeviceTicket;
     private String rememberMeTicket;
 
-    public AuthorizationDTO getAuthorizationDTO() {
-        return new AuthorizationDTO(ticket, profileId, spaceId, sessionId, rememberDeviceTicket, rememberMeTicket);
-    }
 }

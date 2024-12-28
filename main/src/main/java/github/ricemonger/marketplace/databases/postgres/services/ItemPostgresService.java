@@ -21,12 +21,6 @@ public class ItemPostgresService implements ItemDatabaseService {
     private final ItemEntityMapper itemEntityMapper;
 
     @Override
-    @Transactional
-    public void saveAll(Collection<? extends Item> items) {
-        itemRepository.saveAll(itemEntityMapper.createEntities(items));
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public Item findById(String itemId) throws ItemDoesntExistException {
         return itemRepository.findById(itemId).map(itemEntityMapper::createDTO).orElseThrow(() -> new ItemDoesntExistException("Item with id" + itemId + "doesn't exist"));

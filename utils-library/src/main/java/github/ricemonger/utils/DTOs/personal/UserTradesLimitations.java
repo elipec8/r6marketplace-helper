@@ -27,8 +27,4 @@ public class UserTradesLimitations {
         this.resolvedSellTransactionCount = userTransactionsCount.getSellResolvedTransactionCount();
         this.activeSellTransactionCount = userTransactionsCount.getSellActiveTransactionCount();
     }
-
-    public List<ItemResaleLockWithUbiAccount> getItemResaleLocksWithUbiAccount() {
-        return resaleLocks.stream().map(itemResaleLock -> new ItemResaleLockWithUbiAccount(ubiProfileId, itemResaleLock)).toList();
-    }
 }

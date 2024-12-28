@@ -1,16 +1,11 @@
 package github.ricemonger.trades_manager.services;
 
-import github.ricemonger.trades_manager.services.configurations.UbiServiceConfiguration;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.abstractions.CommonValuesDatabaseService;
 import github.ricemonger.utils.enums.ItemRarity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 @Service
 @Slf4j
@@ -89,19 +84,5 @@ public class CommonValuesService {
 
     public Integer getMaximumMarketplacePrice() {
         return Math.max(ubiServiceConfiguration.getMaxUncommonPrice(), Math.max(ubiServiceConfiguration.getMaxRarePrice(), Math.max(ubiServiceConfiguration.getMaxEpicPrice(), ubiServiceConfiguration.getMaxLegendaryPrice())));
-    }
-
-    public LocalDateTime getLastUbiUsersStatsFetchTime() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ubiServiceConfiguration.getDateFormat());
-        try {
-            return LocalDateTime.parse(commonValuesDatabaseService.getLastUbiUsersStatsFetchTime(), formatter);
-        } catch (DateTimeParseException e) {
-            return LocalDateTime.now().minusDays(1).withNano(0);
-        }
-    }
-
-    public void setLastUbiUsersStatsFetchTime(LocalDateTime localDateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ubiServiceConfiguration.getDateFormat());
-        commonValuesDatabaseService.setLastUbiUsersStatsFetchTime(formatter.format(localDateTime));
     }
 }

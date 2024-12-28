@@ -34,54 +34,6 @@ class CommonValuesServiceTest {
     private TelegramBotConfiguration telegramBotConfiguration;
 
     @Test
-    void getExpectedItemCount_should_handle_to_service() {
-        int expectedItemCount = 10;
-        when(commonValuesDatabaseService.getExpectedItemCount()).thenReturn(expectedItemCount);
-
-        assertEquals(expectedItemCount, commonValuesService.getExpectedItemCount());
-    }
-
-    @Test
-    void setExpectedItemCount_should_handle_to_service() {
-        int expectedItemCount = 10;
-        commonValuesService.setExpectedItemCount(expectedItemCount);
-
-        verify(commonValuesDatabaseService).setExpectedItemCount(expectedItemCount);
-    }
-
-    @Test
-    void getConfigResolvedTransactionPeriod_should_handle_to_service() {
-        ConfigResolvedTransactionPeriod configResolvedTransactionPeriod = new ConfigResolvedTransactionPeriod(10, 20);
-        when(commonValuesDatabaseService.getConfigResolvedTransactionPeriod()).thenReturn(configResolvedTransactionPeriod);
-
-        assertEquals(configResolvedTransactionPeriod, commonValuesService.getConfigResolvedTransactionPeriod());
-    }
-
-    @Test
-    void setConfigResolvedTransactionPeriod_should_handle_to_service() {
-        ConfigResolvedTransactionPeriod configResolvedTransactionPeriod = new ConfigResolvedTransactionPeriod(10, 20);
-        commonValuesService.setConfigResolvedTransactionPeriod(configResolvedTransactionPeriod);
-
-        verify(commonValuesDatabaseService).setConfigResolvedTransactionPeriod(configResolvedTransactionPeriod);
-    }
-
-    @Test
-    void getConfigTrades_should_handle_to_service() {
-        ConfigTrades configTrades = new ConfigTrades();
-        when(commonValuesDatabaseService.getConfigTrades()).thenReturn(configTrades);
-
-        assertEquals(configTrades, commonValuesService.getConfigTrades());
-    }
-
-    @Test
-    void setConfigTrades_should_handle_to_service() {
-        ConfigTrades configTrades = new ConfigTrades();
-        commonValuesService.setConfigTrades(configTrades);
-
-        verify(commonValuesDatabaseService).setConfigTrades(configTrades);
-    }
-
-    @Test
     void getPaymentItemId_should_handle_to_service() {
         String paymentItemId = "paymentItemId";
         when(commonValuesDatabaseService.getPaymentItemId()).thenReturn(paymentItemId);

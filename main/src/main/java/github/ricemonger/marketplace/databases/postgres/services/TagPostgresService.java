@@ -20,12 +20,6 @@ public class TagPostgresService implements TagDatabaseService {
     private final TagEntityMapper tagEntityMapper;
 
     @Override
-    @Transactional
-    public void saveAll(Collection<Tag> tags) {
-        tagRepository.saveAll(tags.stream().map(tagEntityMapper::createEntity).toList());
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public List<Tag> findAllByNames(Collection<String> tagNames) {
         return tagRepository.findAllByNames(tagNames).stream().map(tagEntityMapper::createDTO).toList();

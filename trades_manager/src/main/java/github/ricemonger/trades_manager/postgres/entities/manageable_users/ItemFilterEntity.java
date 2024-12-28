@@ -1,6 +1,6 @@
 package github.ricemonger.trades_manager.postgres.entities.manageable_users;
 
-import github.ricemonger.trades_manager.postgres.entities.items.TagValueEntity;
+import github.ricemonger.trades_manager.postgres.entities.items.TagEntity;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.IsOwnedFilter;
 import jakarta.persistence.*;

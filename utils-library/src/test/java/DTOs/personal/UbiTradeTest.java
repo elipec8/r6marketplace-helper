@@ -69,7 +69,7 @@ class UbiTradeTest {
         ubiTrade2.setProposedPaymentPrice(200);
         ubiTrade2.setProposedPaymentFee(20);
 
-        assertTrue(ubiTrade1.isFullyEqualExceptItem(ubiTrade2));
+        assertTrue(ubiTrade1.isFullyEqual(ubiTrade2));
     }
 
     @Test
@@ -99,39 +99,39 @@ class UbiTradeTest {
         ubiTrade2.setProposedPaymentFee(20);
 
         ubiTrade1.setTradeId("tradeId2");
-        assertFalse(ubiTrade1.isFullyEqualExceptItem(ubiTrade2));
+        assertFalse(ubiTrade1.isFullyEqual(ubiTrade2));
         ubiTrade1.setTradeId("tradeId");
         ubiTrade1.setState(TradeState.Failed);
-        assertFalse(ubiTrade1.isFullyEqualExceptItem(ubiTrade2));
+        assertFalse(ubiTrade1.isFullyEqual(ubiTrade2));
         ubiTrade1.setState(TradeState.Created);
         ubiTrade1.setCategory(TradeCategory.Sell);
-        assertFalse(ubiTrade1.isFullyEqualExceptItem(ubiTrade2));
+        assertFalse(ubiTrade1.isFullyEqual(ubiTrade2));
         ubiTrade1.setCategory(TradeCategory.Buy);
         ubiTrade1.setExpiresAt(LocalDateTime.of(2021, 1, 1, 1, 2));
-        assertFalse(ubiTrade1.isFullyEqualExceptItem(ubiTrade2));
+        assertFalse(ubiTrade1.isFullyEqual(ubiTrade2));
         ubiTrade1.setExpiresAt(LocalDateTime.of(2021, 1, 1, 1, 1));
         ubiTrade1.setLastModifiedAt(LocalDateTime.of(2022, 1, 1, 1, 2));
-        assertFalse(ubiTrade1.isFullyEqualExceptItem(ubiTrade2));
+        assertFalse(ubiTrade1.isFullyEqual(ubiTrade2));
         ubiTrade1.setLastModifiedAt(LocalDateTime.of(2022, 1, 1, 1, 1));
         ubiTrade1.setItem(new Item("itemId2"));
-        assertFalse(ubiTrade1.isFullyEqualExceptItem(ubiTrade2));
+        assertFalse(ubiTrade1.isFullyEqual(ubiTrade2));
         ubiTrade1.setItem(new Item("itemId"));
         ubiTrade1.setSuccessPaymentPrice(101);
-        assertFalse(ubiTrade1.isFullyEqualExceptItem(ubiTrade2));
+        assertFalse(ubiTrade1.isFullyEqual(ubiTrade2));
         ubiTrade1.setSuccessPaymentPrice(100);
         ubiTrade1.setSuccessPaymentFee(11);
-        assertFalse(ubiTrade1.isFullyEqualExceptItem(ubiTrade2));
+        assertFalse(ubiTrade1.isFullyEqual(ubiTrade2));
         ubiTrade1.setSuccessPaymentFee(10);
         ubiTrade1.setProposedPaymentPrice(201);
-        assertFalse(ubiTrade1.isFullyEqualExceptItem(ubiTrade2));
+        assertFalse(ubiTrade1.isFullyEqual(ubiTrade2));
         ubiTrade1.setProposedPaymentPrice(200);
         ubiTrade1.setProposedPaymentFee(21);
-        assertFalse(ubiTrade1.isFullyEqualExceptItem(ubiTrade2));
+        assertFalse(ubiTrade1.isFullyEqual(ubiTrade2));
     }
 
     @Test
     public void isFullyEqualExceptItem_should_return_false_other_is_null() {
         UbiTrade ubiTrade1 = new UbiTrade();
-        assertFalse(ubiTrade1.isFullyEqualExceptItem(null));
+        assertFalse(ubiTrade1.isFullyEqual(null));
     }
 }

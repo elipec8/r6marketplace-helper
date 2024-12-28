@@ -32,8 +32,6 @@ public class ManageableUserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<TradeByItemIdManagerEntity> tradeByItemIdManagers = new ArrayList<>();
 
-    private Boolean managingEnabledFlag = true;
-
     public ManageableUserEntity(Long userId) {
         this.id = userId;
     }
@@ -61,8 +59,7 @@ public class ManageableUserEntity {
             return isEqual(entity) &&
                    ubiAccountEntry.isEqual(entity.ubiAccountEntry) &&
                    tradeByFiltersManagersAreEqual &&
-                   tradeByItemIdManagersAreEqual &&
-                   Objects.equals(managingEnabledFlag, entity.managingEnabledFlag);
+                   tradeByItemIdManagersAreEqual;
         }
         return false;
     }

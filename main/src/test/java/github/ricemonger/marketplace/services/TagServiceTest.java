@@ -26,15 +26,6 @@ class TagServiceTest {
     private TagService tagService;
 
     @Test
-    void saveAll_Tags_should_handle_to_service() {
-        Collection<Tag> tags = new ArrayList<>();
-
-        tagService.saveAllTags(tags);
-
-        verify(tagDatabaseService).saveAll(same(tags));
-    }
-
-    @Test
     void getTagsByNames_should_handle_to_service() {
         Collection<String> tagNames = new ArrayList<>();
 

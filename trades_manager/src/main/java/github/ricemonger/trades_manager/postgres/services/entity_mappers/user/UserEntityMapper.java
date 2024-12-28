@@ -1,7 +1,8 @@
 package github.ricemonger.trades_manager.postgres.services.entity_mappers.user;
 
 import github.ricemonger.trades_manager.postgres.entities.manageable_users.ManageableUserEntity;
-import github.ricemonger.utils.DTOs.personal.ManageableUser;
+import github.ricemonger.trades_manager.services.DTOs.ManageableUser;
+import github.ricemonger.trades_manager.services.DTOs.UbiAccountStats;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -15,13 +16,18 @@ public class UserEntityMapper {
 
     private final TradeByItemIdManagerEntityMapper tradeByItemIdManagerEntityMapper;
 
+    private final UbiAccountStatsEntityMapper ubiAccountStatsEntityMapper;
+
     public ManageableUser createManageableUser(ManageableUserEntity entity) {
+
+        UbiAccountStats ubiAccountStats = ubiAccountStatsEntityMapper.createDTO(entity.getUbiAccountEntry().getUbiAccountStats());
+
         return new ManageableUser(
                 entity.getId(),
-                entity.getUbiAccountEntry().getProfileId_(),
-                entity.getUbiAccountEntry().getUbiSessionId(),
-                entity.getUbiAccountEntry().getUbiSpaceId(),
+                ubiAccountStats,
                 entity.getUbiAccountEntry().getUbiAuthTicket(),
+                entity.getUbiAccountEntry().getUbiSpaceId(),
+                entity.getUbiAccountEntry().getUbiSessionId(),
                 entity.getUbiAccountEntry().getUbiRememberDeviceTicket(),
                 entity.getUbiAccountEntry().getUbiRememberMeTicket(),
                 entity.getTradeByFiltersManagers().stream().map(tradeByFiltersManagerEntityMapper::createDTO).toList(),

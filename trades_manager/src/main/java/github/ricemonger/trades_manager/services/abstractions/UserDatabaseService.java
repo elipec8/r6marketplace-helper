@@ -1,6 +1,6 @@
 package github.ricemonger.trades_manager.services.abstractions;
 
-import github.ricemonger.utils.DTOs.personal.ManageableUser;
+import github.ricemonger.trades_manager.services.DTOs.ManageableUser;
 
 import java.util.List;
 

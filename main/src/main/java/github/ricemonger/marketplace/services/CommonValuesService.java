@@ -1,9 +1,7 @@
 package github.ricemonger.marketplace.services;
 
-import github.ricemonger.marketplace.services.configurations.MainUserConfiguration;
 import github.ricemonger.marketplace.services.configurations.TelegramBotConfiguration;
 import github.ricemonger.marketplace.services.configurations.UbiServiceConfiguration;
-import github.ricemonger.utils.DTOs.common.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.abstractions.CommonValuesDatabaseService;
@@ -23,34 +21,12 @@ public class CommonValuesService {
 
     private final CommonValuesDatabaseService commonValuesDatabaseService;
 
-    private final MainUserConfiguration mainUserConfiguration;
-
     private final UbiServiceConfiguration ubiServiceConfiguration;
 
     private final TelegramBotConfiguration telegramBotConfiguration;
 
-    public int getExpectedItemCount() {
-        return commonValuesDatabaseService.getExpectedItemCount();
-    }
-
-    public void setExpectedItemCount(int newItemsAmount) {
-        commonValuesDatabaseService.setExpectedItemCount(newItemsAmount);
-    }
-
-    public ConfigResolvedTransactionPeriod getConfigResolvedTransactionPeriod() {
-        return commonValuesDatabaseService.getConfigResolvedTransactionPeriod();
-    }
-
-    public void setConfigResolvedTransactionPeriod(ConfigResolvedTransactionPeriod configResolvedTransactionPeriod) {
-        commonValuesDatabaseService.setConfigResolvedTransactionPeriod(configResolvedTransactionPeriod);
-    }
-
     public ConfigTrades getConfigTrades() {
         return commonValuesDatabaseService.getConfigTrades();
-    }
-
-    public void setConfigTrades(ConfigTrades configTrades) {
-        commonValuesDatabaseService.setConfigTrades(configTrades);
     }
 
     public String getPaymentItemId() {
@@ -76,18 +52,6 @@ public class CommonValuesService {
     public void setMainUserAuthorization(AuthorizationDTO dto) {
         int expireTimeout = ubiServiceConfiguration.getExpireTimeout();
         commonValuesDatabaseService.setMainUserAuthorization(dto, expireTimeout);
-    }
-
-    public String getMainUserEmail() {
-        return mainUserConfiguration.getEmail();
-    }
-
-    public String getMainUserPassword() {
-        return mainUserConfiguration.getPassword();
-    }
-
-    public String getMainUserPlatform() {
-        return mainUserConfiguration.getPlatform();
     }
 
     public String getTrustedDeviceId() {
