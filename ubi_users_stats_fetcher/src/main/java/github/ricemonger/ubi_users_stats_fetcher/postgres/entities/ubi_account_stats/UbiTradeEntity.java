@@ -39,6 +39,24 @@ public class UbiTradeEntity {
     private Integer proposedPaymentFee;
 
     public boolean isEqual(UbiTradeEntity ubiTradeEntity) {
+        if (this == ubiTradeEntity) return true;
+        if (ubiTradeEntity == null) return false;
         return Objects.equals(tradeId, ubiTradeEntity.getTradeId());
+    }
+
+    @Override
+    public String toString() {
+        return "UbiTradeEntity{" +
+               "tradeId='" + tradeId + '\'' +
+               ", state=" + state +
+               ", category=" + category +
+               ", expiresAt=" + expiresAt +
+               ", lastModifiedAt=" + lastModifiedAt +
+               ", item=" + item +
+               ", successPaymentPrice=" + successPaymentPrice +
+               ", successPaymentFee=" + successPaymentFee +
+               ", proposedPaymentPrice=" + proposedPaymentPrice +
+               ", proposedPaymentFee=" + proposedPaymentFee +
+               '}';
     }
 }

@@ -15,11 +15,6 @@ public class ItemResaleLockEntityId {
 
     private ItemIdEntity item;
 
-    public ItemResaleLockEntityId(String ubiProfileId, String itemId) {
-        this.ubiAccount = new UbiAccountStatsEntity(ubiProfileId);
-        this.item = new ItemIdEntity(itemId);
-    }
-
     @Override
     public int hashCode() {
         return Objects.hash(ubiAccount.getUbiProfileId(), item.getItemId());

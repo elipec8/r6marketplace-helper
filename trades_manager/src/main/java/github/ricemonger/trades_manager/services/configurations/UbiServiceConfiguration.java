@@ -1,4 +1,4 @@
-package github.ricemonger.trades_manager.services;
+package github.ricemonger.trades_manager.services.configurations;
 
 import lombok.Getter;
 import lombok.Setter;

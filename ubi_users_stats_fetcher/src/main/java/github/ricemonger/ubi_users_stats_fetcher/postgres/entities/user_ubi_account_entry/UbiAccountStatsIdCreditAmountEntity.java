@@ -23,30 +23,4 @@ public class UbiAccountStatsIdCreditAmountEntity {
     private String ubiProfileId;
 
     private Integer creditAmount;
-
-    public UbiAccountStatsIdCreditAmountEntity(String ubiProfileId) {
-        this.ubiProfileId = ubiProfileId;
-    }
-
-    public boolean isEqual(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o instanceof UbiAccountStatsIdCreditAmountEntity entity) {
-            return Objects.equals(this.ubiProfileId, entity.ubiProfileId);
-        }
-        return false;
-    }
-
-    public boolean isFullyEqual(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o instanceof UbiAccountStatsIdCreditAmountEntity entity) {
-
-            return isEqual(entity) &&
-                   Objects.equals(this.creditAmount, entity.creditAmount);
-        }
-        return false;
-    }
 }

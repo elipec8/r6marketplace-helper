@@ -28,7 +28,10 @@ public class ItemIdEntity {
         return false;
     }
 
-    public boolean isFullyEqual(Object o) {
-        return isEqual(o);
+    @Override
+    public String toString(){
+        return "ItemIdEntity{" +
+                "itemId='" + itemId + '\'' +
+                '}';
     }
 }

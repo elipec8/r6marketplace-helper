@@ -45,7 +45,7 @@ public class ScheduledAllUbiUsersStatsFetcher {
     private final CommonValuesService commonValuesService;
 
     @Scheduled(fixedRate = 1 * 60 * 1000, initialDelay = 5 * 60 * 1000) // every 1m after 5m of delay
-    public void fetchAllUbiUsersStats() {
+    public void fetchAllAuthorizedUbiUsersStats() {
         List<UserUbiAccount> userUbiAccounts = ubiAccountService.findAllUsersUbiAccountEntries();
 
         List<UbiAccountStats> updatedUbiAccountsStats = new ArrayList<>();
@@ -60,7 +60,7 @@ public class ScheduledAllUbiUsersStatsFetcher {
     }
 
     private UbiAccountStats fetchAndGetUserPersonalStats(UserUbiAccount userUbiAccount) {
-        AuthorizationDTO authorizationDTO = userUbiAccount.getAuthorizationDTO();
+        AuthorizationDTO authorizationDTO = userUbiAccount.toAuthorizationDTO();
         int creditAmount = personalQueryCreditAmountGraphQlClientService.fetchCreditAmountForUser(authorizationDTO);
         List<UbiTrade> currentOrders = personalQueryCurrentOrdersGraphQlClientService.fetchCurrentOrdersForUser(authorizationDTO);
         List<UbiTrade> finishedOrders =personalQueryFinishedOrdersGraphQlClientService.fetchLastFinishedOrdersForUser(authorizationDTO);

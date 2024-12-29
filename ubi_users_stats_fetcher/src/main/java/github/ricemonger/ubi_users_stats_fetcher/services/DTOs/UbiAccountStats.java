@@ -17,11 +17,11 @@ import java.util.Objects;
 public class UbiAccountStats {
     private String ubiProfileId;
 
+    private Integer creditAmount;
+
     private Integer soldIn24h;
 
     private Integer boughtIn24h;
-
-    private Integer creditAmount;
 
     private List<String> ownedItemsIds = new ArrayList<>();
 

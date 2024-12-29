@@ -32,7 +32,17 @@ public class ItemResaleLockEntity {
 
     public boolean isEqual(ItemResaleLockEntity itemResaleLockEntity) {
         if (this == itemResaleLockEntity) return true;
+        if (itemResaleLockEntity == null) return false;
         return ubiAccount.isEqual(itemResaleLockEntity.ubiAccount) &&
                item.isEqual(itemResaleLockEntity.item);
+    }
+
+    @Override
+    public String toString() {
+        return "ItemResaleLockEntity{" +
+               "profileId=" + ubiAccount.getUbiProfileId() +
+               ", item=" + item +
+               ", expiresAt=" + expiresAt +
+               '}';
     }
 }

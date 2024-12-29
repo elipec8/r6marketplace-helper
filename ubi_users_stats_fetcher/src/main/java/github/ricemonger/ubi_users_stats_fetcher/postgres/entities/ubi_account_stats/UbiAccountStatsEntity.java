@@ -99,4 +99,18 @@ public class UbiAccountStatsEntity {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "UbiAccountStatsEntity{" +
+               "ubiProfileId='" + ubiProfileId + '\'' +
+               ", creditAmount=" + creditAmount +
+               ", soldIn24h=" + soldIn24h +
+               ", boughtIn24h=" + boughtIn24h +
+               ", ownedItems=" + ownedItems +
+               ", resaleLocks=" + resaleLocks +
+               ", currentSellTrades=" + currentSellTrades +
+               ", currentBuyTrades=" + currentBuyTrades +
+               '}';
+    }
 }

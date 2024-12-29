@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.graphQl.DTOs.common_query_items_sale_stats.marketableItems.node;
+package github.ricemonger.marketplace.graphQl.common_query_items_sale_stats.DTO.marketableItems.node;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

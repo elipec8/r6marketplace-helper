@@ -1,5 +1,6 @@
 package github.ricemonger.trades_manager.services;
 
+import github.ricemonger.trades_manager.services.configurations.UbiServiceConfiguration;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.abstractions.CommonValuesDatabaseService;
 import github.ricemonger.utils.enums.ItemRarity;
