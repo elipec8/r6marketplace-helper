@@ -250,15 +250,127 @@ class TradeTest {
     }
 
     @Test
-    public void isFullyEqual_should_return_equals_result() {
-        Trade mockTrade = Mockito.mock(Trade.class);
+    public void isFullyEqual_should_return_true_if_same() {
+        Trade trade = new Trade();
+        assertTrue(trade.isFullyEqual(trade));
+    }
 
-        when(mockTrade.equals(any())).thenReturn(true);
+    @Test
+    public void isFullyEqual_should_return_false_if_null() {
+        Trade trade = new Trade();
 
-        assertTrue(mockTrade.isFullyEqual(mockTrade));
+        assertFalse(trade.isFullyEqual(null));
+    }
 
-        when(mockTrade.equals(any())).thenReturn(false);
+    @Test
+    public void isFullyEqual_should_return_true_if_equal_fields(){
+        UbiTrade ubiTrade1 = new UbiTrade();
+        ubiTrade1.setTradeId("tradeId1");
+        ubiTrade1.setState(TradeState.Created);
+        ubiTrade1.setCategory(TradeCategory.Buy);
+        ubiTrade1.setExpiresAt(LocalDateTime.of(2021,1,1,1,1));
+        ubiTrade1.setLastModifiedAt(LocalDateTime.of(2021,2,1,1,1));
+        ubiTrade1.setItem(new Item("itemId1"));
+        ubiTrade1.setSuccessPaymentPrice(100);
+        ubiTrade1.setSuccessPaymentFee(10);
+        ubiTrade1.setProposedPaymentPrice(75);
+        ubiTrade1.setProposedPaymentFee(7);
 
-        assertFalse(mockTrade.isFullyEqual(mockTrade));
+        Trade trade1 = new Trade();
+        trade1.setUbiTrade(ubiTrade1);
+        trade1.setMinutesToTrade(15);
+        trade1.setTradePriority(16L);
+
+        UbiTrade ubiTrade2 = new UbiTrade();
+        ubiTrade2.setTradeId("tradeId1");
+        ubiTrade2.setState(TradeState.Created);
+        ubiTrade2.setCategory(TradeCategory.Buy);
+        ubiTrade2.setExpiresAt(LocalDateTime.of(2021,1,1,1,1));
+        ubiTrade2.setLastModifiedAt(LocalDateTime.of(2021,2,1,1,1));
+        ubiTrade2.setItem(new Item("itemId1"));
+        ubiTrade2.setSuccessPaymentPrice(100);
+        ubiTrade2.setSuccessPaymentFee(10);
+        ubiTrade2.setProposedPaymentPrice(75);
+        ubiTrade2.setProposedPaymentFee(7);
+
+        Trade trade2 = new Trade();
+        trade2.setUbiTrade(ubiTrade2);
+        trade2.setMinutesToTrade(15);
+        trade2.setTradePriority(16L);
+
+        assertTrue(trade1.isFullyEqual(trade2));
+    }
+
+    @Test
+    public void isFullyEqual_should_return_false_if_different_fields(){
+        UbiTrade ubiTrade1 = new UbiTrade();
+        ubiTrade1.setTradeId("tradeId1");
+        ubiTrade1.setState(TradeState.Created);
+        ubiTrade1.setCategory(TradeCategory.Buy);
+        ubiTrade1.setExpiresAt(LocalDateTime.of(2021,1,1,1,1));
+        ubiTrade1.setLastModifiedAt(LocalDateTime.of(2021,2,1,1,1));
+        ubiTrade1.setItem(new Item("itemId1"));
+        ubiTrade1.setSuccessPaymentPrice(100);
+        ubiTrade1.setSuccessPaymentFee(10);
+        ubiTrade1.setProposedPaymentPrice(75);
+        ubiTrade1.setProposedPaymentFee(7);
+
+        Trade trade1 = new Trade();
+        trade1.setUbiTrade(ubiTrade1);
+        trade1.setMinutesToTrade(15);
+        trade1.setTradePriority(16L);
+
+        UbiTrade ubiTrade2 = new UbiTrade();
+        ubiTrade2.setTradeId("tradeId1");
+        ubiTrade2.setState(TradeState.Created);
+        ubiTrade2.setCategory(TradeCategory.Buy);
+        ubiTrade2.setExpiresAt(LocalDateTime.of(2021,1,1,1,1));
+        ubiTrade2.setLastModifiedAt(LocalDateTime.of(2021,2,1,1,1));
+        ubiTrade2.setItem(new Item("itemId1"));
+        ubiTrade2.setSuccessPaymentPrice(100);
+        ubiTrade2.setSuccessPaymentFee(10);
+        ubiTrade2.setProposedPaymentPrice(75);
+        ubiTrade2.setProposedPaymentFee(7);
+
+        Trade trade2 = new Trade();
+        trade2.setUbiTrade(ubiTrade2);
+        trade2.setMinutesToTrade(15);
+        trade2.setTradePriority(16L);
+
+        trade1.setTradeId("tradeId2");
+        assertFalse(trade1.isFullyEqual(trade2));
+        trade1.setTradeId("tradeId1");
+        trade1.getUbiTrade().setState(TradeState.Failed);
+        assertFalse(trade1.isFullyEqual(trade2));
+        trade1.getUbiTrade().setState(TradeState.Created);
+        trade1.getUbiTrade().setCategory(TradeCategory.Sell);
+        assertFalse(trade1.isFullyEqual(trade2));
+        trade1.getUbiTrade().setCategory(TradeCategory.Buy);
+        trade1.getUbiTrade().setExpiresAt(LocalDateTime.of(2021,1,1,1,2));
+        assertFalse(trade1.isFullyEqual(trade2));
+        trade1.getUbiTrade().setExpiresAt(LocalDateTime.of(2021,1,1,1,1));
+        trade1.getUbiTrade().setLastModifiedAt(LocalDateTime.of(2021,2,1,1,2));
+        assertFalse(trade1.isFullyEqual(trade2));
+        trade1.getUbiTrade().setLastModifiedAt(LocalDateTime.of(2021,2,1,1,1));
+        trade1.getUbiTrade().setItem(new Item("itemId2"));
+        assertFalse(trade1.isFullyEqual(trade2));
+        trade1.getUbiTrade().setItem(new Item("itemId1"));
+        trade1.getUbiTrade().setSuccessPaymentPrice(101);
+        assertFalse(trade1.isFullyEqual(trade2));
+        trade1.getUbiTrade().setSuccessPaymentPrice(100);
+        trade1.getUbiTrade().setSuccessPaymentFee(11);
+        assertFalse(trade1.isFullyEqual(trade2));
+        trade1.getUbiTrade().setSuccessPaymentFee(10);
+        trade1.getUbiTrade().setProposedPaymentPrice(76);
+        assertFalse(trade1.isFullyEqual(trade2));
+        trade1.getUbiTrade().setProposedPaymentPrice(75);
+        trade1.getUbiTrade().setProposedPaymentFee(8);
+        assertFalse(trade1.isFullyEqual(trade2));
+        trade1.getUbiTrade().setProposedPaymentFee(7);
+        trade1.setMinutesToTrade(16);
+        assertFalse(trade1.isFullyEqual(trade2));
+        trade1.setMinutesToTrade(15);
+        trade1.setTradePriority(17L);
+        assertFalse(trade1.isFullyEqual(trade2));
     }
 }

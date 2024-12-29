@@ -31,23 +31,6 @@ class TagPostgresServiceTest {
     private TagEntityMapper tagEntityMapper;
 
     @Test
-    public void saveAll_should_map_and_save_all_dtos() {
-        Tag tag1 = new Tag();
-        Tag tag2 = new Tag();
-        List<Tag> tags = List.of(tag1, tag2);
-        TagEntity tagEntity1 = new TagEntity();
-        TagEntity tagEntity2 = new TagEntity();
-        List<TagEntity> entities = List.of(tagEntity1, tagEntity2);
-
-        when(tagEntityMapper.createEntity(same(tag1))).thenReturn(tagEntity1);
-        when(tagEntityMapper.createEntity(same(tag2))).thenReturn(tagEntity2);
-
-        tagService.saveAll(tags);
-
-        verify(tagRepository).saveAll(argThat((a -> StreamSupport.stream(a.spliterator(), false).toList().size() == entities.size() && StreamSupport.stream(a.spliterator(), false).toList().stream().allMatch(ar -> entities.stream().anyMatch(en -> en.isFullyEqual(ar))))));
-    }
-
-    @Test
     public void findAllByNames_should_map_and_return_filtered_entities() {
         TagEntity entity1 = new TagEntity();
         TagEntity entity2 = new TagEntity();

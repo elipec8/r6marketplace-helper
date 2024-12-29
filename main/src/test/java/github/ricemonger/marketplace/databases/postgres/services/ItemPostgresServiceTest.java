@@ -27,17 +27,6 @@ class ItemPostgresServiceTest {
     private ItemEntityMapper itemEntityMapper;
 
     @Test
-    public void saveAll_should_save_all_mapped_dtos() {
-        List<Item> items = List.of(new Item(), new Item());
-        List<ItemEntity> itemEntities = List.of(new ItemEntity(), new ItemEntity());
-        when(itemEntityMapper.createEntities(same(items))).thenReturn(itemEntities);
-
-        itemService.saveAll(items);
-
-        verify(itemRepository).saveAll(same(itemEntities));
-    }
-
-    @Test
     public void findById_should_return_mapped_entity() {
         ItemEntity itemEntity = new ItemEntity();
         when(itemRepository.findById("1")).thenReturn(java.util.Optional.of(itemEntity));

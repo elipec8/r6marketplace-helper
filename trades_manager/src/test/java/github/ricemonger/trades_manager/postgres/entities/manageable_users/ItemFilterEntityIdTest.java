@@ -2,6 +2,8 @@ package github.ricemonger.trades_manager.postgres.entities.manageable_users;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ItemFilterEntityIdTest {
@@ -25,10 +27,10 @@ class ItemFilterEntityIdTest {
     public void hashCode_should_return_same_hash_for_equal_objects() {
         ManageableUserEntity user1 = new ManageableUserEntity();
         user1.setId(1L);
-        user1.setManagingEnabledFlag(true);
+        user1.setUbiAccountEntry(new ManageableUserUbiAccountEntryEntity());
         ManageableUserEntity user2 = new ManageableUserEntity();
         user2.setId(1L);
-        user2.setManagingEnabledFlag(false);
+        user2.setUbiAccountEntry(null);
 
         ItemFilterEntityId id1 = new ItemFilterEntityId(user1, "filterName");
         ItemFilterEntityId id2 = new ItemFilterEntityId(user2, "filterName");
@@ -64,10 +66,10 @@ class ItemFilterEntityIdTest {
     public void equals_should_return_true_for_equal_objects() {
         ManageableUserEntity user1 = new ManageableUserEntity();
         user1.setId(1L);
-        user1.setManagingEnabledFlag(true);
+        user1.setTradeByFiltersManagers(null);
         ManageableUserEntity user2 = new ManageableUserEntity();
         user2.setId(1L);
-        user2.setManagingEnabledFlag(false);
+        user2.setTradeByFiltersManagers(List.of(new TradeByFiltersManagerEntity()));
 
         ItemFilterEntityId id1 = new ItemFilterEntityId(user1, "filterName");
         ItemFilterEntityId id2 = new ItemFilterEntityId(user2, "filterName");

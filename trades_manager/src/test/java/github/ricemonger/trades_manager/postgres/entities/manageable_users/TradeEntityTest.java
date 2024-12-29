@@ -24,6 +24,7 @@ class TradeEntityTest {
         id1.setProposedPaymentFee(20);
         id1.setMinutesToTrade(30);
         id1.setTradePriority(300L);
+
         TradeEntity id2 = new TradeEntity();
         id2.setTradeId("tradeId");
         id2.setState(TradeState.Failed);
@@ -37,7 +38,7 @@ class TradeEntityTest {
         id2.setMinutesToTrade(50);
         id2.setTradePriority(500L);
 
-        assertEquals(id1, id2);
+        assertTrue(id1.isEqual(id2));
     }
 
     @Test

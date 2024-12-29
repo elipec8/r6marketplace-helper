@@ -2,6 +2,7 @@ package github.ricemonger.trades_manager.services.DTOs;
 
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
+import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import org.junit.jupiter.api.Test;
 
@@ -267,6 +268,7 @@ class PotentialTradeTest {
     public void getOldPrice_should_return_proposedPaymentPrice() {
         PersonalItem personalItem = new PersonalItem();
         Trade ubiTrade = new Trade();
+        ubiTrade.setUbiTrade(new UbiTrade());
         ubiTrade.setProposedPaymentPrice(1);
         personalItem.setExistingTrade(ubiTrade);
         PotentialTrade potentialTrade = new PotentialTrade(personalItem, null) {
@@ -327,6 +329,7 @@ class PotentialTradeTest {
     public void getTradeId_should_return_tradeId() {
         PersonalItem personalItem = new PersonalItem();
         Trade ubiTrade = new Trade();
+        ubiTrade.setUbiTrade(new UbiTrade());
         ubiTrade.setTradeId("tradeId");
         personalItem.setExistingTrade(ubiTrade);
         PotentialTrade potentialTrade = new PotentialTrade(personalItem, null) {

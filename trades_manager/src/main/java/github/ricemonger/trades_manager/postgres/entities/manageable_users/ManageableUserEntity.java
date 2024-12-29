@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Entity
+@Entity(name = "manageable_user")
 @Table(name = "helper_user")
 @Getter
 @Setter
@@ -31,6 +31,8 @@ public class ManageableUserEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<TradeByItemIdManagerEntity> tradeByItemIdManagers = new ArrayList<>();
+
+    private Boolean managingEnabledFlag;
 
     public ManageableUserEntity(Long userId) {
         this.id = userId;

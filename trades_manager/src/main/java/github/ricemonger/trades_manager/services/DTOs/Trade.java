@@ -9,12 +9,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Trade {
-    private UbiTrade ubiTrade;
+    private UbiTrade ubiTrade = new UbiTrade();
 
     private Integer minutesToTrade;
 
@@ -27,7 +28,11 @@ public class Trade {
     }
 
     public String getTradeId() {
-        return  ubiTrade == null ? null : ubiTrade.getTradeId();
+        return ubiTrade == null ? null : ubiTrade.getTradeId();
+    }
+
+    public void setTradeId(String buyTradeId2) {
+        ubiTrade.setTradeId(buyTradeId2);
     }
 
     public TradeState getState() {
@@ -36,6 +41,10 @@ public class Trade {
 
     public TradeCategory getCategory() {
         return ubiTrade == null ? null : ubiTrade.getCategory();
+    }
+
+    public void setCategory(TradeCategory tradeCategory) {
+        ubiTrade.setCategory(tradeCategory);
     }
 
     public LocalDateTime getExpiresAt() {
@@ -50,6 +59,10 @@ public class Trade {
         return ubiTrade == null ? null : ubiTrade.getItem();
     }
 
+    public void setItem(Item item) {
+        ubiTrade.setItem(item);
+    }
+
     public Integer getSuccessPaymentPrice() {
         return ubiTrade == null ? null : ubiTrade.getSuccessPaymentPrice();
     }
@@ -62,24 +75,12 @@ public class Trade {
         return ubiTrade == null ? null : ubiTrade.getProposedPaymentPrice();
     }
 
-    public Integer getProposedPaymentFee() {
-        return ubiTrade == null ? null : ubiTrade.getProposedPaymentFee();
-    }
-
     public void setProposedPaymentPrice(Integer i) {
         ubiTrade.setProposedPaymentPrice(i);
     }
 
-    public void setCategory(TradeCategory tradeCategory) {
-        ubiTrade.setCategory(tradeCategory);
-    }
-
-    public void setTradeId(String buyTradeId2) {
-        ubiTrade.setTradeId(buyTradeId2);
-    }
-
-    public void setItem(Item item) {
-        ubiTrade.setItem(item);
+    public Integer getProposedPaymentFee() {
+        return ubiTrade == null ? null : ubiTrade.getProposedPaymentFee();
     }
 
     public String getItemId() {
@@ -91,6 +92,12 @@ public class Trade {
     }
 
     public boolean isFullyEqual(Trade existingTrade) {
-        return equals(existingTrade);
+        if (existingTrade == null) {
+            return false;
+        } else {
+            return Objects.equals(minutesToTrade, existingTrade.minutesToTrade) &&
+                   Objects.equals(tradePriority, existingTrade.tradePriority) &&
+                   ubiTrade.isFullyEqual(existingTrade.ubiTrade);
+        }
     }
 }

@@ -10,17 +10,14 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class TagPostgresRepositoryTest {
-
     @SpyBean
     TagPostgresRepository tagPostgresRepository;
-
-    @BeforeEach
-    void setUp() {
-        tagPostgresRepository.deleteAll();
-    }
 
     @Test
     public void findAllByNames_should_return_all_tags_with_given_names() {
@@ -33,7 +30,8 @@ class TagPostgresRepositoryTest {
 
         List<TagEntity> tags = tagPostgresRepository.findAllByNames(List.of("tag1", "tag2"));
 
-
+        assertEquals(2, tags.size());
+        assertTrue(tags.stream().anyMatch(tag -> tag.getName().equals("tag1")));
+        assertTrue(tags.stream().anyMatch(tag -> tag.getName().equals("tag2")));
     }
-
 }

@@ -1,10 +1,7 @@
 package github.ricemonger.marketplace.services;
 
-import github.ricemonger.marketplace.services.configurations.MainUserConfiguration;
 import github.ricemonger.marketplace.services.configurations.TelegramBotConfiguration;
 import github.ricemonger.marketplace.services.configurations.UbiServiceConfiguration;
-import github.ricemonger.utils.DTOs.common.ConfigResolvedTransactionPeriod;
-import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.abstractions.CommonValuesDatabaseService;
 import github.ricemonger.utils.enums.ItemRarity;
@@ -26,8 +23,6 @@ class CommonValuesServiceTest {
     private CommonValuesService commonValuesService;
     @MockBean
     private CommonValuesDatabaseService commonValuesDatabaseService;
-    @MockBean
-    private MainUserConfiguration mainUserConfiguration;
     @MockBean
     private UbiServiceConfiguration ubiServiceConfiguration;
     @SpyBean
@@ -79,30 +74,6 @@ class CommonValuesServiceTest {
         commonValuesService.setMainUserAuthorization(new AuthorizationDTO());
 
         verify(commonValuesDatabaseService).setMainUserAuthorization(new AuthorizationDTO(), 0);
-    }
-
-    @Test
-    void getMainUserEmail_should_handle_to_service() {
-        String email = "email";
-        when(mainUserConfiguration.getEmail()).thenReturn(email);
-
-        assertEquals(email, commonValuesService.getMainUserEmail());
-    }
-
-    @Test
-    void getMainUserPassword_should_handle_to_service() {
-        String password = "password";
-        when(mainUserConfiguration.getPassword()).thenReturn(password);
-
-        assertEquals(password, commonValuesService.getMainUserPassword());
-    }
-
-    @Test
-    void getMainUserPlatform_should_handle_to_service() {
-        String platform = "platform";
-        when(mainUserConfiguration.getPlatform()).thenReturn(platform);
-
-        assertEquals(platform, commonValuesService.getMainUserPlatform());
     }
 
     @Test

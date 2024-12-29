@@ -14,4 +14,8 @@ public class TagEntityMapper {
     public Tag createDTO(TagEntity entity) {
         return new Tag(entity.getValue(), entity.getName(), entity.getTagGroup());
     }
+
+    public TagEntity createEntity(Tag tag) {
+        return new TagEntity(tag.getValue(), tag.getName(), tag.getTagGroup());
+    }
 }

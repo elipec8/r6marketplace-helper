@@ -1,9 +1,6 @@
 package github.ricemonger.trades_manager.services.factories;
 
-import github.ricemonger.trades_manager.services.DTOs.CentralTradeManagerCommand;
-import github.ricemonger.trades_manager.services.DTOs.PersonalItem;
-import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalBuyTrade;
-import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalSellTrade;
+import github.ricemonger.trades_manager.services.DTOs.*;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
 import github.ricemonger.utils.DTOs.personal.*;
@@ -27,8 +24,6 @@ class CentralTradeManagerCommandFactoryTest {
     public void createCommandsForCentralTradeManagersForUser_should_return_expected_list_of_commands() {
         Long userId = 1L;
         AuthorizationDTO authorizationDTO = new AuthorizationDTO("ticket", "profileId", "spaceId", "sessionId", "rememberDeviceTicket", "rememberMeTicket");
-        String chatId = "chatId";
-        boolean privateNotificationsEnabledFlag = true;
 
         PersonalItem personalItemSellTradeCreate = new PersonalItem();
         personalItemSellTradeCreate.setItem(new Item("1"));
@@ -42,7 +37,7 @@ class CentralTradeManagerCommandFactoryTest {
         personalItemSellTradeUpdate.setItem(new Item("2"));
         personalItemSellTradeUpdate.getItem().setName("name2");
         personalItemSellTradeUpdate.setTradeAlreadyExists(true);
-        personalItemSellTradeUpdate.setExistingTrade(new UbiTrade());
+        personalItemSellTradeUpdate.setExistingTrade(new Trade());
         personalItemSellTradeUpdate.getExistingTrade().setTradeId("tradeId2");
         personalItemSellTradeUpdate.getExistingTrade().setProposedPaymentPrice(2);
         PotentialTradeStats potentialTradeStatsSellTradeUpdate = new PotentialTradeStats();
@@ -53,7 +48,7 @@ class CentralTradeManagerCommandFactoryTest {
         personalItemSellTradeLeave.setItem(new Item("3"));
         personalItemSellTradeLeave.getItem().setName("name3");
         personalItemSellTradeLeave.setTradeAlreadyExists(true);
-        personalItemSellTradeLeave.setExistingTrade(new UbiTrade());
+        personalItemSellTradeLeave.setExistingTrade(new Trade());
         personalItemSellTradeLeave.getExistingTrade().setTradeId("tradeId3");
         personalItemSellTradeLeave.getExistingTrade().setProposedPaymentPrice(3);
         PotentialTradeStats potentialTradeStatsSellTradeLeave = new PotentialTradeStats();
@@ -62,16 +57,16 @@ class CentralTradeManagerCommandFactoryTest {
 
         Collection<PotentialPersonalSellTrade> resultingSellTrades = List.of(potentialSellTradeCreate, potentialSellTradeUpdate, potentialSellTradeLeave);
 
-        UbiTrade currentSellTradeBeUpdated = new UbiTrade();
+        Trade currentSellTradeBeUpdated = new Trade();
         currentSellTradeBeUpdated.setTradeId("tradeId2");
-        UbiTrade currentSellTradeBeLeft = new UbiTrade();
+        Trade currentSellTradeBeLeft = new Trade();
         currentSellTradeBeLeft.setTradeId("tradeId3");
-        UbiTrade currentSellTradeBeCanceled = new UbiTrade();
+        Trade currentSellTradeBeCanceled = new Trade();
         currentSellTradeBeCanceled.setTradeId("tradeId4");
         currentSellTradeBeCanceled.setItem(new Item("44"));
         currentSellTradeBeCanceled.getItem().setName("name44");
         currentSellTradeBeCanceled.setProposedPaymentPrice(44);
-        Collection<UbiTrade> currentSellTrades = List.of(currentSellTradeBeUpdated, currentSellTradeBeLeft, currentSellTradeBeCanceled);
+        Collection<Trade> currentSellTrades = List.of(currentSellTradeBeUpdated, currentSellTradeBeLeft, currentSellTradeBeCanceled);
 
         PersonalItem personalItemBuyTradeCreate = new PersonalItem();
         personalItemBuyTradeCreate.setItem(new Item("4"));
@@ -85,7 +80,7 @@ class CentralTradeManagerCommandFactoryTest {
         personalItemBuyTradeUpdate.setItem(new Item("5"));
         personalItemBuyTradeUpdate.getItem().setName("name5");
         personalItemBuyTradeUpdate.setTradeAlreadyExists(true);
-        personalItemBuyTradeUpdate.setExistingTrade(new UbiTrade());
+        personalItemBuyTradeUpdate.setExistingTrade(new Trade());
         personalItemBuyTradeUpdate.getExistingTrade().setTradeId("tradeId5");
         personalItemBuyTradeUpdate.getExistingTrade().setProposedPaymentPrice(5);
         PotentialTradeStats potentialTradeStatsBuyTradeUpdate = new PotentialTradeStats();
@@ -96,7 +91,7 @@ class CentralTradeManagerCommandFactoryTest {
         personalItemBuyTradeLeave.setItem(new Item("6"));
         personalItemBuyTradeLeave.getItem().setName("name6");
         personalItemBuyTradeLeave.setTradeAlreadyExists(true);
-        personalItemBuyTradeLeave.setExistingTrade(new UbiTrade());
+        personalItemBuyTradeLeave.setExistingTrade(new Trade());
         personalItemBuyTradeLeave.getExistingTrade().setTradeId("tradeId6");
         personalItemBuyTradeLeave.getExistingTrade().setProposedPaymentPrice(6);
         PotentialTradeStats potentialTradeStatsBuyTradeLeave = new PotentialTradeStats();
@@ -105,16 +100,16 @@ class CentralTradeManagerCommandFactoryTest {
 
         Collection<PotentialPersonalBuyTrade> resultingBuyTrades = List.of(potentialBuyTradeCreate, potentialBuyTradeUpdate, potentialBuyTradeLeave);
 
-        UbiTrade currentBuyTradeBeUpdated = new UbiTrade();
+        Trade currentBuyTradeBeUpdated = new Trade();
         currentBuyTradeBeUpdated.setTradeId("tradeId5");
-        UbiTrade currentBuyTradeBeLeft = new UbiTrade();
+        Trade currentBuyTradeBeLeft = new Trade();
         currentBuyTradeBeLeft.setTradeId("tradeId6");
-        UbiTrade currentBuyTradeBeCanceled = new UbiTrade();
+        Trade currentBuyTradeBeCanceled = new Trade();
         currentBuyTradeBeCanceled.setTradeId("tradeId7");
         currentBuyTradeBeCanceled.setItem(new Item("77"));
         currentBuyTradeBeCanceled.getItem().setName("name77");
         currentBuyTradeBeCanceled.setProposedPaymentPrice(77);
-        Collection<UbiTrade> currentBuyTrades = List.of(currentBuyTradeBeUpdated, currentBuyTradeBeLeft, currentBuyTradeBeCanceled);
+        Collection<Trade> currentBuyTrades = List.of(currentBuyTradeBeUpdated, currentBuyTradeBeLeft, currentBuyTradeBeCanceled);
 
         CentralTradeManagerCommand commandCreateSell = new CentralTradeManagerCommand(userId, authorizationDTO,
                 CentralTradeManagerCommandType.SELL_ORDER_CREATE, potentialSellTradeCreate.getItemId(), potentialSellTradeCreate.getItemName(),

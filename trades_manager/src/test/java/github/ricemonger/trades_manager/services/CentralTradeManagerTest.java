@@ -106,69 +106,81 @@ class CentralTradeManagerTest {
         when(buyCancelCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_CANCEL);
         when(buyCancelCommand1.getAuthorizationDTO()).thenReturn(authDTO1);
         when(buyCancelCommand1.getTradeId()).thenReturn("buyCancelTradeId1");
+        when(buyCancelCommand1.getUserId()).thenReturn(1L);
 
         CentralTradeManagerCommand buyCancelCommand12 = Mockito.mock(CentralTradeManagerCommand.class);
         when(buyCancelCommand12.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_CANCEL);
         when(buyCancelCommand12.getAuthorizationDTO()).thenReturn(authDTO1);
         when(buyCancelCommand12.getTradeId()).thenReturn("buyCancelTradeId12");
+        when(buyCancelCommand12.getUserId()).thenReturn(1L);
 
         CentralTradeManagerCommand buyUpdateCommand1 = Mockito.mock(CentralTradeManagerCommand.class);
         when(buyUpdateCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_UPDATE);
         when(buyUpdateCommand1.getAuthorizationDTO()).thenReturn(authDTO1);
         when(buyUpdateCommand1.getTradeId()).thenReturn("buyUpdateTradeId1");
         when(buyUpdateCommand1.getNewPrice()).thenReturn(1);
+        when(buyUpdateCommand1.getUserId()).thenReturn(1L);
 
         CentralTradeManagerCommand buyUpdateCommand12 = Mockito.mock(CentralTradeManagerCommand.class);
         when(buyUpdateCommand12.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_UPDATE);
         when(buyUpdateCommand12.getAuthorizationDTO()).thenReturn(authDTO1);
         when(buyUpdateCommand12.getTradeId()).thenReturn("buyUpdateTradeId12");
         when(buyUpdateCommand12.getNewPrice()).thenReturn(2);
+        when(buyUpdateCommand12.getUserId()).thenReturn(1L);
 
         CentralTradeManagerCommand buyCreateCommand1 = Mockito.mock(CentralTradeManagerCommand.class);
         when(buyCreateCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_CREATE);
         when(buyCreateCommand1.getAuthorizationDTO()).thenReturn(authDTO1);
         when(buyCreateCommand1.getItemId()).thenReturn("buyCreateItemId1");
         when(buyCreateCommand1.getNewPrice()).thenReturn(1);
+        when(buyCreateCommand1.getUserId()).thenReturn(1L);
 
         CentralTradeManagerCommand buyCreateCommand12 = Mockito.mock(CentralTradeManagerCommand.class);
         when(buyCreateCommand12.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_CREATE);
         when(buyCreateCommand12.getAuthorizationDTO()).thenReturn(authDTO1);
         when(buyCreateCommand12.getItemId()).thenReturn("buyCreateItemId12");
         when(buyCreateCommand12.getNewPrice()).thenReturn(2);
+        when(buyCreateCommand12.getUserId()).thenReturn(1L);
 
         CentralTradeManagerCommand sellCancelCommand1 = Mockito.mock(CentralTradeManagerCommand.class);
         when(sellCancelCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_CANCEL);
         when(sellCancelCommand1.getAuthorizationDTO()).thenReturn(authDTO1);
         when(sellCancelCommand1.getTradeId()).thenReturn("sellCancelTradeId1");
+        when(sellCancelCommand1.getUserId()).thenReturn(1L);
 
         CentralTradeManagerCommand sellCancelCommand12 = Mockito.mock(CentralTradeManagerCommand.class);
         when(sellCancelCommand12.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_CANCEL);
         when(sellCancelCommand12.getAuthorizationDTO()).thenReturn(authDTO1);
         when(sellCancelCommand12.getTradeId()).thenReturn("sellCancelTradeId12");
+        when(sellCancelCommand12.getUserId()).thenReturn(1L);
 
         CentralTradeManagerCommand sellUpdateCommand1 = Mockito.mock(CentralTradeManagerCommand.class);
         when(sellUpdateCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_UPDATE);
         when(sellUpdateCommand1.getAuthorizationDTO()).thenReturn(authDTO1);
         when(sellUpdateCommand1.getTradeId()).thenReturn("sellUpdateTradeId1");
         when(sellUpdateCommand1.getNewPrice()).thenReturn(1);
+        when(sellUpdateCommand1.getUserId()).thenReturn(1L);
 
         CentralTradeManagerCommand sellUpdateCommand12 = Mockito.mock(CentralTradeManagerCommand.class);
         when(sellUpdateCommand12.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_UPDATE);
         when(sellUpdateCommand12.getAuthorizationDTO()).thenReturn(authDTO1);
         when(sellUpdateCommand12.getTradeId()).thenReturn("sellUpdateTradeId12");
         when(sellUpdateCommand12.getNewPrice()).thenReturn(2);
+        when(sellUpdateCommand12.getUserId()).thenReturn(1L);
 
         CentralTradeManagerCommand sellCreateCommand1 = Mockito.mock(CentralTradeManagerCommand.class);
         when(sellCreateCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_CREATE);
         when(sellCreateCommand1.getAuthorizationDTO()).thenReturn(authDTO1);
         when(sellCreateCommand1.getItemId()).thenReturn("sellCreateItemId1");
         when(sellCreateCommand1.getNewPrice()).thenReturn(1);
+        when(sellCreateCommand1.getUserId()).thenReturn(1L);
 
         CentralTradeManagerCommand sellCreateCommand12 = Mockito.mock(CentralTradeManagerCommand.class);
         when(sellCreateCommand12.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_CREATE);
         when(sellCreateCommand12.getAuthorizationDTO()).thenReturn(authDTO1);
         when(sellCreateCommand12.getItemId()).thenReturn("sellCreateItemId12");
         when(sellCreateCommand12.getNewPrice()).thenReturn(2);
+        when(sellCreateCommand12.getUserId()).thenReturn(1L);
 
         List<CentralTradeManagerCommand> commands1 = List.of(buyCancelCommand1, buyCancelCommand12, buyUpdateCommand1, buyUpdateCommand12,
                 buyCreateCommand1, buyCreateCommand12, sellCancelCommand1, sellCancelCommand12, sellUpdateCommand1, sellUpdateCommand12,
@@ -218,35 +230,41 @@ class CentralTradeManagerTest {
         when(buyCancelCommand2.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_CANCEL);
         when(buyCancelCommand2.getAuthorizationDTO()).thenReturn(authDTO2);
         when(buyCancelCommand2.getTradeId()).thenReturn("buyCancelTradeId2");
+        when(buyCancelCommand2.getUserId()).thenReturn(2L);
 
         CentralTradeManagerCommand buyUpdateCommand2 = Mockito.mock(CentralTradeManagerCommand.class);
         when(buyUpdateCommand2.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_UPDATE);
         when(buyUpdateCommand2.getAuthorizationDTO()).thenReturn(authDTO2);
         when(buyUpdateCommand2.getTradeId()).thenReturn("buyUpdateTradeId2");
         when(buyUpdateCommand2.getNewPrice()).thenReturn(3);
+        when(buyUpdateCommand2.getUserId()).thenReturn(2L);
 
         CentralTradeManagerCommand buyCreateCommand2 = Mockito.mock(CentralTradeManagerCommand.class);
         when(buyCreateCommand2.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_CREATE);
         when(buyCreateCommand2.getAuthorizationDTO()).thenReturn(authDTO2);
         when(buyCreateCommand2.getItemId()).thenReturn("buyCreateItemId2");
         when(buyCreateCommand2.getNewPrice()).thenReturn(3);
+        when(buyCreateCommand2.getUserId()).thenReturn(2L);
 
         CentralTradeManagerCommand sellCancelCommand2 = Mockito.mock(CentralTradeManagerCommand.class);
         when(sellCancelCommand2.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_CANCEL);
         when(sellCancelCommand2.getAuthorizationDTO()).thenReturn(authDTO2);
         when(sellCancelCommand2.getTradeId()).thenReturn("sellCancelTradeId2");
+        when(sellCancelCommand2.getUserId()).thenReturn(2L);
 
         CentralTradeManagerCommand sellUpdateCommand2 = Mockito.mock(CentralTradeManagerCommand.class);
         when(sellUpdateCommand2.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_UPDATE);
         when(sellUpdateCommand2.getAuthorizationDTO()).thenReturn(authDTO2);
         when(sellUpdateCommand2.getTradeId()).thenReturn("sellUpdateTradeId2");
         when(sellUpdateCommand2.getNewPrice()).thenReturn(3);
+        when(sellUpdateCommand2.getUserId()).thenReturn(2L);
 
         CentralTradeManagerCommand sellCreateCommand2 = Mockito.mock(CentralTradeManagerCommand.class);
         when(sellCreateCommand2.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_CREATE);
         when(sellCreateCommand2.getAuthorizationDTO()).thenReturn(authDTO2);
         when(sellCreateCommand2.getItemId()).thenReturn("sellCreateItemId2");
         when(sellCreateCommand2.getNewPrice()).thenReturn(3);
+        when(sellCreateCommand2.getUserId()).thenReturn(2L);
 
         List<CentralTradeManagerCommand> commands2 = List.of(buyCancelCommand2, buyUpdateCommand2, buyCreateCommand2, sellCancelCommand2, sellUpdateCommand2, sellCreateCommand2);
 

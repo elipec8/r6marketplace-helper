@@ -65,6 +65,6 @@ class TradePostgresServiceTest {
 
         tradePostgresService.saveAllPrioritizedTrades(List.of(dto1, dto2));
 
-        verify(prioritizedTradeRepository.saveAll(argThat(entities -> ((List<?>)entities).contains(entity1) && ((List<?>)entities).contains(entity2) && ((List<PrioritizedTradeEntity>) entities).size() == 2)));
+        verify(prioritizedTradeRepository).saveAll(argThat(entities -> ((List<?>)entities).contains(entity1) && ((List<?>)entities).contains(entity2) && ((List<PrioritizedTradeEntity>) entities).size() == 2));
     }
 }

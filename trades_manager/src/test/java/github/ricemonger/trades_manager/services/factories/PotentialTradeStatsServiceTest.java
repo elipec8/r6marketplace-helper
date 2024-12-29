@@ -6,22 +6,21 @@ import github.ricemonger.utils.DTOs.common.PotentialTradePriceAndTimeStats;
 import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
 import github.ricemonger.utils.enums.ItemRarity;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.util.List;
 
 import static github.ricemonger.trades_manager.services.factories.PotentialTradeStatsService.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class PotentialTradeStatsServiceTest {
-    @Autowired
+    @SpyBean
     private PotentialTradeStatsService potentialTradeStatsService;
     @MockBean
     private CommonValuesService commonValuesService;

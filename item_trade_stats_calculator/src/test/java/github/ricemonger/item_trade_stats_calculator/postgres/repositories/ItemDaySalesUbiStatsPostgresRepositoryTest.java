@@ -1,29 +1,26 @@
-package github.ricemonger.marketplace.databases.postgres.repositories;
+package github.ricemonger.item_trade_stats_calculator.postgres.repositories;
 
-import github.ricemonger.marketplace.databases.postgres.entities.item.ItemDaySalesUbiStatsEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.entities.item.ItemDaySalesUbiStatsEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.entities.item.ItemIdEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class ItemDaySalesUbiStatsEntityDTOPostgresRepositoryTest {
+class ItemDaySalesUbiStatsPostgresRepositoryTest {
     @SpyBean
     private ItemDaySalesUbiStatsPostgresRepository itemDaySalesUbiStatsPostgresRepository;
 
     @SpyBean
-    private ItemPostgresRepository itemPostgresRepository;
+    private ItemIdPostgresRepository itemPostgresRepository;
 
     @BeforeEach
     void setUp() {
@@ -33,17 +30,17 @@ class ItemDaySalesUbiStatsEntityDTOPostgresRepositoryTest {
 
     @Test
     public void findAllLastMonthSales_should_return_only_entities_from_last_30_days() {
-        ItemEntity item1 = itemPostgresRepository.saveAndFlush(new ItemEntity("item1"));
+        ItemIdEntity item1 = itemPostgresRepository.saveAndFlush(new ItemIdEntity("item1"));
         ItemDaySalesUbiStatsEntity entity1 = new ItemDaySalesUbiStatsEntity();
         entity1.setItem(item1);
         entity1.setDate(LocalDate.now());
 
-        ItemEntity item2 = itemPostgresRepository.saveAndFlush(new ItemEntity("item2"));
+        ItemIdEntity item2 = itemPostgresRepository.saveAndFlush(new ItemIdEntity("item2"));
         ItemDaySalesUbiStatsEntity entity2 = new ItemDaySalesUbiStatsEntity();
         entity2.setItem(item2);
         entity2.setDate(LocalDate.now().minusDays(30));
 
-        ItemEntity item3 = itemPostgresRepository.saveAndFlush(new ItemEntity("item3"));
+        ItemIdEntity item3 = itemPostgresRepository.saveAndFlush(new ItemIdEntity("item3"));
         ItemDaySalesUbiStatsEntity entity3 = new ItemDaySalesUbiStatsEntity();
         entity3.setItem(item3);
         entity3.setDate(LocalDate.now().minusDays(31));

@@ -29,7 +29,6 @@ public class ItemFilterEntityMapper {
 
     private final TagEntityMapper tagEntityMapper;
 
-
     public ItemFilterEntity createEntityForTelegramUserChatId(String chatId, ItemFilter filter) {
         return createEntityForUser(userPostgresRepository.findByTelegramUserChatId(chatId), filter);
     }

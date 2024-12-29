@@ -37,7 +37,15 @@ public class ItemResaleLockEntity {
 
     public boolean isEqual(ItemResaleLockEntity itemResaleLockEntity) {
         if (this == itemResaleLockEntity) return true;
-        return ubiAccount.isEqual(itemResaleLockEntity.ubiAccount) &&
-               item.isEqual(itemResaleLockEntity.item);
+
+        boolean ubiAccountIsEqual =
+                ubiAccount == null && itemResaleLockEntity.ubiAccount == null || (
+                        ubiAccount != null && ubiAccount.isEqual(itemResaleLockEntity.ubiAccount));
+
+        boolean itemIsEqual =
+                item == null && itemResaleLockEntity.item == null || (
+                        item != null && item.isEqual(itemResaleLockEntity.item));
+
+        return ubiAccountIsEqual && itemIsEqual;
     }
 }
