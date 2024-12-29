@@ -11,13 +11,15 @@ import github.ricemonger.trades_manager.services.factories.PersonalItemFactory;
 import github.ricemonger.trades_manager.services.factories.PotentialTradeFactory;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.DTOs.common.Item;
-import github.ricemonger.utils.DTOs.personal.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -94,34 +96,34 @@ public class CentralTradeManager {
         switch (command.getCommandType()) {
             case BUY_ORDER_CANCEL -> {
                 personalMutationCancelGraphQlClientService.cancelOrderForUser(command.getAuthorizationDTO(), command.getTradeId());
-                    telegramBotService.sendPrivateNotification(command.getUserId(), String.format("Your buy order for item %s with price %d has been" +
-                                                                                                  " cancelled", command.getItemName(), command.getOldPrice()));
+                telegramBotService.sendPrivateNotification(command.getUserId(), String.format("Your buy order for item %s with price %d has been" +
+                                                                                              " cancelled", command.getItemName(), command.getOldPrice()));
             }
             case BUY_ORDER_UPDATE -> {
                 personalMutationBuyUpdateGraphQlClientService.updateBuyOrderForUser(command.getAuthorizationDTO(), command.getTradeId(), command.getNewPrice());
-                    telegramBotService.sendPrivateNotification(command.getUserId(), String.format("Your buy order price for item %s has been updated" +
-                                                                                                  "from %d to %d", command.getItemName(), command.getOldPrice(), command.getNewPrice()));
+                telegramBotService.sendPrivateNotification(command.getUserId(), String.format("Your buy order price for item %s has been updated" +
+                                                                                              "from %d to %d", command.getItemName(), command.getOldPrice(), command.getNewPrice()));
             }
             case BUY_ORDER_CREATE -> {
                 personalMutationBuyCreateGraphQlClientService.createBuyOrderForUser(command.getAuthorizationDTO(), command.getItemId(), command.getNewPrice());
-                    telegramBotService.sendPrivateNotification(command.getUserId(), String.format("Your buy order for item %s with price %d has been" +
-                                                                                                  " created", command.getItemName(), command.getNewPrice()));
+                telegramBotService.sendPrivateNotification(command.getUserId(), String.format("Your buy order for item %s with price %d has been" +
+                                                                                              " created", command.getItemName(), command.getNewPrice()));
             }
             case SELL_ORDER_CANCEL -> {
                 personalMutationCancelGraphQlClientService.cancelOrderForUser(command.getAuthorizationDTO(), command.getTradeId());
-                    telegramBotService.sendPrivateNotification(command.getUserId(), String.format("Your sell order for item %s with price %d has been" +
-                                                                                                  " cancelled", command.getItemName(), command.getOldPrice()));
+                telegramBotService.sendPrivateNotification(command.getUserId(), String.format("Your sell order for item %s with price %d has been" +
+                                                                                              " cancelled", command.getItemName(), command.getOldPrice()));
 
             }
             case SELL_ORDER_UPDATE -> {
                 personalMutationSellUpdateGraphQlClientService.updateSellOrderForUser(command.getAuthorizationDTO(), command.getTradeId(), command.getNewPrice());
-                    telegramBotService.sendPrivateNotification(command.getUserId(), String.format("Your sell order price for item %s has been updated" +
-                                                                                                  "from %d to %d", command.getItemName(), command.getOldPrice(), command.getNewPrice()));
+                telegramBotService.sendPrivateNotification(command.getUserId(), String.format("Your sell order price for item %s has been updated" +
+                                                                                              "from %d to %d", command.getItemName(), command.getOldPrice(), command.getNewPrice()));
             }
             case SELL_ORDER_CREATE -> {
                 personalMutationSellCreateGraphQlClientService.createSellOrderForUser(command.getAuthorizationDTO(), command.getItemId(), command.getNewPrice());
-                    telegramBotService.sendPrivateNotification(command.getUserId(), String.format("Your sell order for item %s with price %d has been" +
-                                                                                                  " created", command.getItemName(), command.getNewPrice()));
+                telegramBotService.sendPrivateNotification(command.getUserId(), String.format("Your sell order for item %s with price %d has been" +
+                                                                                              " created", command.getItemName(), command.getNewPrice()));
             }
         }
     }

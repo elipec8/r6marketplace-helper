@@ -1,6 +1,6 @@
 package github.ricemonger.configs_fetcher.database.postgres.services;
 
-import github.ricemonger.configs_fetcher.database.postgres.entities.item.TagEntity;
+import github.ricemonger.configs_fetcher.database.postgres.entities.TagEntity;
 import github.ricemonger.configs_fetcher.database.postgres.repositories.TagPostgresRepository;
 import github.ricemonger.configs_fetcher.database.postgres.services.entity_mappers.item.TagEntityMapper;
 import github.ricemonger.utils.DTOs.common.Tag;

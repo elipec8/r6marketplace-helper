@@ -6,12 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
-@Slf4j
-@Entity(name = "telegram_user_input")
+@Table(name = "telegram_user_input")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,41 +18,32 @@ import java.util.Objects;
 @IdClass(TelegramUserInputEntityId.class)
 public class TelegramUserInputEntity {
     @MapsId
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "chatId", referencedColumnName = "chatId")
+    @ManyToOne
+    @JoinColumn(name = "chat_id", referencedColumnName = "chat_id")
     private TelegramUserEntity telegramUser;
 
     @Id
     @Enumerated(EnumType.ORDINAL)
+    @Column(name = "input_state")
     private InputState inputState;
 
-    @Column(name = "input_value") // "value" column name conflicts with H2
+    @Column(name = "input_value")
     private String value;
 
-    public String getChatId_() {
-        return telegramUser.getChatId();
-    }
-
-    public boolean isEqual(Object o) {
-        if (this == o) return true;
-        if (o instanceof TelegramUserInputEntity entity) {
-            return telegramUser.isEqual(entity.telegramUser) &&
-                   inputState == entity.inputState;
-        }
-        return false;
-    }
-
-    public boolean isFullyEqual(Object o) {
-        if (this == o) return true;
-        if (o instanceof TelegramUserInputEntity entity) {
-            return isEqual(entity) &&
-                   Objects.equals(value, entity.value);
-        }
-        return false;
+    @Override
+    public int hashCode() {
+        return Objects.hash(telegramUser, inputState);
     }
 
     @Override
-    public String toString() {
-        return "TelegramUserInputEntity(chatId=" + getChatId_() + ", inputState=" + inputState + ", value=" + value + ")";
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof TelegramUserInputEntity telegramUserInputEntity)) {
+            return false;
+        }
+        return Objects.equals(telegramUser, telegramUserInputEntity.telegramUser) &&
+               Objects.equals(inputState, telegramUserInputEntity.inputState);
     }
 }

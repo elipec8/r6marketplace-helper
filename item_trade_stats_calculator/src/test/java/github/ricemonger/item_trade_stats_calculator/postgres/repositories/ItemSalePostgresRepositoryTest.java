@@ -1,18 +1,18 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.repositories;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.item.ItemSaleEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.item.ItemIdEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemIdEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemSaleEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @SpringBootTest
 @Transactional

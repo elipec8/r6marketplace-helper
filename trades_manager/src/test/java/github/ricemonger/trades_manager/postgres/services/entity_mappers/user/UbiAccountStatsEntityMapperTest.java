@@ -2,8 +2,8 @@ package github.ricemonger.trades_manager.postgres.services.entity_mappers.user;
 
 import github.ricemonger.trades_manager.postgres.entities.items.ItemIdEntity;
 import github.ricemonger.trades_manager.postgres.entities.manageable_users.ItemResaleLockEntity;
-import github.ricemonger.trades_manager.postgres.entities.manageable_users.UbiAccountStatsEntity;
 import github.ricemonger.trades_manager.postgres.entities.manageable_users.TradeEntity;
+import github.ricemonger.trades_manager.postgres.entities.manageable_users.UbiAccountStatsEntity;
 import github.ricemonger.trades_manager.services.DTOs.Trade;
 import github.ricemonger.trades_manager.services.DTOs.UbiAccountStats;
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;

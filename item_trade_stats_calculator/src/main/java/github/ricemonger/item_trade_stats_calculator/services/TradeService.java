@@ -1,7 +1,7 @@
 package github.ricemonger.item_trade_stats_calculator.services;
 
-import github.ricemonger.item_trade_stats_calculator.services.abstractions.TradeDatabaseService;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.PrioritizedTrade;
+import github.ricemonger.item_trade_stats_calculator.services.abstractions.TradeDatabaseService;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +22,9 @@ public class TradeService {
         List<PrioritizedTrade> prioritizedTrades = new ArrayList<>();
 
         for (UbiTrade ubiTrade : tradeDatabaseService.findAllUbiTrades()) {
-            if(ubiTrade.getCategory() == TradeCategory.Buy) {
+            if (ubiTrade.getCategory() == TradeCategory.Buy) {
                 prioritizedTrades.add(new PrioritizedTrade(ubiTrade, potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForExistingTrade(ubiTrade)));
-            }
-            else if(ubiTrade.getCategory() == TradeCategory.Sell) {
+            } else if (ubiTrade.getCategory() == TradeCategory.Sell) {
                 prioritizedTrades.add(new PrioritizedTrade(ubiTrade, potentialTradeStatsCalculator.calculatePotentialSellTradeStatsForExistingTrade(ubiTrade)));
             }
         }

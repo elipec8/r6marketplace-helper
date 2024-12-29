@@ -1,16 +1,15 @@
 package github.ricemonger.trades_manager.postgres.entities.items;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
-@Slf4j
-@Entity
 @Table(name = "item")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,17 +17,22 @@ import java.util.Objects;
 @ToString
 public class ItemIdEntity {
     @Id
+    @Column(name = "item_id")
     private String itemId;
 
-    public boolean isEqual(Object o) {
-        if (this == o) return true;
-        if (o instanceof ItemIdEntity itemEntity) {
-            return Objects.equals(itemId, itemEntity.itemId);
-        }
-        return false;
+    @Override
+    public int hashCode() {
+        return Objects.hash(itemId);
     }
 
-    public boolean isFullyEqual(Object o) {
-        return isEqual(o);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ItemIdEntity itemEntity)) {
+            return false;
+        }
+        return Objects.equals(this.itemId, itemEntity.itemId);
     }
 }

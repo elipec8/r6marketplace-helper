@@ -2,12 +2,13 @@ package github.ricemonger.ubi_users_stats_fetcher.postgres.entities.user_ubi_acc
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class UbiAccountEntryEntityIdTest {
 
     @Test
-    public void hashCode_should_return_true_for_equal_ids(){
+    public void hashCode_should_return_true_for_equal_ids() {
         UserUbiAccountEntryEntity user1 = new UserUbiAccountEntryEntity(1L);
         user1.setUbiAccountEntry(new UbiAccountEntryEntity());
         user1.getUbiAccountEntry().setUbiAuthTicket("ubiAuthTicket");
@@ -24,7 +25,7 @@ class UbiAccountEntryEntityIdTest {
     }
 
     @Test
-    public void equals_should_return_true_for_equal_ids(){
+    public void equals_should_return_true_for_equal_ids() {
         UserUbiAccountEntryEntity user1 = new UserUbiAccountEntryEntity(1L);
         user1.setUbiAccountEntry(new UbiAccountEntryEntity());
         user1.getUbiAccountEntry().setUbiAuthTicket("ubiAuthTicket");
@@ -41,7 +42,7 @@ class UbiAccountEntryEntityIdTest {
     }
 
     @Test
-    public void equals_should_return_false_for_different_ids(){
+    public void equals_should_return_false_for_different_ids() {
         UserUbiAccountEntryEntity user1 = new UserUbiAccountEntryEntity(1L);
 
         UserUbiAccountEntryEntity user2 = new UserUbiAccountEntryEntity(2L);

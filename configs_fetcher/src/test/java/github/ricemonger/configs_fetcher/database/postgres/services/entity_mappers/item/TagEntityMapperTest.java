@@ -1,6 +1,6 @@
 package github.ricemonger.configs_fetcher.database.postgres.services.entity_mappers.item;
 
-import github.ricemonger.configs_fetcher.database.postgres.entities.item.TagEntity;
+import github.ricemonger.configs_fetcher.database.postgres.entities.TagEntity;
 import github.ricemonger.utils.DTOs.common.Tag;
 import github.ricemonger.utils.enums.TagGroup;
 import org.junit.jupiter.api.Test;

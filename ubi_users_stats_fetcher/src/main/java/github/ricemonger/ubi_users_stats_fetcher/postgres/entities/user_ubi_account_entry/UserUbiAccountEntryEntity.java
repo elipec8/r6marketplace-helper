@@ -8,14 +8,15 @@ import lombok.Setter;
 
 import java.util.Objects;
 
-@Entity
 @Table(name = "helper_user")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserUbiAccountEntryEntity {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
     @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
     private Long id;
@@ -25,5 +26,21 @@ public class UserUbiAccountEntryEntity {
 
     public UserUbiAccountEntryEntity(Long userId) {
         this.id = userId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UserUbiAccountEntryEntity userEntity)) {
+            return false;
+        }
+        return Objects.equals(id, userEntity.id);
     }
 }

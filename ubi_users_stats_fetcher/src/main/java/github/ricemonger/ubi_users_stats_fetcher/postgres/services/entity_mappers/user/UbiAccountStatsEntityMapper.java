@@ -5,8 +5,8 @@ import github.ricemonger.ubi_users_stats_fetcher.postgres.entities.ubi_account_s
 import github.ricemonger.ubi_users_stats_fetcher.postgres.entities.ubi_account_stats.ItemResaleLockEntity;
 import github.ricemonger.ubi_users_stats_fetcher.postgres.entities.ubi_account_stats.UbiAccountStatsEntity;
 import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.ItemIdPostgresRepository;
-import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UbiAccountStats;
+import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

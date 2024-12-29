@@ -8,14 +8,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@Slf4j
-@Entity(name = "item_filter")
+@Table(name = "item_filter")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,72 +22,54 @@ import java.util.Set;
 @IdClass(ItemFilterEntityId.class)
 public class ItemFilterEntity {
     @MapsId
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 
     @Id
+    @Column(name = "name")
     private String name;
 
     @Enumerated(EnumType.ORDINAL)
+    @Column(name = "filter_type")
     private FilterType filterType;
 
     @Enumerated(EnumType.ORDINAL)
+    @Column(name = "is_owned")
     private IsOwnedFilter isOwned;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", name = "item_name_patterns")
     private String itemNamePatterns;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", name = "item_types")
     private String itemTypes;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany
     @JoinTable(name = "item_filter_tags",
-            joinColumns = {@JoinColumn(name = "itemFilterUserId", referencedColumnName = "userId"),
-                    @JoinColumn(name = "itemFilterName", referencedColumnName = "name")},
-            inverseJoinColumns = @JoinColumn(name = "tagName", referencedColumnName = "name"))
+            joinColumns = {@JoinColumn(name = "item_filter_user_id", referencedColumnName = "user_id"),
+                    @JoinColumn(name = "item_filter_name", referencedColumnName = "name")},
+            inverseJoinColumns = @JoinColumn(name = "tag_name", referencedColumnName = "name"))
     private Set<TagEntity> tags = new HashSet<>();
 
+    @Column(name = "min_sell_price")
     private Integer minSellPrice;
+    @Column(name = "max_buy_price")
     private Integer maxBuyPrice;
 
-
-    public Long getUserId_() {
-        return user.getId();
-    }
-
-    public boolean isEqual(Object o) {
-        if (this == o) return true;
-        if (o instanceof ItemFilterEntity entity) {
-            return user.isEqual(entity.user) &&
-                   Objects.equals(name, entity.name);
-        }
-        return false;
-    }
-
-    public boolean isFullyEqual(Object o) {
-        if (this == o) return true;
-        if (o instanceof ItemFilterEntity entity) {
-
-            boolean tagsAreEqual = this.tags == null && entity.tags == null || (
-                    this.tags != null && entity.tags != null &&
-                    this.tags.size() == entity.tags.size() &&
-                    this.tags.stream().allMatch(tag -> entity.tags.stream().anyMatch(tag::isEqual)));
-
-            return isEqual(entity) &&
-                   filterType == entity.filterType &&
-                   isOwned == entity.isOwned &&
-                   Objects.equals(itemNamePatterns, entity.itemNamePatterns) &&
-                   Objects.equals(itemTypes, entity.itemTypes) &&
-                   tagsAreEqual &&
-                   Objects.equals(minSellPrice, entity.minSellPrice) &&
-                   Objects.equals(maxBuyPrice, entity.maxBuyPrice);
-        }
-        return false;
+    @Override
+    public int hashCode() {
+        return Objects.hash(user, name);
     }
 
     @Override
-    public String toString() {
-        return "ItemFilterEntity(userId=" + getUserId_() + ", name=" + name + ", filterType=" + filterType + ", isOwned=" + isOwned + ", itemNamePatterns=" + itemNamePatterns + ", itemTypes=" + itemTypes + ", tags=" + tags + ", minSellPrice=" + minSellPrice + ", maxBuyPrice=" + maxBuyPrice + ")";
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ItemFilterEntity itemFilterEntity)) {
+            return false;
+        }
+        return Objects.equals(this.user, itemFilterEntity.user) &&
+               Objects.equals(this.name, itemFilterEntity.name);
     }
 }

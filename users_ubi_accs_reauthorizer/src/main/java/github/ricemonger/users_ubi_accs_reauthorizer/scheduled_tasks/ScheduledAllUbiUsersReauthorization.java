@@ -1,8 +1,8 @@
 package github.ricemonger.users_ubi_accs_reauthorizer.scheduled_tasks;
 
 
-import github.ricemonger.users_ubi_accs_reauthorizer.services.TelegramBotClientService;
 import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserToNotify;
+import github.ricemonger.users_ubi_accs_reauthorizer.services.TelegramBotClientService;
 import github.ricemonger.users_ubi_accs_reauthorizer.services.UserUbiAccountEntryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;

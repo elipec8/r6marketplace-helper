@@ -5,12 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
-@Slf4j
-@Entity(name = "ubi_account_authorization_entry")
+@Table(name = "ubi_account_authorization_entry")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,72 +17,46 @@ import java.util.Objects;
 @IdClass(UbiAccountEntryEntityId.class)
 public class UbiAccountEntryEntity {
     @Id
-    @OneToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 
     @Id
+    @Column(name = "email")
     private String email;
 
+    @Column(name = "encoded_password")
     private String encodedPassword;
 
+    @Column(name = "ubi_session_id")
     private String ubiSessionId;
+    @Column(name = "ubi_space_id")
     private String ubiSpaceId;
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", name = "ubi_auth_ticket")
     private String ubiAuthTicket;
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", name = "ubi_remember_device_ticket")
     private String ubiRememberDeviceTicket;
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", name = "ubi_remember_me_ticket")
     private String ubiRememberMeTicket;
 
-    @ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "ubiProfileId", referencedColumnName = "ubiProfileId")
+    @ManyToOne
+    @JoinColumn(name = "ubi_profile_id", referencedColumnName = "ubi_profile_id")
     private UbiAccountStatsEntity ubiAccountStats;
 
-    public UbiAccountEntryEntity(Long userId, String email, String ubiProfileId) {
-        this(new UserEntity(userId), email, new UbiAccountStatsEntity(ubiProfileId));
-    }
-
-    public UbiAccountEntryEntity(UserEntity user, String email, UbiAccountStatsEntity ubiAccountStats) {
-        this.user = user;
-        this.email = email;
-        this.ubiAccountStats = ubiAccountStats;
-    }
-
-    public Long getUserId_() {
-        return user.getId();
-    }
-
-    public String getProfileId_() {
-        return this.ubiAccountStats.getUbiProfileId();
-    }
-
-    public boolean isEqual(Object o) {
-        if (this == o) return true;
-        if (o instanceof UbiAccountEntryEntity entity) {
-            return user.isEqual(entity.user) &&
-                   Objects.equals(email, entity.getEmail());
-        }
-        return false;
-    }
-
-    public boolean isFullyEqual(Object o) {
-        if (this == o) return true;
-        if (o instanceof UbiAccountEntryEntity entity) {
-            return isEqual(entity) &&
-                   Objects.equals(encodedPassword, entity.getEncodedPassword()) &&
-                   Objects.equals(ubiSessionId, entity.getUbiSessionId()) &&
-                   Objects.equals(ubiSpaceId, entity.getUbiSpaceId()) &&
-                   Objects.equals(ubiAuthTicket, entity.getUbiAuthTicket()) &&
-                   Objects.equals(ubiRememberDeviceTicket, entity.getUbiRememberDeviceTicket()) &&
-                   Objects.equals(ubiRememberMeTicket, entity.getUbiRememberMeTicket()) &&
-                   ubiAccountStats.isFullyEqual(entity.getUbiAccountStats());
-        }
-        return false;
+    @Override
+    public int hashCode() {
+        return Objects.hash(user, email);
     }
 
     @Override
-    public String toString() {
-        return "UbiAccountEntryEntity(userId=" + getUserId_() + ", email=" + email + ", encodedPassword=" + encodedPassword + ", ubiSessionId=" + ubiSessionId + ", ubiSpaceId=" + ubiSpaceId + ", ubiAuthTicket=" + ubiAuthTicket + ", ubiRememberDeviceTicket=" + ubiRememberDeviceTicket + ", ubiRememberMeTicket=" + ubiRememberMeTicket + ", ubiAccountStats=" + ubiAccountStats + ")";
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UbiAccountEntryEntity ubiAccountEntryEntity)) {
+            return false;
+        }
+        return Objects.equals(user, ubiAccountEntryEntity.user) &&
+               Objects.equals(email, ubiAccountEntryEntity.email);
     }
 }

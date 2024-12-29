@@ -7,14 +7,9 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ItemSaleEntityTest {
-    @Test
-    public void isEqual_should_return_true_if_same() {
-        ItemSaleEntity entity = new ItemSaleEntity();
-        assertTrue(entity.isEqual(entity));
-    }
 
     @Test
-    public void isEqual_should_return_true_if_equal_ids() {
+    public void hashCode_should_return_same_for_equal_ids() {
         ItemSaleEntity entity1 = new ItemSaleEntity("itemId");
         entity1.setSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
         entity1.setPrice(100);
@@ -22,17 +17,35 @@ class ItemSaleEntityTest {
         entity2.setSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
         entity2.setPrice(200);
 
-        assertTrue(entity1.isEqual(entity2));
+        assertEquals(entity1.hashCode(), entity2.hashCode());
     }
 
     @Test
-    public void isEqual_should_return_false_if_null() {
+    public void equals_should_return_true_if_same() {
         ItemSaleEntity entity = new ItemSaleEntity();
-        assertFalse(entity.isEqual(null));
+        assertEquals(entity, entity);
     }
 
     @Test
-    public void isEqual_should_return_false_if_different_id_field() {
+    public void equals_should_return_true_if_equal_ids() {
+        ItemSaleEntity entity1 = new ItemSaleEntity("itemId");
+        entity1.setSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
+        entity1.setPrice(100);
+        ItemSaleEntity entity2 = new ItemSaleEntity("itemId");
+        entity2.setSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
+        entity2.setPrice(200);
+
+        assertEquals(entity1, entity2);
+    }
+
+    @Test
+    public void equals_should_return_false_if_null() {
+        ItemSaleEntity entity = new ItemSaleEntity();
+        assertNotEquals(null, entity);
+    }
+
+    @Test
+    public void equals_should_return_false_if_different_id_field() {
         ItemSaleEntity entity1 = new ItemSaleEntity("itemId");
         entity1.setSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
 
@@ -40,10 +53,10 @@ class ItemSaleEntityTest {
         entity2.setSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
 
         entity1.setItem(new ItemMainFieldsEntity("itemId1"));
-        assertFalse(entity1.isEqual(entity2));
+        assertNotEquals(entity1, entity2);
         entity1.setItem(new ItemMainFieldsEntity("itemId"));
         entity1.setSoldAt(LocalDateTime.of(2021, 1, 2, 0, 0));
-        assertFalse(entity1.isEqual(entity2));
+        assertNotEquals(entity1, entity2);
     }
 
     @Test

@@ -9,14 +9,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TradeByFiltersManagerEntityTest {
     @Test
-    public void isEqual_should_return_true_if_same() {
+    public void equals_should_return_true_if_same() {
         TradeByFiltersManagerEntity manager1 = new TradeByFiltersManagerEntity();
 
-        assertTrue(manager1.isEqual(manager1));
+        assertEquals(manager1, manager1);
     }
 
     @Test
-    public void isEqual_should_return_true_if_equal_ids() {
+    public void equals_should_return_true_if_equal_ids() {
         TradeByFiltersManagerEntity manager1 = new TradeByFiltersManagerEntity();
         manager1.setUser(new ManageableUserEntity(1L));
         manager1.setName("name");
@@ -31,18 +31,18 @@ class TradeByFiltersManagerEntityTest {
         manager2.setUser(new ManageableUserEntity(1L));
         manager2.setName("name");
 
-        assertTrue(manager1.isEqual(manager2));
+        assertEquals(manager1, manager2);
     }
 
     @Test
-    public void isEqual_should_return_false_if_null() {
+    public void equals_should_return_false_if_null() {
         TradeByFiltersManagerEntity manager1 = new TradeByFiltersManagerEntity();
 
-        assertFalse(manager1.isEqual(null));
+        assertNotEquals(null, manager1);
     }
 
     @Test
-    public void isEqual_should_return_false_if_different_ids() {
+    public void equals_should_return_false_if_different_ids() {
         TradeByFiltersManagerEntity manager1 = new TradeByFiltersManagerEntity();
         manager1.setUser(new ManageableUserEntity(1L));
         manager1.setName("name");
@@ -52,10 +52,10 @@ class TradeByFiltersManagerEntityTest {
         manager2.setName("name");
 
         manager1.setUser(new ManageableUserEntity(2L));
-        assertFalse(manager1.isEqual(manager2));
+        assertNotEquals(manager1, manager2);
         manager1.setUser(new ManageableUserEntity(1L));
         manager1.setName("name2");
-        assertFalse(manager1.isEqual(manager2));
+        assertNotEquals(manager1, manager2);
     }
 
     @Test

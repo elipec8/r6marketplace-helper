@@ -10,8 +10,8 @@ import lombok.Setter;
 import java.util.List;
 import java.util.Objects;
 
-@Entity
 @Table(name = "trade_manager_by_item_filters")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,40 +20,54 @@ import java.util.Objects;
 public class TradeByFiltersManagerEntity {
     @MapsId
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private ManageableUserEntity user;
 
     @Id
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "enabled")
     private Boolean enabled;
 
     @Enumerated(EnumType.ORDINAL)
+    @Column(name = "trade_operation_type")
     private TradeOperationType tradeOperationType;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "trade_manager_by_item_filters_applied_filters",
-            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId"),
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id"),
                     @JoinColumn(name = "name", referencedColumnName = "name")},
-            inverseJoinColumns = @JoinColumn(name = "itemFilterName", referencedColumnName = "name"))
+            inverseJoinColumns = @JoinColumn(name = "item_filter_name", referencedColumnName = "name"))
     private List<ItemFilterEntity> appliedFilters;
 
+    @Column(name = "min_difference_from_median_price")
     private Integer minDifferenceFromMedianPrice;
+    @Column(name = "min_difference_from_median_price_percent")
     private Integer minDifferenceFromMedianPricePercent;
 
+    @Column(name = "priority_multiplier")
     private Integer priorityMultiplier;
 
     public Long getUserId_() {
         return user.getId();
     }
 
-    public boolean isEqual(Object o) {
-        if (this == o) return true;
-        if (o instanceof TradeByFiltersManagerEntity entity) {
-            return user.isEqual(entity.user) &&
-                   Objects.equals(name, entity.name);
+    @Override
+    public int hashCode() {
+        return Objects.hash(user, name);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
-        return false;
+        if (!(o instanceof TradeByFiltersManagerEntity tradeByFiltersManagerEntity)) {
+            return false;
+        }
+        return Objects.equals(user, tradeByFiltersManagerEntity.user) &&
+               Objects.equals(name, tradeByFiltersManagerEntity.name);
     }
 
     public boolean isFullyEqual(Object o) {
@@ -63,9 +77,9 @@ public class TradeByFiltersManagerEntity {
             boolean appliedFiltersAreEqual = this.appliedFilters == null && entity.appliedFilters == null || (
                     this.appliedFilters != null && entity.appliedFilters != null &&
                     this.appliedFilters.size() == entity.appliedFilters.size() &&
-                    this.appliedFilters.stream().allMatch(filterEntity -> entity.appliedFilters.stream().anyMatch(filterEntity::isEqual)));
+                    this.appliedFilters.stream().allMatch(filterEntity -> entity.appliedFilters.stream().anyMatch(filterEntity::equals)));
 
-            return isEqual(entity) &&
+            return equals(entity) &&
                    enabled == entity.enabled &&
                    tradeOperationType == entity.tradeOperationType &&
                    appliedFiltersAreEqual &&

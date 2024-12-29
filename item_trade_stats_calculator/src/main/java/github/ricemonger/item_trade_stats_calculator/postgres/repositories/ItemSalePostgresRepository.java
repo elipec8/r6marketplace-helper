@@ -1,7 +1,7 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.repositories;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.item.ItemSaleEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.item.ItemSaleEntityId;
+import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemSaleEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemSaleEntityId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

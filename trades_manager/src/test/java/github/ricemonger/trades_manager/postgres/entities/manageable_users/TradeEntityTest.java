@@ -6,12 +6,13 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class TradeEntityTest {
 
     @Test
-    public void isEqual_should_return_true_for_equal_id(){
+    public void equals_should_return_true_for_equal_id() {
         TradeEntity id1 = new TradeEntity();
         id1.setTradeId("tradeId");
         id1.setState(TradeState.Created);
@@ -38,11 +39,11 @@ class TradeEntityTest {
         id2.setMinutesToTrade(50);
         id2.setTradePriority(500L);
 
-        assertTrue(id1.isEqual(id2));
+        assertEquals(id1, id2);
     }
 
     @Test
-    public void isEqual_should_return_false_for_different_id(){
+    public void equals_should_return_false_for_different_id() {
         TradeEntity id1 = new TradeEntity();
         id1.setTradeId("tradeId1");
         TradeEntity id2 = new TradeEntity();

@@ -1,7 +1,7 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.item.ItemHistoryFieldsEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.item.ItemRecalculationRequiredFieldsEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemHistoryFieldsEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemRecalculationRequiredFieldsEntity;
 import github.ricemonger.item_trade_stats_calculator.postgres.repositories.ItemHistoryFieldsPostgresRepository;
 import github.ricemonger.item_trade_stats_calculator.postgres.repositories.ItemRecalculationRequiredFieldsPostgresRepository;
 import github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item.ItemEntitiesMapper;

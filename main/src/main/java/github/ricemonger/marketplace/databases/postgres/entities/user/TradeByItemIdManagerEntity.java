@@ -7,12 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
-@Slf4j
-@Entity(name = "trade_manager_by_item_id")
+@Table(name = "trade_manager_by_item_id")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,58 +19,44 @@ import java.util.Objects;
 @IdClass(TradeByItemIdManagerEntityId.class)
 public class TradeByItemIdManagerEntity {
     @Id
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 
     @Id
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "itemId", referencedColumnName = "itemId")
+    @ManyToOne
+    @JoinColumn(name = "item_id", referencedColumnName = "item_id")
     private ItemEntity item;
 
+    @Column(name = "enabled")
     private Boolean enabled;
 
     @Enumerated(EnumType.ORDINAL)
+    @Column(name = "trade_operation_type")
     private TradeOperationType tradeOperationType;
 
+    @Column(name = "sell_boundary_price")
     private Integer sellBoundaryPrice;
+    @Column(name = "buy_boundary_price")
     private Integer buyBoundaryPrice;
 
+    @Column(name = "priority_multiplier")
     private Integer priorityMultiplier;
 
-    public Long getUserId_() {
-        return user.getId();
-    }
-
-    public String getItemId_() {
-        return item.getItemId();
-    }
-
-    public boolean isEqual(Object o) {
-        if (this == o) return true;
-        if (o instanceof TradeByItemIdManagerEntity entity) {
-            return user.isEqual(entity.user) &&
-                   item.isEqual(entity.item);
-        }
-        return false;
-    }
-
-    public boolean isFullyEqual(Object o) {
-        if (this == o) return true;
-        if (o instanceof TradeByItemIdManagerEntity entity) {
-            return isEqual(entity) &&
-                   enabled == entity.enabled &&
-                   tradeOperationType == entity.tradeOperationType &&
-                   Objects.equals(sellBoundaryPrice, entity.sellBoundaryPrice) &&
-                   Objects.equals(buyBoundaryPrice, entity.buyBoundaryPrice) &&
-                   Objects.equals(priorityMultiplier, entity.priorityMultiplier);
-        }
-        return false;
+    @Override
+    public int hashCode() {
+        return Objects.hash(user, item);
     }
 
     @Override
-    public String toString() {
-        return "TradeByItemIdManagerEntity(userId=" + getUserId_() + ", itemId=" + getItemId_() + ", enabled=" + enabled + ", tradeOperationType=" + tradeOperationType +
-               ", sellBoundaryPrice=" + sellBoundaryPrice + ", buyBoundaryPrice=" + buyBoundaryPrice + ", priorityMultiplier=" + priorityMultiplier + ")";
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof TradeByItemIdManagerEntity tradeByItemIdManagerEntity)) {
+            return false;
+        }
+        return Objects.equals(user, tradeByItemIdManagerEntity.user) &&
+               Objects.equals(item, tradeByItemIdManagerEntity.item);
     }
 }

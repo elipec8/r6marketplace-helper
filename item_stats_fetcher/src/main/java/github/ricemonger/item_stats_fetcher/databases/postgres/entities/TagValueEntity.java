@@ -3,11 +3,13 @@ package github.ricemonger.item_stats_fetcher.databases.postgres.entities;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.*;
 
 import java.util.Objects;
 
-@Entity(name = "tag")
+@Table(name = "tag")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,15 +20,19 @@ public class TagValueEntity {
     @Column(name = "tag_value") // "value" column name conflicts with H2
     private String value;
 
-    public boolean isEqual(Object o) {
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
-        if (o instanceof TagValueEntity tagEntity) {
-            return Objects.equals(value, tagEntity.value);
-        }
-        return false;
+        if (!(o instanceof TagValueEntity tagEntity)) return false;
+        return Objects.equals(value, tagEntity.value);
     }
 
     public boolean isFullyEqual(Object o) {
-        return isEqual(o);
+        return equals(o);
     }
 }

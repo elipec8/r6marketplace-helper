@@ -14,7 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class UbiTradeEntityMapperTest {
@@ -59,7 +60,7 @@ class UbiTradeEntityMapperTest {
         assertEquals(entity.getCategory(), result.getCategory());
         assertEquals(entity.getExpiresAt(), result.getExpiresAt());
         assertEquals(entity.getLastModifiedAt(), result.getLastModifiedAt());
-        assertTrue(entity.getItem().isEqual(result.getItem()));
+        assertEquals(entity.getItem(), result.getItem());
         assertEquals(entity.getSuccessPaymentPrice(), result.getSuccessPaymentPrice());
         assertEquals(entity.getSuccessPaymentFee(), result.getSuccessPaymentFee());
         assertEquals(entity.getProposedPaymentPrice(), result.getProposedPaymentPrice());

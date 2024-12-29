@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.graphQl;
 
-import github.ricemonger.utils.abstractions.CommonValuesDatabaseService;
+import github.ricemonger.utils.abstract_services.CommonValuesDatabaseService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

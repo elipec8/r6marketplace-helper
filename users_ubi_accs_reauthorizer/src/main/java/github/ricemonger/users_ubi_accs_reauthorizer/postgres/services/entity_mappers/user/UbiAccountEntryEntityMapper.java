@@ -1,6 +1,6 @@
 package github.ricemonger.users_ubi_accs_reauthorizer.postgres.services.entity_mappers.user;
 
-import github.ricemonger.users_ubi_accs_reauthorizer.postgres.entities.user.UbiAccountEntryCredentialsEntity;
+import github.ricemonger.users_ubi_accs_reauthorizer.postgres.entities.UbiAccountEntryCredentialsEntity;
 import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserUbiCredentials;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

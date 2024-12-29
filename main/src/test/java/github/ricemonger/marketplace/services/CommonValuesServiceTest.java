@@ -3,7 +3,7 @@ package github.ricemonger.marketplace.services;
 import github.ricemonger.marketplace.services.configurations.TelegramBotConfiguration;
 import github.ricemonger.marketplace.services.configurations.UbiServiceConfiguration;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
-import github.ricemonger.utils.abstractions.CommonValuesDatabaseService;
+import github.ricemonger.utils.abstract_services.CommonValuesDatabaseService;
 import github.ricemonger.utils.enums.ItemRarity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

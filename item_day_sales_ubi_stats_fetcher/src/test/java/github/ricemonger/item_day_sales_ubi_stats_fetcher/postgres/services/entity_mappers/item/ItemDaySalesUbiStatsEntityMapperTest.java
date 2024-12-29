@@ -1,7 +1,7 @@
 package github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.services.entity_mappers.item;
 
-import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.entities.item.ItemDaySalesUbiStatsEntity;
-import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.entities.item.ItemIdEntity;
+import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.entities.ItemDaySalesUbiStatsEntity;
+import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.entities.ItemIdEntity;
 import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.utils.DTOs.common.GroupedItemDaySalesUbiStats;
 import github.ricemonger.utils.DTOs.common.ItemDaySalesUbiStats;
@@ -11,7 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;

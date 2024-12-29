@@ -3,7 +3,7 @@ package github.ricemonger.main_user_reauthorizer.services;
 import github.ricemonger.main_user_reauthorizer.services.configurations.MainUserConfiguration;
 import github.ricemonger.main_user_reauthorizer.services.configurations.UbiServiceConfiguration;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
-import github.ricemonger.utils.abstractions.CommonValuesDatabaseService;
+import github.ricemonger.utils.abstract_services.CommonValuesDatabaseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

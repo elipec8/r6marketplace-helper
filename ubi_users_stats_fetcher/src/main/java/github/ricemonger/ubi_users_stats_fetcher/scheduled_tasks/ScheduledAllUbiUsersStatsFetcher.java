@@ -11,7 +11,9 @@ import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UserUbiAccount;
 import github.ricemonger.ubi_users_stats_fetcher.services.TelegramBotService;
 import github.ricemonger.ubi_users_stats_fetcher.services.UbiAccountService;
 import github.ricemonger.utils.DTOs.common.Item;
-import github.ricemonger.utils.DTOs.personal.*;
+import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
+import github.ricemonger.utils.DTOs.personal.UbiTrade;
+import github.ricemonger.utils.DTOs.personal.UserTradesLimitations;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.TradeCategory;
 import lombok.RequiredArgsConstructor;
@@ -63,7 +65,7 @@ public class ScheduledAllUbiUsersStatsFetcher {
         AuthorizationDTO authorizationDTO = userUbiAccount.toAuthorizationDTO();
         int creditAmount = personalQueryCreditAmountGraphQlClientService.fetchCreditAmountForUser(authorizationDTO);
         List<UbiTrade> currentOrders = personalQueryCurrentOrdersGraphQlClientService.fetchCurrentOrdersForUser(authorizationDTO);
-        List<UbiTrade> finishedOrders =personalQueryFinishedOrdersGraphQlClientService.fetchLastFinishedOrdersForUser(authorizationDTO);
+        List<UbiTrade> finishedOrders = personalQueryFinishedOrdersGraphQlClientService.fetchLastFinishedOrdersForUser(authorizationDTO);
         UserTradesLimitations userTradesLimitations = personalQueryLockedItemsGraphQlClientService.fetchTradesLimitationsForUser(authorizationDTO);
         List<ItemResaleLock> itemResaleLocks = userTradesLimitations.getResaleLocks();
         List<String> ownedItemsIds = personalQueryOwnedItemsGraphQlClientService.fetchAllOwnedItemsIdsForUser(authorizationDTO);
@@ -79,7 +81,7 @@ public class ScheduledAllUbiUsersStatsFetcher {
         List<UbiTrade> currentSellTrades = currentOrders.stream().filter(order -> order.getCategory().equals(TradeCategory.Sell)).toList();
         List<UbiTrade> currentBuyTrades = currentOrders.stream().filter(order -> order.getCategory().equals(TradeCategory.Buy)).toList();
 
-            notifyUser(userUbiAccount, creditAmount, soldIn24h, boughtIn24h);
+        notifyUser(userUbiAccount, creditAmount, soldIn24h, boughtIn24h);
 
         return new UbiAccountStats(
                 userUbiAccount.getProfileId(),

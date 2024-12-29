@@ -2,36 +2,36 @@ package github.ricemonger.ubi_users_stats_fetcher.postgres.entities.ubi_account_
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class ItemIdEntityTest {
 
     @Test
-    public void isEqual_should_return_true_if_same() {
+    public void equals_should_return_true_if_same() {
         ItemIdEntity entity = new ItemIdEntity();
-        assertTrue(entity.isEqual(entity));
+        assertEquals(entity, entity);
     }
 
     @Test
-    public void isEqual_should_return_true_if_equal_id_fields() {
+    public void equals_should_return_true_if_equal_id_fields() {
         ItemIdEntity entity1 = new ItemIdEntity();
         entity1.setItemId("itemId");
 
         ItemIdEntity entity2 = new ItemIdEntity();
         entity2.setItemId("itemId");
 
-        assertTrue(entity1.isEqual(entity2));
+        assertEquals(entity1, entity2);
     }
 
     @Test
-    public void isEqual_should_return_false_for_null() {
+    public void equals_should_return_false_for_null() {
         ItemIdEntity entity = new ItemIdEntity();
-        assertFalse(entity.isEqual(null));
+        assertNotEquals(null, entity);
     }
 
     @Test
-    public void isEqual_should_return_false_for_different_ids() {
+    public void equals_should_return_false_for_different_ids() {
         ItemIdEntity entity1 = new ItemIdEntity();
         entity1.setItemId("itemId");
 
@@ -39,6 +39,6 @@ class ItemIdEntityTest {
         entity2.setItemId("itemId");
 
         entity1.setItemId("itemId1");
-        assertFalse(entity1.isEqual(entity2));
+        assertNotEquals(entity1, entity2);
     }
 }

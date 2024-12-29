@@ -6,13 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-@Slf4j
-@Entity
 @Table(name = "item_resale_lock")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,31 +20,35 @@ import java.time.LocalDateTime;
 public class ItemResaleLockEntity {
     @Id
     @OneToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "ubiProfileId", referencedColumnName = "ubiProfileId")
+    @JoinColumn(name = "ubi_profile_id", referencedColumnName = "ubi_profile_id")
     private UbiAccountStatsEntity ubiAccount;
 
     @Id
     @OneToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "itemId", referencedColumnName = "itemId")
+    @JoinColumn(name = "item_id", referencedColumnName = "item_id")
     private ItemIdEntity item;
 
+    @Column(name = "expires_at")
     private LocalDateTime expiresAt;
 
     public String getItemId_() {
         return item.getItemId();
     }
 
-    public boolean isEqual(ItemResaleLockEntity itemResaleLockEntity) {
-        if (this == itemResaleLockEntity) return true;
+    @Override
+    public int hashCode() {
+        return Objects.hash(ubiAccount, item);
+    }
 
-        boolean ubiAccountIsEqual =
-                ubiAccount == null && itemResaleLockEntity.ubiAccount == null || (
-                        ubiAccount != null && ubiAccount.isEqual(itemResaleLockEntity.ubiAccount));
-
-        boolean itemIsEqual =
-                item == null && itemResaleLockEntity.item == null || (
-                        item != null && item.isEqual(itemResaleLockEntity.item));
-
-        return ubiAccountIsEqual && itemIsEqual;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ItemResaleLockEntity itemResaleLockEntity)) {
+            return false;
+        }
+        return Objects.equals(ubiAccount, itemResaleLockEntity.ubiAccount) &&
+               Objects.equals(item, itemResaleLockEntity.item);
     }
 }

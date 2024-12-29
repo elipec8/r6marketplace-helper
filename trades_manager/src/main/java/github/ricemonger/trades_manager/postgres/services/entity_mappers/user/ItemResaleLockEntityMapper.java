@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 public class ItemResaleLockEntityMapper {
 
     public ItemResaleLock createDTO(ItemResaleLockEntity entity) {
-        return new ItemResaleLock(entity.getItemId_(),entity.getExpiresAt());
+        return new ItemResaleLock(entity.getItemId_(), entity.getExpiresAt());
     }
 }

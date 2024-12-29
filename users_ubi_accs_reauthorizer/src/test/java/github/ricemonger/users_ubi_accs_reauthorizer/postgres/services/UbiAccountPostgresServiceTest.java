@@ -1,8 +1,8 @@
 package github.ricemonger.users_ubi_accs_reauthorizer.postgres.services;
 
-import github.ricemonger.users_ubi_accs_reauthorizer.postgres.entities.user.UbiAccountEntryCredentialsEntity;
-import github.ricemonger.users_ubi_accs_reauthorizer.postgres.entities.user.UbiAccountEntryEntity;
-import github.ricemonger.users_ubi_accs_reauthorizer.postgres.entities.user.UbiAccountStatsIdEntity;
+import github.ricemonger.users_ubi_accs_reauthorizer.postgres.entities.UbiAccountEntryCredentialsEntity;
+import github.ricemonger.users_ubi_accs_reauthorizer.postgres.entities.UbiAccountEntryEntity;
+import github.ricemonger.users_ubi_accs_reauthorizer.postgres.entities.UbiAccountStatsIdEntity;
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.repositories.UbiAccountEntryCredentialsPostgresRepository;
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.repositories.UbiAccountEntryPostgresRepository;
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.services.entity_mappers.user.UbiAccountEntryEntityMapper;

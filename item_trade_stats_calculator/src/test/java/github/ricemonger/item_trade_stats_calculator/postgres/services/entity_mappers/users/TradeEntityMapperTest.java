@@ -1,8 +1,8 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.users;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.item.ItemEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.item.PrioritizedTradeEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.item.UbiTradeEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.entities.PrioritizedTradeEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.entities.UbiTradeEntity;
 import github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item.ItemEntitiesMapper;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.PrioritizedTrade;
 import github.ricemonger.utils.DTOs.common.Item;
@@ -15,10 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -29,7 +28,7 @@ class TradeEntityMapperTest {
     private ItemEntitiesMapper itemEntitiesMapper;
 
     @Test
-    public void createUbiTrade_should_return_expected_result(){
+    public void createUbiTrade_should_return_expected_result() {
 
         ItemEntity itemEntity = Mockito.mock(ItemEntity.class);
 
@@ -64,7 +63,7 @@ class TradeEntityMapperTest {
     }
 
     @Test
-    public void createPrioritizedTradeEntity_should_return_expected_result(){
+    public void createPrioritizedTradeEntity_should_return_expected_result() {
         PrioritizedTrade dto = new PrioritizedTrade();
         dto.setTradeId("tradeId");
         dto.setMinutesToTrade(1);

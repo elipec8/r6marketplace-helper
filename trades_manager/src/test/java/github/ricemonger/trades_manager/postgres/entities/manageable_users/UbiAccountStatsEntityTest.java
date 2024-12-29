@@ -10,19 +10,19 @@ import static org.junit.jupiter.api.Assertions.*;
 class UbiAccountStatsEntityTest {
 
     @Test
-    public void isEqual_should_return_false_if_null(){
+    public void equals_should_return_false_if_null() {
         UbiAccountStatsEntity entity = new UbiAccountStatsEntity();
-        assertFalse(entity.isEqual(null));
+        assertNotEquals(null, entity);
     }
 
     @Test
-    public void isEqual_should_return_true_if_same_object(){
+    public void equals_should_return_true_if_same_object() {
         UbiAccountStatsEntity entity = new UbiAccountStatsEntity();
-        assertTrue(entity.isEqual(entity));
+        assertEquals(entity, entity);
     }
 
     @Test
-    public void idEqual_should_return_true_if_equal_ubiProfileId(){
+    public void equals_should_return_true_if_equal_ubiProfileId() {
         UbiAccountStatsEntity entity1 = new UbiAccountStatsEntity("ubiProfileId");
         entity1.setCreditAmount(1);
         entity1.setSoldIn24h(2);
@@ -34,31 +34,31 @@ class UbiAccountStatsEntityTest {
 
         UbiAccountStatsEntity entity2 = new UbiAccountStatsEntity("ubiProfileId");
 
-        assertTrue(entity1.isEqual(entity2));
+        assertEquals(entity1, entity2);
     }
 
     @Test
-    public void idEqual_should_return_false_if_not_equal_ubiProfileId(){
+    public void equals_should_return_false_if_not_equal_ubiProfileId() {
         UbiAccountStatsEntity entity1 = new UbiAccountStatsEntity("ubiProfileId");
         UbiAccountStatsEntity entity2 = new UbiAccountStatsEntity("ubiProfileId2");
 
-        assertFalse(entity1.isEqual(entity2));
+        assertNotEquals(entity1, entity2);
     }
 
     @Test
-    public void isFullyEqual_should_return_false_if_null(){
+    public void isFullyEqual_should_return_false_if_null() {
         UbiAccountStatsEntity entity = new UbiAccountStatsEntity();
         assertFalse(entity.isFullyEqual(null));
     }
 
     @Test
-    public void isFullyEqual_should_return_true_if_same_object(){
+    public void isFullyEqual_should_return_true_if_same_object() {
         UbiAccountStatsEntity entity = new UbiAccountStatsEntity();
         assertTrue(entity.isFullyEqual(entity));
     }
 
     @Test
-    public void isFullyEqual_should_return_true_if_equal_ubiProfileId_and_creditAmount(){
+    public void isFullyEqual_should_return_true_if_equal_ubiProfileId_and_creditAmount() {
         UbiAccountStatsEntity entity1 = new UbiAccountStatsEntity("ubiProfileId");
         entity1.setCreditAmount(1);
         entity1.setSoldIn24h(2);
@@ -81,7 +81,7 @@ class UbiAccountStatsEntityTest {
     }
 
     @Test
-    public void isFullyEqual_should_return_true_if_different_field(){
+    public void isFullyEqual_should_return_true_if_different_field() {
         UbiAccountStatsEntity entity1 = new UbiAccountStatsEntity("ubiProfileId");
         entity1.setCreditAmount(1);
         entity1.setSoldIn24h(2);

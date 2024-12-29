@@ -4,15 +4,13 @@ import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-@Slf4j
-@Entity
 @Table(name = "item")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,48 +18,73 @@ import java.util.Objects;
 @ToString
 public class ItemEntity {
     @Id
+    @Column(name = "item_id")
     private String itemId;
+    @Column(name = "asset_url")
     private String assetUrl;
+    @Column(name = "name")
     private String name;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "item_tags",
-            joinColumns = {@JoinColumn(name = "itemId", referencedColumnName = "itemId")},
-            inverseJoinColumns = @JoinColumn(name = "tagValue", referencedColumnName = "tag_value"))
+            joinColumns = {@JoinColumn(name = "item_id", referencedColumnName = "item_id")},
+            inverseJoinColumns = @JoinColumn(name = "tag_value", referencedColumnName = "tag_value"))
     private List<TagValueEntity> tags;
 
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "rarity")
     private ItemRarity rarity;
 
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "type")
     private ItemType type;
 
+    @Column(name = "max_buy_price")
     private Integer maxBuyPrice;
+    @Column(name = "buy_orders_count")
     private Integer buyOrdersCount;
 
+    @Column(name = "min_sell_price")
     private Integer minSellPrice;
+    @Column(name = "sell_orders_count")
     private Integer sellOrdersCount;
 
+    @Column(name = "last_sold_at")
     private LocalDateTime lastSoldAt;
+    @Column(name = "last_sold_price")
     private Integer lastSoldPrice;
 
-    // Sale history fields
-
+    @Column(name = "month_average_price")
     private Integer monthAveragePrice;
+    @Column(name = "month_median_price")
     private Integer monthMedianPrice;
+    @Column(name = "month_max_price")
     private Integer monthMaxPrice;
+    @Column(name = "month_min_price")
     private Integer monthMinPrice;
+    @Column(name = "month_sales_per_day")
     private Integer monthSalesPerDay;
+    @Column(name = "month_sales")
     private Integer monthSales;
 
+    @Column(name = "day_average_price")
     private Integer dayAveragePrice;
+    @Column(name = "day_median_price")
     private Integer dayMedianPrice;
+    @Column(name = "day_max_price")
     private Integer dayMaxPrice;
+    @Column(name = "day_min_price")
     private Integer dayMinPrice;
+    @Column(name = "day_sales")
     private Integer daySales;
 
-    private Long priorityToSellByMaxBuyPrice; //updated with every item stats update, not recalculation
-    private Long priorityToSellByNextFancySellPrice; //updated with every item stats update, not recalculation
+    @Column(name = "priority_to_sell_by_max_buy_price")
+    private Long priorityToSellByMaxBuyPrice;
+    @Column(name = "priority_to_sell_by_next_fancy_sell_price")
+    private Long priorityToSellByNextFancySellPrice;
 
-    private Long priorityToBuyByMinSellPrice; //updated with every item stats update, not recalculation
+    @Column(name = "priority_to_buy_by_min_sell_price")
+    private Long priorityToBuyByMinSellPrice;
 
     @Column(name = "priority_to_buy_in_1_hour")
     private Long priorityToBuyIn1Hour;
@@ -85,16 +108,20 @@ public class ItemEntity {
     @Column(name = "price_to_buy_in_720_hours")
     private Integer priceToBuyIn720Hours;
 
-    public ItemEntity(String itemId) {
-        this.itemId = itemId;
+    @Override
+    public int hashCode() {
+        return Objects.hash(itemId);
     }
 
-    public boolean isEqual(Object o) {
-        if (this == o) return true;
-        if (o instanceof ItemEntity itemEntity) {
-            return Objects.equals(itemId, itemEntity.itemId);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
-        return false;
+        if (!(o instanceof ItemEntity itemEntity)) {
+            return false;
+        }
+        return Objects.equals(this.itemId, itemEntity.itemId);
     }
 
     public boolean isFullyEqual(Object o) {
@@ -104,9 +131,9 @@ public class ItemEntity {
             boolean tagsAreEqual = tags == null && itemEntity.tags == null || (
                     tags != null && itemEntity.tags != null &&
                     this.tags.size() == itemEntity.tags.size() &&
-                    this.tags.stream().allMatch(tst -> itemEntity.tags.stream().anyMatch(tst::isEqual)));
+                    this.tags.stream().allMatch(tst -> itemEntity.tags.stream().anyMatch(tst::equals)));
 
-            return isEqual(itemEntity) &&
+            return equals(itemEntity) &&
                    Objects.equals(assetUrl, itemEntity.assetUrl) &&
                    Objects.equals(name, itemEntity.name) &&
                    tagsAreEqual &&

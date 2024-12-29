@@ -38,7 +38,7 @@ public class UserUbiAccountEntryService {
                     unauthorizedUsers.add(new UserToNotify(user.getUserId(), user.getEmail()));
                     continue;
                 }
-                saveAuthorizationInfo(user.getUserId(),user.getEmail(), dto);
+                saveAuthorizationInfo(user.getUserId(), user.getEmail(), dto);
             } catch (UbiUserAuthorizationClientErrorException | UbiUserAuthorizationServerErrorException e) {
                 unauthorizedUsers.add(new UserToNotify(user.getUserId(), user.getEmail()));
             }
@@ -47,10 +47,10 @@ public class UserUbiAccountEntryService {
         return unauthorizedUsers;
     }
 
-    private void saveAuthorizationInfo(Long userId,String email, AuthorizationDTO authorizationDTO) throws TelegramUserDoesntExistException,
+    private void saveAuthorizationInfo(Long userId, String email, AuthorizationDTO authorizationDTO) throws TelegramUserDoesntExistException,
             UbiAccountEntryAlreadyExistsException {
         try {
-            ubiAccountEntryDatabaseService.saveAuthorizationInfo(userId,email, authorizationDTO);
+            ubiAccountEntryDatabaseService.saveAuthorizationInfo(userId, email, authorizationDTO);
         } catch (TelegramUserDoesntExistException e) {
             log.error("Telegram user with Id {} doesn't exist, but reauthorize ubi user was called fir him with authorizationDto-{}", userId, authorizationDTO);
         } catch (UbiAccountEntryAlreadyExistsException e) {

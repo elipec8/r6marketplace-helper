@@ -3,7 +3,6 @@ package github.ricemonger.trades_manager.services.factories;
 import github.ricemonger.trades_manager.services.DTOs.*;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
-import github.ricemonger.utils.DTOs.personal.*;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.CentralTradeManagerCommandType;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class CentralTradeManagerCommandFactoryTest {
@@ -119,7 +119,7 @@ class CentralTradeManagerCommandFactoryTest {
                 CentralTradeManagerCommandType.SELL_ORDER_UPDATE, potentialSellTradeUpdate.getItemId(), potentialSellTradeUpdate.getItemName(),
                 potentialSellTradeUpdate.getTradeId(), potentialSellTradeUpdate.getOldPrice(), potentialSellTradeUpdate.getNewPrice());
 
-        CentralTradeManagerCommand commandCancelSell = new CentralTradeManagerCommand(userId, authorizationDTO,  CentralTradeManagerCommandType.SELL_ORDER_CANCEL, currentSellTradeBeCanceled.getItemId(),
+        CentralTradeManagerCommand commandCancelSell = new CentralTradeManagerCommand(userId, authorizationDTO, CentralTradeManagerCommandType.SELL_ORDER_CANCEL, currentSellTradeBeCanceled.getItemId(),
                 currentSellTradeBeCanceled.getItemName(), currentSellTradeBeCanceled.getTradeId(), currentSellTradeBeCanceled.getProposedPaymentPrice());
 
         CentralTradeManagerCommand commandCreateBuy = new CentralTradeManagerCommand(userId, authorizationDTO,

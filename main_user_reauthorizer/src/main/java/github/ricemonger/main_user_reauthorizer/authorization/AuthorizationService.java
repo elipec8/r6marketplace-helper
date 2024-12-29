@@ -2,7 +2,6 @@ package github.ricemonger.main_user_reauthorizer.authorization;
 
 import github.ricemonger.main_user_reauthorizer.services.CommonValuesService;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
-import github.ricemonger.utils.DTOs.personal.auth.TwoFaBaseAuthDTO;
 import github.ricemonger.utils.exceptions.client.UbiUserAuthorizationClientErrorException;
 import github.ricemonger.utils.exceptions.server.UbiUserAuthorizationServerErrorException;
 import lombok.RequiredArgsConstructor;

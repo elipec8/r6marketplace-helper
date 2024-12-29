@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Data
 @Getter
-public class UserAuthorizationDTO{
+public class UserAuthorizationDTO {
     private Long userId;
 
     private AuthorizationDTO authorizationDTO;

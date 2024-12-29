@@ -5,18 +5,17 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class UbiAccountStatsEntityTest {
     @Test
-    public void idEqual_should_return_true_for_same() {
+    public void equals_should_return_true_for_same() {
         UbiAccountStatsEntity entity = new UbiAccountStatsEntity("ubiProfileId");
-        assertTrue(entity.isEqual(entity));
+        assertEquals(entity, entity);
     }
 
     @Test
-    public void idEqual_should_return_true_for_equal_id_fields() {
+    public void equals_should_return_true_for_equal_id_fields() {
         UbiAccountStatsEntity entity1 = new UbiAccountStatsEntity("ubiProfileId");
         entity1.setCreditAmount(2);
         entity1.setSoldIn24h(3);
@@ -27,21 +26,21 @@ class UbiAccountStatsEntityTest {
         entity2.setSoldIn24h(2);
         entity2.setBoughtIn24h(3);
 
-        assertTrue(entity1.isEqual(entity2));
+        assertEquals(entity1, entity2);
     }
 
     @Test
-    public void idEqual_should_return_false_for_null() {
+    public void equals_should_return_false_for_null() {
         UbiAccountStatsEntity entity = new UbiAccountStatsEntity("ubiProfileId");
-        assertFalse(entity.isEqual(null));
+        assertNotEquals(null, entity);
     }
 
     @Test
-    public void idEqual_should_return_false_for_different_ids() {
+    public void equals_should_return_false_for_different_ids() {
         UbiAccountStatsEntity entity1 = new UbiAccountStatsEntity("ubiProfileId");
         UbiAccountStatsEntity entity2 = new UbiAccountStatsEntity("ubiProfileId1");
 
-        assertFalse(entity1.isEqual(entity2));
+        assertNotEquals(entity1, entity2);
     }
 
     @Test

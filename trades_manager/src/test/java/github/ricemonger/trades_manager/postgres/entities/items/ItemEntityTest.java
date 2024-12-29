@@ -8,18 +8,17 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ItemEntityTest {
     @Test
-    public void isEqual_should_return_true_if_same() {
+    public void equals_should_return_true_if_same() {
         ItemEntity entity = new ItemEntity();
-        assertTrue(entity.isEqual(entity));
+        assertEquals(entity, entity);
     }
 
     @Test
-    public void isEqual_should_return_true_if_equal_id() {
+    public void equals_should_return_true_if_equal_id() {
         ItemEntity entity1 = new ItemEntity();
         entity1.setItemId("itemId");
         entity1.setAssetUrl("url");
@@ -60,13 +59,13 @@ class ItemEntityTest {
         ItemEntity entity2 = new ItemEntity();
         entity2.setItemId("itemId");
 
-        assertTrue(entity1.isEqual(entity2));
+        assertEquals(entity1, entity2);
     }
 
     @Test
-    public void isEqual_should_return_false_for_null() {
+    public void equals_should_return_false_for_null() {
         ItemEntity entity = new ItemEntity();
-        assertFalse(entity.isEqual(null));
+        assertNotEquals(null, entity);
     }
 
 

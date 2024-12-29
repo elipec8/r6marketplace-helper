@@ -1,7 +1,7 @@
 package github.ricemonger.item_trade_stats_calculator.services;
 
-import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemDaySalesStatsByItemId;
+import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.PotentialTradePriceAndTimeStats;
 import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;

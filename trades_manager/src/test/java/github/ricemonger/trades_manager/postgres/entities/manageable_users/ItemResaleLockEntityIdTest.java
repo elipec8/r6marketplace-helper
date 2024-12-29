@@ -3,12 +3,13 @@ package github.ricemonger.trades_manager.postgres.entities.manageable_users;
 import github.ricemonger.trades_manager.postgres.entities.items.ItemIdEntity;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class ItemResaleLockEntityIdTest {
 
     @Test
-    public void hashCode_should_return_same_for_equal_ids(){
+    public void hashCode_should_return_same_for_equal_ids() {
         UbiAccountStatsEntity entity1 = new UbiAccountStatsEntity("ubiProfileId1");
         entity1.setBoughtIn24h(1);
         ItemIdEntity item1 = new ItemIdEntity("itemId1");
@@ -25,7 +26,7 @@ class ItemResaleLockEntityIdTest {
     }
 
     @Test
-    public void equals_should_return_true_for_equal_ids(){
+    public void equals_should_return_true_for_equal_ids() {
         UbiAccountStatsEntity entity1 = new UbiAccountStatsEntity("ubiProfileId1");
         entity1.setBoughtIn24h(1);
         ItemIdEntity item1 = new ItemIdEntity("itemId1");
@@ -42,7 +43,7 @@ class ItemResaleLockEntityIdTest {
     }
 
     @Test
-    public void equals_should_return_false_for_different_ubiProfileId(){
+    public void equals_should_return_false_for_different_ubiProfileId() {
         UbiAccountStatsEntity entity1 = new UbiAccountStatsEntity("ubiProfileId1");
         ItemIdEntity item1 = new ItemIdEntity("itemId1");
 
@@ -57,7 +58,7 @@ class ItemResaleLockEntityIdTest {
     }
 
     @Test
-    public void equals_should_return_false_for_different_items(){
+    public void equals_should_return_false_for_different_items() {
         UbiAccountStatsEntity entity1 = new UbiAccountStatsEntity("ubiProfileId1");
         ItemIdEntity item1 = new ItemIdEntity("itemId1");
 

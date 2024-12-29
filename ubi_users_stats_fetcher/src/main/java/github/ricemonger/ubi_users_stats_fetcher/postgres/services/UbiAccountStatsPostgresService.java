@@ -3,8 +3,8 @@ package github.ricemonger.ubi_users_stats_fetcher.postgres.services;
 
 import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.UbiAccountStatsPostgresRepository;
 import github.ricemonger.ubi_users_stats_fetcher.postgres.services.entity_mappers.user.UbiAccountStatsEntityMapper;
-import github.ricemonger.ubi_users_stats_fetcher.services.abstractions.UbiAccountStatsDatabaseService;
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UbiAccountStats;
+import github.ricemonger.ubi_users_stats_fetcher.services.abstractions.UbiAccountStatsDatabaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

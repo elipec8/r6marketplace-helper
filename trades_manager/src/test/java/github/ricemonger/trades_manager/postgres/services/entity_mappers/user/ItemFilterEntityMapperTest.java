@@ -1,7 +1,7 @@
 package github.ricemonger.trades_manager.postgres.services.entity_mappers.user;
 
-import github.ricemonger.trades_manager.postgres.entities.manageable_users.ItemFilterEntity;
 import github.ricemonger.trades_manager.postgres.entities.items.TagEntity;
+import github.ricemonger.trades_manager.postgres.entities.manageable_users.ItemFilterEntity;
 import github.ricemonger.trades_manager.postgres.services.entity_mappers.item.TagEntityMapper;
 import github.ricemonger.utils.DTOs.common.Tag;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;

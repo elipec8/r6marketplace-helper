@@ -2,7 +2,7 @@ package github.ricemonger.configs_fetcher.services;
 
 import github.ricemonger.utils.DTOs.common.ConfigResolvedTransactionPeriod;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
-import github.ricemonger.utils.abstractions.CommonValuesDatabaseService;
+import github.ricemonger.utils.abstract_services.CommonValuesDatabaseService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,5 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,106 +10,78 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Entity(name = "helper_user")
+@Table(name = "helper_user")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserEntity {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
     @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
     private Long id;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, optional = true)
+    @OneToOne(mappedBy = "user")
     private TelegramUserEntity telegramUser;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, optional = true)
+    @OneToOne(mappedBy = "user")
     private UbiAccountEntryEntity ubiAccountEntry;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     private List<ItemFilterEntity> itemFilters = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     private List<TradeByFiltersManagerEntity> tradeByFiltersManagers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     private List<TradeByItemIdManagerEntity> tradeByItemIdManagers = new ArrayList<>();
 
+    @Column(name = "public_notifications_enabled_flag")
     private Boolean publicNotificationsEnabledFlag = true;
+    @Column(name = "private_notifications_enabled_flag")
     private Boolean privateNotificationsEnabledFlag = false;
 
+    @Column(name = "item_show_name_flag")
     private Boolean itemShowNameFlag = true;
+    @Column(name = "item_show_item_type_flag")
     private Boolean itemShowItemTypeFlag = true;
+    @Column(name = "item_show_max_buy_price")
     private Boolean itemShowMaxBuyPrice = true;
+    @Column(name = "item_show_buy_orders_count_flag")
     private Boolean itemShowBuyOrdersCountFlag = true;
+    @Column(name = "item_show_min_sell_price_flag")
     private Boolean itemShowMinSellPriceFlag = true;
+    @Column(name = "item_show_sell_orders_count_flag")
     private Boolean itemsShowSellOrdersCountFlag = true;
+    @Column(name = "item_show_picture_flag")
     private Boolean itemShowPictureFlag = true;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany
     @JoinTable(name = "user_item_show_applied_item_filter",
-            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "id")},
-            inverseJoinColumns = @JoinColumn(name = "itemFilterName", referencedColumnName = "name"))
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = @JoinColumn(name = "item_filter_name", referencedColumnName = "name"))
     private List<ItemFilterEntity> itemShowAppliedFilters = new ArrayList<>();
 
+    @Column(name = "new_managers_are_active_flag")
     private Boolean newManagersAreActiveFlag = true;
+    @Column(name = "managing_enabled_flag")
     private Boolean managingEnabledFlag = true;
 
-    public UserEntity(Long userId) {
-        this.id = userId;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
-    public boolean isEqual(Object o) {
-        if (this == o) return true;
-        if (o instanceof UserEntity entity) {
-            return Objects.equals(id, entity.id);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
-        return false;
-    }
-
-    public boolean isFullyEqual(Object o) {
-        if (this == o) return true;
-        if (o instanceof UserEntity entity) {
-            boolean itemFiltersAreEqual = itemFilters == null && entity.itemFilters == null || (
-                    itemFilters != null && entity.itemFilters != null &&
-                    itemFilters.size() == entity.itemFilters.size() &&
-                    itemFilters.stream().allMatch(itemFilter -> entity.itemFilters.stream().anyMatch(itemFilter::isEqual)));
-
-            boolean tradeByFiltersManagersAreEqual = tradeByFiltersManagers == null && entity.tradeByFiltersManagers == null || (
-                    tradeByFiltersManagers != null && entity.tradeByFiltersManagers != null &&
-                    tradeByFiltersManagers.size() == entity.tradeByFiltersManagers.size() &&
-                    tradeByFiltersManagers.stream().allMatch(tradeByFiltersManager -> entity.tradeByFiltersManagers.stream().anyMatch(tradeByFiltersManager::isEqual)));
-
-            boolean tradeByItemIdManagersAreEqual = tradeByItemIdManagers == null && entity.tradeByItemIdManagers == null || (
-                    tradeByItemIdManagers != null && entity.tradeByItemIdManagers != null &&
-                    tradeByItemIdManagers.size() == entity.tradeByItemIdManagers.size() &&
-                    tradeByItemIdManagers.stream().allMatch(tradeByItemIdManager -> entity.tradeByItemIdManagers.stream().anyMatch(tradeByItemIdManager::isEqual)));
-
-            boolean itemShowAppliedFiltersAreEqual = itemShowAppliedFilters == null && entity.itemShowAppliedFilters == null || (
-                    itemShowAppliedFilters != null && entity.itemShowAppliedFilters != null &&
-                    itemShowAppliedFilters.size() == entity.itemShowAppliedFilters.size() &&
-                    itemShowAppliedFilters.stream().allMatch(itemFilter -> entity.itemShowAppliedFilters.stream().anyMatch(itemFilter::isEqual)));
-
-            return isEqual(entity) &&
-                   telegramUser.isEqual(entity.telegramUser) &&
-                   ubiAccountEntry.isEqual(entity.ubiAccountEntry) &&
-                   itemFiltersAreEqual &&
-                   tradeByFiltersManagersAreEqual &&
-                   tradeByItemIdManagersAreEqual &&
-                   Objects.equals(publicNotificationsEnabledFlag, entity.publicNotificationsEnabledFlag) &&
-                   Objects.equals(privateNotificationsEnabledFlag, entity.privateNotificationsEnabledFlag) &&
-                   Objects.equals(itemShowNameFlag, entity.itemShowNameFlag) &&
-                   Objects.equals(itemShowItemTypeFlag, entity.itemShowItemTypeFlag) &&
-                   Objects.equals(itemShowMaxBuyPrice, entity.itemShowMaxBuyPrice) &&
-                   Objects.equals(itemShowBuyOrdersCountFlag, entity.itemShowBuyOrdersCountFlag) &&
-                   Objects.equals(itemShowMinSellPriceFlag, entity.itemShowMinSellPriceFlag) &&
-                   Objects.equals(itemsShowSellOrdersCountFlag, entity.itemsShowSellOrdersCountFlag) &&
-                   Objects.equals(itemShowPictureFlag, entity.itemShowPictureFlag) &&
-                   itemShowAppliedFiltersAreEqual &&
-                   Objects.equals(newManagersAreActiveFlag, entity.newManagersAreActiveFlag) &&
-                   Objects.equals(managingEnabledFlag, entity.managingEnabledFlag);
+        if (!(o instanceof UserEntity userEntity)) {
+            return false;
         }
-        return false;
+        return Objects.equals(id, userEntity.id);
     }
 }

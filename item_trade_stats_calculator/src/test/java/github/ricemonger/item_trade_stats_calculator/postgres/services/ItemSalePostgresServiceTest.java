@@ -1,6 +1,6 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.item.ItemSaleEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemSaleEntity;
 import github.ricemonger.item_trade_stats_calculator.postgres.repositories.ItemSalePostgresRepository;
 import github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item.ItemSaleEntityMapper;
 import github.ricemonger.utils.DTOs.common.ItemSale;

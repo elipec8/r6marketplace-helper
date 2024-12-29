@@ -9,13 +9,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ManageableUserManageableUserUbiAccountEntryEntityTest {
     @Test
-    public void isEqual_should_return_true_if_same() {
+    public void equals_should_return_true_if_same() {
         ManageableUserUbiAccountEntryEntity accountEntry = new ManageableUserUbiAccountEntryEntity();
-        assertTrue(accountEntry.isEqual(accountEntry));
+        assertEquals(accountEntry, accountEntry);
     }
 
     @Test
-    public void isEqual_should_return_true_if_equal_ids() {
+    public void equals_should_return_true_if_equal_ids() {
         ManageableUserUbiAccountEntryEntity accountEntry1 = new ManageableUserUbiAccountEntryEntity();
         accountEntry1.setUser(new ManageableUserEntity(1L));
         accountEntry1.setEmail("email");
@@ -30,17 +30,17 @@ class ManageableUserManageableUserUbiAccountEntryEntityTest {
         accountEntry2.setUser(new ManageableUserEntity(1L));
         accountEntry2.setEmail("email");
 
-        assertTrue(accountEntry1.isEqual(accountEntry2));
+        assertEquals(accountEntry1, accountEntry2);
     }
 
     @Test
-    public void isEqual_should_return_false_for_null() {
+    public void equals_should_return_false_for_null() {
         ManageableUserUbiAccountEntryEntity accountEntry = new ManageableUserUbiAccountEntryEntity();
-        assertFalse(accountEntry.isEqual(null));
+        assertNotEquals(null, accountEntry);
     }
 
     @Test
-    public void isEqual_should_return_false_if_different_ids() {
+    public void equals_should_return_false_if_different_ids() {
         ManageableUserUbiAccountEntryEntity accountEntry1 = new ManageableUserUbiAccountEntryEntity();
         accountEntry1.setUser(new ManageableUserEntity(1L));
         accountEntry1.setEmail("email");
@@ -50,10 +50,10 @@ class ManageableUserManageableUserUbiAccountEntryEntityTest {
         accountEntry2.setEmail("email");
 
         accountEntry1.setUser(new ManageableUserEntity(2L));
-        assertFalse(accountEntry1.isEqual(accountEntry2));
+        assertNotEquals(accountEntry1, accountEntry2);
         accountEntry1.setUser(new ManageableUserEntity(1L));
         accountEntry1.setEmail("email1");
-        assertFalse(accountEntry1.isEqual(accountEntry2));
+        assertNotEquals(accountEntry1, accountEntry2);
     }
 
     @Test

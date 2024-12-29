@@ -3,7 +3,7 @@ package github.ricemonger.main_user_reauthorizer.services;
 import github.ricemonger.main_user_reauthorizer.services.configurations.MainUserConfiguration;
 import github.ricemonger.main_user_reauthorizer.services.configurations.UbiServiceConfiguration;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
-import github.ricemonger.utils.abstractions.CommonValuesDatabaseService;
+import github.ricemonger.utils.abstract_services.CommonValuesDatabaseService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

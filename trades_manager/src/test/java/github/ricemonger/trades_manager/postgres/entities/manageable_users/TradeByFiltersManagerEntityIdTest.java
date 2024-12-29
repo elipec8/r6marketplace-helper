@@ -4,30 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class TradeByFiltersManagerEntityIdTest {
-    @Test
-    public void getUserId_should_return_user_id() {
-        ManageableUserEntity user = new ManageableUserEntity();
-        user.setId(1L);
-
-        TradeByFiltersManagerEntityId id = new TradeByFiltersManagerEntityId(user, "filterName");
-
-        assertEquals(1L, id.getUserId_());
-    }
-
-    @Test
-    public void constructor_should_set_id_fields() {
-        ManageableUserEntity user = new ManageableUserEntity();
-        user.setId(1L);
-
-        TradeByFiltersManagerEntityId id = new TradeByFiltersManagerEntityId(1L, "filterName");
-
-        assertEquals(1L, id.getUserId_());
-        assertEquals("filterName", id.getName());
-    }
-
     @Test
     public void hashCode_should_return_same_hash_for_equal_objects() {
         ManageableUserEntity user1 = new ManageableUserEntity();

@@ -1,7 +1,7 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.item.PrioritizedTradeEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.item.UbiTradeEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.entities.PrioritizedTradeEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.entities.UbiTradeEntity;
 import github.ricemonger.item_trade_stats_calculator.postgres.repositories.PrioritizedTradePostgresRepository;
 import github.ricemonger.item_trade_stats_calculator.postgres.repositories.UbiTradePostgresRepository;
 import github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.users.TradeEntityMapper;
@@ -65,6 +65,6 @@ class TradePostgresServiceTest {
 
         tradePostgresService.saveAllPrioritizedTrades(List.of(dto1, dto2));
 
-        verify(prioritizedTradeRepository).saveAll(argThat(entities -> ((List<?>)entities).contains(entity1) && ((List<?>)entities).contains(entity2) && ((List<PrioritizedTradeEntity>) entities).size() == 2));
+        verify(prioritizedTradeRepository).saveAll(argThat(entities -> ((List<?>) entities).contains(entity1) && ((List<?>) entities).contains(entity2) && ((List<PrioritizedTradeEntity>) entities).size() == 2));
     }
 }

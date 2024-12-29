@@ -8,13 +8,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TradeByItemIdManagerEntityTest {
     @Test
-    public void isEqual_should_return_true_if_same_object() {
+    public void equals_should_return_true_if_same_object() {
         TradeByItemIdManagerEntity manager = new TradeByItemIdManagerEntity();
-        assertTrue(manager.isEqual(manager));
+        assertEquals(manager, manager);
     }
 
     @Test
-    public void isEqual_should_return_true_if_equal_ids() {
+    public void equals_should_return_true_if_equal_ids() {
         TradeByItemIdManagerEntity manager1 = new TradeByItemIdManagerEntity();
         manager1.setUser(new ManageableUserEntity(1L));
         manager1.setItem(new ItemIdEntity("itemId"));
@@ -28,17 +28,17 @@ class TradeByItemIdManagerEntityTest {
         manager2.setUser(new ManageableUserEntity(1L));
         manager2.setItem(new ItemIdEntity("itemId"));
 
-        assertTrue(manager1.isEqual(manager2));
+        assertEquals(manager1, manager2);
     }
 
     @Test
-    public void isEqual_should_return_false_if_null() {
+    public void equals_should_return_false_if_null() {
         TradeByItemIdManagerEntity manager = new TradeByItemIdManagerEntity();
-        assertFalse(manager.isEqual(null));
+        assertNotEquals(null, manager);
     }
 
     @Test
-    public void isEqual_should_return_false_if_different_ids() {
+    public void equals_should_return_false_if_different_ids() {
         TradeByItemIdManagerEntity manager1 = new TradeByItemIdManagerEntity();
         manager1.setUser(new ManageableUserEntity(1L));
         manager1.setItem(new ItemIdEntity("itemId"));
@@ -48,10 +48,10 @@ class TradeByItemIdManagerEntityTest {
         manager2.setItem(new ItemIdEntity("itemId"));
 
         manager1.setUser(new ManageableUserEntity(2L));
-        assertFalse(manager1.isEqual(manager2));
+        assertNotEquals(manager1, manager2);
         manager1.setUser(new ManageableUserEntity(1L));
         manager1.setItem(new ItemIdEntity("itemId2"));
-        assertFalse(manager1.isEqual(manager2));
+        assertNotEquals(manager1, manager2);
     }
 
     @Test

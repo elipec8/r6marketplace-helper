@@ -39,7 +39,7 @@ class ManageableUserTest {
     @Test
     public void getSoldIn24h_should_return_soldIn24h_when_ubiAccountStats_is_not_null() {
         ManageableUser manageableUser = new ManageableUser();
-        manageableUser.setUbiAccountStats(new UbiAccountStats("ubiProfileId", 1, 0, 0, List.of(), List.of(), List.of(), List.of()));
+        manageableUser.setUbiAccountStats(new UbiAccountStats("ubiProfileId", 0, 1, 0, List.of(), List.of(), List.of(), List.of()));
 
         assertEquals(1, manageableUser.getSoldIn24h());
     }
@@ -54,7 +54,7 @@ class ManageableUserTest {
     @Test
     public void getBoughtIn24h_should_return_boughtIn24h_when_ubiAccountStats_is_not_null() {
         ManageableUser manageableUser = new ManageableUser();
-        manageableUser.setUbiAccountStats(new UbiAccountStats("ubiProfileId", 0, 1, 0, List.of(), List.of(), List.of(), List.of()));
+        manageableUser.setUbiAccountStats(new UbiAccountStats("ubiProfileId", 0, 0, 1, List.of(), List.of(), List.of(), List.of()));
 
         assertEquals(1, manageableUser.getBoughtIn24h());
     }
@@ -69,7 +69,7 @@ class ManageableUserTest {
     @Test
     public void getCreditAmount_should_return_creditAmount_when_ubiAccountStats_is_not_null() {
         ManageableUser manageableUser = new ManageableUser();
-        manageableUser.setUbiAccountStats(new UbiAccountStats("ubiProfileId", 0, 0, 1, List.of(), List.of(), List.of(), List.of()));
+        manageableUser.setUbiAccountStats(new UbiAccountStats("ubiProfileId", 1, 0, 0, List.of(), List.of(), List.of(), List.of()));
 
         assertEquals(1, manageableUser.getCreditAmount());
     }

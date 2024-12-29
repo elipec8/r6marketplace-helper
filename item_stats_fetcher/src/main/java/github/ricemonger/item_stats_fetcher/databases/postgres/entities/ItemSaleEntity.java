@@ -9,7 +9,8 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity(name = "item_sale")
+@Table(name = "item_sale")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,32 +19,43 @@ import java.util.Objects;
 public class ItemSaleEntity {
     @MapsId
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "itemId", referencedColumnName = "itemId")
+    @JoinColumn(name = "item_id", referencedColumnName = "item_id")
     private ItemMainFieldsEntity item;
     @Id
+    @Column(name = "sold_at")
     private LocalDateTime soldAt;
+    @Column(name = "price")
     private Integer price;
 
     public ItemSaleEntity(String itemId) {
         this.item = new ItemMainFieldsEntity(itemId);
     }
 
-    public String getItemId_() {
-        return item.getItemId();
+    @Override
+    public int hashCode() {
+        return Objects.hash(item, soldAt);
     }
 
-    public boolean isEqual(Object o) {
-        if (this == o) return true;
-        if (o instanceof ItemSaleEntity entity) {
-            return item.isEqual(entity.item) && Objects.equals(soldAt, entity.soldAt);
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
         }
-        return false;
+        if (!(o instanceof ItemSaleEntity itemSaleEntity)) {
+            return false;
+        }
+        return Objects.equals(this.item, itemSaleEntity.item) &&
+               Objects.equals(this.soldAt, itemSaleEntity.soldAt);
+    }
+
+    public String getItemId_() {
+        return item.getItemId();
     }
 
     public boolean isFullyEqual(Object o) {
         if (this == o) return true;
         if (o instanceof ItemSaleEntity entity) {
-            return isEqual(entity) && Objects.equals(price, entity.price);
+            return equals(entity) && Objects.equals(price, entity.price);
         }
         return false;
     }

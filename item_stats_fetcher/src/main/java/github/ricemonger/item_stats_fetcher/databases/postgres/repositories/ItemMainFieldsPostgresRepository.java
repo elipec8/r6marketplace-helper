@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.HashSet;
 
 public interface ItemMainFieldsPostgresRepository extends JpaRepository<ItemMainFieldsEntity, String> {
-    @Query("SELECT i.itemId FROM item i")
+    @Query("SELECT i.itemId FROM ItemMainFieldsEntity i")
     HashSet<String> findAllItemIds();
 }

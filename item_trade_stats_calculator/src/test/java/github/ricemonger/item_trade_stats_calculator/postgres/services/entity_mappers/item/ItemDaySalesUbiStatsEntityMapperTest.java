@@ -1,7 +1,7 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.item.ItemDaySalesUbiStatsEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.item.ItemIdEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemDaySalesUbiStatsEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemIdEntity;
 import github.ricemonger.utils.DTOs.common.ItemDaySalesUbiStats;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

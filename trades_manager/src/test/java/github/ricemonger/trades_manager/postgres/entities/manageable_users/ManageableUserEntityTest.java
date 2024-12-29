@@ -5,18 +5,17 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ManageableManageableUserEntityTest {
     @Test
-    public void isEqual_should_return_true_if_same() {
+    public void equals_should_return_true_if_same() {
         ManageableUserEntity user = new ManageableUserEntity();
-        assertTrue(user.isEqual(user));
+        assertEquals(user, user);
     }
 
     @Test
-    public void isEqual_should_return_true_if_equal_ids() {
+    public void equals_should_return_true_if_equal_ids() {
         ManageableUserEntity user1 = new ManageableUserEntity();
         user1.setId(1L);
         user1.setUbiAccountEntry(new ManageableUserUbiAccountEntryEntity());
@@ -29,22 +28,22 @@ class ManageableManageableUserEntityTest {
         ManageableUserEntity user2 = new ManageableUserEntity();
         user2.setId(1L);
 
-        assertTrue(user1.isEqual(user2));
+        assertEquals(user1, user2);
     }
 
     @Test
-    public void isEqual_should_return_false_if_null() {
+    public void equals_should_return_false_if_null() {
         ManageableUserEntity user = new ManageableUserEntity();
-        assertFalse(user.isEqual(null));
+        assertNotEquals(null, user);
     }
 
     @Test
-    public void isEqual_should_return_false_if_different_ids() {
+    public void equals_should_return_false_if_different_ids() {
         ManageableUserEntity user1 = new ManageableUserEntity(1L);
 
         ManageableUserEntity user2 = new ManageableUserEntity(2L);
 
-        assertFalse(user1.isEqual(user2));
+        assertNotEquals(user1, user2);
     }
 
 

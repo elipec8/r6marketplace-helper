@@ -20,7 +20,7 @@ public class CentralTradeManagerCommand implements Comparable<CentralTradeManage
     private final Integer oldPrice;
     private final Integer newPrice;
 
-    public CentralTradeManagerCommand(Long userId, AuthorizationDTO authorizationDTO,  CentralTradeManagerCommandType commandType, String itemId, String itemName, String tradeId, Integer oldPrice) {
+    public CentralTradeManagerCommand(Long userId, AuthorizationDTO authorizationDTO, CentralTradeManagerCommandType commandType, String itemId, String itemName, String tradeId, Integer oldPrice) {
         this.userId = userId;
         this.authorizationDTO = authorizationDTO;
         this.commandType = commandType;

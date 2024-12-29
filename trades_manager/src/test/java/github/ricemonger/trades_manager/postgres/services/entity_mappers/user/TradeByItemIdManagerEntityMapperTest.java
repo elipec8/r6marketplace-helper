@@ -16,7 +16,7 @@ class TradeByItemIdManagerEntityMapperTest {
     TradeByItemIdManagerEntityMapper tradeByItemIdManagerEntityMapper;
 
     @Test
-    public void  createDTO_should_return_expected_result(){
+    public void createDTO_should_return_expected_result() {
         TradeByItemIdManagerEntity entity = new TradeByItemIdManagerEntity();
         entity.setItem(new ItemIdEntity("itemId"));
         entity.setEnabled(true);

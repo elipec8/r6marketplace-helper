@@ -46,13 +46,13 @@ class ItemResaleLockEntityIdTest {
     }
 
     @Test
-    public void equals_should_return_false_for_null(){
+    public void equals_should_return_false_for_null() {
         ItemResaleLockEntityId itemResaleLockEntityId = new ItemResaleLockEntityId();
         assertNotEquals(null, itemResaleLockEntityId);
     }
 
     @Test
-    public void equals_should_return_false_for_different_id_fields(){
+    public void equals_should_return_false_for_different_id_fields() {
         ItemResaleLockEntityId itemResaleLockEntityId1 = new ItemResaleLockEntityId();
         itemResaleLockEntityId1.setUbiAccount(new UbiAccountStatsEntity("ubiProfileId"));
         itemResaleLockEntityId1.setItem(new ItemIdEntity("itemId"));

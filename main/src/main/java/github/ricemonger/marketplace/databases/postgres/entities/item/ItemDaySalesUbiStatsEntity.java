@@ -9,7 +9,8 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.Objects;
 
-@Entity(name = "item_day_sales_ubi_stats")
+@Table(name = "item_day_sales_ubi_stats")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,46 +18,37 @@ import java.util.Objects;
 @IdClass(ItemDaySalesUbiStatsEntityId.class)
 public class ItemDaySalesUbiStatsEntity {
     @Id
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "itemId", referencedColumnName = "itemId")
+    @ManyToOne
+    @JoinColumn(name = "item_id", referencedColumnName = "item_id")
     private ItemEntity item;
 
     @Id
+    @Column(name = "date")
     private LocalDate date;
 
+    @Column(name = "lowest_price")
     private Integer lowestPrice;
+    @Column(name = "average_price")
     private Integer averagePrice;
+    @Column(name = "highest_price")
     private Integer highestPrice;
+    @Column(name = "items_count")
     private Integer itemsCount;
 
-    public String getItemId_() {
-        return item.getItemId();
-    }
-
-    public boolean isEqual(Object o) {
-        if (this == o) return true;
-        if (o instanceof ItemDaySalesUbiStatsEntity entity) {
-            return item.isEqual(entity.item) &&
-                   Objects.equals(date, entity.date);
-        }
-        return false;
-    }
-
-    public boolean isFullyEqual(Object o) {
-        if (this == o) return true;
-        if (o instanceof ItemDaySalesUbiStatsEntity entity) {
-            return isEqual(entity) &&
-                   Objects.equals(lowestPrice, entity.lowestPrice) &&
-                   Objects.equals(averagePrice, entity.averagePrice) &&
-                   Objects.equals(highestPrice, entity.highestPrice) &&
-                   Objects.equals(itemsCount, entity.itemsCount);
-        }
-        return false;
+    @Override
+    public int hashCode() {
+        return Objects.hash(item, date);
     }
 
     @Override
-    public String toString() {
-        return "ItemDaySalesUbiStatsEntity(itemId=" + getItemId_() + ", date=" + date + ", lowestPrice=" + lowestPrice + ", averagePrice=" + averagePrice +
-               ", highestPrice=" + highestPrice + ", itemsCount=" + itemsCount + ")";
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ItemDaySalesUbiStatsEntity itemDaySalesUbiStatsEntity)) {
+            return false;
+        }
+        return Objects.equals(this.item, itemDaySalesUbiStatsEntity.item) &&
+               Objects.equals(this.date, itemDaySalesUbiStatsEntity.date);
     }
 }

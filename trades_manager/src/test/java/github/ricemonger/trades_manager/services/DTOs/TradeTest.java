@@ -5,13 +5,10 @@ import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 class TradeTest {
 
@@ -263,13 +260,13 @@ class TradeTest {
     }
 
     @Test
-    public void isFullyEqual_should_return_true_if_equal_fields(){
+    public void isFullyEqual_should_return_true_if_equal_fields() {
         UbiTrade ubiTrade1 = new UbiTrade();
         ubiTrade1.setTradeId("tradeId1");
         ubiTrade1.setState(TradeState.Created);
         ubiTrade1.setCategory(TradeCategory.Buy);
-        ubiTrade1.setExpiresAt(LocalDateTime.of(2021,1,1,1,1));
-        ubiTrade1.setLastModifiedAt(LocalDateTime.of(2021,2,1,1,1));
+        ubiTrade1.setExpiresAt(LocalDateTime.of(2021, 1, 1, 1, 1));
+        ubiTrade1.setLastModifiedAt(LocalDateTime.of(2021, 2, 1, 1, 1));
         ubiTrade1.setItem(new Item("itemId1"));
         ubiTrade1.setSuccessPaymentPrice(100);
         ubiTrade1.setSuccessPaymentFee(10);
@@ -285,8 +282,8 @@ class TradeTest {
         ubiTrade2.setTradeId("tradeId1");
         ubiTrade2.setState(TradeState.Created);
         ubiTrade2.setCategory(TradeCategory.Buy);
-        ubiTrade2.setExpiresAt(LocalDateTime.of(2021,1,1,1,1));
-        ubiTrade2.setLastModifiedAt(LocalDateTime.of(2021,2,1,1,1));
+        ubiTrade2.setExpiresAt(LocalDateTime.of(2021, 1, 1, 1, 1));
+        ubiTrade2.setLastModifiedAt(LocalDateTime.of(2021, 2, 1, 1, 1));
         ubiTrade2.setItem(new Item("itemId1"));
         ubiTrade2.setSuccessPaymentPrice(100);
         ubiTrade2.setSuccessPaymentFee(10);
@@ -302,13 +299,13 @@ class TradeTest {
     }
 
     @Test
-    public void isFullyEqual_should_return_false_if_different_fields(){
+    public void isFullyEqual_should_return_false_if_different_fields() {
         UbiTrade ubiTrade1 = new UbiTrade();
         ubiTrade1.setTradeId("tradeId1");
         ubiTrade1.setState(TradeState.Created);
         ubiTrade1.setCategory(TradeCategory.Buy);
-        ubiTrade1.setExpiresAt(LocalDateTime.of(2021,1,1,1,1));
-        ubiTrade1.setLastModifiedAt(LocalDateTime.of(2021,2,1,1,1));
+        ubiTrade1.setExpiresAt(LocalDateTime.of(2021, 1, 1, 1, 1));
+        ubiTrade1.setLastModifiedAt(LocalDateTime.of(2021, 2, 1, 1, 1));
         ubiTrade1.setItem(new Item("itemId1"));
         ubiTrade1.setSuccessPaymentPrice(100);
         ubiTrade1.setSuccessPaymentFee(10);
@@ -324,8 +321,8 @@ class TradeTest {
         ubiTrade2.setTradeId("tradeId1");
         ubiTrade2.setState(TradeState.Created);
         ubiTrade2.setCategory(TradeCategory.Buy);
-        ubiTrade2.setExpiresAt(LocalDateTime.of(2021,1,1,1,1));
-        ubiTrade2.setLastModifiedAt(LocalDateTime.of(2021,2,1,1,1));
+        ubiTrade2.setExpiresAt(LocalDateTime.of(2021, 1, 1, 1, 1));
+        ubiTrade2.setLastModifiedAt(LocalDateTime.of(2021, 2, 1, 1, 1));
         ubiTrade2.setItem(new Item("itemId1"));
         ubiTrade2.setSuccessPaymentPrice(100);
         ubiTrade2.setSuccessPaymentFee(10);
@@ -346,12 +343,12 @@ class TradeTest {
         trade1.getUbiTrade().setCategory(TradeCategory.Sell);
         assertFalse(trade1.isFullyEqual(trade2));
         trade1.getUbiTrade().setCategory(TradeCategory.Buy);
-        trade1.getUbiTrade().setExpiresAt(LocalDateTime.of(2021,1,1,1,2));
+        trade1.getUbiTrade().setExpiresAt(LocalDateTime.of(2021, 1, 1, 1, 2));
         assertFalse(trade1.isFullyEqual(trade2));
-        trade1.getUbiTrade().setExpiresAt(LocalDateTime.of(2021,1,1,1,1));
-        trade1.getUbiTrade().setLastModifiedAt(LocalDateTime.of(2021,2,1,1,2));
+        trade1.getUbiTrade().setExpiresAt(LocalDateTime.of(2021, 1, 1, 1, 1));
+        trade1.getUbiTrade().setLastModifiedAt(LocalDateTime.of(2021, 2, 1, 1, 2));
         assertFalse(trade1.isFullyEqual(trade2));
-        trade1.getUbiTrade().setLastModifiedAt(LocalDateTime.of(2021,2,1,1,1));
+        trade1.getUbiTrade().setLastModifiedAt(LocalDateTime.of(2021, 2, 1, 1, 1));
         trade1.getUbiTrade().setItem(new Item("itemId2"));
         assertFalse(trade1.isFullyEqual(trade2));
         trade1.getUbiTrade().setItem(new Item("itemId1"));

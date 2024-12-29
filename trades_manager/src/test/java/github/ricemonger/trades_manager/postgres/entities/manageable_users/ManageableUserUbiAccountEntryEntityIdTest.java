@@ -4,23 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class ManageableUserUbiAccountEntryEntityIdTest {
-    @Test
-    public void getUserId_should_return_user_id() {
-         ManageableUserUbiAccountEntryEntityId id = new  ManageableUserUbiAccountEntryEntityId(new ManageableUserEntity(1L), "email");
-
-        assertEquals(1L, id.getUserId_());
-    }
-
-    @Test
-    public void constructor_should_set_user_and_email() {
-         ManageableUserUbiAccountEntryEntityId id = new  ManageableUserUbiAccountEntryEntityId(1L, "email");
-
-        assertEquals(1L, id.getUserId_());
-        assertEquals("email", id.getEmail());
-    }
 
     @Test
     public void hashCode_should_return_same_hash_for_equal_objects() {
@@ -32,8 +19,8 @@ class ManageableUserUbiAccountEntryEntityIdTest {
         user2.setId(1L);
         user2.setUbiAccountEntry(null);
 
-         ManageableUserUbiAccountEntryEntityId id1 = new  ManageableUserUbiAccountEntryEntityId(user1, "email@example.com");
-         ManageableUserUbiAccountEntryEntityId id2 = new  ManageableUserUbiAccountEntryEntityId(user2, "email@example.com");
+        ManageableUserUbiAccountEntryEntityId id1 = new ManageableUserUbiAccountEntryEntityId(user1, "email@example.com");
+        ManageableUserUbiAccountEntryEntityId id2 = new ManageableUserUbiAccountEntryEntityId(user2, "email@example.com");
 
         assertEquals(id1.hashCode(), id2.hashCode());
     }
@@ -45,8 +32,8 @@ class ManageableUserUbiAccountEntryEntityIdTest {
         ManageableUserEntity user2 = new ManageableUserEntity();
         user2.setId(2L);
 
-         ManageableUserUbiAccountEntryEntityId id1 = new  ManageableUserUbiAccountEntryEntityId(user1, "email@example.com");
-         ManageableUserUbiAccountEntryEntityId id2 = new  ManageableUserUbiAccountEntryEntityId(user2, "email@example.com");
+        ManageableUserUbiAccountEntryEntityId id1 = new ManageableUserUbiAccountEntryEntityId(user1, "email@example.com");
+        ManageableUserUbiAccountEntryEntityId id2 = new ManageableUserUbiAccountEntryEntityId(user2, "email@example.com");
 
         assertNotEquals(id1.hashCode(), id2.hashCode());
     }
@@ -56,8 +43,8 @@ class ManageableUserUbiAccountEntryEntityIdTest {
         ManageableUserEntity user = new ManageableUserEntity();
         user.setId(1L);
 
-         ManageableUserUbiAccountEntryEntityId id1 = new  ManageableUserUbiAccountEntryEntityId(user, "email1@example.com");
-         ManageableUserUbiAccountEntryEntityId id2 = new  ManageableUserUbiAccountEntryEntityId(user, "email2@example.com");
+        ManageableUserUbiAccountEntryEntityId id1 = new ManageableUserUbiAccountEntryEntityId(user, "email1@example.com");
+        ManageableUserUbiAccountEntryEntityId id2 = new ManageableUserUbiAccountEntryEntityId(user, "email2@example.com");
 
         assertNotEquals(id1.hashCode(), id2.hashCode());
     }
@@ -72,8 +59,8 @@ class ManageableUserUbiAccountEntryEntityIdTest {
         user2.setId(1L);
         user2.setTradeByFiltersManagers(List.of());
 
-         ManageableUserUbiAccountEntryEntityId id1 = new  ManageableUserUbiAccountEntryEntityId(user1, "email@example.com");
-         ManageableUserUbiAccountEntryEntityId id2 = new  ManageableUserUbiAccountEntryEntityId(user2, "email@example.com");
+        ManageableUserUbiAccountEntryEntityId id1 = new ManageableUserUbiAccountEntryEntityId(user1, "email@example.com");
+        ManageableUserUbiAccountEntryEntityId id2 = new ManageableUserUbiAccountEntryEntityId(user2, "email@example.com");
 
         assertEquals(id1, id2);
     }
@@ -85,8 +72,8 @@ class ManageableUserUbiAccountEntryEntityIdTest {
         ManageableUserEntity user2 = new ManageableUserEntity();
         user2.setId(2L);
 
-         ManageableUserUbiAccountEntryEntityId id1 = new  ManageableUserUbiAccountEntryEntityId(user1, "email@example.com");
-         ManageableUserUbiAccountEntryEntityId id2 = new  ManageableUserUbiAccountEntryEntityId(user2, "email@example.com");
+        ManageableUserUbiAccountEntryEntityId id1 = new ManageableUserUbiAccountEntryEntityId(user1, "email@example.com");
+        ManageableUserUbiAccountEntryEntityId id2 = new ManageableUserUbiAccountEntryEntityId(user2, "email@example.com");
 
         assertNotEquals(id1, id2);
     }
@@ -96,8 +83,8 @@ class ManageableUserUbiAccountEntryEntityIdTest {
         ManageableUserEntity user = new ManageableUserEntity();
         user.setId(1L);
 
-         ManageableUserUbiAccountEntryEntityId id1 = new  ManageableUserUbiAccountEntryEntityId(user, "email1@example.com");
-         ManageableUserUbiAccountEntryEntityId id2 = new  ManageableUserUbiAccountEntryEntityId(user, "email2@example.com");
+        ManageableUserUbiAccountEntryEntityId id1 = new ManageableUserUbiAccountEntryEntityId(user, "email1@example.com");
+        ManageableUserUbiAccountEntryEntityId id2 = new ManageableUserUbiAccountEntryEntityId(user, "email2@example.com");
 
         assertNotEquals(id1, id2);
     }
@@ -107,7 +94,7 @@ class ManageableUserUbiAccountEntryEntityIdTest {
         ManageableUserEntity user = new ManageableUserEntity();
         user.setId(1L);
 
-         ManageableUserUbiAccountEntryEntityId id1 = new  ManageableUserUbiAccountEntryEntityId(user, "email@example.com");
+        ManageableUserUbiAccountEntryEntityId id1 = new ManageableUserUbiAccountEntryEntityId(user, "email@example.com");
 
         assertNotEquals(null, id1);
     }
@@ -117,7 +104,7 @@ class ManageableUserUbiAccountEntryEntityIdTest {
         ManageableUserEntity user = new ManageableUserEntity();
         user.setId(1L);
 
-         ManageableUserUbiAccountEntryEntityId id1 = new  ManageableUserUbiAccountEntryEntityId(user, "email@example.com");
+        ManageableUserUbiAccountEntryEntityId id1 = new ManageableUserUbiAccountEntryEntityId(user, "email@example.com");
         Object obj = new Object();
 
         assertNotEquals(id1, obj);

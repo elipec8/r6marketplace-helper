@@ -8,19 +8,40 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ItemMainFieldsEntityTest {
 
     @Test
-    public void isEqual_should_return_true_if_same() {
-        ItemMainFieldsEntity entity = new ItemMainFieldsEntity();
-        assertTrue(entity.isEqual(entity));
+    public void hashCode_should_be_same_for_different_ids() {
+        ItemMainFieldsEntity entity1 = new ItemMainFieldsEntity();
+        entity1.setItemId("itemId1");
+        entity1.setAssetUrl("url1");
+        entity1.setName("name1");
+        entity1.setTags(Collections.emptyList());
+        entity1.setRarity(ItemRarity.RARE);
+        entity1.setType(ItemType.WeaponSkin);
+        entity1.setMaxBuyPrice(100);
+        entity1.setBuyOrdersCount(10);
+        entity1.setMinSellPrice(200);
+        entity1.setSellOrdersCount(20);
+        entity1.setLastSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
+        entity1.setLastSoldPrice(150);
+
+        ItemMainFieldsEntity entity2 = new ItemMainFieldsEntity();
+        entity2.setItemId("itemId1");
+
+        assertEquals(entity1.hashCode(), entity2.hashCode());
     }
 
     @Test
-    public void isEqual_should_return_true_if_equal_id() {
+    public void equals_should_return_true_if_same() {
+        ItemMainFieldsEntity entity = new ItemMainFieldsEntity();
+        assertEquals(entity, entity);
+    }
+
+    @Test
+    public void equals_should_return_true_if_equal_id() {
         ItemMainFieldsEntity entity1 = new ItemMainFieldsEntity();
         entity1.setItemId("itemId");
         entity1.setAssetUrl("url");
@@ -38,13 +59,23 @@ class ItemMainFieldsEntityTest {
         ItemMainFieldsEntity entity2 = new ItemMainFieldsEntity();
         entity2.setItemId("itemId");
 
-        assertTrue(entity1.isEqual(entity2));
+        assertEquals(entity1, entity2);
     }
 
     @Test
-    public void isEqual_should_return_false_for_null() {
+    public void equals_should_return_false_for_null() {
         ItemMainFieldsEntity entity = new ItemMainFieldsEntity();
-        assertFalse(entity.isEqual(null));
+        assertNotEquals(null, entity);
+    }
+
+    @Test
+    public void equals_should_return_false_for_different_ids() {
+        ItemMainFieldsEntity entity1 = new ItemMainFieldsEntity();
+        entity1.setItemId("itemId");
+
+        ItemMainFieldsEntity entity2 = new ItemMainFieldsEntity();
+        entity2.setItemId("itemId1");
+        assertNotEquals(entity1, entity2);
     }
 
 

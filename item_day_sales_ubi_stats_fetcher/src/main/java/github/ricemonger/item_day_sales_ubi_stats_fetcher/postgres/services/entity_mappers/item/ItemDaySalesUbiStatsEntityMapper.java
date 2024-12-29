@@ -1,7 +1,7 @@
 package github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.services.entity_mappers.item;
 
-import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.entities.item.ItemDaySalesUbiStatsEntity;
-import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.entities.item.ItemIdEntity;
+import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.entities.ItemDaySalesUbiStatsEntity;
+import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.entities.ItemIdEntity;
 import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.utils.DTOs.common.GroupedItemDaySalesUbiStats;
 import github.ricemonger.utils.DTOs.common.ItemDaySalesUbiStats;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Component
@@ -48,7 +47,7 @@ public class ItemDaySalesUbiStatsEntityMapper {
         return result;
     }
 
-    private List<ItemDaySalesUbiStatsEntity> createEntitiesForItem(ItemIdEntity itemIdEntity ,GroupedItemDaySalesUbiStats groupedStats) {
+    private List<ItemDaySalesUbiStatsEntity> createEntitiesForItem(ItemIdEntity itemIdEntity, GroupedItemDaySalesUbiStats groupedStats) {
         List<ItemDaySalesUbiStatsEntity> result = new LinkedList<>();
 
         for (ItemDaySalesUbiStats dto : groupedStats.getDaySales()) {

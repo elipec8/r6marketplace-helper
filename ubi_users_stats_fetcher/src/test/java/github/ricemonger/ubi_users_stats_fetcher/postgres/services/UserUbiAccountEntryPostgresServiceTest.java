@@ -12,19 +12,20 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class UserUbiAccountEntryPostgresServiceTest {
     @Autowired
     private UserUbiAccountEntryPostgresService userUbiAccountEntryPostgresService;
-@MockBean
+    @MockBean
     private UserUbiAccountEntryPostgresRepository userUbiAccountEntryPostgresRepository;
     @MockBean
     private UbiAccountEntryEntityMapper ubiAccountEntryEntityMapper;
 
     @Test
-    public void findAll_should_return_mapped_service_result(){
+    public void findAll_should_return_mapped_service_result() {
         UserUbiAccountEntryEntity entity1 = Mockito.mock(UserUbiAccountEntryEntity.class);
         UserUbiAccountEntryEntity entity2 = Mockito.mock(UserUbiAccountEntryEntity.class);
 
@@ -38,7 +39,7 @@ class UserUbiAccountEntryPostgresServiceTest {
         List<UserUbiAccount> result = userUbiAccountEntryPostgresService.findAll();
 
         assertEquals(2, result.size());
-        assertTrue(result.stream().anyMatch(d-> d == dto1));
-        assertTrue(result.stream().anyMatch(d-> d == dto2));
+        assertTrue(result.stream().anyMatch(d -> d == dto1));
+        assertTrue(result.stream().anyMatch(d -> d == dto2));
     }
 }

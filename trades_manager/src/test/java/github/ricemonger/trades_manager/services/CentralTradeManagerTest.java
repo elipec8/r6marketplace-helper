@@ -5,14 +5,14 @@ import github.ricemonger.marketplace.graphQl.personal_mutation_buy_update.Person
 import github.ricemonger.marketplace.graphQl.personal_mutation_cancel.PersonalMutationCancelGraphQlClientService;
 import github.ricemonger.marketplace.graphQl.personal_mutation_sell_create.PersonalMutationSellCreateGraphQlClientService;
 import github.ricemonger.marketplace.graphQl.personal_mutation_sell_update.PersonalMutationSellUpdateGraphQlClientService;
+import github.ricemonger.trades_manager.services.DTOs.CentralTradeManagerCommand;
+import github.ricemonger.trades_manager.services.DTOs.ManageableUser;
 import github.ricemonger.trades_manager.services.DTOs.UbiAccountStats;
 import github.ricemonger.trades_manager.services.factories.CentralTradeManagerCommandFactory;
 import github.ricemonger.trades_manager.services.factories.PersonalItemFactory;
 import github.ricemonger.trades_manager.services.factories.PotentialTradeFactory;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.DTOs.common.Item;
-import github.ricemonger.trades_manager.services.DTOs.CentralTradeManagerCommand;
-import github.ricemonger.trades_manager.services.DTOs.ManageableUser;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.CentralTradeManagerCommandType;
 import org.junit.jupiter.api.Test;
@@ -294,7 +294,7 @@ class CentralTradeManagerTest {
         verify(personalMutationSellCreateGraphQlClientService).createSellOrderForUser(same(authDTO1), eq("sellCreateItemId1"), eq(1));
         verify(personalMutationSellCreateGraphQlClientService).createSellOrderForUser(same(authDTO1), eq("sellCreateItemId12"), eq(2));
 
-        verify(telegramBotService,times(12)).sendPrivateNotification(eq(1L), anyString());
+        verify(telegramBotService, times(12)).sendPrivateNotification(eq(1L), anyString());
 
         verify(personalMutationCancelGraphQlClientService).cancelOrderForUser(same(authDTO2), eq("buyCancelTradeId2"));
         verify(personalMutationBuyUpdateGraphQlClientService).updateBuyOrderForUser(same(authDTO2), eq("buyUpdateTradeId2"), eq(3));
@@ -303,6 +303,6 @@ class CentralTradeManagerTest {
         verify(personalMutationSellUpdateGraphQlClientService).updateSellOrderForUser(same(authDTO2), eq("sellUpdateTradeId2"), eq(3));
         verify(personalMutationSellCreateGraphQlClientService).createSellOrderForUser(same(authDTO2), eq("sellCreateItemId2"), eq(3));
 
-        verify(telegramBotService,times(6)).sendPrivateNotification(eq(2L), anyString());
+        verify(telegramBotService, times(6)).sendPrivateNotification(eq(2L), anyString());
     }
 }

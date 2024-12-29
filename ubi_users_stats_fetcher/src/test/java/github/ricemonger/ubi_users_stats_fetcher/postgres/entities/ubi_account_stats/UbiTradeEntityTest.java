@@ -6,18 +6,19 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UbiTradeEntityTest {
 
     @Test
-    public void isEqual_should_return_true_if_same() {
+    public void equals_should_return_true_if_same() {
         UbiTradeEntity entity = new UbiTradeEntity();
-        assertTrue(entity.isEqual(entity));
+        assertTrue(entity.equals(entity));
     }
 
     @Test
-    public void isEqual_should_return_true_if_equal_ids_different_fields(){
+    public void equals_should_return_true_if_equal_ids_different_fields() {
         UbiTradeEntity entity1 = new UbiTradeEntity();
         entity1.setTradeId("tradeId");
         entity1.setState(TradeState.Created);
@@ -32,23 +33,23 @@ class UbiTradeEntityTest {
         UbiTradeEntity entity2 = new UbiTradeEntity();
         entity2.setTradeId("tradeId");
 
-        assertTrue(entity1.isEqual(entity2));
+        assertTrue(entity1.equals(entity2));
     }
 
     @Test
-    public void isEqual_should_return_false_for_null() {
+    public void equals_should_return_false_for_null() {
         UbiTradeEntity entity = new UbiTradeEntity();
-        assertFalse(entity.isEqual(null));
+        assertFalse(entity.equals(null));
     }
 
     @Test
-    public void isEqual_should_return_false_for_different_ids() {
+    public void equals_should_return_false_for_different_ids() {
         UbiTradeEntity entity1 = new UbiTradeEntity();
         entity1.setTradeId("tradeId");
 
         UbiTradeEntity entity2 = new UbiTradeEntity();
         entity2.setTradeId("tradeId1");
 
-        assertFalse(entity1.isEqual(entity2));
+        assertFalse(entity1.equals(entity2));
     }
 }

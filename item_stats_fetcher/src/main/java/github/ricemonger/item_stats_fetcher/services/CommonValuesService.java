@@ -1,6 +1,6 @@
 package github.ricemonger.item_stats_fetcher.services;
 
-import github.ricemonger.utils.abstractions.CommonValuesDatabaseService;
+import github.ricemonger.utils.abstract_services.CommonValuesDatabaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

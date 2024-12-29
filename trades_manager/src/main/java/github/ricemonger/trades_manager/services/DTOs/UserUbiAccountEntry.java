@@ -1,6 +1,5 @@
 package github.ricemonger.trades_manager.services.DTOs;
 
-import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

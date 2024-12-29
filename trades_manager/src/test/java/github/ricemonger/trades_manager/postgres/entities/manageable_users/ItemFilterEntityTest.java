@@ -12,13 +12,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ItemFilterEntityTest {
     @Test
-    public void isEqual_should_return_true_if_same() {
+    public void equals_should_return_true_if_same() {
         ItemFilterEntity filter = new ItemFilterEntity();
-        assertTrue(filter.isEqual(filter));
+        assertEquals(filter, filter);
     }
 
     @Test
-    public void isEqual_should_return_true_if_equal_id_fields() {
+    public void equals_should_return_true_if_equal_id_fields() {
         ItemFilterEntity filter1 = new ItemFilterEntity();
         filter1.setUser(new ManageableUserEntity(1L));
         filter1.setName("filterName");
@@ -41,17 +41,17 @@ class ItemFilterEntityTest {
         filter2.setMinSellPrice(1000);
         filter2.setMaxBuyPrice(2000);
 
-        assertTrue(filter1.isEqual(filter2));
+        assertEquals(filter1, filter2);
     }
 
     @Test
-    public void isEqual_should_return_false_if_null() {
+    public void equals_should_return_false_if_null() {
         ItemFilterEntity filter1 = new ItemFilterEntity();
-        assertFalse(filter1.isEqual(null));
+        assertNotEquals(null, filter1);
     }
 
     @Test
-    public void isEqual_should_return_false_if_different_id_fields() {
+    public void equals_should_return_false_if_different_id_fields() {
         ItemFilterEntity filter1 = new ItemFilterEntity();
         filter1.setUser(new ManageableUserEntity(1L));
         filter1.setName("filterName");
@@ -61,10 +61,10 @@ class ItemFilterEntityTest {
         filter2.setName("filterName");
 
         filter1.setUser(new ManageableUserEntity(2L));
-        assertFalse(filter1.isEqual(filter2));
+        assertNotEquals(filter1, filter2);
         filter1.setUser(new ManageableUserEntity(1L));
         filter1.setName("filterName2");
-        assertFalse(filter1.isEqual(filter2));
+        assertNotEquals(filter1, filter2);
     }
 
     @Test

@@ -1,7 +1,7 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.users;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.item.PrioritizedTradeEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.item.UbiTradeEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.entities.PrioritizedTradeEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.entities.UbiTradeEntity;
 import github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item.ItemEntitiesMapper;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.PrioritizedTrade;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
