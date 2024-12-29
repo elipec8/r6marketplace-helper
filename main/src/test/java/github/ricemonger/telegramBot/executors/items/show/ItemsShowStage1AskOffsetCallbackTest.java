@@ -1,7 +1,8 @@
 package github.ricemonger.telegramBot.executors.items.show;
 
-import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
+import github.ricemonger.telegramBot.update_consumer.BotInnerService;
+import github.ricemonger.telegramBot.update_consumer.executors.items.show.ItemsShowStage1AskOffsetCallback;
 import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ class ItemsShowStage1AskOffsetCallbackTest {
 
         verify(botInnerService).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());
 
-        verify(botInnerService).clearUserInputs(MockUpdateInfos.UPDATE_INFO.getChatId());
+        verify(botInnerService).clearUserInputsAndSetInputStateAndGroup(MockUpdateInfos.UPDATE_INFO.getChatId());
         verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.ITEMS_SHOW_OFFSET);
         verify(botInnerService).setUserInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.ITEMS_SHOW);
     }

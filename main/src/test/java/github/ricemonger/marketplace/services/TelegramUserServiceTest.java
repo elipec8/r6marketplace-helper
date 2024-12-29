@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.services;
 
+import github.ricemonger.marketplace.services.DTOs.TelegramUserInputStateAndGroup;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserInputDatabaseService;
 import github.ricemonger.telegramBot.Callbacks;
@@ -311,6 +312,20 @@ class TelegramUserServiceTest {
     }
 
     @Test
+    public void getTelegramUserInputStateAndGroup_should_return_service_result() {
+        when(telegramUserDatabaseService.findUserInputStateAndGroupById("123")).thenReturn(new TelegramUserInputStateAndGroup("chatId", InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID, InputGroup.ITEM_FILTER_EDIT));
+
+        assertEquals(new TelegramUserInputStateAndGroup("chatId", InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID, InputGroup.ITEM_FILTER_EDIT), telegramUserService.getTelegramUserInputStateAndGroup(123L));
+    }
+
+    @Test
+    public void getTelegramUserInputStateAndGroup_should_throw_if_user_doesnt_exist() {
+        when(telegramUserDatabaseService.findUserInputStateAndGroupById("123")).thenThrow(TelegramUserDoesntExistException.class);
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getTelegramUserInputStateAndGroup(123L));
+    }
+
+    @Test
     public void getItemShowSettings_should_return_settings() {
         ItemShowSettings settings = new ItemShowSettings();
         when(telegramUserDatabaseService.findUserItemShowSettingsById("123")).thenReturn(settings);
@@ -385,42 +400,6 @@ class TelegramUserServiceTest {
     }
 
     @Test
-    public void getUserInputState_should_return_state() {
-        TelegramUser telegramUser = new TelegramUser(123L);
-        telegramUser.setInputState(InputState.UBI_ACCOUNT_ENTRY_EMAIL);
-        when(telegramUserDatabaseService.findUserById("123")).thenReturn(telegramUser);
-
-        assertEquals(InputState.UBI_ACCOUNT_ENTRY_EMAIL, telegramUserService.getUserInputState(123L));
-
-        verify(telegramUserDatabaseService).findUserById("123");
-    }
-
-    @Test
-    public void getUserInputState_should_throw_if_user_doesnt_exist() {
-        when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
-
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getUserInputState(123L));
-    }
-
-    @Test
-    public void getUserInputGroup_should_return_group() {
-        TelegramUser telegramUser = new TelegramUser(123L);
-        telegramUser.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
-        when(telegramUserDatabaseService.findUserById("123")).thenReturn(telegramUser);
-
-        assertEquals(InputGroup.UBI_ACCOUNT_ENTRY_LINK, telegramUserService.getUserInputGroup(123L));
-
-        verify(telegramUserDatabaseService).findUserById("123");
-    }
-
-    @Test
-    public void getUserInputGroup_should_throw_if_user_doesnt_exist() {
-        when(telegramUserDatabaseService.findUserById("123")).thenThrow(TelegramUserDoesntExistException.class);
-
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getUserInputGroup(123L));
-    }
-
-    @Test
     public void getUserUbiAccountEntry_should_return_user_ubi_account_entry() {
         when(telegramUserUbiAccountEntryDatabaseService.findByChatId("123")).thenReturn(new UbiAccountAuthorizationEntry());
 
@@ -484,21 +463,5 @@ class TelegramUserServiceTest {
         when(telegramUserInputDatabaseService.findAllByChatId("123")).thenThrow(TelegramUserDoesntExistException.class);
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.getAllUserInputs(123L));
-    }
-
-    @Test
-    public void getAllChatIdsForNotifiableUsers_should_return_only_notifiable_users() {
-        TelegramUser user1 = new TelegramUser(1L);
-        user1.setPublicNotificationsEnabledFlag(true);
-        TelegramUser user2 = new TelegramUser(2L);
-        user2.setPublicNotificationsEnabledFlag(false);
-        TelegramUser user3 = new TelegramUser(3L);
-        user3.setPublicNotificationsEnabledFlag(true);
-
-        when(telegramUserDatabaseService.findAllUsers()).thenReturn(List.of(user1, user2, user3));
-
-        List<String> result = telegramUserService.getAllChatIdsForNotifiableUsers();
-
-        assertTrue(List.of("1", "3").containsAll(result) && result.containsAll(List.of("1", "3")));
     }
 }

@@ -157,4 +157,8 @@ public class ItemFilter {
             return Arrays.stream(split).map(String::trim).toList();
         }
     }
+
+    public String toHandsomeString() {
+        return this.toString();
+    }
 }

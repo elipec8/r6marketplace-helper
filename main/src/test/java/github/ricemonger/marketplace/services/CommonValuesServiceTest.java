@@ -2,7 +2,6 @@ package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.configurations.TelegramBotConfiguration;
 import github.ricemonger.marketplace.services.configurations.UbiServiceConfiguration;
-import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.abstract_services.CommonValuesDatabaseService;
 import github.ricemonger.utils.enums.ItemRarity;
 import org.junit.jupiter.api.Test;
@@ -11,10 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
-import java.time.LocalDateTime;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -27,54 +23,6 @@ class CommonValuesServiceTest {
     private UbiServiceConfiguration ubiServiceConfiguration;
     @SpyBean
     private TelegramBotConfiguration telegramBotConfiguration;
-
-    @Test
-    void getPaymentItemId_should_handle_to_service() {
-        String paymentItemId = "paymentItemId";
-        when(commonValuesDatabaseService.getPaymentItemId()).thenReturn(paymentItemId);
-
-        assertEquals(paymentItemId, commonValuesService.getPaymentItemId());
-    }
-
-    @Test
-    void getMainUserAuthorizationToken_should_handle_to_service() {
-        String mainUserAuthorizationToken
-                = "mainUserAuthorizationToken";
-        when(commonValuesDatabaseService.getMainUserAuthorizationToken()).thenReturn(mainUserAuthorizationToken);
-
-        assertEquals(mainUserAuthorizationToken, commonValuesService.getMainUserAuthorizationToken());
-    }
-
-    @Test
-    void getMainUserProfileId_should_handle_to_service() {
-        String mainUserProfileId = "mainUserProfileId";
-        when(commonValuesDatabaseService.getMainUserProfileId()).thenReturn(mainUserProfileId);
-
-        assertEquals(mainUserProfileId, commonValuesService.getMainUserProfileId());
-    }
-
-    @Test
-    void getMainUserSessionId_should_handle_to_service() {
-        String mainUserSessionId = "mainUserSessionId";
-        when(commonValuesDatabaseService.getMainUserSessionId()).thenReturn(mainUserSessionId);
-
-        assertEquals(mainUserSessionId, commonValuesService.getMainUserSessionId());
-    }
-
-    @Test
-    void getMainUserRememberMeTicket_should_handle_to_service() {
-        String mainUserRememberMeTicket = "mainUserRememberMeTicket";
-        when(commonValuesDatabaseService.getMainUserRememberMeTicket()).thenReturn(mainUserRememberMeTicket);
-
-        assertEquals(mainUserRememberMeTicket, commonValuesService.getMainUserRememberMeTicket());
-    }
-
-    @Test
-    void setMainUserAuthorization_should_handle_to_service() {
-        commonValuesService.setMainUserAuthorization(new AuthorizationDTO());
-
-        verify(commonValuesDatabaseService).setMainUserAuthorization(new AuthorizationDTO(), 0);
-    }
 
     @Test
     void getTrustedDevice_Id_should_handle_to_service() {
@@ -90,14 +38,6 @@ class CommonValuesServiceTest {
         when(ubiServiceConfiguration.getTrustedDeviceFriendlyName()).thenReturn(friendlyName);
 
         assertEquals(friendlyName, commonValuesService.getTrustedDeviceFriendlyName());
-    }
-
-    @Test
-    void getGraphqlUrl_should_handle_to_service() {
-        String graphqlUrl = "graphqlUrl";
-        when(ubiServiceConfiguration.getGraphqlUrl()).thenReturn(graphqlUrl);
-
-        assertEquals(graphqlUrl, commonValuesService.getGraphqlUrl());
     }
 
     @Test
@@ -133,67 +73,11 @@ class CommonValuesServiceTest {
     }
 
     @Test
-    void getUbiBaseAppId_should_handle_to_service() {
-        String ubiAppId = "ubiAppId";
-        when(ubiServiceConfiguration.getUbiBaseAppId()).thenReturn(ubiAppId);
-
-        assertEquals(ubiAppId, commonValuesService.getUbiBaseAppId());
-    }
-
-    @Test
     public void getUbiTwoFaAppId_should_handle_to_service() {
         String ubiTwoFaAppId = "ubiTwoFaAppId";
         when(ubiServiceConfiguration.getUbiTwoFaAppId()).thenReturn(ubiTwoFaAppId);
 
         assertEquals(ubiTwoFaAppId, commonValuesService.getUbiTwoFaAppId());
-    }
-
-    @Test
-    void getUbiGameSpaceId_should_handle_to_service() {
-        String ubiGameSpaceId = "ubiGameSpaceId";
-        when(ubiServiceConfiguration.getUbiSpaceId()).thenReturn(ubiGameSpaceId);
-
-        assertEquals(ubiGameSpaceId, commonValuesService.getUbiGameSpaceId());
-    }
-
-    @Test
-    void getRegionId_should_handle_to_service() {
-        String regionId = "regionId";
-        when(ubiServiceConfiguration.getUbiRegionId()).thenReturn(regionId);
-
-        assertEquals(regionId, commonValuesService.getUbiRegionId());
-    }
-
-    @Test
-    void getLocaleCode_should_handle_to_service() {
-        String localeCode = "localeCode";
-        when(ubiServiceConfiguration.getUbiLocaleCode()).thenReturn(localeCode);
-
-        assertEquals(localeCode, commonValuesService.getUbiLocaleCode());
-    }
-
-    @Test
-    void getExpireTimeout_should_handle_to_service() {
-        int expireTimeout = 10;
-        when(ubiServiceConfiguration.getExpireTimeout()).thenReturn(expireTimeout);
-
-        assertEquals(expireTimeout, commonValuesService.getExpireTimeout());
-    }
-
-    @Test
-    void getDateFormat_should_handle_to_service() {
-        String dateFormat = "dateFormat";
-        when(ubiServiceConfiguration.getDateFormat()).thenReturn(dateFormat);
-
-        assertEquals(dateFormat, commonValuesService.getDateFormat());
-    }
-
-    @Test
-    void getItemSaleStatsDateFormat_should_handle_to_service() {
-        String dateFormat = "dateFormat";
-        when(ubiServiceConfiguration.getItemSaleStatsDateFormat()).thenReturn(dateFormat);
-
-        assertEquals(dateFormat, commonValuesService.getItemSaleStatsDateFormat());
     }
 
     @Test
@@ -373,24 +257,5 @@ class CommonValuesServiceTest {
         when(telegramBotConfiguration.getMessageLimit()).thenReturn(messageLimit);
 
         assertEquals(messageLimit, commonValuesService.getMaximumTelegramMessageLimit());
-    }
-
-    @Test
-    public void setLastUbiUsersStatsFetchTime_should_handle_to_service() {
-
-        when(ubiServiceConfiguration.getDateFormat()).thenReturn("yyyy-MM-dd HH:mm:ss");
-
-        commonValuesService.setLastUbiUsersStatsFetchTime(LocalDateTime.of(2021, 1, 2, 3, 4, 5));
-
-        verify(commonValuesDatabaseService).setLastUbiUsersStatsFetchTime("2021-01-02 03:04:05");
-    }
-
-    @Test
-    public void getLastUbiUsersStatsFetchTime_should_handle_to_service() {
-
-        when(ubiServiceConfiguration.getDateFormat()).thenReturn("yyyy-MM-dd HH:mm:ss");
-        when(commonValuesDatabaseService.getLastUbiUsersStatsFetchTime()).thenReturn("2021-01-02 03:04:05");
-
-        assertEquals(LocalDateTime.of(2021, 1, 2, 3, 4, 5), commonValuesService.getLastUbiUsersStatsFetchTime());
     }
 }

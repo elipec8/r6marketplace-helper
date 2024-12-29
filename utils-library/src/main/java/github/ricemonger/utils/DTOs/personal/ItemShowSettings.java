@@ -51,7 +51,7 @@ public class ItemShowSettings {
         return shownFieldsSettings == null ? null : shownFieldsSettings.getActiveFieldsCount();
     }
 
-    public String toString() {
+    public String toHandsomeString() {
         String shownFields;
         if (shownFieldsSettings == null) {
             shownFields = "null";

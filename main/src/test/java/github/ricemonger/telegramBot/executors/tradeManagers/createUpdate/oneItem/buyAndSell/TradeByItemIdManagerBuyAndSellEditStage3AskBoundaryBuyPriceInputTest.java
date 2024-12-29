@@ -1,8 +1,8 @@
 package github.ricemonger.telegramBot.executors.tradeManagers.createUpdate.oneItem.buyAndSell;
 
-import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
-import github.ricemonger.telegramBot.executors.tradeManagers.edit.oneItem.buyAndSell.TradeByItemIdManagerBuyAndSellEditStage3AskBoundaryBuyPriceInput;
+import github.ricemonger.telegramBot.update_consumer.BotInnerService;
+import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.edit.oneItem.buyAndSell.TradeByItemIdManagerBuyAndSellEditStage3AskBoundaryBuyPriceInput;
 import github.ricemonger.utils.enums.InputState;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,7 +22,7 @@ class TradeByItemIdManagerBuyAndSellEditStage3AskBoundaryBuyPriceInputTest {
         TradeByItemIdManagerBuyAndSellEditStage3AskBoundaryBuyPriceInput commandExecutor = new TradeByItemIdManagerBuyAndSellEditStage3AskBoundaryBuyPriceInput();
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO);
+        verify(botInnerService).saveUserInputAndSetInputState(MockUpdateInfos.UPDATE_INFO);
         verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_BUY_PRICE);
 
         verify(botInnerService).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());

@@ -1,7 +1,8 @@
 package github.ricemonger.telegramBot.executors.itemFilters.edit;
 
-import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
+import github.ricemonger.telegramBot.update_consumer.BotInnerService;
+import github.ricemonger.telegramBot.update_consumer.executors.itemFilters.edit.FilterEditStage1AskNameCallback;
 import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ class FilterEditStage1AskNameCallbackTest {
 
         verify(botInnerService).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());
 
-        verify(botInnerService).clearUserInputs(MockUpdateInfos.UPDATE_INFO.getChatId());
+        verify(botInnerService).clearUserInputsAndSetInputStateAndGroup(MockUpdateInfos.UPDATE_INFO.getChatId());
         verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.ITEM_FILTER_NAME);
         verify(botInnerService).setUserInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.ITEM_FILTER_EDIT);
     }

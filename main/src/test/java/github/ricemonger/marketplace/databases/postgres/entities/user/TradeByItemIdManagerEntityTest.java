@@ -4,8 +4,6 @@ import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity
 import github.ricemonger.utils.enums.TradeOperationType;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class TradeByItemIdManagerEntityTest {
 
     @Test

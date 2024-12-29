@@ -1,7 +1,8 @@
 package github.ricemonger.telegramBot.executors.cancel;
 
-import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
+import github.ricemonger.telegramBot.update_consumer.BotInnerService;
+import github.ricemonger.telegramBot.update_consumer.executors.cancel.Cancel;
 import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ class CancelTest {
 
         verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.BASE);
         verify(botInnerService).setUserInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.BASE);
-        verify(botInnerService).clearUserInputs(MockUpdateInfos.UPDATE_INFO.getChatId());
+        verify(botInnerService).clearUserInputsAndSetInputStateAndGroup(MockUpdateInfos.UPDATE_INFO.getChatId());
 
         verify(botInnerService).sendText(same(MockUpdateInfos.UPDATE_INFO), anyString());
     }

@@ -2,7 +2,6 @@ package github.ricemonger.marketplace.databases.postgres.services.entity_mappers
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
-import github.ricemonger.marketplace.databases.postgres.repositories.TagPostgresRepository;
 import github.ricemonger.utils.DTOs.common.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,8 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 @Slf4j

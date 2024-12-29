@@ -19,7 +19,7 @@ public class TradeByFiltersManager {
     private Integer minDifferenceFromMedianPricePercent;
     private Integer priorityMultiplier;
 
-    public String toString() {
+    public String toHandsomeString() {
         String sb = "Trade By Item Filter Manager: \n" +
                     "Name: " + name + "\n" +
                     "Enabled: " + enabled + "\n" +

@@ -1,7 +1,8 @@
 package github.ricemonger.telegramBot.executors.tradeManagers.edit.itemFilter;
 
-import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
+import github.ricemonger.telegramBot.update_consumer.BotInnerService;
+import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.edit.itemFilter.TradeByFiltersManagerEditStage5AskMinProfitPercentInput;
 import github.ricemonger.utils.enums.InputState;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +21,7 @@ class TradeByFiltersManagerEditStage5AskMinProfitPercentInputTest {
         TradeByFiltersManagerEditStage5AskMinProfitPercentInput commandExecutor = new TradeByFiltersManagerEditStage5AskMinProfitPercentInput();
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO);
+        verify(botInnerService).saveUserInputAndSetInputState(MockUpdateInfos.UPDATE_INFO);
         verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.TRADE_BY_FILTERS_MANAGER_MIN_MEDIAN_PRICE_DIFFERENCE_PERCENT);
 
         verify(botInnerService).askFromInlineKeyboard(eq(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());

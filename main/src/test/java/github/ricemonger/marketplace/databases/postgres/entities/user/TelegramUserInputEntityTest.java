@@ -3,8 +3,6 @@ package github.ricemonger.marketplace.databases.postgres.entities.user;
 import github.ricemonger.utils.enums.InputState;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class TelegramUserInputEntityTest {
 
 

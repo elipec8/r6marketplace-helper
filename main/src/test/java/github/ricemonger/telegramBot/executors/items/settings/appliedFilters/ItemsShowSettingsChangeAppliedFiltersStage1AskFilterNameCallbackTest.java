@@ -1,7 +1,8 @@
 package github.ricemonger.telegramBot.executors.items.settings.appliedFilters;
 
-import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
+import github.ricemonger.telegramBot.update_consumer.BotInnerService;
+import github.ricemonger.telegramBot.update_consumer.executors.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallback;
 import github.ricemonger.utils.DTOs.personal.ItemShowSettings;
 import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
@@ -28,7 +29,7 @@ class ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallbackTest {
         ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallback commandExecutor = new ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallback();
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService).clearUserInputs(eq(MockUpdateInfos.UPDATE_INFO.getChatId()));
+        verify(botInnerService).clearUserInputsAndSetInputStateAndGroup(eq(MockUpdateInfos.UPDATE_INFO.getChatId()));
         verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.ITEM_FILTER_NAME);
         verify(botInnerService).setUserInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.ITEMS_SHOW_SETTING_CHANGE_APPLIED_FILTERS);
 

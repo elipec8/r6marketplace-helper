@@ -1,7 +1,8 @@
 package github.ricemonger.telegramBot.executors.tradeManagers.settings;
 
-import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
+import github.ricemonger.telegramBot.update_consumer.BotInnerService;
+import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.settings.TradeManagersSettingsCallback;
 import github.ricemonger.utils.DTOs.personal.TradeManagersSettings;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

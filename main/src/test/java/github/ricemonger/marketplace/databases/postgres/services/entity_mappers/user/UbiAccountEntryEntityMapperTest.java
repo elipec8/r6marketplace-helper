@@ -1,23 +1,19 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
-import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountEntryEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountStatsEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountStatsEntityPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
-import github.ricemonger.utils.DTOs.personal.*;
+import github.ricemonger.utils.DTOs.personal.UbiAccountAuthorizationEntry;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

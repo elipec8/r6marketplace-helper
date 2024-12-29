@@ -1,7 +1,8 @@
 package github.ricemonger.telegramBot.executors.items.settings;
 
-import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
+import github.ricemonger.telegramBot.update_consumer.BotInnerService;
+import github.ricemonger.telegramBot.update_consumer.executors.items.settings.ItemsShowSettingsCallback;
 import github.ricemonger.utils.DTOs.personal.ItemShowSettings;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

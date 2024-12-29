@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.services;
 
+import github.ricemonger.marketplace.services.DTOs.TelegramUserInputStateAndGroup;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserInputDatabaseService;
 import github.ricemonger.utils.DTOs.personal.*;
@@ -128,6 +129,10 @@ public class TelegramUserService {
         return getTelegramUserOrThrow(chatId);
     }
 
+    public TelegramUserInputStateAndGroup getTelegramUserInputStateAndGroup(Long chatId) throws TelegramUserDoesntExistException {
+        return telegramUserDatabaseService.findUserInputStateAndGroupById(String.valueOf(chatId));
+    }
+
     public ItemShowSettings getItemShowSettings(Long chatId) throws TelegramUserDoesntExistException {
         return telegramUserDatabaseService.findUserItemShowSettingsById(String.valueOf(chatId));
     }
@@ -144,16 +149,6 @@ public class TelegramUserService {
         telegramUserDatabaseService.setTradeManagersSettingsManagingEnabledFlag(String.valueOf(chatId), flag);
     }
 
-    public InputState getUserInputState(Long chatId) throws TelegramUserDoesntExistException {
-        TelegramUser telegramUser = getTelegramUserOrThrow(chatId);
-        return telegramUser.getInputState();
-    }
-
-    public InputGroup getUserInputGroup(Long chatId) throws TelegramUserDoesntExistException {
-        TelegramUser telegramUser = getTelegramUserOrThrow(chatId);
-        return telegramUser.getInputGroup();
-    }
-
     public UbiAccountAuthorizationEntry getUserUbiAccountEntry(Long chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
         getTelegramUserOrThrow(chatId);
 
@@ -166,13 +161,6 @@ public class TelegramUserService {
 
     public List<TelegramUserInput> getAllUserInputs(Long chatId) throws TelegramUserDoesntExistException {
         return inputDatabaseService.findAllByChatId(String.valueOf(chatId));
-    }
-
-    public List<String> getAllChatIdsForNotifiableUsers() {
-        return telegramUserDatabaseService.findAllUsers().stream()
-                .filter(TelegramUser::getPublicNotificationsEnabledFlag)
-                .map(TelegramUser::getChatId)
-                .toList();
     }
 
     private boolean parseBooleanOrTrue(String value, String falseValue) {

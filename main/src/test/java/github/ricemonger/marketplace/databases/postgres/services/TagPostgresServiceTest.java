@@ -12,12 +12,9 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.same;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest

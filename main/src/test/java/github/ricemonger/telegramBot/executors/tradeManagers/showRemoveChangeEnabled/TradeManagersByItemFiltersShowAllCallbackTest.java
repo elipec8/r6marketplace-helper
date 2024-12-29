@@ -1,6 +1,6 @@
 package github.ricemonger.telegramBot.executors.tradeManagers.showRemoveChangeEnabled;
 
-import github.ricemonger.telegramBot.client.BotInnerService;
+import github.ricemonger.telegramBot.update_consumer.BotInnerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

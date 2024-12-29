@@ -1,9 +1,11 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
+import github.ricemonger.marketplace.databases.postgres.entities.tg_user_input_group_and_state.InputStateAndGroupTelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.ItemFilterEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
+import github.ricemonger.marketplace.services.DTOs.TelegramUserInputStateAndGroup;
 import github.ricemonger.utils.DTOs.personal.*;
 import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
@@ -130,5 +132,20 @@ class TelegramUserEntityMapperTest {
 
         assertFalse(tradeManagersSettings.getNewManagersAreActiveFlag());
         assertFalse(tradeManagersSettings.getManagingEnabledFlag());
+    }
+
+    @Test
+    public void createInputStateAndGroupDTO_should_return_input_state_and_group_dto() {
+        InputStateAndGroupTelegramUserEntity entity = new InputStateAndGroupTelegramUserEntity();
+        entity.setChatId("chatId");
+        entity.setInputState(InputState.ITEM_FILTER_NAME);
+        entity.setInputGroup(InputGroup.ITEMS_SHOW);
+
+        TelegramUserInputStateAndGroup expected = new TelegramUserInputStateAndGroup();
+        expected.setChatId("chatId");
+        expected.setInputState(InputState.ITEM_FILTER_NAME);
+        expected.setInputGroup(InputGroup.ITEMS_SHOW);
+
+        assertEquals(expected, telegramUserEntityMapper.createInputStateAndGroupDTO(entity));
     }
 }

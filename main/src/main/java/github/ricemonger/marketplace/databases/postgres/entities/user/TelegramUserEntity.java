@@ -20,6 +20,7 @@ import java.util.Objects;
 @AllArgsConstructor
 public class TelegramUserEntity {
     @Id
+    @Column(name = "chat_id")
     private String chatId;
 
     @OneToOne

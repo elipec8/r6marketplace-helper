@@ -1,7 +1,8 @@
 package github.ricemonger.telegramBot.executors.itemFilters.showOrRemove;
 
-import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
+import github.ricemonger.telegramBot.update_consumer.BotInnerService;
+import github.ricemonger.telegramBot.update_consumer.executors.itemFilters.showOrRemove.FilterShowChosenStage2RemoveRequestInput;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
@@ -25,7 +26,7 @@ class FilterShowChosenStage2RemoveRequestInputTest {
         FilterShowChosenStage2RemoveRequestInput filterShowChosenStage2RemoveRequestInput = new FilterShowChosenStage2RemoveRequestInput();
         filterShowChosenStage2RemoveRequestInput.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO);
+        verify(botInnerService).saveUserInputAndSetInputState(MockUpdateInfos.UPDATE_INFO);
         verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.BASE);
         verify(botInnerService).setUserInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.BASE);
 

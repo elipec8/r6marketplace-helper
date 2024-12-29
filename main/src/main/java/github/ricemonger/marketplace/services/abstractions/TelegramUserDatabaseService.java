@@ -1,6 +1,7 @@
 package github.ricemonger.marketplace.services.abstractions;
 
 
+import github.ricemonger.marketplace.services.DTOs.TelegramUserInputStateAndGroup;
 import github.ricemonger.utils.DTOs.personal.*;
 import github.ricemonger.utils.exceptions.client.TelegramUserAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
@@ -30,6 +31,8 @@ public interface TelegramUserDatabaseService {
     boolean existsById(String chatId);
 
     TelegramUser findUserById(String chatId) throws TelegramUserDoesntExistException;
+
+    TelegramUserInputStateAndGroup findUserInputStateAndGroupById(String chatId) throws TelegramUserDoesntExistException;
 
     ItemShowSettings findUserItemShowSettingsById(String chatId) throws TelegramUserDoesntExistException;
 

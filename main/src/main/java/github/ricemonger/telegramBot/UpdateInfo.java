@@ -12,14 +12,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateInfo {
-
     private Integer updateId;
     private Long chatId;
 
-
     private boolean hasMessage;
     private String messageText;
-
 
     private boolean hasCallBackQuery;
     private String callbackQueryData;

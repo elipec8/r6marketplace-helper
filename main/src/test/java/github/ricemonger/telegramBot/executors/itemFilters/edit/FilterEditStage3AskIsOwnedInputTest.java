@@ -1,7 +1,8 @@
 package github.ricemonger.telegramBot.executors.itemFilters.edit;
 
-import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
+import github.ricemonger.telegramBot.update_consumer.BotInnerService;
+import github.ricemonger.telegramBot.update_consumer.executors.itemFilters.edit.FilterEditStage3AskIsOwnedInput;
 import github.ricemonger.utils.enums.InputState;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +24,7 @@ class FilterEditStage3AskIsOwnedInputTest {
 
         verify(botInnerService, times(0)).sendText(any(), anyString());
 
-        verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO);
+        verify(botInnerService).saveUserInputAndSetInputState(MockUpdateInfos.UPDATE_INFO);
         verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.ITEM_FILTER_IS_OWNED);
 
         verify(botInnerService).askFromInlineKeyboard(eq(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());

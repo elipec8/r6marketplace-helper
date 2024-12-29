@@ -1,7 +1,8 @@
 package github.ricemonger.telegramBot.executors.itemFilters.showOrRemove;
 
-import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
+import github.ricemonger.telegramBot.update_consumer.BotInnerService;
+import github.ricemonger.telegramBot.update_consumer.executors.itemFilters.showOrRemove.FiltersShowAllNamesStage1AskNameCallback;
 import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ class FiltersShowAllNamesStage1AskNameCallbackTest {
         FiltersShowAllNamesStage1AskNameCallback filtersShowAllNamesStage1AskNameCallback = new FiltersShowAllNamesStage1AskNameCallback();
         filtersShowAllNamesStage1AskNameCallback.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService).clearUserInputs(MockUpdateInfos.UPDATE_INFO.getChatId());
+        verify(botInnerService).clearUserInputsAndSetInputStateAndGroup(MockUpdateInfos.UPDATE_INFO.getChatId());
         verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.ITEM_FILTER_NAME);
         verify(botInnerService).setUserInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.ITEM_FILTER_SHOW_OR_REMOVE);
 
@@ -43,7 +44,7 @@ class FiltersShowAllNamesStage1AskNameCallbackTest {
         FiltersShowAllNamesStage1AskNameCallback filtersShowAllNamesStage1AskNameCallback = new FiltersShowAllNamesStage1AskNameCallback();
         filtersShowAllNamesStage1AskNameCallback.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService, times(0)).clearUserInputs(MockUpdateInfos.UPDATE_INFO.getChatId());
+        verify(botInnerService, times(0)).clearUserInputsAndSetInputStateAndGroup(MockUpdateInfos.UPDATE_INFO.getChatId());
         verify(botInnerService, times(0)).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.ITEM_FILTER_NAME);
         verify(botInnerService, times(0)).setUserInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.ITEM_FILTER_SHOW_OR_REMOVE);
 

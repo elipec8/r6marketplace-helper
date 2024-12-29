@@ -12,4 +12,10 @@ import lombok.NoArgsConstructor;
 public class TelegramUserInputEntityId {
     private TelegramUserEntity telegramUser;
     private InputState inputState;
+
+    public TelegramUserInputEntityId(String chatId, InputState inputState) {
+        this.telegramUser = new TelegramUserEntity();
+        this.telegramUser.setChatId(chatId);
+        this.inputState = inputState;
+    }
 }

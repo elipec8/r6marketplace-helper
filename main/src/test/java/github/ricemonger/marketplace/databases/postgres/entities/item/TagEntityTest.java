@@ -3,9 +3,6 @@ package github.ricemonger.marketplace.databases.postgres.entities.item;
 import github.ricemonger.utils.enums.TagGroup;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 class TagEntityTest {
 
     @Test

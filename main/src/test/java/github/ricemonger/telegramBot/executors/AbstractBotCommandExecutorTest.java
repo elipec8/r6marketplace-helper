@@ -1,9 +1,10 @@
 package github.ricemonger.telegramBot.executors;
 
+import github.ricemonger.telegramBot.CallbackButton;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.telegramBot.client.BotInnerService;
-import github.ricemonger.telegramBot.client.CallbackButton;
+import github.ricemonger.telegramBot.update_consumer.BotInnerService;
+import github.ricemonger.telegramBot.update_consumer.executors.AbstractBotCommandExecutor;
 import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,7 +54,7 @@ class AbstractBotCommandExecutorTest {
 
         abstractBotCommandExecutor.processFirstInput(InputState.ITEM_FILTER_ITEM_NAME_PATTERNS, InputGroup.ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT, "question");
 
-        verify(botInnerService).clearUserInputs(updateInfo.getChatId());
+        verify(botInnerService).clearUserInputsAndSetInputStateAndGroup(updateInfo.getChatId());
         verify(botInnerService).setUserInputState(updateInfo.getChatId(), InputState.ITEM_FILTER_ITEM_NAME_PATTERNS);
         verify(botInnerService).setUserInputGroup(updateInfo.getChatId(), InputGroup.ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT);
         verify(abstractBotCommandExecutor).sendText("question");
@@ -66,7 +67,7 @@ class AbstractBotCommandExecutorTest {
 
         abstractBotCommandExecutor.processFirstInput(InputState.ITEM_FILTER_ITEM_NAME_PATTERNS, InputGroup.ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT);
 
-        verify(botInnerService).clearUserInputs(updateInfo.getChatId());
+        verify(botInnerService).clearUserInputsAndSetInputStateAndGroup(updateInfo.getChatId());
         verify(botInnerService).setUserInputState(updateInfo.getChatId(), InputState.ITEM_FILTER_ITEM_NAME_PATTERNS);
         verify(botInnerService).setUserInputGroup(updateInfo.getChatId(), InputGroup.ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT);
     }
@@ -78,7 +79,7 @@ class AbstractBotCommandExecutorTest {
 
         abstractBotCommandExecutor.processMiddleInput(InputState.ITEM_FILTER_ITEM_NAME_PATTERNS, "question");
 
-        verify(botInnerService).saveUserInput(updateInfo);
+        verify(botInnerService).saveUserInputAndSetInputState(updateInfo);
         verify(botInnerService).setUserInputState(updateInfo.getChatId(), InputState.ITEM_FILTER_ITEM_NAME_PATTERNS);
         verify(abstractBotCommandExecutor).sendText("question");
     }
@@ -90,7 +91,7 @@ class AbstractBotCommandExecutorTest {
 
         abstractBotCommandExecutor.processMiddleInput(InputState.ITEM_FILTER_ITEM_NAME_PATTERNS);
 
-        verify(botInnerService).saveUserInput(updateInfo);
+        verify(botInnerService).saveUserInputAndSetInputState(updateInfo);
         verify(botInnerService).setUserInputState(updateInfo.getChatId(), InputState.ITEM_FILTER_ITEM_NAME_PATTERNS);
     }
 
@@ -101,7 +102,7 @@ class AbstractBotCommandExecutorTest {
 
         abstractBotCommandExecutor.processLastInput("text");
 
-        verify(botInnerService).saveUserInput(updateInfo);
+        verify(botInnerService).saveUserInputAndSetInputState(updateInfo);
         verify(botInnerService).setUserInputState(updateInfo.getChatId(), InputState.BASE);
         verify(botInnerService).setUserInputGroup(updateInfo.getChatId(), InputGroup.BASE);
         verify(abstractBotCommandExecutor).sendText("text");
@@ -114,7 +115,7 @@ class AbstractBotCommandExecutorTest {
 
         abstractBotCommandExecutor.processLastInput();
 
-        verify(botInnerService).saveUserInput(updateInfo);
+        verify(botInnerService).saveUserInputAndSetInputState(updateInfo);
         verify(botInnerService).setUserInputState(updateInfo.getChatId(), InputState.BASE);
         verify(botInnerService).setUserInputGroup(updateInfo.getChatId(), InputGroup.BASE);
     }
@@ -196,7 +197,7 @@ class AbstractBotCommandExecutorTest {
 
         abstractBotCommandExecutor.cancel();
 
-        verify(botInnerService).clearUserInputs(updateInfo.getChatId());
+        verify(botInnerService).clearUserInputsAndSetInputStateAndGroup(updateInfo.getChatId());
         verify(botInnerService).setUserInputState(updateInfo.getChatId(), InputState.BASE);
         verify(botInnerService).setUserInputGroup(updateInfo.getChatId(), InputGroup.BASE);
         verify(botInnerService).sendText(same(updateInfo), any());
@@ -209,7 +210,7 @@ class AbstractBotCommandExecutorTest {
 
         abstractBotCommandExecutor.silentCancel();
 
-        verify(botInnerService).clearUserInputs(updateInfo.getChatId());
+        verify(botInnerService).clearUserInputsAndSetInputStateAndGroup(updateInfo.getChatId());
         verify(botInnerService).setUserInputState(updateInfo.getChatId(), InputState.BASE);
         verify(botInnerService).setUserInputGroup(updateInfo.getChatId(), InputGroup.BASE);
         verify(botInnerService, times(0)).sendText(same(updateInfo), any());

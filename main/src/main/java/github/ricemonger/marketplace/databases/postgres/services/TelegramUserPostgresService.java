@@ -2,9 +2,11 @@ package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.entities.user.ItemFilterEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
+import github.ricemonger.marketplace.databases.postgres.repositories.InputStateAndGroupTelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.ItemFilterEntityMapper;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TelegramUserEntityMapper;
+import github.ricemonger.marketplace.services.DTOs.TelegramUserInputStateAndGroup;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserDatabaseService;
 import github.ricemonger.utils.DTOs.personal.*;
 import github.ricemonger.utils.exceptions.client.TelegramUserAlreadyExistsException;
@@ -23,6 +25,8 @@ import java.util.List;
 public class TelegramUserPostgresService implements TelegramUserDatabaseService {
 
     private final TelegramUserPostgresRepository telegramUserRepository;
+
+    private final InputStateAndGroupTelegramUserPostgresRepository inputStateAndGroupTelegramUserRepository;
 
     private final TelegramUserEntityMapper telegramUserEntityMapper;
 
@@ -134,6 +138,11 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     @Override
     public TelegramUser findUserById(String chatId) throws TelegramUserDoesntExistException {
         return telegramUserEntityMapper.createTelegramUser(getTelegramUserEntityByIdOrThrow(chatId));
+    }
+
+    @Override
+    public TelegramUserInputStateAndGroup findUserInputStateAndGroupById(String chatId) throws TelegramUserDoesntExistException {
+        return telegramUserEntityMapper.createInputStateAndGroupDTO(inputStateAndGroupTelegramUserRepository.findById(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found")));
     }
 
     @Override

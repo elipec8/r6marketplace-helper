@@ -1,11 +1,14 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
+import github.ricemonger.marketplace.databases.postgres.entities.tg_user_input_group_and_state.InputStateAndGroupTelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.ItemFilterEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
+import github.ricemonger.marketplace.databases.postgres.repositories.InputStateAndGroupTelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.ItemFilterEntityMapper;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TelegramUserEntityMapper;
+import github.ricemonger.marketplace.services.DTOs.TelegramUserInputStateAndGroup;
 import github.ricemonger.utils.DTOs.personal.*;
 import github.ricemonger.utils.exceptions.client.TelegramUserAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
@@ -30,6 +33,8 @@ class TelegramUserPostgresServiceTest {
     private TelegramUserPostgresService telegramUserService;
     @MockBean
     private TelegramUserPostgresRepository telegramUserRepository;
+    @MockBean
+    private InputStateAndGroupTelegramUserPostgresRepository inputStateAndGroupTelegramUserRepository;
     @MockBean
     private TelegramUserEntityMapper telegramUserEntityMapper;
     @MockBean
@@ -261,6 +266,19 @@ class TelegramUserPostgresServiceTest {
         when(telegramUserRepository.findById(any())).thenReturn(java.util.Optional.empty());
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.findUserById("chatId"));
+    }
+
+    @Test
+    public void findUserInputStateAndGroupById_should_return_mapped_repository_result() {
+        InputStateAndGroupTelegramUserEntity entity = Mockito.mock(InputStateAndGroupTelegramUserEntity.class);
+
+        when(inputStateAndGroupTelegramUserRepository.findById("chatId")).thenReturn(java.util.Optional.of(entity));
+
+        TelegramUserInputStateAndGroup dto = Mockito.mock(TelegramUserInputStateAndGroup.class);
+
+        when(telegramUserEntityMapper.createInputStateAndGroupDTO(same(entity))).thenReturn(dto);
+
+        assertSame(dto, telegramUserService.findUserInputStateAndGroupById("chatId"));
     }
 
     @Test

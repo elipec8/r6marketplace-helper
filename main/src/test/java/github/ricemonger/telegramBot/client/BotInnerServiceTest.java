@@ -2,8 +2,12 @@ package github.ricemonger.telegramBot.client;
 
 
 import github.ricemonger.marketplace.services.*;
+import github.ricemonger.telegramBot.CallbackButton;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.UpdateInfo;
+import github.ricemonger.telegramBot.update_consumer.BotInnerService;
+import github.ricemonger.telegramBot.update_consumer.ItemFilterFromInputsMapper;
+import github.ricemonger.telegramBot.update_consumer.TradeManagerFromInputsMapper;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.Tag;
 import github.ricemonger.utils.DTOs.personal.*;
@@ -22,7 +26,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -92,52 +95,6 @@ public class BotInnerServiceTest {
         doThrow(new RuntimeException()).when(telegramBotClientService).askFromInlineKeyboard(same(updateInfo), same(text), same(buttonsInLine), same(buttons));
 
         assertThrows(RuntimeException.class, () -> botInnerService.askFromInlineKeyboard(updateInfo, text, buttonsInLine, buttons));
-    }
-
-    @Test
-    public void sendMultipleObjectsStringsInMessage_should_send_proper_amount_of_messages() {
-        when(commonValuesService.getMaximumTelegramMessageHeight()).thenReturn(3);
-
-        int objectStringHeight = 2;
-        long chatId = 1L;
-
-        Collection<Object> objects = new ArrayList<>();
-
-        botInnerService.sendMultipleObjectStringsGroupedInMessages(objects, objectStringHeight, chatId);
-        verify(telegramBotClientService, times(0)).sendText(anyString(), any());
-
-        objects.add(new Object());
-        botInnerService.sendMultipleObjectStringsGroupedInMessages(objects, objectStringHeight, chatId);
-        verify(telegramBotClientService, times(1)).sendText(anyString(), any());
-
-        objects.add(new Object());
-        reset(telegramBotClientService);
-        botInnerService.sendMultipleObjectStringsGroupedInMessages(objects, objectStringHeight, chatId);
-        verify(telegramBotClientService, times(2)).sendText(anyString(), any());
-
-        when(commonValuesService.getMaximumTelegramMessageHeight()).thenReturn(2);
-        objects.add(new Object());
-        reset(telegramBotClientService);
-        botInnerService.sendMultipleObjectStringsGroupedInMessages(objects, objectStringHeight, chatId);
-        verify(telegramBotClientService, times(3)).sendText(anyString(), any());
-    }
-
-    @Test
-    public void sendMultipleObjectsStringsInMessage_should_throw_exception_if_service_throws() {
-        when(commonValuesService.getMaximumTelegramMessageHeight()).thenReturn(4);
-
-        int objectStringHeight = 2;
-        long chatId = 1L;
-
-        Collection<Object> objects = new ArrayList<>();
-        objects.add(new Object());
-
-        doThrow(new RuntimeException()).when(telegramBotClientService).sendText(anyString(), any());
-
-        assertThrows(RuntimeException.class, () -> botInnerService.sendMultipleObjectStringsGroupedInMessages(objects, objectStringHeight, chatId));
-
-        objects.add(new Object());
-        assertThrows(RuntimeException.class, () -> botInnerService.sendMultipleObjectStringsGroupedInMessages(objects, objectStringHeight, chatId));
     }
 
     @Test
@@ -449,7 +406,7 @@ public class BotInnerServiceTest {
     }
 
     @Test
-    public void saveUserInput_should_save_input_from_message_text() {
+    public void saveUserInput_should_save_InputAndSet_input_State_from_message_text() {
         UpdateInfo updateInfo = new UpdateInfo();
         updateInfo.setChatId(1L);
         updateInfo.setInputState(InputState.UBI_ACCOUNT_ENTRY_EMAIL);
@@ -457,13 +414,13 @@ public class BotInnerServiceTest {
         updateInfo.setMessageText("text");
         updateInfo.setHasMessage(true);
 
-        botInnerService.saveUserInput(updateInfo);
+        botInnerService.saveUserInputAndSetInputState(updateInfo);
 
         verify(telegramUserService).saveUserInput(updateInfo.getChatId(), updateInfo.getInputState(), updateInfo.getMessageText());
     }
 
     @Test
-    public void saveUserInput_should_save_input_from_callback_data() {
+    public void saveUserInput_should_save_InputAndSet_input_State_from_callback_data() {
         UpdateInfo updateInfo = new UpdateInfo();
         updateInfo.setChatId(1L);
         updateInfo.setInputState(InputState.UBI_ACCOUNT_ENTRY_EMAIL);
@@ -471,23 +428,23 @@ public class BotInnerServiceTest {
         updateInfo.setCallbackQueryData("data");
         updateInfo.setHasCallBackQuery(true);
 
-        botInnerService.saveUserInput(updateInfo);
+        botInnerService.saveUserInputAndSetInputState(updateInfo);
 
         verify(telegramUserService).saveUserInput(updateInfo.getChatId(), updateInfo.getInputState(), updateInfo.getCallbackQueryData());
     }
 
     @Test
-    public void saveUserInput_should_throw_if_no_text_or_data_provided() {
+    public void saveUserInputAndSetInput_State_should_throw_if_no_text_or_data_provided() {
         UpdateInfo updateInfo = new UpdateInfo();
         updateInfo.setChatId(1L);
         updateInfo.setInputState(InputState.UBI_ACCOUNT_ENTRY_EMAIL);
         updateInfo.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
 
-        assertThrows(InvalidTelegramUserInputException.class, () -> botInnerService.saveUserInput(updateInfo));
+        assertThrows(InvalidTelegramUserInputException.class, () -> botInnerService.saveUserInputAndSetInputState(updateInfo));
     }
 
     @Test
-    public void saveUserInput_should_throw_if_user_doesnt_exist() {
+    public void saveUserInput_should_throw_if_user_InputAndSet_doesnt_existState() {
         UpdateInfo updateInfo = new UpdateInfo();
         updateInfo.setChatId(1L);
         updateInfo.setInputState(InputState.UBI_ACCOUNT_ENTRY_EMAIL);
@@ -497,21 +454,21 @@ public class BotInnerServiceTest {
 
         doThrow(new TelegramUserDoesntExistException("")).when(telegramUserService).saveUserInput(any(), any(), any());
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> botInnerService.saveUserInput(updateInfo));
+        assertThrows(TelegramUserDoesntExistException.class, () -> botInnerService.saveUserInputAndSetInputState(updateInfo));
     }
 
     @Test
-    public void clearUserInputs_should_handle_to_service() {
+    public void clearUserInputs_AndSetInputStateAndGroup_should_handle_to_service() {
         long chatId = 1L;
-        botInnerService.clearUserInputs(chatId);
+        botInnerService.clearUserInputsAndSetInputStateAndGroup(chatId);
         verify(telegramUserService).clearUserInputs(chatId);
     }
 
     @Test
-    public void clearUserInputs_should_throw_if_user_doesnt_exist() {
+    public void clearUserInputs_should_throw_if_user_doesnt_existAndSetInputStateAndGroup() {
         long chatId = 1L;
         doThrow(new TelegramUserDoesntExistException("")).when(telegramUserService).clearUserInputs(chatId);
-        assertThrows(TelegramUserDoesntExistException.class, () -> botInnerService.clearUserInputs(chatId));
+        assertThrows(TelegramUserDoesntExistException.class, () -> botInnerService.clearUserInputsAndSetInputStateAndGroup(chatId));
     }
 
     @Test

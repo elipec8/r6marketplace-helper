@@ -2,57 +2,20 @@ package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.configurations.TelegramBotConfiguration;
 import github.ricemonger.marketplace.services.configurations.UbiServiceConfiguration;
-import github.ricemonger.utils.DTOs.common.ConfigTrades;
-import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
-import github.ricemonger.utils.abstract_services.CommonValuesDatabaseService;
 import github.ricemonger.utils.enums.ItemRarity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class CommonValuesService {
 
-    private final CommonValuesDatabaseService commonValuesDatabaseService;
-
     private final UbiServiceConfiguration ubiServiceConfiguration;
 
     private final TelegramBotConfiguration telegramBotConfiguration;
 
-    public ConfigTrades getConfigTrades() {
-        return commonValuesDatabaseService.getConfigTrades();
-    }
-
-    public String getPaymentItemId() {
-        return commonValuesDatabaseService.getPaymentItemId();
-    }
-
-    public String getMainUserAuthorizationToken() {
-        return commonValuesDatabaseService.getMainUserAuthorizationToken();
-    }
-
-    public String getMainUserProfileId() {
-        return commonValuesDatabaseService.getMainUserProfileId();
-    }
-
-    public String getMainUserSessionId() {
-        return commonValuesDatabaseService.getMainUserSessionId();
-    }
-
-    public String getMainUserRememberMeTicket() {
-        return commonValuesDatabaseService.getMainUserRememberMeTicket();
-    }
-
-    public void setMainUserAuthorization(AuthorizationDTO dto) {
-        int expireTimeout = ubiServiceConfiguration.getExpireTimeout();
-        commonValuesDatabaseService.setMainUserAuthorization(dto, expireTimeout);
-    }
 
     public String getTrustedDeviceId() {
         return ubiServiceConfiguration.getTrustedDeviceId();
@@ -60,10 +23,6 @@ public class CommonValuesService {
 
     public String getTrustedDeviceFriendlyName() {
         return ubiServiceConfiguration.getTrustedDeviceFriendlyName();
-    }
-
-    public String getGraphqlUrl() {
-        return ubiServiceConfiguration.getGraphqlUrl();
     }
 
     public String getAuthorizationUrl() {
@@ -82,36 +41,8 @@ public class CommonValuesService {
         return ubiServiceConfiguration.getUserAgent();
     }
 
-    public String getUbiBaseAppId() {
-        return ubiServiceConfiguration.getUbiBaseAppId();
-    }
-
     public String getUbiTwoFaAppId() {
         return ubiServiceConfiguration.getUbiTwoFaAppId();
-    }
-
-    public String getUbiGameSpaceId() {
-        return ubiServiceConfiguration.getUbiSpaceId();
-    }
-
-    public String getUbiRegionId() {
-        return ubiServiceConfiguration.getUbiRegionId();
-    }
-
-    public String getUbiLocaleCode() {
-        return ubiServiceConfiguration.getUbiLocaleCode();
-    }
-
-    public Integer getExpireTimeout() {
-        return ubiServiceConfiguration.getExpireTimeout();
-    }
-
-    public String getDateFormat() {
-        return ubiServiceConfiguration.getDateFormat();
-    }
-
-    public String getItemSaleStatsDateFormat() {
-        return ubiServiceConfiguration.getItemSaleStatsDateFormat();
     }
 
     public int getMinimumPriceByRarity(ItemRarity rarity) {
@@ -186,19 +117,5 @@ public class CommonValuesService {
 
     public Integer getMaximumTelegramMessageLimit() {
         return telegramBotConfiguration.getMessageLimit();
-    }
-
-    public LocalDateTime getLastUbiUsersStatsFetchTime() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ubiServiceConfiguration.getDateFormat());
-        try {
-            return LocalDateTime.parse(commonValuesDatabaseService.getLastUbiUsersStatsFetchTime(), formatter);
-        } catch (DateTimeParseException e) {
-            return LocalDateTime.now().minusDays(1).withNano(0);
-        }
-    }
-
-    public void setLastUbiUsersStatsFetchTime(LocalDateTime localDateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ubiServiceConfiguration.getDateFormat());
-        commonValuesDatabaseService.setLastUbiUsersStatsFetchTime(formatter.format(localDateTime));
     }
 }

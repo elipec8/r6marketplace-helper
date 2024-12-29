@@ -1,8 +1,8 @@
 package github.ricemonger.telegramBot.executors;
 
+import github.ricemonger.telegramBot.CallbackButton;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.telegramBot.client.CallbackButton;
 import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
 

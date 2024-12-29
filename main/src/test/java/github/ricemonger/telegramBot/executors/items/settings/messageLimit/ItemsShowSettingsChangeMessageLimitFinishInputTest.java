@@ -1,7 +1,8 @@
 package github.ricemonger.telegramBot.executors.items.settings.messageLimit;
 
-import github.ricemonger.telegramBot.client.BotInnerService;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
+import github.ricemonger.telegramBot.update_consumer.BotInnerService;
+import github.ricemonger.telegramBot.update_consumer.executors.items.settings.messageLimit.ItemsShowSettingsChangeMessageLimitFinishInput;
 import github.ricemonger.utils.DTOs.personal.ItemShowSettings;
 import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
@@ -28,7 +29,7 @@ class ItemsShowSettingsChangeMessageLimitFinishInputTest {
 
         verify(botInnerService).setUserItemShowSettingsMessageLimitOrEdgeValueByUserInput(MockUpdateInfos.UPDATE_INFO.getChatId());
 
-        verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO);
+        verify(botInnerService).saveUserInputAndSetInputState(MockUpdateInfos.UPDATE_INFO);
         verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.BASE);
         verify(botInnerService).setUserInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.BASE);
 

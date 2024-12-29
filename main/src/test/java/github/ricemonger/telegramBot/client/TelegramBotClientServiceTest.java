@@ -1,11 +1,13 @@
 package github.ricemonger.telegramBot.client;
 
+import github.ricemonger.marketplace.services.CommonValuesService;
+import github.ricemonger.telegramBot.CallbackButton;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.utils.exceptions.server.TelegramApiRuntimeException;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -13,21 +15,22 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class TelegramBotClientServiceTest {
-
+    @SpyBean
+    private TelegramBotClientService telegramBotClientService;
     @MockBean
     private TelegramBotClient telegramBotClient;
-
-    @Autowired
-    private TelegramBotClientService telegramBotClientService;
+    @MockBean
+    private CommonValuesService commonValuesService;
 
     @Test
     public void askFromInlineKeyboardShouldCreateKeyboardMarkupAndHandleItToClient() throws Exception {
@@ -114,5 +117,51 @@ class TelegramBotClientServiceTest {
 
         assertThrows(TelegramApiRuntimeException.class, () -> telegramBotClientService.sendText(updateInfo, "message"));
         assertThrows(TelegramApiRuntimeException.class, () -> telegramBotClientService.sendText(String.valueOf(updateInfo.getChatId()), "message"));
+    }
+
+    @Test
+    public void sendMultipleObjectsStringsInMessage_should_send_proper_amount_of_messages() {
+        when(commonValuesService.getMaximumTelegramMessageHeight()).thenReturn(3);
+
+        int objectStringHeight = 2;
+        long chatId = 1L;
+
+        Collection<Object> objects = new ArrayList<>();
+
+        telegramBotClientService.sendMultipleObjectStringsGroupedInMessages(objects, objectStringHeight, chatId);
+        verify(telegramBotClientService, times(0)).sendText(anyString(), any());
+
+        objects.add(new Object());
+        telegramBotClientService.sendMultipleObjectStringsGroupedInMessages(objects, objectStringHeight, chatId);
+        verify(telegramBotClientService, times(1)).sendText(anyString(), any());
+
+        objects.add(new Object());
+        reset(telegramBotClientService);
+        telegramBotClientService.sendMultipleObjectStringsGroupedInMessages(objects, objectStringHeight, chatId);
+        verify(telegramBotClientService, times(2)).sendText(anyString(), any());
+
+        when(commonValuesService.getMaximumTelegramMessageHeight()).thenReturn(2);
+        objects.add(new Object());
+        reset(telegramBotClientService);
+        telegramBotClientService.sendMultipleObjectStringsGroupedInMessages(objects, objectStringHeight, chatId);
+        verify(telegramBotClientService, times(3)).sendText(anyString(), any());
+    }
+
+    @Test
+    public void sendMultipleObjectsStringsInMessage_should_throw_exception_if_service_throws() {
+        when(commonValuesService.getMaximumTelegramMessageHeight()).thenReturn(4);
+
+        int objectStringHeight = 2;
+        long chatId = 1L;
+
+        Collection<Object> objects = new ArrayList<>();
+        objects.add(new Object());
+
+        doThrow(new RuntimeException()).when(telegramBotClientService).sendText(anyString(), any());
+
+        assertThrows(RuntimeException.class, () -> telegramBotClientService.sendMultipleObjectStringsGroupedInMessages(objects, objectStringHeight, chatId));
+
+        objects.add(new Object());
+        assertThrows(RuntimeException.class, () -> telegramBotClientService.sendMultipleObjectStringsGroupedInMessages(objects, objectStringHeight, chatId));
     }
 }

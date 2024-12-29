@@ -3,6 +3,7 @@ package github.ricemonger.telegramBot.client;
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.TagService;
 import github.ricemonger.telegramBot.Callbacks;
+import github.ricemonger.telegramBot.update_consumer.ItemFilterFromInputsMapper;
 import github.ricemonger.utils.DTOs.common.Tag;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.DTOs.personal.TelegramUserInput;
