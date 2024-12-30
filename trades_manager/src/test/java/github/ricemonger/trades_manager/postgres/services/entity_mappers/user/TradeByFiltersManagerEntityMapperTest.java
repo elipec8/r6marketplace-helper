@@ -4,7 +4,7 @@ import github.ricemonger.trades_manager.postgres.entities.manageable_users.ItemF
 import github.ricemonger.trades_manager.postgres.entities.manageable_users.ManageableUserEntity;
 import github.ricemonger.trades_manager.postgres.entities.manageable_users.TradeByFiltersManagerEntity;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
-import github.ricemonger.utils.DTOs.personal.TradeByFiltersManager;
+import github.ricemonger.trades_manager.services.DTOs.TradeByFiltersManager;
 import github.ricemonger.utils.enums.TradeOperationType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

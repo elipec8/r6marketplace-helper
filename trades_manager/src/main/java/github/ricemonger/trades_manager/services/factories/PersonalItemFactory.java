@@ -4,7 +4,7 @@ import github.ricemonger.trades_manager.services.DTOs.PersonalItem;
 import github.ricemonger.trades_manager.services.DTOs.Trade;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
-import github.ricemonger.utils.DTOs.personal.TradeByFiltersManager;
+import github.ricemonger.trades_manager.services.DTOs.TradeByFiltersManager;
 import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

@@ -2,7 +2,6 @@ package github.ricemonger.trades_manager.postgres.repositories;
 
 import github.ricemonger.trades_manager.postgres.entities.items.ItemIdEntity;
 import github.ricemonger.trades_manager.postgres.entities.manageable_users.*;
-import github.ricemonger.utils.DTOs.personal.UbiAccountAuthorizationEntry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +29,6 @@ class ManageableUserPostgresRepositoryTest {
         userRepository.save(new ManageableUserEntity());
         userRepository.save(new ManageableUserEntity());
         userRepository.save(new ManageableUserEntity());
-
-        UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry = new UbiAccountAuthorizationEntry();
-        ubiAccountAuthorizationEntry.setEmail("email");
-
 
         // Have managers, true flag and ubi account entry - must be returned
 
