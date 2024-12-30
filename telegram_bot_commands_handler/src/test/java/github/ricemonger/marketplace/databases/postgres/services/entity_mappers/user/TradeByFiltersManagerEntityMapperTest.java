@@ -1,6 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
-import github.ricemonger.marketplace.databases.postgres.custom_repositories.tg_user_item_filter_service.ItemFilterUserIdEntity;
+import github.ricemonger.marketplace.databases.postgres.custom.item_filters.entities.ItemFilterEntity;
+import github.ricemonger.marketplace.databases.postgres.custom.trade_managers.service.TradeByFiltersManagerEntityMapper;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByFiltersManagerEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
@@ -30,7 +31,7 @@ class TradeByFiltersManagerEntityMapperTest {
     @Test
     public void createEntityForTelegramUser_should_properly_map_entity() {
         when(userPostgresRepository.findByTelegramUserChatId("chatId")).thenReturn(new UserEntity(1L));
-        ItemFilterUserIdEntity itemFilterEntity = new ItemFilterUserIdEntity();
+        ItemFilterEntity itemFilterEntity = new ItemFilterEntity();
         itemFilterEntity.setUser(new UserEntity(1L));
         when(itemFilterEntityMapper.createEntityForUser(any(), any())).thenReturn(itemFilterEntity);
 
@@ -65,7 +66,7 @@ class TradeByFiltersManagerEntityMapperTest {
         entity.setName("name");
         entity.setEnabled(true);
         entity.setTradeOperationType(TradeOperationType.BUY);
-        entity.setAppliedFilters(List.of(new ItemFilterUserIdEntity()));
+        entity.setAppliedFilters(List.of(new ItemFilterEntity()));
         entity.setMinDifferenceFromMedianPrice(10);
         entity.setMinDifferenceFromMedianPricePercent(11);
         entity.setPriorityMultiplier(12);

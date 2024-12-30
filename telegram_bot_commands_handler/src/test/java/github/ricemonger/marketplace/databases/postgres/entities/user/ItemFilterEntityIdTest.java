@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
-import github.ricemonger.marketplace.databases.postgres.custom_repositories.tg_user_item_filter_service.ItemFilterUserIdEntityId;
+import github.ricemonger.marketplace.databases.postgres.custom.item_filters.entities.ItemFilterEntityId;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,14 +12,14 @@ class ItemFilterEntityIdTest {
     public void getUserId_should_return_user_id() {
         UserEntity user = new UserEntity();
         user.setId(1L);
-        ItemFilterUserIdEntityId id = new ItemFilterUserIdEntityId(user, "filterName");
+        ItemFilterEntityId id = new ItemFilterEntityId(user, "filterName");
 
         assertEquals(1L, id.getUserId_());
     }
 
     @Test
     public void constructor_should_set_id_fields() {
-        ItemFilterUserIdEntityId id = new ItemFilterUserIdEntityId(1L, "filterName");
+        ItemFilterEntityId id = new ItemFilterEntityId(1L, "filterName");
 
         assertEquals(1L, id.getUserId_());
     }
@@ -33,8 +33,8 @@ class ItemFilterEntityIdTest {
         user2.setId(1L);
         user2.setItemShowNameFlag(false);
 
-        ItemFilterUserIdEntityId id1 = new ItemFilterUserIdEntityId(user1, "filterName");
-        ItemFilterUserIdEntityId id2 = new ItemFilterUserIdEntityId(user2, "filterName");
+        ItemFilterEntityId id1 = new ItemFilterEntityId(user1, "filterName");
+        ItemFilterEntityId id2 = new ItemFilterEntityId(user2, "filterName");
 
         assertEquals(id1.hashCode(), id2.hashCode());
     }
@@ -46,8 +46,8 @@ class ItemFilterEntityIdTest {
         UserEntity user2 = new UserEntity();
         user2.setId(2L);
 
-        ItemFilterUserIdEntityId id1 = new ItemFilterUserIdEntityId(user1, "filterName");
-        ItemFilterUserIdEntityId id2 = new ItemFilterUserIdEntityId(user2, "filterName");
+        ItemFilterEntityId id1 = new ItemFilterEntityId(user1, "filterName");
+        ItemFilterEntityId id2 = new ItemFilterEntityId(user2, "filterName");
 
         assertNotEquals(id1.hashCode(), id2.hashCode());
     }
@@ -57,8 +57,8 @@ class ItemFilterEntityIdTest {
         UserEntity user = new UserEntity();
         user.setId(1L);
 
-        ItemFilterUserIdEntityId id1 = new ItemFilterUserIdEntityId(user, "filterName1");
-        ItemFilterUserIdEntityId id2 = new ItemFilterUserIdEntityId(user, "filterName2");
+        ItemFilterEntityId id1 = new ItemFilterEntityId(user, "filterName1");
+        ItemFilterEntityId id2 = new ItemFilterEntityId(user, "filterName2");
 
         assertNotEquals(id1.hashCode(), id2.hashCode());
     }
@@ -72,8 +72,8 @@ class ItemFilterEntityIdTest {
         user2.setId(1L);
         user2.setItemShowNameFlag(false);
 
-        ItemFilterUserIdEntityId id1 = new ItemFilterUserIdEntityId(user1, "filterName");
-        ItemFilterUserIdEntityId id2 = new ItemFilterUserIdEntityId(user2, "filterName");
+        ItemFilterEntityId id1 = new ItemFilterEntityId(user1, "filterName");
+        ItemFilterEntityId id2 = new ItemFilterEntityId(user2, "filterName");
 
         assertEquals(id1, id2);
     }
@@ -85,8 +85,8 @@ class ItemFilterEntityIdTest {
         UserEntity user2 = new UserEntity();
         user2.setId(2L);
 
-        ItemFilterUserIdEntityId id1 = new ItemFilterUserIdEntityId(user1, "filterName");
-        ItemFilterUserIdEntityId id2 = new ItemFilterUserIdEntityId(user2, "filterName");
+        ItemFilterEntityId id1 = new ItemFilterEntityId(user1, "filterName");
+        ItemFilterEntityId id2 = new ItemFilterEntityId(user2, "filterName");
 
         assertNotEquals(id1, id2);
     }
@@ -96,7 +96,7 @@ class ItemFilterEntityIdTest {
         UserEntity user = new UserEntity();
         user.setId(1L);
 
-        ItemFilterUserIdEntityId id1 = new ItemFilterUserIdEntityId(user, "filterName");
+        ItemFilterEntityId id1 = new ItemFilterEntityId(user, "filterName");
 
         assertNotEquals(null, id1);
     }
@@ -106,7 +106,7 @@ class ItemFilterEntityIdTest {
         UserEntity user = new UserEntity();
         user.setId(1L);
 
-        ItemFilterUserIdEntityId id1 = new ItemFilterUserIdEntityId(user, "filterName");
+        ItemFilterEntityId id1 = new ItemFilterEntityId(user, "filterName");
         Object obj = new Object();
 
         assertNotEquals(id1, obj);
@@ -117,8 +117,8 @@ class ItemFilterEntityIdTest {
         UserEntity user = new UserEntity();
         user.setId(1L);
 
-        ItemFilterUserIdEntityId id1 = new ItemFilterUserIdEntityId(user, "filterName1");
-        ItemFilterUserIdEntityId id2 = new ItemFilterUserIdEntityId(user, "filterName2");
+        ItemFilterEntityId id1 = new ItemFilterEntityId(user, "filterName1");
+        ItemFilterEntityId id2 = new ItemFilterEntityId(user, "filterName2");
 
         assertNotEquals(id1, id2);
     }

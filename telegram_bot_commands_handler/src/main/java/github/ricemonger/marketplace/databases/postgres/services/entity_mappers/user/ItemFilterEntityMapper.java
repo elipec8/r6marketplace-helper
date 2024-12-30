@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
+import github.ricemonger.marketplace.databases.postgres.custom.item_filters.entities.ItemFilterEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
-import github.ricemonger.marketplace.databases.postgres.custom_repositories.tg_user_item_filter_service.ItemFilterUserIdEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item.TagEntityMapper;
@@ -29,11 +29,11 @@ public class ItemFilterEntityMapper {
 
     private final TagEntityMapper tagEntityMapper;
 
-    public ItemFilterUserIdEntity createEntityForTelegramUserChatId(String chatId, ItemFilter filter) {
+    public ItemFilterEntity createEntityForTelegramUserChatId(String chatId, ItemFilter filter) {
         return createEntityForUser(userPostgresRepository.findByTelegramUserChatId(chatId), filter);
     }
 
-    public ItemFilterUserIdEntity createEntityForUser(UserEntity userEntity, ItemFilter filter) {
+    public ItemFilterEntity createEntityForUser(UserEntity userEntity, ItemFilter filter) {
         String name = filter.getName();
         FilterType filterType = filter.getFilterType();
         IsOwnedFilter isOwned = filter.getIsOwned();
@@ -65,7 +65,7 @@ public class ItemFilterEntityMapper {
         Integer minSellPrice = filter.getMinSellPrice();
         Integer maxBuyPrice = filter.getMaxBuyPrice();
 
-        return new ItemFilterUserIdEntity(userEntity,
+        return new ItemFilterEntity(userEntity,
                 name,
                 filterType,
                 isOwned,
@@ -76,7 +76,7 @@ public class ItemFilterEntityMapper {
                 maxBuyPrice);
     }
 
-    public ItemFilter createDTO(ItemFilterUserIdEntity entity) {
+    public ItemFilter createDTO(ItemFilterEntity entity) {
         String name = entity.getName();
         FilterType filterType = entity.getFilterType();
         IsOwnedFilter isOwned = entity.getIsOwned();

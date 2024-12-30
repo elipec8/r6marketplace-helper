@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
-import github.ricemonger.marketplace.databases.postgres.custom_repositories.tg_user_item_filter_service.ItemFilterUserIdEntity;
+import github.ricemonger.marketplace.databases.postgres.custom.item_filters.entities.ItemFilterEntity;
 import github.ricemonger.utils.enums.TradeOperationType;
 import org.junit.jupiter.api.Test;
 
@@ -69,7 +69,7 @@ class TradeByFiltersManagerEntityTest {
 
     @Test
     public void isFullyEqualExceptUser_should_return_true_if_equal_() {
-        ItemFilterUserIdEntity filter = new ItemFilterUserIdEntity();
+        ItemFilterEntity filter = new ItemFilterEntity();
         filter.setUser(new UserEntity(1L));
 
         TradeByFiltersManagerEntity manager1 = new TradeByFiltersManagerEntity();
@@ -97,7 +97,7 @@ class TradeByFiltersManagerEntityTest {
 
     @Test
     public void isFullyEqualExceptUser_should_return_false_if_not_equal_() {
-        ItemFilterUserIdEntity filter = new ItemFilterUserIdEntity();
+        ItemFilterEntity filter = new ItemFilterEntity();
         filter.setUser(new UserEntity(1L));
 
         TradeByFiltersManagerEntity manager1 = new TradeByFiltersManagerEntity();

@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
-import github.ricemonger.marketplace.databases.postgres.custom_repositories.tg_user_item_filter_service.ItemFilterUserIdEntity;
+import github.ricemonger.marketplace.databases.postgres.custom.item_filters.entities.ItemFilterEntity;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.ItemFilterEntityMapper;
 import github.ricemonger.marketplace.services.DTOs.ItemShownFieldsSettings;
 import github.ricemonger.marketplace.services.DTOs.TelegramUser;
@@ -11,8 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class TelegramUserEntityTest {
@@ -124,7 +122,7 @@ class TelegramUserEntityTest {
     @Test
     public void getItemShowAppliedFilters_should_return_item_show_applied_filters() {
         UserEntity user = new UserEntity();
-        ItemFilterUserIdEntity itemFilterEntity = new ItemFilterUserIdEntity();
+        ItemFilterEntity itemFilterEntity = new ItemFilterEntity();
         user.setItemShowAppliedFilters(List.of(itemFilterEntity));
         TelegramUserEntity telegramUser = new TelegramUserEntity();
         telegramUser.setUser(user);
@@ -134,7 +132,7 @@ class TelegramUserEntityTest {
     @Test
     public void setItemShowAppliedFilters_should_set_item_show_applied_filters() {
         UserEntity user = new UserEntity();
-        ItemFilterUserIdEntity itemFilterEntity = new ItemFilterUserIdEntity();
+        ItemFilterEntity itemFilterEntity = new ItemFilterEntity();
         TelegramUserEntity telegramUser = new TelegramUserEntity();
         telegramUser.setUser(user);
         telegramUser.setItemShowAppliedFilters(List.of(itemFilterEntity));

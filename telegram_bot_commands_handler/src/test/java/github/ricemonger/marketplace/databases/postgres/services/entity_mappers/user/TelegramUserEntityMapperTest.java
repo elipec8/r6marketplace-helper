@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
-import github.ricemonger.marketplace.databases.postgres.custom_repositories.tg_user_input_group_and_state.InputStateAndGroupTelegramUserEntity;
+import github.ricemonger.marketplace.databases.postgres.custom.tg_user_input_group_and_state.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.tg_user_input_group_and_state.UserIdEntity;
-import github.ricemonger.marketplace.databases.postgres.custom_repositories.tg_user_item_filter_service.ItemFilterUserIdEntity;
+import github.ricemonger.marketplace.databases.postgres.custom.item_filters.entities.ItemFilterEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
@@ -59,7 +59,7 @@ class TelegramUserEntityMapperTest {
         entity.getUser().setItemShowMinSellPriceFlag(true);
         entity.getUser().setItemsShowSellOrdersCountFlag(false);
         entity.getUser().setItemShowPictureFlag(true);
-        entity.getUser().setItemShowAppliedFilters(List.of(new ItemFilterUserIdEntity()));
+        entity.getUser().setItemShowAppliedFilters(List.of(new ItemFilterEntity()));
         entity.getUser().setNewManagersAreActiveFlag(true);
         entity.getUser().setManagingEnabledFlag(false);
 
@@ -137,7 +137,7 @@ class TelegramUserEntityMapperTest {
 
     @Test
     public void createInputStateAndGroupDTO_should_return_input_state_and_group_dto() {
-        InputStateAndGroupTelegramUserEntity entity = new InputStateAndGroupTelegramUserEntity();
+        TelegramUserEntity entity = new TelegramUserEntity();
         entity.setUser(new UserIdEntity(1L));
         entity.setChatId("chatId");
         entity.setInputState(InputState.ITEM_FILTER_NAME);

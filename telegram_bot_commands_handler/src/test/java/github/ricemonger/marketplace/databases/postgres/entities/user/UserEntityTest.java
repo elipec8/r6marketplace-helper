@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
-import github.ricemonger.marketplace.databases.postgres.custom_repositories.tg_user_item_filter_service.ItemFilterUserIdEntity;
+import github.ricemonger.marketplace.databases.postgres.custom.item_filters.entities.ItemFilterEntity;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -20,7 +20,7 @@ class UserEntityTest {
         user1.setId(1L);
         user1.setTelegramUser(new TelegramUserEntity("chatId", user1));
         user1.setUbiAccountEntry(new UbiAccountEntryEntity(1L, "email", "ubiProfileId"));
-        user1.setItemFilters(List.of(new ItemFilterUserIdEntity()));
+        user1.setItemFilters(List.of(new ItemFilterEntity()));
         user1.setTradeByFiltersManagers(List.of(new TradeByFiltersManagerEntity()));
         user1.setTradeByItemIdManagers(List.of(new TradeByItemIdManagerEntity()));
         user1.setPublicNotificationsEnabledFlag(false);
@@ -32,7 +32,7 @@ class UserEntityTest {
         user1.setItemShowMinSellPriceFlag(false);
         user1.setItemsShowSellOrdersCountFlag(false);
         user1.setItemShowPictureFlag(false);
-        user1.setItemShowAppliedFilters(List.of(new ItemFilterUserIdEntity()));
+        user1.setItemShowAppliedFilters(List.of(new ItemFilterEntity()));
         user1.setNewManagersAreActiveFlag(false);
         user1.setManagingEnabledFlag(false);
 
@@ -75,7 +75,7 @@ class UserEntityTest {
         tradeByItemIdManagerEntity1.setUser(new UserEntity(1L));
         tradeByItemIdManagerEntity1.setItem(new ItemEntity("itemId1"));
 
-        ItemFilterUserIdEntity itemFilterEntity1 = new ItemFilterUserIdEntity();
+        ItemFilterEntity itemFilterEntity1 = new ItemFilterEntity();
         itemFilterEntity1.setUser(new UserEntity(1L));
         itemFilterEntity1.setName("name");
 
@@ -107,7 +107,7 @@ class UserEntityTest {
         tradeByItemIdManagerEntity2.setUser(new UserEntity(1L));
         tradeByItemIdManagerEntity2.setItem(new ItemEntity("itemId1"));
 
-        ItemFilterUserIdEntity itemFilterEntity2 = new ItemFilterUserIdEntity();
+        ItemFilterEntity itemFilterEntity2 = new ItemFilterEntity();
         itemFilterEntity2.setUser(new UserEntity(1L));
         itemFilterEntity2.setName("name");
 
@@ -144,7 +144,7 @@ class UserEntityTest {
         tradeByItemIdManagerEntity1.setUser(new UserEntity(1L));
         tradeByItemIdManagerEntity1.setItem(new ItemEntity("itemId1"));
 
-        ItemFilterUserIdEntity itemFilterEntity1 = new ItemFilterUserIdEntity();
+        ItemFilterEntity itemFilterEntity1 = new ItemFilterEntity();
         itemFilterEntity1.setUser(new UserEntity(1L));
         itemFilterEntity1.setName("name");
 
@@ -161,7 +161,7 @@ class UserEntityTest {
         tradeByItemIdManagerEntity2.setUser(new UserEntity(2L));
         tradeByItemIdManagerEntity2.setItem(new ItemEntity("itemId1"));
 
-        ItemFilterUserIdEntity itemFilterEntity2 = new ItemFilterUserIdEntity();
+        ItemFilterEntity itemFilterEntity2 = new ItemFilterEntity();
         itemFilterEntity2.setUser(new UserEntity(2L));
         itemFilterEntity2.setName("name");
 
@@ -178,7 +178,7 @@ class UserEntityTest {
         tradeByItemIdManagerEntity3.setUser(new UserEntity(1L));
         tradeByItemIdManagerEntity3.setItem(new ItemEntity("itemId2"));
 
-        ItemFilterUserIdEntity itemFilterEntity3 = new ItemFilterUserIdEntity();
+        ItemFilterEntity itemFilterEntity3 = new ItemFilterEntity();
         itemFilterEntity3.setUser(new UserEntity(1L));
         itemFilterEntity3.setName("name2");
 

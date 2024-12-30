@@ -1,10 +1,10 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.custom_repositories.tg_user_input_group_and_state.InputStateAndGroupTelegramUserEntity;
-import github.ricemonger.marketplace.databases.postgres.custom_repositories.tg_user_item_filter_service.ItemFilterUserIdEntity;
+import github.ricemonger.marketplace.databases.postgres.custom.tg_user_input_group_and_state.TelegramUserEntity;
+import github.ricemonger.marketplace.databases.postgres.custom.item_filters.entities.ItemFilterEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
-import github.ricemonger.marketplace.databases.postgres.custom_repositories.tg_user_input_group_and_state.InputStateAndGroupTelegramUserPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.custom.tg_user_input_group_and_state.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.ItemFilterEntityMapper;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TelegramUserEntityMapper;
@@ -34,7 +34,7 @@ class TelegramUserPostgresServiceTest {
     @MockBean
     private TelegramUserPostgresRepository telegramUserRepository;
     @MockBean
-    private InputStateAndGroupTelegramUserPostgresRepository inputStateAndGroupTelegramUserRepository;
+    private TelegramUserPostgresRepository inputStateAndGroupTelegramUserRepository;
     @MockBean
     private TelegramUserEntityMapper telegramUserEntityMapper;
     @MockBean
@@ -153,7 +153,7 @@ class TelegramUserPostgresServiceTest {
 
         ItemFilter filter = new ItemFilter();
 
-        ItemFilterUserIdEntity filterEntity = new ItemFilterUserIdEntity();
+        ItemFilterEntity filterEntity = new ItemFilterEntity();
         when(itemFilterEntityMapper.createEntityForUser(same(userEntity), same(filter))).thenReturn(filterEntity);
 
         telegramUserService.addItemShowAppliedFilter("chatId", filter);
@@ -178,7 +178,7 @@ class TelegramUserPostgresServiceTest {
         List filtersMock = Mockito.mock(List.class);
         when(telegramUserEntity.getItemShowAppliedFilters()).thenReturn(filtersMock);
 
-        ItemFilterUserIdEntity filterEntity = new ItemFilterUserIdEntity();
+        ItemFilterEntity filterEntity = new ItemFilterEntity();
         filterEntity.setName("filterName");
 
         when(filtersMock.size()).thenReturn(1);
@@ -270,7 +270,7 @@ class TelegramUserPostgresServiceTest {
 
     @Test
     public void findUserInputStateAndGroupById_should_return_mapped_repository_result() {
-        InputStateAndGroupTelegramUserEntity entity = Mockito.mock(InputStateAndGroupTelegramUserEntity.class);
+        TelegramUserEntity entity = Mockito.mock(TelegramUserEntity.class);
 
         when(inputStateAndGroupTelegramUserRepository.findById("chatId")).thenReturn(java.util.Optional.of(entity));
 

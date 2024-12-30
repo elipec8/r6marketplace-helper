@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.custom_repositories.tg_user_item_filter_service.ItemFilterUserIdEntity;
-import github.ricemonger.marketplace.databases.postgres.custom_repositories.tg_user_item_filter_service.ItemFilterUserIdPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.custom.item_filters.entities.ItemFilterEntity;
+import github.ricemonger.marketplace.databases.postgres.custom.item_filters.service.ItemFilterPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.ItemFilterEntityMapper;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserItemFilterDatabaseService;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TelegramUserItemFilterPostgresService implements TelegramUserItemFilterDatabaseService {
 
-    private final ItemFilterUserIdPostgresRepository itemFilterRepository;
+    private final ItemFilterPostgresRepository itemFilterRepository;
 
     private final ItemFilterEntityMapper itemFilterEntityMapper;
 
@@ -42,7 +42,7 @@ public class TelegramUserItemFilterPostgresService implements TelegramUserItemFi
     @Override
     @Transactional(readOnly = true)
     public List<String> findAllNamesByChatId(String chatId) throws TelegramUserDoesntExistException {
-        return itemFilterRepository.findAllByUserTelegramUserChatId(chatId).stream().map(ItemFilterUserIdEntity::getName).toList();
+        return itemFilterRepository.findAllByUserTelegramUserChatId(chatId).stream().map(ItemFilterEntity::getName).toList();
     }
 
     @Override

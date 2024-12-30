@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
+import github.ricemonger.marketplace.databases.postgres.custom.trade_managers.service.TelegramUserTradeByItemIdManagerPostgresService;
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByItemIdManagerEntity;
@@ -7,8 +8,8 @@ import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByIte
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.repositories.TradeByItemIdManagerPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TradeByItemIdManagerEntityMapper;
+import github.ricemonger.marketplace.databases.postgres.custom.trade_managers.service.TradeByItemIdManagerPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.custom.trade_managers.service.TradeByItemIdManagerEntityMapper;
 import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TradeByItemIdManagerDoesntExistException;
@@ -46,7 +47,7 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
         TradeByItemIdManagerEntity entity = new TradeByItemIdManagerEntity();
 
 
-        when(tradeByItemIdManagerEntityMapper.createEntityForTelegramUser(eq("chatId"), same(manager))).thenReturn(entity);
+        when(tradeByItemIdManagerEntityMapper.createEntity(eq("chatId"), same(manager))).thenReturn(entity);
 
         telegramUserTradeManagerByItemIdService.save("chatId", manager);
 

@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
-import github.ricemonger.marketplace.databases.postgres.custom_repositories.tg_user_item_filter_service.ItemFilterUserIdEntity;
+import github.ricemonger.marketplace.databases.postgres.custom.item_filters.entities.ItemFilterEntity;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.IsOwnedFilter;
 import org.junit.jupiter.api.Test;
@@ -13,13 +13,13 @@ class ItemFilterEntityTest {
 
     @Test
     public void isEqual_should_return_true_if_same() {
-        ItemFilterUserIdEntity filter = new ItemFilterUserIdEntity();
+        ItemFilterEntity filter = new ItemFilterEntity();
         assertTrue(filter.isEqual(filter));
     }
 
     @Test
     public void isEqual_should_return_true_if_equal_id_fields() {
-        ItemFilterUserIdEntity filter1 = new ItemFilterUserIdEntity();
+        ItemFilterEntity filter1 = new ItemFilterEntity();
         filter1.setUser(new UserEntity(1L));
         filter1.setName("filterName");
         filter1.setFilterType(FilterType.ALLOW);
@@ -30,7 +30,7 @@ class ItemFilterEntityTest {
         filter1.setMinSellPrice(100);
         filter1.setMaxBuyPrice(200);
 
-        ItemFilterUserIdEntity filter2 = new ItemFilterUserIdEntity();
+        ItemFilterEntity filter2 = new ItemFilterEntity();
         filter2.setUser(new UserEntity(1L));
         filter2.setName("filterName");
         filter2.setFilterType(FilterType.DENY);
@@ -46,17 +46,17 @@ class ItemFilterEntityTest {
 
     @Test
     public void isEqual_should_return_false_if_null() {
-        ItemFilterUserIdEntity filter1 = new ItemFilterUserIdEntity();
+        ItemFilterEntity filter1 = new ItemFilterEntity();
         assertFalse(filter1.isEqual(null));
     }
 
     @Test
     public void isEqual_should_return_false_if_different_id_fields() {
-        ItemFilterUserIdEntity filter1 = new ItemFilterUserIdEntity();
+        ItemFilterEntity filter1 = new ItemFilterEntity();
         filter1.setUser(new UserEntity(1L));
         filter1.setName("filterName");
 
-        ItemFilterUserIdEntity filter2 = new ItemFilterUserIdEntity();
+        ItemFilterEntity filter2 = new ItemFilterEntity();
         filter2.setUser(new UserEntity(1L));
         filter2.setName("filterName");
 
@@ -71,14 +71,14 @@ class ItemFilterEntityTest {
     public void getUserId_should_return_user_id() {
         UserEntity user = new UserEntity();
         user.setId(1L);
-        ItemFilterUserIdEntity filter = new ItemFilterUserIdEntity();
+        ItemFilterEntity filter = new ItemFilterEntity();
         filter.setUser(user);
         assertEquals(1L, filter.getUserId_());
     }
 
     @Test
     public void isFullyEqualExceptUser_should_return_true_if_equal_() {
-        ItemFilterUserIdEntity filter1 = new ItemFilterUserIdEntity();
+        ItemFilterEntity filter1 = new ItemFilterEntity();
         filter1.setUser(new UserEntity(1L));
         filter1.setName("filterName");
         filter1.setFilterType(FilterType.ALLOW);
@@ -89,7 +89,7 @@ class ItemFilterEntityTest {
         filter1.setMinSellPrice(100);
         filter1.setMaxBuyPrice(200);
 
-        ItemFilterUserIdEntity filter2 = new ItemFilterUserIdEntity();
+        ItemFilterEntity filter2 = new ItemFilterEntity();
         filter2.setUser(new UserEntity(1L));
         filter2.setName("filterName");
         filter2.setFilterType(FilterType.ALLOW);
@@ -105,7 +105,7 @@ class ItemFilterEntityTest {
 
     @Test
     public void isFullyEqualExceptUser_should_return_false_if_not_equal_() {
-        ItemFilterUserIdEntity filter1 = new ItemFilterUserIdEntity();
+        ItemFilterEntity filter1 = new ItemFilterEntity();
         filter1.setUser(new UserEntity(1L));
         filter1.setName("filterName1");
         filter1.setFilterType(FilterType.ALLOW);
@@ -116,7 +116,7 @@ class ItemFilterEntityTest {
         filter1.setMinSellPrice(100);
         filter1.setMaxBuyPrice(200);
 
-        ItemFilterUserIdEntity filter2 = new ItemFilterUserIdEntity();
+        ItemFilterEntity filter2 = new ItemFilterEntity();
         filter2.setUser(new UserEntity(1L));
         filter2.setName("filterName1");
         filter2.setFilterType(FilterType.ALLOW);

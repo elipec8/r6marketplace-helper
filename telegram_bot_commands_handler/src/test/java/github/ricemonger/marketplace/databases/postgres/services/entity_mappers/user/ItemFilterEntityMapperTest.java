@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
-import github.ricemonger.marketplace.databases.postgres.custom_repositories.tg_user_item_filter_service.ItemFilterUserIdEntity;
+import github.ricemonger.marketplace.databases.postgres.custom.item_filters.entities.ItemFilterEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item.TagEntityMapper;
@@ -47,7 +47,7 @@ class ItemFilterEntityMapperTest {
         filter.setMinSellPrice(1);
         filter.setMaxBuyPrice(2);
 
-        ItemFilterUserIdEntity expected = new ItemFilterUserIdEntity();
+        ItemFilterEntity expected = new ItemFilterEntity();
         expected.setUser(userEntity);
         expected.setName("name");
         expected.setFilterType(FilterType.ALLOW);
@@ -60,7 +60,7 @@ class ItemFilterEntityMapperTest {
 
         when(tagEntityMapper.createEntity(new Tag("value", "name", TagGroup.Rarity))).thenReturn(new TagEntity("value", "name", TagGroup.Rarity));
 
-        ItemFilterUserIdEntity result = itemFilterEntityMapper.createEntityForTelegramUserChatId("chatId", filter);
+        ItemFilterEntity result = itemFilterEntityMapper.createEntityForTelegramUserChatId("chatId", filter);
 
         System.out.println(result);
 
@@ -81,7 +81,7 @@ class ItemFilterEntityMapperTest {
 
         UserEntity userEntity = new UserEntity(1L);
 
-        ItemFilterUserIdEntity expected = new ItemFilterUserIdEntity();
+        ItemFilterEntity expected = new ItemFilterEntity();
         expected.setUser(userEntity);
         expected.setName("name");
         expected.setFilterType(FilterType.ALLOW);
@@ -95,7 +95,7 @@ class ItemFilterEntityMapperTest {
         when(tagEntityMapper.createEntity(new Tag("value", "name", TagGroup.Rarity))).thenReturn(new TagEntity("value", "name", TagGroup.Rarity));
 
 
-        ItemFilterUserIdEntity result = itemFilterEntityMapper.createEntityForUser(userEntity, filter);
+        ItemFilterEntity result = itemFilterEntityMapper.createEntityForUser(userEntity, filter);
 
         System.out.println(result);
 
@@ -106,7 +106,7 @@ class ItemFilterEntityMapperTest {
     public void createDTO_should_properly_map_dto() {
         TagEntity tagEntity = new TagEntity("value", "name", TagGroup.Rarity);
 
-        ItemFilterUserIdEntity entity = new ItemFilterUserIdEntity();
+        ItemFilterEntity entity = new ItemFilterEntity();
         entity.setName("name");
         entity.setFilterType(FilterType.ALLOW);
         entity.setIsOwned(IsOwnedFilter.OWNED);

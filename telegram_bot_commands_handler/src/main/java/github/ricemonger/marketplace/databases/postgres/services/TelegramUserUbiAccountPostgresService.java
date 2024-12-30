@@ -1,12 +1,9 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountEntryEntity;
-import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountAuthorizationEntryPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.UbiAccountEntryEntityMapper;
-import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
 import github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry;
+import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
@@ -19,8 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class TelegramUserUbiAccountPostgresService implements TelegramUserUbiAccountEntryDatabaseService {
 
     private final UbiAccountAuthorizationEntryPostgresRepository ubiAccountAuthorizationEntryRepository;
-
-    private final TelegramUserPostgresRepository telegramUserRepository;
 
     private final UbiAccountEntryEntityMapper ubiAccountEntryEntityMapper;
 

@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
+import github.ricemonger.marketplace.databases.postgres.custom.trade_managers.service.TradeByItemIdManagerEntityMapper;
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByItemIdManagerEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
@@ -48,7 +49,7 @@ class TradeByItemIdManagerEntityMapperTest {
         expected.setBuyBoundaryPrice(10);
         expected.setPriorityMultiplier(2);
 
-        assertTrue(expected.isFullyEqual(tradeByItemIdManagerEntityMapper.createEntityForTelegramUser("chatId", dto)));
+        assertTrue(expected.isFullyEqual(tradeByItemIdManagerEntityMapper.createEntity("chatId", dto)));
     }
 
     @Test
