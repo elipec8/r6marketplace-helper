@@ -1,8 +1,7 @@
 package github.ricemonger.utilspostgresschema.full_entities.user;
 
 import github.ricemonger.utils.enums.TradeOperationType;
-import github.ricemonger.utilspostgresschema.id_entities.user.IdItemFilterEntity;
-import github.ricemonger.utilspostgresschema.id_entities.user.IdTradeByFiltersManagerEntity;
+import github.ricemonger.utilspostgresschema.ids.user.TradeByFiltersManagerEntityId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,13 +9,25 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Objects;
 
+@Table(name = "trade_manager_by_item_filters")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TradeByFiltersManagerEntity extends IdTradeByFiltersManagerEntity {
+@IdClass(TradeByFiltersManagerEntityId.class)
+public class TradeByFiltersManagerEntity {
+    @MapsId
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private UserEntity user;
+
+    @Id
+    @Column(name = "name")
+    private String name;
+
     @Column(name = "enabled")
     private Boolean enabled;
 
@@ -38,4 +49,21 @@ public class TradeByFiltersManagerEntity extends IdTradeByFiltersManagerEntity {
 
     @Column(name = "priority_multiplier")
     private Integer priorityMultiplier;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user, name);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof TradeByFiltersManagerEntity tradeByFiltersManagerEntity)) {
+            return false;
+        }
+        return Objects.equals(user, tradeByFiltersManagerEntity.user) &&
+               Objects.equals(name, tradeByFiltersManagerEntity.name);
+    }
 }

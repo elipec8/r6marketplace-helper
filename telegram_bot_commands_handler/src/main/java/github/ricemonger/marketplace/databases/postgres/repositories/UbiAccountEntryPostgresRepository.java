@@ -4,13 +4,31 @@ import github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry;
 import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountEntryEntity;
 import github.ricemonger.utilspostgresschema.ids.user.UbiAccountEntryEntityId;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 public interface UbiAccountEntryPostgresRepository extends JpaRepository<UbiAccountEntryEntity, UbiAccountEntryEntityId> {
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM UbiAccountEntryEntity u WHERE u.user.telegramUser.chatId = :chatId")
     void deleteByUserTelegramUserChatId(String chatId);
 
+    @Transactional(readOnly = true)
     Optional<UbiAccountEntryEntity> findByUserTelegramUserChatId(String chatId);
 
+    @Transactional(readOnly = true)
+    @Query("SELECT new github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry(" +
+           "u.ubiAccountStats.ubiProfileId," +
+           " u.email," +
+           "u.encodedPassword," +
+           "u.ubiSessionId," +
+           "u.ubiSpaceId," +
+           "u.ubiAuthTicket," +
+           "u.ubiRememberDeviceTicket," +
+           "u.ubiRememberMeTicket) " +
+           "FROM UbiAccountEntryEntity u WHERE u.user.telegramUser.chatId = :chatId")
     Optional<UbiAccountAuthorizationEntry> findUbiAccountAuthorizationEntryByUserTelegramUserChatId(String chatId);
 }

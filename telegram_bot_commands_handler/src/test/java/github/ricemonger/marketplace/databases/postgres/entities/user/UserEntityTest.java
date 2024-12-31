@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
-import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.custom.item_filters.entities.ItemFilterEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

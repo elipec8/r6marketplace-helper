@@ -1,9 +1,9 @@
 package github.ricemonger.telegramBot.executors.items.settings.messageLimit;
 
+import github.ricemonger.marketplace.services.DTOs.ItemShowSettings;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
 import github.ricemonger.telegramBot.update_consumer.BotInnerService;
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.messageLimit.ItemsShowSettingsChangeMessageLimitFinishInput;
-import github.ricemonger.marketplace.services.DTOs.ItemShowSettings;
 import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
 import org.junit.jupiter.api.Test;

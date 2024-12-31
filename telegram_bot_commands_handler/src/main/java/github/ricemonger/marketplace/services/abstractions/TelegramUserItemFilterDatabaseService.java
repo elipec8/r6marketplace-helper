@@ -4,7 +4,6 @@ import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.exceptions.client.ItemFilterDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface TelegramUserItemFilterDatabaseService {
@@ -14,7 +13,7 @@ public interface TelegramUserItemFilterDatabaseService {
 
     ItemFilter findById(String chatId, String name) throws TelegramUserDoesntExistException, ItemFilterDoesntExistException;
 
-    List<String>findAllNamesByChatId(String chatId) throws TelegramUserDoesntExistException;
+    List<String> findAllNamesByChatId(String chatId) throws TelegramUserDoesntExistException;
 
     List<ItemFilter> findAllByChatId(String chatId) throws TelegramUserDoesntExistException;
 }

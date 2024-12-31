@@ -4,6 +4,7 @@ import github.ricemonger.marketplace.databases.postgres.repositories.ItemFilterP
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TelegramUserEntityMapper;
+import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.UserEntityMapper;
 import github.ricemonger.marketplace.services.DTOs.ItemShowSettings;
 import github.ricemonger.marketplace.services.DTOs.ItemShownFieldsSettings;
 import github.ricemonger.marketplace.services.DTOs.TelegramUserInputStateAndGroup;
@@ -31,6 +32,8 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     private final TelegramUserEntityMapper telegramUserEntityMapper;
 
     private final ItemFilterPostgresEntity itemFilterPostgresRepository;
+
+    private final UserEntityMapper userEntityMapper;
 
     private final UserPostgresRepository userRepository;
 
@@ -113,7 +116,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     @Override
     @Transactional(readOnly = true)
     public ItemShowSettings findUserItemShowSettings(String chatId) throws TelegramUserDoesntExistException {
-        return userRepository.findItemShowSettingsByTelegramUserChatId(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found"));
+        return userEntityMapper.mapItemShowSettings(userRepository.findItemShowSettingsByTelegramUserChatId(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found")));
     }
 
     @Override

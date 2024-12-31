@@ -2,7 +2,7 @@ package github.ricemonger.utilspostgresschema.ids.user;
 
 
 import github.ricemonger.utils.enums.InputState;
-import github.ricemonger.utilspostgresschema.id_entities.user.IdTelegramUserEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TelegramUserInputEntityId {
-    private IdTelegramUserEntity telegramUser;
+    private TelegramUserEntity telegramUser;
     private InputState inputState;
 
     public TelegramUserInputEntityId(String chatId, InputState inputState) {
-        this.telegramUser = new IdTelegramUserEntity(chatId);
+        this.telegramUser = new TelegramUserEntity(chatId);
         this.inputState = inputState;
     }
 }

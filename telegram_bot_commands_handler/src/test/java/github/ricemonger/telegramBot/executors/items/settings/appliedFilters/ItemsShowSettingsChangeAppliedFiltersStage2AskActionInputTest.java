@@ -1,10 +1,10 @@
 package github.ricemonger.telegramBot.executors.items.settings.appliedFilters;
 
+import github.ricemonger.marketplace.services.DTOs.ItemShowSettings;
 import github.ricemonger.telegramBot.executors.MockUpdateInfos;
 import github.ricemonger.telegramBot.update_consumer.BotInnerService;
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage2AskActionInput;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
-import github.ricemonger.marketplace.services.DTOs.ItemShowSettings;
 import github.ricemonger.utils.enums.InputState;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

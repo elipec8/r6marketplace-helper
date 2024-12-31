@@ -4,7 +4,7 @@ import github.ricemonger.marketplace.services.DTOs.*;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserInputDatabaseService;
 import github.ricemonger.telegramBot.Callbacks;
-import github.ricemonger.utils.DTOs.personal.*;
+import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;

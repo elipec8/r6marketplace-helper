@@ -1,10 +1,6 @@
 package github.ricemonger.utilspostgresschema.full_entities.user;
 
 import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
-import github.ricemonger.utilspostgresschema.id_entities.item.IdItemEntity;
-import github.ricemonger.utilspostgresschema.id_entities.user.IdItemResaleLockEntity;
-import github.ricemonger.utilspostgresschema.id_entities.user.IdTradeEntity;
-import github.ricemonger.utilspostgresschema.id_entities.user.IdUbiAccountStatsEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,13 +9,19 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+@Table(name = "ubi_account_stats")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UbiAccountStatsEntity extends IdUbiAccountStatsEntity {
+public class UbiAccountStatsEntity {
+    @Id
+    @Column(name = "ubi_profile_id")
+    private String ubiProfileId;
+
     @Column(name = "credit_amount")
     private Integer creditAmount;
 
@@ -52,4 +54,20 @@ public class UbiAccountStatsEntity extends IdUbiAccountStatsEntity {
             joinColumns = {@JoinColumn(name = "ubi_profile_id", referencedColumnName = "ubi_profile_id")},
             inverseJoinColumns = @JoinColumn(name = "trade_id", referencedColumnName = "trade_id"))
     private List<TradeEntity> currentBuyTrades = new ArrayList<>();
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ubiProfileId);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof UbiAccountStatsEntity ubiAccountStatsEntity)) {
+            return false;
+        }
+        return Objects.equals(this.ubiProfileId, ubiAccountStatsEntity.ubiProfileId);
+    }
 }

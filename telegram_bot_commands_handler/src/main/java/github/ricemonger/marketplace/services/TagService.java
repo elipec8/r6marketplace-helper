@@ -20,6 +20,6 @@ public class TagService {
     }
 
     public List<Tag> getAllTagsByTagGroup(TagGroup tagGroup) {
-        return  tagDatabaseService.findAllByTagGroup(tagGroup);
+        return tagDatabaseService.findAllByTagGroup(tagGroup);
     }
 }

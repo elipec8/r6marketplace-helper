@@ -7,7 +7,6 @@ import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccoun
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
-import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountEntryEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,6 +41,6 @@ public class TelegramUserUbiAccountPostgresService implements TelegramUserUbiAcc
     @Override
     @Transactional(readOnly = true)
     public UbiAccountAuthorizationEntry findByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
-      return ubiAccountEntryPostgresRepository.findUbiAccountAuthorizationEntryByUserTelegramUserChatId(chatId).orElseThrow(() -> new UbiAccountEntryDoesntExistException("Ubi account entry for chatId " + chatId + " doesn't exist"));
+        return ubiAccountEntryPostgresRepository.findUbiAccountAuthorizationEntryByUserTelegramUserChatId(chatId).orElseThrow(() -> new UbiAccountEntryDoesntExistException("Ubi account entry for chatId " + chatId + " doesn't exist"));
     }
 }

@@ -1,7 +1,7 @@
 package github.ricemonger.utilspostgresschema.ids.user;
 
-import github.ricemonger.utilspostgresschema.id_entities.item.IdItemEntity;
-import github.ricemonger.utilspostgresschema.id_entities.user.IdUbiAccountStatsEntity;
+import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountStatsEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemResaleLockEntityId {
-    private IdUbiAccountStatsEntity ubiAccount;
-    private IdItemEntity item;
+    private UbiAccountStatsEntity ubiAccount;
+    private ItemEntity item;
 }

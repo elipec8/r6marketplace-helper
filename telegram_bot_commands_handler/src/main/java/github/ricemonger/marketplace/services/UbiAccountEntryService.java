@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationService;
-import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
 import github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry;
+import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
@@ -34,15 +34,15 @@ public class UbiAccountEntryService {
         saveUbiAccountEntry(chatId, user.getEmail(), user.getEncodedPassword(), userAuthorizationDTO);
     }
 
-    public void deleteByChatId(String chatId){
+    public void deleteByChatId(String chatId) {
         telegramUserUbiAccountEntryDatabaseService.deleteByChatId(chatId);
     }
 
-    public UbiAccountAuthorizationEntry findByChatId(String chatId){
+    public UbiAccountAuthorizationEntry findByChatId(String chatId) {
         return telegramUserUbiAccountEntryDatabaseService.findByChatId(chatId);
     }
 
-    private void saveUbiAccountEntry(String chatId, String email, String encodedPassword, AuthorizationDTO authorizationDTO){
+    private void saveUbiAccountEntry(String chatId, String email, String encodedPassword, AuthorizationDTO authorizationDTO) {
         try {
             telegramUserUbiAccountEntryDatabaseService.save(chatId, buildUbiAccount(email, encodedPassword, authorizationDTO));
         } catch (TelegramUserDoesntExistException e) {

@@ -3,8 +3,7 @@ package github.ricemonger.utilspostgresschema.full_entities.user;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.IsOwnedFilter;
 import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
-import github.ricemonger.utilspostgresschema.id_entities.item.IdTagEntity;
-import github.ricemonger.utilspostgresschema.id_entities.user.IdItemFilterEntity;
+import github.ricemonger.utilspostgresschema.ids.user.ItemFilterEntityId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,14 +11,26 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
+@Table(name = "item_filter")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemFilterEntity extends IdItemFilterEntity {
+@IdClass(ItemFilterEntityId.class)
+public class ItemFilterEntity {
+    @MapsId
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private UserEntity user;
+
+    @Id
+    @Column(name = "name")
+    private String name;
+
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "filter_type")
     private FilterType filterType;
@@ -45,4 +56,21 @@ public class ItemFilterEntity extends IdItemFilterEntity {
     private Integer minSellPrice;
     @Column(name = "max_buy_price")
     private Integer maxBuyPrice;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user, name);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ItemFilterEntity itemFilterEntity)) {
+            return false;
+        }
+        return Objects.equals(this.user, itemFilterEntity.user) &&
+               Objects.equals(this.name, itemFilterEntity.name);
+    }
 }

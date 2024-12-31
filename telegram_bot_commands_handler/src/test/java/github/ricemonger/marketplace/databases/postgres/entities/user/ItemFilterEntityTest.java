@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.entities.user;
 
-import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
 import github.ricemonger.marketplace.databases.postgres.custom.item_filters.entities.ItemFilterEntity;
+import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.IsOwnedFilter;
 import org.junit.jupiter.api.Test;

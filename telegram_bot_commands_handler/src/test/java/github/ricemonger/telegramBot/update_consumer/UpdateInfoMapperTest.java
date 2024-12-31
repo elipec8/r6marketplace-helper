@@ -1,8 +1,8 @@
 package github.ricemonger.telegramBot.update_consumer;
 
+import github.ricemonger.marketplace.services.DTOs.TelegramUser;
 import github.ricemonger.marketplace.services.TelegramUserService;
 import github.ricemonger.telegramBot.UpdateInfo;
-import github.ricemonger.marketplace.services.DTOs.TelegramUser;
 import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;

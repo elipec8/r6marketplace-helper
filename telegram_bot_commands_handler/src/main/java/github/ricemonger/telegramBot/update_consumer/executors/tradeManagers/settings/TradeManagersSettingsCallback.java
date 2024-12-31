@@ -1,9 +1,9 @@
 package github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.settings;
 
+import github.ricemonger.marketplace.services.DTOs.TradeManagersSettings;
 import github.ricemonger.telegramBot.CallbackButton;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.update_consumer.executors.AbstractBotCommandExecutor;
-import github.ricemonger.marketplace.services.DTOs.TradeManagersSettings;
 
 public class TradeManagersSettingsCallback extends AbstractBotCommandExecutor {
     @Override

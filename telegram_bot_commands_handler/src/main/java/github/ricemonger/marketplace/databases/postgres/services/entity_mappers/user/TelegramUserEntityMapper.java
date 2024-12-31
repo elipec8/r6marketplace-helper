@@ -45,8 +45,8 @@ public class TelegramUserEntityMapper {
 
         List<ItemFilter> itemShowAppliedFilters = new ArrayList<>();
 
-        if (entity.getItemShowAppliedFilters() != null) {
-            itemShowAppliedFilters.addAll(entity.getItemShowAppliedFilters().stream().map(itemFilterEntityMapper::createDTO).toList());
+        if (entity.getUser().getItemShowAppliedFilters() != null) {
+            itemShowAppliedFilters.addAll(entity.getUser().getItemShowAppliedFilters().stream().map(itemFilterEntityMapper::createDTO).toList());
         }
 
         return new ItemShowSettings(messageLimit,

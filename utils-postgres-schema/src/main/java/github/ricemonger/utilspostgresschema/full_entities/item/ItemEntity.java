@@ -2,8 +2,6 @@ package github.ricemonger.utilspostgresschema.full_entities.item;
 
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
-import github.ricemonger.utilspostgresschema.id_entities.item.IdItemEntity;
-import github.ricemonger.utilspostgresschema.id_entities.item.IdTagEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,13 +10,19 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
+@Table(name = "item")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemEntity extends IdItemEntity {
+public class ItemEntity {
+    @Id
+    @Column(name = "item_id")
+    private String itemId;
+
     @Column(name = "asset_url")
     private String assetUrl;
     @Column(name = "name")
@@ -106,4 +110,20 @@ public class ItemEntity extends IdItemEntity {
     private Integer priceToBuyIn168Hours;
     @Column(name = "price_to_buy_in_720_hours")
     private Integer priceToBuyIn720Hours;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(itemId);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ItemEntity itemEntity)) {
+            return false;
+        }
+        return Objects.equals(this.itemId, itemEntity.itemId);
+    }
 }

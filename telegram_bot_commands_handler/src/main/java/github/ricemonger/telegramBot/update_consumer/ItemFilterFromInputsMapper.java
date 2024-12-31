@@ -1,11 +1,11 @@
 package github.ricemonger.telegramBot.update_consumer;
 
 import github.ricemonger.marketplace.services.CommonValuesService;
+import github.ricemonger.marketplace.services.DTOs.TelegramUserInput;
 import github.ricemonger.marketplace.services.TagService;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.utils.DTOs.common.Tag;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
-import github.ricemonger.marketplace.services.DTOs.TelegramUserInput;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.InputState;
 import github.ricemonger.utils.enums.IsOwnedFilter;

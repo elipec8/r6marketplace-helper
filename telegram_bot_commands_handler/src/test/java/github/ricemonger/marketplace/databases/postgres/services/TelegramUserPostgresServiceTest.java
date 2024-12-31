@@ -1,15 +1,13 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.custom.tg_user_input_group_and_state.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.custom.item_filters.entities.ItemFilterEntity;
+import github.ricemonger.marketplace.databases.postgres.custom.tg_user_input_group_and_state.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
-import github.ricemonger.marketplace.databases.postgres.custom.tg_user_input_group_and_state.TelegramUserPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.ItemFilterEntityMapper;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TelegramUserEntityMapper;
 import github.ricemonger.marketplace.services.DTOs.*;
-import github.ricemonger.utils.DTOs.personal.*;
+import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.exceptions.client.TelegramUserAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import org.junit.jupiter.api.Test;

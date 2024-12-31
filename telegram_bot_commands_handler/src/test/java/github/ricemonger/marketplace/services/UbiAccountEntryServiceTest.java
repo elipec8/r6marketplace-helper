@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.authorization.AuthorizationService;
-import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
 import github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry;
+import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;

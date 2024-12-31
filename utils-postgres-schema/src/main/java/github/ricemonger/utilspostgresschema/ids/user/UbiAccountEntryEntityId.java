@@ -1,6 +1,6 @@
 package github.ricemonger.utilspostgresschema.ids.user;
 
-import github.ricemonger.utilspostgresschema.id_entities.user.IdUserEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UbiAccountEntryEntityId {
-    private IdUserEntity user;
+    private UserEntity user;
     private String email;
 }

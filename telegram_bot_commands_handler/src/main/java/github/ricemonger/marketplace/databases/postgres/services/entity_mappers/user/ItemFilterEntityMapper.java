@@ -10,7 +10,7 @@ import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.ItemFilterEntity;
-import github.ricemonger.utilspostgresschema.id_entities.user.IdUserEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -31,7 +31,8 @@ public class ItemFilterEntityMapper {
     private final TagEntityMapper tagEntityMapper;
 
     public ItemFilterEntity createEntity(String chatId, ItemFilter filter) {
-        IdUserEntity userEntity = userPostgresRepository.findIdEntityByTelegramUserChatId(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
+        UserEntity userEntity = userPostgresRepository.findByTelegramUserChatId(chatId).orElseThrow(() -> new TelegramUserDoesntExistException(
+                "User with chatId " + chatId + " doesn't exist"));
 
         String name = filter.getName();
         FilterType filterType = filter.getFilterType();

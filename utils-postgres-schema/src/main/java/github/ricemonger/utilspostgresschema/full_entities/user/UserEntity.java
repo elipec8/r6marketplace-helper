@@ -1,6 +1,5 @@
 package github.ricemonger.utilspostgresschema.full_entities.user;
 
-import github.ricemonger.utilspostgresschema.id_entities.user.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,13 +8,21 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+@Table(name = "helper_user")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserEntity extends IdUserEntity {
+public class UserEntity {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
+    @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
+    private Long id;
+
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true)
     private TelegramUserEntity telegramUser;
 
@@ -61,4 +68,20 @@ public class UserEntity extends IdUserEntity {
     private Boolean newManagersAreActiveFlag = true;
     @Column(name = "managing_enabled_flag")
     private Boolean managingEnabledFlag = true;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UserEntity userEntity)) {
+            return false;
+        }
+        return Objects.equals(id, userEntity.id);
+    }
 }

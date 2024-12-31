@@ -1,19 +1,31 @@
 package github.ricemonger.utilspostgresschema.full_entities.user;
 
-import github.ricemonger.utilspostgresschema.id_entities.user.IdUbiAccountEntryEntity;
-import github.ricemonger.utilspostgresschema.id_entities.user.IdUbiAccountStatsEntity;
+import github.ricemonger.utilspostgresschema.ids.user.UbiAccountEntryEntityId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
+@Table(name = "ubi_account_authorization_entry")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UbiAccountEntryEntity extends IdUbiAccountEntryEntity {
+@IdClass(UbiAccountEntryEntityId.class)
+public class UbiAccountEntryEntity {
+    @Id
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private UserEntity user;
+
+    @Id
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "encoded_password")
     private String encodedPassword;
 
@@ -34,5 +46,22 @@ public class UbiAccountEntryEntity extends IdUbiAccountEntryEntity {
 
     public String getProfileId_() {
         return ubiAccountStats.getUbiProfileId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user, email);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UbiAccountEntryEntity ubiAccountEntryEntity)) {
+            return false;
+        }
+        return Objects.equals(user, ubiAccountEntryEntity.user) &&
+               Objects.equals(email, ubiAccountEntryEntity.email);
     }
 }
