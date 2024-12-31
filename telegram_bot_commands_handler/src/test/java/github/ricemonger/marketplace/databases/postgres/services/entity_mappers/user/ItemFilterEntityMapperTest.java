@@ -60,7 +60,7 @@ class ItemFilterEntityMapperTest {
 
         when(tagEntityMapper.createEntity(new Tag("value", "name", TagGroup.Rarity))).thenReturn(new TagEntity("value", "name", TagGroup.Rarity));
 
-        ItemFilterEntity result = itemFilterEntityMapper.createEntityForTelegramUserChatId("chatId", filter);
+        ItemFilterEntity result = itemFilterEntityMapper.createEntity("chatId", filter);
 
         System.out.println(result);
 

@@ -20,7 +20,7 @@ public class ItemDaySalesUbiStatsEntity {
     @Id
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id", referencedColumnName = "item_id")
-    private ItemIdEntity item;
+    private ItemEntity item;
 
     @Id
     @Column(name = "date")

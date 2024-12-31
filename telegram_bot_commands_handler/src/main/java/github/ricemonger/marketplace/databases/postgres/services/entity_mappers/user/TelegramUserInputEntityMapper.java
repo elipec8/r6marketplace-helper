@@ -1,9 +1,11 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
-import github.ricemonger.marketplace.databases.postgres.custom.inputs.entities.TelegramUserInputEntity;
-import github.ricemonger.marketplace.databases.postgres.custom.inputs.service.TelegramUserPostgresRepository;
+
+import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.services.DTOs.TelegramUserInput;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
+import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserInputEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -12,13 +14,19 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class TelegramUserInputEntityMapper {
-    private final TelegramUserPostgresRepository telegramUserIdPostgresRepository;
+    private final TelegramUserPostgresRepository telegramUserPostgresRepository;
 
     public TelegramUserInputEntity createEntity(TelegramUserInput input) {
-        return new TelegramUserInputEntity(
-                telegramUserIdPostgresRepository.findById(input.getChatId()).orElseThrow(() -> new TelegramUserDoesntExistException("Telegram user with chatId " + input.getChatId() + " not found")),
-                input.getInputState(),
-                input.getValue());
+        if (telegramUserPostgresRepository.existsById(input.getChatId())) {
+            TelegramUserEntity telegramUserEntity = telegramUserPostgresRepository.getReferenceById(input.getChatId());
+            TelegramUserInputEntity entity = new TelegramUserInputEntity();
+            entity.setTelegramUser(telegramUserEntity);
+            entity.setInputState(input.getInputState());
+            entity.setValue(input.getValue());
+            return entity;
+        } else {
+            throw new TelegramUserDoesntExistException("Telegram user with chatId " + input.getChatId() + " not found");
+        }
     }
 
     public TelegramUserInput createDTO(TelegramUserInputEntity entity) {

@@ -1,6 +1,6 @@
 package github.ricemonger.item_stats_fetcher.databases.postgres.repositories;
 
-import github.ricemonger.item_stats_fetcher.databases.postgres.entities.ItemMainFieldsEntity;
+import github.ricemonger.item_stats_fetcher.databases.postgres.entities.ItemEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,11 +26,11 @@ class ItemMainFieldsPostgresRepositoryTest {
 
     @Test
     public void findAllItemIds_should_return_all_item_ids() {
-        ItemMainFieldsEntity item1 = new ItemMainFieldsEntity();
+        ItemEntity item1 = new ItemEntity();
         item1.setItemId("itemId1");
-        ItemMainFieldsEntity item2 = new ItemMainFieldsEntity();
+        ItemEntity item2 = new ItemEntity();
         item2.setItemId("itemId4");
-        ItemMainFieldsEntity item3 = new ItemMainFieldsEntity();
+        ItemEntity item3 = new ItemEntity();
         item3.setItemId("itemId7");
         itemPostgresRepository.save(item1);
         itemPostgresRepository.save(item2);

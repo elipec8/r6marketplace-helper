@@ -1,14 +1,14 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.custom.inputs.entities.TelegramUserInputEntity;
-import github.ricemonger.marketplace.databases.postgres.custom.inputs.entities.TelegramUserInputEntityId;
-import github.ricemonger.marketplace.databases.postgres.custom.inputs.service.TelegramUserInputPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserInputPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TelegramUserInputEntityMapper;
 import github.ricemonger.marketplace.services.DTOs.TelegramUserInput;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserInputDatabaseService;
 import github.ricemonger.utils.enums.InputState;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.server.TelegramUserInputDoesntExistException;
+import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserInputEntity;
+import github.ricemonger.utilspostgresschema.ids.user.TelegramUserInputEntityId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -42,8 +42,9 @@ public class TelegramUserInputPostgresService implements TelegramUserInputDataba
     @Override
     @Transactional(readOnly = true)
     public TelegramUserInput findById(String chatId, InputState inputState) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
-        return telegramUserInputEntityMapper.createDTO(telegramUserInputRepository.findById(new TelegramUserInputEntityId(chatId, inputState))
-                .orElseThrow(() -> new TelegramUserInputDoesntExistException("Input with chatId " + chatId + " and inputState " + inputState + " " + "not found")));
+        return telegramUserInputRepository.findById(new TelegramUserInputEntityId(chatId, inputState))
+                .map(telegramUserInputEntityMapper::createDTO)
+                .orElseThrow(() -> new TelegramUserInputDoesntExistException("Telegram user input with chatId " + chatId + " and inputState " + inputState + " doesn't exist"));
     }
 
     @Override

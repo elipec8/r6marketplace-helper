@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.databases.postgres.services.entity_mappers
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
-import github.ricemonger.marketplace.databases.postgres.repositories.TagPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.TagPostgresPostgresRepository;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
@@ -22,7 +22,7 @@ class ItemEntityMapperTest {
     @Autowired
     private ItemEntityMapper itemEntityMapper;
     @MockBean
-    private TagPostgresRepository tagRepository;
+    private TagPostgresPostgresRepository tagRepository;
 
     @Test
     public void createDTO_should_properly_map_entity_to_dto() {

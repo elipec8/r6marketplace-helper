@@ -3,7 +3,7 @@ package github.ricemonger.marketplace.databases.postgres.services;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserInputEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserInputEntityId;
-import github.ricemonger.marketplace.databases.postgres.custom.inputs.service.TelegramUserInputPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserInputPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TelegramUserInputEntityMapper;
 import github.ricemonger.marketplace.services.DTOs.TelegramUserInput;

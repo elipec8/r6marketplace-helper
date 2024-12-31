@@ -1,7 +1,7 @@
 package github.ricemonger.item_stats_fetcher.databases.postgres.services.entity_mappers;
 
-import github.ricemonger.item_stats_fetcher.databases.postgres.entities.ItemMainFieldsEntity;
-import github.ricemonger.item_stats_fetcher.databases.postgres.entities.TagValueEntity;
+import github.ricemonger.item_stats_fetcher.databases.postgres.entities.ItemEntity;
+import github.ricemonger.item_stats_fetcher.databases.postgres.entities.TagEntity;
 import github.ricemonger.item_stats_fetcher.databases.postgres.repositories.TagValuePostgresRepository;
 import github.ricemonger.utils.DTOs.common.ItemMainFieldsI;
 import lombok.RequiredArgsConstructor;
@@ -16,16 +16,16 @@ public class ItemMainFieldsPostgresMapper {
 
     private final TagValuePostgresRepository tagValueRepository;
 
-    public List<ItemMainFieldsEntity> mapToEntities(Collection<? extends ItemMainFieldsI> items) {
-        List<TagValueEntity> existingTagValues = tagValueRepository.findAll();
+    public List<ItemEntity> mapToEntities(Collection<? extends ItemMainFieldsI> items) {
+        List<TagEntity> existingTagValues = tagValueRepository.findAll();
 
         return items.stream()
                 .map(item -> mapEntity(item, existingTagValues))
                 .toList();
     }
 
-    private ItemMainFieldsEntity mapEntity(ItemMainFieldsI item, Collection<TagValueEntity> existingTagValues) {
-        return new ItemMainFieldsEntity(
+    private ItemEntity mapEntity(ItemMainFieldsI item, Collection<TagEntity> existingTagValues) {
+        return new ItemEntity(
                 item.getItemId(),
                 item.getAssetUrl(),
                 item.getName(),

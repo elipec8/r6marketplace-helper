@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.repositories.TagPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.TagPostgresPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item.TagEntityMapper;
 import github.ricemonger.marketplace.services.abstractions.TagDatabaseService;
 import github.ricemonger.utils.DTOs.common.Tag;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TagPostgresService implements TagDatabaseService {
 
-    private final TagPostgresRepository tagRepository;
+    private final TagPostgresPostgresRepository tagRepository;
 
     private final TagEntityMapper tagEntityMapper;
 

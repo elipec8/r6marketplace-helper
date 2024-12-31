@@ -4,7 +4,7 @@ import github.ricemonger.marketplace.databases.postgres.custom.item_filters.enti
 import github.ricemonger.marketplace.databases.postgres.custom.item_filters.entities.ItemFilterEntityId;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
-import github.ricemonger.marketplace.databases.postgres.custom.item_filters.service.ItemFilterPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.ItemFilterPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.ItemFilterEntityMapper;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
@@ -41,7 +41,7 @@ class TelegramUserItemFilterPostgresServiceTest {
         ItemFilter filter = new ItemFilter();
         ItemFilterEntity entity = new ItemFilterEntity();
         String chatId = "chatId";
-        when(itemFilterEntityMapper.createEntityForTelegramUserChatId(same(chatId), same(filter))).thenReturn(entity);
+        when(itemFilterEntityMapper.createEntity(same(chatId), same(filter))).thenReturn(entity);
 
         itemFilterRepository.save(entity);
 

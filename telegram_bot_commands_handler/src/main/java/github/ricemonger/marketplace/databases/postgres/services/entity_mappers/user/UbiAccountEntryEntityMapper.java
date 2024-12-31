@@ -1,11 +1,12 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
-import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountEntryEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountStatsEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountStatsEntityPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry;
+import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
+import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountEntryEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountStatsEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,32 +21,26 @@ public class UbiAccountEntryEntityMapper {
     private final UbiAccountStatsEntityPostgresRepository ubiAccountStatsEntityPostgresRepository;
 
     public UbiAccountEntryEntity createEntityForTelegramUser(String chatId, UbiAccountAuthorizationEntry account) {
-        UserEntity user = userPostgresRepository.findByTelegramUserChatId(chatId);
-        UbiAccountStatsEntity ubiAccountStatsEntity = ubiAccountStatsEntityPostgresRepository.findById(account.getUbiProfileId()).orElse(ubiAccountStatsEntityPostgresRepository.save(new UbiAccountStatsEntity(account.getUbiProfileId())));
+        UserEntity user = userPostgresRepository.findByTelegramUserChatId(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
+        UbiAccountStatsEntity ubiAccountStatsEntity = ubiAccountStatsEntityPostgresRepository.findById(account.getUbiProfileId()).orElse(null);
 
-        return new UbiAccountEntryEntity(
-                user,
-                account.getEmail(),
-                account.getEncodedPassword(),
-                account.getUbiSessionId(),
-                account.getUbiSpaceId(),
-                account.getUbiAuthTicket(),
-                account.getUbiRememberDeviceTicket(),
-                account.getUbiRememberMeTicket(),
-                ubiAccountStatsEntity);
-    }
+        if(ubiAccountStatsEntity == null) {
+            ubiAccountStatsEntity = new UbiAccountStatsEntity();
+            ubiAccountStatsEntity.setUbiProfileId(account.getUbiProfileId());
+            ubiAccountStatsEntityPostgresRepository.save(ubiAccountStatsEntity);
+        }
 
-    public UbiAccountEntryEntity createEntity(UserEntity userEntity, UbiAccountStatsEntity ubiAccountStatsEntity, UbiAccountAuthorizationEntry ubiAccountAuthorizationEntry) {
-        return new UbiAccountEntryEntity(
-                userEntity,
-                ubiAccountAuthorizationEntry.getEmail(),
-                ubiAccountAuthorizationEntry.getEncodedPassword(),
-                ubiAccountAuthorizationEntry.getUbiSessionId(),
-                ubiAccountAuthorizationEntry.getUbiSpaceId(),
-                ubiAccountAuthorizationEntry.getUbiAuthTicket(),
-                ubiAccountAuthorizationEntry.getUbiRememberDeviceTicket(),
-                ubiAccountAuthorizationEntry.getUbiRememberMeTicket(),
-                ubiAccountStatsEntity);
+        UbiAccountEntryEntity ubiAccountEntryEntity = new UbiAccountEntryEntity();
+        ubiAccountEntryEntity.setUser(user);
+        ubiAccountEntryEntity.setEmail(account.getEmail());
+        ubiAccountEntryEntity.setEncodedPassword(account.getEncodedPassword());
+        ubiAccountEntryEntity.setUbiSessionId(account.getUbiSessionId());
+        ubiAccountEntryEntity.setUbiSpaceId(account.getUbiSpaceId());
+        ubiAccountEntryEntity.setUbiAuthTicket(account.getUbiAuthTicket());
+        ubiAccountEntryEntity.setUbiRememberDeviceTicket(account.getUbiRememberDeviceTicket());
+        ubiAccountEntryEntity.setUbiRememberMeTicket(account.getUbiRememberMeTicket());
+        ubiAccountEntryEntity.setUbiAccountStats(ubiAccountStatsEntity);
+        return ubiAccountEntryEntity;
     }
 
     public UbiAccountAuthorizationEntry createUbiAccountAuthorizationEntry(UbiAccountEntryEntity entity) {

@@ -1,8 +1,5 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
-import github.ricemonger.marketplace.databases.postgres.custom.item_filters.entities.ItemFilterEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item.TagEntityMapper;
 import github.ricemonger.utils.DTOs.common.Tag;
@@ -10,6 +7,10 @@ import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.IsOwnedFilter;
 import github.ricemonger.utils.enums.ItemType;
+import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
+import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.ItemFilterEntity;
+import github.ricemonger.utilspostgresschema.id_entities.user.IdUserEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -29,11 +30,9 @@ public class ItemFilterEntityMapper {
 
     private final TagEntityMapper tagEntityMapper;
 
-    public ItemFilterEntity createEntityForTelegramUserChatId(String chatId, ItemFilter filter) {
-        return createEntityForUser(userPostgresRepository.findByTelegramUserChatId(chatId), filter);
-    }
+    public ItemFilterEntity createEntity(String chatId, ItemFilter filter) {
+        IdUserEntity userEntity = userPostgresRepository.findIdEntityByTelegramUserChatId(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
 
-    public ItemFilterEntity createEntityForUser(UserEntity userEntity, ItemFilter filter) {
         String name = filter.getName();
         FilterType filterType = filter.getFilterType();
         IsOwnedFilter isOwned = filter.getIsOwned();
@@ -65,15 +64,17 @@ public class ItemFilterEntityMapper {
         Integer minSellPrice = filter.getMinSellPrice();
         Integer maxBuyPrice = filter.getMaxBuyPrice();
 
-        return new ItemFilterEntity(userEntity,
-                name,
-                filterType,
-                isOwned,
-                itemNamePatterns,
-                itemTypes,
-                tags,
-                minSellPrice,
-                maxBuyPrice);
+        ItemFilterEntity entity = new ItemFilterEntity();
+        entity.setUser(userEntity);
+        entity.setName(name);
+        entity.setFilterType(filterType);
+        entity.setIsOwned(isOwned);
+        entity.setItemNamePatterns(itemNamePatterns);
+        entity.setItemTypes(itemTypes);
+        entity.setTags(tags);
+        entity.setMinSellPrice(minSellPrice);
+        entity.setMaxBuyPrice(maxBuyPrice);
+        return entity;
     }
 
     public ItemFilter createDTO(ItemFilterEntity entity) {

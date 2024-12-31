@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccount
 import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountStatsEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountAuthorizationEntryPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountEntryPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountStatsEntityPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.UbiAccountEntryEntityMapper;
 import github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry;
@@ -31,7 +31,7 @@ class TelegramUserUbiAccountPostgresServiceTest {
     @Autowired
     private TelegramUserUbiAccountPostgresService telegramUserUbiAccountEntryService;
     @MockBean
-    private UbiAccountAuthorizationEntryPostgresRepository ubiAccountAuthorizationEntryRepository;
+    private UbiAccountEntryPostgresRepository ubiAccountAuthorizationEntryRepository;
     @MockBean
     private UbiAccountStatsEntityPostgresRepository ubiAccountStatsRepository;
     @MockBean

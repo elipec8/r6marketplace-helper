@@ -1,7 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
 import github.ricemonger.marketplace.databases.postgres.custom.item_filters.entities.ItemFilterEntity;
-import github.ricemonger.marketplace.databases.postgres.custom.trade_managers.service.TradeByFiltersManagerEntityMapper;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByFiltersManagerEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;

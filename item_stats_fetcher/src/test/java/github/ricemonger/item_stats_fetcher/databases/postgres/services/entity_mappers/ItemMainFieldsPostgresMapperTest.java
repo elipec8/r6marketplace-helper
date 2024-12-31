@@ -1,7 +1,7 @@
 package github.ricemonger.item_stats_fetcher.databases.postgres.services.entity_mappers;
 
-import github.ricemonger.item_stats_fetcher.databases.postgres.entities.ItemMainFieldsEntity;
-import github.ricemonger.item_stats_fetcher.databases.postgres.entities.TagValueEntity;
+import github.ricemonger.item_stats_fetcher.databases.postgres.entities.ItemEntity;
+import github.ricemonger.item_stats_fetcher.databases.postgres.entities.TagEntity;
 import github.ricemonger.item_stats_fetcher.databases.postgres.repositories.TagValuePostgresRepository;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.enums.ItemRarity;
@@ -80,18 +80,18 @@ class ItemMainFieldsPostgresMapperTest {
         item2.setLastSoldAt(LocalDateTime.of(2022, 1, 1, 1, 1));
         item2.setLastSoldPrice(6);
 
-        TagValueEntity TagValueEntity1 = new TagValueEntity();
-        TagValueEntity1.setValue("tag");
-        TagValueEntity TagValueEntity2 = new TagValueEntity();
-        TagValueEntity2.setValue("tag1");
+        TagEntity tagEntity1 = new TagEntity();
+        tagEntity1.setValue("tag");
+        TagEntity tagEntity2 = new TagEntity();
+        tagEntity2.setValue("tag1");
 
-        when(tagValueRepository.findAll()).thenReturn(List.of(TagValueEntity1, TagValueEntity2));
+        when(tagValueRepository.findAll()).thenReturn(List.of(tagEntity1, tagEntity2));
 
-        ItemMainFieldsEntity entity1 = new ItemMainFieldsEntity();
+        ItemEntity entity1 = new ItemEntity();
         entity1.setItemId("itemId");
         entity1.setAssetUrl("assetUrl");
         entity1.setName("name");
-        entity1.setTags(List.of(TagValueEntity1));
+        entity1.setTags(List.of(tagEntity1));
         entity1.setRarity(ItemRarity.RARE);
         entity1.setType(ItemType.WeaponSkin);
         entity1.setMaxBuyPrice(1);
@@ -101,11 +101,11 @@ class ItemMainFieldsPostgresMapperTest {
         entity1.setLastSoldAt(LocalDateTime.of(2021, 1, 1, 1, 1));
         entity1.setLastSoldPrice(5);
 
-        ItemMainFieldsEntity entity2 = new ItemMainFieldsEntity();
+        ItemEntity entity2 = new ItemEntity();
         entity2.setItemId("itemId1");
         entity2.setAssetUrl("assetUrl1");
         entity2.setName("name1");
-        entity2.setTags(List.of(TagValueEntity2));
+        entity2.setTags(List.of(tagEntity2));
         entity2.setRarity(ItemRarity.EPIC);
         entity2.setType(ItemType.Charm);
         entity2.setMaxBuyPrice(2);
@@ -115,9 +115,9 @@ class ItemMainFieldsPostgresMapperTest {
         entity2.setLastSoldAt(LocalDateTime.of(2022, 1, 1, 1, 1));
         entity2.setLastSoldPrice(6);
 
-        List<ItemMainFieldsEntity> expected = List.of(entity1, entity2);
+        List<ItemEntity> expected = List.of(entity1, entity2);
 
-        List<ItemMainFieldsEntity> actual = itemMainFieldsPostgresMapper.mapToEntities(List.of(item1, item2));
+        List<ItemEntity> actual = itemMainFieldsPostgresMapper.mapToEntities(List.of(item1, item2));
 
         assertTrue(expected.stream().allMatch(ex -> actual.stream().anyMatch(ac -> ac.isFullyEqual(ex))) && expected.size() == actual.size());
     }

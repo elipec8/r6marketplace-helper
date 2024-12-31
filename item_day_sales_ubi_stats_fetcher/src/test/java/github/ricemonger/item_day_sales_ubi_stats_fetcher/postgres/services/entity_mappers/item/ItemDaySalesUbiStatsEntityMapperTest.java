@@ -1,7 +1,7 @@
 package github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.services.entity_mappers.item;
 
 import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.entities.ItemDaySalesUbiStatsEntity;
-import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.entities.ItemIdEntity;
+import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.entities.ItemEntity;
 import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.utils.DTOs.common.GroupedItemDaySalesUbiStats;
 import github.ricemonger.utils.DTOs.common.ItemDaySalesUbiStats;
@@ -34,10 +34,10 @@ class ItemDaySalesUbiStatsEntityMapperTest {
 
     @Test
     public void createEntities_should_return_mapped_entities_except_non_existent_items() {
-        List<ItemIdEntity> entities = new ArrayList<>();
-        entities.add(new ItemIdEntity("itemId1"));
-        entities.add(new ItemIdEntity("itemId2"));
-        entities.add(new ItemIdEntity("itemId4"));
+        List<ItemEntity> entities = new ArrayList<>();
+        entities.add(new ItemEntity("itemId1"));
+        entities.add(new ItemEntity("itemId2"));
+        entities.add(new ItemEntity("itemId4"));
         when(itemPostgresRepository.findAll()).thenReturn(entities);
 
         ItemDaySalesUbiStats daySales11 = new ItemDaySalesUbiStats("itemId1", LocalDate.of(2021, 1, 1), 1, 2, 3, 4);
@@ -54,10 +54,10 @@ class ItemDaySalesUbiStatsEntityMapperTest {
 
         Collection<GroupedItemDaySalesUbiStats> groupedItemDaySalesUbiStatsList = List.of(groupedItemDaySalesUbiStats1, groupedItemDaySalesUbiStats2, groupedItemDaySalesUbiStats3);
 
-        ItemDaySalesUbiStatsEntity expected1 = new ItemDaySalesUbiStatsEntity(new ItemIdEntity("itemId1"), LocalDate.of(2021, 1, 1), 1, 2, 3, 4);
-        ItemDaySalesUbiStatsEntity expected2 = new ItemDaySalesUbiStatsEntity(new ItemIdEntity("itemId1"), LocalDate.of(2021, 1, 2), 5, 6, 7, 8);
-        ItemDaySalesUbiStatsEntity expected3 = new ItemDaySalesUbiStatsEntity(new ItemIdEntity("itemId2"), LocalDate.of(2022, 1, 1), 2, 3, 4, 5);
-        ItemDaySalesUbiStatsEntity expected4 = new ItemDaySalesUbiStatsEntity(new ItemIdEntity("itemId2"), LocalDate.of(2022, 1, 2), 6, 7, 8, 9);
+        ItemDaySalesUbiStatsEntity expected1 = new ItemDaySalesUbiStatsEntity(new ItemEntity("itemId1"), LocalDate.of(2021, 1, 1), 1, 2, 3, 4);
+        ItemDaySalesUbiStatsEntity expected2 = new ItemDaySalesUbiStatsEntity(new ItemEntity("itemId1"), LocalDate.of(2021, 1, 2), 5, 6, 7, 8);
+        ItemDaySalesUbiStatsEntity expected3 = new ItemDaySalesUbiStatsEntity(new ItemEntity("itemId2"), LocalDate.of(2022, 1, 1), 2, 3, 4, 5);
+        ItemDaySalesUbiStatsEntity expected4 = new ItemDaySalesUbiStatsEntity(new ItemEntity("itemId2"), LocalDate.of(2022, 1, 2), 6, 7, 8, 9);
 
         List<ItemDaySalesUbiStatsEntity> expected = List.of(expected1, expected2, expected3, expected4);
 

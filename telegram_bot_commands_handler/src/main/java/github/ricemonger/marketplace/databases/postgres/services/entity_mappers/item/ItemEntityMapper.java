@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item;
 
-import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
 import github.ricemonger.utils.DTOs.common.Item;
+import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
+import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemEntityMapper {
 
-    public Item createDTO(@NotNull ItemEntity itemEntity) {
+    public Item createItem(@NotNull ItemEntity itemEntity) {
         List<String> tags = new ArrayList<>();
         if (itemEntity.getTags() != null && !itemEntity.getTags().isEmpty()) {
             tags = itemEntity.getTags().stream().map(TagEntity::getValue).toList();

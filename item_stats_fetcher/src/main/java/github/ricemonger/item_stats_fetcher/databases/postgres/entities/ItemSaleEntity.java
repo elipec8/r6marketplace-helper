@@ -20,7 +20,7 @@ public class ItemSaleEntity {
     @MapsId
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id", referencedColumnName = "item_id")
-    private ItemMainFieldsEntity item;
+    private ItemEntity item;
     @Id
     @Column(name = "sold_at")
     private LocalDateTime soldAt;
@@ -28,7 +28,7 @@ public class ItemSaleEntity {
     private Integer price;
 
     public ItemSaleEntity(String itemId) {
-        this.item = new ItemMainFieldsEntity(itemId);
+        this.item = new ItemEntity(itemId);
     }
 
     @Override

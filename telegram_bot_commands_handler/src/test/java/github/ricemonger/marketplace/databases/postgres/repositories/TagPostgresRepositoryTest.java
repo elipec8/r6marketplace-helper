@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class TagPostgresRepositoryTest {
     @SpyBean
-    TagPostgresRepository tagPostgresRepository;
+    TagPostgresPostgresRepository tagPostgresRepository;
 
     @Test
     public void findAllByNames_should_return_all_tags_with_given_names() {

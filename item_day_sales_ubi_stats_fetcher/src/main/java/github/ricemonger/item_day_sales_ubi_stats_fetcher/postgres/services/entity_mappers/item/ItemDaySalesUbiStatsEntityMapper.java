@@ -1,7 +1,7 @@
 package github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.services.entity_mappers.item;
 
 import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.entities.ItemDaySalesUbiStatsEntity;
-import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.entities.ItemIdEntity;
+import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.entities.ItemEntity;
 import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.utils.DTOs.common.GroupedItemDaySalesUbiStats;
 import github.ricemonger.utils.DTOs.common.ItemDaySalesUbiStats;
@@ -26,13 +26,13 @@ public class ItemDaySalesUbiStatsEntityMapper {
             return new LinkedList<>();
         }
 
-        List<ItemIdEntity> existingItemsIds = itemPostgresRepository.findAll();
+        List<ItemEntity> existingItemsIds = itemPostgresRepository.findAll();
 
         List<ItemDaySalesUbiStatsEntity> result = new LinkedList<>();
 
         for (GroupedItemDaySalesUbiStats groupedStats : groupedItemDaySalesUbiStatsList) {
 
-            ItemIdEntity itemIdEntity = existingItemsIds.stream()
+            ItemEntity itemIdEntity = existingItemsIds.stream()
                     .filter(item -> item.getItemId().equals(groupedStats.getItemId()))
                     .findFirst()
                     .orElse(null);
@@ -47,7 +47,7 @@ public class ItemDaySalesUbiStatsEntityMapper {
         return result;
     }
 
-    private List<ItemDaySalesUbiStatsEntity> createEntitiesForItem(ItemIdEntity itemIdEntity, GroupedItemDaySalesUbiStats groupedStats) {
+    private List<ItemDaySalesUbiStatsEntity> createEntitiesForItem(ItemEntity itemIdEntity, GroupedItemDaySalesUbiStats groupedStats) {
         List<ItemDaySalesUbiStatsEntity> result = new LinkedList<>();
 
         for (ItemDaySalesUbiStats dto : groupedStats.getDaySales()) {

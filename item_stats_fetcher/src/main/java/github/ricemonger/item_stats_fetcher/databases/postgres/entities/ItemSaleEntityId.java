@@ -12,6 +12,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 public class ItemSaleEntityId implements Serializable {
-    private ItemMainFieldsEntity item;
+    private ItemEntity item;
     private LocalDateTime soldAt;
 }

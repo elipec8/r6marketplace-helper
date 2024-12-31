@@ -1,10 +1,9 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
-import github.ricemonger.marketplace.databases.postgres.custom.trade_managers.service.TradeByItemIdManagerEntityMapper;
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByItemIdManagerEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
-import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
 import github.ricemonger.utils.enums.TradeOperationType;
@@ -25,7 +24,7 @@ class TradeByItemIdManagerEntityMapperTest {
     @MockBean
     private UserPostgresRepository userRepository;
     @MockBean
-    private ItemPostgresRepository itemRepository;
+    private ItemPostgresPostgresRepository itemRepository;
 
     @Test
     public void createEntityForTelegramUser_should_properly_map_entity() {

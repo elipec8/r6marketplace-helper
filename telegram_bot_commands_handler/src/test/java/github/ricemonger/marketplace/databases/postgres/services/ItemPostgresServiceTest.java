@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
-import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item.ItemEntityMapper;
 import github.ricemonger.utils.DTOs.common.Item;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class ItemPostgresServiceTest {
     @Autowired
     private ItemPostgresService itemService;
     @MockBean
-    private ItemPostgresRepository itemRepository;
+    private ItemPostgresPostgresRepository itemRepository;
     @MockBean
     private ItemEntityMapper itemEntityMapper;
 

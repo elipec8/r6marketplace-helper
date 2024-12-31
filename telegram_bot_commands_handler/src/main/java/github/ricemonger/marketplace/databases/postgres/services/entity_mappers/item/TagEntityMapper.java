@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item;
 
-import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
 import github.ricemonger.utils.DTOs.common.Tag;
+import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,6 +16,10 @@ public class TagEntityMapper {
     }
 
     public TagEntity createEntity(Tag tag) {
-        return new TagEntity(tag.getValue(), tag.getName(), tag.getTagGroup());
+        TagEntity entity = new TagEntity();
+        entity.setValue(tag.getValue());
+        entity.setName(tag.getName());
+        entity.setTagGroup(tag.getTagGroup());
+        return entity;
     }
 }

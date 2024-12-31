@@ -10,6 +10,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemDaySalesUbiStatsEntityId {
-    private ItemIdEntity item;
+    private ItemEntity item;
     private LocalDate date;
 }
