@@ -12,7 +12,6 @@ import github.ricemonger.marketplace.services.DTOs.TradeManagersSettings;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserDatabaseService;
 import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
-import github.ricemonger.utils.exceptions.client.ItemFilterDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TelegramUserAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import lombok.RequiredArgsConstructor;
@@ -98,13 +97,17 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     @Override
     @Transactional
     public void addUserItemShowAppliedFilter(String chatId, String filterName) throws TelegramUserDoesntExistException {
-        userRepository.addItemShowAppliedFilterByTelegramUserChatId(chatId, itemFilterPostgresRepository.findByUserTelegramUserChatIdAndName(chatId, filterName).orElseThrow(() -> new ItemFilterDoesntExistException("Item filter with name " + filterName + " not found")));
+        Long userId = userRepository.findUserIdByTelegramUserChatId(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found"));
+
+        userRepository.addItemShowAppliedFilter(userId, filterName);
     }
 
     @Override
     @Transactional
     public void removeUserItemShowAppliedFilter(String chatId, String filterName) throws TelegramUserDoesntExistException {
-        userRepository.removeItemShowAppliedFilterByTelegramUserChatId(chatId, itemFilterPostgresRepository.findByUserTelegramUserChatIdAndName(chatId, filterName).orElseThrow(() -> new ItemFilterDoesntExistException("Item filter with name " + filterName + " not found")));
+        Long userId = userRepository.findUserIdByTelegramUserChatId(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found"));
+
+        userRepository.removeItemShowAppliedFilter(userId, filterName);
     }
 
     @Override

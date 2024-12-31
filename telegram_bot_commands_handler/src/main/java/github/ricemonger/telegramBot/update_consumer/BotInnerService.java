@@ -86,7 +86,7 @@ public class BotInnerService {
             if (messageCount >= messageLimit) {
                 break;
             }
-            currentMessage.append(item.toStringBySettings(settings.getShownFieldsSettings())).append("\n");
+            currentMessage.append(settings.showItem(item)).append("\n");
             itemsInCurrentMessageCount++;
             if (itemsInCurrentMessageCount >= maxItemsInMessage) {
                 telegramBotClientService.sendText(String.valueOf(updateInfo.getChatId()), currentMessage.toString());

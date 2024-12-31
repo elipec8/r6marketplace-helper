@@ -2,7 +2,6 @@ package DTOs.common;
 
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.ItemMainFieldsI;
-import github.ricemonger.utils.DTOs.personal.ItemShownFieldsSettings;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
 import org.junit.jupiter.api.Test;

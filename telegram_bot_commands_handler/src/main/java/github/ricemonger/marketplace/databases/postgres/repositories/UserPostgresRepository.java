@@ -1,10 +1,8 @@
 package github.ricemonger.marketplace.databases.postgres.repositories;
 
 import github.ricemonger.marketplace.databases.postgres.dto_projections.ItemShowSettingsProjection;
-import github.ricemonger.marketplace.services.DTOs.ItemShowSettings;
 import github.ricemonger.marketplace.services.DTOs.ItemShownFieldsSettings;
 import github.ricemonger.marketplace.services.DTOs.TradeManagersSettings;
-import github.ricemonger.utilspostgresschema.full_entities.user.ItemFilterEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -52,15 +50,19 @@ public interface UserPostgresRepository extends JpaRepository<UserEntity, Long> 
 
     @Transactional
     @Modifying
-    @Query("UPDATE UserEntity u SET u.itemShowAppliedFilters = CONCAT(u.itemShowAppliedFilters, :itemFilterEntity) " +
-           "WHERE u.telegramUser.chatId = :chatId")
-    void addItemShowAppliedFilterByTelegramUserChatId(String chatId, ItemFilterEntity itemFilterEntity);
+    @Query(value = "INSERT INTO user_item_show_applied_item_filter (user_id, item_filter_name) " +
+                   "VALUES (:userId, :name)", nativeQuery = true)
+    void addItemShowAppliedFilter(Long userId, String name);
 
     @Transactional
     @Modifying
-    @Query("UPDATE UserEntity u SET u.itemShowAppliedFilters = REMOVE(u.itemShowAppliedFilters, :itemFilterEntity) " +
-           "WHERE u.telegramUser.chatId = :chatId")
-    void removeItemShowAppliedFilterByTelegramUserChatId(String chatId, ItemFilterEntity itemFilterEntity);
+    @Query(value = "DELETE FROM user_item_show_applied_item_filter " +
+                   "WHERE user_id = :userId AND item_filter_name = :name", nativeQuery = true)
+    void removeItemShowAppliedFilter(Long userId, String name);
+
+    @Transactional(readOnly = true)
+    @Query("SELECT u.id FROM UserEntity u WHERE u.telegramUser.chatId = :chatId")
+    Optional<Long> findUserIdByTelegramUserChatId(String chatId);
 
     @Transactional(readOnly = true)
     @Query("SELECT f.name FROM UserEntity u JOIN u.itemShowAppliedFilters f WHERE u.telegramUser.chatId = :chatId")

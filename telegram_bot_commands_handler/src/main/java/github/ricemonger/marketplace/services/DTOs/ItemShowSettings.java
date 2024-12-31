@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.services.DTOs;
 
+import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -71,5 +72,9 @@ public class ItemShowSettings {
                "Few items in message: " + itemShowFewInMessageFlag + "\n" +
                "Shown fields: \n" + shownFields + "\n" +
                "Applied filters: " + appliedFilters;
+    }
+
+    public String showItem(Item item) {
+        return shownFieldsSettings.showItem(item);
     }
 }

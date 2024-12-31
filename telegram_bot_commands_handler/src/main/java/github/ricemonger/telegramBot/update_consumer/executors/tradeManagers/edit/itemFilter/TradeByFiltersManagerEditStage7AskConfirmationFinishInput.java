@@ -1,8 +1,8 @@
 package github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.edit.itemFilter;
 
+import github.ricemonger.marketplace.services.DTOs.TradeByFiltersManager;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.update_consumer.executors.AbstractBotCommandExecutor;
-import github.ricemonger.utils.DTOs.personal.TradeByFiltersManager;
 
 public class TradeByFiltersManagerEditStage7AskConfirmationFinishInput extends AbstractBotCommandExecutor {
     @Override

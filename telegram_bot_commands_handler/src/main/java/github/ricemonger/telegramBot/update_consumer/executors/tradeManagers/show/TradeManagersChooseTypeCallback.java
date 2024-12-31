@@ -1,4 +1,4 @@
-package github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.showRemoveChangeEnabled;
+package github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.show;
 
 import github.ricemonger.telegramBot.CallbackButton;
 import github.ricemonger.telegramBot.Callbacks;
