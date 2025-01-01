@@ -7,10 +7,10 @@ import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 public class TradeByItemIdManagerBuyAndSellEditStage2AskBoundarySellPriceInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
+        processMiddleInput(InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
 
         try {
             sendText("Chosen item is:\n" + botInnerService.getItemByUserInputItemId(updateInfo.getChatId()));
-            processMiddleInput(InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
         } catch (ItemDoesntExistException e) {
             sendText("Item not found. Please enter correct item id.");
             return;

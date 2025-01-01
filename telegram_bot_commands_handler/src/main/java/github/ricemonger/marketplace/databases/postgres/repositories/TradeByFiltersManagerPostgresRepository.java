@@ -19,7 +19,7 @@ public interface TradeByFiltersManagerPostgresRepository extends JpaRepository<T
 
     @Transactional
     @Modifying
-    @Query("DELETE FROM TradeByFiltersManagerEntity t WHERE t.user.telegramUser.chatId = :chatId AND t.name = :name")
+    //@Query("DELETE FROM TradeByFiltersManagerEntity t WHERE t.user.telegramUser.chatId = :chatId AND t.name = :name")
     void deleteByUserTelegramUserChatIdAndName(String chatId, String name);
 
     @Transactional(readOnly = true)

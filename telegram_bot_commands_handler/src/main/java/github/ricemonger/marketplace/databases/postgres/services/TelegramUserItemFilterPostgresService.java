@@ -6,7 +6,6 @@ import github.ricemonger.marketplace.services.abstractions.TelegramUserItemFilte
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.exceptions.client.ItemFilterDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
-import github.ricemonger.utilspostgresschema.full_entities.user.ItemFilterEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +41,7 @@ public class TelegramUserItemFilterPostgresService implements TelegramUserItemFi
     @Override
     @Transactional(readOnly = true)
     public List<String> findAllNamesByChatId(String chatId) throws TelegramUserDoesntExistException {
-        return itemFilterRepository.findAllNamesByUserTelegramUserChatId(chatId).stream().map(ItemFilterEntity::getName).toList();
+        return itemFilterRepository.findAllNameByUserTelegramUserChatId(chatId);
     }
 
     @Override

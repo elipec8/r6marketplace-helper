@@ -19,11 +19,12 @@ public interface TradeByItemIdManagerPostgresRepository extends JpaRepository<Tr
 
     @Transactional
     @Modifying
-    @Query("DELETE FROM TradeByItemIdManagerEntity t WHERE t.user.telegramUser.chatId = :chatId AND t.item.itemId = :itemId")
+    //@Query("DELETE FROM TradeByItemIdManagerEntity t WHERE t.user.telegramUser.chatId = :chatId AND t.item.itemId = :itemId")
     void deleteByUserTelegramUserChatIdAndItemItemId(String chatId, String itemId);
 
     @Transactional(readOnly = true)
     Optional<TradeByItemIdManagerEntity> findByUserTelegramUserChatIdAndItemItemId(String chatId, String itemId);
+
     @Transactional(readOnly = true)
     List<TradeByItemIdManagerEntity> findAllByUserTelegramUserChatId(String chatId);
 }

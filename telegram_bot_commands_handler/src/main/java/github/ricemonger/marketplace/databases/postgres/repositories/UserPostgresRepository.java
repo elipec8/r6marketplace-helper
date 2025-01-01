@@ -58,7 +58,7 @@ public interface UserPostgresRepository extends JpaRepository<UserEntity, Long> 
     @Modifying
     @Query(value = "DELETE FROM user_item_show_applied_item_filter " +
                    "WHERE user_id = :userId AND item_filter_name = :name", nativeQuery = true)
-    void removeItemShowAppliedFilter(Long userId, String name);
+    void deleteItemShowAppliedFilter(Long userId, String name);
 
     @Transactional(readOnly = true)
     @Query("SELECT u.id FROM UserEntity u WHERE u.telegramUser.chatId = :chatId")

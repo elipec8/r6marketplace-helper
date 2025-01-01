@@ -107,7 +107,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     public void removeUserItemShowAppliedFilter(String chatId, String filterName) throws TelegramUserDoesntExistException {
         Long userId = userRepository.findUserIdByTelegramUserChatId(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found"));
 
-        userRepository.removeItemShowAppliedFilter(userId, filterName);
+        userRepository.deleteItemShowAppliedFilter(userId, filterName);
     }
 
     @Override
