@@ -15,6 +15,12 @@ import java.util.Optional;
 
 public interface UserPostgresRepository extends JpaRepository<UserEntity, Long> {
     @Transactional(readOnly = true)
+    boolean existsByTelegramUserChatId(String chatId);
+
+    @Transactional(readOnly = true)
+    UserEntity getReferenceByTelegramUserChatId(String chatId);
+
+    @Transactional(readOnly = true)
     Optional<UserEntity> findByTelegramUserChatId(String chatId);
 
     @Transactional

@@ -18,14 +18,17 @@ public class TradeByFiltersManagerEntityMapper {
     private final UserPostgresRepository userPostgresRepository;
 
     public TradeByFiltersManagerEntity createEntity(String chatId, TradeByFiltersManager tradeManager) {
-        UserEntity user = userPostgresRepository.findByTelegramUserChatId(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
+        if(!userPostgresRepository.existsByTelegramUserChatId(chatId)) {
+            throw new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found");
+        }
+        UserEntity userEntity = userPostgresRepository.getReferenceByTelegramUserChatId(chatId);
 
         TradeByFiltersManagerEntity entity = new TradeByFiltersManagerEntity();
-        entity.setUser(user);
+        entity.setUser(userEntity);
         entity.setName(tradeManager.getName());
         entity.setEnabled(tradeManager.getEnabled());
         entity.setTradeOperationType(tradeManager.getTradeOperationType());
-        entity.setAppliedFilters(user.getItemFilters().stream().filter(itemFilter -> tradeManager.getAppliedFilters().contains(itemFilter.getName())).toList());
+        entity.setAppliedFilters(userEntity.getItemFilters().stream().filter(itemFilter -> tradeManager.getAppliedFilters().contains(itemFilter.getName())).toList());
         entity.setMinDifferenceFromMedianPrice(tradeManager.getMinDifferenceFromMedianPrice());
         entity.setMinDifferenceFromMedianPricePercent(tradeManager.getMinDifferenceFromMedianPricePercent());
         entity.setPriorityMultiplier(tradeManager.getPriorityMultiplier());

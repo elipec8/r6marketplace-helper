@@ -20,8 +20,12 @@ public class UbiAccountEntryEntityMapper {
 
     private final UbiAccountStatsEntityPostgresRepository ubiAccountStatsEntityPostgresRepository;
 
-    public UbiAccountEntryEntity createEntityForTelegramUser(String chatId, UbiAccountAuthorizationEntry account) {
-        UserEntity user = userPostgresRepository.findByTelegramUserChatId(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist"));
+    public UbiAccountEntryEntity createEntity(String chatId, UbiAccountAuthorizationEntry account) {
+        if(!userPostgresRepository.existsByTelegramUserChatId(chatId)) {
+            throw new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found");
+        }
+        UserEntity userEntity = userPostgresRepository.getReferenceByTelegramUserChatId(chatId);
+
         UbiAccountStatsEntity ubiAccountStatsEntity = ubiAccountStatsEntityPostgresRepository.findById(account.getUbiProfileId()).orElse(null);
 
         if (ubiAccountStatsEntity == null) {
@@ -31,7 +35,7 @@ public class UbiAccountEntryEntityMapper {
         }
 
         UbiAccountEntryEntity ubiAccountEntryEntity = new UbiAccountEntryEntity();
-        ubiAccountEntryEntity.setUser(user);
+        ubiAccountEntryEntity.setUser(userEntity);
         ubiAccountEntryEntity.setEmail(account.getEmail());
         ubiAccountEntryEntity.setEncodedPassword(account.getEncodedPassword());
         ubiAccountEntryEntity.setUbiSessionId(account.getUbiSessionId());
@@ -41,17 +45,5 @@ public class UbiAccountEntryEntityMapper {
         ubiAccountEntryEntity.setUbiRememberMeTicket(account.getUbiRememberMeTicket());
         ubiAccountEntryEntity.setUbiAccountStats(ubiAccountStatsEntity);
         return ubiAccountEntryEntity;
-    }
-
-    public UbiAccountAuthorizationEntry createUbiAccountAuthorizationEntry(UbiAccountEntryEntity entity) {
-        return new UbiAccountAuthorizationEntry(
-                entity.getProfileId_(),
-                entity.getEmail(),
-                entity.getEncodedPassword(),
-                entity.getUbiSessionId(),
-                entity.getUbiSpaceId(),
-                entity.getUbiAuthTicket(),
-                entity.getUbiRememberDeviceTicket(),
-                entity.getUbiRememberMeTicket());
     }
 }

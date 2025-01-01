@@ -1,13 +1,14 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item;
 
-import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
 import github.ricemonger.utils.DTOs.common.Tag;
 import github.ricemonger.utils.enums.TagGroup;
+import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class TagEntityMapperTest {

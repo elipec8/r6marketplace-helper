@@ -31,9 +31,11 @@ public class ItemFilterEntityMapper {
     private final TagEntityMapper tagEntityMapper;
 
     public ItemFilterEntity createEntity(String chatId, ItemFilter filter) {
-        UserEntity userEntity = userPostgresRepository.findByTelegramUserChatId(chatId).orElseThrow(() -> new TelegramUserDoesntExistException(
-                "User with chatId " + chatId + " doesn't exist"));
-
+        if(!userPostgresRepository.existsByTelegramUserChatId(chatId)) {
+            throw new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found");
+        }
+        UserEntity userEntity = userPostgresRepository.getReferenceByTelegramUserChatId(chatId);
+        
         String name = filter.getName();
         FilterType filterType = filter.getFilterType();
         IsOwnedFilter isOwned = filter.getIsOwned();

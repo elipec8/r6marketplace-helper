@@ -1,11 +1,13 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
-import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
 import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
+import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.TradeByItemIdManagerEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -15,14 +17,24 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class TradeByItemIdManagerEntityMapper {
 
-    private final UserPostgresRepository userRepository;
+    private final UserPostgresRepository userPostgresRepository;
 
-    private final ItemPostgresPostgresRepository itemRepository;
+    private final ItemPostgresRepository itemPostgresRepository;
 
     public TradeByItemIdManagerEntity createEntity(String chatId, TradeByItemIdManager tradeManager) {
+        if(!userPostgresRepository.existsByTelegramUserChatId(chatId)) {
+            throw new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found");
+        }
+        UserEntity userEntity = userPostgresRepository.getReferenceByTelegramUserChatId(chatId);
+
+        if (!itemPostgresRepository.existsById(tradeManager.getItemId())) {
+            throw new ItemDoesntExistException("Item with id " + tradeManager.getItemId() + " doesn't exist");
+        }
+        ItemEntity itemEntity = itemPostgresRepository.getReferenceById(tradeManager.getItemId());
+
         TradeByItemIdManagerEntity tradeByItemIdManagerEntity = new TradeByItemIdManagerEntity();
-        tradeByItemIdManagerEntity.setUser(userRepository.findByTelegramUserChatId(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("User with chatId " + chatId + " doesn't exist")));
-        tradeByItemIdManagerEntity.setItem(itemRepository.findById(tradeManager.getItemId()).orElseThrow(() -> new ItemDoesntExistException("Item with id " + tradeManager.getItemId() + " doesn't exist")));
+        tradeByItemIdManagerEntity.setUser(userEntity);
+        tradeByItemIdManagerEntity.setItem(itemEntity);
         tradeByItemIdManagerEntity.setEnabled(tradeManager.getEnabled());
         tradeByItemIdManagerEntity.setTradeOperationType(tradeManager.getTradeOperationType());
         tradeByItemIdManagerEntity.setSellBoundaryPrice(tradeManager.getSellBoundaryPrice());

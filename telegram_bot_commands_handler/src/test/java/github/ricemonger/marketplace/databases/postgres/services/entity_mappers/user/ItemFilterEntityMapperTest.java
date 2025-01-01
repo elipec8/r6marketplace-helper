@@ -1,8 +1,5 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
-import github.ricemonger.marketplace.databases.postgres.custom.item_filters.entities.ItemFilterEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item.TagEntityMapper;
 import github.ricemonger.utils.DTOs.common.Tag;
@@ -11,6 +8,10 @@ import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.IsOwnedFilter;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TagGroup;
+import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
+import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.ItemFilterEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,8 +20,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -33,9 +35,11 @@ class ItemFilterEntityMapperTest {
     private TagEntityMapper tagEntityMapper;
 
     @Test
-    public void createEntityForTelegramUserChatId_should_properly_map_entity() {
-        UserEntity userEntity = new UserEntity(1L);
-        when(userPostgresRepository.findByTelegramUserChatId("chatId")).thenReturn(userEntity);
+    public void createEntity_should_properly_map_entity() {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(1L);
+        when(userPostgresRepository.existsByTelegramUserChatId("chatId")).thenReturn(true);
+        when(userPostgresRepository.getReferenceByTelegramUserChatId("chatId")).thenReturn(userEntity);
 
         ItemFilter filter = new ItemFilter();
         filter.setName("name");
@@ -68,38 +72,9 @@ class ItemFilterEntityMapperTest {
     }
 
     @Test
-    public void createEntityForUser_should_properly_map_entity() {
-        ItemFilter filter = new ItemFilter();
-        filter.setName("name");
-        filter.setFilterType(FilterType.ALLOW);
-        filter.setIsOwned(IsOwnedFilter.OWNED);
-        filter.setItemNamePatterns(List.of("pattern1", "pattern2"));
-        filter.setItemTypes(List.of(ItemType.Charm, ItemType.CharacterHeadgear));
-        filter.setTags(List.of(new Tag("value", "name", TagGroup.Rarity)));
-        filter.setMinSellPrice(1);
-        filter.setMaxBuyPrice(2);
-
-        UserEntity userEntity = new UserEntity(1L);
-
-        ItemFilterEntity expected = new ItemFilterEntity();
-        expected.setUser(userEntity);
-        expected.setName("name");
-        expected.setFilterType(FilterType.ALLOW);
-        expected.setIsOwned(IsOwnedFilter.OWNED);
-        expected.setItemNamePatterns("pattern1,pattern2");
-        expected.setItemTypes("Charm,CharacterHeadgear");
-        expected.setTags(Set.of(new TagEntity("value", "name", TagGroup.Rarity)));
-        expected.setMinSellPrice(1);
-        expected.setMaxBuyPrice(2);
-
-        when(tagEntityMapper.createEntity(new Tag("value", "name", TagGroup.Rarity))).thenReturn(new TagEntity("value", "name", TagGroup.Rarity));
-
-
-        ItemFilterEntity result = itemFilterEntityMapper.createEntityForUser(userEntity, filter);
-
-        System.out.println(result);
-
-        assertTrue(expected.isFullyEqual(result));
+    public void createEntity_should_trow_if_user_doesnt_exist() {
+        when(userPostgresRepository.existsByTelegramUserChatId("chatId")).thenReturn(false);
+        assertThrows(TelegramUserDoesntExistException.class, () -> itemFilterEntityMapper.createEntity("chatId", new ItemFilter()));
     }
 
     @Test

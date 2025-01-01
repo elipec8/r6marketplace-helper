@@ -64,4 +64,13 @@ public class TradeByItemIdManagerEntity {
         return Objects.equals(user, tradeByItemIdManagerEntity.user) &&
                Objects.equals(item, tradeByItemIdManagerEntity.item);
     }
+
+    public boolean isFullyEqual(TradeByItemIdManagerEntity manager) {
+        return equals(manager) &&
+               enabled.equals(manager.enabled) &&
+               tradeOperationType.equals(manager.tradeOperationType) &&
+               sellBoundaryPrice.equals(manager.sellBoundaryPrice) &&
+               buyBoundaryPrice.equals(manager.buyBoundaryPrice) &&
+               priorityMultiplier.equals(manager.priorityMultiplier);
+    }
 }

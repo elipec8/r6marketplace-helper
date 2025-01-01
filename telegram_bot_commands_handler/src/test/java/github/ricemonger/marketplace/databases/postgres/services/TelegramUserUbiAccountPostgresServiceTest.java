@@ -48,7 +48,7 @@ class TelegramUserUbiAccountPostgresServiceTest {
         account.setUbiProfileId("ubiProfileId");
         UbiAccountEntryEntity entity = new UbiAccountEntryEntity();
         entity.setUbiAccountStats(new UbiAccountStatsEntity("ubiProfileId"));
-        when(ubiAccountEntryEntityMapper.createEntityForTelegramUser(same(chatId), same(account))).thenReturn(entity);
+        when(ubiAccountEntryEntityMapper.createEntity(same(chatId), same(account))).thenReturn(entity);
 
         telegramUserUbiAccountEntryService.save(chatId, account);
 

@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemEntityMapper {
 
-    public Item createItem(@NotNull ItemEntity itemEntity) {
+    public Item createDTO(@NotNull ItemEntity itemEntity) {
         List<String> tags = new ArrayList<>();
         if (itemEntity.getTags() != null && !itemEntity.getTags().isEmpty()) {
             tags = itemEntity.getTags().stream().map(TagEntity::getValue).toList();

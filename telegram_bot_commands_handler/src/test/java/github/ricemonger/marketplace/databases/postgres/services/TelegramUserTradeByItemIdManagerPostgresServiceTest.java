@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUs
 import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByItemIdManagerEntity;
 import github.ricemonger.marketplace.databases.postgres.entities.user.TradeByItemIdManagerEntityId;
 import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
-import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TradeByItemIdManagerPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TradeByItemIdManagerEntityMapper;
@@ -36,7 +36,7 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
     @MockBean
     private TelegramUserPostgresRepository telegramUserRepository;
     @MockBean
-    private ItemPostgresPostgresRepository itemRepository;
+    private ItemPostgresRepository itemRepository;
     @MockBean
     private TradeByItemIdManagerEntityMapper tradeByItemIdManagerEntityMapper;
 

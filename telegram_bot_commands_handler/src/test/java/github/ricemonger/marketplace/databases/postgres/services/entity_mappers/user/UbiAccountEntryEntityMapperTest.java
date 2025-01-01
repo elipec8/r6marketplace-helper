@@ -1,11 +1,12 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
-import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountEntryEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountStatsEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountStatsEntityPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry;
+import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
+import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountEntryEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountStatsEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,8 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -28,20 +28,50 @@ class UbiAccountEntryEntityMapperTest {
     private UbiAccountStatsEntityPostgresRepository ubiAccountStatsEntityPostgresRepository;
 
     @Test
-    public void createEntityForTelegramUser_should_save_new_ubi_stats_entity_if_doesnt_exist() {
-        when(userPostgresRepository.findByTelegramUserChatId("chatId")).thenReturn(new UserEntity(1L));
+    public void createEntity_should_properly_map_entity_if_ubi_stats_exists() {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(1L);
+        when(userPostgresRepository.existsByTelegramUserChatId("chatId")).thenReturn(true);
+        when(userPostgresRepository.getReferenceByTelegramUserChatId("chatId")).thenReturn(userEntity);
+
+        UbiAccountStatsEntity ubiAccountStatsEntity = new UbiAccountStatsEntity();
+        ubiAccountStatsEntity.setUbiProfileId("ubiProfileId");
+        when(ubiAccountStatsEntityPostgresRepository.findById("ubiProfileId")).thenReturn(Optional.of(ubiAccountStatsEntity));
+
+        UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
+        account.setUbiProfileId("ubiProfileId");
+        account.setEmail("email");
+        account.setEncodedPassword("encodedPassword");
+        account.setUbiSessionId("ubiSessionId");
+        account.setUbiSpaceId("ubiSpaceId");
+        account.setUbiAuthTicket("ubiAuthTicket");
+        account.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
+        account.setUbiRememberMeTicket("ubiRememberMeTicket");
+
+        UbiAccountEntryEntity entity = ubiAccountEntryEntityMapper.createEntity("chatId", account);
+
+        assertEquals(userEntity, entity.getUser());
+        assertEquals("email", entity.getEmail());
+        assertEquals("encodedPassword", entity.getEncodedPassword());
+        assertEquals("ubiSessionId", entity.getUbiSessionId());
+        assertEquals("ubiSpaceId", entity.getUbiSpaceId());
+        assertEquals("ubiAuthTicket", entity.getUbiAuthTicket());
+        assertEquals("ubiRememberDeviceTicket", entity.getUbiRememberDeviceTicket());
+        assertEquals("ubiRememberMeTicket", entity.getUbiRememberMeTicket());
+        assertEquals(ubiAccountStatsEntity, entity.getUbiAccountStats());
+    }
+
+    @Test
+    public void createEntity_should_properly_map_entity_if_ubi_stats_doesnt_exist() {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(1L);
+        when(userPostgresRepository.existsByTelegramUserChatId("chatId")).thenReturn(true);
+        when(userPostgresRepository.getReferenceByTelegramUserChatId("chatId")).thenReturn(userEntity);
+
+        UbiAccountStatsEntity ubiAccountStatsEntity = new UbiAccountStatsEntity();
+        ubiAccountStatsEntity.setUbiProfileId("ubiProfileId");
         when(ubiAccountStatsEntityPostgresRepository.findById("ubiProfileId")).thenReturn(Optional.empty());
 
-        ubiAccountEntryEntityMapper.createEntityForTelegramUser("chatId", new UbiAccountAuthorizationEntry());
-
-        verify(ubiAccountStatsEntityPostgresRepository).save(any(UbiAccountStatsEntity.class));
-    }
-
-    @Test
-    public void createEntityForTelegramUser_should_properly_map_entity_for_existing_ubi_stats() {
-        when(userPostgresRepository.findByTelegramUserChatId("chatId")).thenReturn(new UserEntity(1L));
-        when(ubiAccountStatsEntityPostgresRepository.findById("ubiProfileId")).thenReturn(Optional.of(new UbiAccountStatsEntity("ubiProfileId")));
-
         UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
         account.setUbiProfileId("ubiProfileId");
         account.setEmail("email");
@@ -52,29 +82,24 @@ class UbiAccountEntryEntityMapperTest {
         account.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
         account.setUbiRememberMeTicket("ubiRememberMeTicket");
 
-        UbiAccountEntryEntity expected = new UbiAccountEntryEntity();
-        expected.setUser(new UserEntity(1L));
-        expected.setEmail("email");
-        expected.setEncodedPassword("encodedPassword");
-        expected.setUbiSessionId("ubiSessionId");
-        expected.setUbiSpaceId("ubiSpaceId");
-        expected.setUbiAuthTicket("ubiAuthTicket");
-        expected.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
-        expected.setUbiRememberMeTicket("ubiRememberMeTicket");
-        expected.setUbiAccountStats(new UbiAccountStatsEntity("ubiProfileId"));
+        UbiAccountEntryEntity entity = ubiAccountEntryEntityMapper.createEntity("chatId", account);
 
-        assertTrue(expected.isFullyEqual(ubiAccountEntryEntityMapper.createEntityForTelegramUser("chatId", account)));
+        assertEquals(userEntity, entity.getUser());
+        assertEquals("email", entity.getEmail());
+        assertEquals("encodedPassword", entity.getEncodedPassword());
+        assertEquals("ubiSessionId", entity.getUbiSessionId());
+        assertEquals("ubiSpaceId", entity.getUbiSpaceId());
+        assertEquals("ubiAuthTicket", entity.getUbiAuthTicket());
+        assertEquals("ubiRememberDeviceTicket", entity.getUbiRememberDeviceTicket());
+        assertEquals("ubiRememberMeTicket", entity.getUbiRememberMeTicket());
+        assertEquals(ubiAccountStatsEntity, entity.getUbiAccountStats());
     }
 
     @Test
-    public void createEntityForTelegramUser_should_properly_map_entity_for_non_existing_ubi_stats() {
-        when(userPostgresRepository.findByTelegramUserChatId("chatId")).thenReturn(new UserEntity(1L));
-        when(ubiAccountStatsEntityPostgresRepository.findById("ubiProfileId")).thenReturn(Optional.empty());
-        UbiAccountStatsEntity ubiAccountStatsEntity = new UbiAccountStatsEntity("ubiProfileId");
-        when(ubiAccountStatsEntityPostgresRepository.save(any())).thenReturn(ubiAccountStatsEntity);
-
+    public void createEntity_should_throw_if_user_doesnt_exist() {
+        when(userPostgresRepository.existsByTelegramUserChatId("chatId")).thenReturn(false);
         UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
-        account.setUbiProfileId("ubiProfileId");
+        account.setUbiProfileId("ubiProfileId1");
         account.setEmail("email");
         account.setEncodedPassword("encodedPassword");
         account.setUbiSessionId("ubiSessionId");
@@ -83,76 +108,6 @@ class UbiAccountEntryEntityMapperTest {
         account.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
         account.setUbiRememberMeTicket("ubiRememberMeTicket");
 
-        UbiAccountEntryEntity expected = new UbiAccountEntryEntity();
-        expected.setUser(new UserEntity(1L));
-        expected.setEmail("email");
-        expected.setEncodedPassword("encodedPassword");
-        expected.setUbiSessionId("ubiSessionId");
-        expected.setUbiSpaceId("ubiSpaceId");
-        expected.setUbiAuthTicket("ubiAuthTicket");
-        expected.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
-        expected.setUbiRememberMeTicket("ubiRememberMeTicket");
-        expected.setUbiAccountStats(new UbiAccountStatsEntity("ubiProfileId"));
-
-        UbiAccountEntryEntity actual = ubiAccountEntryEntityMapper.createEntityForTelegramUser("chatId", account);
-        //verify(ubiAccountStatsEntityPostgresRepository).save(same(ubiAccountStatsEntity));
-
-        System.out.println("Expected: " + expected);
-        System.out.println("Actual: " + actual);
-
-        assertTrue(expected.isFullyEqual(actual));
-    }
-
-    @Test
-    public void createEntity() {
-        UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
-        account.setUbiProfileId("ubiProfileId");
-        account.setEmail("email");
-        account.setEncodedPassword("encodedPassword");
-        account.setUbiSessionId("ubiSessionId");
-        account.setUbiSpaceId("ubiSpaceId");
-        account.setUbiAuthTicket("ubiAuthTicket");
-        account.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
-        account.setUbiRememberMeTicket("ubiRememberMeTicket");
-
-        UbiAccountEntryEntity expected = new UbiAccountEntryEntity();
-        expected.setUser(new UserEntity(1L));
-        expected.setEmail("email");
-        expected.setEncodedPassword("encodedPassword");
-        expected.setUbiSessionId("ubiSessionId");
-        expected.setUbiSpaceId("ubiSpaceId");
-        expected.setUbiAuthTicket("ubiAuthTicket");
-        expected.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
-        expected.setUbiRememberMeTicket("ubiRememberMeTicket");
-        expected.setUbiAccountStats(new UbiAccountStatsEntity("ubiProfileId"));
-
-        assertTrue(expected.isFullyEqual(ubiAccountEntryEntityMapper.createEntity(new UserEntity(1L), new UbiAccountStatsEntity(
-                "ubiProfileId"), account)));
-    }
-
-    @Test
-    public void createUbiAccountAuthorizationEntry() {
-        UbiAccountEntryEntity entity = new UbiAccountEntryEntity();
-        entity.setUser(new UserEntity(1L));
-        entity.setEmail("email");
-        entity.setEncodedPassword("encodedPassword");
-        entity.setUbiSessionId("ubiSessionId");
-        entity.setUbiSpaceId("ubiSpaceId");
-        entity.setUbiAuthTicket("ubiAuthTicket");
-        entity.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
-        entity.setUbiRememberMeTicket("ubiRememberMeTicket");
-        entity.setUbiAccountStats(new UbiAccountStatsEntity("ubiProfileId"));
-
-        UbiAccountAuthorizationEntry authorizationEntry = new UbiAccountAuthorizationEntry();
-        authorizationEntry.setUbiProfileId("ubiProfileId");
-        authorizationEntry.setEmail("email");
-        authorizationEntry.setEncodedPassword("encodedPassword");
-        authorizationEntry.setUbiSessionId("ubiSessionId");
-        authorizationEntry.setUbiSpaceId("ubiSpaceId");
-        authorizationEntry.setUbiAuthTicket("ubiAuthTicket");
-        authorizationEntry.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
-        authorizationEntry.setUbiRememberMeTicket("ubiRememberMeTicket");
-
-        assertEquals(authorizationEntry, ubiAccountEntryEntityMapper.createUbiAccountAuthorizationEntry(entity));
+        assertThrows(TelegramUserDoesntExistException.class, () -> ubiAccountEntryEntityMapper.createEntity("chatId", account));
     }
 }

@@ -1,27 +1,24 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item;
 
-import github.ricemonger.marketplace.databases.postgres.entities.item.ItemEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
-import github.ricemonger.marketplace.databases.postgres.repositories.TagPostgresPostgresRepository;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
+import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
+import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class ItemEntityMapperTest {
     @Autowired
     private ItemEntityMapper itemEntityMapper;
-    @MockBean
-    private TagPostgresPostgresRepository tagRepository;
 
     @Test
     public void createDTO_should_properly_map_entity_to_dto() {

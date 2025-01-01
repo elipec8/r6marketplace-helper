@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -65,5 +66,20 @@ public class TradeByFiltersManagerEntity {
         }
         return Objects.equals(user, tradeByFiltersManagerEntity.user) &&
                Objects.equals(name, tradeByFiltersManagerEntity.name);
+    }
+
+    public boolean isFullyEqual(TradeByFiltersManagerEntity manager) {
+
+        boolean appliedFiltersAreEqual = appliedFilters == null && manager.appliedFilters == null || (
+                appliedFilters != null && manager.appliedFilters != null &&
+                appliedFilters.size() == manager.appliedFilters.size() && new HashSet<>(appliedFilters).containsAll(manager.appliedFilters));
+
+        return equals(manager) &&
+               Objects.equals(enabled, manager.enabled) &&
+               Objects.equals(tradeOperationType, manager.tradeOperationType) &&
+               appliedFiltersAreEqual &&
+               Objects.equals(minDifferenceFromMedianPrice, manager.minDifferenceFromMedianPrice) &&
+               Objects.equals(minDifferenceFromMedianPricePercent, manager.minDifferenceFromMedianPricePercent) &&
+               Objects.equals(priorityMultiplier, manager.priorityMultiplier);
     }
 }
