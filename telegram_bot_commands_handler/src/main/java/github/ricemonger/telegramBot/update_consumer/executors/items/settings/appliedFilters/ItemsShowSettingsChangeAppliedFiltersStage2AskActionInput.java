@@ -10,20 +10,18 @@ import java.util.Collection;
 public class ItemsShowSettingsChangeAppliedFiltersStage2AskActionInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
-        processMiddleInput(InputState.ITEMS_SHOW_SETTINGS_APPLIED_FILTER_ADD_OR_REMOVE);
+        processLastInput();
 
         ItemFilter filter = botInnerService.getUserItemFilterByUserCurrentInputCallbackFilterName(updateInfo);
 
         Collection<String> appliedFilters = botInnerService.getItemShowAppliedFiltersNames(updateInfo.getChatId());
 
-        String text;
-
         if (appliedFilters.contains(filter.getName())) {
-            text = "Chosen filter is:\n" + filter.toHandsomeString() + "\nWould you like to remove it?";
+          String  text = "Chosen filter is:\n" + filter.toHandsomeString() + "\nWould you like to remove it?";
+            askYesOrNoFromInlineKeyboard(text, Callbacks.DELETE_ITEM_SHOW_APPLIED_FILTER, Callbacks.CANCEL);
         } else {
-            text = "Chosen filter is:\n" + filter.toHandsomeString() + "\nWould you like to add it?";
+           String text = "Chosen filter is:\n" + filter.toHandsomeString() + "\nWould you like to add it?";
+            askYesOrNoFromInlineKeyboard(text, Callbacks.ADD_ITEM_SHOW_APPLIED_FILTER, Callbacks.CANCEL);
         }
-
-        askYesOrNoFromInlineKeyboard(text, Callbacks.INPUT_CALLBACK_TRUE, Callbacks.INPUT_CALLBACK_FALSE);
     }
 }

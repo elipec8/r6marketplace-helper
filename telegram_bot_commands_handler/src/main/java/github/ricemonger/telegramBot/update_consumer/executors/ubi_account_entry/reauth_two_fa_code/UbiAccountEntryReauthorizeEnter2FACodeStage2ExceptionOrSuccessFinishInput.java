@@ -11,8 +11,7 @@ public class UbiAccountEntryReauthorizeEnter2FACodeStage2ExceptionOrSuccessFinis
 
         sendText("""
                 2FA Code was successfully provided. Be aware:
-                Do not check "Remember this device" box on the Ubisoft 2FA login page,
-                as it will cause the bot to fail to login.
+                Do not check "Remember this device" box on the Ubisoft 2FA login page, as it will cause the bot to fail to login.
                 """);
     }
 }

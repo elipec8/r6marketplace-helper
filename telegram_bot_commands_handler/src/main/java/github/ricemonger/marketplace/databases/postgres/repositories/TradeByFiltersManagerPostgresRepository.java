@@ -13,13 +13,13 @@ import java.util.Optional;
 public interface TradeByFiltersManagerPostgresRepository extends JpaRepository<TradeByFiltersManagerEntity, TradeByFiltersManagerEntityId> {
     @Transactional
     @Modifying
-    @Query("UPDATE TradeByFiltersManagerEntity t SET t.enabled = NOT t.enabled " +
-           "WHERE t.user.telegramUser.chatId = :chatId AND t.name = :name")
+    @Query(value = "UPDATE trade_manager_by_item_filters t " +
+                   "SET enabled = NOT (enabled)" +
+                   "FROM telegram_user tu " +
+                   "WHERE t.user_id = tu.user_id AND tu.chat_id = :chatId AND t.name = :name", nativeQuery = true)
     void invertEnabledFlagByUserTelegramUserChatIdAndName(String chatId, String name);
 
     @Transactional
-    @Modifying
-    //@Query("DELETE FROM TradeByFiltersManagerEntity t WHERE t.user.telegramUser.chatId = :chatId AND t.name = :name")
     void deleteByUserTelegramUserChatIdAndName(String chatId, String name);
 
     @Transactional(readOnly = true)

@@ -752,8 +752,8 @@ public class BotInnerServiceTest {
 
         botInnerService.updateUserItemShowAppliedFiltersSettingsByUserInput(1L);
 
-        verify(telegramUserService).addItemShowAppliedFilter(1L, filter);
-        verify(telegramUserService, times(0)).removeItemShowAppliedFilter(any(), any());
+        verify(telegramUserService).addUserItemShowAppliedFilter(1L, filter);
+        verify(telegramUserService, times(0)).removeUserItemShowAppliedFilter(any(), any());
     }
 
     @Test
@@ -776,8 +776,8 @@ public class BotInnerServiceTest {
 
         botInnerService.updateUserItemShowAppliedFiltersSettingsByUserInput(1L);
 
-        verify(telegramUserService, times(0)).addItemShowAppliedFilter(any(), any());
-        verify(telegramUserService, times(0)).removeItemShowAppliedFilter(any(), any());
+        verify(telegramUserService, times(0)).addUserItemShowAppliedFilter(any(), any());
+        verify(telegramUserService, times(0)).removeUserItemShowAppliedFilter(any(), any());
     }
 
     @Test
@@ -800,8 +800,8 @@ public class BotInnerServiceTest {
 
         botInnerService.updateUserItemShowAppliedFiltersSettingsByUserInput(1L);
 
-        verify(telegramUserService, times(0)).addItemShowAppliedFilter(any(), any());
-        verify(telegramUserService).removeItemShowAppliedFilter(1L, filterName);
+        verify(telegramUserService, times(0)).addUserItemShowAppliedFilter(any(), any());
+        verify(telegramUserService).removeUserItemShowAppliedFilter(1L, filterName);
     }
 
     @Test
@@ -822,8 +822,8 @@ public class BotInnerServiceTest {
 
         botInnerService.updateUserItemShowAppliedFiltersSettingsByUserInput(1L);
 
-        verify(telegramUserService, times(0)).addItemShowAppliedFilter(any(), any());
-        verify(telegramUserService, times(0)).removeItemShowAppliedFilter(any(), any());
+        verify(telegramUserService, times(0)).addUserItemShowAppliedFilter(any(), any());
+        verify(telegramUserService, times(0)).removeUserItemShowAppliedFilter(any(), any());
     }
 
     @Test
@@ -842,7 +842,7 @@ public class BotInnerServiceTest {
 
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_SETTINGS_APPLIED_FILTER_ADD_OR_REMOVE)).thenReturn(Callbacks.INPUT_CALLBACK_TRUE);
 
-        doThrow(new RuntimeException()).when(telegramUserService).addItemShowAppliedFilter(any(), any());
+        doThrow(new RuntimeException()).when(telegramUserService).addUserItemShowAppliedFilter(any(), any());
 
         assertThrows(RuntimeException.class, () -> botInnerService.updateUserItemShowAppliedFiltersSettingsByUserInput(1L));
     }
@@ -865,7 +865,7 @@ public class BotInnerServiceTest {
 
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_SETTINGS_APPLIED_FILTER_ADD_OR_REMOVE)).thenReturn("any_other");
 
-        doThrow(new RuntimeException()).when(telegramUserService).removeItemShowAppliedFilter(any(), any());
+        doThrow(new RuntimeException()).when(telegramUserService).removeUserItemShowAppliedFilter(any(), any());
 
         assertThrows(RuntimeException.class, () -> botInnerService.updateUserItemShowAppliedFiltersSettingsByUserInput(1L));
     }

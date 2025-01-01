@@ -3,10 +3,8 @@ package github.ricemonger.marketplace.services;
 import github.ricemonger.marketplace.services.DTOs.*;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserDatabaseService;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserInputDatabaseService;
-import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
-import github.ricemonger.utils.exceptions.server.MissingCallbackPrefixInUserInputException;
 import github.ricemonger.utils.exceptions.server.TelegramUserInputDoesntExistException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -121,17 +119,12 @@ public class TelegramUserService {
         telegramUserDatabaseService.setUserItemShowFieldsSettings(String.valueOf(chatId), settings);
     }
 
-    public void updateItemShowAppliedFiltersSettingsByUserInput(Long chatId, String trueValue, String falseValue) {
-        List<TelegramUserInput> inputs = inputDatabaseService.findAllByChatId(String.valueOf(chatId));
+    public void addUserItemShowAppliedFilter(Long chatId, String name) {
+        telegramUserDatabaseService.addUserItemShowAppliedFilter(String.valueOf(chatId), name);
+    }
 
-        boolean addOrRemove = parseBooleanOrFalse(getInputValueByStateFromCollection(InputState.ITEMS_SHOW_SETTINGS_APPLIED_FILTER_ADD_OR_REMOVE, inputs), trueValue);
-        String filterName = removeCallbackPrefixFromInput(getInputValueByStateFromCollection(InputState.ITEM_FILTER_NAME, inputs));
-
-        if (addOrRemove) {
-            telegramUserDatabaseService.addUserItemShowAppliedFilter(String.valueOf(chatId), filterName);
-        } else {
-            telegramUserDatabaseService.removeUserItemShowAppliedFilter(String.valueOf(chatId), filterName);
-        }
+    public void removeUserItemShowAppliedFilter(Long chatId, String name) {
+        telegramUserDatabaseService.removeUserItemShowAppliedFilter(String.valueOf(chatId), name);
     }
 
     public List<String> getUserItemShowAppliedFiltersNames(Long chatId) {
@@ -195,13 +188,5 @@ public class TelegramUserService {
                 .findFirst()
                 .orElseThrow(() -> new TelegramUserInputDoesntExistException("Input with state " + inputState + " could no be found in collection: " + inputs))
                 .getValue();
-    }
-
-    private String removeCallbackPrefixFromInput(String inputValue) {
-        try {
-            return inputValue.substring(Callbacks.INPUT_CALLBACK_PREFIX.length());
-        } catch (StringIndexOutOfBoundsException e) {
-            throw new MissingCallbackPrefixInUserInputException("Callback prefix is missing in user input: " + inputValue);
-        }
     }
 }

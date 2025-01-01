@@ -13,13 +13,13 @@ import java.util.Optional;
 public interface TradeByItemIdManagerPostgresRepository extends JpaRepository<TradeByItemIdManagerEntity, TradeByItemIdManagerEntityId> {
     @Transactional
     @Modifying
-    @Query("UPDATE TradeByItemIdManagerEntity t SET t.enabled = NOT t.enabled " +
-           "WHERE t.user.telegramUser.chatId = :chatId AND t.item.itemId = :itemId")
+    @Query(value = "UPDATE trade_manager_by_item_id t " +
+                   "SET enabled = NOT (enabled)" +
+                   "FROM telegram_user tu " +
+                   "WHERE t.user_id = tu.user_id AND tu.chat_id = :chatId AND t.item_id = :itemId", nativeQuery = true)
     void invertEnabledFlagByUserTelegramUserChatIdAndItemItemId(String chatId, String itemId);
 
     @Transactional
-    @Modifying
-    //@Query("DELETE FROM TradeByItemIdManagerEntity t WHERE t.user.telegramUser.chatId = :chatId AND t.item.itemId = :itemId")
     void deleteByUserTelegramUserChatIdAndItemItemId(String chatId, String itemId);
 
     @Transactional(readOnly = true)

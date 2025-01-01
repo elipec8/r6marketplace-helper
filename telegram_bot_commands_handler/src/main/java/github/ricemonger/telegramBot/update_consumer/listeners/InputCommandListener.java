@@ -8,7 +8,6 @@ import github.ricemonger.telegramBot.update_consumer.executors.cancel.SilentCanc
 import github.ricemonger.telegramBot.update_consumer.executors.itemFilters.edit.*;
 import github.ricemonger.telegramBot.update_consumer.executors.itemFilters.showOrRemove.FilterShowChosenStage2RemoveRequestInput;
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage2AskActionInput;
-import github.ricemonger.telegramBot.update_consumer.executors.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage3FinishInput;
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.messageLimit.ItemsShowSettingsChangeMessageLimitFinishInput;
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.shownFields.*;
 import github.ricemonger.telegramBot.update_consumer.executors.items.show.ItemsShowStage2FinishInput;
@@ -148,9 +147,6 @@ public class InputCommandListener {
 
         switch (inputState) {
             case ITEM_FILTER_NAME -> executorsService.execute(ItemsShowSettingsChangeAppliedFiltersStage2AskActionInput.class, updateInfo);
-
-            case ITEMS_SHOW_SETTINGS_APPLIED_FILTER_ADD_OR_REMOVE ->
-                    executorsService.execute(ItemsShowSettingsChangeAppliedFiltersStage3FinishInput.class, updateInfo);
 
             default ->
                     throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());

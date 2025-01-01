@@ -149,30 +149,30 @@ class TelegramUserServiceTest {
     }
 
     @Test
-    public void addItemShowAppliedFilter_should_handle_to_service() {
+    public void addUserItemShowAppliedFilter_should_handle_to_service() {
         ItemFilter filter = new ItemFilter();
-        telegramUserService.addItemShowAppliedFilter(123L, filter);
+        telegramUserService.addUserItemShowAppliedFilter(123L, filter);
         verify(telegramUserDatabaseService).addUserItemShowAppliedFilter(eq("123"), same(filter));
     }
 
     @Test
-    public void addItemShowAppliedFilter_should_throw_if_user_doesnt_exist() {
+    public void addUserItemShowAppliedFilter_should_throw_if_user_doesnt_exist() {
         doThrow(TelegramUserDoesntExistException.class).when(telegramUserDatabaseService).addUserItemShowAppliedFilter("123", new ItemFilter());
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.addItemShowAppliedFilter(123L, new ItemFilter()));
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.addUserItemShowAppliedFilter(123L, new ItemFilter()));
     }
 
     @Test
-    public void removeItemShowAppliedFilter_should_handle_to_service() {
-        telegramUserService.removeItemShowAppliedFilter(123L, "filterName");
+    public void removeUserItemShowAppliedFilter_should_handle_to_service() {
+        telegramUserService.removeUserItemShowAppliedFilter(123L, "filterName");
         verify(telegramUserDatabaseService).removeUserItemShowAppliedFilter("123", "filterName");
     }
 
     @Test
-    public void removeItemShowAppliedFilter_should_throw_if_user_doesnt_exist() {
+    public void removeUserItemShowAppliedFilter_should_throw_if_user_doesnt_exist() {
         doThrow(TelegramUserDoesntExistException.class).when(telegramUserDatabaseService).removeUserItemShowAppliedFilter("123", "filterName");
 
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.removeItemShowAppliedFilter(123L, "filterName"));
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.removeUserItemShowAppliedFilter(123L, "filterName"));
     }
 
     @Test

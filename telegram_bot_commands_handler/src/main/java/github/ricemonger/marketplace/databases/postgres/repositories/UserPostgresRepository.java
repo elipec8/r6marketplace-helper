@@ -3,6 +3,7 @@ package github.ricemonger.marketplace.databases.postgres.repositories;
 import github.ricemonger.marketplace.databases.postgres.dto_projections.ItemShowSettingsProjection;
 import github.ricemonger.marketplace.services.DTOs.ItemShownFieldsSettings;
 import github.ricemonger.marketplace.services.DTOs.TradeManagersSettings;
+import github.ricemonger.utilspostgresschema.full_entities.user.ItemFilterEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -69,6 +70,10 @@ public interface UserPostgresRepository extends JpaRepository<UserEntity, Long> 
     List<String> findAllUserItemShowAppliedFiltersNamesByTelegramUserChatId(String chatId);
 
     @Transactional(readOnly = true)
+    @Query("SELECT f FROM UserEntity u JOIN u.itemShowAppliedFilters f WHERE u.telegramUser.chatId = :chatId")
+    List<ItemFilterEntity> findAllUserItemShowAppliedFiltersByTelegramUserChatId(String chatId);
+
+    @Transactional(readOnly = true)
     @Query("SELECT new github.ricemonger.marketplace.databases.postgres.dto_projections.ItemShowSettingsProjection(" +
            "u.telegramUser.itemShowMessagesLimit, " +
            "u.telegramUser.itemShowFewInMessageFlag, " +
@@ -78,8 +83,7 @@ public interface UserPostgresRepository extends JpaRepository<UserEntity, Long> 
            "u.itemShowBuyOrdersCountFlag, " +
            "u.itemShowMinSellPriceFlag, " +
            "u.itemsShowSellOrdersCountFlag, " +
-           "u.itemShowPictureFlag, " +
-           "u.itemShowAppliedFilters) " +
+           "u.itemShowPictureFlag) " +
            "FROM UserEntity u WHERE u.telegramUser.chatId = :chatId")
     Optional<ItemShowSettingsProjection> findItemShowSettingsByTelegramUserChatId(String chatId);
 }

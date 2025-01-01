@@ -215,8 +215,12 @@ public class BotInnerService {
         telegramUserService.setItemShownFieldsSettingsByUserInput(chatId, Callbacks.INPUT_CALLBACK_TRUE, Callbacks.INPUT_CALLBACK_FALSE);
     }
 
-    public void updateUserItemShowAppliedFiltersSettingsByUserInput(Long chatId) {
-        telegramUserService.updateItemShowAppliedFiltersSettingsByUserInput(chatId, Callbacks.INPUT_CALLBACK_TRUE, Callbacks.INPUT_CALLBACK_FALSE);
+    public void addItemShowAppliedFilterByUserInput(Long chatId) {
+        telegramUserService.addUserItemShowAppliedFilter(chatId, getUserInputValueWithoutCallbackPrefix(chatId, InputState.ITEM_FILTER_NAME));
+    }
+
+    public void deleteItemShowAppliedFilterByUserInput(Long chatId) {
+        telegramUserService.removeUserItemShowAppliedFilter(chatId, getUserInputValueWithoutCallbackPrefix(chatId, InputState.ITEM_FILTER_NAME));
     }
 
     public void saveUserTradeByItemIdManagerByUserInput(Long chatId, TradeOperationType tradeOperationType) {

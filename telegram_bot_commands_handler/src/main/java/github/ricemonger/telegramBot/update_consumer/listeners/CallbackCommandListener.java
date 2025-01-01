@@ -11,6 +11,8 @@ import github.ricemonger.telegramBot.update_consumer.executors.itemFilters.showO
 import github.ricemonger.telegramBot.update_consumer.executors.itemFilters.showOrRemove.FiltersShowAllNamesStage1AskNameCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.ItemsShowSettingsCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallback;
+import github.ricemonger.telegramBot.update_consumer.executors.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage3AddAppliedFilterCallback;
+import github.ricemonger.telegramBot.update_consumer.executors.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage3DeleteAppliedFilterCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.itemsInMessage.ItemsShowSettingsChangeItemsInMessageCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.itemsInMessage.ItemsShowSettingsChangeItemsInMessageNoCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.itemsInMessage.ItemsShowSettingsChangeItemsInMessageYesCallback;
@@ -84,9 +86,6 @@ public class CallbackCommandListener {
 
             case Callbacks.ITEMS_SHOW_SETTINGS -> executorsService.execute(ItemsShowSettingsCallback.class, updateInfo);
 
-            case Callbacks.ITEMS_SHOW_SETTINGS_CHANGE_APPLIED_FILTERS ->
-                    executorsService.execute(ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallback.class, updateInfo);
-
             case Callbacks.ITEMS_SHOW_SETTINGS_CHANGE_FEW_ITEMS_IN_MESSAGE ->
                     executorsService.execute(ItemsShowSettingsChangeItemsInMessageCallback.class, updateInfo);
 
@@ -103,6 +102,13 @@ public class CallbackCommandListener {
             case Callbacks.ITEMS_SHOW_SETTINGS_CHANGE_SHOWN_FIELDS ->
                     executorsService.execute(ItemsShowSettingsChangeShownFieldsStage1AskNameFlagCallback.class,
                             updateInfo);
+
+            case Callbacks.ITEMS_SHOW_SETTINGS_CHANGE_APPLIED_FILTERS ->
+                    executorsService.execute(ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallback.class, updateInfo);
+
+            case Callbacks.ADD_ITEM_SHOW_APPLIED_FILTER -> executorsService.execute(ItemsShowSettingsChangeAppliedFiltersStage3AddAppliedFilterCallback.class, updateInfo);
+
+            case Callbacks.DELETE_ITEM_SHOW_APPLIED_FILTER -> executorsService.execute(ItemsShowSettingsChangeAppliedFiltersStage3DeleteAppliedFilterCallback.class, updateInfo);
 
 
             case Callbacks.ITEMS_SHOW -> executorsService.execute(ItemsShowStage1AskOffsetCallback.class, updateInfo);

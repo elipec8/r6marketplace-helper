@@ -119,7 +119,10 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     @Override
     @Transactional(readOnly = true)
     public ItemShowSettings findUserItemShowSettings(String chatId) throws TelegramUserDoesntExistException {
-        return userEntityMapper.mapItemShowSettings(userRepository.findItemShowSettingsByTelegramUserChatId(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found")));
+        return userEntityMapper.mapItemShowSettings(
+                userRepository.findItemShowSettingsByTelegramUserChatId(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found")),
+                userRepository.findAllUserItemShowAppliedFiltersByTelegramUserChatId(chatId)
+        );
     }
 
     @Override
