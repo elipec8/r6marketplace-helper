@@ -106,9 +106,11 @@ public class CallbackCommandListener {
             case Callbacks.ITEMS_SHOW_SETTINGS_CHANGE_APPLIED_FILTERS ->
                     executorsService.execute(ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallback.class, updateInfo);
 
-            case Callbacks.ADD_ITEM_SHOW_APPLIED_FILTER -> executorsService.execute(ItemsShowSettingsChangeAppliedFiltersStage3AddAppliedFilterCallback.class, updateInfo);
+            case Callbacks.ADD_ITEM_SHOW_APPLIED_FILTER ->
+                    executorsService.execute(ItemsShowSettingsChangeAppliedFiltersStage3AddAppliedFilterCallback.class, updateInfo);
 
-            case Callbacks.DELETE_ITEM_SHOW_APPLIED_FILTER -> executorsService.execute(ItemsShowSettingsChangeAppliedFiltersStage3DeleteAppliedFilterCallback.class, updateInfo);
+            case Callbacks.DELETE_ITEM_SHOW_APPLIED_FILTER ->
+                    executorsService.execute(ItemsShowSettingsChangeAppliedFiltersStage3DeleteAppliedFilterCallback.class, updateInfo);
 
 
             case Callbacks.ITEMS_SHOW -> executorsService.execute(ItemsShowStage1AskOffsetCallback.class, updateInfo);

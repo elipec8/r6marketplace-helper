@@ -22,7 +22,7 @@ public class TradeByItemIdManagerEntityMapper {
     private final ItemPostgresRepository itemPostgresRepository;
 
     public TradeByItemIdManagerEntity createEntity(String chatId, TradeByItemIdManager tradeManager) {
-        if(!userPostgresRepository.existsByTelegramUserChatId(chatId)) {
+        if (!userPostgresRepository.existsByTelegramUserChatId(chatId)) {
             throw new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found");
         }
         UserEntity userEntity = userPostgresRepository.getReferenceByTelegramUserChatId(chatId);

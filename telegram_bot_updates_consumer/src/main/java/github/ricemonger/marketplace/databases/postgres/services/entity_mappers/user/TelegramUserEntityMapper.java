@@ -2,18 +2,11 @@ package github.ricemonger.marketplace.databases.postgres.services.entity_mappers
 
 
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
-import github.ricemonger.marketplace.services.DTOs.ItemShowSettings;
-import github.ricemonger.marketplace.services.DTOs.TelegramUserInputStateAndGroup;
-import github.ricemonger.marketplace.services.DTOs.TradeManagersSettings;
-import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @Component

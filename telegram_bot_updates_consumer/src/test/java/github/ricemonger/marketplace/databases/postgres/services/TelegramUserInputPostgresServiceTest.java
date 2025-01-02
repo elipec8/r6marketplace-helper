@@ -1,7 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserInputPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TelegramUserInputEntityMapper;
 import github.ricemonger.marketplace.services.DTOs.TelegramUserInput;
 import github.ricemonger.utils.enums.InputState;

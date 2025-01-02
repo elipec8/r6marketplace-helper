@@ -21,7 +21,7 @@ public class UbiAccountEntryEntityMapper {
     private final UbiAccountStatsEntityPostgresRepository ubiAccountStatsEntityPostgresRepository;
 
     public UbiAccountEntryEntity createEntity(String chatId, UbiAccountAuthorizationEntry account) {
-        if(!userPostgresRepository.existsByTelegramUserChatId(chatId)) {
+        if (!userPostgresRepository.existsByTelegramUserChatId(chatId)) {
             throw new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found");
         }
         UserEntity userEntity = userPostgresRepository.getReferenceByTelegramUserChatId(chatId);

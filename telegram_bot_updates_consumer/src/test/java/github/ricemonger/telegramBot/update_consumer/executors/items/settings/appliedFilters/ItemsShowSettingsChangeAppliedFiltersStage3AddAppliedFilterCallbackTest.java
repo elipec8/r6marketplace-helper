@@ -2,19 +2,13 @@ package github.ricemonger.telegramBot.update_consumer.executors.items.settings.a
 
 import github.ricemonger.telegramBot.update_consumer.BotInnerService;
 import github.ricemonger.telegramBot.update_consumer.executors.MockUpdateInfos;
-import github.ricemonger.utils.DTOs.personal.ItemFilter;
-import github.ricemonger.utils.enums.InputGroup;
-import github.ricemonger.utils.enums.InputState;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class ItemsShowSettingsChangeAppliedFiltersStage3AddAppliedFilterCallbackTest {

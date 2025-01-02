@@ -2,8 +2,8 @@ package github.ricemonger.trades_manager.postgres.services.entity_mappers.user;
 
 import github.ricemonger.trades_manager.postgres.entities.manageable_users.*;
 import github.ricemonger.trades_manager.services.DTOs.ManageableUser;
-import github.ricemonger.trades_manager.services.DTOs.UbiAccountStats;
 import github.ricemonger.trades_manager.services.DTOs.TradeByFiltersManager;
+import github.ricemonger.trades_manager.services.DTOs.UbiAccountStats;
 import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

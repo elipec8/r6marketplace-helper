@@ -1,6 +1,5 @@
 package github.ricemonger.telegramBot.update_consumer.executors.items.settings.appliedFilters;
 
-import github.ricemonger.marketplace.services.DTOs.ItemShowSettings;
 import github.ricemonger.telegramBot.update_consumer.BotInnerService;
 import github.ricemonger.telegramBot.update_consumer.executors.MockUpdateInfos;
 import github.ricemonger.utils.enums.InputGroup;

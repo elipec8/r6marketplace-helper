@@ -11,6 +11,8 @@ import github.ricemonger.telegramBot.update_consumer.executors.itemFilters.showO
 import github.ricemonger.telegramBot.update_consumer.executors.itemFilters.showOrRemove.FiltersShowAllNamesStage1AskNameCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.ItemsShowSettingsCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallback;
+import github.ricemonger.telegramBot.update_consumer.executors.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage3AddAppliedFilterCallback;
+import github.ricemonger.telegramBot.update_consumer.executors.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage3DeleteAppliedFilterCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.itemsInMessage.ItemsShowSettingsChangeItemsInMessageCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.itemsInMessage.ItemsShowSettingsChangeItemsInMessageNoCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.itemsInMessage.ItemsShowSettingsChangeItemsInMessageYesCallback;
@@ -119,6 +121,20 @@ class CallbackCommandListenerTest {
         callbackCommandListener.handleUpdate(updateInfo(Callbacks.ITEMS_SHOW_SETTINGS_CHANGE_APPLIED_FILTERS));
 
         verify(executorsService).execute(ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallback.class, updateInfo(Callbacks.ITEMS_SHOW_SETTINGS_CHANGE_APPLIED_FILTERS));
+    }
+
+    @Test
+    public void handleUpdate_should_add_item_show_applied_filters() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.ADD_ITEM_SHOW_APPLIED_FILTER));
+
+        verify(executorsService).execute(ItemsShowSettingsChangeAppliedFiltersStage3AddAppliedFilterCallback.class, updateInfo(Callbacks.ADD_ITEM_SHOW_APPLIED_FILTER));
+    }
+
+    @Test
+    public void handleUpdate_should_remove_item_show_applied_filters() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.DELETE_ITEM_SHOW_APPLIED_FILTER));
+
+        verify(executorsService).execute(ItemsShowSettingsChangeAppliedFiltersStage3DeleteAppliedFilterCallback.class, updateInfo(Callbacks.DELETE_ITEM_SHOW_APPLIED_FILTER));
     }
 
     @Test

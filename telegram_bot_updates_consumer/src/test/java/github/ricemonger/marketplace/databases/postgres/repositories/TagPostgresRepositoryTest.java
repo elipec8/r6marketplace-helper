@@ -1,11 +1,10 @@
 package github.ricemonger.marketplace.databases.postgres.repositories;
 
-import github.ricemonger.marketplace.databases.postgres.entities.item.TagEntity;
 import github.ricemonger.utils.enums.TagGroup;
+import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
 
@@ -13,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class TagPostgresRepositoryTest {
     @SpyBean
     TagPostgresPostgresRepository tagPostgresRepository;

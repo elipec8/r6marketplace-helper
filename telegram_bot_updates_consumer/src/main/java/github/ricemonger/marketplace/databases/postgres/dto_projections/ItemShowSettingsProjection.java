@@ -1,11 +1,8 @@
 package github.ricemonger.marketplace.databases.postgres.dto_projections;
 
-import github.ricemonger.utilspostgresschema.full_entities.user.ItemFilterEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Collection;
 
 @Data
 @NoArgsConstructor

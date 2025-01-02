@@ -1,8 +1,8 @@
 package github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.show.remove_or_change_enabled.itemFilters;
 
 import github.ricemonger.marketplace.services.DTOs.TradeByFiltersManager;
-import github.ricemonger.telegramBot.update_consumer.executors.MockUpdateInfos;
 import github.ricemonger.telegramBot.update_consumer.BotInnerService;
+import github.ricemonger.telegramBot.update_consumer.executors.MockUpdateInfos;
 import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
 import org.junit.jupiter.api.Test;

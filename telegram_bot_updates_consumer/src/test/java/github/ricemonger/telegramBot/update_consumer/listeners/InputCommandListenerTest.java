@@ -8,7 +8,6 @@ import github.ricemonger.telegramBot.update_consumer.executors.cancel.SilentCanc
 import github.ricemonger.telegramBot.update_consumer.executors.itemFilters.edit.*;
 import github.ricemonger.telegramBot.update_consumer.executors.itemFilters.showOrRemove.FilterShowChosenStage2RemoveRequestInput;
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage2AskActionInput;
-import github.ricemonger.telegramBot.update_consumer.executors.items.settings.appliedFilters.ItemsShowSettingsChangeAppliedFiltersStage3FinishInput;
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.messageLimit.ItemsShowSettingsChangeMessageLimitFinishInput;
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.shownFields.*;
 import github.ricemonger.telegramBot.update_consumer.executors.items.show.ItemsShowStage2FinishInput;
@@ -227,13 +226,6 @@ class InputCommandListenerTest {
         verify(executorsService).execute(ItemsShowSettingsChangeAppliedFiltersStage2AskActionInput.class, updateInfo);
     }
 
-    @Test
-    public void handleUpdate_should_item_show_settings_change_applied_filters_add_or_remove() {
-        UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTING_CHANGE_APPLIED_FILTERS, InputState.ITEMS_SHOW_SETTINGS_APPLIED_FILTER_ADD_OR_REMOVE);
-        inputCommandListener.handleUpdate(updateInfo);
-
-        verify(executorsService).execute(ItemsShowSettingsChangeAppliedFiltersStage3FinishInput.class, updateInfo);
-    }
 
     @Test
     public void handleUpdate_should_item_show_settings_change_applied_filters_throw() {
