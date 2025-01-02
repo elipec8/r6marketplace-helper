@@ -2,50 +2,46 @@ package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.abstractions.TagDatabaseService;
 import github.ricemonger.utils.DTOs.common.Tag;
+import github.ricemonger.utils.enums.TagGroup;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.same;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class TagServiceTest {
-
+    @Autowired
+    private TagService tagService;
     @MockBean
     private TagDatabaseService tagDatabaseService;
 
-    @Autowired
-    private TagService tagService;
-
     @Test
     void getTagsByNames_should_handle_to_service() {
-        Collection<String> tagNames = new ArrayList<>();
+        List tagNames = Mockito.mock(List.class);
 
-        List<Tag> tags = new ArrayList<>();
+        List tags = Mockito.mock(List.class);
 
-        when(tagDatabaseService.findAllByNames(tagNames)).thenReturn(tags);
+        when(tagDatabaseService.findAllByNames(same(tagNames))).thenReturn(tags);
 
-        assertEquals(tags, tagService.getTagsByNames(tagNames));
-
-        verify(tagDatabaseService).findAllByNames(same(tagNames));
+        assertSame(tags, tagService.getTagsByNames(tagNames));
     }
 
     @Test
-    void getAllTags_should_handle_to_service() {
-        List<Tag> tags = new ArrayList<>();
+    void getAllTagsByTagGroup_should_handle_to_service() {
+        List tags = Mockito.mock(List.class);
 
-        when(tagDatabaseService.findAll()).thenReturn(tags);
+        TagGroup tagGroup = TagGroup.Rarity;
 
-        assertEquals(tags, tagService.getAllTags());
+        when(tagDatabaseService.findAllByTagGroup(tagGroup)).thenReturn(tags);
 
-        verify(tagDatabaseService).findAll();
+        assertSame(tags, tagService.getAllTagsByTagGroup(tagGroup));
     }
 }

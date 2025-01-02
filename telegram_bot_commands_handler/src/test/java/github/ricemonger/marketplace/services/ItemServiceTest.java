@@ -21,8 +21,6 @@ class ItemServiceTest {
     @Autowired
     private ItemService itemService;
     @MockBean
-    private TagService tagService;
-    @MockBean
     private ItemDatabaseService itemDatabaseService;
 
     @Test
@@ -54,7 +52,7 @@ class ItemServiceTest {
 
             itemFilterMock.when(() -> ItemFilter.filterItems(same(items), same(filters))).thenReturn(filteredItems);
 
-            assertSame(filteredItems, itemService.getAllItemsShownFieldsByFilters(filters));
+            assertSame(filteredItems, itemService.getAllItemsByFilters(filters));
         }
     }
 }

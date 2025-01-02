@@ -3,13 +3,14 @@ package github.ricemonger.marketplace.services;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserItemFilterDatabaseService;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -22,7 +23,7 @@ class ItemFilterServiceTest {
     private TelegramUserItemFilterDatabaseService telegramUserItemFilterDatabaseService;
 
     @Test
-    public void saveItemFilter_should_handle_to_db_service() {
+    public void save_should_handle_to_db_service() {
         ItemFilter itemFilter = new ItemFilter();
         String chatId = "chatId";
 
@@ -32,7 +33,7 @@ class ItemFilterServiceTest {
     }
 
     @Test
-    public void deleteItemFilterById_should_handle_to_db_service() {
+    public void deleteById_should_handle_to_db_service() {
         String chatId = "chatId";
         String name = "name";
 
@@ -42,7 +43,7 @@ class ItemFilterServiceTest {
     }
 
     @Test
-    public void getItemFilterById_should_handle_to_db_service() {
+    public void getById_should_handle_to_db_service() {
         String chatId = "chatId";
         String name = "name";
 
@@ -50,33 +51,27 @@ class ItemFilterServiceTest {
 
         when(telegramUserItemFilterDatabaseService.findById(chatId, name)).thenReturn(itemFilter);
 
-        assertEquals(itemFilter, itemFilterService.getById(chatId, name));
-
-        verify(telegramUserItemFilterDatabaseService).findById(same(chatId), same(name));
+        assertSame(itemFilter, itemFilterService.getById(chatId, name));
     }
 
     @Test
-    public void getAllUser_ItemFilters_should_handle_to_db_service() {
+    public void getAllByChatId_should_handle_to_db_service() {
         String chatId = "chatId";
-        ItemFilter itemFilter = new ItemFilter();
 
-        when(telegramUserItemFilterDatabaseService.findAllByChatId(chatId)).thenReturn(List.of(itemFilter));
+        List list = Mockito.mock(List.class);
 
-        assertEquals(List.of(itemFilter), itemFilterService.getAllByChatId(chatId));
+        when(telegramUserItemFilterDatabaseService.findAllByChatId(chatId)).thenReturn(list);
 
-        verify(telegramUserItemFilterDatabaseService).findAllByChatId(same(chatId));
+        assertSame(list, itemFilterService.getAllByChatId(chatId));
     }
 
     @Test
-    public void getAllUser_ItemFiltersNames_should_handle_to_db_service() {
+    public void getAllNamesByChatId_should_handle_to_db_service() {
         String chatId = "chatId";
-        ItemFilter itemFilter = new ItemFilter();
-        itemFilter.setName("name");
+        List list = Mockito.mock(List.class);
 
-        when(telegramUserItemFilterDatabaseService.findAllByChatId(chatId)).thenReturn(List.of(itemFilter));
+        when(telegramUserItemFilterDatabaseService.findAllNamesByChatId(chatId)).thenReturn(list);
 
-        assertEquals(List.of("name"), itemFilterService.getAllNamesByChatId(chatId));
-
-        verify(telegramUserItemFilterDatabaseService).findAllByChatId(same(chatId));
+        assertSame(list, itemFilterService.getAllNamesByChatId(chatId));
     }
 }

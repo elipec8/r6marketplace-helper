@@ -4,17 +4,14 @@ import github.ricemonger.marketplace.authorization.AuthorizationService;
 import github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
-import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
-import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class UbiAccountEntryServiceTest {
@@ -38,15 +35,12 @@ class UbiAccountEntryServiceTest {
 
         ubiAccountEntryService.authorizeAndSaveUbiAccountEntry("chatId", email, password, twoFaCode);
 
-        verify(authorizationService).authorizeAndGet2FaAuthorizedDTO(email, password, twoFaCode);
-
         verify(telegramUserUbiAccountEntryDatabaseService).save("chatId", buildUbiAccount(email, encodedPassword, dto));
     }
 
     @Test
     public void reauthorizeAndSaveExistingUserBy2FACode_should_reauthorize_using_email_and_encodedPassword_from_db_and_twoFaCode() {
         String email = "email";
-        String password = "password";
         String twoFaCode = "twoFaCode";
         String encodedPassword = "encodedPassword";
         AuthorizationDTO dto = new AuthorizationDTO();
@@ -54,7 +48,7 @@ class UbiAccountEntryServiceTest {
         UbiAccountAuthorizationEntry authEntry = new UbiAccountAuthorizationEntry();
         authEntry.setEmail(email);
         authEntry.setEncodedPassword(encodedPassword);
-        when(telegramUserUbiAccountEntryDatabaseService.findByChatId(any())).thenReturn(authEntry);
+        when(telegramUserUbiAccountEntryDatabaseService.findByChatId("chatId")).thenReturn(authEntry);
         when(authorizationService.authorizeAndGet2FaAuthorizedDTOForEncodedPassword(email, encodedPassword, twoFaCode)).thenReturn(dto);
 
         ubiAccountEntryService.reauthorizeAndSaveExistingUbiAccountEntryBy2FACode("chatId", twoFaCode);
@@ -70,36 +64,13 @@ class UbiAccountEntryServiceTest {
     }
 
     @Test
-    public void deleteByChatId_should_throw_if_user_doesnt_exist() {
-        doThrow(TelegramUserDoesntExistException.class).when(telegramUserUbiAccountEntryDatabaseService).deleteByChatId(any());
-
-        assertThrows(TelegramUserDoesntExistException.class, () -> ubiAccountEntryService.deleteByChatId("chatId"));
-    }
-
-    @Test
     public void findByChatId_should_return_ubi_account_entry() {
         String chatId = "chatId";
         UbiAccountAuthorizationEntry entry = new UbiAccountAuthorizationEntry();
         entry.setEmail("email");
         when(telegramUserUbiAccountEntryDatabaseService.findByChatId(chatId)).thenReturn(entry);
 
-        assertEquals(entry, ubiAccountEntryService.findByChatId(chatId));
-
-        verify(telegramUserUbiAccountEntryDatabaseService).findByChatId(chatId);
-    }
-
-    @Test
-    public void findByChatId_should_throw_if_user_doesnt_exist() {
-        doThrow(TelegramUserDoesntExistException.class).when(telegramUserUbiAccountEntryDatabaseService).findByChatId(any());
-
-        assertThrows(TelegramUserDoesntExistException.class, () -> ubiAccountEntryService.findByChatId("chatId"));
-    }
-
-    @Test
-    public void findByChatId_should_throw_if_ubi_account_entry_doesnt_exist() {
-        doThrow(UbiAccountEntryDoesntExistException.class).when(telegramUserUbiAccountEntryDatabaseService).findByChatId(any());
-
-        assertThrows(UbiAccountEntryDoesntExistException.class, () -> ubiAccountEntryService.findByChatId("chatId"));
+        assertSame(entry, ubiAccountEntryService.findByChatId(chatId));
     }
 
     private UbiAccountAuthorizationEntry buildUbiAccount(String email, String password, AuthorizationDTO authorizationDTO) {

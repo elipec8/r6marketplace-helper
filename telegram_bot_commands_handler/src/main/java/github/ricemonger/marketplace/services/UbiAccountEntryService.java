@@ -20,7 +20,6 @@ public class UbiAccountEntryService {
     private final TelegramUserUbiAccountEntryDatabaseService telegramUserUbiAccountEntryDatabaseService;
 
     public void authorizeAndSaveUbiAccountEntry(String chatId, String email, String password, String twoFACode) {
-
         AuthorizationDTO userAuthorizationDTO = authorizationService.authorizeAndGet2FaAuthorizedDTO(email, password, twoFACode);
 
         saveUbiAccountEntry(chatId, email, authorizationService.encodePassword(password), userAuthorizationDTO);

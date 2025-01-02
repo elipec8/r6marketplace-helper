@@ -2,7 +2,6 @@ package github.ricemonger.marketplace.services;
 
 import github.ricemonger.marketplace.services.configurations.TelegramBotConfiguration;
 import github.ricemonger.marketplace.services.configurations.UbiServiceConfiguration;
-import github.ricemonger.utils.abstract_services.CommonValuesDatabaseService;
 import github.ricemonger.utils.enums.ItemRarity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,6 @@ import static org.mockito.Mockito.when;
 class CommonValuesServiceTest {
     @Autowired
     private CommonValuesService commonValuesService;
-    @MockBean
-    private CommonValuesDatabaseService commonValuesDatabaseService;
     @MockBean
     private UbiServiceConfiguration ubiServiceConfiguration;
     @SpyBean

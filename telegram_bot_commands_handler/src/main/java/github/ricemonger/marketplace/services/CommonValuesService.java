@@ -16,7 +16,6 @@ public class CommonValuesService {
 
     private final TelegramBotConfiguration telegramBotConfiguration;
 
-
     public String getTrustedDeviceId() {
         return ubiServiceConfiguration.getTrustedDeviceId();
     }

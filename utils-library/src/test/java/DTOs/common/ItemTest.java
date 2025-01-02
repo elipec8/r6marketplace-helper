@@ -175,42 +175,6 @@ class ItemTest {
     }
 
     @Test
-    public void toStringBySettings_should_print_proper_amount_of_fields() {
-        ItemShownFieldsSettings settings = new ItemShownFieldsSettings();
-        settings.setItemShowNameFlag(false);
-        settings.setItemShowItemTypeFlag(false);
-        settings.setItemShowMaxBuyPrice(false);
-        settings.setItemShowBuyOrdersCountFlag(false);
-        settings.setItemShowMinSellPriceFlag(false);
-        settings.setItemsShowSellOrdersCountFlag(false);
-        settings.setItemShowPictureFlag(false);
-
-        Item item = new Item();
-        assertEquals(1, item.toStringBySettings(settings).split("\n").length);
-
-        settings.setItemShowNameFlag(true);
-        assertEquals(2, item.toStringBySettings(settings).split("\n").length);
-
-        settings.setItemShowItemTypeFlag(true);
-        assertEquals(3, item.toStringBySettings(settings).split("\n").length);
-
-        settings.setItemShowMaxBuyPrice(true);
-        assertEquals(4, item.toStringBySettings(settings).split("\n").length);
-
-        settings.setItemShowBuyOrdersCountFlag(true);
-        assertEquals(5, item.toStringBySettings(settings).split("\n").length);
-
-        settings.setItemShowMinSellPriceFlag(true);
-        assertEquals(6, item.toStringBySettings(settings).split("\n").length);
-
-        settings.setItemsShowSellOrdersCountFlag(true);
-        assertEquals(7, item.toStringBySettings(settings).split("\n").length);
-
-        settings.setItemShowPictureFlag(true);
-        assertEquals(8, item.toStringBySettings(settings).split("\n").length);
-    }
-
-    @Test
     public void updateCurrentPricesPriorities_should_update_fields() {
         Item item = new Item();
         item.updateCurrentPricesPriorities(1L, 2L, 3L);

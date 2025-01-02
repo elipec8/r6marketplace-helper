@@ -15,15 +15,13 @@ public class UbiServiceConfigurationTest {
 
     @Test
     public void ubiServiceConfigurationPropertiesShouldBeAutowired() {
-        assertNotNull(ubiServiceConfiguration.getGraphqlUrl());
         assertNotNull(ubiServiceConfiguration.getAuthorizationUrl());
+        assertNotNull(ubiServiceConfiguration.getTwoFaCodeToSmsUrl());
         assertNotNull(ubiServiceConfiguration.getContentType());
         assertNotNull(ubiServiceConfiguration.getUserAgent());
-        assertNotNull(ubiServiceConfiguration.getUbiRegionId());
-        assertNotNull(ubiServiceConfiguration.getUbiLocaleCode());
-        assertNotNull(ubiServiceConfiguration.getUbiBaseAppId());
-        assertNotNull(ubiServiceConfiguration.getExpireTimeout());
-        assertNotNull(ubiServiceConfiguration.getDateFormat());
+        assertNotNull(ubiServiceConfiguration.getUbiTwoFaAppId());
+        assertNotNull(ubiServiceConfiguration.getTrustedDeviceId());
+        assertNotNull(ubiServiceConfiguration.getTrustedDeviceFriendlyName());
         assertNotNull(ubiServiceConfiguration.getMinUncommonPrice());
         assertNotNull(ubiServiceConfiguration.getMaxUncommonPrice());
         assertNotNull(ubiServiceConfiguration.getMinRarePrice());

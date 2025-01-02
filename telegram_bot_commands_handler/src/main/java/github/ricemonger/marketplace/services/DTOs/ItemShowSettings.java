@@ -49,6 +49,10 @@ public class ItemShowSettings {
         return shownFieldsSettings == null ? null : shownFieldsSettings.getActiveFieldsCount();
     }
 
+    public String showItem(Item item) {
+        return shownFieldsSettings == null ? null : shownFieldsSettings.showItem(item);
+    }
+
     public String toHandsomeString() {
         String shownFields;
         if (shownFieldsSettings == null) {
@@ -70,16 +74,8 @@ public class ItemShowSettings {
                "Applied filters: " + appliedFilters;
     }
 
-    public String showItem(Item item) {
-        return shownFieldsSettings.showItem(item);
-    }
-
     public Boolean getItemShowNameFlag() {
         return shownFieldsSettings == null ? null : shownFieldsSettings.getItemShowNameFlag();
-    }
-
-    public void setItemShowNameFlag(Boolean itemShowNameFlag) {
-        shownFieldsSettings.setItemShowNameFlag(itemShowNameFlag);
     }
 
     public Boolean getItemShowItemTypeFlag() {
@@ -98,7 +94,7 @@ public class ItemShowSettings {
         return shownFieldsSettings == null ? null : shownFieldsSettings.getItemShowMinSellPriceFlag();
     }
 
-    public Boolean getItemsShowSellOrdersCountFlag() {
+    public Boolean getItemShowSellOrdersCountFlag() {
         return shownFieldsSettings == null ? null : shownFieldsSettings.getItemsShowSellOrdersCountFlag();
     }
 

@@ -127,9 +127,9 @@ public class BotInnerServiceTest {
         itemShowSettings.setItemShowMessagesLimit(1);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("0");
-        when(itemService.getAllItemsShownFieldsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
-        verify(itemService).getAllItemsShownFieldsByFilters(appliedFilters);
+        verify(itemService).getAllItemsByFilters(appliedFilters);
         verify(telegramBotClientService, times(1)).sendText(eq("1"), anyString());
 
         itemMainFields.add(new Item());
@@ -137,7 +137,7 @@ public class BotInnerServiceTest {
         itemShowSettings.setItemShowMessagesLimit(1);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("0");
-        when(itemService.getAllItemsShownFieldsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
         verify(telegramBotClientService, times(1)).sendText(eq("1"), anyString());
 
@@ -146,7 +146,7 @@ public class BotInnerServiceTest {
         itemShowSettings.setItemShowMessagesLimit(2);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("0");
-        when(itemService.getAllItemsShownFieldsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
         verify(telegramBotClientService, times(2)).sendText(eq("1"), anyString());
 
@@ -154,7 +154,7 @@ public class BotInnerServiceTest {
         itemShowSettings.setItemShowMessagesLimit(1);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("1");
-        when(itemService.getAllItemsShownFieldsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
         verify(telegramBotClientService, times(1)).sendText(eq("1"), anyString());
     }
@@ -174,9 +174,9 @@ public class BotInnerServiceTest {
         itemShowSettings.setItemShowMessagesLimit(1);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("0");
-        when(itemService.getAllItemsShownFieldsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
-        verify(itemService).getAllItemsShownFieldsByFilters(appliedFilters);
+        verify(itemService).getAllItemsByFilters(appliedFilters);
         verify(telegramBotClientService, times(1)).sendText(eq("1"), anyString());
 
         itemMainFields.add(new Item());
@@ -184,7 +184,7 @@ public class BotInnerServiceTest {
         itemShowSettings.setItemShowMessagesLimit(2);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("0");
-        when(itemService.getAllItemsShownFieldsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
         verify(telegramBotClientService, times(2)).sendText(eq("1"), anyString());
 
@@ -193,7 +193,7 @@ public class BotInnerServiceTest {
         itemShowSettings.setItemShowMessagesLimit(3);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("0");
-        when(itemService.getAllItemsShownFieldsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
         verify(telegramBotClientService, times(3)).sendText(eq("1"), anyString());
 
@@ -201,7 +201,7 @@ public class BotInnerServiceTest {
         itemShowSettings.setItemShowMessagesLimit(2);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("1");
-        when(itemService.getAllItemsShownFieldsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
         verify(telegramBotClientService, times(2)).sendText(eq("1"), anyString());
 
@@ -209,7 +209,7 @@ public class BotInnerServiceTest {
         itemShowSettings.setItemShowMessagesLimit(5);
         when(telegramUserService.getItemShowSettings(1L)).thenReturn(itemShowSettings);
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("1");
-        when(itemService.getAllItemsShownFieldsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
         verify(telegramBotClientService, times(3)).sendText(eq("1"), anyString());
     }
@@ -229,7 +229,7 @@ public class BotInnerServiceTest {
         itemMainFields.add(new Item());
         itemMainFields.add(new Item());
         itemMainFields.add(new Item());
-        when(itemService.getAllItemsShownFieldsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
 
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("invalid");
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
@@ -251,11 +251,11 @@ public class BotInnerServiceTest {
         when(telegramUserService.getUserInputByState(1L, InputState.ITEMS_SHOW_OFFSET)).thenReturn("100");
 
         List<Item> itemMainFields = new ArrayList<>();
-        when(itemService.getAllItemsShownFieldsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
+        when(itemService.getAllItemsByFilters(appliedFilters)).thenReturn(new ArrayList(itemMainFields));
 
         botInnerService.sendItemsByUserItemShowSettingsAndUserInputOffset(1L);
 
-        verify(itemService).getAllItemsShownFieldsByFilters(appliedFilters);
+        verify(itemService).getAllItemsByFilters(appliedFilters);
 
         verify(telegramBotClientService, times(1)).sendText(eq("1"), eq("Too big offset or strict filters, no items to show"));
 

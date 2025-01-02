@@ -36,8 +36,4 @@ public class TelegramUser {
 
     private Boolean newManagersAreActiveFlag;
     private Boolean managingEnabledFlag;
-
-    public TelegramUser(Long chatId) {
-        this.chatId = String.valueOf(chatId);
-    }
 }

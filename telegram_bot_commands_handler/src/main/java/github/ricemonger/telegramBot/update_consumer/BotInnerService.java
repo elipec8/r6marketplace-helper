@@ -66,7 +66,7 @@ public class BotInnerService {
 
         int offset = getItemOffsetOrZeroByUserCurrentInput(updateInfo);
 
-        List<Item> items = itemService.getAllItemsShownFieldsByFilters(settings.getItemShowAppliedFilters());
+        List<Item> items = itemService.getAllItemsByFilters(settings.getItemShowAppliedFilters());
 
         if (offset >= items.size()) {
             telegramBotClientService.sendText(String.valueOf(updateInfo.getChatId()), "Too big offset or strict filters, no items to show");

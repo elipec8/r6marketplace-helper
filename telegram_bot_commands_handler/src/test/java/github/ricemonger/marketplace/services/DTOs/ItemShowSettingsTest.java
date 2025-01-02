@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.services.DTOs;
 
+import github.ricemonger.utils.DTOs.common.Item;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -24,16 +25,6 @@ class ItemShowSettingsTest {
     }
 
     @Test
-    public void setItemShowNameFlag_should_set_name_flag() {
-        ItemShowSettings itemShowSettings = new ItemShowSettings();
-        itemShowSettings.setItemShowNameFlag(true);
-        assertTrue(itemShowSettings.getShownFieldsSettings().getItemShowNameFlag());
-
-        itemShowSettings.setItemShowNameFlag(false);
-        assertFalse(itemShowSettings.getShownFieldsSettings().getItemShowNameFlag());
-    }
-
-    @Test
     public void getActiveFieldsCount_should_return_active_fields_count() {
         ItemShowSettings itemShowSettings = new ItemShowSettings();
         ItemShownFieldsSettings shownFieldsSettings = Mockito.mock(ItemShownFieldsSettings.class);
@@ -49,5 +40,150 @@ class ItemShowSettingsTest {
         ItemShowSettings itemShowSettings = new ItemShowSettings();
         itemShowSettings.setShownFieldsSettings(null);
         assertNull(itemShowSettings.getActiveFieldsCount());
+    }
+
+    @Test
+    public void showItem_should_return_shownFieldsSettings_showItem() {
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        ItemShownFieldsSettings shownFieldsSettings = Mockito.mock(ItemShownFieldsSettings.class);
+        itemShowSettings.setShownFieldsSettings(shownFieldsSettings);
+
+        Item item = Mockito.mock(Item.class);
+        Mockito.when(shownFieldsSettings.showItem(item)).thenReturn("shownFields");
+
+        assertEquals("shownFields", itemShowSettings.showItem(item));
+    }
+
+    @Test
+    public void showItem_should_return_null_when_shownFieldsSettings_is_null() {
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        itemShowSettings.setShownFieldsSettings(null);
+        assertNull(itemShowSettings.showItem(Mockito.mock(Item.class)));
+    }
+
+    @Test
+    public void getItemShowNameFlag_should_return_shownFieldsSettings_ItemShowNameFlag() {
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        ItemShownFieldsSettings shownFieldsSettings = Mockito.mock(ItemShownFieldsSettings.class);
+        itemShowSettings.setShownFieldsSettings(shownFieldsSettings);
+
+        Mockito.when(shownFieldsSettings.getItemShowNameFlag()).thenReturn(true);
+
+        assertTrue(itemShowSettings.getItemShowNameFlag());
+    }
+
+    @Test
+    public void getItemShowNameFlag_should_return_null_when_shownFieldsSettings_is_null() {
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        itemShowSettings.setShownFieldsSettings(null);
+        assertNull(itemShowSettings.getItemShowNameFlag());
+    }
+
+    @Test
+    public void getItemShowItemTypeFlag_should_return_shownFieldsSettings_ItemShowItemTypeFlag() {
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        ItemShownFieldsSettings shownFieldsSettings = Mockito.mock(ItemShownFieldsSettings.class);
+        itemShowSettings.setShownFieldsSettings(shownFieldsSettings);
+
+        Mockito.when(shownFieldsSettings.getItemShowItemTypeFlag()).thenReturn(true);
+
+        assertTrue(itemShowSettings.getItemShowItemTypeFlag());
+    }
+
+    @Test
+    public void getItemShowItemTypeFlag_should_return_null_when_shownFieldsSettings_is_null() {
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        itemShowSettings.setShownFieldsSettings(null);
+        assertNull(itemShowSettings.getItemShowItemTypeFlag());
+    }
+
+    @Test
+    public void getItemShowMaxBuyPrice_should_return_shownFieldsSettings_ItemShowMaxBuyPrice() {
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        ItemShownFieldsSettings shownFieldsSettings = Mockito.mock(ItemShownFieldsSettings.class);
+        itemShowSettings.setShownFieldsSettings(shownFieldsSettings);
+
+        Mockito.when(shownFieldsSettings.getItemShowMaxBuyPrice()).thenReturn(true);
+
+        assertTrue(itemShowSettings.getItemShowMaxBuyPrice());
+    }
+
+    @Test
+    public void getItemShowMaxBuyPrice_should_return_null_when_shownFieldsSettings_is_null() {
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        itemShowSettings.setShownFieldsSettings(null);
+        assertNull(itemShowSettings.getItemShowMaxBuyPrice());
+    }
+
+    @Test
+    public void getItemShowBuyOrdersCountFlag_should_return_shownFieldsSettings_ItemShowBuyOrdersCountFlag() {
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        ItemShownFieldsSettings shownFieldsSettings = Mockito.mock(ItemShownFieldsSettings.class);
+        itemShowSettings.setShownFieldsSettings(shownFieldsSettings);
+
+        Mockito.when(shownFieldsSettings.getItemShowBuyOrdersCountFlag()).thenReturn(true);
+
+        assertTrue(itemShowSettings.getItemShowBuyOrdersCountFlag());
+    }
+
+    @Test
+    public void getItemShowBuyOrdersCountFlag_should_return_null_when_shownFieldsSettings_is_null() {
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        itemShowSettings.setShownFieldsSettings(null);
+        assertNull(itemShowSettings.getItemShowBuyOrdersCountFlag());
+    }
+
+    @Test
+    public void getItemShowMinSellPriceFlag_should_return_shownFieldsSettings_ItemShowMinSellPriceFlag() {
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        ItemShownFieldsSettings shownFieldsSettings = Mockito.mock(ItemShownFieldsSettings.class);
+        itemShowSettings.setShownFieldsSettings(shownFieldsSettings);
+
+        Mockito.when(shownFieldsSettings.getItemShowMinSellPriceFlag()).thenReturn(true);
+
+        assertTrue(itemShowSettings.getItemShowMinSellPriceFlag());
+    }
+
+    @Test
+    public void getItemShowMinSellPriceFlag_should_return_null_when_shownFieldsSettings_is_null() {
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        itemShowSettings.setShownFieldsSettings(null);
+        assertNull(itemShowSettings.getItemShowMinSellPriceFlag());
+    }
+
+    @Test
+    public void getItemShowSellOrdersCountFlag_should_return_shownFieldsSettings_ItemsShowSellOrdersCountFlag() {
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        ItemShownFieldsSettings shownFieldsSettings = Mockito.mock(ItemShownFieldsSettings.class);
+        itemShowSettings.setShownFieldsSettings(shownFieldsSettings);
+
+        Mockito.when(shownFieldsSettings.getItemsShowSellOrdersCountFlag()).thenReturn(true);
+
+        assertTrue(itemShowSettings.getItemShowSellOrdersCountFlag());
+    }
+
+    @Test
+    public void getItemShowSellOrdersCountFlag_should_return_null_when_shownFieldsSettings_is_null() {
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        itemShowSettings.setShownFieldsSettings(null);
+        assertNull(itemShowSettings.getItemShowSellOrdersCountFlag());
+    }
+
+    @Test
+    public void getItemShowPictureFlag_should_return_shownFieldsSettings_ItemShowPictureFlag() {
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        ItemShownFieldsSettings shownFieldsSettings = Mockito.mock(ItemShownFieldsSettings.class);
+        itemShowSettings.setShownFieldsSettings(shownFieldsSettings);
+
+        Mockito.when(shownFieldsSettings.getItemShowPictureFlag()).thenReturn(true);
+
+        assertTrue(itemShowSettings.getItemShowPictureFlag());
+    }
+
+    @Test
+    public void getItemShowPictureFlag_should_return_null_when_shownFieldsSettings_is_null() {
+        ItemShowSettings itemShowSettings = new ItemShowSettings();
+        itemShowSettings.setShownFieldsSettings(null);
+        assertNull(itemShowSettings.getItemShowPictureFlag());
     }
 }

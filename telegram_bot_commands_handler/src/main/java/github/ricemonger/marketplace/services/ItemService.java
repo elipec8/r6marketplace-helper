@@ -21,7 +21,7 @@ public class ItemService {
         return itemDatabaseService.findById(itemId);
     }
 
-    public List<Item> getAllItemsShownFieldsByFilters(Collection<ItemFilter> filters) {
+    public List<Item> getAllItemsByFilters(Collection<ItemFilter> filters) {
         List<Item> item = itemDatabaseService.findAll();
 
         return ItemFilter.filterItems(item, filters);

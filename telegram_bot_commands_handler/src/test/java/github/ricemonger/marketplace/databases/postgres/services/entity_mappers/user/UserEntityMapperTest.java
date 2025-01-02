@@ -56,7 +56,7 @@ class UserEntityMapperTest {
         assertEquals(itemShowSettingsProjection.getItemShowMaxBuyPrice(), itemShowSettings.getItemShowMaxBuyPrice());
         assertEquals(itemShowSettingsProjection.getItemShowBuyOrdersCountFlag(), itemShowSettings.getItemShowBuyOrdersCountFlag());
         assertEquals(itemShowSettingsProjection.getItemShowMinSellPriceFlag(), itemShowSettings.getItemShowMinSellPriceFlag());
-        assertEquals(itemShowSettingsProjection.getItemsShowSellOrdersCountFlag(), itemShowSettings.getItemsShowSellOrdersCountFlag());
+        assertEquals(itemShowSettingsProjection.getItemsShowSellOrdersCountFlag(), itemShowSettings.getItemShowSellOrdersCountFlag());
         assertEquals(itemShowSettingsProjection.getItemShowPictureFlag(), itemShowSettings.getItemShowPictureFlag());
         assertEquals(2, itemShowSettings.getItemShowAppliedFilters().size());
         assertTrue(itemShowSettings.getItemShowAppliedFilters().contains(itemFilter1));
