@@ -1,6 +1,6 @@
 package github.ricemonger.telegramBot.update_consumer;
 
-import github.ricemonger.marketplace.services.DTOs.TelegramUser;
+import github.ricemonger.marketplace.services.DTOs.TelegramUserInputStateAndGroup;
 import github.ricemonger.marketplace.services.TelegramUserService;
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.utils.enums.InputGroup;
@@ -36,7 +36,7 @@ public class UpdateInfoMapperTest {
         update.setMessage(message);
         update.setUpdateId(88);
 
-        doThrow(new TelegramUserDoesntExistException("")).when(telegramUserService).getTelegramUser(1L);
+        doThrow(new TelegramUserDoesntExistException("")).when(telegramUserService).getTelegramUserInputStateAndGroup(1L);
 
         UpdateInfo expected = new UpdateInfo();
         expected.setUpdateId(88);
@@ -67,12 +67,12 @@ public class UpdateInfoMapperTest {
         update.setCallbackQuery(callbackQuery);
         update.setUpdateId(88);
 
-        TelegramUser telegramUser = new TelegramUser();
+        TelegramUserInputStateAndGroup telegramUser = new TelegramUserInputStateAndGroup();
         telegramUser.setChatId("1");
         telegramUser.setInputState(null);
         telegramUser.setInputGroup(null);
 
-        when(telegramUserService.getTelegramUser(1L)).thenReturn(telegramUser);
+        when(telegramUserService.getTelegramUserInputStateAndGroup(1L)).thenReturn(telegramUser);
 
         UpdateInfo expected = new UpdateInfo();
         expected.setUpdateId(88);
@@ -108,12 +108,12 @@ public class UpdateInfoMapperTest {
         update.setMessage(message);
         update.setUpdateId(88);
 
-        TelegramUser telegramUser = new TelegramUser();
+        TelegramUserInputStateAndGroup telegramUser = new TelegramUserInputStateAndGroup();
         telegramUser.setChatId("1");
         telegramUser.setInputState(InputState.ITEMS_SHOW_OFFSET);
         telegramUser.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
 
-        when(telegramUserService.getTelegramUser(any())).thenReturn(telegramUser);
+        when(telegramUserService.getTelegramUserInputStateAndGroup(any())).thenReturn(telegramUser);
 
         UpdateInfo expected = new UpdateInfo();
         expected.setUpdateId(88);

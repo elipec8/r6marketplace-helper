@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 @Import({SchedulingUtilsConfiguration.class, RedisUtilsConfiguration.class})
-public class R6sMarketplaceHelperApplication {
+public class TelegramBotUpdatesConsumerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(R6sMarketplaceHelperApplication.class, args);
+        SpringApplication.run(TelegramBotUpdatesConsumerApplication.class, args);
     }
 
 }

@@ -9,7 +9,7 @@
         <relativePath/>
     </parent>
     <groupId>github</groupId>
-    <artifactId>telegram_bot_commands_handler</artifactId>
+    <artifactId>telegram_bot_updates_consumer</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>r6smarketplace-helper</name>
     <description>r6smarketplace-helper</description>

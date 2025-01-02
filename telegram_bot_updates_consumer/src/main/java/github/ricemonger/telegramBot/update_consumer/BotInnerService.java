@@ -132,22 +132,6 @@ public class BotInnerService {
         telegramUserService.setUserInputGroup(chatId, inputGroup);
     }
 
-    public void addUserUbiAccountEntryByUserInput(Long chatId) {
-        telegramUserService.authorizeAndSaveUbiUserByUserInput(chatId);
-    }
-
-    public void reauthorizeUbiAccountEntryBy2FACode(Long chatId) {
-        telegramUserService.reauthorizeAndSaveExistingUbiUserBy2FACodeByUserInput(chatId);
-    }
-
-    public void removeUserUbiAccountEntry(Long chatId) {
-        telegramUserService.removeUbiUserByChatId(chatId);
-    }
-
-    public String getUserUbiAccountEntryEmail(Long chatId) {
-        return telegramUserService.getUbiUserByChatId(chatId).getEmail();
-    }
-
     public void saveUserInput(UpdateInfo updateInfo) {
         String userInput;
 
@@ -167,6 +151,10 @@ public class BotInnerService {
 
     public void clearUserInputsAndSetInputStateAndGroup(Long chatId, InputState inputState, InputGroup inputGroup) {
         telegramUserService.clearUserInputsAndSetInputStateAndGroup(chatId, inputState, inputGroup);
+    }
+
+    public String getUserInputByState(Long chatId, InputState inputState) {
+        return telegramUserService.getUserInputByState(chatId, inputState);
     }
 
     public String getStringOfAllTagsNamesByTagGroup(TagGroup tagGroup) {
@@ -295,8 +283,20 @@ public class BotInnerService {
         telegramUserService.setTradeManagersSettingsManagingEnabledFlag(chatId, flag);
     }
 
-    public String getUserInputByState(Long chatId, InputState inputState) {
-        return telegramUserService.getUserInputByState(chatId, inputState);
+    public void addUserUbiAccountEntryByUserInput(Long chatId) {
+        telegramUserService.authorizeAndSaveUbiUserByUserInput(chatId);
+    }
+
+    public void reauthorizeUbiAccountEntryBy2FACode(Long chatId) {
+        telegramUserService.reauthorizeAndSaveExistingUbiUserBy2FACodeByUserInput(chatId);
+    }
+
+    public void removeUserUbiAccountEntry(Long chatId) {
+        telegramUserService.removeUbiUserByChatId(chatId);
+    }
+
+    public String getUserUbiAccountEntryEmail(Long chatId) {
+        return telegramUserService.getUbiUserByChatId(chatId).getEmail();
     }
 
     private String getUserInputValueWithoutCallbackPrefix(Long chatId, InputState inputState) {

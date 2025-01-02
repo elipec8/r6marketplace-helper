@@ -2,11 +2,11 @@ package github.ricemonger.telegramBot.client;
 
 import github.ricemonger.marketplace.services.CommonValuesService;
 import github.ricemonger.marketplace.services.DTOs.TelegramUserInput;
+import github.ricemonger.marketplace.services.DTOs.TradeByFiltersManager;
+import github.ricemonger.marketplace.services.ItemService;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.update_consumer.TradeManagerFromInputsMapper;
 import github.ricemonger.utils.DTOs.common.Item;
-import github.ricemonger.utils.DTOs.personal.ItemFilter;
-import github.ricemonger.utils.DTOs.personal.TradeByFiltersManager;
 import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
 import github.ricemonger.utils.enums.InputState;
 import github.ricemonger.utils.enums.ItemRarity;
@@ -28,6 +28,8 @@ class TradeManagerFromInputsMapperTest {
     private TradeManagerFromInputsMapper tradeManagerFromInputsMapper;
     @MockBean
     private CommonValuesService commonValuesService;
+    @MockBean
+    private ItemService itemService;
 
     @Test
     public void mapToTradeByItemIdManager_should_map_inputs_to_manager_with_valid_inputs() {
@@ -49,12 +51,13 @@ class TradeManagerFromInputsMapperTest {
         Item item = new Item();
         item.setMinSellPrice(0);
         item.setMaxBuyPrice(120);
-
         item.setRarity(ItemRarity.UNCOMMON);
+
+        when(itemService.getItemById("itemId")).thenReturn(item);
         when(commonValuesService.getMinimumPriceByRarity(item.getRarity())).thenReturn(0);
         when(commonValuesService.getMaximumPriceByRarity(item.getRarity())).thenReturn(1000);
 
-        assertEquals(expected, tradeManagerFromInputsMapper.generateTradeByItemIdManagerByUserInput(inputs, TradeOperationType.BUY, item, true));
+        assertEquals(expected, tradeManagerFromInputsMapper.generateTradeByItemIdManagerByUserInput(inputs, TradeOperationType.BUY, true));
     }
 
     @Test
@@ -77,12 +80,13 @@ class TradeManagerFromInputsMapperTest {
         Item item = new Item();
         item.setMinSellPrice(150);
         item.setMaxBuyPrice(0);
-
         item.setRarity(ItemRarity.UNCOMMON);
+
+        when(itemService.getItemById("itemId")).thenReturn(item);
         when(commonValuesService.getMinimumPriceByRarity(item.getRarity())).thenReturn(120);
         when(commonValuesService.getMaximumPriceByRarity(item.getRarity())).thenReturn(100000);
 
-        TradeByItemIdManager actual = tradeManagerFromInputsMapper.generateTradeByItemIdManagerByUserInput(inputs, TradeOperationType.SELL, item, false);
+        TradeByItemIdManager actual = tradeManagerFromInputsMapper.generateTradeByItemIdManagerByUserInput(inputs, TradeOperationType.SELL, false);
 
         assertEquals(expected, actual);
     }
@@ -107,12 +111,13 @@ class TradeManagerFromInputsMapperTest {
         Item item = new Item();
         item.setMinSellPrice(150);
         item.setMaxBuyPrice(0);
-
         item.setRarity(ItemRarity.UNCOMMON);
+
+        when(itemService.getItemById("itemId")).thenReturn(item);
         when(commonValuesService.getMinimumPriceByRarity(item.getRarity())).thenReturn(0);
         when(commonValuesService.getMaximumPriceByRarity(item.getRarity())).thenReturn(360);
 
-        TradeByItemIdManager actual = tradeManagerFromInputsMapper.generateTradeByItemIdManagerByUserInput(inputs, TradeOperationType.BUY_AND_SELL, item, false);
+        TradeByItemIdManager actual = tradeManagerFromInputsMapper.generateTradeByItemIdManagerByUserInput(inputs, TradeOperationType.BUY_AND_SELL, false);
 
         assertEquals(expected, actual);
     }
@@ -137,12 +142,13 @@ class TradeManagerFromInputsMapperTest {
         Item item = new Item();
         item.setMinSellPrice(150);
         item.setMaxBuyPrice(0);
-
         item.setRarity(ItemRarity.UNCOMMON);
+
+        when(itemService.getItemById("itemId")).thenReturn(item);
         when(commonValuesService.getMinimumPriceByRarity(item.getRarity())).thenReturn(120);
         when(commonValuesService.getMaximumPriceByRarity(item.getRarity())).thenReturn(360);
 
-        TradeByItemIdManager actual = tradeManagerFromInputsMapper.generateTradeByItemIdManagerByUserInput(inputs, TradeOperationType.BUY_AND_SELL, item, true);
+        TradeByItemIdManager actual = tradeManagerFromInputsMapper.generateTradeByItemIdManagerByUserInput(inputs, TradeOperationType.BUY_AND_SELL, true);
 
         assertEquals(expected, actual);
     }
@@ -167,12 +173,13 @@ class TradeManagerFromInputsMapperTest {
         Item item = new Item();
         item.setMinSellPrice(150);
         item.setMaxBuyPrice(0);
-
         item.setRarity(ItemRarity.UNCOMMON);
+
+        when(itemService.getItemById("itemId")).thenReturn(item);
         when(commonValuesService.getMinimumPriceByRarity(item.getRarity())).thenReturn(0);
         when(commonValuesService.getMaximumPriceByRarity(item.getRarity())).thenReturn(150_000);
 
-        TradeByItemIdManager actual = tradeManagerFromInputsMapper.generateTradeByItemIdManagerByUserInput(inputs, TradeOperationType.BUY_AND_SELL, item, true);
+        TradeByItemIdManager actual = tradeManagerFromInputsMapper.generateTradeByItemIdManagerByUserInput(inputs, TradeOperationType.BUY_AND_SELL, true);
 
         assertEquals(expected, actual);
     }
@@ -186,17 +193,20 @@ class TradeManagerFromInputsMapperTest {
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_MIN_BUY_SELL_PROFIT, "100"));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_MIN_MEDIAN_PRICE_DIFFERENCE_PERCENT, "30"));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_PRIORITY, "2"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_FILTERS_NAMES, "filter1,filter2|filter3"));
 
         TradeByFiltersManager expected = new TradeByFiltersManager();
         expected.setName("name");
         expected.setEnabled(true);
         expected.setTradeOperationType(TradeOperationType.BUY);
-        expected.setAppliedFilters(List.of(new ItemFilter()));
+        expected.setAppliedFilters(List.of("filter1", "filter2", "filter3"));
         expected.setMinDifferenceFromMedianPrice(100);
         expected.setMinDifferenceFromMedianPricePercent(30);
         expected.setPriorityMultiplier(2);
 
-        assertEquals(expected, tradeManagerFromInputsMapper.generateTradeByFiltersManagerByUserInput(inputs, 150_000, List.of(new ItemFilter()), true));
+        when(commonValuesService.getMaximumMarketplacePrice()).thenReturn(1000);
+
+        assertEquals(expected, tradeManagerFromInputsMapper.generateTradeByFiltersManagerByUserInput(inputs, true));
     }
 
     @Test
@@ -209,6 +219,7 @@ class TradeManagerFromInputsMapperTest {
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_MIN_BUY_SELL_PROFIT, ""));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_MIN_MEDIAN_PRICE_DIFFERENCE_PERCENT, ""));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_PRIORITY, ""));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_FILTERS_NAMES, ""));
 
         TradeByFiltersManager expected = new TradeByFiltersManager();
         expected.setName("");
@@ -219,7 +230,9 @@ class TradeManagerFromInputsMapperTest {
         expected.setMinDifferenceFromMedianPricePercent(10);
         expected.setPriorityMultiplier(1);
 
-        assertEquals(expected, tradeManagerFromInputsMapper.generateTradeByFiltersManagerByUserInput(inputs, 150_000, List.of(), false));
+        when(commonValuesService.getMaximumMarketplacePrice()).thenReturn(1000);
+
+        assertEquals(expected, tradeManagerFromInputsMapper.generateTradeByFiltersManagerByUserInput(inputs, false));
     }
 
     @Test
@@ -242,7 +255,9 @@ class TradeManagerFromInputsMapperTest {
         expected.setMinDifferenceFromMedianPricePercent(-2147483647);
         expected.setPriorityMultiplier(1);
 
-        assertEquals(expected, tradeManagerFromInputsMapper.generateTradeByFiltersManagerByUserInput(inputs, 150_000, List.of(), true));
+        when(commonValuesService.getMaximumMarketplacePrice()).thenReturn(150_000);
+
+        assertEquals(expected, tradeManagerFromInputsMapper.generateTradeByFiltersManagerByUserInput(inputs, true));
     }
 
     @Test
@@ -266,6 +281,8 @@ class TradeManagerFromInputsMapperTest {
         expected.setMinDifferenceFromMedianPricePercent(Integer.MAX_VALUE);
         expected.setPriorityMultiplier(Integer.MAX_VALUE);
 
-        assertEquals(expected, tradeManagerFromInputsMapper.generateTradeByFiltersManagerByUserInput(inputs, 150_000, List.of(), true));
+        when(commonValuesService.getMaximumMarketplacePrice()).thenReturn(150_000);
+
+        assertEquals(expected, tradeManagerFromInputsMapper.generateTradeByFiltersManagerByUserInput(inputs, true));
     }
 }
