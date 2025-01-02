@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-public interface ItemFilterPostgresEntity extends JpaRepository<ItemFilterEntity, ItemFilterEntityId> {
+public interface ItemFilterPostgresRepository extends JpaRepository<ItemFilterEntity, ItemFilterEntityId> {
     @Transactional
     void deleteByUserTelegramUserChatIdAndName(String chatId, String name);
 

@@ -1,17 +1,11 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountEntryEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.UbiAccountStatsEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
-import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountEntryPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountStatsEntityPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.UbiAccountEntryEntityMapper;
 import github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry;
-import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
-import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
+import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountEntryEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountStatsEntity;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +17,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.same;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -33,85 +26,72 @@ class TelegramUserUbiAccountPostgresServiceTest {
     @MockBean
     private UbiAccountEntryPostgresRepository ubiAccountAuthorizationEntryRepository;
     @MockBean
-    private UbiAccountStatsEntityPostgresRepository ubiAccountStatsRepository;
-    @MockBean
-    private TelegramUserPostgresRepository telegramUserRepository;
-    @MockBean
     private UbiAccountEntryEntityMapper ubiAccountEntryEntityMapper;
 
     @Test
-    public void saveAuthorizationInfo_should_map_and_save_ubi_account_if_doesnt_exists_other_ubiAccountAuthorizationEntry_for_user() {
+    public void save_should_save_ubi_account_entry_if_exists_same_ubi_acc_for_user() {
+        UbiAccountEntryEntity ubiAccountEntryEntity = new UbiAccountEntryEntity();
+        ubiAccountEntryEntity.setUbiAccountStats(new UbiAccountStatsEntity());
+        ubiAccountEntryEntity.getUbiAccountStats().setUbiProfileId("profileId");
+
+        UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
+        account.setUbiProfileId("profileId");
+
+        UbiAccountEntryEntity entity = Mockito.mock(UbiAccountEntryEntity.class);
+
+        when(ubiAccountAuthorizationEntryRepository.findByUserTelegramUserChatId("chatId")).thenReturn(Optional.of(ubiAccountEntryEntity));
+        when(ubiAccountEntryEntityMapper.createEntity("chatId", account)).thenReturn(entity);
+
+        telegramUserUbiAccountEntryService.save("chatId", account);
+
+        Mockito.verify(ubiAccountAuthorizationEntryRepository).save(same(entity));
+    }
+
+    @Test
+    public void save_should_save_ubi_account_entry_if_user_doesnt_have_ubi_acc() {
+        UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
+        account.setUbiProfileId("profileId");
+
+        UbiAccountEntryEntity entity = Mockito.mock(UbiAccountEntryEntity.class);
+
         when(ubiAccountAuthorizationEntryRepository.findByUserTelegramUserChatId("chatId")).thenReturn(Optional.empty());
+        when(ubiAccountEntryEntityMapper.createEntity("chatId", account)).thenReturn(entity);
 
-        String chatId = "chatId";
+        telegramUserUbiAccountEntryService.save("chatId", account);
+
+        Mockito.verify(ubiAccountAuthorizationEntryRepository).save(same(entity));
+    }
+
+    @Test
+    public void save_should_throw_if_user_has_another_ubi_acc_linked() {
+        UbiAccountEntryEntity ubiAccountEntryEntity = new UbiAccountEntryEntity();
+        ubiAccountEntryEntity.setUbiAccountStats(new UbiAccountStatsEntity());
+        ubiAccountEntryEntity.getUbiAccountStats().setUbiProfileId("profileId1");
+
         UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
-        account.setUbiProfileId("ubiProfileId");
-        UbiAccountEntryEntity entity = new UbiAccountEntryEntity();
-        entity.setUbiAccountStats(new UbiAccountStatsEntity("ubiProfileId"));
-        when(ubiAccountEntryEntityMapper.createEntity(same(chatId), same(account))).thenReturn(entity);
+        account.setUbiProfileId("profileId");
 
-        telegramUserUbiAccountEntryService.save(chatId, account);
+        UbiAccountEntryEntity entity = Mockito.mock(UbiAccountEntryEntity.class);
 
-        verify(ubiAccountAuthorizationEntryRepository).save(same(entity));
+        when(ubiAccountAuthorizationEntryRepository.findByUserTelegramUserChatId("chatId")).thenReturn(Optional.of(ubiAccountEntryEntity));
+        when(ubiAccountEntryEntityMapper.createEntity("chatId", account)).thenReturn(entity);
+
+        assertThrows(UbiAccountEntryAlreadyExistsException.class, () -> telegramUserUbiAccountEntryService.save("chatId", account));
     }
 
     @Test
-    public void saveAuthorizationInfo_should_throw_exception_if_ubiAccountAuthorizationEntry_for_user_already_exists() {
-        UbiAccountEntryEntity entity = new UbiAccountEntryEntity();
-        entity.setUser(new UserEntity(1L));
-        entity.setUbiAccountStats(new UbiAccountStatsEntity("ubiProfileId"));
-        when(ubiAccountAuthorizationEntryRepository.findByUserTelegramUserChatId("chatId")).thenReturn(Optional.of(entity));
+    public void deleteByChatId_should_handle_to_repository() {
+        telegramUserUbiAccountEntryService.deleteByChatId("chatId");
 
-        String chatId = "chatId";
-        UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
-        account.setUbiProfileId("anotherUbiProfileId");
-
-        assertThrows(UbiAccountEntryAlreadyExistsException.class, () -> telegramUserUbiAccountEntryService.save(chatId, account));
+        Mockito.verify(ubiAccountAuthorizationEntryRepository).deleteByUserTelegramUserChatId("chatId");
     }
 
     @Test
-    public void deleteAuthorizationInfoByChatId_should_delete_ubiAccountAuthorizationEntry_by_chatId() {
-        String chatId = "chatId";
-        TelegramUserEntity telegramUserEntity = Mockito.mock(TelegramUserEntity.class);
-        UserEntity userEntity = Mockito.mock(UserEntity.class);
-        when(telegramUserRepository.findById(chatId)).thenReturn(Optional.of(telegramUserEntity));
+    public void findByChatId_should_return_ubi_acc_entry() {
+        UbiAccountAuthorizationEntry entry = Mockito.mock(UbiAccountAuthorizationEntry.class);
 
-        when(telegramUserEntity.getUser()).thenReturn(userEntity);
+        when(ubiAccountAuthorizationEntryRepository.findUbiAccountAuthorizationEntryByUserTelegramUserChatId("chatId")).thenReturn(Optional.of(entry));
 
-        telegramUserUbiAccountEntryService.deleteByChatId(chatId);
-
-        verify(userEntity).setUbiAccountEntry(null);
-        verify(telegramUserRepository).save(same(telegramUserEntity));
-    }
-
-    @Test
-    public void deleteByChatId_should_throw_exception_if_telegram_user_doesnt_exist() {
-        String chatId = "chatId";
-        when(telegramUserRepository.findById(chatId)).thenReturn(Optional.empty());
-
-        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserUbiAccountEntryService.deleteByChatId(chatId));
-    }
-
-    @Test
-    public void findAuthorizationInfoByChatId_should_return_ubiAccountAuthorizationEntry_by_chatId() {
-        String chatId = "chatId";
-        UbiAccountEntryEntity entity = new UbiAccountEntryEntity();
-
-        when(ubiAccountAuthorizationEntryRepository.findByUserTelegramUserChatId(chatId)).thenReturn(Optional.of(entity));
-
-        UbiAccountAuthorizationEntry authorizationEntry = new UbiAccountAuthorizationEntry();
-        when(ubiAccountEntryEntityMapper.createUbiAccountAuthorizationEntry(same(entity))).thenReturn(authorizationEntry);
-
-        UbiAccountAuthorizationEntry result = telegramUserUbiAccountEntryService.findByChatId(chatId);
-
-        assertSame(authorizationEntry, result);
-    }
-
-    @Test
-    public void findByChatId_should_throw_exception_if_telegram_user_doesnt_exist() {
-        String chatId = "chatId";
-        when(ubiAccountAuthorizationEntryRepository.findByUserTelegramUserChatId(chatId)).thenReturn(Optional.empty());
-
-        assertThrows(UbiAccountEntryDoesntExistException.class, () -> telegramUserUbiAccountEntryService.findByChatId(chatId));
+        assertSame(entry, telegramUserUbiAccountEntryService.findByChatId("chatId"));
     }
 }

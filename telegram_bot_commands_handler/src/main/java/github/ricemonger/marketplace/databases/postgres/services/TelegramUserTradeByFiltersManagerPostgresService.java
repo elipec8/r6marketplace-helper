@@ -40,9 +40,8 @@ public class TelegramUserTradeByFiltersManagerPostgresService implements Telegra
     @Override
     @Transactional(readOnly = true)
     public TradeByFiltersManager findById(String chatId, String name) {
-        return tradeByFiltersManagerRepository.findByUserTelegramUserChatIdAndName(chatId, name)
-                .map(tradeByFiltersManagerEntityMapper::createDTO)
-                .orElseThrow(() -> new TradeByFiltersManagerDoesntExistException("Trade by filters manager with name " + name + " doesn't exist for chatId: " + chatId));
+        return tradeByFiltersManagerEntityMapper.createDTO(tradeByFiltersManagerRepository.findByUserTelegramUserChatIdAndName(chatId, name)
+                .orElseThrow(() -> new TradeByFiltersManagerDoesntExistException("Trade by filters manager with name " + name + " doesn't exist for chatId: " + chatId)));
     }
 
     @Override

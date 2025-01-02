@@ -41,14 +41,14 @@ public interface UserPostgresRepository extends JpaRepository<UserEntity, Long> 
     @Query("UPDATE UserEntity u SET " +
            "u.newManagersAreActiveFlag = :#{#flag} " +
            "WHERE u.telegramUser.chatId = :chatId")
-    void updateNewManagersAreActiveFlagByTelegramUserChatId(String chatId, boolean flag);
+    void updateTradeManagersSettingsNewManagersAreActiveFlagByTelegramUserChatId(String chatId, boolean flag);
 
     @Transactional
     @Modifying
     @Query("UPDATE UserEntity u SET " +
            "u.managingEnabledFlag = :#{#flag} " +
            "WHERE u.telegramUser.chatId = :chatId")
-    void updateTradeManagersManagingEnabledFlagByTelegramUserChatId(String chatId, boolean flag);
+    void updateTradeManagersSettingsManagingEnabledFlagByTelegramUserChatId(String chatId, boolean flag);
 
     @Transactional(readOnly = true)
     @Query("SELECT new github.ricemonger.marketplace.services.DTOs.TradeManagersSettings(u.newManagersAreActiveFlag, u.managingEnabledFlag) " +

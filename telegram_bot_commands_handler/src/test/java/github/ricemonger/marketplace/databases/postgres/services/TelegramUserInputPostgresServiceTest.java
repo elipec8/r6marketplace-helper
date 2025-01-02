@@ -1,8 +1,5 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserInputEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserInputEntityId;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserInputPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TelegramUserInputEntityMapper;
@@ -10,6 +7,9 @@ import github.ricemonger.marketplace.services.DTOs.TelegramUserInput;
 import github.ricemonger.utils.enums.InputState;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.server.TelegramUserInputDoesntExistException;
+import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserInputEntity;
+import github.ricemonger.utilspostgresschema.ids.user.TelegramUserInputEntityId;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,8 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.verify;
@@ -34,8 +33,6 @@ class TelegramUserInputPostgresServiceTest {
     private TelegramUserInputPostgresService inputService;
     @MockBean
     private TelegramUserInputPostgresRepository telegramUserInputRepository;
-    @MockBean
-    private TelegramUserPostgresRepository telegramUserRepository;
     @MockBean
     private TelegramUserInputEntityMapper telegramUserInputEntityMapper;
 
@@ -53,19 +50,9 @@ class TelegramUserInputPostgresServiceTest {
 
     @Test
     public void deleteAllByChatId_should_clear_and_save_user() throws TelegramUserDoesntExistException {
-        TelegramUserEntity user = new TelegramUserEntity();
-        user.setChatId("chatId");
-        List<TelegramUserInputEntity> inputs = new ArrayList<>();
-        inputs.add(new TelegramUserInputEntity(user, InputState.UBI_ACCOUNT_ENTRY_2FA_CODE, "value"));
-        inputs.add(new TelegramUserInputEntity(user, InputState.ITEM_FILTER_ITEM_NAME_PATTERNS, "value1"));
-        user.setTelegramUserInputs(inputs);
-
-        when(telegramUserRepository.findById("chatId")).thenReturn(Optional.of(user));
-
         inputService.deleteAllByChatId("chatId");
 
-        assertEquals(0, user.getTelegramUserInputs().size());
-        verify(telegramUserRepository).save(same(user));
+        verify(telegramUserInputRepository).deleteAllByTelegramUserChatId("chatId");
     }
 
     @Test
@@ -76,13 +63,12 @@ class TelegramUserInputPostgresServiceTest {
         TelegramUserInputEntity entity = new TelegramUserInputEntity();
         TelegramUserInput input = new TelegramUserInput("chatId", InputState.UBI_ACCOUNT_ENTRY_2FA_CODE, "value");
 
-        when(telegramUserRepository.findById("chatId")).thenReturn(Optional.of(user));
         when(telegramUserInputRepository.findById(eq(id))).thenReturn(Optional.of(entity));
         when(telegramUserInputEntityMapper.createDTO(same(entity))).thenReturn(input);
 
         TelegramUserInput result = inputService.findById("chatId", InputState.UBI_ACCOUNT_ENTRY_2FA_CODE);
 
-        assertEquals(input, result);
+        assertSame(input, result);
     }
 
     @Test

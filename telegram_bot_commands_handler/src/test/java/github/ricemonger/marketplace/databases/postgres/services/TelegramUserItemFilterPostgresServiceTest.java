@@ -1,16 +1,15 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.custom.item_filters.entities.ItemFilterEntity;
-import github.ricemonger.marketplace.databases.postgres.custom.item_filters.entities.ItemFilterEntityId;
-import github.ricemonger.marketplace.databases.postgres.entities.user.TelegramUserEntity;
-import github.ricemonger.marketplace.databases.postgres.entities.user.UserEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemFilterPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.ItemFilterEntityMapper;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.exceptions.client.ItemFilterDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
+import github.ricemonger.utilspostgresschema.full_entities.user.ItemFilterEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -19,8 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,8 +31,6 @@ class TelegramUserItemFilterPostgresServiceTest {
     private TelegramUserItemFilterPostgresService telegramUserItemFilterService;
     @MockBean
     private ItemFilterPostgresRepository itemFilterRepository;
-    @MockBean
-    private TelegramUserPostgresRepository telegramUserRepository;
     @MockBean
     private ItemFilterEntityMapper itemFilterEntityMapper;
 
@@ -49,43 +47,33 @@ class TelegramUserItemFilterPostgresServiceTest {
     }
 
     @Test
-    public void deleteAllByChatId_should_clear_and_save_user() throws TelegramUserDoesntExistException {
-        TelegramUserEntity telegramUser = new TelegramUserEntity();
-        telegramUser.setUser(new UserEntity(1L));
-        ItemFilterEntity filterEntity1 = new ItemFilterEntity();
-        filterEntity1.setName("name");
-        ItemFilterEntity filterEntity2 = new ItemFilterEntity();
-        filterEntity2.setName("name2");
-        List<ItemFilterEntity> filtersEntities = new ArrayList<>();
-        filtersEntities.add(filterEntity1);
-        filtersEntities.add(filterEntity2);
-        telegramUser.getUser().setItemFilters(filtersEntities);
-
-        when(telegramUserRepository.findById("chatId")).thenReturn(Optional.of(telegramUser));
-
+    public void deleteById_should_handle_to_repository() throws TelegramUserDoesntExistException {
         telegramUserItemFilterService.deleteById("chatId", "name");
-
-        assertEquals(1, telegramUser.getUser().getItemFilters().size());
-        assertTrue(telegramUser.getUser().getItemFilters().stream().allMatch(filter -> filter.getName().equals("name2")));
-        verify(telegramUserRepository).save(same(telegramUser));
+        verify(itemFilterRepository).deleteByUserTelegramUserChatIdAndName("chatId", "name");
     }
 
     @Test
     public void findById_should_return_mapped_dto() throws TelegramUserDoesntExistException, ItemFilterDoesntExistException {
         TelegramUserEntity telegramUser = new TelegramUserEntity();
-        UserEntity userEntity = new UserEntity(1L);
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(1L);
         telegramUser.setUser(userEntity);
         ItemFilterEntity entity = new ItemFilterEntity();
         ItemFilter filter = new ItemFilter();
         filter.setName("name");
 
-        when(telegramUserRepository.findById("chatId")).thenReturn(Optional.of(telegramUser));
-        when(itemFilterRepository.findById(new ItemFilterEntityId(userEntity, "name"))).thenReturn(Optional.of(entity));
+        when(itemFilterRepository.findByUserTelegramUserChatIdAndName(eq("chatId"), eq("name"))).thenReturn(Optional.of(entity));
         when(itemFilterEntityMapper.createDTO(same(entity))).thenReturn(filter);
 
-        ItemFilter result = telegramUserItemFilterService.findById("chatId", "name");
+        assertSame(filter, telegramUserItemFilterService.findById("chatId", "name"));
+    }
 
-        assertEquals(filter, result);
+    @Test
+    public void findAllNamesByChatId_should_return_repository_result() throws TelegramUserDoesntExistException {
+        List names = Mockito.mock(List.class);
+        when(itemFilterRepository.findAllNameByUserTelegramUserChatId("chatId")).thenReturn(names);
+
+        assertSame(names, telegramUserItemFilterService.findAllNamesByChatId("chatId"));
     }
 
     @Test

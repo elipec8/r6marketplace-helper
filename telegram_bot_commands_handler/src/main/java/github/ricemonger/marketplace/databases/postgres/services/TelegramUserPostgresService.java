@@ -1,6 +1,5 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.repositories.ItemFilterPostgresEntity;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TelegramUserEntityMapper;
@@ -29,8 +28,6 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     private final TelegramUserPostgresRepository telegramUserRepository;
 
     private final TelegramUserEntityMapper telegramUserEntityMapper;
-
-    private final ItemFilterPostgresEntity itemFilterPostgresRepository;
 
     private final UserEntityMapper userEntityMapper;
 
@@ -128,13 +125,13 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     @Override
     @Transactional
     public void setUserTradeManagersSettingsNewManagersAreActiveFlag(String chatId, boolean flag) throws TelegramUserDoesntExistException {
-        userRepository.updateNewManagersAreActiveFlagByTelegramUserChatId(chatId, flag);
+        userRepository.updateTradeManagersSettingsNewManagersAreActiveFlagByTelegramUserChatId(chatId, flag);
     }
 
     @Override
     @Transactional
     public void setUserTradeManagersSettingsManagingEnabledFlag(String chatId, boolean flag) throws TelegramUserDoesntExistException {
-        userRepository.updateTradeManagersManagingEnabledFlagByTelegramUserChatId(chatId, flag);
+        userRepository.updateTradeManagersSettingsManagingEnabledFlagByTelegramUserChatId(chatId, flag);
     }
 
     @Override

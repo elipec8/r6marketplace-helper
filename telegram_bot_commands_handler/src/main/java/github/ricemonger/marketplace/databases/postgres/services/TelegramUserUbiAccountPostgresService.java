@@ -4,7 +4,6 @@ import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountE
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.UbiAccountEntryEntityMapper;
 import github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserUbiAccountEntryDatabaseService;
-import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryDoesntExistException;
 import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountEntryEntity;
@@ -22,7 +21,7 @@ public class TelegramUserUbiAccountPostgresService implements TelegramUserUbiAcc
 
     @Override
     @Transactional
-    public void save(String chatId, UbiAccountAuthorizationEntry account) throws TelegramUserDoesntExistException, UbiAccountEntryAlreadyExistsException {
+    public void save(String chatId, UbiAccountAuthorizationEntry account) {
         UbiAccountEntryEntity ubiAccountEntryEntity = ubiAccountEntryPostgresRepository.findByUserTelegramUserChatId(chatId).orElse(null);
 
         if (ubiAccountEntryEntity != null && !ubiAccountEntryEntity.getUbiAccountStats().getUbiProfileId().equals(account.getUbiProfileId())) {
@@ -34,13 +33,13 @@ public class TelegramUserUbiAccountPostgresService implements TelegramUserUbiAcc
 
     @Override
     @Transactional
-    public void deleteByChatId(String chatId) throws TelegramUserDoesntExistException {
+    public void deleteByChatId(String chatId) {
         ubiAccountEntryPostgresRepository.deleteByUserTelegramUserChatId(chatId);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public UbiAccountAuthorizationEntry findByChatId(String chatId) throws TelegramUserDoesntExistException, UbiAccountEntryDoesntExistException {
+    public UbiAccountAuthorizationEntry findByChatId(String chatId) {
         return ubiAccountEntryPostgresRepository.findUbiAccountAuthorizationEntryByUserTelegramUserChatId(chatId).orElseThrow(() -> new UbiAccountEntryDoesntExistException("Ubi account entry for chatId " + chatId + " doesn't exist"));
     }
 }
