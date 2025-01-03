@@ -112,14 +112,6 @@ public class BotInnerServiceTest {
     }
 
     @Test
-    public void setUserInputGroup_should_handle_to_service() {
-        long chatId = 1L;
-        InputGroup inputGroup = InputGroup.UBI_ACCOUNT_ENTRY_LINK;
-        botInnerService.setUserInputGroup(chatId, inputGroup);
-        verify(telegramUserService).setUserInputGroup(chatId, inputGroup);
-    }
-
-    @Test
     public void saveUserInput_should_save_InputAndSet_input_State_from_message_text() {
         UpdateInfo updateInfo = new UpdateInfo();
         updateInfo.setChatId(1L);

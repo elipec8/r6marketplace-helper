@@ -38,10 +38,6 @@ public class TelegramUserService {
         telegramUserDatabaseService.setUserInputState(String.valueOf(chatId), inputState);
     }
 
-    public void setUserInputGroup(Long chatId, InputGroup inputGroup) {
-        telegramUserDatabaseService.setUserInputGroup(String.valueOf(chatId), inputGroup);
-    }
-
     public void setUserInputStateAndGroup(Long chatId, InputState inputState, InputGroup inputGroup) {
         telegramUserDatabaseService.setUserInputStateAndGroup(String.valueOf(chatId), inputState, inputGroup);
     }

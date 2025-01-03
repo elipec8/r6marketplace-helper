@@ -80,13 +80,6 @@ class TelegramUserPostgresServiceTest {
     }
 
     @Test
-    public void setUserInputGroup_should_update_input_group() {
-        telegramUserService.setUserInputGroup("chatId", InputGroup.ITEMS_SHOW);
-
-        Mockito.verify(telegramUserRepository).updateInputGroup("chatId", InputGroup.ITEMS_SHOW);
-    }
-
-    @Test
     public void setUserInputState_should_update_input_state() {
         telegramUserService.setUserInputState("chatId", InputState.ITEM_FILTER_NAME);
 

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -41,7 +42,7 @@ public class TradeByFiltersManagerEntity {
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id"),
                     @JoinColumn(name = "name", referencedColumnName = "name")},
             inverseJoinColumns = @JoinColumn(name = "item_filter_name", referencedColumnName = "name"))
-    private List<ItemFilterEntity> appliedFilters;
+    private List<ItemFilterEntity> appliedFilters = new ArrayList<>();;
 
     @Column(name = "min_difference_from_median_price")
     private Integer minDifferenceFromMedianPrice;

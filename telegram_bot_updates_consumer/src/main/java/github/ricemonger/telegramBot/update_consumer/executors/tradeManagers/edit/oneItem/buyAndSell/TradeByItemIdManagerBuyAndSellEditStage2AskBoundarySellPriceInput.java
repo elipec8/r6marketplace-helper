@@ -9,7 +9,7 @@ public class TradeByItemIdManagerBuyAndSellEditStage2AskBoundarySellPriceInput e
     protected void executeCommand() {
         try {
             sendText("Chosen item is:\n" + botInnerService.getItemByUserInputItemId(updateInfo.getChatId()));
-            processMiddleInput(InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+            processMiddleInput(InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_SELL_PRICE);
             sendText("Please enter boundary price to sell item(If value is invalid, (current min sell price - 1) will be used):");
         } catch (ItemDoesntExistException e) {
             sendText("Item not found. Please enter correct item id.");

@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
-import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountStatsEntityPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountStatsPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
@@ -25,7 +25,7 @@ class UbiAccountEntryEntityMapperTest {
     @MockBean
     private UserPostgresRepository userPostgresRepository;
     @MockBean
-    private UbiAccountStatsEntityPostgresRepository ubiAccountStatsEntityPostgresRepository;
+    private UbiAccountStatsPostgresRepository ubiAccountStatsPostgresRepository;
 
     @Test
     public void createEntity_should_properly_map_entity_if_ubi_stats_exists() {
@@ -36,7 +36,7 @@ class UbiAccountEntryEntityMapperTest {
 
         UbiAccountStatsEntity ubiAccountStatsEntity = new UbiAccountStatsEntity();
         ubiAccountStatsEntity.setUbiProfileId("ubiProfileId");
-        when(ubiAccountStatsEntityPostgresRepository.findById("ubiProfileId")).thenReturn(Optional.of(ubiAccountStatsEntity));
+        when(ubiAccountStatsPostgresRepository.findById("ubiProfileId")).thenReturn(Optional.of(ubiAccountStatsEntity));
 
         UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
         account.setUbiProfileId("ubiProfileId");
@@ -70,7 +70,7 @@ class UbiAccountEntryEntityMapperTest {
 
         UbiAccountStatsEntity ubiAccountStatsEntity = new UbiAccountStatsEntity();
         ubiAccountStatsEntity.setUbiProfileId("ubiProfileId");
-        when(ubiAccountStatsEntityPostgresRepository.findById("ubiProfileId")).thenReturn(Optional.empty());
+        when(ubiAccountStatsPostgresRepository.findById("ubiProfileId")).thenReturn(Optional.empty());
 
         UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
         account.setUbiProfileId("ubiProfileId");

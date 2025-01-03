@@ -14,15 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserPostgresRepository extends JpaRepository<UserEntity, Long> {
-    @Transactional(readOnly = true)
-    boolean existsByTelegramUserChatId(String chatId);
-
-    @Transactional(readOnly = true)
-    UserEntity getReferenceByTelegramUserChatId(String chatId);
-
-    @Transactional(readOnly = true)
-    Optional<UserEntity> findByTelegramUserChatId(String chatId);
-
     @Transactional
     @Modifying
     @Query("UPDATE UserEntity u SET " +
@@ -35,6 +26,18 @@ public interface UserPostgresRepository extends JpaRepository<UserEntity, Long> 
            "u.itemShowPictureFlag = :#{#settings.itemShowPictureFlag} " +
            "WHERE u.telegramUser.chatId = :chatId")
     void updateItemShowFieldsSettingsByTelegramUserChatId(String chatId, ItemShownFieldsSettings settings);
+
+    @Transactional
+    @Modifying
+    @Query(value = "INSERT INTO user_item_show_applied_item_filter (user_id, item_filter_name) " +
+                   "VALUES (:userId, :name)", nativeQuery = true)
+    void addItemShowAppliedFilter(Long userId, String name);
+
+    @Transactional
+    @Modifying
+    @Query(value = "DELETE FROM user_item_show_applied_item_filter " +
+                   "WHERE user_id = :userId AND item_filter_name = :name", nativeQuery = true)
+    void deleteItemShowAppliedFilter(Long userId, String name);
 
     @Transactional
     @Modifying
@@ -51,21 +54,10 @@ public interface UserPostgresRepository extends JpaRepository<UserEntity, Long> 
     void updateTradeManagersSettingsManagingEnabledFlagByTelegramUserChatId(String chatId, boolean flag);
 
     @Transactional(readOnly = true)
-    @Query("SELECT new github.ricemonger.marketplace.services.DTOs.TradeManagersSettings(u.newManagersAreActiveFlag, u.managingEnabledFlag) " +
-           "FROM UserEntity u WHERE u.telegramUser.chatId = :chatId")
-    Optional<TradeManagersSettings> findTradeManagersSettingsByTelegramUserChatId(String chatId);
+    boolean existsByTelegramUserChatId(String chatId);
 
-    @Transactional
-    @Modifying
-    @Query(value = "INSERT INTO user_item_show_applied_item_filter (user_id, item_filter_name) " +
-                   "VALUES (:userId, :name)", nativeQuery = true)
-    void addItemShowAppliedFilter(Long userId, String name);
-
-    @Transactional
-    @Modifying
-    @Query(value = "DELETE FROM user_item_show_applied_item_filter " +
-                   "WHERE user_id = :userId AND item_filter_name = :name", nativeQuery = true)
-    void deleteItemShowAppliedFilter(Long userId, String name);
+    @Transactional(readOnly = true)
+    UserEntity getReferenceByTelegramUserChatId(String chatId);
 
     @Transactional(readOnly = true)
     @Query("SELECT u.id FROM UserEntity u WHERE u.telegramUser.chatId = :chatId")
@@ -92,4 +84,10 @@ public interface UserPostgresRepository extends JpaRepository<UserEntity, Long> 
            "u.itemShowPictureFlag) " +
            "FROM UserEntity u WHERE u.telegramUser.chatId = :chatId")
     Optional<ItemShowSettingsProjection> findItemShowSettingsByTelegramUserChatId(String chatId);
+
+    @Transactional(readOnly = true)
+    @Query("SELECT new github.ricemonger.marketplace.services.DTOs.TradeManagersSettings(u.newManagersAreActiveFlag, u.managingEnabledFlag) " +
+           "FROM UserEntity u WHERE u.telegramUser.chatId = :chatId")
+    Optional<TradeManagersSettings> findTradeManagersSettingsByTelegramUserChatId(String chatId);
+
 }

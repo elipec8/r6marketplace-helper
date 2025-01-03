@@ -31,7 +31,7 @@ public class TradeManagerFromInputsMapper {
                                                                         TradeOperationType tradeOperationType,
                                                                         boolean enabledFlag) {
         String itemId = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID);
-        String boundarySellPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+        String boundarySellPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_SELL_PRICE);
         String boundaryBuyPrice = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_BUY_PRICE);
         String priority = getValueByState(inputs, InputState.TRADE_BY_ITEM_ID_MANAGER_PRIORITY);
 

@@ -197,7 +197,7 @@ class InputCommandListenerTest {
     @Test
     public void handleUpdate_should_item_filter_edit_throw() {
         assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
-            UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+            UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_SELL_PRICE);
             inputCommandListener.handleUpdate(updateInfo);
         });
     }
@@ -213,7 +213,7 @@ class InputCommandListenerTest {
     @Test
     public void handleUpdate_should_item_filter_show_or_remove_throw() {
         assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
-            UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_SHOW_OR_REMOVE, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+            UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_SHOW_OR_REMOVE, InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_SELL_PRICE);
             inputCommandListener.handleUpdate(updateInfo);
         });
     }
@@ -230,7 +230,7 @@ class InputCommandListenerTest {
     @Test
     public void handleUpdate_should_item_show_settings_change_applied_filters_throw() {
         assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
-            UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTING_CHANGE_APPLIED_FILTERS, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+            UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTING_CHANGE_APPLIED_FILTERS, InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_SELL_PRICE);
             inputCommandListener.handleUpdate(updateInfo);
         });
     }
@@ -246,7 +246,7 @@ class InputCommandListenerTest {
     @Test
     public void handleUpdate_should_item_show_settings_change_message_limit_throw() {
         assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
-            UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+            UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT, InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_SELL_PRICE);
             inputCommandListener.handleUpdate(updateInfo);
         });
     }
@@ -310,7 +310,7 @@ class InputCommandListenerTest {
     @Test
     public void handleUpdate_should_item_show_settings_change_shown_fields_throw() {
         assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
-            UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTING_CHANGE_SHOWN_FIELDS, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+            UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW_SETTING_CHANGE_SHOWN_FIELDS, InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_SELL_PRICE);
             inputCommandListener.handleUpdate(updateInfo);
         });
     }
@@ -326,7 +326,7 @@ class InputCommandListenerTest {
     @Test
     public void handleUpdate_should_item_show_throw() {
         assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
-            UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+            UpdateInfo updateInfo = updateInfo(InputGroup.ITEMS_SHOW, InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_SELL_PRICE);
             inputCommandListener.handleUpdate(updateInfo);
         });
     }
@@ -429,7 +429,7 @@ class InputCommandListenerTest {
 
     @Test
     public void handleUpdate_should_trade_by_item_id_manager_type_sell_edit_boundary_sell_price() {
-        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_SELL_PRICE);
         inputCommandListener.handleUpdate(updateInfo);
 
         verify(executorsService).execute(TradeByItemIdManagerSellEditStage3AskPriorityInput.class, updateInfo);
@@ -461,7 +461,7 @@ class InputCommandListenerTest {
 
     @Test
     public void handleUpdate_should_trade_by_item_id_manager_type_buy_and_sell_edit_boundary_sell_price() {
-        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT, InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_SELL_PRICE);
         inputCommandListener.handleUpdate(updateInfo);
 
         verify(executorsService).execute(TradeByItemIdManagerBuyAndSellEditStage3AskBoundaryBuyPriceInput.class, updateInfo);

@@ -56,12 +56,6 @@ class TelegramUserServiceTest {
     }
 
     @Test
-    public void setUserInputGroup_should_handle_to_service() {
-        telegramUserService.setUserInputGroup(123L, InputGroup.UBI_ACCOUNT_ENTRY_LINK);
-        verify(telegramUserDatabaseService).setUserInputGroup("123", InputGroup.UBI_ACCOUNT_ENTRY_LINK);
-    }
-
-    @Test
     public void setUserInputStateAndGroup_should_handle_to_service() {
         telegramUserService.setUserInputStateAndGroup(123L, InputState.ITEM_FILTER_NAME, InputGroup.UBI_ACCOUNT_ENTRY_LINK);
         verify(telegramUserDatabaseService).setUserInputStateAndGroup("123", InputState.ITEM_FILTER_NAME, InputGroup.UBI_ACCOUNT_ENTRY_LINK);

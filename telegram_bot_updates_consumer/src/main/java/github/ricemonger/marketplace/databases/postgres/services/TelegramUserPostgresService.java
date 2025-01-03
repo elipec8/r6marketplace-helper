@@ -51,12 +51,6 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
 
     @Override
     @Transactional
-    public void setUserInputGroup(String chatId, InputGroup inputGroup) {
-        telegramUserRepository.updateInputGroup(chatId, inputGroup);
-    }
-
-    @Override
-    @Transactional
     public void setUserInputState(String chatId, InputState inputState) {
         telegramUserRepository.updateInputState(chatId, inputState);
     }

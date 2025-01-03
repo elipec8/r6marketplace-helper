@@ -128,10 +128,6 @@ public class BotInnerService {
         telegramUserService.setUserInputState(chatId, inputState);
     }
 
-    public void setUserInputGroup(Long chatId, InputGroup inputGroup) {
-        telegramUserService.setUserInputGroup(chatId, inputGroup);
-    }
-
     public void saveUserInput(UpdateInfo updateInfo) {
         String userInput;
 

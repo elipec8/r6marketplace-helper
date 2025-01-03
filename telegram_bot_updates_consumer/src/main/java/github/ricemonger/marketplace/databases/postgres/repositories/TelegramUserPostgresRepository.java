@@ -14,11 +14,6 @@ import java.util.Optional;
 public interface TelegramUserPostgresRepository extends JpaRepository<TelegramUserEntity, String> {
     @Transactional
     @Modifying
-    @Query("UPDATE TelegramUserEntity t SET t.inputGroup = :inputGroup WHERE t.chatId = :chatId")
-    void updateInputGroup(String chatId, InputGroup inputGroup);
-
-    @Transactional
-    @Modifying
     @Query("UPDATE TelegramUserEntity t SET t.inputState = :inputState WHERE t.chatId = :chatId")
     void updateInputState(String chatId, InputState inputState);
 

@@ -2,9 +2,7 @@ package github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.ed
 
 import github.ricemonger.telegramBot.update_consumer.BotInnerService;
 import github.ricemonger.telegramBot.update_consumer.executors.MockUpdateInfos;
-import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.edit.oneItem.buy.TradeByItemIdManagerBuyEditStage2AskBoundaryPriceInput;
 import github.ricemonger.utils.DTOs.common.Item;
-import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
 import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 import org.junit.jupiter.api.Test;
@@ -27,7 +25,7 @@ class TradeByItemIdManagerBuyAndSellEditStage2AskBoundarySellPriceInputTest {
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
         verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO);
-        verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+        verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_SELL_PRICE);
         verify(botInnerService).getItemByUserInputItemId(MockUpdateInfos.UPDATE_INFO.getChatId());
         verify(botInnerService,times(2)).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());
     }
@@ -40,7 +38,7 @@ class TradeByItemIdManagerBuyAndSellEditStage2AskBoundarySellPriceInputTest {
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
         verify(botInnerService,times(0)).saveUserInput(MockUpdateInfos.UPDATE_INFO);
-        verify(botInnerService,times(0)).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE);
+        verify(botInnerService,times(0)).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_SELL_PRICE);
 
         verify(botInnerService).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());
     }

@@ -258,7 +258,7 @@ public class InputCommandListener {
             case TRADE_BY_ITEM_ID_MANAGER_ITEM_ID ->
                     executorsService.execute(TradeByItemIdManagerSellEditStage2AskBoundaryPriceInput.class, updateInfo);
 
-            case TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE ->
+            case TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_SELL_PRICE ->
                     executorsService.execute(TradeByItemIdManagerSellEditStage3AskPriorityInput.class, updateInfo);
 
             case TRADE_BY_ITEM_ID_MANAGER_PRIORITY ->
@@ -276,7 +276,7 @@ public class InputCommandListener {
             case TRADE_BY_ITEM_ID_MANAGER_ITEM_ID ->
                     executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage2AskBoundarySellPriceInput.class, updateInfo);
 
-            case TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE ->
+            case TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_SELL_PRICE ->
                     executorsService.execute(TradeByItemIdManagerBuyAndSellEditStage3AskBoundaryBuyPriceInput.class, updateInfo);
 
             case TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_BUY_PRICE ->

@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
-import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountStatsEntityPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountStatsPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
@@ -18,7 +18,7 @@ public class UbiAccountEntryEntityMapper {
 
     private final UserPostgresRepository userPostgresRepository;
 
-    private final UbiAccountStatsEntityPostgresRepository ubiAccountStatsEntityPostgresRepository;
+    private final UbiAccountStatsPostgresRepository ubiAccountStatsPostgresRepository;
 
     public UbiAccountEntryEntity createEntity(String chatId, UbiAccountAuthorizationEntry account) {
         if (!userPostgresRepository.existsByTelegramUserChatId(chatId)) {
@@ -26,12 +26,12 @@ public class UbiAccountEntryEntityMapper {
         }
         UserEntity userEntity = userPostgresRepository.getReferenceByTelegramUserChatId(chatId);
 
-        UbiAccountStatsEntity ubiAccountStatsEntity = ubiAccountStatsEntityPostgresRepository.findById(account.getUbiProfileId()).orElse(null);
+        UbiAccountStatsEntity ubiAccountStatsEntity = ubiAccountStatsPostgresRepository.findById(account.getUbiProfileId()).orElse(null);
 
         if (ubiAccountStatsEntity == null) {
             ubiAccountStatsEntity = new UbiAccountStatsEntity();
             ubiAccountStatsEntity.setUbiProfileId(account.getUbiProfileId());
-            ubiAccountStatsEntityPostgresRepository.save(ubiAccountStatsEntity);
+            ubiAccountStatsPostgresRepository.save(ubiAccountStatsEntity);
         }
 
         UbiAccountEntryEntity ubiAccountEntryEntity = new UbiAccountEntryEntity();

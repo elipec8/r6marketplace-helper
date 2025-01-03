@@ -6,11 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface TelegramUserInputPostgresRepository extends JpaRepository<TelegramUserInputEntity, TelegramUserInputEntityId> {
     @Transactional
     void deleteAllByTelegramUserChatId(String chatId);
 
     @Transactional(readOnly = true)
-    Collection<TelegramUserInputEntity> findAllByTelegramUserChatId(String chatId);
+    List<TelegramUserInputEntity> findAllByTelegramUserChatId(String chatId);
 }

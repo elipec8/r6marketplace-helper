@@ -18,8 +18,6 @@ public interface TelegramUserDatabaseService {
 
     boolean isRegistered(String chatId);
 
-    void setUserInputGroup(String chatId, InputGroup inputGroup);
-
     void setUserInputState(String chatId, InputState inputState);
 
     void setUserInputStateAndGroup(String chatId, InputState inputState, InputGroup inputGroup);
