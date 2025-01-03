@@ -75,6 +75,11 @@ public class ItemFilterEntity {
     }
 
     public boolean isFullyEqual(ItemFilterEntity filter) {
+        if (filter == this) {
+            return true;
+        } else if (filter == null) {
+            return false;
+        }
 
         boolean tagsAreEqual = tags == null && filter.tags == null || (
                 tags != null && filter.tags != null &&

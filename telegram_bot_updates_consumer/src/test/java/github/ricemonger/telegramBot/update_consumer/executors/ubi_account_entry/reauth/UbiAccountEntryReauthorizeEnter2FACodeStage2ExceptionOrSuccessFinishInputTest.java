@@ -20,7 +20,7 @@ class UbiAccountEntryReauthorizeEnter2FACodeStage2ExceptionOrSuccessFinishInputT
     @Test
     public void initAndExecute_should_process_last_input_and_reauthorize_user() {
         UbiAccountEntryReauthorizeEnter2FACodeStage2ExceptionOrSuccessFinishInput commandExecutor = new UbiAccountEntryReauthorizeEnter2FACodeStage2ExceptionOrSuccessFinishInput();
-        commandExecutor.initAndExecute(null, botInnerService);
+        commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
         verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO);
         verify(botInnerService).setUserInputStateAndGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.BASE, InputGroup.BASE);

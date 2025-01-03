@@ -41,7 +41,7 @@ public class TelegramUserItemFilterPostgresService implements TelegramUserItemFi
     @Override
     @Transactional(readOnly = true)
     public List<String> findAllNamesByChatId(String chatId) throws TelegramUserDoesntExistException {
-        return itemFilterRepository.findAllNameByUserTelegramUserChatId(chatId);
+        return itemFilterRepository.findAllNamesByUserTelegramUserChatId(chatId);
     }
 
     @Override

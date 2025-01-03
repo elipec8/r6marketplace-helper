@@ -71,7 +71,7 @@ class TelegramUserItemFilterPostgresServiceTest {
     @Test
     public void findAllNamesByChatId_should_return_repository_result() throws TelegramUserDoesntExistException {
         List names = Mockito.mock(List.class);
-        when(itemFilterRepository.findAllNameByUserTelegramUserChatId("chatId")).thenReturn(names);
+        when(itemFilterRepository.findAllNamesByUserTelegramUserChatId("chatId")).thenReturn(names);
 
         assertSame(names, telegramUserItemFilterService.findAllNamesByChatId("chatId"));
     }

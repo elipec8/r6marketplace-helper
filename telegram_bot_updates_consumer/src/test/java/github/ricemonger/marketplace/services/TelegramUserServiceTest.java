@@ -5,21 +5,22 @@ import github.ricemonger.marketplace.services.abstractions.TelegramUserDatabaseS
 import github.ricemonger.marketplace.services.abstractions.TelegramUserInputDatabaseService;
 import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
+import github.ricemonger.utils.exceptions.server.TelegramUserInputDoesntExistException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class TelegramUserServiceTest {
-    @Autowired
+    @SpyBean
     private TelegramUserService telegramUserService;
     @MockBean
     private TelegramUserDatabaseService telegramUserDatabaseService;
@@ -119,7 +120,7 @@ class TelegramUserServiceTest {
     @Test
     public void setItemShowMessagesLimitByUserInput_should_handle_to_service_valid_value() {
         when(commonValuesService.getMaximumTelegramMessageLimit()).thenReturn(10);
-        when(telegramUserService.getUserInputByState(123L, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT)).thenReturn("5");
+        doReturn("5").when(telegramUserService).getUserInputByState(123L, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT);
         telegramUserService.setItemShowMessagesLimitByUserInput(123L);
         verify(telegramUserDatabaseService).setUserItemShowMessagesLimit("123", 5);
     }
@@ -127,7 +128,7 @@ class TelegramUserServiceTest {
     @Test
     public void setItemShowMessagesLimitByUserInput_should_handle_to_service_big_value() {
         when(commonValuesService.getMaximumTelegramMessageLimit()).thenReturn(10);
-        when(telegramUserService.getUserInputByState(123L, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT)).thenReturn("15");
+        doReturn("15").when(telegramUserService).getUserInputByState(123L, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT);
         telegramUserService.setItemShowMessagesLimitByUserInput(123L);
         verify(telegramUserDatabaseService).setUserItemShowMessagesLimit("123", 10);
     }
@@ -135,7 +136,7 @@ class TelegramUserServiceTest {
     @Test
     public void setItemShowMessagesLimitByUserInput_should_handle_to_service_small_value() {
         when(commonValuesService.getMaximumTelegramMessageLimit()).thenReturn(10);
-        when(telegramUserService.getUserInputByState(123L, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT)).thenReturn("0");
+        doReturn("0").when(telegramUserService).getUserInputByState(123L, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT);
         telegramUserService.setItemShowMessagesLimitByUserInput(123L);
         verify(telegramUserDatabaseService).setUserItemShowMessagesLimit("123", 1);
     }
@@ -143,7 +144,7 @@ class TelegramUserServiceTest {
     @Test
     public void setItemShowMessagesLimitByUserInput_should_handle_to_service_input_doesnt_exist() {
         when(commonValuesService.getMaximumTelegramMessageLimit()).thenReturn(10);
-        when(telegramUserService.getUserInputByState(123L, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT)).thenThrow(new RuntimeException());
+        doThrow(new TelegramUserInputDoesntExistException("")).when(telegramUserService).getUserInputByState(123L, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT);
         telegramUserService.setItemShowMessagesLimitByUserInput(123L);
         verify(telegramUserDatabaseService).setUserItemShowMessagesLimit("123", 10);
     }
@@ -151,7 +152,7 @@ class TelegramUserServiceTest {
     @Test
     public void setItemShowMessagesLimitByUserInput_should_handle_to_service_input_is_not_number() {
         when(commonValuesService.getMaximumTelegramMessageLimit()).thenReturn(10);
-        when(telegramUserService.getUserInputByState(123L, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT)).thenReturn("test");
+        doReturn("test").when(telegramUserService).getUserInputByState(123L, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT);
         telegramUserService.setItemShowMessagesLimitByUserInput(123L);
         verify(telegramUserDatabaseService).setUserItemShowMessagesLimit("123", 10);
     }
@@ -232,7 +233,7 @@ class TelegramUserServiceTest {
 
     @Test
     public void reauthorizeAndSaveExistingUbiUserBy2FACodeByUserInput_should_handle_to_service() {
-        when(telegramUserService.getUserInputByState(123L, InputState.UBI_ACCOUNT_ENTRY_2FA_CODE)).thenReturn("2faCode");
+        doReturn("2faCode").when(telegramUserService).getUserInputByState(123L, InputState.UBI_ACCOUNT_ENTRY_2FA_CODE);
 
         telegramUserService.reauthorizeAndSaveExistingUbiUserBy2FACodeByUserInput(123L);
 

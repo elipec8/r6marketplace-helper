@@ -59,26 +59,19 @@ class TelegramUserInputEntityTest {
     @Test
     public void equals_should_return_false_for_different_ids() {
         TelegramUserEntity telegramUser1 = new TelegramUserEntity();
-        telegramUser1.setUser(new UserEntity());
-        telegramUser1.getUser().setId(1L);
         telegramUser1.setChatId("12345");
 
         TelegramUserInputEntity input = new TelegramUserInputEntity();
         input.setTelegramUser(telegramUser1);
         input.setInputState(InputState.ITEM_FILTER_MAX_PRICE);
 
-        TelegramUserInputEntity input2 = new TelegramUserInputEntity();
-        input2.setTelegramUser(telegramUser1);
-        input2.setInputState(InputState.ITEM_FILTER_MAX_PRICE);
-
         TelegramUserEntity telegramUser2 = new TelegramUserEntity();
-        telegramUser2.setUser(new UserEntity());
-        telegramUser2.getUser().setId(2L);
         telegramUser2.setChatId("12345");
 
+        TelegramUserInputEntity input2 = new TelegramUserInputEntity();
         input2.setTelegramUser(telegramUser2);
-        assertNotEquals(input, input2);
-        telegramUser2.getUser().setId(1L);
+        input2.setInputState(InputState.ITEM_FILTER_MAX_PRICE);
+
         telegramUser2.setChatId("12346");
         assertNotEquals(input, input2);
         telegramUser2.setChatId("12345");
@@ -121,18 +114,14 @@ class TelegramUserInputEntityTest {
         TelegramUserInputEntity input1 = new TelegramUserInputEntity();
         input1.setTelegramUser(new TelegramUserEntity());
         input1.getTelegramUser().setChatId("chatId");
-        input1.getTelegramUser().setUser(new UserEntity());
-        input1.getTelegramUser().getUser().setId(1L);
         input1.setInputState(InputState.ITEM_FILTER_MAX_PRICE);
-        input1.setValue("value1");
+        input1.setValue("value");
 
         TelegramUserInputEntity input2 = new TelegramUserInputEntity();
         input2.setTelegramUser(new TelegramUserEntity());
-        input2.getTelegramUser().setChatId("chatId1");
-        input2.getTelegramUser().setUser(new UserEntity());
-        input2.getTelegramUser().getUser().setId(1L);
+        input2.getTelegramUser().setChatId("chatId");
         input2.setInputState(InputState.ITEM_FILTER_MAX_PRICE);
-        input2.setValue("value1");
+        input2.setValue("value");
 
         input1.getTelegramUser().setChatId("chatId1");
         assertFalse(input1.isFullyEqual(input2));

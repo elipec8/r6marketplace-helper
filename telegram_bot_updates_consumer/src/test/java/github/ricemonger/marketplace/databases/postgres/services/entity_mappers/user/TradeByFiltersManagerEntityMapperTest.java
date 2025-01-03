@@ -35,7 +35,7 @@ class TradeByFiltersManagerEntityMapperTest {
         itemFilterEntity2.setName("filter2");
         ItemFilterEntity itemFilterEntity3 = new ItemFilterEntity();
         itemFilterEntity3.setName("filter3");
-        userEntity.setItemFilters(List.of(new ItemFilterEntity()));
+        userEntity.setItemFilters(List.of(itemFilterEntity1, itemFilterEntity2, itemFilterEntity3));
         when(userPostgresRepository.existsByTelegramUserChatId("chatId")).thenReturn(true);
         when(userPostgresRepository.getReferenceByTelegramUserChatId("chatId")).thenReturn(userEntity);
 

@@ -92,7 +92,7 @@ class ItemFilterEntityTest {
 
         ItemFilterEntity filter2 = new ItemFilterEntity();
         filter2.setUser(new UserEntity());
-        filter2.getUser().setId(2L);
+        filter2.getUser().setId(1L);
         filter2.setName("filterName");
 
         filter1.getUser().setId(2L);

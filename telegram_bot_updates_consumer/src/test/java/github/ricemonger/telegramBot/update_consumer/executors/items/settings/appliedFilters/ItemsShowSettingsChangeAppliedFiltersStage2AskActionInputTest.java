@@ -23,7 +23,9 @@ class ItemsShowSettingsChangeAppliedFiltersStage2AskActionInputTest {
     @Test
     public void initAndExecute_should_process_last_input_with_keyboard_and_get_current_filter_and_get_user_applied_filters() {
         when(botInnerService.getItemShowAppliedFiltersNames(any())).thenReturn(List.of());
-        when(botInnerService.getUserItemFilterByUserCurrentInputCallbackFilterName(any())).thenReturn(new ItemFilter());
+        ItemFilter filter = new ItemFilter();
+        filter.setName("name");
+        when(botInnerService.getUserItemFilterByUserCurrentInputCallbackFilterName(any())).thenReturn(filter);
 
         ItemsShowSettingsChangeAppliedFiltersStage2AskActionInput commandExecutor = new ItemsShowSettingsChangeAppliedFiltersStage2AskActionInput();
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);

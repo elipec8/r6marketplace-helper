@@ -78,20 +78,11 @@ class TelegramUserEntityTest {
     @Test
     public void equals_should_return_false_if_different_ids() {
         TelegramUserEntity telegramUser1 = new TelegramUserEntity();
-        telegramUser1.setUser(new UserEntity());
-        telegramUser1.getUser().setId(1L);
         telegramUser1.setChatId("chatId");
 
         TelegramUserEntity telegramUser2 = new TelegramUserEntity();
-        telegramUser2.setUser(new UserEntity());
-        telegramUser2.getUser().setId(1L);
-        telegramUser2.setChatId("chatId");
+        telegramUser2.setChatId("chatId1");
 
-
-        telegramUser1.getUser().setId(2L);
-        assertNotEquals(telegramUser1, telegramUser2);
-        telegramUser1.getUser().setId(1L);
-        telegramUser1.setChatId("chatId2");
         assertNotEquals(telegramUser1, telegramUser2);
     }
 }

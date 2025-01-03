@@ -67,10 +67,10 @@ public class TradeByItemIdManagerEntity {
 
     public boolean isFullyEqual(TradeByItemIdManagerEntity manager) {
         return equals(manager) &&
-               enabled.equals(manager.enabled) &&
-               tradeOperationType.equals(manager.tradeOperationType) &&
-               sellBoundaryPrice.equals(manager.sellBoundaryPrice) &&
-               buyBoundaryPrice.equals(manager.buyBoundaryPrice) &&
-               priorityMultiplier.equals(manager.priorityMultiplier);
+               Objects.equals(enabled, manager.enabled) &&
+               Objects.equals(tradeOperationType, manager.tradeOperationType) &&
+               Objects.equals(sellBoundaryPrice, manager.sellBoundaryPrice) &&
+               Objects.equals(buyBoundaryPrice, manager.buyBoundaryPrice) &&
+               Objects.equals(priorityMultiplier, manager.priorityMultiplier);
     }
 }

@@ -3,7 +3,6 @@ package github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.ed
 import github.ricemonger.telegramBot.update_consumer.BotInnerService;
 import github.ricemonger.telegramBot.update_consumer.executors.MockUpdateInfos;
 import github.ricemonger.utils.DTOs.common.Item;
-import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
 import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,7 @@ class TradeByItemIdManagerBuyEditStage2AskBoundaryPriceInputTest {
     private BotInnerService botInnerService;
 
     @Test
-    public void initAndExecute_should_process_middle_input_and_print_chosen_item_and_not_cancel_if_item_is_found() {
+    public void initAndExecute_should_process_middle_input_and_print_chosen_item_if_item_is_found() {
         when(botInnerService.getItemByUserInputItemId(any())).thenReturn(new Item());
 
         TradeByItemIdManagerBuyEditStage2AskBoundaryPriceInput commandExecutor = new TradeByItemIdManagerBuyEditStage2AskBoundaryPriceInput();
@@ -27,28 +26,20 @@ class TradeByItemIdManagerBuyEditStage2AskBoundaryPriceInputTest {
 
         verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO);
         verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_BUY_PRICE);
-
-        verify(botInnerService, times(2)).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());
-
-        verify(botInnerService, times(0)).clearUserInputsAndSetInputStateAndGroup(MockUpdateInfos.UPDATE_INFO.getChatId());
-        verify(botInnerService, times(0)).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.BASE);
-        verify(botInnerService, times(0)).setUserInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.BASE);
+        verify(botInnerService).getItemByUserInputItemId(MockUpdateInfos.UPDATE_INFO.getChatId());
+        verify(botInnerService,times(2)).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());
     }
 
     @Test
-    public void initAndExecute_should_process_middle_input_and_cancel_if_item_is_not_found() {
+    public void initAndExecute_should_not_process_middle_input_if_item_is_not_found() {
         when(botInnerService.getItemByUserInputItemId(any())).thenThrow(new ItemDoesntExistException(""));
 
         TradeByItemIdManagerBuyEditStage2AskBoundaryPriceInput commandExecutor = new TradeByItemIdManagerBuyEditStage2AskBoundaryPriceInput();
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO);
-        verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_BUY_PRICE);
+        verify(botInnerService,times(0)).saveUserInput(MockUpdateInfos.UPDATE_INFO);
+        verify(botInnerService,times(0)).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_BUY_PRICE);
 
-        verify(botInnerService, times(2)).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());
-
-        verify(botInnerService).clearUserInputsAndSetInputStateAndGroup(MockUpdateInfos.UPDATE_INFO.getChatId());
-        verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.BASE);
-        verify(botInnerService).setUserInputGroup(MockUpdateInfos.UPDATE_INFO.getChatId(), InputGroup.BASE);
+        verify(botInnerService).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());
     }
 }

@@ -14,11 +14,11 @@ public interface ItemFilterPostgresRepository extends JpaRepository<ItemFilterEn
     void deleteByUserTelegramUserChatIdAndName(String chatId, String name);
 
     @Transactional(readOnly = true)
-    @Query("SELECT i.name FROM ItemFilterEntity i WHERE i.user.telegramUser.chatId = :chatId")
-    List<String> findAllNameByUserTelegramUserChatId(String chatId);
+    Optional<ItemFilterEntity> findByUserTelegramUserChatIdAndName(String chatId, String name);
 
     @Transactional(readOnly = true)
-    Optional<ItemFilterEntity> findByUserTelegramUserChatIdAndName(String chatId, String name);
+    @Query("SELECT i.name FROM ItemFilterEntity i WHERE i.user.telegramUser.chatId = :chatId")
+    List<String> findAllNamesByUserTelegramUserChatId(String chatId);
 
     @Transactional(readOnly = true)
     List<ItemFilterEntity> findAllByUserTelegramUserChatId(String chatId);

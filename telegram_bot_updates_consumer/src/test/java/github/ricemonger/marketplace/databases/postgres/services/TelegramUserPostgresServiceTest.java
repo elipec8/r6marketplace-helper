@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.when;
 
@@ -44,7 +45,7 @@ class TelegramUserPostgresServiceTest {
 
     @Test
     public void register_should_save_new_user_if_doesnt_exist() {
-        when(telegramUserRepository.existsById("chatId")).thenReturn(true);
+        when(telegramUserRepository.existsById("chatId")).thenReturn(false);
 
         TelegramUserEntity entity = Mockito.mock(TelegramUserEntity.class);
         when(telegramUserEntityMapper.createNewEntityForNewUser("chatId")).thenReturn(entity);
@@ -56,7 +57,7 @@ class TelegramUserPostgresServiceTest {
 
     @Test
     public void register_should_throw_if_user_already_exists() {
-        when(telegramUserRepository.existsById("chatId")).thenReturn(false);
+        when(telegramUserRepository.existsById("chatId")).thenReturn(true);
 
         TelegramUserEntity entity = Mockito.mock(TelegramUserEntity.class);
         when(telegramUserEntityMapper.createNewEntityForNewUser("chatId")).thenReturn(entity);
@@ -137,9 +138,10 @@ class TelegramUserPostgresServiceTest {
 
     @Test
     public void setUserItemShowFieldsSettings_should_update_settings() {
-        telegramUserService.setUserItemShowFieldsSettings("chatId", Mockito.mock(ItemShownFieldsSettings.class));
+        ItemShownFieldsSettings settings = Mockito.mock(ItemShownFieldsSettings.class);
+        telegramUserService.setUserItemShowFieldsSettings("chatId", settings);
 
-        Mockito.verify(userRepository).updateItemShowFieldsSettingsByTelegramUserChatId("chatId", Mockito.any(ItemShownFieldsSettings.class));
+        Mockito.verify(userRepository).updateItemShowFieldsSettingsByTelegramUserChatId(eq("chatId"), same(settings));
     }
 
     @Test

@@ -98,8 +98,7 @@ class AbstractBotCommandExecutorTest {
         abstractBotCommandExecutor.processLastInput("text");
 
         verify(botInnerService).saveUserInput(updateInfo);
-        verify(botInnerService).setUserInputState(updateInfo.getChatId(), InputState.BASE);
-        verify(botInnerService).setUserInputGroup(updateInfo.getChatId(), InputGroup.BASE);
+        verify(botInnerService).setUserInputStateAndGroup(updateInfo.getChatId(), InputState.BASE, InputGroup.BASE);
         verify(abstractBotCommandExecutor).sendText("text");
     }
 
@@ -111,8 +110,7 @@ class AbstractBotCommandExecutorTest {
         abstractBotCommandExecutor.processLastInput();
 
         verify(botInnerService).saveUserInput(updateInfo);
-        verify(botInnerService).setUserInputState(updateInfo.getChatId(), InputState.BASE);
-        verify(botInnerService).setUserInputGroup(updateInfo.getChatId(), InputGroup.BASE);
+        verify(botInnerService).setUserInputStateAndGroup(updateInfo.getChatId(), InputState.BASE, InputGroup.BASE);
     }
 
     @Test

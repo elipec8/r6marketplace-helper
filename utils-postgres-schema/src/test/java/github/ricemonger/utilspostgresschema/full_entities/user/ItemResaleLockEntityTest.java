@@ -20,6 +20,8 @@ class ItemResaleLockEntityTest {
         ItemResaleLockEntity itemResaleLockEntity2 = new ItemResaleLockEntity();
         itemResaleLockEntity2.setUbiAccount(new UbiAccountStatsEntity());
         itemResaleLockEntity2.getUbiAccount().setUbiProfileId("ubiProfileId");
+        itemResaleLockEntity2.setItem(new ItemEntity());
+        itemResaleLockEntity2.getItem().setItemId("itemId");
 
         assertEquals(itemResaleLockEntity1.hashCode(), itemResaleLockEntity2.hashCode());
     }
@@ -41,6 +43,8 @@ class ItemResaleLockEntityTest {
         ItemResaleLockEntity itemResaleLockEntity2 = new ItemResaleLockEntity();
         itemResaleLockEntity2.setUbiAccount(new UbiAccountStatsEntity());
         itemResaleLockEntity2.getUbiAccount().setUbiProfileId("ubiProfileId");
+        itemResaleLockEntity2.setItem(new ItemEntity());
+        itemResaleLockEntity2.getItem().setItemId("itemId");
 
         assertEquals(itemResaleLockEntity1, itemResaleLockEntity2);
     }

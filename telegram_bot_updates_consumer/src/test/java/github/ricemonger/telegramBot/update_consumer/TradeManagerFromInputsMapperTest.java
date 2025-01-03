@@ -63,14 +63,14 @@ class TradeManagerFromInputsMapperTest {
     public void mapToTradeByItemIdManager_should_map_inputs_to_manager_with_invalid_inputs() {
         String chatId = "chatId";
         List<TelegramUserInput> inputs = new ArrayList<>();
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID, ""));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID, "itemId"));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_EDIT_BOUNDARY_SELL_PRICE, ""));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_BUY_PRICE, ""));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_PRIORITY, ""));
 
         TradeByItemIdManager expected = new TradeByItemIdManager();
         expected.setTradeOperationType(TradeOperationType.SELL);
-        expected.setItemId("");
+        expected.setItemId("itemId");
         expected.setEnabled(false);
         expected.setSellBoundaryPrice(120);
         expected.setBuyBoundaryPrice(100000);

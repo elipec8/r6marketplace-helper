@@ -12,9 +12,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.same;
 
 @SpringBootTest
 class UserEntityMapperTest {
@@ -33,8 +34,8 @@ class UserEntityMapperTest {
         ItemFilter itemFilter2 = new ItemFilter();
         itemFilter2.setName("filter2");
 
-        Mockito.when(itemFilterEntityMapper.createDTO(itemFilterEntity1)).thenReturn(itemFilter1);
-        Mockito.when(itemFilterEntityMapper.createDTO(itemFilterEntity2)).thenReturn(itemFilter2);
+        Mockito.when(itemFilterEntityMapper.createDTO(same(itemFilterEntity1))).thenReturn(itemFilter1);
+        Mockito.when(itemFilterEntityMapper.createDTO(same(itemFilterEntity2))).thenReturn(itemFilter2);
 
         ItemShowSettingsProjection itemShowSettingsProjection = new ItemShowSettingsProjection();
         itemShowSettingsProjection.setItemShowMessagesLimit(10);
@@ -46,7 +47,7 @@ class UserEntityMapperTest {
         itemShowSettingsProjection.setItemShowMinSellPriceFlag(false);
         itemShowSettingsProjection.setItemsShowSellOrdersCountFlag(true);
         itemShowSettingsProjection.setItemShowPictureFlag(false);
-        Collection<ItemFilterEntity> itemFilters = new ArrayList<>();
+        Collection<ItemFilterEntity> itemFilters = List.of(itemFilterEntity1, itemFilterEntity2);
 
         ItemShowSettings itemShowSettings = userEntityMapper.mapItemShowSettings(itemShowSettingsProjection, itemFilters);
 
