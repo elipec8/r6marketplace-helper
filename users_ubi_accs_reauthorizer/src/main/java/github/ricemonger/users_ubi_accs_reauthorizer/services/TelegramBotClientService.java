@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TelegramBotClientService {
 
-    public void sendNotificationToUser(Long id, String format) {
-        System.out.println("Sending notification to user with id: " + id + " and message: " + format);
+    public void sendNotificationToUser(Long id, String text) {
+        System.out.println("Sending notification to user with id: " + id + " and message: " + text);
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@Import({SchedulingUtilsConfiguration.class, RedisUtilsConfiguration.class})
+@Import({RedisUtilsConfiguration.class})
 public class TelegramBotUpdatesConsumerApplication {
 
     public static void main(String[] args) {

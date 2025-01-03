@@ -166,6 +166,8 @@ class TradeByFiltersManagerPostgresRepositoryTest {
         telegramUserEntity1.setChatId("chatId1");
         telegramUserEntity1.setUser(userEntity1);
         telegramUserEntity1 = telegramUserPostgresRepository.save(telegramUserEntity1);
+        userEntity1.setTelegramUser(telegramUserEntity1);
+        userEntity1 = userPostgresRepository.save(userEntity1);
 
         TradeByFiltersManagerEntity tradeByFiltersManagerEntity11 = new TradeByFiltersManagerEntity();
         tradeByFiltersManagerEntity11.setName("name1");
@@ -194,10 +196,11 @@ class TradeByFiltersManagerPostgresRepositoryTest {
         List<TradeByFiltersManagerEntity> allEntities = tradeByFiltersManagerPostgresRepository.findAll();
         assertEquals(3, allEntities.size());
 
+        UserEntity userEntity1u = userPostgresRepository.findById(userEntity1.getId()).get();
         List<TradeByFiltersManagerEntity> entities = tradeByFiltersManagerPostgresRepository.findAllByUserTelegramUserChatId("chatId1");
 
         assertEquals(2, entities.size());
-        assertTrue(entities.stream().anyMatch(entity -> entity.getName().equals("name1") && entity.getUser().equals(userEntity1) && entity.getEnabled()));
-        assertTrue(entities.stream().anyMatch(entity -> entity.getName().equals("name2") && entity.getUser().equals(userEntity1) && !entity.getEnabled()));
+        assertTrue(entities.stream().anyMatch(entity -> entity.getName().equals("name1") && entity.getUser().equals(userEntity1u) && entity.getEnabled()));
+        assertTrue(entities.stream().anyMatch(entity -> entity.getName().equals("name2") && entity.getUser().equals(userEntity1u) && !entity.getEnabled()));
     }
 }

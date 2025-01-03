@@ -6,6 +6,9 @@ import github.ricemonger.marketplace.services.DTOs.TradeManagersSettings;
 import github.ricemonger.utilspostgresschema.full_entities.user.ItemFilterEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -25,6 +28,8 @@ class UserPostgresRepositoryTest {
     private TelegramUserPostgresRepository telegramUserPostgresRepository;
     @Autowired
     private ItemFilterPostgresRepository itemFilterPostgresRepository;
+    @Autowired
+    private EntityManagerFactory entityManagerFactory;
 
     @BeforeEach
     public void setUp() {
@@ -128,69 +133,108 @@ class UserPostgresRepositoryTest {
     }
 
     @Test
-    @Transactional
-    @Disabled
     public void addItemShowAppliedFilter_should_add_filter() {
-        UserEntity userEntity1 = userPostgresRepository.saveAndFlush(new UserEntity());
-        TelegramUserEntity telegramUserEntity1 = new TelegramUserEntity();
-        telegramUserEntity1.setChatId("chatId1");
-        telegramUserEntity1.setUser(userEntity1);
-        telegramUserEntity1 = telegramUserPostgresRepository.saveAndFlush(telegramUserEntity1);
-        userEntity1.setTelegramUser(telegramUserEntity1);
-        userEntity1 = userPostgresRepository.saveAndFlush(userEntity1);
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
 
-        ItemFilterEntity itemFilterEntity11 = new ItemFilterEntity();
-        itemFilterEntity11.setName("filter11");
-        itemFilterEntity11.setUser(userEntity1);
-        itemFilterEntity11 = itemFilterPostgresRepository.saveAndFlush(itemFilterEntity11);
+        try {
+            transaction.begin();
+            UserEntity userEntity1 = new UserEntity();
+            entityManager.persist(userEntity1);
 
-        ItemFilterEntity itemFilterEntity12 = new ItemFilterEntity();
-        itemFilterEntity12.setName("filter12");
-        itemFilterEntity12.setUser(userEntity1);
-        itemFilterEntity12 = itemFilterPostgresRepository.saveAndFlush(itemFilterEntity12);
+            TelegramUserEntity telegramUserEntity1 = new TelegramUserEntity();
+            telegramUserEntity1.setChatId("chatId1");
+            telegramUserEntity1.setUser(userEntity1);
+            entityManager.persist(telegramUserEntity1);
 
-        userPostgresRepository.addItemShowAppliedFilter(userEntity1.getId(), "filter11");
-        userPostgresRepository.flush();
+            userEntity1.setTelegramUser(telegramUserEntity1);
+            entityManager.merge(userEntity1);
 
-        UserEntity userEntity = userPostgresRepository.findById(userEntity1.getId()).get();
-        assertEquals(1, userEntity.getItemShowAppliedFilters().size());
-        assertEquals(itemFilterEntity11, userEntity.getItemShowAppliedFilters().get(0));
+            ItemFilterEntity itemFilterEntity11 = new ItemFilterEntity();
+            itemFilterEntity11.setName("filter11");
+            itemFilterEntity11.setUser(userEntity1);
+            entityManager.persist(itemFilterEntity11);
+
+            ItemFilterEntity itemFilterEntity12 = new ItemFilterEntity();
+            itemFilterEntity12.setName("filter12");
+            itemFilterEntity12.setUser(userEntity1);
+            entityManager.persist(itemFilterEntity12);
+
+            transaction.commit();
+
+            entityManager.clear();
+
+            transaction.begin();
+            userPostgresRepository.addItemShowAppliedFilter(userEntity1.getId(), "filter11");
+            entityManager.flush();
+            transaction.commit();
+
+            UserEntity userEntity = entityManager.find(UserEntity.class, userEntity1.getId());
+            assertEquals(1, userEntity.getItemShowAppliedFilters().size());
+            assertEquals(itemFilterEntity11, userEntity.getItemShowAppliedFilters().get(0));
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            entityManager.close();
+        }
     }
 
     @Test
-    @Transactional
     @Disabled
     public void deleteItemShowAppliedFilter_should_delete_filter() {
-        UserEntity userEntity1 = userPostgresRepository.saveAndFlush(new UserEntity());
-        TelegramUserEntity telegramUserEntity1 = new TelegramUserEntity();
-        telegramUserEntity1.setChatId("chatId1");
-        telegramUserEntity1.setUser(userEntity1);
-        telegramUserPostgresRepository.saveAndFlush(telegramUserEntity1);
-        userEntity1.setTelegramUser(telegramUserEntity1);
-        userPostgresRepository.saveAndFlush(userEntity1);
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
 
-        ItemFilterEntity itemFilterEntity11 = new ItemFilterEntity();
-        itemFilterEntity11.setName("filter11");
-        itemFilterEntity11.setUser(userEntity1);
-        itemFilterEntity11 = itemFilterPostgresRepository.saveAndFlush(itemFilterEntity11);
+        try {
+            transaction.begin();
+            UserEntity userEntity1 = new UserEntity();
+            entityManager.persist(userEntity1);
 
-        ItemFilterEntity itemFilterEntity12 = new ItemFilterEntity();
-        itemFilterEntity12.setName("filter12");
-        itemFilterEntity12.setUser(userEntity1);
-        itemFilterEntity12 = itemFilterPostgresRepository.saveAndFlush(itemFilterEntity12);
+            TelegramUserEntity telegramUserEntity1 = new TelegramUserEntity();
+            telegramUserEntity1.setChatId("chatId1");
+            telegramUserEntity1.setUser(userEntity1);
+            entityManager.persist(telegramUserEntity1);
 
-        userEntity1.getItemShowAppliedFilters().add(itemFilterEntity11);
-        userEntity1.getItemShowAppliedFilters().add(itemFilterEntity12);
+            userEntity1.setTelegramUser(telegramUserEntity1);
+            entityManager.merge(userEntity1);
 
-        UserEntity userEntity = userPostgresRepository.findById(userEntity1.getId()).get();
-        assertEquals(2, userEntity.getItemShowAppliedFilters().size());
+            ItemFilterEntity itemFilterEntity11 = new ItemFilterEntity();
+            itemFilterEntity11.setName("filter11");
+            itemFilterEntity11.setUser(userEntity1);
+            entityManager.persist(itemFilterEntity11);
 
-        userPostgresRepository.deleteItemShowAppliedFilter(userEntity1.getId(), "filter11");
-        userPostgresRepository.flush();
+            ItemFilterEntity itemFilterEntity12 = new ItemFilterEntity();
+            itemFilterEntity12.setName("filter12");
+            itemFilterEntity12.setUser(userEntity1);
+            entityManager.persist(itemFilterEntity12);
 
-        userEntity = userPostgresRepository.findById(userEntity1.getId()).get();
-        assertEquals(1, userEntity.getItemShowAppliedFilters().size());
-        assertEquals(itemFilterEntity12, userEntity.getItemShowAppliedFilters().get(0));
+            userEntity1.getItemShowAppliedFilters().add(itemFilterEntity11);
+            userEntity1.getItemShowAppliedFilters().add(itemFilterEntity12);
+            entityManager.merge(userEntity1);
+
+            transaction.commit();
+
+            transaction.begin();
+            userPostgresRepository.deleteItemShowAppliedFilter(userEntity1.getId(), "filter11");
+            entityManager.flush();
+            transaction.commit();
+
+            //entityManager.clear();
+
+            UserEntity userEntity = entityManager.find(UserEntity.class, userEntity1.getId());
+            assertEquals(1, userEntity.getItemShowAppliedFilters().size());
+            assertEquals(itemFilterEntity12, userEntity.getItemShowAppliedFilters().get(0));
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            entityManager.close();
+        }
     }
 
     @Test
