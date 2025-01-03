@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.List;
 
-public interface TagPostgresPostgresRepository extends JpaRepository<TagEntity, String> {
+public interface TagPostgresRepository extends JpaRepository<TagEntity, String> {
     @Transactional(readOnly = true)
     @Query("SELECT t FROM tag t WHERE t.name IN (:names)")
     List<TagEntity> findAllByNames(@Param("names") Collection<String> names);

@@ -1,26 +1,12 @@
-package github.ricemonger.marketplace.databases.postgres.entities.user;
+package github.ricemonger.utilspostgresschema.ids.user;
 
+import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class UbiAccountEntryEntityIdTest {
-
-    @Test
-    public void getUserId_should_return_user_id() {
-        UbiAccountEntryEntityId id = new UbiAccountEntryEntityId(new UserEntity(1L), "email");
-
-        assertEquals(1L, id.getUserId_());
-    }
-
-    @Test
-    public void constructor_should_set_user_and_email() {
-        UbiAccountEntryEntityId id = new UbiAccountEntryEntityId(1L, "email");
-
-        assertEquals(1L, id.getUserId_());
-        assertEquals("email", id.getEmail());
-    }
 
     @Test
     public void hashCode_should_return_same_hash_for_equal_objects() {

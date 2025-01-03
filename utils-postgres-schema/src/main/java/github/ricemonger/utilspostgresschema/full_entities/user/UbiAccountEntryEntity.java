@@ -44,10 +44,6 @@ public class UbiAccountEntryEntity {
     @JoinColumn(name = "ubi_profile_id", referencedColumnName = "ubi_profile_id")
     private UbiAccountStatsEntity ubiAccountStats;
 
-    public String getProfileId_() {
-        return ubiAccountStats.getUbiProfileId();
-    }
-
     @Override
     public int hashCode() {
         return Objects.hash(user, email);

@@ -5,6 +5,7 @@ import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -12,9 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
+@Transactional
 class TagPostgresRepositoryTest {
     @SpyBean
-    TagPostgresPostgresRepository tagPostgresRepository;
+    TagPostgresRepository tagPostgresRepository;
 
     @Test
     public void findAllByNames_should_return_all_tags_with_given_names() {
