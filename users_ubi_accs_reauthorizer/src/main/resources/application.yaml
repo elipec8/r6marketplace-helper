@@ -46,6 +46,13 @@ management:
 spring:
   application:
     name: r6s-helper-users-ubi-accs-reauthorizer
+  kafka:
+    admin:
+      auto-create: true
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://${POSTGRES_SERVER_HOST:localhost}:${POSTGRES_SERVER_PORT:5432}/${POSTGRES_DB:postgres}

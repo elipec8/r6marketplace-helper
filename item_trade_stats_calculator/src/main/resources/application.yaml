@@ -36,6 +36,15 @@ management:
 spring:
   application:
     name: r6s-helper-items-stats-recalculator
+  kafka:
+    admin:
+      auto-create: true
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: ${KAFKA_GROUP_ID:r6s-helper-items-stats-fetcher}
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://${POSTGRES_SERVER_HOST:localhost}:${POSTGRES_SERVER_PORT:5432}/${POSTGRES_DB:postgres}

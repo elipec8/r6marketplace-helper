@@ -71,7 +71,16 @@ management:
 
 spring:
   application:
-    name: r6s-helper
+    name: r6s-helper-notifications-service
+  kafka:
+    admin:
+      auto-create: true
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: r6s-helper-notifications-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
   data:
     redis:
       repositories:
