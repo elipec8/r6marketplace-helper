@@ -1,3 +1,3 @@
 package github.ricemonger.utils.DTOs.personal;
 
-public record SendTextDTO(String chatId, String text) { }
+public record SendTextDTO(Long userId, String text) { }

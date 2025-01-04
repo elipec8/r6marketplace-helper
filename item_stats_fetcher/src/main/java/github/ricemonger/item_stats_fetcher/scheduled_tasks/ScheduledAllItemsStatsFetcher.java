@@ -3,7 +3,7 @@ package github.ricemonger.item_stats_fetcher.scheduled_tasks;
 
 import github.ricemonger.item_stats_fetcher.services.CommonValuesService;
 import github.ricemonger.item_stats_fetcher.services.ItemService;
-import github.ricemonger.item_stats_fetcher.services.TelegramBotClientService;
+import github.ricemonger.item_stats_fetcher.services.NotificationService;
 import github.ricemonger.marketplace.graphQl.common_query_items.CommonQueryItemsGraphQlClientService;
 import github.ricemonger.utils.DTOs.common.Item;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class ScheduledAllItemsStatsFetcher {
 
     private final CommonValuesService commonValuesService;
 
-    private final TelegramBotClientService telegramBotService;
+    private final NotificationService telegramBotService;
 
     @Scheduled(fixedRate = 3 * 60 * 1000, initialDelay = 60 * 1000) // every 3m after 1m of delay
     public void fetchAllItemStats() {

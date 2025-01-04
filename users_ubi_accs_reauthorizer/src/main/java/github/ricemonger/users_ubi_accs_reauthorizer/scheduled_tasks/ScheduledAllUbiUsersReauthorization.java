@@ -2,7 +2,7 @@ package github.ricemonger.users_ubi_accs_reauthorizer.scheduled_tasks;
 
 
 import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserToNotify;
-import github.ricemonger.users_ubi_accs_reauthorizer.services.TelegramBotClientService;
+import github.ricemonger.users_ubi_accs_reauthorizer.services.NotificationService;
 import github.ricemonger.users_ubi_accs_reauthorizer.services.UserUbiAccountEntryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,7 +16,7 @@ public class ScheduledAllUbiUsersReauthorization {
 
     private final UserUbiAccountEntryService userUbiAccountEntryService;
 
-    private final TelegramBotClientService telegramBotService;
+    private final NotificationService telegramBotService;
 
     @Scheduled(fixedRate = 150 * 60 * 1000, initialDelay = 90 * 1000) // every 2.5h after 1.5m of delay
     public void reauthorizeAllUbiUsersAndNotifyAboutFailures() {

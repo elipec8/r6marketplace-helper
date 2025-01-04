@@ -7,6 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 class TelegramBotClientServiceTest {
 
     @Autowired
-    private TelegramBotClientService telegramBotClientService;
+    private NotificationService notificationService;
 
 }

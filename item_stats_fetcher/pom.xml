@@ -27,6 +27,12 @@
 
         <dependency>
             <groupId>github.ricemonger</groupId>
+            <artifactId>utils-library-kafka</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>github.ricemonger</groupId>
             <artifactId>utils-library-graphQl</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

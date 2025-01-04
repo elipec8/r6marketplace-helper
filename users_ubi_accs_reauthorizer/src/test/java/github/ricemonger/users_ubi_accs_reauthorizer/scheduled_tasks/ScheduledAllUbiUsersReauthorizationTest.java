@@ -1,7 +1,7 @@
 package github.ricemonger.users_ubi_accs_reauthorizer.scheduled_tasks;
 
 import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserToNotify;
-import github.ricemonger.users_ubi_accs_reauthorizer.services.TelegramBotClientService;
+import github.ricemonger.users_ubi_accs_reauthorizer.services.NotificationService;
 import github.ricemonger.users_ubi_accs_reauthorizer.services.UserUbiAccountEntryService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ class ScheduledAllUbiUsersReauthorizationTest {
     @MockBean
     private UserUbiAccountEntryService userUbiAccountEntryService;
     @MockBean
-    private TelegramBotClientService telegramBotService;
+    private NotificationService telegramBotService;
 
     @Test
     public void reauthorizeUbiUsersAndNotifyAboutFailures_should_reauthorize_All_and_notify_via_services() {

@@ -8,7 +8,7 @@ import github.ricemonger.marketplace.graphQl.personal_query_owned_items.Personal
 import github.ricemonger.ubi_users_stats_fetcher.services.CommonValuesService;
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UbiAccountStats;
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UserUbiAccount;
-import github.ricemonger.ubi_users_stats_fetcher.services.TelegramBotService;
+import github.ricemonger.ubi_users_stats_fetcher.services.NotificationService;
 import github.ricemonger.ubi_users_stats_fetcher.services.UbiAccountService;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
@@ -32,7 +32,7 @@ public class ScheduledAllUbiUsersStatsFetcher {
 
     private final UbiAccountService ubiAccountService;
 
-    private final TelegramBotService telegramBotService;
+    private final NotificationService notificationService;
 
     private final PersonalQueryCreditAmountGraphQlClientService personalQueryCreditAmountGraphQlClientService;
 
@@ -119,7 +119,7 @@ public class ScheduledAllUbiUsersStatsFetcher {
                 }
             }
 
-            telegramBotService.sendPrivateNotification(userUbiAccount.getUserId(), message.toString());
+            notificationService.sendPrivateNotification(userUbiAccount.getUserId(), message.toString());
         }
     }
 

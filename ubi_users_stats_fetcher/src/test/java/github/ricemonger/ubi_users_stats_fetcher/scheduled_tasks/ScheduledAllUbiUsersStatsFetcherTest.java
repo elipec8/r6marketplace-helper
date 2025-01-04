@@ -8,7 +8,7 @@ import github.ricemonger.marketplace.graphQl.personal_query_owned_items.Personal
 import github.ricemonger.ubi_users_stats_fetcher.services.CommonValuesService;
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UbiAccountStats;
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UserUbiAccount;
-import github.ricemonger.ubi_users_stats_fetcher.services.TelegramBotService;
+import github.ricemonger.ubi_users_stats_fetcher.services.NotificationService;
 import github.ricemonger.ubi_users_stats_fetcher.services.UbiAccountService;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
@@ -35,7 +35,7 @@ class ScheduledAllUbiUsersStatsFetcherTest {
     @MockBean
     private UbiAccountService ubiAccountService;
     @MockBean
-    private TelegramBotService telegramBotService;
+    private NotificationService notificationService;
     @MockBean
     private PersonalQueryCreditAmountGraphQlClientService personalQueryCreditAmountGraphQlClientService;
     @MockBean
@@ -314,9 +314,9 @@ class ScheduledAllUbiUsersStatsFetcherTest {
 
         verify(ubiAccountService).saveAllUbiAccountStats(argThat(arg -> arg.containsAll(expectedUpdatedUbiAccountsStats) && arg.size() == 4));
 
-        verify(telegramBotService, times(0)).sendPrivateNotification(eq(noNotificationUbiAccount.getUserId()), anyString());
-        verify(telegramBotService, times(1)).sendPrivateNotification(eq(creditAmountNotificationUbiAccount.getUserId()), anyString());
-        verify(telegramBotService, times(1)).sendPrivateNotification(eq(soldIn24hNotificationUbiAccount.getUserId()), anyString());
-        verify(telegramBotService, times(1)).sendPrivateNotification(eq(boughtIn24hNotificationUbiAccount.getUserId()), anyString());
+        verify(notificationService, times(0)).sendPrivateNotification(eq(noNotificationUbiAccount.getUserId()), anyString());
+        verify(notificationService, times(1)).sendPrivateNotification(eq(creditAmountNotificationUbiAccount.getUserId()), anyString());
+        verify(notificationService, times(1)).sendPrivateNotification(eq(soldIn24hNotificationUbiAccount.getUserId()), anyString());
+        verify(notificationService, times(1)).sendPrivateNotification(eq(boughtIn24hNotificationUbiAccount.getUserId()), anyString());
     }
 }
