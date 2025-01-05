@@ -7,9 +7,12 @@ import github.ricemonger.marketplace.graphQl.config_query_trade.ConfigQueryTrade
 import github.ricemonger.utils.SchedulingUtilsConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
+@ComponentScan(basePackages = {"github.ricemonger.configs_fetcher"},
+        basePackageClasses = github.ricemonger.utils.PublicMethodLogger.class)
 @Import({SchedulingUtilsConfiguration.class,
         RedisUtilsConfiguration.class,
         ConfigQueryMarketplaceGraphQlConfiguration.class,

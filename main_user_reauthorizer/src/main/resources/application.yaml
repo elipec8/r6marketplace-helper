@@ -27,12 +27,6 @@ app:
 logging:
   level:
     github: debug
-    org:
-      springframework:
-        data:
-          neo4j:
-            cypher:
-              unrecognized: off
   file:
     name: ./logs/${LOG_FILE_DIRECTORY:prod}/${spring.application.name}.log
 

@@ -5,9 +5,12 @@ import github.ricemonger.utils.SchedulingUtilsConfiguration;
 import github.ricemonger.utilslibrarykafka.KafkaUtilsConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
+@ComponentScan(basePackages = {"github.ricemonger.users_ubi_accs_reauthorizer"},
+        basePackageClasses = github.ricemonger.utils.PublicMethodLogger.class)
 @Import({
         KafkaUtilsConfiguration.class,
         SchedulingUtilsConfiguration.class,
