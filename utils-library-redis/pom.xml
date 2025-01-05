@@ -2,28 +2,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.5</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
-    <groupId>github.ricemonger</groupId>
-    <artifactId>utils-library-redis</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <name>utils-library-redis</name>
-    <description>utils-library-redis</description>
 
-    <properties>
-        <java.version>19</java.version>
-        <spring-cloud.version>2023.0.1</spring-cloud.version>
-    </properties>
+    <parent>
+        <groupId>github.ricemonger</groupId>
+        <artifactId>utils-dependencies</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../utils-dependencies/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>utils-library-redis</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>github.ricemonger</groupId>
             <artifactId>utils-library</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${utils.version}</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -33,6 +27,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <optional>true</optional>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -40,21 +35,4 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>

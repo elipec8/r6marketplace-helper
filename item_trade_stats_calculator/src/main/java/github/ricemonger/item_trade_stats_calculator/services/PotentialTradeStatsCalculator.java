@@ -8,8 +8,6 @@ import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -43,7 +41,7 @@ public class PotentialTradeStatsCalculator {
         return calculateBuyTradeStats(item, item.getMinSellPrice(), TRADE_MANAGER_FIXED_RATE_MINUTES);
     }
 
-    public PotentialTradeStats calculatePotentialBuyTradeStatsForTime(Item item, @NotNull Collection<ItemDaySalesStatsByItemId> resultingPerDayStats, Integer minutesToBuy) {
+    public PotentialTradeStats calculatePotentialBuyTradeStatsForTime(Item item,  Collection<ItemDaySalesStatsByItemId> resultingPerDayStats, Integer minutesToBuy) {
         TreeMap<Integer, Integer> sortedMonthPricesAndQuantities = new TreeMap<>(Comparator.naturalOrder());
         for (ItemDaySalesStatsByItemId dayStat : resultingPerDayStats) {
             for (Map.Entry<Integer, Integer> priceAndQuantity : dayStat.getPriceAndQuantity().entrySet()) {
@@ -73,18 +71,17 @@ public class PotentialTradeStatsCalculator {
         return calculateBuyTradeStats(item, null, minutesToBuy);
     }
 
-    public PotentialTradeStats calculatePotentialSellTradeStatsForExistingTrade(@NotNull UbiTrade existingTrade) {
+    public PotentialTradeStats calculatePotentialSellTradeStatsForExistingTrade( UbiTrade existingTrade) {
         return calculateSellTradeStats(existingTrade.getItem(), existingTrade.getProposedPaymentPrice(),
                 getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(existingTrade));
     }
 
-    public PotentialTradeStats calculatePotentialBuyTradeStatsForExistingTrade(@NotNull UbiTrade existingTrade) {
+    public PotentialTradeStats calculatePotentialBuyTradeStatsForExistingTrade( UbiTrade existingTrade) {
         return calculateBuyTradeStats(existingTrade.getItem(), existingTrade.getProposedPaymentPrice(),
                 getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(existingTrade));
     }
 
-    @Nullable
-    public Integer getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(@NotNull UbiTrade ubiTrade) {
+    public Integer getExpectedPaymentsSuccessMinutesForExistingTradeOrNull( UbiTrade ubiTrade) {
         int minutesTradeExists = (int) Duration.between(ubiTrade.getLastModifiedAt(), LocalDateTime.now()).toMinutes();
 
         Integer prognosedTradeSuccessMinutes = getPrognosedTradeSuccessMinutesByPriceOrNull(ubiTrade.getItem(), ubiTrade.getProposedPaymentPrice(), ubiTrade.getCategory());
@@ -96,7 +93,6 @@ public class PotentialTradeStatsCalculator {
         }
     }
 
-    @Nullable
     public Integer getPrognosedTradeSuccessMinutesByPriceOrNull(Item item, Integer proposedPaymentPrice, TradeCategory category) {
         if (category == TradeCategory.Buy) {
             if (item.getMinSellPrice() != null && proposedPaymentPrice >= item.getMinSellPrice()) {
@@ -128,7 +124,7 @@ public class PotentialTradeStatsCalculator {
         }
     }
 
-    @NotNull
+    
     public PotentialTradeStats calculateSellTradeStats(Item item, Integer price, Integer minutesToTrade) {
         if (price != null && price > 0) {
             if (item.getMinSellPrice() != null && item.getMinSellPrice() < price) {
@@ -156,7 +152,7 @@ public class PotentialTradeStatsCalculator {
         }
     }
 
-    @NotNull
+    
     public PotentialTradeStats calculateBuyTradeStats(Item item, Integer price, Integer minutesToTrade) {
         long constant = commonValuesService.getMaximumMarketplacePrice();
         if (price != null && price > 0) {
@@ -183,7 +179,7 @@ public class PotentialTradeStatsCalculator {
         }
     }
 
-    public int getSameOrHigherPricesBuyOrdersAmount(@NotNull Item item, int price) {
+    public int getSameOrHigherPricesBuyOrdersAmount( Item item, int price) {
         int currentBuyers = item.getBuyOrdersCount();
         // buyers prices proportions: 1% - maxBuyPrice
         // 4% - prevFancyPrice
@@ -211,7 +207,7 @@ public class PotentialTradeStatsCalculator {
         return Math.round(currentBuyers * percentOfSameOrHigherPricesBuyOrdersAmount);
     }
 
-    public PotentialTradePriceAndTimeStats calculatePriceAndTimeForNextFancySellPriceSale(@NotNull Item item) {
+    public PotentialTradePriceAndTimeStats calculatePriceAndTimeForNextFancySellPriceSale( Item item) {
         int monthSalesPerDay = item.getMonthSalesPerDay() == null || item.getMonthSalesPerDay() <= 0 ? 1 : item.getMonthSalesPerDay();
         int nextFancySellPrice = getNextFancySellPrice(item);
         int timeToSellByNextFancySellPrice;
@@ -251,7 +247,7 @@ public class PotentialTradeStatsCalculator {
         return Math.max(Math.abs(result), 1);
     }
 
-    private long getTimeToResellFactor(@NotNull Item item, int pow) {
+    private long getTimeToResellFactor( Item item, int pow) {
         int sales = item.getMonthSales() == null ? 0 : Math.max(item.getMonthSales(), 0);
 
         return (long) Math.pow(sales, pow);
@@ -263,7 +259,7 @@ public class PotentialTradeStatsCalculator {
         return MINUTES_IN_A_MONTH / (long) (Math.pow(minutesToTrade, pow));
     }
 
-    private int getNextFancySellPrice(@NotNull Item item) {
+    private int getNextFancySellPrice( Item item) {
         int limitMaxPrice = commonValuesService.getMaximumPriceByRarity(item.getRarity());
 
         int limitMinPrice = commonValuesService.getMinimumPriceByRarity(item.getRarity());
@@ -279,7 +275,7 @@ public class PotentialTradeStatsCalculator {
         return getPrevFancyBuyPrice(item, item.getMaxBuyPrice());
     }
 
-    private int getPrevFancyBuyPrice(@NotNull Item item, Integer buyPrice) {
+    private int getPrevFancyBuyPrice( Item item, Integer buyPrice) {
         int limitMinPrice = commonValuesService.getMinimumPriceByRarity(item.getRarity());
 
         if (buyPrice == null || buyPrice <= 0) {
@@ -303,7 +299,7 @@ public class PotentialTradeStatsCalculator {
         }
     }
 
-    private int getCurrentFancyBuyPrice(@NotNull Item item, Integer buyPrice) {
+    private int getCurrentFancyBuyPrice( Item item, Integer buyPrice) {
         Integer sellPrice = item.getMinSellPrice();
         int limitMinPrice = commonValuesService.getMinimumPriceByRarity(item.getRarity());
 
@@ -400,7 +396,7 @@ public class PotentialTradeStatsCalculator {
         }
     }
 
-    private int getNextFancyBuyPrice(@NotNull Item item, Integer buyPrice) {
+    private int getNextFancyBuyPrice( Item item, Integer buyPrice) {
         Integer sellPrice = item.getMinSellPrice();
         int limitMinPrice = commonValuesService.getMinimumPriceByRarity(item.getRarity());
 

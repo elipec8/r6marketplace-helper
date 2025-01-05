@@ -16,8 +16,8 @@ ubi:
     spaceId: ${UBI_SPACE_ID:0d2ae42d-4c27-4cb7-af6c-2099062302bb}
     regionId: ${UBI_REGION_ID:WW}
     localeCode: ${UBI_LOCALE_CODE:en-US}
-    trustedDeviceId: ${UBI_TRUSTED_DEVICE_ID}
-    trustedDeviceFriendlyName: ${UBI_TRUSTED_DEVICE_FRIENDLY_NAME}
+    trustedDeviceId: ${UBI_TRUSTED_DEVICE_ID:16a2c7f446d2fcb5b92d0efee317da39}
+    trustedDeviceFriendlyName: ${UBI_TRUSTED_DEVICE_FRIENDLY_NAME:Opera 114.0.0.0, Windows 10}
 
 server:
   port: 8085
@@ -29,19 +29,8 @@ app:
 logging:
   level:
     github: debug
-    org:
-      springframework:
-        data:
-          neo4j:
-            cypher:
-              unrecognized: off
   file:
     name: ./logs/${LOG_FILE_DIRECTORY:prod}/${spring.application.name}.log
-
-management:
-  tracing:
-    sampling:
-      probability: 1.0
 
 spring:
   application:
@@ -62,7 +51,7 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
 
   config:
     import:

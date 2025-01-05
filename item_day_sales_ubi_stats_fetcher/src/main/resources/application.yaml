@@ -25,11 +25,6 @@ logging:
   file:
     name: ./logs/${LOG_FILE_DIRECTORY:prod}/${spring.application.name}.log
 
-management:
-  tracing:
-    sampling:
-      probability: 1.0
-
 spring:
   application:
     name: r6s-helper-item_day_sales_ubi_stats_fetcher
@@ -47,7 +42,7 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
 
   config:
     import:

@@ -9,7 +9,6 @@ import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.ItemHistoryFieldsI;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemEntitiesMapper {
 
-    public ItemRecalculationRequiredFields createRecalculationRequiredFieldsDTO(@NotNull ItemRecalculationRequiredFieldsEntity itemEntity) {
+    public ItemRecalculationRequiredFields createRecalculationRequiredFieldsDTO(ItemRecalculationRequiredFieldsEntity itemEntity) {
         return new ItemRecalculationRequiredFields(
                 itemEntity.getItemId(),
                 itemEntity.getRarity(),
@@ -59,7 +58,7 @@ public class ItemEntitiesMapper {
                 item.getPriceToBuyIn720Hours());
     }
 
-    public Item createItem(@NotNull ItemEntity itemEntity) {
+    public Item createItem(ItemEntity itemEntity) {
         List<String> tags = new ArrayList<>();
         if (itemEntity.getTags() != null && !itemEntity.getTags().isEmpty()) {
             tags = itemEntity.getTags().stream().map(TagEntity::getValue).toList();

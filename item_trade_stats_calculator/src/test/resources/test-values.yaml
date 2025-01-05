@@ -1,9 +1,6 @@
-UBI_EXPIRE_TIMEOUT: 3
 REDIS_URL: redis://localhost:6380
-NEO4J_URL: bolt://localhost:7688
 SCHEDULING_ENABLED: false
 LOG_FILE_DIRECTORY: test
-POSTGRES_SERVER_PORT: 5433
 
 spring:
   datasource:
@@ -16,5 +13,4 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
-
 

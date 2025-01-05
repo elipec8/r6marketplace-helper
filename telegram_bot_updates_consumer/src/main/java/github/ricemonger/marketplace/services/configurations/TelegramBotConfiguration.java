@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 public class TelegramBotConfiguration {
 
-    @Value("${TELEGRAM_BOT_TOKEN}")
+    @Value("${auth.telegram.bot.token}")
     private String TELEGRAM_BOT_TOKEN;
 
-    @Value("${TELEGRAM_BOT_USERNAME}")
+    @Value("${auth.telegram.bot.username}")
     private String TELEGRAM_BOT_USERNAME;
 
     @Value("${telegram.bot.message.height}")

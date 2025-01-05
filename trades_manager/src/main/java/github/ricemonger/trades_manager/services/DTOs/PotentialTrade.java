@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import org.jetbrains.annotations.NotNull;
 
 @Getter
 @EqualsAndHashCode
@@ -20,7 +19,7 @@ public abstract class PotentialTrade implements Comparable<PotentialTrade> {
     public abstract TradeCategory getTradeCategory();
 
     @Override
-    public int compareTo(@NotNull PotentialTrade other) {
+    public int compareTo(PotentialTrade other) {
         int tradeCategoryComparison = this.getTradeCategory().compareTo(other.getTradeCategory());
         if (tradeCategoryComparison != 0) {
             return tradeCategoryComparison;

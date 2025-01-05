@@ -3,54 +3,15 @@ auth:
     bot:
       token: ${TELEGRAM_BOT_TOKEN}
       username: ${TELEGRAM_BOT_USERNAME}
-  ubi_credentials:
-    platform: ${UBI_PLATFORM:UPLAY}
-    email: ${UBI_EMAIL}
-    password: ${UBI_PASSWORD}
-    expireTimeout: ${UBI_EXPIRE_TIMEOUT:10500} # seconds, 3 hours - 5min. Ubisoft's session expires in 3 hours
-  user_service:
-    password:
-      encryption:
-        key: ${PASSWORD_ENCRYPTION_KEY} #AES Key
 
 telegram:
   bot:
     message:
       height: 100
       limit: 50
-ubi:
-  urls:
-    graphql: https://public-ubiservices.ubi.com/v1/profiles/me/uplay/graphql
-    authorization: https://public-ubiservices.ubi.com/v3/profiles/sessions
-    twoFaCodeToSMS: https://public-ubiservices.ubi.com/v3/profiles/me/2facode
-  session:
-    contentType: application/json
-    userAgent: UbiServices_SDK_2020.Release.58_PC64_ansi_static
-    baseAppId: ${UBI_APP_ID:80a4a0e8-8797-440f-8f4c-eaba87d0fdda}
-    twoFaAppId: ${UBI_2FA_APP_ID:685a3038-2b04-47ee-9c5a-6403381a46aa}
-    spaceId: ${UBI_SPACE_ID:0d2ae42d-4c27-4cb7-af6c-2099062302bb}
-    regionId: ${UBI_REGION_ID:WW}
-    localeCode: ${UBI_LOCALE_CODE:en-US}
-    expireTimeout: ${auth.ubi_credentials.expireTimeout}
-    trustedDeviceId: ${UBI_TRUSTED_DEVICE_ID}
-    trustedDeviceFriendlyName: ${UBI_TRUSTED_DEVICE_FRIENDLY_NAME}
-    dateFormat: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
-    itemSaleStatsDateFormat: yyyy-MM-dd
-    minUncommonPrice: 10
-    maxUncommonPrice: 25_000
-    minRarePrice: 10
-    maxRarePrice: 250_000
-    minEpicPrice: 10
-    maxEpicPrice: 1_000_000
-    minLegendaryPrice: 10
-    maxLegendaryPrice: 1_000_000
 
 server:
   port: 8080
-
-app:
-  scheduling:
-    enabled: ${SCHEDULING_ENABLED:true}
 
 logging:
   level:
@@ -64,11 +25,6 @@ logging:
   file:
     name: ./logs/${LOG_FILE_DIRECTORY:prod}/${spring.application.name}.log
 
-management:
-  tracing:
-    sampling:
-      probability: 1.0
-
 spring:
   application:
     name: r6s-helper-notifications-service
@@ -81,16 +37,6 @@ spring:
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-  data:
-    redis:
-      repositories:
-        enabled: false
-      url: ${REDIS_URL:redis://localhost:6379}
-  neo4j:
-    uri: ${NEO4J_URL:bolt://localhost:7687}
-    authentication:
-      username: ${NEO4J_AUTH_USERNAME:neo4j}
-      password: ${NEO4J_AUTH_PASSWORD:password}
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://${POSTGRES_SERVER_HOST:localhost}:${POSTGRES_SERVER_PORT:5432}/${POSTGRES_DB:postgres}

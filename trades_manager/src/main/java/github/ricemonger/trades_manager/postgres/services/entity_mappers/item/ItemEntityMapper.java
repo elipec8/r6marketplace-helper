@@ -5,7 +5,6 @@ import github.ricemonger.trades_manager.postgres.entities.items.TagValueEntity;
 import github.ricemonger.utils.DTOs.common.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemEntityMapper {
 
-    public Item createDTO(@NotNull ItemEntity itemEntity) {
+    public Item createDTO( ItemEntity itemEntity) {
         List<String> tags = new ArrayList<>();
         if (itemEntity.getTags() != null && !itemEntity.getTags().isEmpty()) {
             tags = itemEntity.getTags().stream().map(TagValueEntity::getValue).toList();

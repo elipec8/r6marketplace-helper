@@ -5,7 +5,6 @@ import github.ricemonger.utils.enums.CentralTradeManagerCommandType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import org.jetbrains.annotations.NotNull;
 
 @Getter
 @ToString
@@ -56,7 +55,7 @@ public class CentralTradeManagerCommand implements Comparable<CentralTradeManage
     }
 
     @Override
-    public int compareTo(@NotNull CentralTradeManagerCommand o) {
+    public int compareTo(CentralTradeManagerCommand o) {
         return this.commandType.compareTo(o.commandType);
     }
 }

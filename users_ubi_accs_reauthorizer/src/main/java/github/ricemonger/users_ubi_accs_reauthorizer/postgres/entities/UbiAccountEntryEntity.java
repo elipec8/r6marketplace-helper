@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -49,7 +48,7 @@ public class UbiAccountEntryEntity {
         return ubiAccountStats == null ? null : ubiAccountStats.getUbiProfileId();
     }
 
-    public void setAuthorizationDTOFields(@NotNull AuthorizationDTO authDTO) {
+    public void setAuthorizationDTOFields(AuthorizationDTO authDTO) {
         this.ubiSessionId = authDTO.getSessionId();
         this.ubiSpaceId = authDTO.getSpaceId();
         this.ubiAuthTicket = authDTO.getTicket();

@@ -70,15 +70,6 @@ services:
     networks:
       - kafka-net
 
-  zipkin:
-    container_name: r6helper-zipkin
-    image: openzipkin/zipkin:3.1.0
-    ports:
-      - "9411:9411"
-    networks:
-      - zipkin-net
-    restart: always
-
 networks:
   postgres-net:
   zipkin-net:

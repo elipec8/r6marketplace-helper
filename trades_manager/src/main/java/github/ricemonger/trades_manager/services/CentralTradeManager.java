@@ -13,7 +13,6 @@ import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.DTOs.common.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -50,8 +49,8 @@ public class CentralTradeManager {
         }
     }
 
-    private void createAndExecuteCentralTradeManagerCommandsForUser(@NotNull ManageableUser manageableUser,
-                                                                    @NotNull ConfigTrades configTrades,
+    private void createAndExecuteCentralTradeManagerCommandsForUser(ManageableUser manageableUser,
+                                                                    ConfigTrades configTrades,
                                                                     Collection<Item> existingItems) {
 
         List<Trade> currentSellTrades = manageableUser.getCurrentSellTrades();
@@ -92,7 +91,7 @@ public class CentralTradeManager {
         }
     }
 
-    private void executeCentralTradeManagerCommand(@NotNull CentralTradeManagerCommand command) {
+    private void executeCentralTradeManagerCommand(CentralTradeManagerCommand command) {
         switch (command.getCommandType()) {
             case BUY_ORDER_CANCEL -> {
                 personalMutationCancelGraphQlClientService.cancelOrderForUser(command.getAuthorizationDTO(), command.getTradeId());

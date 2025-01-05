@@ -36,11 +36,6 @@ logging:
   file:
     name: ./logs/${LOG_FILE_DIRECTORY:prod}/${spring.application.name}.log
 
-management:
-  tracing:
-    sampling:
-      probability: 1.0
-
 spring:
   application:
     name: r6s-helper-main-user-reauthorizer
