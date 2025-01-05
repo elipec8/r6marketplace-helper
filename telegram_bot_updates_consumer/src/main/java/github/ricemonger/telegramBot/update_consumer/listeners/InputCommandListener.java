@@ -36,8 +36,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
-import static github.ricemonger.utils.enums.InputGroup.*;
-
 @Component
 @RequiredArgsConstructor
 public class InputCommandListener {

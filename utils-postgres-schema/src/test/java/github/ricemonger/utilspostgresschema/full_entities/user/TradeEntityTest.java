@@ -7,12 +7,13 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class TradeEntityTest {
 
     @Test
-    public void hashCode_should_return_equal_hash_for_equal_ids(){
+    public void hashCode_should_return_equal_hash_for_equal_ids() {
         TradeEntity tradeEntity1 = new TradeEntity();
         tradeEntity1.setTradeId("1");
         tradeEntity1.setState(TradeState.Created);
@@ -34,7 +35,7 @@ class TradeEntityTest {
     }
 
     @Test
-    public void equals_should_return_true_for_same(){
+    public void equals_should_return_true_for_same() {
         TradeEntity tradeEntity1 = new TradeEntity();
         tradeEntity1.setTradeId("1");
 
@@ -42,7 +43,7 @@ class TradeEntityTest {
     }
 
     @Test
-    public void equals_should_return_true_for_same_ids(){
+    public void equals_should_return_true_for_same_ids() {
         TradeEntity tradeEntity1 = new TradeEntity();
         tradeEntity1.setTradeId("1");
         tradeEntity1.setState(TradeState.Created);
@@ -64,7 +65,7 @@ class TradeEntityTest {
     }
 
     @Test
-    public void equals_should_return_false_for_different_ids(){
+    public void equals_should_return_false_for_different_ids() {
         TradeEntity tradeEntity1 = new TradeEntity();
         tradeEntity1.setTradeId("1");
         TradeEntity tradeEntity2 = new TradeEntity();
@@ -74,7 +75,7 @@ class TradeEntityTest {
     }
 
     @Test
-    public void equals_should_return_false_for_null(){
+    public void equals_should_return_false_for_null() {
         TradeEntity tradeEntity1 = new TradeEntity();
         tradeEntity1.setTradeId("1");
 

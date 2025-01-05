@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TagEntityTest {
 
     @Test
-    public void hashCode_should_return_equal_hash_for_equal_ids(){
+    public void hashCode_should_return_equal_hash_for_equal_ids() {
         TagEntity tag1 = new TagEntity();
         tag1.setValue("tagValue");
         tag1.setName("tagName");

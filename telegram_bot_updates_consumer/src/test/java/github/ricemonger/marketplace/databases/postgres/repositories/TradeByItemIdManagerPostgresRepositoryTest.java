@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -41,11 +40,11 @@ class TradeByItemIdManagerPostgresRepositoryTest {
         ItemEntity itemEntity1 = new ItemEntity();
         itemEntity1.setItemId("itemId1");
         itemEntity1 = itemPostgresRepository.save(itemEntity1);
-        
+
         ItemEntity itemEntity2 = new ItemEntity();
         itemEntity2.setItemId("itemId2");
         itemEntity2 = itemPostgresRepository.save(itemEntity2);
-        
+
         UserEntity userEntity1 = userPostgresRepository.save(new UserEntity());
         TelegramUserEntity telegramUserEntity1 = new TelegramUserEntity();
         telegramUserEntity1.setChatId("chatId1");

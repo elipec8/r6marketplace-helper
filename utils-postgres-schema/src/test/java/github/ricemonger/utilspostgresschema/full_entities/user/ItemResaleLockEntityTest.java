@@ -5,12 +5,13 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class ItemResaleLockEntityTest {
 
     @Test
-    public void hashCode_should_return_equal_hash_for_equal_ids(){
+    public void hashCode_should_return_equal_hash_for_equal_ids() {
         ItemResaleLockEntity itemResaleLockEntity1 = new ItemResaleLockEntity();
         itemResaleLockEntity1.setUbiAccount(new UbiAccountStatsEntity());
         itemResaleLockEntity1.getUbiAccount().setUbiProfileId("ubiProfileId");
@@ -27,13 +28,13 @@ class ItemResaleLockEntityTest {
     }
 
     @Test
-    public void equals_should_return_true_for_same(){
+    public void equals_should_return_true_for_same() {
         ItemResaleLockEntity entity = new ItemResaleLockEntity();
         assertEquals(entity, entity);
     }
 
     @Test
-    public void equals_should_return_true_for_equal_ids(){
+    public void equals_should_return_true_for_equal_ids() {
         ItemResaleLockEntity itemResaleLockEntity1 = new ItemResaleLockEntity();
         itemResaleLockEntity1.setUbiAccount(new UbiAccountStatsEntity());
         itemResaleLockEntity1.getUbiAccount().setUbiProfileId("ubiProfileId");
@@ -50,7 +51,7 @@ class ItemResaleLockEntityTest {
     }
 
     @Test
-    public void equals_should_return_false_for_different_ids(){
+    public void equals_should_return_false_for_different_ids() {
         ItemResaleLockEntity itemResaleLockEntity1 = new ItemResaleLockEntity();
         itemResaleLockEntity1.setUbiAccount(new UbiAccountStatsEntity());
         itemResaleLockEntity1.getUbiAccount().setUbiProfileId("ubiProfileId");
@@ -71,7 +72,7 @@ class ItemResaleLockEntityTest {
     }
 
     @Test
-    public void equals_should_return_false_for_null(){
+    public void equals_should_return_false_for_null() {
         ItemResaleLockEntity itemResaleLockEntity = new ItemResaleLockEntity();
         assertNotEquals(null, itemResaleLockEntity);
     }

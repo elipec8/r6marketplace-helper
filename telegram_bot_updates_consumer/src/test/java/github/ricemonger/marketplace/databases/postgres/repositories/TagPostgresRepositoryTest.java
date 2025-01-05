@@ -3,11 +3,9 @@ package github.ricemonger.marketplace.databases.postgres.repositories;
 import github.ricemonger.utils.enums.TagGroup;
 import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

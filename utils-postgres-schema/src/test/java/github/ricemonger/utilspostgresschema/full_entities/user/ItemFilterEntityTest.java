@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ItemFilterEntityTest {
 
     @Test
-    public void hashCode_should_return_equal_hash_for_equal_ids(){
+    public void hashCode_should_return_equal_hash_for_equal_ids() {
         ItemFilterEntity filter1 = new ItemFilterEntity();
         filter1.setUser(new UserEntity());
         filter1.getUser().setId(1L);
@@ -132,7 +132,7 @@ class ItemFilterEntityTest {
     }
 
     @Test
-    public void isFullyEqual_should_return_false_for_null(){
+    public void isFullyEqual_should_return_false_for_null() {
         ItemFilterEntity filter1 = new ItemFilterEntity();
         assertFalse(filter1.isFullyEqual(null));
     }

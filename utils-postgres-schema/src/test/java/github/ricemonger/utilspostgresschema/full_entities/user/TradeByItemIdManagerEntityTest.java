@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TradeByItemIdManagerEntityTest {
 
     @Test
-    public void hashCode_should_return_equal_hash_for_equal_ids(){
+    public void hashCode_should_return_equal_hash_for_equal_ids() {
         TradeByItemIdManagerEntity manager1 = new TradeByItemIdManagerEntity();
         manager1.setUser(new UserEntity());
         manager1.getUser().setId(1L);

@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TelegramUserInputEntityTest {
 
     @Test
-    public void hashCode_should_return_equal_hash_for_equal_ids(){
+    public void hashCode_should_return_equal_hash_for_equal_ids() {
         TelegramUserEntity telegramUser = new TelegramUserEntity();
         telegramUser.setChatId("12345");
 

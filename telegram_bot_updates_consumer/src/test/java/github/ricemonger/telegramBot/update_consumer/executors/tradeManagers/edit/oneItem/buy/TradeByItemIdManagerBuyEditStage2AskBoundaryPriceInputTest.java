@@ -27,7 +27,7 @@ class TradeByItemIdManagerBuyEditStage2AskBoundaryPriceInputTest {
         verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO);
         verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_BUY_PRICE);
         verify(botInnerService).getItemByUserInputItemId(MockUpdateInfos.UPDATE_INFO.getChatId());
-        verify(botInnerService,times(2)).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());
+        verify(botInnerService, times(2)).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());
     }
 
     @Test
@@ -37,8 +37,8 @@ class TradeByItemIdManagerBuyEditStage2AskBoundaryPriceInputTest {
         TradeByItemIdManagerBuyEditStage2AskBoundaryPriceInput commandExecutor = new TradeByItemIdManagerBuyEditStage2AskBoundaryPriceInput();
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService,times(0)).saveUserInput(MockUpdateInfos.UPDATE_INFO);
-        verify(botInnerService,times(0)).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_BUY_PRICE);
+        verify(botInnerService, times(0)).saveUserInput(MockUpdateInfos.UPDATE_INFO);
+        verify(botInnerService, times(0)).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_BUY_PRICE);
 
         verify(botInnerService).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());
     }

@@ -2,7 +2,6 @@ package github.ricemonger.utilslibrarykafka;
 
 import github.ricemonger.utils.DTOs.personal.SendTextDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 

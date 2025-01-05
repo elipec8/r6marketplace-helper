@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ class TelegramUserPostgresRepositoryTest {
     }
 
     @Test
-    public void updateInputState_should_update_existing_user_input_group(){
+    public void updateInputState_should_update_existing_user_input_group() {
         UserEntity userEntity1 = userPostgresRepository.save(new UserEntity());
         TelegramUserEntity telegramUserEntity1 = new TelegramUserEntity();
         telegramUserEntity1.setChatId("chatId1");
@@ -49,7 +48,8 @@ class TelegramUserPostgresRepositoryTest {
         telegramUserPostgresRepository.updateInputState("chatId1", InputState.UBI_ACCOUNT_ENTRY_2FA_CODE);
         telegramUserPostgresRepository.flush();
 
-        List<TelegramUserEntity> tgUsers = telegramUserPostgresRepository.findAll();;
+        List<TelegramUserEntity> tgUsers = telegramUserPostgresRepository.findAll();
+        ;
 
         assertEquals(2, tgUsers.size());
         assertEquals(InputState.UBI_ACCOUNT_ENTRY_2FA_CODE, tgUsers.stream().filter(tgUser -> tgUser.getChatId().equals("chatId1")).findFirst().get().getInputState());
@@ -57,7 +57,7 @@ class TelegramUserPostgresRepositoryTest {
     }
 
     @Test
-    public void updateInputStateAndGroup_should_update_existing_user_input_group_and_state(){
+    public void updateInputStateAndGroup_should_update_existing_user_input_group_and_state() {
         UserEntity userEntity1 = userPostgresRepository.save(new UserEntity());
         TelegramUserEntity telegramUserEntity1 = new TelegramUserEntity();
         telegramUserEntity1.setChatId("chatId1");
@@ -77,7 +77,8 @@ class TelegramUserPostgresRepositoryTest {
         telegramUserPostgresRepository.updateInputStateAndGroup("chatId1", InputState.UBI_ACCOUNT_ENTRY_2FA_CODE, InputGroup.ITEM_FILTER_EDIT);
         telegramUserPostgresRepository.flush();
 
-        List<TelegramUserEntity> tgUsers = telegramUserPostgresRepository.findAll();;
+        List<TelegramUserEntity> tgUsers = telegramUserPostgresRepository.findAll();
+        ;
 
         assertEquals(2, tgUsers.size());
         assertEquals(InputState.UBI_ACCOUNT_ENTRY_2FA_CODE, tgUsers.stream().filter(tgUser -> tgUser.getChatId().equals("chatId1")).findFirst().get().getInputState());
@@ -87,7 +88,7 @@ class TelegramUserPostgresRepositoryTest {
     }
 
     @Test
-    public void updateItemShowFewItemsInMessageFlag_should_update_existing_user_item_show_few_items_in_message_flag(){
+    public void updateItemShowFewItemsInMessageFlag_should_update_existing_user_item_show_few_items_in_message_flag() {
         UserEntity userEntity1 = userPostgresRepository.save(new UserEntity());
         TelegramUserEntity telegramUserEntity1 = new TelegramUserEntity();
         telegramUserEntity1.setChatId("chatId1");
@@ -105,7 +106,8 @@ class TelegramUserPostgresRepositoryTest {
         telegramUserPostgresRepository.updateItemShowFewItemsInMessageFlag("chatId1", false);
         telegramUserPostgresRepository.flush();
 
-        List<TelegramUserEntity> tgUsers = telegramUserPostgresRepository.findAll();;
+        List<TelegramUserEntity> tgUsers = telegramUserPostgresRepository.findAll();
+        ;
 
         assertEquals(2, tgUsers.size());
         assertEquals(false, tgUsers.stream().filter(tgUser -> tgUser.getChatId().equals("chatId1")).findFirst().get().getItemShowFewInMessageFlag());
@@ -113,7 +115,7 @@ class TelegramUserPostgresRepositoryTest {
     }
 
     @Test
-    public void updateItemShowMessagesLimit_should_update_existing_user_item_show_messages_limit(){
+    public void updateItemShowMessagesLimit_should_update_existing_user_item_show_messages_limit() {
         UserEntity userEntity1 = userPostgresRepository.save(new UserEntity());
         TelegramUserEntity telegramUserEntity1 = new TelegramUserEntity();
         telegramUserEntity1.setChatId("chatId1");
@@ -131,7 +133,8 @@ class TelegramUserPostgresRepositoryTest {
         telegramUserPostgresRepository.updateItemShowMessagesLimit("chatId1", 10);
         telegramUserPostgresRepository.flush();
 
-        List<TelegramUserEntity> tgUsers = telegramUserPostgresRepository.findAll();;
+        List<TelegramUserEntity> tgUsers = telegramUserPostgresRepository.findAll();
+        ;
 
         assertEquals(2, tgUsers.size());
         assertEquals(10, tgUsers.stream().filter(tgUser -> tgUser.getChatId().equals("chatId1")).findFirst().get().getItemShowMessagesLimit());
@@ -139,7 +142,7 @@ class TelegramUserPostgresRepositoryTest {
     }
 
     @Test
-    public void findTelegramUserInputStateAndGroupByChatId_should_return_dto_for_user(){
+    public void findTelegramUserInputStateAndGroupByChatId_should_return_dto_for_user() {
         UserEntity userEntity1 = userPostgresRepository.save(new UserEntity());
         TelegramUserEntity telegramUserEntity1 = new TelegramUserEntity();
         telegramUserEntity1.setChatId("chatId1");

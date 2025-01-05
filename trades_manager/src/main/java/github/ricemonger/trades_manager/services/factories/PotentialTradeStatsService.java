@@ -22,7 +22,7 @@ public class PotentialTradeStatsService {
 
     private final CommonValuesService commonValuesService;
 
-    public List<PotentialTradeStats> getPotentialBuyTradesStatsOfItem( Item item) {
+    public List<PotentialTradeStats> getPotentialBuyTradesStatsOfItem(Item item) {
         List<PotentialTradeStats> result = new ArrayList<>();
 
         if (item.getPriorityToBuyByMinSellPrice() != null) {
@@ -53,7 +53,7 @@ public class PotentialTradeStatsService {
         return result;
     }
 
-    public List<PotentialTradeStats> getPotentialSellTradesStatsOfItem( Item item) {
+    public List<PotentialTradeStats> getPotentialSellTradesStatsOfItem(Item item) {
         List<PotentialTradeStats> result = new ArrayList<>();
 
         if (item.getPriorityToSellByNextFancySellPrice() != null) {
@@ -68,7 +68,7 @@ public class PotentialTradeStatsService {
         return result;
     }
 
-    public PotentialTradePriceAndTimeStats calculatePriceAndTimeForNextFancySellPriceSale( Item item) {
+    public PotentialTradePriceAndTimeStats calculatePriceAndTimeForNextFancySellPriceSale(Item item) {
         int monthSalesPerDay = item.getMonthSalesPerDay() == null || item.getMonthSalesPerDay() <= 0 ? 1 : item.getMonthSalesPerDay();
         int nextFancySellPrice = getNextFancySellPrice(item);
         int timeToSellByNextFancySellPrice;
@@ -82,7 +82,7 @@ public class PotentialTradeStatsService {
         return new PotentialTradePriceAndTimeStats(nextFancySellPrice, timeToSellByNextFancySellPrice);
     }
 
-    private int getNextFancySellPrice( Item item) {
+    private int getNextFancySellPrice(Item item) {
         int limitMaxPrice = commonValuesService.getMaximumPriceByRarity(item.getRarity());
 
         int limitMinPrice = commonValuesService.getMinimumPriceByRarity(item.getRarity());

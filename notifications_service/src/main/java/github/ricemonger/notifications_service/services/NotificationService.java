@@ -34,7 +34,7 @@ public class NotificationService {
     public void sendPublicNotificationToAllUsers(String text) {
         List<ToBeNotifiedUser> users = userDatabaseService.getAllToBeNotifiedUsers();
 
-        for(ToBeNotifiedUser user : users) {
+        for (ToBeNotifiedUser user : users) {
             if (user.publicNotificationsEnabled() != null && user.publicNotificationsEnabled()) {
                 telegramBotClientService.sendText(user.chatId(), text);
             }

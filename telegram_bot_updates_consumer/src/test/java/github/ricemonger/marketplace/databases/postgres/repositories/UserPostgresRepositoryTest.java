@@ -369,6 +369,6 @@ class UserPostgresRepositoryTest {
         telegramUserEntity1 = telegramUserPostgresRepository.save(telegramUserEntity1);
 
         ItemShowSettingsProjection settings = userPostgresRepository.findItemShowSettingsByTelegramUserChatId(telegramUserEntity1.getChatId()).get();
-        assertEquals(new ItemShowSettingsProjection(25,true,false, false, false, false, false, false, false), settings);
+        assertEquals(new ItemShowSettingsProjection(25, true, false, false, false, false, false, false, false), settings);
     }
 }

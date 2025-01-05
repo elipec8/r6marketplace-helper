@@ -29,7 +29,7 @@ class TradeManagersDirectTest {
         TradeManagersDirect commandExecutor = new TradeManagersDirect();
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
-        verify(botInnerService,times(0)).askFromInlineKeyboard(eq(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());
+        verify(botInnerService, times(0)).askFromInlineKeyboard(eq(MockUpdateInfos.UPDATE_INFO), anyString(), anyInt(), any());
         verify(botInnerService).sendText(eq(MockUpdateInfos.UPDATE_INFO), anyString());
     }
 }
