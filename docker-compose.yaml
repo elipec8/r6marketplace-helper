@@ -13,6 +13,19 @@ services:
       - redis-net
     restart: always
 
+  item_day_sales_ubi_stats_fetcher:
+    container_name: r6helper-item-day-sales-ubi-stats-fetcher
+    build:
+      context: .
+      dockerfile: item_day_sales_ubi_stats_fetcher/Dockerfile
+    image: r6helper-item-day-sales-ubi-stats-fetcher
+    ports:
+      - "8092:8083"
+    networks:
+      - postgres-net
+      - redis-net
+    restart: always
+
   postgres:
     container_name: r6helper-postgres
     command: postgres -c 'max_connections=300'
