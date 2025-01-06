@@ -65,6 +65,21 @@ services:
       - redis-net
     restart: always
 
+  notifications_service:
+    container_name: r6helper-notifications-service
+    build:
+      context: .
+      dockerfile: notifications_service/Dockerfile
+    image: r6helper-notifications-service
+    ports:
+      - "8096:8089"
+    networks:
+      - postgres-net
+      - redis-net
+      - kafka-net
+    restart: always
+
+
   postgres:
     container_name: r6helper-postgres
     command: postgres -c 'max_connections=300'
