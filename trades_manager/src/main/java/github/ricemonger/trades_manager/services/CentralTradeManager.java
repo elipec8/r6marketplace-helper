@@ -86,7 +86,6 @@ public class CentralTradeManager {
                 manageableUser.toAuthorizationDTO()));
 
         for (CentralTradeManagerCommand command : commands.stream().sorted().toList()) {
-            log.info("Executing command: {}", command);
             executeCentralTradeManagerCommand(command);
         }
     }
