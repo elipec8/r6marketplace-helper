@@ -11,7 +11,6 @@ services:
     networks:
       - postgres-net
       - redis-net
-    restart: always
 
   item_day_sales_ubi_stats_fetcher:
     container_name: r6helper-item-day-sales-ubi-stats-fetcher
@@ -24,7 +23,6 @@ services:
     networks:
       - postgres-net
       - redis-net
-    restart: always
 
   items_stats_fetcher:
     container_name: r6helper-item-stats-fetcher
@@ -38,7 +36,6 @@ services:
       - postgres-net
       - redis-net
       - kafka-net
-    restart: always
 
   item_trade_stats_calculator:
     container_name: r6helper-item-trade-stats-calculator
@@ -51,7 +48,6 @@ services:
     networks:
         - postgres-net
         - redis-net
-    restart: always
 
   main_user_reauthorizer:
     container_name: r6helper-main-user-reauthorizer
@@ -64,7 +60,6 @@ services:
     networks:
       - postgres-net
       - redis-net
-    restart: always
 
   notifications_service:
     container_name: r6helper-notifications-service
@@ -78,7 +73,6 @@ services:
       - postgres-net
       - redis-net
       - kafka-net
-    restart: always
 
   telegram_bot_updates_consumer:
     container_name: r6helper-telegram-bot-updates-consumer
@@ -91,7 +85,6 @@ services:
     networks:
       - postgres-net
       - redis-net
-    restart: always
 
   trades_manager:
     container_name: r6helper-trades-manager
@@ -105,7 +98,6 @@ services:
       - postgres-net
       - redis-net
       - kafka-net
-    restart: always
 
   ubi_users_stats_fetcher:
     container_name: r6helper-ubi-users-stats-fetcher
@@ -119,7 +111,18 @@ services:
       - postgres-net
       - redis-net
       - kafka-net
-    restart: always
+
+  users_ubi_accs_reauthorizer:
+    container_name: r6helper-users-ubi-accs-reauthorizer
+    build:
+      context: .
+      dockerfile: users_ubi_accs_reauthorizer/Dockerfile
+    image: r6helper-users-ubi-accs-reauthorizer
+    ports:
+      - "8100:8088"
+    networks:
+      - postgres-net
+      - redis-net
 
 
   postgres:
