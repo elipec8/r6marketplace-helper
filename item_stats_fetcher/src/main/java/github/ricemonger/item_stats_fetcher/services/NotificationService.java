@@ -13,6 +13,11 @@ public class NotificationService {
     private final NotificationKafkaProducer notificationKafkaProducer;
 
     public void notifyAllUsersAboutItemAmountIncrease(int expectedItemCount, int fetchedItemsCount) {
-        notificationKafkaProducer.producePublicNotificationToAllUsers("Item amount increased from " + expectedItemCount + " to " + fetchedItemsCount + ". Probably new items were added to marketplace.");
+        log.info("Public notification about item amount increase from {} to {}", expectedItemCount, fetchedItemsCount);
+        try {
+            notificationKafkaProducer.producePublicNotificationToAllUsers("Item amount increased from " + expectedItemCount + " to " + fetchedItemsCount + ". Probably new items were added to marketplace.");
+        } catch (Exception e) {
+            log.warn("Failed to send public notification about item amount increase from {} to {} due to: {}", expectedItemCount, fetchedItemsCount, e.getMessage());
+        }
     }
 }

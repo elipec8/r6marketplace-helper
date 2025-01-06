@@ -24,7 +24,7 @@ public class CommonValuesService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ubiServiceConfiguration.getDateFormat());
         try {
             return LocalDateTime.parse(commonValuesDatabaseService.getLastUbiUsersStatsFetchTime(), formatter);
-        } catch (DateTimeParseException e) {
+        } catch (DateTimeParseException | NullPointerException e) {
             return LocalDateTime.now().minusDays(1).withNano(0);
         }
     }

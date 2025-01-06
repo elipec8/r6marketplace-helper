@@ -20,7 +20,7 @@ ubi:
     trustedDeviceFriendlyName: ${UBI_TRUSTED_DEVICE_FRIENDLY_NAME:Opera 114.0.0.0, Windows 10}
 
 server:
-  port: 8085
+  port: 8088
 
 app:
   scheduling:

@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,6 +34,26 @@ class CommonValuesServiceTest {
         LocalDateTime result = commonValuesService.getLastUbiUsersStatsFetchTime();
 
         assertEquals(LocalDateTime.parse(lastFetchTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")), result);
+    }
+
+    @Test
+    public void getLastUbiUsersStatsFetchTime_should_return_yesterday_time_if_null() {
+        when(commonValuesDatabaseService.getLastUbiUsersStatsFetchTime()).thenReturn(null);
+        when(ubiServiceConfiguration.getDateFormat()).thenReturn("yyyy-MM-dd'T'HH:mm:ss");
+
+        LocalDateTime result = commonValuesService.getLastUbiUsersStatsFetchTime();
+
+        assertEquals(1, Duration.between(result, LocalDateTime.now()).toDays());
+    }
+
+    @Test
+    public void getLastUbiUsersStatsFetchTime_should_return_yesterday_time_if_invalid_input() {
+        when(commonValuesDatabaseService.getLastUbiUsersStatsFetchTime()).thenReturn("text");
+        when(ubiServiceConfiguration.getDateFormat()).thenReturn("yyyy-MM-dd'T'HH:mm:ss");
+
+        LocalDateTime result = commonValuesService.getLastUbiUsersStatsFetchTime();
+
+        assertEquals(1, Duration.between(result, LocalDateTime.now()).toDays());
     }
 
     @Test

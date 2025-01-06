@@ -20,7 +20,7 @@ ubi:
     maxLegendaryPrice: 1_000_000
 
 server:
-  port: 8080
+  port: 8086
 
 app:
   scheduling:

@@ -37,19 +37,19 @@ public class UbiAccountStatsEntity {
             inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "item_id"))
     private List<ItemEntity> ownedItems = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "ubi_account_current_owned_items",
             joinColumns = {@JoinColumn(name = "ubi_profile_id", referencedColumnName = "ubi_profile_id")},
             inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "item_id"))
     private List<ItemResaleLockEntity> resaleLocks = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "ubi_account_current_owned_items",
             joinColumns = {@JoinColumn(name = "ubi_profile_id", referencedColumnName = "ubi_profile_id")},
             inverseJoinColumns = @JoinColumn(name = "trade_id", referencedColumnName = "trade_id"))
     private List<TradeEntity> currentSellTrades = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "ubi_account_current_owned_items",
             joinColumns = {@JoinColumn(name = "ubi_profile_id", referencedColumnName = "ubi_profile_id")},
             inverseJoinColumns = @JoinColumn(name = "trade_id", referencedColumnName = "trade_id"))

@@ -15,7 +15,7 @@ public class ScheduledAllUbiUsersManager {
 
     private final CentralTradeManager centralTradeManager;
 
-    @Scheduled(fixedRate = TRADE_MANAGER_FIXED_RATE_MINUTES * 60 * 1000, initialDelay = 5 * 60 * 1000) // every 1m after 5m of delay
+    @Scheduled(fixedRate = TRADE_MANAGER_FIXED_RATE_MINUTES * 60 * 1000, initialDelay = 15 * 60 * 1000) // every 1m after 15m of delay
     public void manageAllUsersTrades() {
         centralTradeManager.manageAllUsersTrades();
     }

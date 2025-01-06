@@ -13,7 +13,7 @@ public class ScheduledUsersCurrentTradesPotentialTradeStatsCalculator {
 
     private final TradeService tradeService;
 
-    @Scheduled(fixedRate = 20 * 60 * 1000, initialDelay = 3 * 60 * 1000) // every 20m after 3m of delay
+    @Scheduled(fixedRate = 60 * 1000, initialDelay = 13 * 60 * 1000) // every 1m after 13m of delay
 
     public void recalculateAndSaveUsersCurrentTradesPotentialTradeStats() {
         tradeService.recalculateAndSaveUsersCurrentTradesPotentialTradeStats();

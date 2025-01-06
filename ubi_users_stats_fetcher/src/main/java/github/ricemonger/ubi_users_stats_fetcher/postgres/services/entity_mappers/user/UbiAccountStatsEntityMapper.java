@@ -4,7 +4,9 @@ package github.ricemonger.ubi_users_stats_fetcher.postgres.services.entity_mappe
 import github.ricemonger.ubi_users_stats_fetcher.postgres.entities.ubi_account_stats.ItemIdEntity;
 import github.ricemonger.ubi_users_stats_fetcher.postgres.entities.ubi_account_stats.ItemResaleLockEntity;
 import github.ricemonger.ubi_users_stats_fetcher.postgres.entities.ubi_account_stats.UbiAccountStatsEntity;
+import github.ricemonger.ubi_users_stats_fetcher.postgres.entities.ubi_account_stats.UbiTradeEntity;
 import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.ItemIdPostgresRepository;
+import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.UbiAccountStatsPostgresRepository;
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UbiAccountStats;
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
 import lombok.RequiredArgsConstructor;
@@ -23,21 +25,34 @@ public class UbiAccountStatsEntityMapper {
 
     private final UbiTradeEntityMapper ubiTradeEntityMapper;
 
+    private final UbiAccountStatsPostgresRepository ubiAccountStatsPostgresRepository;
+
     public List<UbiAccountStatsEntity> createEntities(List<UbiAccountStats> ubiAccounts) {
         List<ItemIdEntity> existingItems = itemIdPostgresRepository.findAll();
 
         List<UbiAccountStatsEntity> entities = new LinkedList<>();
 
         for (UbiAccountStats ubiAccount : ubiAccounts) {
-            UbiAccountStatsEntity entity = new UbiAccountStatsEntity();
-            entity.setUbiProfileId(ubiAccount.getUbiProfileId());
+
+            UbiAccountStatsEntity entity;
+
+            if (ubiAccountStatsPostgresRepository.existsById(ubiAccount.getUbiProfileId())) {
+                entity = ubiAccountStatsPostgresRepository.findById(ubiAccount.getUbiProfileId()).get();
+                entity.getCurrentBuyTrades().clear();
+                entity.getCurrentSellTrades().clear();
+                entity.getOwnedItems().clear();
+                entity.getResaleLocks().clear();
+            } else {
+                entity = new UbiAccountStatsEntity(ubiAccount.getUbiProfileId());
+            }
+
             entity.setCreditAmount(ubiAccount.getCreditAmount());
             entity.setSoldIn24h(ubiAccount.getSoldIn24h());
             entity.setBoughtIn24h(ubiAccount.getBoughtIn24h());
-            entity.setOwnedItems(existingItems.stream().filter(item -> ubiAccount.getOwnedItemsIds().contains(item.getItemId())).toList());
-            entity.setCurrentSellTrades(ubiAccount.getCurrentSellTrades().stream().map(ubiTrade -> ubiTradeEntityMapper.createEntity(ubiTrade, existingItems)).toList());
-            entity.setCurrentBuyTrades(ubiAccount.getCurrentBuyTrades().stream().map(ubiTrade -> ubiTradeEntityMapper.createEntity(ubiTrade, existingItems)).toList());
 
+            List<ItemIdEntity> ownedItemsIds = existingItems.stream().filter(item -> ubiAccount.getOwnedItemsIds().contains(item.getItemId())).toList();
+            List<UbiTradeEntity> currentSellTrades = ubiAccount.getCurrentSellTrades().stream().map(ubiTrade -> ubiTradeEntityMapper.createEntity(ubiTrade, existingItems)).toList();
+            List<UbiTradeEntity> currentBuyTrades = ubiAccount.getCurrentBuyTrades().stream().map(ubiTrade -> ubiTradeEntityMapper.createEntity(ubiTrade, existingItems)).toList();
             List<ItemResaleLockEntity> resaleLocksEntities = new LinkedList<>();
 
             for (ItemResaleLock resaleLock : ubiAccount.getResaleLocks()) {
@@ -50,7 +65,11 @@ public class UbiAccountStatsEntityMapper {
                 }
             }
 
-            entity.setResaleLocks(resaleLocksEntities);
+            entity.getOwnedItems().addAll(ownedItemsIds);
+            entity.getCurrentSellTrades().addAll(currentSellTrades);
+            entity.getCurrentBuyTrades().addAll(currentBuyTrades);
+
+            entity.getResaleLocks().addAll(resaleLocksEntities);
 
             entities.add(entity);
         }

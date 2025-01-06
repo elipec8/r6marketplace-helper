@@ -18,12 +18,12 @@ import java.util.Objects;
 @IdClass(ItemResaleLockEntityId.class)
 public class ItemResaleLockEntity {
     @Id
-    @OneToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ubi_profile_id", referencedColumnName = "ubi_profile_id")
     private UbiAccountStatsEntity ubiAccount;
 
     @Id
-    @OneToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id", referencedColumnName = "item_id")
     private ItemIdEntity item;
 

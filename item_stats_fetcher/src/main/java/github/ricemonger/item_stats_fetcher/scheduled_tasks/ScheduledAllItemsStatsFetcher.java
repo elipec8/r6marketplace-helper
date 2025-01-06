@@ -27,7 +27,7 @@ public class ScheduledAllItemsStatsFetcher {
 
     private final NotificationService telegramBotService;
 
-    @Scheduled(fixedRate = 3 * 60 * 1000, initialDelay = 60 * 1000) // every 3m after 1m of delay
+    @Scheduled(fixedRate = 3 * 60 * 1000, initialDelay = 30 * 1000) // every 3m after 30s of delay
     public void fetchAllItemStats() {
         int expectedItemCount = 0;
         try {
@@ -38,6 +38,9 @@ public class ScheduledAllItemsStatsFetcher {
 
         Collection<Item> items = graphQlClientService.fetchAllItemStats();
 
+        itemService.saveAllItemsMainFields(items);
+        itemService.saveAllItemsLastSales(items);
+
         if (items.size() < expectedItemCount) {
             log.error("Fetched {} items' stats, expected {}", items.size(), expectedItemCount);
         } else if (items.size() > expectedItemCount) {
@@ -46,9 +49,6 @@ public class ScheduledAllItemsStatsFetcher {
         } else {
             log.info("Fetched {} items' stats", items.size());
         }
-
-        itemService.saveAllItemsMainFields(items);
-        itemService.saveAllItemsLastSales(items);
     }
 
     private void onItemsAmountIncrease(int expectedItemCount, int fetchedItemsCount) {

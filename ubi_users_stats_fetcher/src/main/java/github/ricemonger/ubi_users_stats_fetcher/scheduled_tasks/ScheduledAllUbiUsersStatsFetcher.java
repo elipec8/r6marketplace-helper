@@ -46,7 +46,7 @@ public class ScheduledAllUbiUsersStatsFetcher {
 
     private final CommonValuesService commonValuesService;
 
-    @Scheduled(fixedRate = 1 * 60 * 1000, initialDelay = 5 * 60 * 1000) // every 1m after 5m of delay
+    @Scheduled(fixedRate = 1 * 60 * 1000, initialDelay = 12 * 60 * 1000) // every 1m after 12m of delay
     public void fetchAllAuthorizedUbiUsersStats() {
         List<UserUbiAccount> userUbiAccounts = ubiAccountService.findAllUsersUbiAccountEntries();
 
