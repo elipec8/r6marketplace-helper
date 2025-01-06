@@ -52,6 +52,19 @@ services:
         - redis-net
     restart: always
 
+  main_user_reauthorizer:
+    container_name: r6helper-main-user-reauthorizer
+    build:
+      context: .
+      dockerfile: main_user_reauthorizer/Dockerfile
+    image: r6helper-main-user-reauthorizer
+    ports:
+      - "8095:8084"
+    networks:
+      - postgres-net
+      - redis-net
+    restart: always
+
   postgres:
     container_name: r6helper-postgres
     command: postgres -c 'max_connections=300'
