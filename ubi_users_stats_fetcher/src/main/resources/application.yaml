@@ -18,6 +18,9 @@ server:
 app:
   scheduling:
     enabled: ${SCHEDULING_ENABLED:true}
+    fixedRate: ${SCHEDULING_FIXED_DELAY:9000000}
+    initialDelay: ${SCHEDULING_INITIAL_DELAY:90000}
+    # every 2.5h after 1.5m of delay
 
 logging:
   level:
@@ -34,7 +37,7 @@ spring:
       auto-create: true
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
   data:
     redis:

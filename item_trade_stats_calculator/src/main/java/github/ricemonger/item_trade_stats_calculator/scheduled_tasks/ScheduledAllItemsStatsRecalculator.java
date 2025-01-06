@@ -13,7 +13,7 @@ public class ScheduledAllItemsStatsRecalculator {
 
     private final ItemService itemService;
 
-    @Scheduled(fixedRate = 20 * 60 * 1000, initialDelay = 9 * 60 * 1000) // every 20m after 9m of delay
+    @Scheduled(fixedRateString = "${app.scheduling.items.fixedRate}", initialDelayString = "${app.scheduling.items.initialDelay}")
     public void recalculateAndSaveAllItemsHistoryFields() {
         itemService.recalculateAndSaveAllItemsHistoryFields();
     }

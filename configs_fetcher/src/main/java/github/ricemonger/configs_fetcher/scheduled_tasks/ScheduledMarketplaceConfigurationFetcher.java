@@ -25,7 +25,7 @@ public class ScheduledMarketplaceConfigurationFetcher {
 
     private final TagService tagService;
 
-    @Scheduled(fixedRate = 24 * 60 * 60 * 1000, initialDelay = 20 * 1000) // every 24h with 20s delay
+    @Scheduled(fixedRateString = "${app.scheduling.fixedRate}", initialDelayString = "${app.scheduling.initialDelay}")
     public void fetchMarketplaceConfigurations() {
         tagService.saveAllTags(configQueryMarketplaceGraphQlClientService.fetchAllTags());
         configQueryMarketplaceGraphQlClientService.checkItemTypes();

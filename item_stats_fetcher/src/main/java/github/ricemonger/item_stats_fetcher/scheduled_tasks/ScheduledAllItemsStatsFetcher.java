@@ -27,7 +27,7 @@ public class ScheduledAllItemsStatsFetcher {
 
     private final NotificationService telegramBotService;
 
-    @Scheduled(fixedRate = 3 * 60 * 1000, initialDelay = 30 * 1000) // every 3m after 30s of delay
+    @Scheduled(fixedRateString = "${app.scheduling.fixedRate}", initialDelayString = "${app.scheduling.initialDelay}")
     public void fetchAllItemStats() {
         int expectedItemCount = 0;
         try {

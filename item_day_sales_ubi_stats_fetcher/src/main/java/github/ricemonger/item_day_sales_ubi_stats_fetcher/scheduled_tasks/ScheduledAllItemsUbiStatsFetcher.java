@@ -20,7 +20,7 @@ public class ScheduledAllItemsUbiStatsFetcher {
 
     private final ItemSaleUbiStatsService itemSaleUbiStatsService;
 
-    @Scheduled(fixedRate = 24 * 60 * 60 * 1000, initialDelay = 3 * 60 * 1000) // every 24h after 3m of delay
+    @Scheduled(fixedRateString = "${app.scheduling.fixedRate}", initialDelayString = "${app.scheduling.initialDelay}")
     public void fetchAllItemSalesUbiStats() {
         List<GroupedItemDaySalesUbiStats> ubiStats = commonQueryItemsSaleStatsGraphQlClientService.fetchAllItemSalesUbiStats();
 

@@ -17,6 +17,9 @@ server:
 app:
   scheduling:
     enabled: ${SCHEDULING_ENABLED:true}
+    fixedRate: ${SCHEDULING_FIXED_DELAY:180000}
+    initialDelay: ${SCHEDULING_INITIAL_DELAY:30000}
+    # every 3m after 30s of delay
 
 logging:
   level:
@@ -39,7 +42,7 @@ spring:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVER:localhost:9092}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       retries: 2
 
   data:

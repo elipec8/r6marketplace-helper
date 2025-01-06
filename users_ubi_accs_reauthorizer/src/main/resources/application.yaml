@@ -25,6 +25,9 @@ server:
 app:
   scheduling:
     enabled: ${SCHEDULING_ENABLED:true}
+    fixedRate: ${SCHEDULING_FIXED_DELAY:9000000}
+    initialDelay: ${SCHEDULING_INITIAL_DELAY:0}
+    # every 2.5h
 
 logging:
   level:
@@ -41,7 +44,7 @@ spring:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://${POSTGRES_SERVER_HOST:localhost}:${POSTGRES_SERVER_PORT:5432}/${POSTGRES_DB:postgres}
