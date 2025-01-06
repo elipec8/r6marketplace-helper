@@ -85,9 +85,9 @@ public class ScheduledAllUbiUsersStatsFetcher {
 
         return new UbiAccountStats(
                 userUbiAccount.getProfileId(),
+                creditAmount,
                 userTradesLimitations.getResolvedSellTransactionCount(),
                 userTradesLimitations.getResolvedBuyTransactionCount(),
-                creditAmount,
                 ownedItemsIds,
                 itemResaleLocks,
                 currentSellTrades,

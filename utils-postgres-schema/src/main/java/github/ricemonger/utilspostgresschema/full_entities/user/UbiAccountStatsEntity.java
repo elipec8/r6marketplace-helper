@@ -32,25 +32,25 @@ public class UbiAccountStatsEntity {
     private Integer boughtIn24h;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "ubi_account_current_owned_items",
+    @JoinTable(name = "ubi_account_owned_items",
             joinColumns = {@JoinColumn(name = "ubi_profile_id", referencedColumnName = "ubi_profile_id")},
             inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "item_id"))
     private List<ItemEntity> ownedItems = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "ubi_account_current_owned_items",
+    @JoinTable(name = "ubi_account_resale_locks",
             joinColumns = {@JoinColumn(name = "ubi_profile_id", referencedColumnName = "ubi_profile_id")},
             inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "item_id"))
     private List<ItemResaleLockEntity> resaleLocks = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "ubi_account_current_owned_items",
+    @JoinTable(name = "ubi_account_current_sell_trades",
             joinColumns = {@JoinColumn(name = "ubi_profile_id", referencedColumnName = "ubi_profile_id")},
             inverseJoinColumns = @JoinColumn(name = "trade_id", referencedColumnName = "trade_id"))
     private List<TradeEntity> currentSellTrades = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "ubi_account_current_owned_items",
+    @JoinTable(name = "ubi_account_current_buy_trades",
             joinColumns = {@JoinColumn(name = "ubi_profile_id", referencedColumnName = "ubi_profile_id")},
             inverseJoinColumns = @JoinColumn(name = "trade_id", referencedColumnName = "trade_id"))
     private List<TradeEntity> currentBuyTrades = new ArrayList<>();
