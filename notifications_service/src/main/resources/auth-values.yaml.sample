@@ -1,0 +1,2 @@
+TELEGRAM_BOT_TOKEN: # your tg bot token, receive from @BotFather, should be same as in telegram_bot_updates_consumer module
+TELEGRAM_BOT_USERNAME: # your tg bot username, receive from @BotFather, should be same as in telegram_bot_updates_consumer module

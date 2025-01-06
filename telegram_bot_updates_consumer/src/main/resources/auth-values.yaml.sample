@@ -1,0 +1,3 @@
+TELEGRAM_BOT_TOKEN: # your tg bot token, receive from @BotFather, should be same as in notifications module
+TELEGRAM_BOT_USERNAME: # your tg bot username, receive from @BotFather, should be same as in notifications module
+PASSWORD_ENCRYPTION_KEY: # AES password encryption key for storing passwords in db, should be the same as in users_ubi_accs_reauthorizer module

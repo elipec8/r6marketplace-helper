@@ -1,0 +1,58 @@
+package github.ricemonger.item_stats_fetcher.scheduled_tasks;
+
+
+import github.ricemonger.item_stats_fetcher.services.CommonValuesService;
+import github.ricemonger.item_stats_fetcher.services.ItemService;
+import github.ricemonger.item_stats_fetcher.services.NotificationService;
+import github.ricemonger.marketplace.graphQl.common_query_items.CommonQueryItemsGraphQlClientService;
+import github.ricemonger.utils.DTOs.common.Item;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+import java.util.Collection;
+
+
+@Component
+@Slf4j
+@RequiredArgsConstructor
+public class ScheduledAllItemsStatsFetcher {
+
+    private final CommonQueryItemsGraphQlClientService graphQlClientService;
+
+    private final ItemService itemService;
+
+    private final CommonValuesService commonValuesService;
+
+    private final NotificationService telegramBotService;
+
+    @Scheduled(fixedRateString = "${app.scheduling.fixedRate}", initialDelayString = "${app.scheduling.initialDelay}")
+    public void fetchAllItemStats() {
+        int expectedItemCount = 0;
+        try {
+            expectedItemCount = commonValuesService.getExpectedItemCount();
+        } catch (NullPointerException ignore) {
+            log.info("Expected item count is not set");
+        }
+
+        Collection<Item> items = graphQlClientService.fetchAllItemStats();
+
+        itemService.saveAllItemsMainFields(items);
+        itemService.saveAllItemsLastSales(items);
+
+        if (items.size() < expectedItemCount) {
+            log.error("Fetched {} items' stats, expected {}", items.size(), expectedItemCount);
+        } else if (items.size() > expectedItemCount) {
+            log.info("Fetched {} items' stats, expected {}", items.size(), expectedItemCount);
+            onItemsAmountIncrease(expectedItemCount, items.size());
+        } else {
+            log.info("Fetched {} items' stats", items.size());
+        }
+    }
+
+    private void onItemsAmountIncrease(int expectedItemCount, int fetchedItemsCount) {
+        commonValuesService.setExpectedItemCount(fetchedItemsCount);
+        telegramBotService.notifyAllUsersAboutItemAmountIncrease(expectedItemCount, fetchedItemsCount);
+    }
+}

@@ -1,0 +1,2 @@
+PASSWORD_ENCRYPTION_KEY: # AES password encryption key for storing passwords in db, should be same as in telegram_bot_updates_consumer module
+

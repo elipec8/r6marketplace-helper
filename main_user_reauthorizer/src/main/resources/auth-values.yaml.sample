@@ -1,0 +1,3 @@
+UBI_PLATFORM: UPLAY # platform of your Ubi Acc
+UBI_EMAIL: # your Ubi Acc's email, for main user, used for items, sales and marketplace configs + tags stats fetching
+UBI_PASSWORD: # your Ubi Acc's password

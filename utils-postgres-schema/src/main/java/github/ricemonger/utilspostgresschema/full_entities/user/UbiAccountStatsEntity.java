@@ -1,0 +1,70 @@
+package github.ricemonger.utilspostgresschema.full_entities.user;
+
+import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+@Table(name = "ubi_account_stats")
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class UbiAccountStatsEntity {
+    @Id
+    @Column(name = "ubi_profile_id")
+    private String ubiProfileId;
+
+    @Column(name = "credit_amount")
+    private Integer creditAmount;
+
+    @Column(name = "sold_in_24h")
+    private Integer soldIn24h;
+
+    @Column(name = "bought_in_24h")
+    private Integer boughtIn24h;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "ubi_account_owned_items",
+            joinColumns = {@JoinColumn(name = "ubi_profile_id", referencedColumnName = "ubi_profile_id")},
+            inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "item_id"))
+    private List<ItemEntity> ownedItems = new ArrayList<>();
+
+    @OneToMany(mappedBy = "ubiAccount", fetch = FetchType.EAGER, orphanRemoval = true)
+    private List<ItemResaleLockEntity> resaleLocks = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "ubi_account_current_sell_trades",
+            joinColumns = {@JoinColumn(name = "ubi_profile_id", referencedColumnName = "ubi_profile_id")},
+            inverseJoinColumns = @JoinColumn(name = "trade_id", referencedColumnName = "trade_id"))
+    private List<TradeEntity> currentSellTrades = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "ubi_account_current_buy_trades",
+            joinColumns = {@JoinColumn(name = "ubi_profile_id", referencedColumnName = "ubi_profile_id")},
+            inverseJoinColumns = @JoinColumn(name = "trade_id", referencedColumnName = "trade_id"))
+    private List<TradeEntity> currentBuyTrades = new ArrayList<>();
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ubiProfileId);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof UbiAccountStatsEntity ubiAccountStatsEntity)) {
+            return false;
+        }
+        return Objects.equals(this.ubiProfileId, ubiAccountStatsEntity.ubiProfileId);
+    }
+}
