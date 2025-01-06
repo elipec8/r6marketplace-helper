@@ -107,6 +107,20 @@ services:
       - kafka-net
     restart: always
 
+  ubi_users_stats_fetcher:
+    container_name: r6helper-ubi-users-stats-fetcher
+    build:
+      context: .
+      dockerfile: ubi_users_stats_fetcher/Dockerfile
+    image: r6helper-ubi-users-stats-fetcher
+    ports:
+      - "8099:8087"
+    networks:
+      - postgres-net
+      - redis-net
+      - kafka-net
+    restart: always
+
 
   postgres:
     container_name: r6helper-postgres
