@@ -86,7 +86,11 @@ public class CentralTradeManager {
                 manageableUser.toAuthorizationDTO()));
 
         for (CentralTradeManagerCommand command : commands.stream().sorted().toList()) {
-            executeCentralTradeManagerCommand(command);
+            try {
+                executeCentralTradeManagerCommand(command);
+            } catch (Exception e) {
+                log.error("Exception {} while executing command: {}", e, command);
+            }
         }
     }
 
