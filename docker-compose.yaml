@@ -37,6 +37,7 @@ services:
     networks:
       - postgres-net
       - redis-net
+      - kafka-net
     restart: always
 
   item_trade_stats_calculator:
@@ -77,6 +78,19 @@ services:
       - postgres-net
       - redis-net
       - kafka-net
+    restart: always
+
+  telegram_bot_updates_consumer:
+    container_name: r6helper-telegram-bot-updates-consumer
+    build:
+      context: .
+      dockerfile: telegram_bot_updates_consumer/Dockerfile
+    image: r6helper-telegram-bot-updates-consumer
+    ports:
+      - "8097:8080"
+    networks:
+      - postgres-net
+      - redis-net
     restart: always
 
 
