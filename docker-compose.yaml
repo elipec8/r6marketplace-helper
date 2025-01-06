@@ -27,16 +27,29 @@ services:
     restart: always
 
   items_stats_fetcher:
-    container_name: r6helper-items-stats-fetcher
+    container_name: r6helper-item-stats-fetcher
     build:
       context: .
       dockerfile: item_stats_fetcher/Dockerfile
-    image: r6helper-items-stats-fetcher
+    image: r6helper-item-stats-fetcher
     ports:
       - "8093:8081"
     networks:
       - postgres-net
       - redis-net
+    restart: always
+
+  item_trade_stats_calculator:
+    container_name: r6helper-item-trade-stats-calculator
+    build:
+      context: .
+      dockerfile: item_trade_stats_calculator/Dockerfile
+    image: r6helper-item-trade-stats-calculator
+    ports:
+      - "8094:8085"
+    networks:
+        - postgres-net
+        - redis-net
     restart: always
 
   postgres:
