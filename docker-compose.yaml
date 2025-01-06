@@ -93,6 +93,20 @@ services:
       - redis-net
     restart: always
 
+  trades_manager:
+    container_name: r6helper-trades-manager
+    build:
+      context: .
+      dockerfile: trades_manager/Dockerfile
+    image: r6helper-trades-manager
+    ports:
+      - "8098:8086"
+    networks:
+      - postgres-net
+      - redis-net
+      - kafka-net
+    restart: always
+
 
   postgres:
     container_name: r6helper-postgres
