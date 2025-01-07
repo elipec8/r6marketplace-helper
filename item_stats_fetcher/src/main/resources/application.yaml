@@ -52,7 +52,9 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      retries: 2
+      retries: 1
+    properties:
+      request.timeout.ms: 3000
 
   config:
     import:
