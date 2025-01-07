@@ -24,13 +24,14 @@ public abstract class PotentialTrade implements Comparable<PotentialTrade> {
         if (tradeCategoryComparison != 0) {
             return tradeCategoryComparison;
         } else {
-            int thisPriorityMultiplier = this.getPriorityMultiplier() == null ? 1 : this.getPriorityMultiplier();
-            int otherPriorityMultiplier = other.getPriorityMultiplier() == null ? 1 : other.getPriorityMultiplier();
+            int thisPriorityMultiplier = this.getPriorityMultiplier() == null || this.getPriorityMultiplier() < 1 ? 1 : this.getPriorityMultiplier();
+            int otherPriorityMultiplier = other.getPriorityMultiplier() == null || other.getPriorityMultiplier() < 1 ? 1 : other.getPriorityMultiplier();
 
-            Long priority = this.getTradePriority() * thisPriorityMultiplier;
-            Long otherPriority = other.getTradePriority() * otherPriorityMultiplier;
+            Long thisPriority = this.getTradePriority() > 0 ? this.getTradePriority() * thisPriorityMultiplier : this.getTradePriority() / thisPriorityMultiplier;
 
-            int priorityComparison = otherPriority.compareTo(priority);
+            Long otherPriority = other.getTradePriority() > 0?  other.getTradePriority() * otherPriorityMultiplier : other.getTradePriority() / otherPriorityMultiplier;
+
+            int priorityComparison = otherPriority.compareTo(thisPriority);
 
             if (priorityComparison != 0) {
                 return priorityComparison;

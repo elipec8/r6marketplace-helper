@@ -43,20 +43,13 @@ public class TradeManagerFromInputsMapper {
         int boundSellPrice = parseIntValue(boundarySellPrice, limitMinPrice, limitMaxPrice, limitMinPrice);
         int boundBuyPrice = parseIntValue(boundaryBuyPrice, limitMinPrice, limitMaxPrice, limitMaxPrice);
 
-        int prior;
-        try {
-            prior = Integer.parseInt(priority);
-        } catch (NumberFormatException | NullPointerException e) {
-            prior = 1;
-        }
-
         TradeByItemIdManager tradeByItemIdManager = new TradeByItemIdManager();
         tradeByItemIdManager.setTradeOperationType(tradeOperationType);
         tradeByItemIdManager.setItemId(itemId);
         tradeByItemIdManager.setEnabled(enabledFlag);
         tradeByItemIdManager.setSellBoundaryPrice(boundSellPrice);
         tradeByItemIdManager.setBuyBoundaryPrice(boundBuyPrice);
-        tradeByItemIdManager.setPriorityMultiplier(prior);
+        tradeByItemIdManager.setPriorityMultiplier(parseIntValue(priority, 1, Integer.MAX_VALUE, 1));
 
         return tradeByItemIdManager;
     }

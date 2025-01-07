@@ -103,6 +103,34 @@ class PotentialTradeTest {
     }
 
     @Test
+    public void compareTo_should_compare_by_priority_if_equal_tradeCategory_negative_values() {
+        PersonalItem personalItem1 = new PersonalItem();
+        PersonalItem personalItem2 = new PersonalItem();
+        PotentialTradeStats potentialTradeStats1 = new PotentialTradeStats();
+        potentialTradeStats1.setTradePriority(-10L);
+        personalItem1.setPriorityMultiplier(1);
+        PotentialTradeStats potentialTradeStats2 = new PotentialTradeStats();
+        potentialTradeStats2.setTradePriority(-15L);
+        personalItem2.setPriorityMultiplier(2);
+        PotentialTrade potentialTrade1 = new PotentialTrade(personalItem1, potentialTradeStats1) {
+            @Override
+            public TradeCategory getTradeCategory() {
+                return TradeCategory.Sell;
+            }
+        };
+        PotentialTrade potentialTrade2 = new PotentialTrade(personalItem2, potentialTradeStats2) {
+            @Override
+            public TradeCategory getTradeCategory() {
+                return TradeCategory.Sell;
+            }
+        };
+
+        int result = potentialTrade1.compareTo(potentialTrade2);
+
+        assertEquals(1, result);
+    }
+
+    @Test
     public void compareTo_should_compare_by_tradeCategory_first() {
         PersonalItem personalItem1 = new PersonalItem();
         PersonalItem personalItem2 = new PersonalItem();

@@ -167,7 +167,7 @@ public class PotentialTradeStatsCalculator {
                                  getPriceDifferenceFactor(price, monthMedianPrice, 1) *
                                  getPriceRatioFactorPercent(price, monthMedianPrice, 1) *
                                  getTimeToResellFactor(item, 1) *
-                                 getTimeFactor(minutesToTrade, 0.4);
+                                 getTimeFactor(minutesToTrade, 0.66);
 
             if (item.getMonthMedianPrice() != null && price > monthMedianPrice) {
                 tradePriority = -tradePriority;

@@ -184,6 +184,35 @@ class TradeManagerFromInputsMapperTest {
     }
 
     @Test
+    public void mapToTradeByItemIdManager_should_map_inputs_to_manager_with_out_of_limit_priority() {
+        String chatId = "chatId";
+        List<TelegramUserInput> inputs = new ArrayList<>();
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_ITEM_ID, "itemId"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_SELL_PRICE, "120"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_BUY_PRICE, "360"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_ITEM_ID_MANAGER_PRIORITY, "0"));
+
+        TradeByItemIdManager expected = new TradeByItemIdManager();
+        expected.setTradeOperationType(TradeOperationType.BUY);
+        expected.setItemId("itemId");
+        expected.setEnabled(true);
+        expected.setSellBoundaryPrice(120);
+        expected.setBuyBoundaryPrice(360);
+        expected.setPriorityMultiplier(1);
+
+        Item item = new Item();
+        item.setMinSellPrice(0);
+        item.setMaxBuyPrice(120);
+        item.setRarity(ItemRarity.UNCOMMON);
+
+        when(itemService.getItemById("itemId")).thenReturn(item);
+        when(commonValuesService.getMinimumPriceByRarity(item.getRarity())).thenReturn(0);
+        when(commonValuesService.getMaximumPriceByRarity(item.getRarity())).thenReturn(1000);
+
+        assertEquals(expected, tradeManagerFromInputsMapper.generateTradeByItemIdManagerByUserInput(inputs, TradeOperationType.BUY, true));
+    }
+
+    @Test
     public void mapToTradeByFiltersManager_should_map_inputs_to_manager_with_valid_inputs() {
         String chatId = "chatId";
         List<TelegramUserInput> inputs = new ArrayList<>();
@@ -242,7 +271,7 @@ class TradeManagerFromInputsMapperTest {
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_TRADE_TYPE, Callbacks.TRADE_BY_FILTERS_MANAGER_TYPE_SELL_EDIT));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_FILTERS_NAMES, null));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_MIN_BUY_SELL_PROFIT, "-150001"));
-        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_MIN_MEDIAN_PRICE_DIFFERENCE_PERCENT, "-2147483647"));
+        inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_MIN_MEDIAN_PRICE_DIFFERENCE_PERCENT, "0"));
         inputs.add(new TelegramUserInput(chatId, InputState.TRADE_BY_FILTERS_MANAGER_PRIORITY, "-2147483647"));
 
         TradeByFiltersManager expected = new TradeByFiltersManager();
