@@ -1,16 +1,16 @@
 ubi:
   session:
-    minUncommonPrice: 10
-    maxUncommonPrice: 25_000
-    minRarePrice: 10
-    maxRarePrice: 250_000
-    minEpicPrice: 10
-    maxEpicPrice: 1_000_000
-    minLegendaryPrice: 10
-    maxLegendaryPrice: 1_000_000
+    minUncommonPrice: ${UBI_MIN_UNCOMMON_PRICE:10}
+    maxUncommonPrice: ${UBI_MAX_UNCOMMON_PRICE:25_000}
+    minRarePrice: ${UBI_MIN_RARE_PRICE:10}
+    maxRarePrice: ${UBI_MAX_RARE_PRICE:250_000}
+    minEpicPrice: ${UBI_MIN_EPIC_PRICE:10}
+    maxEpicPrice: ${UBI_MAX_EPIC_PRICE:1_000_000}
+    minLegendaryPrice: ${UBI_MIN_LEGENDARY_PRICE:10}
+    maxLegendaryPrice: ${UBI_MAX_LEGENDARY_PRICE:1_000_000}
 
 server:
-  port: 8085
+  port: ${SERVER_PORT:8084}
 
 app:
   scheduling:
@@ -27,8 +27,7 @@ app:
 
 logging:
   level:
-    github: debug
-
+    github: \${LOGGING_LEVEL:debug}
   file:
     name: ./logs/${LOG_FILE_DIRECTORY:prod}/${spring.application.name}.log
 

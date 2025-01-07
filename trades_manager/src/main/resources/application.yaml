@@ -1,26 +1,26 @@
 ubi:
   urls:
-    graphql: https://public-ubiservices.ubi.com/v1/profiles/me/uplay/graphql
+    graphql: ${UBI_GRAPHQL_URL:https://public-ubiservices.ubi.com/v1/profiles/me/uplay/graphql}
   session:
-    contentType: application/json
-    userAgent: UbiServices_SDK_2020.Release.58_PC64_ansi_static
+    contentType: ${UBI_CONTENT_TYPE:application/json}
+    userAgent: ${UBI_USER_AGENT:UbiServices_SDK_2020.Release.58_PC64_ansi_static}
     baseAppId: ${UBI_APP_ID:80a4a0e8-8797-440f-8f4c-eaba87d0fdda}
     spaceId: ${UBI_SPACE_ID:0d2ae42d-4c27-4cb7-af6c-2099062302bb}
     regionId: ${UBI_REGION_ID:WW}
     localeCode: ${UBI_LOCALE_CODE:en-US}
-    dateFormat: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
-    itemSaleStatsDateFormat: yyyy-MM-dd
-    minUncommonPrice: 10
-    maxUncommonPrice: 25_000
-    minRarePrice: 10
-    maxRarePrice: 250_000
-    minEpicPrice: 10
-    maxEpicPrice: 1_000_000
-    minLegendaryPrice: 10
-    maxLegendaryPrice: 1_000_000
+    dateFormat: ${UBI_DATE_FORMAT:yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}
+    itemSaleStatsDateFormat: ${UBI_ITEM_SALE_DATE_FORMAT:yyyy-MM-dd}
+    minUncommonPrice: ${UBI_MIN_UNCOMMON_PRICE:10}
+    maxUncommonPrice: ${UBI_MAX_UNCOMMON_PRICE:25_000}
+    minRarePrice: ${UBI_MIN_RARE_PRICE:10}
+    maxRarePrice: ${UBI_MAX_RARE_PRICE:250_000}
+    minEpicPrice: ${UBI_MIN_EPIC_PRICE:10}
+    maxEpicPrice: ${UBI_MAX_EPIC_PRICE:1_000_000}
+    minLegendaryPrice: ${UBI_MIN_LEGENDARY_PRICE:10}
+    maxLegendaryPrice: ${UBI_MAX_LEGENDARY_PRICE:1_000_000}
 
 server:
-  port: 8086
+  port: ${SERVER_PORT:8088}
 
 app:
   scheduling:
@@ -31,21 +31,13 @@ app:
 
 logging:
   level:
-    github: debug
-
+    github: \${logging_level:debug}
   file:
     name: ./logs/${LOG_FILE_DIRECTORY:prod}/${spring.application.name}.log
 
 spring:
   application:
     name: r6s-helper
-  kafka:
-    admin:
-      auto-create: true
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   data:
     redis:
       repositories:
@@ -61,6 +53,13 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
+  kafka:
+    admin:
+      auto-create: true
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVER_HOST:localhost}:${KAFKA_BOOTSTRAP_SERVER_PORT:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
   config:
     import:

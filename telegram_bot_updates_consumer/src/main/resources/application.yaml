@@ -11,34 +11,33 @@ auth:
 telegram:
   bot:
     message:
-      height: 100
-      limit: 50
+      height: ${TELEGRAM_BOT_MESSAGE_MAX_HEIGHT:100}
+      limit: ${TELEGRAM_BOT_MESSAGE_COUNT_LIMIT:50}
 ubi:
   urls:
-    authorization: https://public-ubiservices.ubi.com/v3/profiles/sessions
-    twoFaCodeToSMS: https://public-ubiservices.ubi.com/v3/profiles/me/2facode
+    authorization: ${UBI_AUTH_URL:https://public-ubiservices.ubi.com/v3/profiles/sessions}
+    twoFaCodeToSMS: ${UBI_TWO_FA_CODE_TO_SMS_URL:https://public-ubiservices.ubi.com/v3/profiles/me/2facode}
   session:
-    contentType: application/json
-    userAgent: UbiServices_SDK_2020.Release.58_PC64_ansi_static
+    contentType: ${UBI_CONTENT_TYPE:application/json}
+    userAgent: ${UBI_USER_AGENT:UbiServices_SDK_2020.Release.58_PC64_ansi_static}
     twoFaAppId: ${UBI_2FA_APP_ID:685a3038-2b04-47ee-9c5a-6403381a46aa}
     trustedDeviceId: ${UBI_TRUSTED_DEVICE_ID:16a2c7f446d2fcb5b92d0efee317da39}
     trustedDeviceFriendlyName: ${UBI_TRUSTED_DEVICE_FRIENDLY_NAME:Opera 114.0.0.0, Windows 10}
-    minUncommonPrice: 10
-    maxUncommonPrice: 25_000
-    minRarePrice: 10
-    maxRarePrice: 250_000
-    minEpicPrice: 10
-    maxEpicPrice: 1_000_000
-    minLegendaryPrice: 10
-    maxLegendaryPrice: 1_000_000
+    minUncommonPrice: ${UBI_MIN_UNCOMMON_PRICE:10}
+    maxUncommonPrice: ${UBI_MAX_UNCOMMON_PRICE:25_000}
+    minRarePrice: ${UBI_MIN_RARE_PRICE:10}
+    maxRarePrice: ${UBI_MAX_RARE_PRICE:250_000}
+    minEpicPrice: ${UBI_MIN_EPIC_PRICE:10}
+    maxEpicPrice: ${UBI_MAX_EPIC_PRICE:1_000_000}
+    minLegendaryPrice: ${UBI_MIN_LEGENDARY_PRICE:10}
+    maxLegendaryPrice: ${UBI_MAX_LEGENDARY_PRICE:1_000_000}
 
 server:
-  port: 8080
+  port: ${SERVER_PORT:8087}
 
 logging:
   level:
-    github: debug
-
+    github: \${LOGGING_LEVEL:debug}
   file:
     name: ./logs/${LOG_FILE_DIRECTORY:prod}/${spring.application.name}.log
 
