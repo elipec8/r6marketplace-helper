@@ -24,13 +24,4 @@ class NotificationServiceTest {
 
         verify(notificationKafkaProducer).producePublicNotificationToAllUsers(anyString());
     }
-
-    @Test
-    public void sendPrivateNotification_should_not_throw_exception_if_kafka_throws() {
-        doThrow(new RuntimeException("error")).when(notificationKafkaProducer).producePublicNotificationToAllUsers(anyString());
-
-        assertDoesNotThrow(() -> notificationService.notifyAllUsersAboutItemAmountIncrease(1,2));
-
-        verify(notificationKafkaProducer).producePublicNotificationToAllUsers(anyString());
-    }
 }

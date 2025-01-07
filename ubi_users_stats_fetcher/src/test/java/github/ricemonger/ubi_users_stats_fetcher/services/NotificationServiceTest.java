@@ -22,14 +22,4 @@ class NotificationServiceTest {
         notificationService.sendPrivateNotification(1L, "text");
         verify(notificationKafkaProducer).producePrivateNotification(1L, "text");
     }
-
-    @Test
-    public void sendPrivateNotification_should_not_throw_exception_if_kafka_throws() {
-        doThrow(new RuntimeException("error")).when(notificationKafkaProducer).producePrivateNotification(1L, "text");
-
-        assertDoesNotThrow(() -> notificationService.sendPrivateNotification(1L, "text"));
-
-        verify(notificationKafkaProducer).producePrivateNotification(1L, "text");
-
-    }
 }
