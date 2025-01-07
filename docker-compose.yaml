@@ -1,3 +1,17 @@
+x-constants:
+  &telegram-max-message-height: 100
+  &telegram-max-message-count: 50
+
+  &redis-container-name: r6helper-redis
+  &redis-container-port: 6379
+
+  &postgres-container-name: r6helper-postgres
+  &postgres-container-port: 5432
+  &postgres-db: postgres
+  
+  &kafka-container-name: r6helper-kafka
+  &kafka-container-port: 9092
+
 services:
 
   configs_fetcher:
@@ -8,27 +22,19 @@ services:
     image: r6helper-configs-fetcher
     ports:
       - "8091:8081"
+    env_file:
+      - ubi_constants.env
     environment:
-      UBI_GRAPHQL_URL: https://public-ubiservices.ubi.com/v1/profiles/me/uplay/graphql
-      UBI_CONTENT_TYPE: application/json
-      UBI_USER_AGENT: UbiServices_SDK_2020.Release.58_PC64_ansi_static
-      UBI_APP_ID: 80a4a0e8-8797-440f-8f4c-eaba87d0fdda
-      UBI_SPACE_ID: 0d2ae42d-4c27-4cb7-af6c-2099062302bb
-      UBI_REGION_ID: WW
-      UBI_LOCALE_CODE: en-US
-      UBI_DATE_FORMAT: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
-
       SCHEDULING_ENABLED: true
       SCHEDULING_FIXED_DELAY: 86400000
       SCHEDULING_INITIAL_DELAY: 20000
 
-      REDIS_URL: redis://r6helper-redis:6379
+      REDIS_SERVER_HOST: *redis-container-name
+      REDIS_SERVER_PORT: *redis-container-port
 
-      POSTGRES_SERVER_HOST: r6helper-postgres
-      POSTGRES_SERVER_PORT: 5432
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_SERVER_HOST: *postgres-container-name
+      POSTGRES_SERVER_PORT: *postgres-container-port
+      POSTGRES_DB: *postgres-db
     networks:
       - postgres-net
       - redis-net
@@ -41,28 +47,19 @@ services:
     image: r6helper-item-day-sales-ubi-stats-fetcher
     ports:
       - "8092:8082"
+    env_file:
+      - ubi_constants.env
     environment:
-      UBI_GRAPHQL_URL: https://public-ubiservices.ubi.com/v1/profiles/me/uplay/graphql
-      UBI_CONTENT_TYPE: application/json
-      UBI_USER_AGENT: UbiServices_SDK_2020.Release.58_PC64_ansi_static
-      UBI_APP_ID: 80a4a0e8-8797-440f-8f4c-eaba87d0fdda
-      UBI_SPACE_ID: 0d2ae42d-4c27-4cb7-af6c-2099062302bb
-      UBI_REGION_ID: WW
-      UBI_LOCALE_CODE: en-US
-      UBI_DATE_FORMAT: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
-      UBI_ITEM_SALE_DATE_FORMAT: yyyy-MM-dd
-
       SCHEDULING_ENABLED: true
       SCHEDULING_FIXED_DELAY: 86400000
       SCHEDULING_INITIAL_DELAY: 180000
 
-      REDIS_URL: redis://r6helper-redis:6379
+      REDIS_SERVER_HOST: *redis-container-name
+      REDIS_SERVER_PORT: *redis-container-port
 
-      POSTGRES_SERVER_HOST: r6helper-postgres
-      POSTGRES_SERVER_PORT: 5432
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_SERVER_HOST: *postgres-container-name
+      POSTGRES_SERVER_PORT: *postgres-container-port
+      POSTGRES_DB: *postgres-db
     networks:
       - postgres-net
       - redis-net
@@ -75,30 +72,23 @@ services:
     image: r6helper-item-stats-fetcher
     ports:
       - "8093:8083"
+    env_file:
+      - ubi_constants.env
     environment:
-      UBI_GRAPHQL_URL: https://public-ubiservices.ubi.com/v1/profiles/me/uplay/graphql
-      UBI_CONTENT_TYPE: application/json
-      UBI_USER_AGENT: UbiServices_SDK_2020.Release.58_PC64_ansi_static
-      UBI_APP_ID: 80a4a0e8-8797-440f-8f4c-eaba87d0fdda
-      UBI_SPACE_ID: 0d2ae42d-4c27-4cb7-af6c-2099062302bb
-      UBI_REGION_ID: WW
-      UBI_LOCALE_CODE: en-US
-      UBI_DATE_FORMAT: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
-
       SCHEDULING_ENABLED: true
       SCHEDULING_FIXED_DELAY: 180000
       SCHEDULING_INITIAL_DELAY: 30000
 
-      REDIS_URL: redis://r6helper-redis:6379
+      REDIS_SERVER_HOST: *redis-container-name
+      REDIS_SERVER_PORT: *redis-container-port
 
-      POSTGRES_SERVER_HOST: r6helper-postgres
-      POSTGRES_SERVER_PORT: 5432
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_SERVER_HOST: *postgres-container-name
+      POSTGRES_SERVER_PORT: *postgres-container-port
+      POSTGRES_DB: *postgres-db
 
-      KAFKA_BOOTSTRAP_SERVER_HOST: r6helper-kafka
-      KAFKA_BOOTSTRAP_SERVER_PORT: 9092
+      KAFKA_BOOTSTRAP_SERVER_HOST: *kafka-container-name
+      KAFKA_BOOTSTRAP_SERVER_PORT: *kafka-container-port
+      
     networks:
       - postgres-net
       - redis-net
@@ -112,29 +102,21 @@ services:
     image: r6helper-item-trade-stats-calculator
     ports:
       - "8094:8084"
+    env_file:
+      - ubi_constants.env
     environment:
-      UBI_MIN_UNCOMMON_PRICE: 10
-      UBI_MAX_UNCOMMON_PRICE: 25000
-      UBI_MIN_RARE_PRICE: 10
-      UBI_MAX_RARE_PRICE: 250000
-      UBI_MIN_EPIC_PRICE: 10
-      UBI_MAX_EPIC_PRICE: 1000000
-      UBI_MIN_LEGENDARY_PRICE: 10
-      UBI_MAX_LEGENDARY_PRICE: 1000000
-
       SCHEDULING_ENABLED: true
       SCHEDULING_FIXED_DELAY_ITEMS: 1200000
       SCHEDULING_INITIAL_DELAY_ITEMS: 540000
       SCHEDULING_FIXED_DELAY_TRADES: 60000
       SCHEDULING_INITIAL_DELAY_TRADES: 780000
 
-      REDIS_URL: redis://r6helper-redis:6379
+      REDIS_SERVER_HOST: *redis-container-name
+      REDIS_SERVER_PORT: *redis-container-port
 
-      POSTGRES_SERVER_HOST: r6helper-postgres
-      POSTGRES_SERVER_PORT: 5432
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_SERVER_HOST: *postgres-container-name
+      POSTGRES_SERVER_PORT: *postgres-container-port
+      POSTGRES_DB: *postgres-db
     networks:
         - postgres-net
         - redis-net
@@ -147,24 +129,16 @@ services:
     image: r6helper-main-user-reauthorizer
     ports:
       - "8095:8085"
+    env_file:
+      - ubi_constants.env
+      - auth_constants.env
     environment:
-     # UBI_PLATFORM: UPLAY # platform of your Ubi Acc
-     # UBI_EMAIL: your Ubi Acc's email, for main user, used for items, sales and marketplace configs + tags stats fetching
-     # UBI_PASSWORD: your Ubi Acc's password
-      UBI_AUTH_EXPIRE_TIMEOUT: 10500
-      UBI_AUTH_URL: https://public-ubiservices.ubi.com/v3/profiles/sessions
-      UBI_CONTENT_TYPE: application/json
-      UBI_USER_AGENT: UbiServices_SDK_2020.Release.58_PC64_ansi_static
-      UBI_APP_ID: 80a4a0e8-8797-440f-8f4c-eaba87d0fdda
-      UBI_SPACE_ID: 0d2ae42d-4c27-4cb7-af6c-2099062302bb
-      UBI_REGION_ID: WW
-      UBI_LOCALE_CODE: en-US
-
       SCHEDULING_ENABLED: true
       SCHEDULING_FIXED_DELAY: 9000000
       SCHEDULING_INITIAL_DELAY: 0
 
-      REDIS_URL: redis://r6helper-redis:6379
+      REDIS_SERVER_HOST: *redis-container-name
+      REDIS_SERVER_PORT: *redis-container-port
     networks:
       - postgres-net
       - redis-net
@@ -177,28 +151,19 @@ services:
     image: r6helper-notifications-service
     ports:
       - "8096:8086"
+    env_file:
+      - ubi_constants.env
+      - auth_constants.env
     environment:
-     # TELEGRAM_BOT_TOKEN: your tg bot token, receive from @BotFather, should be same as in notifications module
-     # TELEGRAM_BOT_USERNAME: your tg bot username, receive from @BotFather, should be same as in notifications module
-      TELEGRAM_BOT_MESSAGE_MAX_HEIGHT: 100
-      TELEGRAM_BOT_MESSAGE_COUNT_LIMIT: 50
+      TELEGRAM_BOT_MESSAGE_MAX_HEIGHT: *telegram-max-message-height
+      TELEGRAM_BOT_MESSAGE_COUNT_LIMIT: *telegram-max-message-count
 
-      UBI_AUTH_URL: https://public-ubiservices.ubi.com/v3/profiles/sessions
-      UBI_CONTENT_TYPE: application/json
-      UBI_USER_AGENT: UbiServices_SDK_2020.Release.58_PC64_ansi_static
-      UBI_APP_ID: 80a4a0e8-8797-440f-8f4c-eaba87d0fdda
-      UBI_SPACE_ID: 0d2ae42d-4c27-4cb7-af6c-2099062302bb
-      UBI_REGION_ID: WW
-      UBI_LOCALE_CODE: en-US
+      POSTGRES_SERVER_HOST: *postgres-container-name
+      POSTGRES_SERVER_PORT: *postgres-container-port
+      POSTGRES_DB: *postgres-db
 
-      POSTGRES_SERVER_HOST: r6helper-postgres
-      POSTGRES_SERVER_PORT: 5432
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
-
-      KAFKA_BOOTSTRAP_SERVER_HOST: r6helper-kafka
-      KAFKA_BOOTSTRAP_SERVER_PORT: 9092
+      KAFKA_BOOTSTRAP_SERVER_HOST: *kafka-container-name
+      KAFKA_BOOTSTRAP_SERVER_PORT: *kafka-container-port
     networks:
       - postgres-net
       - redis-net
@@ -212,37 +177,19 @@ services:
     image: r6helper-telegram-bot-updates-consumer
     ports:
       - "8097:8087"
+    env_file:
+      - ubi_constants.env
+      - auth_constants.env
     environment:
-     # TELEGRAM_BOT_TOKEN: your tg bot token, receive from @BotFather, should be same as in notifications module
-     # TELEGRAM_BOT_USERNAME: your tg bot username, receive from @BotFather, should be same as in notifications module
-      TELEGRAM_BOT_MESSAGE_MAX_HEIGHT: 100
-      TELEGRAM_BOT_MESSAGE_COUNT_LIMIT: 50
+      TELEGRAM_BOT_MESSAGE_MAX_HEIGHT: *telegram-max-message-height
+      TELEGRAM_BOT_MESSAGE_COUNT_LIMIT: *telegram-max-message-count
 
-     # PASSWORD_ENCRYPTION_KEY: AES password encryption key for storing passwords in db, should be the same as in users_ubi_accs_reauthorizer module
+      REDIS_SERVER_HOST: *redis-container-name
+      REDIS_SERVER_PORT: *redis-container-port
 
-      UBI_AUTH_URL: https://public-ubiservices.ubi.com/v3/profiles/sessions
-      UBI_TWO_FA_CODE_TO_SMS_URL: https://public-ubiservices.ubi.com/v3/profiles/me/2facode
-      UBI_CONTENT_TYPE: application/json
-      UBI_USER_AGENT: UbiServices_SDK_2020.Release.58_PC64_ansi_static
-      UBI_2FA_APP_ID: 685a3038-2b04-47ee-9c5a-6403381a46aa
-      UBI_TRUSTED_DEVICE_ID: 16a2c7f446d2fcb5b92d0efee317da39
-      UBI_TRUSTED_DEVICE_FRIENDLY_NAME: Opera 114.0.0.0, Windows 10
-      UBI_MIN_UNCOMMON_PRICE: 10
-      UBI_MAX_UNCOMMON_PRICE: 25000
-      UBI_MIN_RARE_PRICE: 10
-      UBI_MAX_RARE_PRICE: 250000
-      UBI_MIN_EPIC_PRICE: 10
-      UBI_MAX_EPIC_PRICE: 1000000
-      UBI_MIN_LEGENDARY_PRICE: 10
-      UBI_MAX_LEGENDARY_PRICE: 1000000
-
-      REDIS_URL: redis://r6helper-redis:6379
-
-      POSTGRES_SERVER_HOST: r6helper-postgres
-      POSTGRES_SERVER_PORT: 5432
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_SERVER_HOST: *postgres-container-name
+      POSTGRES_SERVER_PORT: *postgres-container-port
+      POSTGRES_DB: *postgres-db
     networks:
       - postgres-net
       - redis-net
@@ -255,39 +202,22 @@ services:
     image: r6helper-trades-manager
     ports:
       - "8098:8088"
+    env_file:
+      - ubi_constants.env
     environment:
-      UBI_GRAPHQL_URL: https://public-ubiservices.ubi.com/v1/profiles/me/uplay/graphql
-      UBI_CONTENT_TYPE: application/json
-      UBI_USER_AGENT: UbiServices_SDK_2020.Release.58_PC64_ansi_static
-      UBI_APP_ID: 80a4a0e8-8797-440f-8f4c-eaba87d0fdda
-      UBI_SPACE_ID: 0d2ae42d-4c27-4cb7-af6c-2099062302bb
-      UBI_REGION_ID: WW
-      UBI_LOCALE_CODE: en-US
-      UBI_DATE_FORMAT: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
-      UBI_ITEM_SALE_DATE_FORMAT: yyyy-MM-dd
-      UBI_MIN_UNCOMMON_PRICE: 10
-      UBI_MAX_UNCOMMON_PRICE: 25000
-      UBI_MIN_RARE_PRICE: 10
-      UBI_MAX_RARE_PRICE: 250000
-      UBI_MIN_EPIC_PRICE: 10
-      UBI_MAX_EPIC_PRICE: 1000000
-      UBI_MIN_LEGENDARY_PRICE: 10
-      UBI_MAX_LEGENDARY_PRICE: 1000000
-
       SCHEDULING_ENABLED: true
       SCHEDULING_FIXED_DELAY: 60000
       SCHEDULING_INITIAL_DELAY: 930000
 
-      REDIS_URL: redis://r6helper-redis:6379
+      REDIS_SERVER_HOST: *redis-container-name
+      REDIS_SERVER_PORT: *redis-container-port
 
-      POSTGRES_SERVER_HOST: r6helper-postgres
-      POSTGRES_SERVER_PORT: 5432
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_SERVER_HOST: *postgres-container-name
+      POSTGRES_SERVER_PORT: *postgres-container-port
+      POSTGRES_DB: *postgres-db
 
-      KAFKA_BOOTSTRAP_SERVER_HOST: r6helper-kafka
-      KAFKA_BOOTSTRAP_SERVER_PORT: 9092
+      KAFKA_BOOTSTRAP_SERVER_HOST: *kafka-container-name
+      KAFKA_BOOTSTRAP_SERVER_PORT: *kafka-container-port
     networks:
       - postgres-net
       - redis-net
@@ -301,30 +231,22 @@ services:
     image: r6helper-ubi-users-stats-fetcher
     ports:
       - "8099:8089"
+    env_file:
+      - ubi_constants.env
     environment:
-      UBI_GRAPHQL_URL: https://public-ubiservices.ubi.com/v1/profiles/me/uplay/graphql
-      UBI_CONTENT_TYPE: application/json
-      UBI_USER_AGENT: UbiServices_SDK_2020.Release.58_PC64_ansi_static
-      UBI_APP_ID: 80a4a0e8-8797-440f-8f4c-eaba87d0fdda
-      UBI_SPACE_ID: 0d2ae42d-4c27-4cb7-af6c-2099062302bb
-      UBI_REGION_ID: WW
-      UBI_LOCALE_CODE: en-US
-      UBI_DATE_FORMAT: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
-
       SCHEDULING_ENABLED: true
       SCHEDULING_FIXED_DELAY: 60000
       SCHEDULING_INITIAL_DELAY: 720000
 
-      REDIS_URL: redis://r6helper-redis:6379
+      REDIS_SERVER_HOST: *redis-container-name
+      REDIS_SERVER_PORT: *redis-container-port
 
-      POSTGRES_SERVER_HOST: postgres
-      POSTGRES_SERVER_PORT: 5432
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_SERVER_HOST: *postgres-container-name
+      POSTGRES_SERVER_PORT: *postgres-container-port
+      POSTGRES_DB: *postgres-db
 
-      KAFKA_BOOTSTRAP_SERVER_HOST: r6helper-kafka
-      KAFKA_BOOTSTRAP_SERVER_PORT: 9092
+      KAFKA_BOOTSTRAP_SERVER_HOST: *kafka-container-name
+      KAFKA_BOOTSTRAP_SERVER_PORT: *kafka-container-port
     networks:
       - postgres-net
       - redis-net
@@ -338,48 +260,35 @@ services:
     image: r6helper-users-ubi-accs-reauthorizer
     ports:
       - "8100:8090"
+    env_file:
+      - ubi_constants.env
+      - auth_constants.env
     environment:
-     # PASSWORD_ENCRYPTION_KEY: password encryption key for storing passwords in db, should be same as in telegram_bot_updates_consumer module
-
-      UBI_AUTH_URL: https://public-ubiservices.ubi.com/v3/profiles/sessions
-      UBI_TWO_FA_CODE_TO_SMS_URL: https://public-ubiservices.ubi.com/v3/profiles/me/2facode
-      UBI_CONTENT_TYPE: application/json
-      UBI_USER_AGENT: UbiServices_SDK_2020.Release.58_PC64_ansi_static
-      UBI_2FA_APP_ID: 685a3038-2b04-47ee-9c5a-6403381a46aa
-      UBI_SPACE_ID: 0d2ae42d-4c27-4cb7-af6c-2099062302bb
-      UBI_REGION_ID: WW
-      UBI_LOCALE_CODE: en-US
-      UBI_TRUSTED_DEVICE_ID: 16a2c7f446d2fcb5b92d0efee317da39
-      UBI_TRUSTED_DEVICE_FRIENDLY_NAME: Opera 114.0.0.0, Windows 10
-
       SCHEDULING_ENABLED: true
       SCHEDULING_FIXED_DELAY: 9000000
       SCHEDULING_INITIAL_DELAY: 90000
 
-      POSTGRES_SERVER_HOST: postgres
-      POSTGRES_SERVER_PORT: 5432
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_SERVER_HOST: *postgres-container-name
+      POSTGRES_SERVER_PORT: *postgres-container-port
+      POSTGRES_DB: *postgres-db
 
-      KAFKA_BOOTSTRAP_SERVER_HOST: r6helper-kafka
-      KAFKA_BOOTSTRAP_SERVER_PORT: 9092
+      KAFKA_BOOTSTRAP_SERVER_HOST: *kafka-container-name
+      KAFKA_BOOTSTRAP_SERVER_PORT: *kafka-container-port
     networks:
       - postgres-net
       - redis-net
       - kafka-net
 
-
   postgres:
-    container_name: r6helper-postgres
+    container_name: *postgres-container-name
     command: postgres -c 'max_connections=300'
     image: postgres:16.4
     ports:
       - "5432:5432"
+    env_file:
+      - auth_constants.env
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=1234
-      - POSTGRES_DB=postgres
+        POSTGRES_DB: *postgres-db
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
@@ -393,14 +302,14 @@ services:
       - "5050:80"
     networks:
       - postgres-net
+    env_file:
+      - auth_constants.env
     environment:
-      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
-      PGADMIN_DEFAULT_PASSWORD: 1234
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     restart: always
 
   redis:
-    container_name: r6helper-redis
+    container_name: *redis-container-name
     image: redis:7.2.4-bookworm
     ports:
       - "6379:6379"
@@ -422,7 +331,7 @@ services:
     restart: always
 
   kafka:
-    container_name: r6helper-kafka
+    container_name: *kafka-container-name
     image: bitnami/kafka:3.9.0
     ports:
       - "9092:9092"
@@ -443,7 +352,6 @@ services:
 
 networks:
   postgres-net:
-  zipkin-net:
   redis-net:
   kafka-net:
 
