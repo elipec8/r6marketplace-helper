@@ -66,12 +66,45 @@ public class ItemFilter {
     }
 
     public List<Item> filterItems(Collection<Item> items) {
+        List<String> seasonTagsValues;
+        List<String> rarityTagsValues;
+        List<String> operatorTagsValues;
+        List<String> weaponTagsValues;
+        List<String> eventTagsValues;
+        List<String> esportsTagsValues;
+        List<String> otherTagsValues;
+
+        if(this.tags !=null && !this.tags.isEmpty()) {
+            seasonTagsValues = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Season)).map(Tag::getValue).toList();
+            rarityTagsValues = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Rarity)).map(Tag::getValue).toList();
+            operatorTagsValues = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Operator)).map(Tag::getValue).toList();
+            weaponTagsValues = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Weapon)).map(Tag::getValue).toList();
+            eventTagsValues = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Event)).map(Tag::getValue).toList();
+            esportsTagsValues = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Esports_Team)).map(Tag::getValue).toList();
+            otherTagsValues = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Other)).map(Tag::getValue).toList();
+        }
+        else{
+            seasonTagsValues = new ArrayList<>();
+            rarityTagsValues = new ArrayList<>();
+            operatorTagsValues = new ArrayList<>();
+            weaponTagsValues = new ArrayList<>();
+            eventTagsValues = new ArrayList<>();
+            esportsTagsValues = new ArrayList<>();
+            otherTagsValues = new ArrayList<>();
+        }
+
         return items.stream()
                 .filter(item -> this.minSellPrice == null || item.getMinSellPrice() >= this.minSellPrice)
                 .filter(item -> this.maxBuyPrice == null || item.getMaxBuyPrice() <= this.maxBuyPrice)
                 .filter(item -> this.itemNamePatterns == null || this.itemNamePatterns.isEmpty() || this.itemNamePatterns.stream().anyMatch(s -> item.getName().toLowerCase().contains(s.toLowerCase())))
                 .filter(item -> this.itemTypes == null || this.itemTypes.isEmpty() || this.itemTypes.contains(item.getType()))
-                .filter(item -> this.tags == null || this.tags.isEmpty() || this.tags.stream().anyMatch(tag -> item.getTags().contains(tag.getValue())))
+                .filter(item -> rarityTagsValues.isEmpty() || item.getTags().stream().anyMatch(rarityTagsValues::contains))
+                .filter(item -> otherTagsValues.isEmpty() || item.getTags().stream().anyMatch(otherTagsValues::contains))
+                .filter(item -> eventTagsValues.isEmpty() || item.getTags().stream().anyMatch(eventTagsValues::contains))
+                .filter(item -> esportsTagsValues.isEmpty() || item.getTags().stream().anyMatch(esportsTagsValues::contains))
+                .filter(item -> seasonTagsValues.isEmpty() || item.getTags().stream().anyMatch(seasonTagsValues::contains))
+                .filter(item -> operatorTagsValues.isEmpty() || item.getTags().stream().anyMatch(operatorTagsValues::contains))
+                .filter(item -> weaponTagsValues.isEmpty() || item.getTags().stream().anyMatch(weaponTagsValues::contains))
                 .toList();
     }
 
