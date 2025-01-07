@@ -31,15 +31,15 @@ COPY ./utils-library-kafka/src ./utils-library-kafka/src
 
 RUN mvn -f ./utils-library-kafka/pom.xml clean install -DskipTests
 
-COPY ./users_ubi_accs_reauthorizer/pom.xml ./users_ubi_accs_reauthorizer/pom.xml
-COPY ./users_ubi_accs_reauthorizer/src ./users_ubi_accs_reauthorizer/src
+COPY ./item_stats_fetcher/pom.xml ./item_stats_fetcher/pom.xml
+COPY ./item_stats_fetcher/src ./item_stats_fetcher/src
 
-RUN mvn -f ./users_ubi_accs_reauthorizer/pom.xml clean install -DskipTests
+RUN mvn -f ./item_stats_fetcher/pom.xml clean install -DskipTests
 
 FROM eclipse-temurin:21.0.2_13-jre-alpine
 
 WORKDIR /app
 
-COPY --from=builder /app/users_ubi_accs_reauthorizer/target/*.jar /app/users_ubi_accs_reauthorizer.jar
+COPY --from=builder /app/item_stats_fetcher/target/*.jar /app/item_stats_fetcher.jar
 
-CMD ["java", "-jar", "users_ubi_accs_reauthorizer.jar"]
+CMD ["java", "-jar", "item_stats_fetcher.jar"]

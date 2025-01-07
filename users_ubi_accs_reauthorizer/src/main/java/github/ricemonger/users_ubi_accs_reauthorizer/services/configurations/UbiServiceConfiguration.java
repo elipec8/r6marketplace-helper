@@ -9,8 +9,6 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 public class UbiServiceConfiguration {
-    @Value("${ubi.urls.graphql}")
-    private String graphqlUrl;
     @Value("${ubi.urls.authorization}")
     private String authorizationUrl;
     @Value("${ubi.urls.twoFaCodeToSMS}")

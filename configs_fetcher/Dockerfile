@@ -26,20 +26,15 @@ COPY ./utils-library-graphQl/src ./utils-library-graphQl/src
 
 RUN mvn -f ./utils-library-graphQl/pom.xml clean install -DskipTests
 
-COPY ./utils-library-kafka/pom.xml ./utils-library-kafka/pom.xml
-COPY ./utils-library-kafka/src ./utils-library-kafka/src
+COPY ./configs_fetcher/pom.xml ./configs_fetcher/pom.xml
+COPY ./configs_fetcher/src ./configs_fetcher/src
 
-RUN mvn -f ./utils-library-kafka/pom.xml clean install -DskipTests
-
-COPY ./users_ubi_accs_reauthorizer/pom.xml ./users_ubi_accs_reauthorizer/pom.xml
-COPY ./users_ubi_accs_reauthorizer/src ./users_ubi_accs_reauthorizer/src
-
-RUN mvn -f ./users_ubi_accs_reauthorizer/pom.xml clean install -DskipTests
+RUN mvn -f ./configs_fetcher/pom.xml clean install -DskipTests
 
 FROM eclipse-temurin:21.0.2_13-jre-alpine
 
 WORKDIR /app
 
-COPY --from=builder /app/users_ubi_accs_reauthorizer/target/*.jar /app/users_ubi_accs_reauthorizer.jar
+COPY --from=builder /app/configs_fetcher/target/*.jar /app/configs_fetcher.jar
 
-CMD ["java", "-jar", "users_ubi_accs_reauthorizer.jar"]
+CMD ["java", "-jar", "configs_fetcher.jar"]

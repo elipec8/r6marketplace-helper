@@ -20,11 +20,6 @@
         </dependency>
         <dependency>
             <groupId>github.ricemonger</groupId>
-            <artifactId>utils-library-graphQl</artifactId>
-            <version>${utils.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>github.ricemonger</groupId>
             <artifactId>utils-library-redis</artifactId>
             <version>${utils.version}</version>
         </dependency>

@@ -15,7 +15,6 @@ class UbiServiceConfigurationTest {
     public void values_should_not_be_null() {
         assertNotNull(ubiServiceConfiguration.getAuthorizationUrl());
         assertNotNull(ubiServiceConfiguration.getContentType());
-        assertNotNull(ubiServiceConfiguration.getGraphqlUrl());
         assertNotNull(ubiServiceConfiguration.getTrustedDeviceFriendlyName());
         assertNotNull(ubiServiceConfiguration.getTrustedDeviceId());
         assertNotNull(ubiServiceConfiguration.getUbiLocaleCode());

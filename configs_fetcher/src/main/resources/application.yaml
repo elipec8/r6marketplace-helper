@@ -1,18 +1,18 @@
 ubi:
   urls:
-    graphql: https://public-ubiservices.ubi.com/v1/profiles/me/uplay/graphql
+    graphql: ${UBI_GRAPHQL_URL:https://public-ubiservices.ubi.com/v1/profiles/me/uplay/graphql}
   session:
-    contentType: application/json
-    userAgent: UbiServices_SDK_2020.Release.58_PC64_ansi_static
+    contentType: ${UBI_CONTENT_TYPE:application/json}
+    userAgent: ${UBI_USER_AGENT:UbiServices_SDK_2020.Release.58_PC64_ansi_static}
     baseAppId: ${UBI_APP_ID:80a4a0e8-8797-440f-8f4c-eaba87d0fdda}
     spaceId: ${UBI_SPACE_ID:0d2ae42d-4c27-4cb7-af6c-2099062302bb}
     regionId: ${UBI_REGION_ID:WW}
     localeCode: ${UBI_LOCALE_CODE:en-US}
-    dateFormat: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
-    itemSaleStatsDateFormat: yyyy-MM-dd
+    dateFormat: ${UBI_DATE_FORMAT:yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}
+    itemSaleStatsDateFormat: ${UBI_ITEM_SALE_DATE_FORMAT:yyyy-MM-dd}
 
 server:
-  port: 8082
+  port: ${SERVER_PORT:8081}
 
 app:
   scheduling:
@@ -23,8 +23,7 @@ app:
 
 logging:
   level:
-    github: debug
-
+    github: \${LOGGING_LEVEL:debug}
   file:
     name: ./logs/${LOG_FILE_DIRECTORY:prod}/${spring.application.name}.log
 
@@ -35,7 +34,7 @@ spring:
     redis:
       repositories:
         enabled: false
-      url: ${REDIS_URL:redis://localhost:6379}
+      url: redis://${REDIS_SERVER_HOST:localhost}:${REDIS_SERVER_PORT:6379}
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://${POSTGRES_SERVER_HOST:localhost}:${POSTGRES_SERVER_PORT:5432}/${POSTGRES_DB:postgres}

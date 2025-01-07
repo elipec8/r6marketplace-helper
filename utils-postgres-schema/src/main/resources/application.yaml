@@ -1,9 +1,9 @@
 server:
-  port: 8090
+  port: ${SERVER_PORT:8080}
 
 logging:
   level:
-    github: debug
+    github: \${LOGGING_LEVEL:debug}
 
   file:
     name: ./logs/${LOG_FILE_DIRECTORY:prod}/${spring.application.name}.log

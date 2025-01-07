@@ -1,20 +1,269 @@
 services:
 
+  configs_fetcher:
+    container_name: r6helper-configs-fetcher
+    build:
+      context: .
+      dockerfile: configs_fetcher/Dockerfile
+    image: r6helper-configs-fetcher
+    ports:
+      - "8091:8081"
+    env_file:
+      - ubi_constants.env
+      - containers_constants.env
+      - auth_constants.env
+    environment:
+      SCHEDULING_ENABLED: true
+      SCHEDULING_FIXED_DELAY: 86400000
+      SCHEDULING_INITIAL_DELAY: 20000
+    networks:
+      - postgres-net
+      - redis-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+      - main_user_reauthorizer
+
+  item_day_sales_ubi_stats_fetcher:
+    container_name: r6helper-item-day-sales-ubi-stats-fetcher
+    build:
+      context: .
+      dockerfile: item_day_sales_ubi_stats_fetcher/Dockerfile
+    image: r6helper-item-day-sales-ubi-stats-fetcher
+    ports:
+      - "8092:8082"
+    env_file:
+      - ubi_constants.env
+      - containers_constants.env
+      - auth_constants.env
+    environment:
+      SCHEDULING_ENABLED: true
+      SCHEDULING_FIXED_DELAY: 86400000
+      SCHEDULING_INITIAL_DELAY: 180000
+    networks:
+      - postgres-net
+      - redis-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+      - main_user_reauthorizer
+      - configs_fetcher
+      - items_stats_fetcher
+
+  items_stats_fetcher:
+    container_name: r6helper-item-stats-fetcher
+    build:
+      context: .
+      dockerfile: item_stats_fetcher/Dockerfile
+    image: item-stats-fetcher
+    ports:
+      - "8093:8083"
+    env_file:
+      - ubi_constants.env
+      - containers_constants.env
+      - auth_constants.env
+    environment:
+      SCHEDULING_ENABLED: true
+      SCHEDULING_FIXED_DELAY: 180000
+      SCHEDULING_INITIAL_DELAY: 30000
+    networks:
+      - postgres-net
+      - redis-net
+      - kafka-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+      - main_user_reauthorizer
+      - configs_fetcher
+
+  item_trade_stats_calculator:
+    container_name: r6helper-item-trade-stats-calculator
+    build:
+      context: .
+      dockerfile: item_trade_stats_calculator/Dockerfile
+    image: r6helper-item-trade-stats-calculator
+    ports:
+      - "8094:8084"
+    env_file:
+      - ubi_constants.env
+      - containers_constants.env
+      - auth_constants.env
+    environment:
+      SCHEDULING_ENABLED: true
+      SCHEDULING_FIXED_DELAY_ITEMS: 1200000
+      SCHEDULING_INITIAL_DELAY_ITEMS: 540000
+      SCHEDULING_FIXED_DELAY_TRADES: 60000
+      SCHEDULING_INITIAL_DELAY_TRADES: 780000
+    networks:
+        - postgres-net
+        - redis-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+      - main_user_reauthorizer
+      - configs_fetcher
+      - items_stats_fetcher
+      - item_day_sales_ubi_stats_fetcher
+
+
+  main_user_reauthorizer:
+    container_name: r6helper-main-user-reauthorizer
+    build:
+      context: .
+      dockerfile: main_user_reauthorizer/Dockerfile
+    image: r6helper-main-user-reauthorizer
+    ports:
+      - "8095:8085"
+    env_file:
+      - ubi_constants.env
+      - containers_constants.env
+      - auth_constants.env
+    environment:
+      SCHEDULING_ENABLED: true
+      SCHEDULING_FIXED_DELAY: 9000000
+      SCHEDULING_INITIAL_DELAY: 0
+    networks:
+      - postgres-net
+      - redis-net
+    restart: unless-stopped
+    depends_on:
+      - redis
+
+  notifications_service:
+    container_name: r6helper-notifications-service
+    build:
+      context: .
+      dockerfile: notifications_service/Dockerfile
+    image: r6helper-notifications-service
+    ports:
+      - "8096:8086"
+    env_file:
+      - ubi_constants.env
+      - containers_constants.env
+      - auth_constants.env
+    networks:
+      - postgres-net
+      - redis-net
+      - kafka-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+
+  telegram_bot_updates_consumer:
+    container_name: r6helper-telegram-bot-updates-consumer
+    build:
+      context: .
+      dockerfile: telegram_bot_updates_consumer/Dockerfile
+    image: r6helper-telegram-bot-updates-consumer
+    ports:
+      - "8097:8087"
+    env_file:
+      - ubi_constants.env
+      - containers_constants.env
+      - auth_constants.env
+    networks:
+      - postgres-net
+      - redis-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+
+  trades_manager:
+    container_name: r6helper-trades-manager
+    build:
+      context: .
+      dockerfile: trades_manager/Dockerfile
+    image: r6helper-trades-manager
+    ports:
+      - "8098:8088"
+    env_file:
+      - ubi_constants.env
+      - containers_constants.env
+      - auth_constants.env
+    environment:
+      SCHEDULING_ENABLED: true
+      SCHEDULING_FIXED_DELAY: 60000
+      SCHEDULING_INITIAL_DELAY: 930000
+    networks:
+      - postgres-net
+      - redis-net
+      - kafka-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+
+  ubi_users_stats_fetcher:
+    container_name: r6helper-ubi-users-stats-fetcher
+    build:
+      context: .
+      dockerfile: ubi_users_stats_fetcher/Dockerfile
+    image: r6helper-ubi-users-stats-fetcher
+    ports:
+      - "8099:8089"
+    env_file:
+      - ubi_constants.env
+      - containers_constants.env
+      - auth_constants.env
+    environment:
+      SCHEDULING_ENABLED: true
+      SCHEDULING_FIXED_DELAY: 60000
+      SCHEDULING_INITIAL_DELAY: 720000
+    networks:
+      - postgres-net
+      - redis-net
+      - kafka-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+
+  users_ubi_accs_reauthorizer:
+    container_name: r6helper-users-ubi-accs-reauthorizer
+    build:
+      context: .
+      dockerfile: users_ubi_accs_reauthorizer/Dockerfile
+    image: r6helper-users-ubi-accs-reauthorizer
+    ports:
+      - "8100:8090"
+    env_file:
+      - ubi_constants.env
+      - containers_constants.env
+      - auth_constants.env
+    environment:
+      SCHEDULING_ENABLED: true
+      SCHEDULING_FIXED_DELAY: 9000000
+      SCHEDULING_INITIAL_DELAY: 90000
+    networks:
+      - postgres-net
+      - redis-net
+      - kafka-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+
   postgres:
     container_name: r6helper-postgres
     command: postgres -c 'max_connections=300'
     image: postgres:16.4
     ports:
       - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=1234
-      - POSTGRES_DB=postgres
+    env_file:
+      - containers_constants.env
+      - auth_constants.env
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
       - postgres-net
-    restart: always
+    restart: unless-stopped
 
   pgadmin:
     container_name: r6helper-pgadmin
@@ -23,11 +272,11 @@ services:
       - "5050:80"
     networks:
       - postgres-net
+    env_file:
+      - auth_constants.env
     environment:
-      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
-      PGADMIN_DEFAULT_PASSWORD: 1234
       PGADMIN_CONFIG_SERVER_MODE: 'False'
-    restart: always
+    restart: unless-stopped
 
   redis:
     container_name: r6helper-redis
@@ -38,7 +287,7 @@ services:
       - redis-data:/data
     networks:
       - redis-net
-    restart: always
+    restart: unless-stopped
 
   redis-test:
     container_name: r6helper-redis-test
@@ -49,7 +298,7 @@ services:
       - test-redis-data:/data
     networks:
       - redis-net
-    restart: always
+    restart: unless-stopped
 
   kafka:
     container_name: r6helper-kafka
@@ -70,10 +319,10 @@ services:
       - kafka-data:/bitnami/kafka
     networks:
       - kafka-net
+    restart: unless-stopped
 
 networks:
   postgres-net:
-  zipkin-net:
   redis-net:
   kafka-net:
 

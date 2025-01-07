@@ -26,20 +26,15 @@ COPY ./utils-library-graphQl/src ./utils-library-graphQl/src
 
 RUN mvn -f ./utils-library-graphQl/pom.xml clean install -DskipTests
 
-COPY ./utils-library-kafka/pom.xml ./utils-library-kafka/pom.xml
-COPY ./utils-library-kafka/src ./utils-library-kafka/src
+COPY ./item_day_sales_ubi_stats_fetcher/pom.xml ./item_day_sales_ubi_stats_fetcher/pom.xml
+COPY ./item_day_sales_ubi_stats_fetcher/src ./item_day_sales_ubi_stats_fetcher/src
 
-RUN mvn -f ./utils-library-kafka/pom.xml clean install -DskipTests
-
-COPY ./users_ubi_accs_reauthorizer/pom.xml ./users_ubi_accs_reauthorizer/pom.xml
-COPY ./users_ubi_accs_reauthorizer/src ./users_ubi_accs_reauthorizer/src
-
-RUN mvn -f ./users_ubi_accs_reauthorizer/pom.xml clean install -DskipTests
+RUN mvn -f ./item_day_sales_ubi_stats_fetcher/pom.xml clean install -DskipTests
 
 FROM eclipse-temurin:21.0.2_13-jre-alpine
 
 WORKDIR /app
 
-COPY --from=builder /app/users_ubi_accs_reauthorizer/target/*.jar /app/users_ubi_accs_reauthorizer.jar
+COPY --from=builder /app/item_day_sales_ubi_stats_fetcher/target/*.jar /app/item_day_sales_ubi_stats_fetcher.jar
 
-CMD ["java", "-jar", "users_ubi_accs_reauthorizer.jar"]
+CMD ["java", "-jar", "item_day_sales_ubi_stats_fetcher.jar"]
