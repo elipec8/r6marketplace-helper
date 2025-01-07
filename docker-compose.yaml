@@ -19,6 +19,11 @@ services:
     networks:
       - postgres-net
       - redis-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+      - main_user_reauthorizer
 
   item_day_sales_ubi_stats_fetcher:
     container_name: r6helper-item-day-sales-ubi-stats-fetcher
@@ -39,13 +44,20 @@ services:
     networks:
       - postgres-net
       - redis-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+      - main_user_reauthorizer
+      - configs_fetcher
+      - items_stats_fetcher
 
   items_stats_fetcher:
     container_name: r6helper-item-stats-fetcher
     build:
       context: .
       dockerfile: item_stats_fetcher/Dockerfile
-    image: r6helper-item-stats-fetcher
+    image: item-stats-fetcher
     ports:
       - "8093:8083"
     env_file:
@@ -60,6 +72,12 @@ services:
       - postgres-net
       - redis-net
       - kafka-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+      - main_user_reauthorizer
+      - configs_fetcher
 
   item_trade_stats_calculator:
     container_name: r6helper-item-trade-stats-calculator
@@ -82,6 +100,15 @@ services:
     networks:
         - postgres-net
         - redis-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+      - main_user_reauthorizer
+      - configs_fetcher
+      - items_stats_fetcher
+      - item_day_sales_ubi_stats_fetcher
+
 
   main_user_reauthorizer:
     container_name: r6helper-main-user-reauthorizer
@@ -102,6 +129,9 @@ services:
     networks:
       - postgres-net
       - redis-net
+    restart: unless-stopped
+    depends_on:
+      - redis
 
   notifications_service:
     container_name: r6helper-notifications-service
@@ -119,6 +149,11 @@ services:
       - postgres-net
       - redis-net
       - kafka-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+      - kafka
 
   telegram_bot_updates_consumer:
     container_name: r6helper-telegram-bot-updates-consumer
@@ -135,6 +170,10 @@ services:
     networks:
       - postgres-net
       - redis-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
 
   trades_manager:
     container_name: r6helper-trades-manager
@@ -156,6 +195,10 @@ services:
       - postgres-net
       - redis-net
       - kafka-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
 
   ubi_users_stats_fetcher:
     container_name: r6helper-ubi-users-stats-fetcher
@@ -177,6 +220,10 @@ services:
       - postgres-net
       - redis-net
       - kafka-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
 
   users_ubi_accs_reauthorizer:
     container_name: r6helper-users-ubi-accs-reauthorizer
@@ -198,6 +245,10 @@ services:
       - postgres-net
       - redis-net
       - kafka-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
 
   postgres:
     container_name: r6helper-postgres
@@ -212,7 +263,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
     networks:
       - postgres-net
-    restart: always
+    restart: unless-stopped
 
   pgadmin:
     container_name: r6helper-pgadmin
@@ -225,7 +276,7 @@ services:
       - auth_constants.env
     environment:
       PGADMIN_CONFIG_SERVER_MODE: 'False'
-    restart: always
+    restart: unless-stopped
 
   redis:
     container_name: r6helper-redis
@@ -236,7 +287,7 @@ services:
       - redis-data:/data
     networks:
       - redis-net
-    restart: always
+    restart: unless-stopped
 
   redis-test:
     container_name: r6helper-redis-test
@@ -247,7 +298,7 @@ services:
       - test-redis-data:/data
     networks:
       - redis-net
-    restart: always
+    restart: unless-stopped
 
   kafka:
     container_name: r6helper-kafka
@@ -268,6 +319,7 @@ services:
       - kafka-data:/bitnami/kafka
     networks:
       - kafka-net
+    restart: unless-stopped
 
 networks:
   postgres-net:
