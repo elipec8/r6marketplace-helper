@@ -290,7 +290,7 @@ class PotentialTradeStatsCalculatorTest {
         int price = 500;
         int minutesToTrade = 432;
 
-        long expectedPriority = 100_000L / price * 500L * 50L * 100L * 3927L;
+        long expectedPriority = 400000000000L;
 
         assertEquals(new PotentialTradeStats(price, minutesToTrade, expectedPriority), potentialTradeStatsCalculator.calculateBuyTradeStats(item, price, minutesToTrade));
     }
@@ -306,7 +306,7 @@ class PotentialTradeStatsCalculatorTest {
         int price = 1500;
         int minutesToTrade = 432;
 
-        long expectedPriority = -1L * 100_000L / price * 500L * 50L * 100L * 3927L;
+        long expectedPriority = -132000000000L;
 
         assertEquals(new PotentialTradeStats(price, minutesToTrade, expectedPriority), potentialTradeStatsCalculator.calculateBuyTradeStats(item, price, minutesToTrade));
     }
@@ -338,7 +338,7 @@ class PotentialTradeStatsCalculatorTest {
         int price = 500;
         int minutesToTrade = 432;
 
-        long expectedPriority = -100_000L / price * 1L * 1L * 100L * 3927L;
+        long expectedPriority = -16000000L;
 
         assertEquals(new PotentialTradeStats(price, minutesToTrade, expectedPriority), potentialTradeStatsCalculator.calculateBuyTradeStats(item, price, minutesToTrade));
     }

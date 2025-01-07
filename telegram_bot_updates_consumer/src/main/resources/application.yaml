@@ -24,13 +24,13 @@ ubi:
     trustedDeviceId: ${UBI_TRUSTED_DEVICE_ID:16a2c7f446d2fcb5b92d0efee317da39}
     trustedDeviceFriendlyName: ${UBI_TRUSTED_DEVICE_FRIENDLY_NAME:Opera 114.0.0.0, Windows 10}
     minUncommonPrice: ${UBI_MIN_UNCOMMON_PRICE:10}
-    maxUncommonPrice: ${UBI_MAX_UNCOMMON_PRICE:25_000}
+    maxUncommonPrice: ${UBI_MAX_UNCOMMON_PRICE:25000}
     minRarePrice: ${UBI_MIN_RARE_PRICE:10}
-    maxRarePrice: ${UBI_MAX_RARE_PRICE:250_000}
+    maxRarePrice: ${UBI_MAX_RARE_PRICE:250000}
     minEpicPrice: ${UBI_MIN_EPIC_PRICE:10}
-    maxEpicPrice: ${UBI_MAX_EPIC_PRICE:1_000_000}
+    maxEpicPrice: ${UBI_MAX_EPIC_PRICE:1000000}
     minLegendaryPrice: ${UBI_MIN_LEGENDARY_PRICE:10}
-    maxLegendaryPrice: ${UBI_MAX_LEGENDARY_PRICE:1_000_000}
+    maxLegendaryPrice: ${UBI_MAX_LEGENDARY_PRICE:1000000}
 
 server:
   port: ${SERVER_PORT:8087}
