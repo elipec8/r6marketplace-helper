@@ -22,8 +22,8 @@ class ItemSaleUbiStatsServiceTest {
     public void saveAll_should_handle_to_service() {
         List mockedList = Mockito.mock(List.class);
 
-        itemSaleUbiStatsService.saveAllItemSaleUbiStats(mockedList);
+        itemSaleUbiStatsService.insertAllItemSaleUbiStats(mockedList);
 
-        verify(itemSaleUbiStatsDatabaseService).saveAll(mockedList);
+        verify(itemSaleUbiStatsDatabaseService).insertAll(mockedList);
     }
 }

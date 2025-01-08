@@ -22,7 +22,7 @@ public class ItemDaySalesUbiStatsPostgresDatabaseService implements ItemSaleUbiS
 
     @Override
     @Transactional
-    public void saveAll(Collection<GroupedItemDaySalesUbiStats> groupedItemDaySalesUbiStatsList) {
-        itemDaySalesUbiStatsRepository.saveAll(itemDaySalesUbiStatsEntityMapper.createEntities(groupedItemDaySalesUbiStatsList));
+    public void insertAll(Collection<GroupedItemDaySalesUbiStats> groupedItemDaySalesUbiStatsList) {
+        itemDaySalesUbiStatsRepository.insertAll(itemDaySalesUbiStatsEntityMapper.createEntities(groupedItemDaySalesUbiStatsList));
     }
 }

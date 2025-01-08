@@ -14,7 +14,7 @@ public class ItemSaleUbiStatsService {
 
     private final ItemSaleUbiStatsDatabaseService itemSaleUbiStatsDatabaseService;
 
-    public void saveAllItemSaleUbiStats(List<GroupedItemDaySalesUbiStats> ubiStats) {
-        itemSaleUbiStatsDatabaseService.saveAll(ubiStats);
+    public void insertAllItemSaleUbiStats(List<GroupedItemDaySalesUbiStats> ubiStats) {
+        itemSaleUbiStatsDatabaseService.insertAll(ubiStats);
     }
 }

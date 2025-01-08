@@ -5,5 +5,5 @@ import github.ricemonger.utils.DTOs.common.GroupedItemDaySalesUbiStats;
 import java.util.Collection;
 
 public interface ItemSaleUbiStatsDatabaseService {
-    void saveAll(Collection<GroupedItemDaySalesUbiStats> statsList);
+    void insertAll(Collection<GroupedItemDaySalesUbiStats> statsList);
 }

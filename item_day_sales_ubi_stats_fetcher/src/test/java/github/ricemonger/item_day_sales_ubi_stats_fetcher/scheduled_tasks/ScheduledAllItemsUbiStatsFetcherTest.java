@@ -31,7 +31,7 @@ class ScheduledAllItemsUbiStatsFetcherTest {
 
         scheduledAllItemsUbiStatsFetcher.fetchAllItemSalesUbiStats();
 
-        verify(itemSaleUbiStatsService).saveAllItemSaleUbiStats(same(stats));
+        verify(itemSaleUbiStatsService).insertAllItemSaleUbiStats(same(stats));
     }
 
 }
