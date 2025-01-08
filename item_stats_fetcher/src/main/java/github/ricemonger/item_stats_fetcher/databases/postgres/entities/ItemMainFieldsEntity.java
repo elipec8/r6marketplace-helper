@@ -1,6 +1,5 @@
 package github.ricemonger.item_stats_fetcher.databases.postgres.entities;
 
-import github.ricemonger.item_stats_fetcher.databases.postgres.services.ItemTagDTO;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
 import jakarta.persistence.*;
@@ -99,9 +98,5 @@ public class ItemMainFieldsEntity {
                    Objects.equals(lastSoldPrice, itemMainFieldsEntity.lastSoldPrice);
         }
         return false;
-    }
-
-    public List<ItemTagDTO> getItemTags() {
-        return tags.stream().map(tag -> new ItemTagDTO(itemId, tag.getValue())).toList();
     }
 }
