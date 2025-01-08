@@ -32,4 +32,13 @@ class ItemPostgresServiceTest {
 
         verify(itemMainFieldsRepository).saveAll(entities);
     }
+
+    @Test
+    public void updateAllItemsMinSellPrice_should_update_all_items_min_sell_price() {
+        List dtos = Mockito.mock(List.class);
+
+        itemPostgresService.updateAllItemsMinSellPrice(dtos);
+
+        verify(itemMainFieldsRepository).updateAllItemsMinSellPrice(dtos);
+    }
 }

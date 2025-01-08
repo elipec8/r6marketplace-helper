@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Table(name = "item")
-@Entity(name = "item")
+@Entity(name = "item_main_fields")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemEntity {
+public class ItemMainFieldsEntity {
     @Id
     @Column(name = "item_id")
     private String itemId;
@@ -56,7 +56,7 @@ public class ItemEntity {
     @Column(name = "last_sold_price")
     private Integer lastSoldPrice;
 
-    public ItemEntity(String itemId) {
+    public ItemMainFieldsEntity(String itemId) {
         this.itemId = itemId;
     }
 
@@ -70,15 +70,15 @@ public class ItemEntity {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ItemEntity itemEntity)) {
+        if (!(o instanceof ItemMainFieldsEntity itemMainFieldsEntity)) {
             return false;
         }
-        return Objects.equals(this.itemId, itemEntity.itemId);
+        return Objects.equals(this.itemId, itemMainFieldsEntity.itemId);
     }
 
     public boolean isFullyEqual(Object o) {
         if (this == o) return true;
-        if (o instanceof ItemEntity itemMainFieldsEntity) {
+        if (o instanceof ItemMainFieldsEntity itemMainFieldsEntity) {
 
             boolean tagsAreEqual = tags == null && itemMainFieldsEntity.tags == null || (
                     tags != null && itemMainFieldsEntity.tags != null &&

@@ -18,16 +18,16 @@ public class NotificationKafkaProducer {
         try {
             kafkaTemplate.send("private.notification", new SendTextDTO(userId, message));
         } catch (Exception e) {
-            log.warn("Failed to send private notification to user {} cause of: {}",userId, e.getMessage());
+            log.warn("Failed to send private notification to user {} cause of: {}", userId, e.getMessage());
         }
     }
 
     public void producePublicNotification(Long userId, String message) {
         log.info("Producing public notification for user with id: " + userId + " with message: " + message);
         try {
-        kafkaTemplate.send("public.notification", new SendTextDTO(userId, message));
+            kafkaTemplate.send("public.notification", new SendTextDTO(userId, message));
         } catch (Exception e) {
-            log.warn("Failed to send public notification to user {} cause of: {}",userId, e.getMessage());
+            log.warn("Failed to send public notification to user {} cause of: {}", userId, e.getMessage());
         }
     }
 

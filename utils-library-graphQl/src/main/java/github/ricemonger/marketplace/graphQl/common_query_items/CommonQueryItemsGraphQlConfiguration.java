@@ -18,7 +18,7 @@ public class CommonQueryItemsGraphQlConfiguration {
     }
 
     @Bean
-    public CommonQueryItemsGraphQlClientService fetchAllItemsStatsGraphQlClientService(GraphQlClientFactory graphQlClientFactory, GraphQlVariablesService graphQlVariablesService, CommonQueryItemsMapper commonQueryItemsMapper) {
+    public CommonQueryItemsGraphQlClientService commonQueryItemsGraphQlClientService(GraphQlClientFactory graphQlClientFactory, GraphQlVariablesService graphQlVariablesService, CommonQueryItemsMapper commonQueryItemsMapper) {
         return new CommonQueryItemsGraphQlClientService(graphQlClientFactory, graphQlVariablesService, commonQueryItemsMapper);
     }
 }

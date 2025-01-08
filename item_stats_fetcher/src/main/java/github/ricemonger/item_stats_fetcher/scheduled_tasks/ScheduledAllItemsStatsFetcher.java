@@ -25,9 +25,9 @@ public class ScheduledAllItemsStatsFetcher {
 
     private final CommonValuesService commonValuesService;
 
-    private final NotificationService telegramBotService;
+    private final NotificationService notificationService;
 
-    @Scheduled(fixedRateString = "${app.scheduling.fixedRate}", initialDelayString = "${app.scheduling.initialDelay}")
+    @Scheduled(fixedRateString = "${app.scheduling.stats.fixedRate}", initialDelayString = "${app.scheduling.stats.initialDelay}")
     public void fetchAllItemStats() {
         int expectedItemCount = 0;
         try {
@@ -53,6 +53,6 @@ public class ScheduledAllItemsStatsFetcher {
 
     private void onItemsAmountIncrease(int expectedItemCount, int fetchedItemsCount) {
         commonValuesService.setExpectedItemCount(fetchedItemsCount);
-        telegramBotService.notifyAllUsersAboutItemAmountIncrease(expectedItemCount, fetchedItemsCount);
+        notificationService.notifyAllUsersAboutItemAmountIncrease(expectedItemCount, fetchedItemsCount);
     }
 }

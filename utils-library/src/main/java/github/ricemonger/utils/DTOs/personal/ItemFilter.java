@@ -74,7 +74,7 @@ public class ItemFilter {
         List<String> esportsTagsValues;
         List<String> otherTagsValues;
 
-        if(this.tags !=null && !this.tags.isEmpty()) {
+        if (this.tags != null && !this.tags.isEmpty()) {
             seasonTagsValues = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Season)).map(Tag::getValue).toList();
             rarityTagsValues = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Rarity)).map(Tag::getValue).toList();
             operatorTagsValues = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Operator)).map(Tag::getValue).toList();
@@ -82,8 +82,7 @@ public class ItemFilter {
             eventTagsValues = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Event)).map(Tag::getValue).toList();
             esportsTagsValues = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Esports_Team)).map(Tag::getValue).toList();
             otherTagsValues = this.tags.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Other)).map(Tag::getValue).toList();
-        }
-        else{
+        } else {
             seasonTagsValues = new ArrayList<>();
             rarityTagsValues = new ArrayList<>();
             operatorTagsValues = new ArrayList<>();

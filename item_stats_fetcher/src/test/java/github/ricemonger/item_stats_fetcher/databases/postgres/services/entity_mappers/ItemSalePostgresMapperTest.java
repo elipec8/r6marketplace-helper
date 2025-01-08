@@ -1,6 +1,6 @@
 package github.ricemonger.item_stats_fetcher.databases.postgres.services.entity_mappers;
 
-import github.ricemonger.item_stats_fetcher.databases.postgres.entities.ItemEntity;
+import github.ricemonger.item_stats_fetcher.databases.postgres.entities.ItemMainFieldsEntity;
 import github.ricemonger.item_stats_fetcher.databases.postgres.entities.ItemSaleEntity;
 import github.ricemonger.item_stats_fetcher.databases.postgres.repositories.ItemMainFieldsPostgresRepository;
 import github.ricemonger.utils.DTOs.common.ItemSale;
@@ -34,14 +34,14 @@ class ItemSalePostgresMapperTest {
         ItemSale sale3 = new ItemSale("itemId3", LocalDateTime.of(2023, 1, 1, 0, 0), 300);
 
         when(itemMainFieldsRepository.findAllItemIds()).thenReturn(new HashSet<>(Set.of("itemId1", "itemId2", "itemId4")));
-        when(itemMainFieldsRepository.getReferenceById("itemId1")).thenReturn(new ItemEntity("itemId1"));
-        when(itemMainFieldsRepository.getReferenceById("itemId2")).thenReturn(new ItemEntity("itemId2"));
-        when(itemMainFieldsRepository.getReferenceById("itemId3")).thenReturn(new ItemEntity("itemId3"));
-        when(itemMainFieldsRepository.getReferenceById("itemId4")).thenReturn(new ItemEntity("itemId4"));
+        when(itemMainFieldsRepository.getReferenceById("itemId1")).thenReturn(new ItemMainFieldsEntity("itemId1"));
+        when(itemMainFieldsRepository.getReferenceById("itemId2")).thenReturn(new ItemMainFieldsEntity("itemId2"));
+        when(itemMainFieldsRepository.getReferenceById("itemId3")).thenReturn(new ItemMainFieldsEntity("itemId3"));
+        when(itemMainFieldsRepository.getReferenceById("itemId4")).thenReturn(new ItemMainFieldsEntity("itemId4"));
 
         List<ItemSaleEntity> expected = new ArrayList<>();
-        expected.add(new ItemSaleEntity(new ItemEntity("itemId1"), LocalDateTime.of(2021, 1, 1, 0, 0), 100));
-        expected.add(new ItemSaleEntity(new ItemEntity("itemId2"), LocalDateTime.of(2022, 1, 1, 0, 0), 200));
+        expected.add(new ItemSaleEntity(new ItemMainFieldsEntity("itemId1"), LocalDateTime.of(2021, 1, 1, 0, 0), 100));
+        expected.add(new ItemSaleEntity(new ItemMainFieldsEntity("itemId2"), LocalDateTime.of(2022, 1, 1, 0, 0), 200));
 
         List<ItemSaleEntity> actual = itemSalePostgresMapper.mapToSaleEntities(List.of(sale1, sale2, sale3));
 

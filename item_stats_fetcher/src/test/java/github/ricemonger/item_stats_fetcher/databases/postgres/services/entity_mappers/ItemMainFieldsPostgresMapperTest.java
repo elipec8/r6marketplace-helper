@@ -1,6 +1,6 @@
 package github.ricemonger.item_stats_fetcher.databases.postgres.services.entity_mappers;
 
-import github.ricemonger.item_stats_fetcher.databases.postgres.entities.ItemEntity;
+import github.ricemonger.item_stats_fetcher.databases.postgres.entities.ItemMainFieldsEntity;
 import github.ricemonger.item_stats_fetcher.databases.postgres.entities.TagEntity;
 import github.ricemonger.item_stats_fetcher.databases.postgres.repositories.TagValuePostgresRepository;
 import github.ricemonger.utils.DTOs.common.Item;
@@ -87,7 +87,7 @@ class ItemMainFieldsPostgresMapperTest {
 
         when(tagValueRepository.findAll()).thenReturn(List.of(tagEntity1, tagEntity2));
 
-        ItemEntity entity1 = new ItemEntity();
+        ItemMainFieldsEntity entity1 = new ItemMainFieldsEntity();
         entity1.setItemId("itemId");
         entity1.setAssetUrl("assetUrl");
         entity1.setName("name");
@@ -101,7 +101,7 @@ class ItemMainFieldsPostgresMapperTest {
         entity1.setLastSoldAt(LocalDateTime.of(2021, 1, 1, 1, 1));
         entity1.setLastSoldPrice(5);
 
-        ItemEntity entity2 = new ItemEntity();
+        ItemMainFieldsEntity entity2 = new ItemMainFieldsEntity();
         entity2.setItemId("itemId1");
         entity2.setAssetUrl("assetUrl1");
         entity2.setName("name1");
@@ -115,9 +115,9 @@ class ItemMainFieldsPostgresMapperTest {
         entity2.setLastSoldAt(LocalDateTime.of(2022, 1, 1, 1, 1));
         entity2.setLastSoldPrice(6);
 
-        List<ItemEntity> expected = List.of(entity1, entity2);
+        List<ItemMainFieldsEntity> expected = List.of(entity1, entity2);
 
-        List<ItemEntity> actual = itemMainFieldsPostgresMapper.mapToEntities(List.of(item1, item2));
+        List<ItemMainFieldsEntity> actual = itemMainFieldsPostgresMapper.mapToEntities(List.of(item1, item2));
 
         assertTrue(expected.stream().allMatch(ex -> actual.stream().anyMatch(ac -> ac.isFullyEqual(ex))) && expected.size() == actual.size());
     }

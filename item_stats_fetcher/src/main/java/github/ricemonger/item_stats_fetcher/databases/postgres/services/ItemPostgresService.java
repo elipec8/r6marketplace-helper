@@ -4,6 +4,7 @@ import github.ricemonger.item_stats_fetcher.databases.postgres.repositories.Item
 import github.ricemonger.item_stats_fetcher.databases.postgres.services.entity_mappers.ItemMainFieldsPostgresMapper;
 import github.ricemonger.item_stats_fetcher.services.abstractions.ItemDatabaseService;
 import github.ricemonger.utils.DTOs.common.ItemMainFieldsI;
+import github.ricemonger.utils.DTOs.common.ItemMinSellPrice;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -24,5 +25,11 @@ public class ItemPostgresService implements ItemDatabaseService {
     @Transactional
     public void saveAllItemsMainFields(Collection<? extends ItemMainFieldsI> items) {
         itemMainFieldsRepository.saveAll(itemMainFieldsPostgresMapper.mapToEntities(items));
+    }
+
+    @Override
+    @Transactional
+    public void updateAllItemsMinSellPrice(Collection<? extends ItemMinSellPrice> items) {
+        itemMainFieldsRepository.updateAllItemsMinSellPrice(items);
     }
 }

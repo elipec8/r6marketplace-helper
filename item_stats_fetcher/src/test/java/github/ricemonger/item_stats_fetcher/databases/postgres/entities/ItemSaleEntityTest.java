@@ -52,9 +52,9 @@ class ItemSaleEntityTest {
         ItemSaleEntity entity2 = new ItemSaleEntity("itemId");
         entity2.setSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
 
-        entity1.setItem(new ItemEntity("itemId1"));
+        entity1.setItem(new ItemMainFieldsEntity("itemId1"));
         assertNotEquals(entity1, entity2);
-        entity1.setItem(new ItemEntity("itemId"));
+        entity1.setItem(new ItemMainFieldsEntity("itemId"));
         entity1.setSoldAt(LocalDateTime.of(2021, 1, 2, 0, 0));
         assertNotEquals(entity1, entity2);
     }
@@ -67,7 +67,7 @@ class ItemSaleEntityTest {
 
     @Test
     public void getItemId_should_return_item_itemId() {
-        ItemEntity item = new ItemEntity();
+        ItemMainFieldsEntity item = new ItemMainFieldsEntity();
         item.setItemId("itemId");
         ItemSaleEntity itemSaleEntity = new ItemSaleEntity();
         itemSaleEntity.setItem(item);
@@ -82,7 +82,7 @@ class ItemSaleEntityTest {
 
     @Test
     public void isFullyEqual_should_return_true_if_equal() {
-        ItemEntity item = new ItemEntity();
+        ItemMainFieldsEntity item = new ItemMainFieldsEntity();
         item.setItemId("itemId");
 
         ItemSaleEntity entity1 = new ItemSaleEntity();
@@ -100,10 +100,10 @@ class ItemSaleEntityTest {
 
     @Test
     public void isFullyEqual_should_return_false_if_not_equal() {
-        ItemEntity item1 = new ItemEntity();
+        ItemMainFieldsEntity item1 = new ItemMainFieldsEntity();
         item1.setItemId("itemId1");
 
-        ItemEntity item2 = new ItemEntity();
+        ItemMainFieldsEntity item2 = new ItemMainFieldsEntity();
         item2.setItemId("itemId");
 
         ItemSaleEntity entity1 = new ItemSaleEntity();

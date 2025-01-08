@@ -14,7 +14,7 @@ class ItemMainFieldsEntityTest {
 
     @Test
     public void hashCode_should_be_same_for_different_ids() {
-        ItemEntity entity1 = new ItemEntity();
+        ItemMainFieldsEntity entity1 = new ItemMainFieldsEntity();
         entity1.setItemId("itemId1");
         entity1.setAssetUrl("url1");
         entity1.setName("name1");
@@ -28,7 +28,7 @@ class ItemMainFieldsEntityTest {
         entity1.setLastSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
         entity1.setLastSoldPrice(150);
 
-        ItemEntity entity2 = new ItemEntity();
+        ItemMainFieldsEntity entity2 = new ItemMainFieldsEntity();
         entity2.setItemId("itemId1");
 
         assertEquals(entity1.hashCode(), entity2.hashCode());
@@ -36,13 +36,13 @@ class ItemMainFieldsEntityTest {
 
     @Test
     public void equals_should_return_true_if_same() {
-        ItemEntity entity = new ItemEntity();
+        ItemMainFieldsEntity entity = new ItemMainFieldsEntity();
         assertEquals(entity, entity);
     }
 
     @Test
     public void equals_should_return_true_if_equal_id() {
-        ItemEntity entity1 = new ItemEntity();
+        ItemMainFieldsEntity entity1 = new ItemMainFieldsEntity();
         entity1.setItemId("itemId");
         entity1.setAssetUrl("url");
         entity1.setName("name");
@@ -56,7 +56,7 @@ class ItemMainFieldsEntityTest {
         entity1.setLastSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
         entity1.setLastSoldPrice(150);
 
-        ItemEntity entity2 = new ItemEntity();
+        ItemMainFieldsEntity entity2 = new ItemMainFieldsEntity();
         entity2.setItemId("itemId");
 
         assertEquals(entity1, entity2);
@@ -64,16 +64,16 @@ class ItemMainFieldsEntityTest {
 
     @Test
     public void equals_should_return_false_for_null() {
-        ItemEntity entity = new ItemEntity();
+        ItemMainFieldsEntity entity = new ItemMainFieldsEntity();
         assertNotEquals(null, entity);
     }
 
     @Test
     public void equals_should_return_false_for_different_ids() {
-        ItemEntity entity1 = new ItemEntity();
+        ItemMainFieldsEntity entity1 = new ItemMainFieldsEntity();
         entity1.setItemId("itemId");
 
-        ItemEntity entity2 = new ItemEntity();
+        ItemMainFieldsEntity entity2 = new ItemMainFieldsEntity();
         entity2.setItemId("itemId1");
         assertNotEquals(entity1, entity2);
     }
@@ -81,13 +81,13 @@ class ItemMainFieldsEntityTest {
 
     @Test
     public void isFullyEqual_should_return_true_if_same() {
-        ItemEntity entity = new ItemEntity();
+        ItemMainFieldsEntity entity = new ItemMainFieldsEntity();
         assertTrue(entity.isFullyEqual(entity));
     }
 
     @Test
     public void isFullyEqual_should_return_true_if_equal() {
-        ItemEntity entity1 = new ItemEntity();
+        ItemMainFieldsEntity entity1 = new ItemMainFieldsEntity();
         entity1.setItemId("itemId");
         entity1.setAssetUrl("url");
         entity1.setName("name");
@@ -101,7 +101,7 @@ class ItemMainFieldsEntityTest {
         entity1.setLastSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
         entity1.setLastSoldPrice(150);
 
-        ItemEntity entity2 = new ItemEntity();
+        ItemMainFieldsEntity entity2 = new ItemMainFieldsEntity();
         entity2.setItemId("itemId");
         entity2.setAssetUrl("url");
         entity2.setName("name");
@@ -120,7 +120,7 @@ class ItemMainFieldsEntityTest {
 
     @Test
     public void isFullyEqual_should_return_false_if_not_equal() {
-        ItemEntity entity1 = new ItemEntity();
+        ItemMainFieldsEntity entity1 = new ItemMainFieldsEntity();
         entity1.setItemId("itemId1");
         entity1.setAssetUrl("url1");
         entity1.setName("name1");
@@ -134,7 +134,7 @@ class ItemMainFieldsEntityTest {
         entity1.setLastSoldAt(LocalDateTime.of(2021, 1, 1, 0, 0));
         entity1.setLastSoldPrice(150);
 
-        ItemEntity entity2 = new ItemEntity();
+        ItemMainFieldsEntity entity2 = new ItemMainFieldsEntity();
         entity2.setItemId("itemId");
         entity2.setAssetUrl("url");
         entity2.setName("name");

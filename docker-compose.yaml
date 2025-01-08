@@ -66,8 +66,10 @@ services:
       - auth_constants.env
     environment:
       SCHEDULING_ENABLED: true
-      SCHEDULING_FIXED_DELAY: 180000
-      SCHEDULING_INITIAL_DELAY: 30000
+      SCHEDULING_FIXED_DELAY_STATS: 180000
+      SCHEDULING_INITIAL_DELAY_STATS: 30000
+      SCHEDULING_FIXED_DELAY_PRICE: 60000
+      SCHEDULING_INITIAL_DELAY_PRICE: 885000
     networks:
       - postgres-net
       - redis-net

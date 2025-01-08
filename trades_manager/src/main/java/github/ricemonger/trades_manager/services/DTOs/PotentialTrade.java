@@ -29,7 +29,7 @@ public abstract class PotentialTrade implements Comparable<PotentialTrade> {
 
             Long thisPriority = this.getTradePriority() > 0 ? this.getTradePriority() * thisPriorityMultiplier : this.getTradePriority() / thisPriorityMultiplier;
 
-            Long otherPriority = other.getTradePriority() > 0?  other.getTradePriority() * otherPriorityMultiplier : other.getTradePriority() / otherPriorityMultiplier;
+            Long otherPriority = other.getTradePriority() > 0 ? other.getTradePriority() * otherPriorityMultiplier : other.getTradePriority() / otherPriorityMultiplier;
 
             int priorityComparison = otherPriority.compareTo(thisPriority);
 
