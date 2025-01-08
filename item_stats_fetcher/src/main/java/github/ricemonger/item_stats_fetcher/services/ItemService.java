@@ -23,11 +23,15 @@ public class ItemService {
         itemDatabaseService.saveAllItemsMainFields(items);
     }
 
-    public void insertAllItemsLastSales(Collection<? extends SoldItemDetails> items) {
-        itemSaleDatabaseService.insertAllItemsLastSales(items);
+    public void updateAllItemsMainFieldsExceptTags(Collection<Item> items) {
+        itemDatabaseService.updateAllItemsMainFieldsExceptTags(items);
     }
 
     public void updateAllItemsMinSellPrice(Collection<? extends ItemMinSellPrice> items) {
         itemDatabaseService.updateAllItemsMinSellPrice(items);
+    }
+
+    public void insertAllItemsLastSales(Collection<? extends SoldItemDetails> items) {
+        itemSaleDatabaseService.insertAllItemsLastSales(items);
     }
 }

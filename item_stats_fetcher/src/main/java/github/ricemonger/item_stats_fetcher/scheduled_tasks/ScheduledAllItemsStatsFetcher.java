@@ -33,20 +33,26 @@ public class ScheduledAllItemsStatsFetcher {
 
         Collection<Item> items = graphQlClientService.fetchAllItemStats();
 
-        saveAllItemsAndInsertSales(items);
-
         if (items.size() < expectedItemCount) {
             log.error("Fetched {} items' stats, expected {}", items.size(), expectedItemCount);
+            saveAllItemsAndInsertSales(items);
         } else if (items.size() > expectedItemCount) {
             log.info("Fetched {} items' stats, expected {}", items.size(), expectedItemCount);
+            saveAllItemsAndInsertSales(items);
             onItemsAmountIncrease(expectedItemCount, items.size());
         } else {
+            updateAllItemsAndInsertSales(items);
             log.info("Fetched {} items' stats", items.size());
         }
     }
 
     private void saveAllItemsAndInsertSales(Collection<Item> items) {
         itemService.saveAllItemsMainFields(items);
+        itemService.insertAllItemsLastSales(items);
+    }
+
+    private void updateAllItemsAndInsertSales(Collection<Item> items) {
+        itemService.updateAllItemsMainFieldsExceptTags(items);
         itemService.insertAllItemsLastSales(items);
     }
 

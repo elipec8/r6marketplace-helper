@@ -34,12 +34,12 @@ class ItemServiceTest {
     }
 
     @Test
-    public void insertAllItemsLastSales_should_handle_to_service() {
-        List<SoldItemDetails> list = List.of();
+    public void updateAllItemsMainFieldsExceptTags_should_handle_to_service() {
+        List list = mock(List.class);
 
-        itemService.insertAllItemsLastSales(list);
+        itemService.updateAllItemsMainFieldsExceptTags(list);
 
-        verify(itemSaleDatabaseService).insertAllItemsLastSales(same(list));
+        verify(itemDatabaseService).updateAllItemsMainFieldsExceptTags(same(list));
     }
 
     @Test
@@ -49,5 +49,14 @@ class ItemServiceTest {
         itemService.updateAllItemsMinSellPrice(list);
 
         verify(itemDatabaseService).updateAllItemsMinSellPrice(same(list));
+    }
+
+    @Test
+    public void insertAllItemsLastSales_should_handle_to_service() {
+        List<SoldItemDetails> list = List.of();
+
+        itemService.insertAllItemsLastSales(list);
+
+        verify(itemSaleDatabaseService).insertAllItemsLastSales(same(list));
     }
 }

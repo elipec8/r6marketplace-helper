@@ -42,6 +42,7 @@ public class ScheduledAllItemsStatsFetcherTest {
 
         scheduledAllItemsStatsFetcher.fetchAllItemStats();
 
+        verify(itemService,never()).updateAllItemsMainFieldsExceptTags(any());
         verify(itemService).saveAllItemsMainFields(same(itemMainFields));
         verify(itemService).insertAllItemsLastSales(same(itemMainFields));
     }
@@ -56,6 +57,7 @@ public class ScheduledAllItemsStatsFetcherTest {
 
         scheduledAllItemsStatsFetcher.fetchAllItemStats();
 
+        verify(itemService,never()).updateAllItemsMainFieldsExceptTags(any());
         verify(itemService).saveAllItemsMainFields(same(itemMainFields));
         verify(itemService).insertAllItemsLastSales(same(itemMainFields));
         verify(commonValuesService).setExpectedItemCount(2);
@@ -72,7 +74,8 @@ public class ScheduledAllItemsStatsFetcherTest {
 
         scheduledAllItemsStatsFetcher.fetchAllItemStats();
 
-        verify(itemService).saveAllItemsMainFields(any());
+        verify(itemService,never()).saveAllItemsMainFields(any());
+        verify(itemService).updateAllItemsMainFieldsExceptTags(same(itemMainFields));
         verify(itemService).insertAllItemsLastSales(same(itemMainFields));
     }
 }
