@@ -59,7 +59,7 @@ public class ScheduledAllItemsStatsFetcherTest {
         verify(itemService).saveAllItemsMainFields(same(itemMainFields));
         verify(itemService).insertAllItemsLastSales(same(itemMainFields));
         verify(commonValuesService).setExpectedItemCount(2);
-        verify(telegramBotService).notifyAllUsersAboutItemAmountIncrease(0, 1);
+        verify(telegramBotService).notifyAllUsersAboutItemAmountIncrease(1, 2);
     }
 
     @Test
