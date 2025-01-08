@@ -64,7 +64,7 @@ class ItemServiceTest {
 
         List<ItemRecalculationRequiredFields> existingItems = List.of(existingItemToRecalculate1, existingItemToRecalculate2, existingItemNoSales);
 
-        when(itemDatabaseService.findAllRecalculationRequiredFields()).thenReturn(existingItems);
+        when(itemDatabaseService.findAllItemsRecalculationRequiredFields()).thenReturn(existingItems);
 
         ItemSale item1TodaySale1 = new ItemSale("itemId1", LocalDateTime.now().withMinute(1).withNano(0), 100);
         ItemSale item1TodaySale2 = new ItemSale("itemId1", LocalDateTime.now().withMinute(2).withNano(0), 200);
@@ -269,7 +269,7 @@ class ItemServiceTest {
 
         itemService.recalculateAndSaveAllItemsHistoryFields();
 
-        verify(itemDatabaseService).saveAllHistoryFields(argThat(arg ->
+        verify(itemDatabaseService).updateAllItemsHistoryFields(argThat(arg ->
                 arg.size() == expectedResult.size() &&
                 expectedResult.stream().allMatch(expectedItem ->
                         arg.stream().anyMatch(actualItem ->

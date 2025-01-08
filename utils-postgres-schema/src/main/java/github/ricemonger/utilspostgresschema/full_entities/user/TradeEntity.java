@@ -68,4 +68,19 @@ public class TradeEntity {
         }
         return false;
     }
+
+    public boolean isFullyEqual(TradeEntity trade) {
+        return equals(trade) &&
+               state == trade.state &&
+               category == trade.category &&
+               Objects.equals(expiresAt, trade.expiresAt) &&
+               Objects.equals(lastModifiedAt, trade.lastModifiedAt) &&
+               Objects.equals(item, trade.item) &&
+               Objects.equals(successPaymentPrice, trade.successPaymentPrice) &&
+               Objects.equals(successPaymentFee, trade.successPaymentFee) &&
+               Objects.equals(proposedPaymentPrice, trade.proposedPaymentPrice) &&
+               Objects.equals(proposedPaymentFee, trade.proposedPaymentFee) &&
+               Objects.equals(minutesToTrade, trade.minutesToTrade) &&
+               Objects.equals(tradePriority, trade.tradePriority);
+    }
 }

@@ -1,12 +1,12 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemHistoryFieldsEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemRecalculationRequiredFieldsEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.TagEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemHistoryFieldsDtoProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemRecalculationRequiredFieldsDtoProjection;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemRecalculationRequiredFields;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.ItemHistoryFieldsI;
+import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
+import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,18 +19,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemEntitiesMapper {
 
-    public ItemRecalculationRequiredFields createRecalculationRequiredFieldsDTO(ItemRecalculationRequiredFieldsEntity itemEntity) {
+    public ItemRecalculationRequiredFields createRecalculationRequiredFieldsDTO(ItemRecalculationRequiredFieldsDtoProjection projection) {
         return new ItemRecalculationRequiredFields(
-                itemEntity.getItemId(),
-                itemEntity.getRarity(),
-                itemEntity.getMaxBuyPrice(),
-                itemEntity.getBuyOrdersCount(),
-                itemEntity.getMinSellPrice(),
-                itemEntity.getSellOrdersCount());
+                projection.getItemId(),
+                projection.getRarity(),
+                projection.getMaxBuyPrice(),
+                projection.getBuyOrdersCount(),
+                projection.getMinSellPrice(),
+                projection.getSellOrdersCount());
     }
 
-    public ItemHistoryFieldsEntity createHistoryFieldsEntity(ItemHistoryFieldsI item) {
-        return new ItemHistoryFieldsEntity(
+    public ItemHistoryFieldsDtoProjection createHistoryFieldsDtoProjection(ItemHistoryFieldsI item) {
+        return new ItemHistoryFieldsDtoProjection(
                 item.getItemId(),
                 item.getMonthAveragePrice(),
                 item.getMonthMedianPrice(),

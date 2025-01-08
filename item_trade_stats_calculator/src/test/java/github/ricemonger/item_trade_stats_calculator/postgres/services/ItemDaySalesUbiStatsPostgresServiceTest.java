@@ -1,6 +1,6 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemDaySalesUbiStatsEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemDaySalesUbiStatsDtoProjection;
 import github.ricemonger.item_trade_stats_calculator.postgres.repositories.ItemDaySalesUbiStatsPostgresRepository;
 import github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item.ItemDaySalesUbiStatsEntityMapper;
 import github.ricemonger.utils.DTOs.common.ItemDaySalesUbiStats;
@@ -26,15 +26,15 @@ class ItemDaySalesUbiStatsPostgresServiceTest {
 
     @Test
     public void findAllForLastMonth_should_return_mapped_repository_result() {
-        ItemDaySalesUbiStatsEntity entity1 = Mockito.mock(ItemDaySalesUbiStatsEntity.class);
-        ItemDaySalesUbiStatsEntity entity2 = Mockito.mock(ItemDaySalesUbiStatsEntity.class);
+        ItemDaySalesUbiStatsDtoProjection projection1 = Mockito.mock(ItemDaySalesUbiStatsDtoProjection.class);
+        ItemDaySalesUbiStatsDtoProjection projection2 = Mockito.mock(ItemDaySalesUbiStatsDtoProjection.class);
 
         ItemDaySalesUbiStats dto1 = Mockito.mock(ItemDaySalesUbiStats.class);
         ItemDaySalesUbiStats dto2 = Mockito.mock(ItemDaySalesUbiStats.class);
 
-        Mockito.when(itemDaySalesUbiStatsRepository.findAllForLastMonth()).thenReturn(List.of(entity1, entity2));
-        Mockito.when(itemDaySalesUbiStatsEntityMapper.createDTO(entity1)).thenReturn(dto1);
-        Mockito.when(itemDaySalesUbiStatsEntityMapper.createDTO(entity2)).thenReturn(dto2);
+        Mockito.when(itemDaySalesUbiStatsRepository.findAllForLastMonth()).thenReturn(List.of(projection1, projection2));
+        Mockito.when(itemDaySalesUbiStatsEntityMapper.createDTO(projection1)).thenReturn(dto1);
+        Mockito.when(itemDaySalesUbiStatsEntityMapper.createDTO(projection2)).thenReturn(dto2);
 
         List<ItemDaySalesUbiStats> result = itemDaySalesUbiStatsPostgresService.findAllForLastMonth();
 

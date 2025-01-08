@@ -29,6 +29,6 @@ public class TradeService {
             }
         }
 
-        tradeDatabaseService.saveAllPrioritizedTrades(prioritizedTrades);
+        tradeDatabaseService.prioritizeAllTrades(prioritizedTrades);
     }
 }

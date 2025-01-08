@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 public interface ItemDatabaseService {
-    void saveAllHistoryFields(Collection<? extends ItemHistoryFieldsI> items);
+    void updateAllItemsHistoryFields(Collection<? extends ItemHistoryFieldsI> items);
 
-    List<ItemRecalculationRequiredFields> findAllRecalculationRequiredFields();
+    List<ItemRecalculationRequiredFields> findAllItemsRecalculationRequiredFields();
 }

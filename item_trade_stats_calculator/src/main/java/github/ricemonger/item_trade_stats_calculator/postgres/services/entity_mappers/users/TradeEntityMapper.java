@@ -1,7 +1,7 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.users;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.PrioritizedTradeEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.UbiTradeEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.PrioritizedTradeDtoProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.UbiTradeDtoProjection;
 import github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item.ItemEntitiesMapper;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.PrioritizedTrade;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
@@ -14,23 +14,23 @@ public class TradeEntityMapper {
 
     private final ItemEntitiesMapper itemEntitiesMapper;
 
-    public UbiTrade createUbiTrade(UbiTradeEntity ubiTradeEntity) {
+    public UbiTrade createUbiTrade(UbiTradeDtoProjection projection) {
         return new UbiTrade(
-                ubiTradeEntity.getTradeId(),
-                ubiTradeEntity.getState(),
-                ubiTradeEntity.getCategory(),
-                ubiTradeEntity.getExpiresAt(),
-                ubiTradeEntity.getLastModifiedAt(),
-                itemEntitiesMapper.createItem(ubiTradeEntity.getItem()),
-                ubiTradeEntity.getSuccessPaymentPrice(),
-                ubiTradeEntity.getSuccessPaymentFee(),
-                ubiTradeEntity.getProposedPaymentPrice(),
-                ubiTradeEntity.getProposedPaymentFee()
+                projection.getTradeId(),
+                projection.getState(),
+                projection.getCategory(),
+                projection.getExpiresAt(),
+                projection.getLastModifiedAt(),
+                itemEntitiesMapper.createItem(projection.getItem()),
+                projection.getSuccessPaymentPrice(),
+                projection.getSuccessPaymentFee(),
+                projection.getProposedPaymentPrice(),
+                projection.getProposedPaymentFee()
         );
     }
 
-    public PrioritizedTradeEntity createPrioritizedTradeEntity(PrioritizedTrade prioritizedTrade) {
-        return new PrioritizedTradeEntity(
+    public PrioritizedTradeDtoProjection createPrioritizedTradeDtoProjection(PrioritizedTrade prioritizedTrade) {
+        return new PrioritizedTradeDtoProjection(
                 prioritizedTrade.getTradeId(),
                 prioritizedTrade.getMinutesToTrade(),
                 prioritizedTrade.getTradePriority()

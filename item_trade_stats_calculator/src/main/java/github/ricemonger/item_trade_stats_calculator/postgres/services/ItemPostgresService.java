@@ -1,7 +1,6 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.repositories.ItemHistoryFieldsPostgresRepository;
-import github.ricemonger.item_trade_stats_calculator.postgres.repositories.ItemRecalculationRequiredFieldsPostgresRepository;
+import github.ricemonger.item_trade_stats_calculator.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item.ItemEntitiesMapper;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemRecalculationRequiredFields;
 import github.ricemonger.item_trade_stats_calculator.services.abstractions.ItemDatabaseService;
@@ -17,19 +16,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemPostgresService implements ItemDatabaseService {
 
-    private final ItemHistoryFieldsPostgresRepository itemHistoryFieldsRepository;
-
-    private final ItemRecalculationRequiredFieldsPostgresRepository itemMainFieldsRepository;
+    private final ItemPostgresRepository itemRepository;
 
     private final ItemEntitiesMapper itemEntitiesMapper;
 
     @Transactional
-    public void saveAllHistoryFields(Collection<? extends ItemHistoryFieldsI> items) {
-        itemHistoryFieldsRepository.saveAll(items.stream().map(itemEntitiesMapper::createHistoryFieldsEntity).toList());
+    public void updateAllItemsHistoryFields(Collection<? extends ItemHistoryFieldsI> items) {
+        itemRepository.updateAllItemsHistoryFields(items.stream().map(itemEntitiesMapper::createHistoryFieldsDtoProjection).toList());
     }
 
     @Transactional(readOnly = true)
-    public List<ItemRecalculationRequiredFields> findAllRecalculationRequiredFields() {
-        return itemMainFieldsRepository.findAll().stream().map(itemEntitiesMapper::createRecalculationRequiredFieldsDTO).toList();
+    public List<ItemRecalculationRequiredFields> findAllItemsRecalculationRequiredFields() {
+        return itemRepository.findAllItemsRecalculationRequiredFields().stream().map(itemEntitiesMapper::createRecalculationRequiredFieldsDTO).toList();
     }
 }

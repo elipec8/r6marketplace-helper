@@ -60,6 +60,6 @@ class TradeServiceTest {
 
         tradeService.recalculateAndSaveUsersCurrentTradesPotentialTradeStats();
 
-        verify(tradeDatabaseService).saveAllPrioritizedTrades(argThat(trades -> trades.contains(buyPrioritizedTrade) && trades.contains(sellPrioritizedTrade) && trades.size() == 2));
+        verify(tradeDatabaseService).prioritizeAllTrades(argThat(trades -> trades.contains(buyPrioritizedTrade) && trades.contains(sellPrioritizedTrade) && trades.size() == 2));
     }
 }

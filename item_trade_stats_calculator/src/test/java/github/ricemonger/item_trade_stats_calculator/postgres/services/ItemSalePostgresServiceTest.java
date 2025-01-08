@@ -1,6 +1,6 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemSaleEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemSaleDtoProjection;
 import github.ricemonger.item_trade_stats_calculator.postgres.repositories.ItemSalePostgresRepository;
 import github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item.ItemSaleEntityMapper;
 import github.ricemonger.utils.DTOs.common.ItemSale;
@@ -26,16 +26,16 @@ class ItemSalePostgresServiceTest {
 
     @Test
     public void findAllForLastMonth_should_return_mapped_dtos() {
-        ItemSaleEntity entity1 = Mockito.mock(ItemSaleEntity.class);
-        ItemSaleEntity entity2 = Mockito.mock(ItemSaleEntity.class);
+        ItemSaleDtoProjection projection1 = Mockito.mock(ItemSaleDtoProjection.class);
+        ItemSaleDtoProjection projection2 = Mockito.mock(ItemSaleDtoProjection.class);
 
         ItemSale dto1 = Mockito.mock(ItemSale.class);
         ItemSale dto2 = Mockito.mock(ItemSale.class);
 
-        Mockito.when(itemSaleRepository.findAllForLastMonth()).thenReturn(List.of(entity1, entity2));
+        Mockito.when(itemSaleRepository.findAllForLastMonth()).thenReturn(List.of(projection1, projection2));
 
-        Mockito.when(itemSaleEntityMapper.createDTO(entity1)).thenReturn(dto1);
-        Mockito.when(itemSaleEntityMapper.createDTO(entity2)).thenReturn(dto2);
+        Mockito.when(itemSaleEntityMapper.createDTO(projection1)).thenReturn(dto1);
+        Mockito.when(itemSaleEntityMapper.createDTO(projection2)).thenReturn(dto2);
 
         List<ItemSale> result = itemSalePostgresService.findAllForLastMonth();
 

@@ -18,6 +18,7 @@ public interface ItemSalePostgresRepository extends JpaRepository<ItemSaleEntity
         }
     }
 
+    @Transactional
     @Modifying
     @Query(value = "INSERT INTO item_sale (item_id, sold_at, price) VALUES (:#{#itemSaleEntity.item.itemId}, :#{#itemSaleEntity.soldAt}, :#{#itemSaleEntity.price}) ON CONFLICT (item_id, sold_at) DO NOTHING", nativeQuery = true)
     void insert(ItemSaleEntity itemSaleEntity);

@@ -1,15 +1,15 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemHistoryFieldsEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemRecalculationRequiredFieldsEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.TagEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemHistoryFieldsDtoProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemRecalculationRequiredFieldsDtoProjection;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemHistoryFields;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemRecalculationRequiredFields;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.ItemHistoryFieldsI;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
+import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
+import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,26 +28,26 @@ class ItemEntitiesMapperTest {
 
     @Test
     public void createRecalculationRequiredFieldsDTO_should_return_expected_result() {
-        ItemRecalculationRequiredFieldsEntity entity = new ItemRecalculationRequiredFieldsEntity();
-        entity.setItemId("itemId");
-        entity.setRarity(ItemRarity.RARE);
-        entity.setMaxBuyPrice(1);
-        entity.setBuyOrdersCount(2);
-        entity.setMinSellPrice(3);
-        entity.setSellOrdersCount(4);
+        ItemRecalculationRequiredFieldsDtoProjection projection = new ItemRecalculationRequiredFieldsDtoProjection();
+        projection.setItemId("itemId");
+        projection.setRarity(ItemRarity.RARE);
+        projection.setMaxBuyPrice(1);
+        projection.setBuyOrdersCount(2);
+        projection.setMinSellPrice(3);
+        projection.setSellOrdersCount(4);
 
-        ItemRecalculationRequiredFields result = itemEntitiesMapper.createRecalculationRequiredFieldsDTO(entity);
+        ItemRecalculationRequiredFields result = itemEntitiesMapper.createRecalculationRequiredFieldsDTO(projection);
 
-        assertEquals(entity.getItemId(), result.getItemId());
-        assertEquals(entity.getRarity(), result.getRarity());
-        assertEquals(entity.getMaxBuyPrice(), result.getMaxBuyPrice());
-        assertEquals(entity.getBuyOrdersCount(), result.getBuyOrdersCount());
-        assertEquals(entity.getMinSellPrice(), result.getMinSellPrice());
-        assertEquals(entity.getSellOrdersCount(), result.getSellOrdersCount());
+        assertEquals(projection.getItemId(), result.getItemId());
+        assertEquals(projection.getRarity(), result.getRarity());
+        assertEquals(projection.getMaxBuyPrice(), result.getMaxBuyPrice());
+        assertEquals(projection.getBuyOrdersCount(), result.getBuyOrdersCount());
+        assertEquals(projection.getMinSellPrice(), result.getMinSellPrice());
+        assertEquals(projection.getSellOrdersCount(), result.getSellOrdersCount());
     }
 
     @Test
-    public void createHistoryFieldsEntity_should_return_expected_result() {
+    public void createHistoryFieldsDtoProjection_should_return_expected_result() {
         ItemHistoryFieldsI dto = new ItemHistoryFields();
 
         dto.setItemId("itemId");
@@ -76,7 +76,7 @@ class ItemEntitiesMapperTest {
         dto.setPriceToBuyIn168Hours(23);
         dto.setPriceToBuyIn720Hours(24);
 
-        ItemHistoryFieldsEntity result = itemEntitiesMapper.createHistoryFieldsEntity(dto);
+        ItemHistoryFieldsDtoProjection result = itemEntitiesMapper.createHistoryFieldsDtoProjection(dto);
 
         assertEquals(dto.getItemId(), result.getItemId());
         assertEquals(dto.getMonthAveragePrice(), result.getMonthAveragePrice());

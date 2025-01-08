@@ -1,7 +1,9 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.repositories;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemDaySalesUbiStatsEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemIdEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemDaySalesUbiStatsDtoProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemDaySalesUbiStatsDtoProjectionI;
+import github.ricemonger.utilspostgresschema.full_entities.item.ItemDaySalesUbiStatsEntity;
+import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +23,7 @@ class ItemDaySalesUbiStatsPostgresRepositoryTest {
     private ItemDaySalesUbiStatsPostgresRepository itemDaySalesUbiStatsPostgresRepository;
 
     @SpyBean
-    private ItemIdPostgresRepository itemPostgresRepository;
+    private ItemPostgresRepository itemPostgresRepository;
 
     @BeforeEach
     void setUp() {
@@ -31,17 +33,17 @@ class ItemDaySalesUbiStatsPostgresRepositoryTest {
 
     @Test
     public void findAllLastMonthSales_should_return_only_entities_from_last_30_days() {
-        ItemIdEntity item1 = itemPostgresRepository.saveAndFlush(new ItemIdEntity("item1"));
+        ItemEntity item1 = itemPostgresRepository.saveAndFlush(new ItemEntity("item1"));
         ItemDaySalesUbiStatsEntity entity1 = new ItemDaySalesUbiStatsEntity();
         entity1.setItem(item1);
         entity1.setDate(LocalDate.now());
 
-        ItemIdEntity item2 = itemPostgresRepository.saveAndFlush(new ItemIdEntity("item2"));
+        ItemEntity item2 = itemPostgresRepository.saveAndFlush(new ItemEntity("item2"));
         ItemDaySalesUbiStatsEntity entity2 = new ItemDaySalesUbiStatsEntity();
         entity2.setItem(item2);
         entity2.setDate(LocalDate.now().minusDays(30));
 
-        ItemIdEntity item3 = itemPostgresRepository.saveAndFlush(new ItemIdEntity("item3"));
+        ItemEntity item3 = itemPostgresRepository.saveAndFlush(new ItemEntity("item3"));
         ItemDaySalesUbiStatsEntity entity3 = new ItemDaySalesUbiStatsEntity();
         entity3.setItem(item3);
         entity3.setDate(LocalDate.now().minusDays(31));
@@ -50,9 +52,9 @@ class ItemDaySalesUbiStatsPostgresRepositoryTest {
         itemDaySalesUbiStatsPostgresRepository.save(entity2);
         itemDaySalesUbiStatsPostgresRepository.save(entity3);
 
-        List<ItemDaySalesUbiStatsEntity> result = itemDaySalesUbiStatsPostgresRepository.findAllForLastMonth();
-        for (ItemDaySalesUbiStatsEntity entity : result) {
-            assertNotEquals(entity3.getItem().getItemId(), entity.getItem().getItemId());
+        List<ItemDaySalesUbiStatsDtoProjectionI> result = itemDaySalesUbiStatsPostgresRepository.findAllForLastMonth();
+        for (ItemDaySalesUbiStatsDtoProjectionI dto : result) {
+            assertNotEquals(entity3.getItem().getItemId(), dto.getItemId());
         }
 
         assertEquals(2, result.size());

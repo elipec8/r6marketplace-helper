@@ -1,7 +1,6 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.repositories.PrioritizedTradePostgresRepository;
-import github.ricemonger.item_trade_stats_calculator.postgres.repositories.UbiTradePostgresRepository;
+import github.ricemonger.item_trade_stats_calculator.postgres.repositories.TradePostgresRepository;
 import github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.users.TradeEntityMapper;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.PrioritizedTrade;
 import github.ricemonger.item_trade_stats_calculator.services.abstractions.TradeDatabaseService;
@@ -15,19 +14,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TradePostgresService implements TradeDatabaseService {
 
+    private final TradePostgresRepository tradeRepository;
+
     private final TradeEntityMapper tradesEntityMapper;
-
-    private final UbiTradePostgresRepository ubiTradeRepository;
-
-    private final PrioritizedTradePostgresRepository prioritizedTradeRepository;
 
     @Override
     public List<UbiTrade> findAllUbiTrades() {
-        return ubiTradeRepository.findAll().stream().map(tradesEntityMapper::createUbiTrade).toList();
+        return tradeRepository.findAllUbiTrades().stream().map(tradesEntityMapper::createUbiTrade).toList();
     }
 
     @Override
-    public void saveAllPrioritizedTrades(List<PrioritizedTrade> trades) {
-        prioritizedTradeRepository.saveAll(trades.stream().map(tradesEntityMapper::createPrioritizedTradeEntity).toList());
+    public void prioritizeAllTrades(List<PrioritizedTrade> trades) { //update
+        tradeRepository.prioritizeAllTrades(trades.stream().map(tradesEntityMapper::createPrioritizedTradeDtoProjection).toList());
     }
 }

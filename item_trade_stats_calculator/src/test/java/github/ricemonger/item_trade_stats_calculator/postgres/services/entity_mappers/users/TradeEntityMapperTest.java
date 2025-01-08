@@ -1,14 +1,14 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.users;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.PrioritizedTradeEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.UbiTradeEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.PrioritizedTradeDtoProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.UbiTradeDtoProjection;
 import github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item.ItemEntitiesMapper;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.PrioritizedTrade;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
+import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,19 +36,19 @@ class TradeEntityMapperTest {
 
         when(itemEntitiesMapper.createItem(itemEntity)).thenReturn(item);
 
-        UbiTradeEntity entity = new UbiTradeEntity();
-        entity.setTradeId("tradeId");
-        entity.setState(TradeState.Created);
-        entity.setCategory(TradeCategory.Buy);
-        entity.setExpiresAt(LocalDateTime.of(2021, 1, 1, 0, 0));
-        entity.setLastModifiedAt(LocalDateTime.of(2022, 1, 1, 0, 0));
-        entity.setItem(itemEntity);
-        entity.setSuccessPaymentPrice(100);
-        entity.setSuccessPaymentFee(10);
-        entity.setProposedPaymentPrice(200);
-        entity.setProposedPaymentFee(20);
+        UbiTradeDtoProjection projection = new UbiTradeDtoProjection();
+        projection.setTradeId("tradeId");
+        projection.setState(TradeState.Created);
+        projection.setCategory(TradeCategory.Buy);
+        projection.setExpiresAt(LocalDateTime.of(2021, 1, 1, 0, 0));
+        projection.setLastModifiedAt(LocalDateTime.of(2022, 1, 1, 0, 0));
+        projection.setItem(itemEntity);
+        projection.setSuccessPaymentPrice(100);
+        projection.setSuccessPaymentFee(10);
+        projection.setProposedPaymentPrice(200);
+        projection.setProposedPaymentFee(20);
 
-        UbiTrade trade = tradeEntityMapper.createUbiTrade(entity);
+        UbiTrade trade = tradeEntityMapper.createUbiTrade(projection);
 
         assertEquals("tradeId", trade.getTradeId());
         assertEquals(TradeState.Created, trade.getState());
@@ -63,16 +63,16 @@ class TradeEntityMapperTest {
     }
 
     @Test
-    public void createPrioritizedTradeEntity_should_return_expected_result() {
+    public void createPrioritizedTradeDtoProjection_should_return_expected_result() {
         PrioritizedTrade dto = new PrioritizedTrade();
         dto.setTradeId("tradeId");
         dto.setMinutesToTrade(1);
         dto.setTradePriority(2L);
 
-        PrioritizedTradeEntity entity = tradeEntityMapper.createPrioritizedTradeEntity(dto);
+        PrioritizedTradeDtoProjection projection = tradeEntityMapper.createPrioritizedTradeDtoProjection(dto);
 
-        assertEquals("tradeId", entity.getTradeId());
-        assertEquals(1, entity.getMinutesToTrade());
-        assertEquals(2L, entity.getTradePriority());
+        assertEquals("tradeId", projection.getTradeId());
+        assertEquals(1, projection.getMinutesToTrade());
+        assertEquals(2L, projection.getTradePriority());
     }
 }

@@ -8,5 +8,5 @@ import java.util.List;
 public interface TradeDatabaseService {
     List<UbiTrade> findAllUbiTrades();
 
-    void saveAllPrioritizedTrades(List<PrioritizedTrade> trades);
+    void prioritizeAllTrades(List<PrioritizedTrade> trades);
 }

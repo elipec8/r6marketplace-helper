@@ -18,6 +18,7 @@ public interface ItemMainFieldsPostgresRepository extends JpaRepository<ItemMain
             updateExceptTagsField(itemMainFieldsEntity);
         }
     }
+    @Transactional
     @Modifying
     @Query("UPDATE item_main_fields i SET i.assetUrl = :#{#itemMainFieldsEntity.assetUrl}, i.name = :#{#itemMainFieldsEntity.name}, i.rarity = :#{#itemMainFieldsEntity.rarity}, i.type = :#{#itemMainFieldsEntity.type}, i.maxBuyPrice = :#{#itemMainFieldsEntity.maxBuyPrice}, i.buyOrdersCount = :#{#itemMainFieldsEntity.buyOrdersCount}, i.minSellPrice = :#{#itemMainFieldsEntity.minSellPrice}, i.sellOrdersCount = :#{#itemMainFieldsEntity.sellOrdersCount}, i.lastSoldAt = :#{#itemMainFieldsEntity.lastSoldAt}, i.lastSoldPrice = :#{#itemMainFieldsEntity.lastSoldPrice} WHERE i.itemId = :#{#itemMainFieldsEntity.itemId}")
     void updateExceptTagsField(ItemMainFieldsEntity itemMainFieldsEntity);
@@ -29,6 +30,7 @@ public interface ItemMainFieldsPostgresRepository extends JpaRepository<ItemMain
         }
     }
 
+    @Transactional
     @Modifying
     @Query("UPDATE item_main_fields i SET i.minSellPrice = :#{#itemMinSellPrice.minSellPrice} WHERE i.itemId = :#{#itemMinSellPrice.itemId}")
     void updateItemMinSellPrice(ItemMinSellPrice itemMinSellPrice);

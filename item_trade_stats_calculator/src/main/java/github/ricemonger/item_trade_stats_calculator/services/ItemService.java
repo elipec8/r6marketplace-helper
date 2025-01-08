@@ -31,7 +31,7 @@ public class ItemService {
     private final PotentialTradeStatsCalculator potentialTradeStatsCalculator;
 
     public void recalculateAndSaveAllItemsHistoryFields() {
-        Set<Item> itemWithRequiredFields = itemDatabaseService.findAllRecalculationRequiredFields().stream().map(ItemRecalculationRequiredFields::toItem).collect(Collectors.toSet());
+        Set<Item> itemWithRequiredFields = itemDatabaseService.findAllItemsRecalculationRequiredFields().stream().map(ItemRecalculationRequiredFields::toItem).collect(Collectors.toSet());
 
         Collection<ItemSale> lastMonthSales = saleDatabaseService.findAllForLastMonth();
         Collection<ItemDaySalesUbiStats> lastMonthSalesUbiStats = itemSaleUbiStatsDatabaseService.findAllForLastMonth();
@@ -86,7 +86,7 @@ public class ItemService {
             item.setPriceToBuyIn168Hours(potentialTradeToBuyIn168Hours.getPrice());
             item.setPriceToBuyIn720Hours(potentialTradeToBuyIn720Hours.getPrice());
         }
-        itemDatabaseService.saveAllHistoryFields(itemWithRequiredFields);
+        itemDatabaseService.updateAllItemsHistoryFields(itemWithRequiredFields);
     }
 
     private TodayPriceStats recalculateTodayItemPriceStats(ItemDaySalesStatsByItemId todayStats) {

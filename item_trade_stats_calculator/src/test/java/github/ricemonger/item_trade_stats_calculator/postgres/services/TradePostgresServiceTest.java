@@ -1,9 +1,8 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.PrioritizedTradeEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.UbiTradeEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.repositories.PrioritizedTradePostgresRepository;
-import github.ricemonger.item_trade_stats_calculator.postgres.repositories.UbiTradePostgresRepository;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.PrioritizedTradeDtoProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.UbiTradeDtoProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.repositories.TradePostgresRepository;
 import github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.users.TradeEntityMapper;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.PrioritizedTrade;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
@@ -28,22 +27,22 @@ class TradePostgresServiceTest {
     @MockBean
     private TradeEntityMapper tradesEntityMapper;
     @MockBean
-    private UbiTradePostgresRepository ubiTradeRepository;
-    @MockBean
-    private PrioritizedTradePostgresRepository prioritizedTradeRepository;
+    private TradePostgresRepository ubiTradeRepository;
+    @Autowired
+    private TradePostgresRepository tradePostgresRepository;
 
     @Test
     public void findAllUbiTrades_should_return_mapped_entities() {
-        UbiTradeEntity entity1 = Mockito.mock(UbiTradeEntity.class);
-        UbiTradeEntity entity2 = Mockito.mock(UbiTradeEntity.class);
+        UbiTradeDtoProjection projection1 = Mockito.mock(UbiTradeDtoProjection.class);
+        UbiTradeDtoProjection projection2 = Mockito.mock(UbiTradeDtoProjection.class);
 
-        when(ubiTradeRepository.findAll()).thenReturn(List.of(entity1, entity2));
+        when(ubiTradeRepository.findAllUbiTrades()).thenReturn(List.of(projection1, projection2));
 
         UbiTrade dto1 = Mockito.mock(UbiTrade.class);
         UbiTrade dto2 = Mockito.mock(UbiTrade.class);
 
-        when(tradesEntityMapper.createUbiTrade(entity1)).thenReturn(dto1);
-        when(tradesEntityMapper.createUbiTrade(entity2)).thenReturn(dto2);
+        when(tradesEntityMapper.createUbiTrade(projection1)).thenReturn(dto1);
+        when(tradesEntityMapper.createUbiTrade(projection2)).thenReturn(dto2);
 
         List<UbiTrade> result = tradePostgresService.findAllUbiTrades();
 
@@ -53,18 +52,18 @@ class TradePostgresServiceTest {
     }
 
     @Test
-    public void saveAllPrioritizedTrades_should_save_all_mapped_dtos() {
+    public void saveAllPrioritizedTrades_should_prioritize_all_mapped_dtos() {
         PrioritizedTrade dto1 = Mockito.mock(PrioritizedTrade.class);
         PrioritizedTrade dto2 = Mockito.mock(PrioritizedTrade.class);
 
-        PrioritizedTradeEntity entity1 = Mockito.mock(PrioritizedTradeEntity.class);
-        PrioritizedTradeEntity entity2 = Mockito.mock(PrioritizedTradeEntity.class);
+        PrioritizedTradeDtoProjection projection1 = Mockito.mock(PrioritizedTradeDtoProjection.class);
+        PrioritizedTradeDtoProjection projection2 = Mockito.mock(PrioritizedTradeDtoProjection.class);
 
-        when(tradesEntityMapper.createPrioritizedTradeEntity(dto1)).thenReturn(entity1);
-        when(tradesEntityMapper.createPrioritizedTradeEntity(dto2)).thenReturn(entity2);
+        when(tradesEntityMapper.createPrioritizedTradeDtoProjection(dto1)).thenReturn(projection1);
+        when(tradesEntityMapper.createPrioritizedTradeDtoProjection(dto2)).thenReturn(projection2);
 
-        tradePostgresService.saveAllPrioritizedTrades(List.of(dto1, dto2));
+        tradePostgresService.prioritizeAllTrades(List.of(dto1, dto2));
 
-        verify(prioritizedTradeRepository).saveAll(argThat(entities -> ((List<?>) entities).contains(entity1) && ((List<?>) entities).contains(entity2) && ((List<PrioritizedTradeEntity>) entities).size() == 2));
+        verify(tradePostgresRepository).prioritizeAllTrades(argThat(arg -> arg.stream().anyMatch(projection1::equals) && arg.stream().anyMatch(projection2::equals) && arg.size() == 2));
     }
 }

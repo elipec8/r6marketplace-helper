@@ -1,7 +1,6 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemIdEntity;
-import github.ricemonger.item_trade_stats_calculator.postgres.entities.ItemSaleEntity;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemSaleDtoProjection;
 import github.ricemonger.utils.DTOs.common.ItemSale;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,8 @@ class ItemSaleEntityMapperTest {
 
     @Test
     public void createDTO_should_return_expected_dto() {
-        ItemSaleEntity entity = new ItemSaleEntity();
-        entity.setItem(new ItemIdEntity("itemId"));
+        ItemSaleDtoProjection entity = new ItemSaleDtoProjection();
+        entity.setItemId("itemId");
         entity.setSoldAt(LocalDateTime.of(2021, 9, 1, 0, 0));
         entity.setPrice(100);
 
