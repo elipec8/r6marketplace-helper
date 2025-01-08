@@ -17,8 +17,8 @@ server:
 app:
   scheduling:
     enabled: ${SCHEDULING_ENABLED:true}
-    fixedRate: ${SCHEDULING_FIXED_DELAY:86400000}
-    initialDelay: ${SCHEDULING_INITIAL_DELAY:20000}
+    fixedRate: ${SCHEDULING_FIXED_DELAY:9000000}
+    initialDelay: ${SCHEDULING_INITIAL_DELAY:0}
     # every 24h with 20s delay
 
 logging:

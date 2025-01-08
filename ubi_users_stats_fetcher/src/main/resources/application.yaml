@@ -18,7 +18,7 @@ app:
   scheduling:
     enabled: ${SCHEDULING_ENABLED:true}
     fixedRate: ${SCHEDULING_FIXED_DELAY:60000}
-    initialDelay: ${SCHEDULING_INITIAL_DELAY:720000}
+    initialDelay: ${SCHEDULING_INITIAL_DELAY:0}
     # every 1m after 12m of delay
 
 logging:

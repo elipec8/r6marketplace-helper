@@ -14,7 +14,7 @@ services:
       - auth_constants.env
     environment:
       SCHEDULING_ENABLED: true
-      SCHEDULING_FIXED_DELAY: 86400000
+      SCHEDULING_FIXED_DELAY: 9000000
       SCHEDULING_INITIAL_DELAY: 20000
     networks:
       - postgres-net
@@ -40,7 +40,7 @@ services:
     environment:
       SCHEDULING_ENABLED: true
       SCHEDULING_FIXED_DELAY: 86400000
-      SCHEDULING_INITIAL_DELAY: 180000
+      SCHEDULING_INITIAL_DELAY: 90000
     networks:
       - postgres-net
       - redis-net
@@ -66,10 +66,10 @@ services:
       - auth_constants.env
     environment:
       SCHEDULING_ENABLED: true
-      SCHEDULING_FIXED_DELAY_STATS: 180000
+      SCHEDULING_FIXED_DELAY_STATS: 90000
       SCHEDULING_INITIAL_DELAY_STATS: 30000
       SCHEDULING_FIXED_DELAY_PRICE: 60000
-      SCHEDULING_INITIAL_DELAY_PRICE: 885000
+      SCHEDULING_INITIAL_DELAY_PRICE: 375000
     networks:
       - postgres-net
       - redis-net
@@ -95,10 +95,10 @@ services:
       - auth_constants.env
     environment:
       SCHEDULING_ENABLED: true
-      SCHEDULING_FIXED_DELAY_ITEMS: 1200000
-      SCHEDULING_INITIAL_DELAY_ITEMS: 540000
+      SCHEDULING_FIXED_DELAY_ITEMS: 180000
+      SCHEDULING_INITIAL_DELAY_ITEMS: 300000
       SCHEDULING_FIXED_DELAY_TRADES: 60000
-      SCHEDULING_INITIAL_DELAY_TRADES: 780000
+      SCHEDULING_INITIAL_DELAY_TRADES: 390000
     networks:
         - postgres-net
         - redis-net
@@ -192,7 +192,7 @@ services:
     environment:
       SCHEDULING_ENABLED: true
       SCHEDULING_FIXED_DELAY: 60000
-      SCHEDULING_INITIAL_DELAY: 930000
+      SCHEDULING_INITIAL_DELAY: 420000
     networks:
       - postgres-net
       - redis-net
@@ -217,7 +217,7 @@ services:
     environment:
       SCHEDULING_ENABLED: true
       SCHEDULING_FIXED_DELAY: 60000
-      SCHEDULING_INITIAL_DELAY: 720000
+      SCHEDULING_INITIAL_DELAY: 360000
     networks:
       - postgres-net
       - redis-net

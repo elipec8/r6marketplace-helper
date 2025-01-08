@@ -16,12 +16,12 @@ app:
   scheduling:
     enabled: ${SCHEDULING_ENABLED:true}
     items:
-      fixedRate: ${SCHEDULING_FIXED_DELAY_ITEMS:1200000}
-      initialDelay: ${SCHEDULING_INITIAL_DELAY_ITEMS:540000}
+      fixedRate: ${SCHEDULING_FIXED_DELAY_ITEMS:180000}
+      initialDelay: ${SCHEDULING_INITIAL_DELAY_ITEMS:0}
       # every 20m after 9m of delay
     trades:
       fixedRate: ${SCHEDULING_FIXED_DELAY_TRADES:60000}
-      initialDelay: ${SCHEDULING_INITIAL_DELAY_TRADES:780000}
+      initialDelay: ${SCHEDULING_INITIAL_DELAY_TRADES:0}
       # every 1m after 13m of delay
 
 

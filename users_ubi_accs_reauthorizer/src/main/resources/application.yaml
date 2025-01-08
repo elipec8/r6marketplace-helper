@@ -25,7 +25,7 @@ app:
   scheduling:
     enabled: ${SCHEDULING_ENABLED:true}
     fixedRate: ${SCHEDULING_FIXED_DELAY:9000000}
-    initialDelay: ${SCHEDULING_INITIAL_DELAY:90000}
+    initialDelay: ${SCHEDULING_INITIAL_DELAY:0}
     # every 2.5h after 1.5m of delay
 
 logging:

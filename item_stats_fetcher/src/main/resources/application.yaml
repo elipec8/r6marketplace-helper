@@ -18,12 +18,12 @@ app:
   scheduling:
     enabled: ${SCHEDULING_ENABLED:true}
     stats:
-      fixedRate: ${SCHEDULING_FIXED_DELAY_STATS:180000}
-      initialDelay: ${SCHEDULING_INITIAL_DELAY_STATS:30000}
+      fixedRate: ${SCHEDULING_FIXED_DELAY_STATS:90000}
+      initialDelay: ${SCHEDULING_INITIAL_DELAY_STATS:0}
     # every 3m after 30s of delay
     price:
       fixedRate: ${SCHEDULING_FIXED_DELAY_PRICE:60000}
-      initialDelay: ${SCHEDULING_INITIAL_DELAY_PRICE:885000}
+      initialDelay: ${SCHEDULING_INITIAL_DELAY_PRICE:0}
 
 logging:
   level:
