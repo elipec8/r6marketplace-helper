@@ -23,14 +23,14 @@ class ItemSalePostgresServiceTest {
     private ItemSalePostgresMapper itemSalePostgresMapper;
 
     @Test
-    public void saveAllItemsLastSales_should_save_mapped_result() {
+    public void saveAllItemsLastSales_should_insert_mapped_result() {
         List dtos = Mockito.mock(List.class);
         List entities = Mockito.mock(List.class);
         when(itemSalePostgresMapper.mapToSaleEntities(dtos)).thenReturn(entities);
 
-        itemSalePostgresService.saveAllItemsLastSales(dtos);
+        itemSalePostgresService.insertAllItemsLastSales(dtos);
 
-        verify(itemSaleRepository).saveAll(entities);
+        verify(itemSaleRepository).insertAll(entities);
     }
 
 }

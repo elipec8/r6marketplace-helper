@@ -1,12 +1,17 @@
 package github.ricemonger.item_stats_fetcher.databases.postgres.repositories;
 
 import github.ricemonger.item_stats_fetcher.databases.postgres.entities.ItemMainFieldsEntity;
+import github.ricemonger.item_stats_fetcher.databases.postgres.entities.TagEntity;
 import github.ricemonger.utils.DTOs.common.ItemMinSellPrice;
+import github.ricemonger.utils.enums.ItemRarity;
+import github.ricemonger.utils.enums.ItemType;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -22,26 +27,6 @@ class ItemMainFieldsPostgresRepositoryTest {
     @BeforeEach
     void setUp() {
         itemPostgresRepository.deleteAll();
-    }
-
-    @Test
-    public void findAllItemIds_should_return_all_item_ids() {
-        ItemMainFieldsEntity item1 = new ItemMainFieldsEntity();
-        item1.setItemId("itemId1");
-        ItemMainFieldsEntity item2 = new ItemMainFieldsEntity();
-        item2.setItemId("itemId4");
-        ItemMainFieldsEntity item3 = new ItemMainFieldsEntity();
-        item3.setItemId("itemId7");
-        itemPostgresRepository.save(item1);
-        itemPostgresRepository.save(item2);
-        itemPostgresRepository.save(item3);
-
-        Set<String> itemIds = itemPostgresRepository.findAllItemIds();
-
-        assertEquals(3, itemIds.size());
-        assertTrue(itemIds.contains("itemId1"));
-        assertTrue(itemIds.contains("itemId4"));
-        assertTrue(itemIds.contains("itemId7"));
     }
 
     @Test
@@ -70,5 +55,25 @@ class ItemMainFieldsPostgresRepositoryTest {
         assertEquals(150, itemPostgresRepository.findById("itemId1").get().getMinSellPrice());
         assertEquals(250, itemPostgresRepository.findById("itemId2").get().getMinSellPrice());
         assertEquals(350, itemPostgresRepository.findById("itemId3").get().getMinSellPrice());
+    }
+
+    @Test
+    public void findAllItemIds_should_return_all_item_ids() {
+        ItemMainFieldsEntity item1 = new ItemMainFieldsEntity();
+        item1.setItemId("itemId1");
+        ItemMainFieldsEntity item2 = new ItemMainFieldsEntity();
+        item2.setItemId("itemId4");
+        ItemMainFieldsEntity item3 = new ItemMainFieldsEntity();
+        item3.setItemId("itemId7");
+        itemPostgresRepository.save(item1);
+        itemPostgresRepository.save(item2);
+        itemPostgresRepository.save(item3);
+
+        Set<String> itemIds = itemPostgresRepository.findAllItemIds();
+
+        assertEquals(3, itemIds.size());
+        assertTrue(itemIds.contains("itemId1"));
+        assertTrue(itemIds.contains("itemId4"));
+        assertTrue(itemIds.contains("itemId7"));
     }
 }

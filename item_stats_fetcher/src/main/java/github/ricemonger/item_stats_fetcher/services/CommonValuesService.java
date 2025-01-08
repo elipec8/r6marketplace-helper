@@ -10,8 +10,12 @@ public class CommonValuesService {
 
     private final CommonValuesDatabaseService commonValuesDatabaseService;
 
-    public int getExpectedItemCount() {
-        return commonValuesDatabaseService.getExpectedItemCount();
+    public int getExpectedItemCountOrZero() {
+        try {
+            return commonValuesDatabaseService.getExpectedItemCount();
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     public void setExpectedItemCount(int fetchedItemsCount) {

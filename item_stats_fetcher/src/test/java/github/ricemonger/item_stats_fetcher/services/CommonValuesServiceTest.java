@@ -23,7 +23,13 @@ class CommonValuesServiceTest {
     void getExpectedItemCount_should_return_service_result() {
         int expectedItemCount = 10;
         when(commonValuesDatabaseService.getExpectedItemCount()).thenReturn(expectedItemCount);
-        assertEquals(expectedItemCount, commonValuesService.getExpectedItemCount());
+        assertEquals(expectedItemCount, commonValuesService.getExpectedItemCountOrZero());
+    }
+
+    @Test
+    void getExpectedItemCount_should_return_zero_on_exception() {
+        when(commonValuesDatabaseService.getExpectedItemCount()).thenThrow(new RuntimeException());
+        assertEquals(0, commonValuesService.getExpectedItemCountOrZero());
     }
 
     @Test

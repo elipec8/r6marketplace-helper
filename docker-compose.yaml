@@ -57,7 +57,7 @@ services:
     build:
       context: .
       dockerfile: item_stats_fetcher/Dockerfile
-    image: item-stats-fetcher
+    image: r6helper-item-stats-fetcher
     ports:
       - "8093:8083"
     env_file:

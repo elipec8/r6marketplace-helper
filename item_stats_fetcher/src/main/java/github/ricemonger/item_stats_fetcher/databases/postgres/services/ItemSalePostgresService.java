@@ -22,7 +22,7 @@ public class ItemSalePostgresService implements ItemSaleDatabaseService {
 
     @Override
     @Transactional
-    public void saveAllItemsLastSales(Collection<? extends SoldItemDetails> items) {
-        itemSaleRepository.saveAll(itemSalePostgresMapper.mapToSaleEntities(items));
+    public void insertAllItemsLastSales(Collection<? extends SoldItemDetails> items) {
+        itemSaleRepository.insertAll(itemSalePostgresMapper.mapToSaleEntities(items));
     }
 }

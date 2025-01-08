@@ -29,17 +29,11 @@ public class ScheduledAllItemsStatsFetcher {
 
     @Scheduled(fixedRateString = "${app.scheduling.stats.fixedRate}", initialDelayString = "${app.scheduling.stats.initialDelay}")
     public void fetchAllItemStats() {
-        int expectedItemCount = 0;
-        try {
-            expectedItemCount = commonValuesService.getExpectedItemCount();
-        } catch (NullPointerException ignore) {
-            log.info("Expected item count is not set");
-        }
+        int expectedItemCount = commonValuesService.getExpectedItemCountOrZero();
 
         Collection<Item> items = graphQlClientService.fetchAllItemStats();
 
-        itemService.saveAllItemsMainFields(items);
-        itemService.saveAllItemsLastSales(items);
+        saveAllItemsAndInsertSales(items);
 
         if (items.size() < expectedItemCount) {
             log.error("Fetched {} items' stats, expected {}", items.size(), expectedItemCount);
@@ -49,6 +43,11 @@ public class ScheduledAllItemsStatsFetcher {
         } else {
             log.info("Fetched {} items' stats", items.size());
         }
+    }
+
+    private void saveAllItemsAndInsertSales(Collection<Item> items) {
+        itemService.saveAllItemsMainFields(items);
+        itemService.insertAllItemsLastSales(items);
     }
 
     private void onItemsAmountIncrease(int expectedItemCount, int fetchedItemsCount) {

@@ -1,5 +1,6 @@
 package github.ricemonger.item_stats_fetcher.databases.postgres.services;
 
+import github.ricemonger.item_stats_fetcher.databases.postgres.entities.ItemMainFieldsEntity;
 import github.ricemonger.item_stats_fetcher.databases.postgres.repositories.ItemMainFieldsPostgresRepository;
 import github.ricemonger.item_stats_fetcher.databases.postgres.services.entity_mappers.ItemMainFieldsPostgresMapper;
 import github.ricemonger.item_stats_fetcher.services.abstractions.ItemDatabaseService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 
 @Slf4j
 @Component

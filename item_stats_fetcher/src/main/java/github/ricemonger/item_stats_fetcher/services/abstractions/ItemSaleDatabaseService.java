@@ -5,5 +5,5 @@ import github.ricemonger.utils.DTOs.common.SoldItemDetails;
 import java.util.Collection;
 
 public interface ItemSaleDatabaseService {
-    void saveAllItemsLastSales(Collection<? extends SoldItemDetails> items);
+    void insertAllItemsLastSales(Collection<? extends SoldItemDetails> items);
 }

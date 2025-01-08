@@ -34,12 +34,12 @@ class ItemServiceTest {
     }
 
     @Test
-    public void saveAllItemsLastSales_should_handle_to_service() {
+    public void insertAllItemsLastSales_should_handle_to_service() {
         List<SoldItemDetails> list = List.of();
 
-        itemService.saveAllItemsLastSales(list);
+        itemService.insertAllItemsLastSales(list);
 
-        verify(itemSaleDatabaseService).saveAllItemsLastSales(same(list));
+        verify(itemSaleDatabaseService).insertAllItemsLastSales(same(list));
     }
 
     @Test

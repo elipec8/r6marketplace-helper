@@ -1,14 +1,13 @@
 package github.ricemonger.item_stats_fetcher.databases.postgres.entities;
 
+import github.ricemonger.item_stats_fetcher.databases.postgres.services.ItemTagDTO;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,6 +15,7 @@ import java.util.Objects;
 @Entity(name = "item_main_fields")
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemMainFieldsEntity {
@@ -31,7 +31,7 @@ public class ItemMainFieldsEntity {
     @JoinTable(name = "item_tags",
             joinColumns = {@JoinColumn(name = "item_id", referencedColumnName = "item_id")},
             inverseJoinColumns = @JoinColumn(name = "tag_value", referencedColumnName = "tag_value"))
-    private List<TagEntity> tags;
+    private List<TagEntity> tags = new ArrayList<>();
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "rarity")
@@ -99,5 +99,9 @@ public class ItemMainFieldsEntity {
                    Objects.equals(lastSoldPrice, itemMainFieldsEntity.lastSoldPrice);
         }
         return false;
+    }
+
+    public List<ItemTagDTO> getItemTags() {
+        return tags.stream().map(tag -> new ItemTagDTO(itemId, tag.getValue())).toList();
     }
 }

@@ -9,11 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 public interface ItemMainFieldsPostgresRepository extends JpaRepository<ItemMainFieldsEntity, String> {
-    @Transactional(readOnly = true)
-    @Query("SELECT i.itemId FROM item_main_fields i")
-    HashSet<String> findAllItemIds();
 
     @Transactional
     default void updateAllItemsMinSellPrice(Collection<? extends ItemMinSellPrice> itemMinSellPrices) {
@@ -25,4 +23,8 @@ public interface ItemMainFieldsPostgresRepository extends JpaRepository<ItemMain
     @Modifying
     @Query("UPDATE item_main_fields i SET i.minSellPrice = :#{#itemMinSellPrice.minSellPrice} WHERE i.itemId = :#{#itemMinSellPrice.itemId}")
     void updateItemMinSellPrice(ItemMinSellPrice itemMinSellPrice);
+
+    @Transactional(readOnly = true)
+    @Query("SELECT i.itemId FROM item_main_fields i")
+    HashSet<String> findAllItemIds();
 }
