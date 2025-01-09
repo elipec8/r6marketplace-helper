@@ -49,13 +49,31 @@ class TelegramUserUbiAccountPostgresServiceTest {
     }
 
     @Test
-    public void save_should_save_ubi_account_entry_if_user_doesnt_have_ubi_acc() {
+    public void save_should_save_ubi_account_entry_if_user_doesnt_have_ubi_acc_auth_entry() {
         UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
         account.setUbiProfileId("profileId");
 
         UbiAccountEntryEntity entity = Mockito.mock(UbiAccountEntryEntity.class);
 
         when(ubiAccountAuthorizationEntryRepository.findByUserTelegramUserChatId("chatId")).thenReturn(Optional.empty());
+        when(ubiAccountEntryEntityMapper.createEntity("chatId", account)).thenReturn(entity);
+
+        telegramUserUbiAccountEntryService.save("chatId", account);
+
+        Mockito.verify(ubiAccountAuthorizationEntryRepository).save(same(entity));
+    }
+
+    @Test
+    public void save_should_save_ubi_account_entry_if_user_doesnt_have_ubi_acc_stats() {
+        UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
+        account.setUbiProfileId("profileId");
+
+        UbiAccountEntryEntity ubiAccountEntryEntity = new UbiAccountEntryEntity();
+        ubiAccountEntryEntity.setUbiAccountStats(null);
+
+        UbiAccountEntryEntity entity = Mockito.mock(UbiAccountEntryEntity.class);
+
+        when(ubiAccountAuthorizationEntryRepository.findByUserTelegramUserChatId("chatId")).thenReturn(Optional.of(ubiAccountEntryEntity));
         when(ubiAccountEntryEntityMapper.createEntity("chatId", account)).thenReturn(entity);
 
         telegramUserUbiAccountEntryService.save("chatId", account);

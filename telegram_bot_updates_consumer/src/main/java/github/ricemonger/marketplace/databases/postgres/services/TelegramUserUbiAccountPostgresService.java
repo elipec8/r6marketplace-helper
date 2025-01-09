@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class TelegramUserUbiAccountPostgresService implements TelegramUserUbiAccountEntryDatabaseService {
@@ -24,7 +26,9 @@ public class TelegramUserUbiAccountPostgresService implements TelegramUserUbiAcc
     public void save(String chatId, UbiAccountAuthorizationEntry account) {
         UbiAccountEntryEntity ubiAccountEntryEntity = ubiAccountEntryPostgresRepository.findByUserTelegramUserChatId(chatId).orElse(null);
 
-        if (ubiAccountEntryEntity != null && !ubiAccountEntryEntity.getUbiAccountStats().getUbiProfileId().equals(account.getUbiProfileId())) {
+        if (ubiAccountEntryEntity != null &&
+            ubiAccountEntryEntity.getUbiAccountStats() != null &&
+            !Objects.equals(ubiAccountEntryEntity.getUbiAccountStats().getUbiProfileId(), account.getUbiProfileId())) {
             throw new UbiAccountEntryAlreadyExistsException("User with chatId " + chatId + " already has another Ubi account");
         } else {
             ubiAccountEntryPostgresRepository.save(ubiAccountEntryEntityMapper.createEntity(chatId, account));
