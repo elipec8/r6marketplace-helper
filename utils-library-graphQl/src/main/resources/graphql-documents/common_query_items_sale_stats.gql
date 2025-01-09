@@ -23,7 +23,6 @@ fragment MarketableItemFragment on MarketableItem {
         __typename
     }
     priceHistory(paymentItemId: $paymentItemId) {
-        id
         date
         lowestPrice
         averagePrice

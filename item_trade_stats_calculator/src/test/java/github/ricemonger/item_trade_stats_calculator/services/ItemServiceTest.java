@@ -1,5 +1,6 @@
 package github.ricemonger.item_trade_stats_calculator.services;
 
+import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemCurrentPricesRecalculationRequiredFields;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemRecalculationRequiredFields;
 import github.ricemonger.item_trade_stats_calculator.services.abstractions.ItemDatabaseService;
 import github.ricemonger.item_trade_stats_calculator.services.abstractions.ItemSaleDatabaseService;
@@ -277,6 +278,114 @@ class ItemServiceTest {
                         )
                 )
         ));
+    }
+
+    @Test
+    public void recalculateAndSaveAllItemsPotentialTradeStatsByCurrentPrices_should_recalculate_only_current_prices_history_fields_and_save_all_items() {
+        ItemCurrentPricesRecalculationRequiredFields existingItemToRecalculate1 = new ItemCurrentPricesRecalculationRequiredFields();
+        existingItemToRecalculate1.setItemId("itemId1");
+        existingItemToRecalculate1.setRarity(ItemRarity.RARE);
+        existingItemToRecalculate1.setMaxBuyPrice(101);
+        existingItemToRecalculate1.setMinSellPrice(102);
+        existingItemToRecalculate1.setSellOrdersCount(103);
+        existingItemToRecalculate1.setMonthMedianPrice(104);
+        existingItemToRecalculate1.setMonthSalesPerDay(105);
+        existingItemToRecalculate1.setMonthSales(106);
+
+        ItemCurrentPricesRecalculationRequiredFields existingItemToRecalculate2 = new ItemCurrentPricesRecalculationRequiredFields();
+        existingItemToRecalculate2.setItemId("itemId2");
+        existingItemToRecalculate2.setRarity(ItemRarity.EPIC);
+        existingItemToRecalculate2.setMaxBuyPrice(201);
+        existingItemToRecalculate2.setMinSellPrice(202);
+        existingItemToRecalculate2.setSellOrdersCount(203);
+        existingItemToRecalculate2.setMonthMedianPrice(204);
+        existingItemToRecalculate2.setMonthSalesPerDay(205);
+        existingItemToRecalculate2.setMonthSales(206);
+
+        ItemCurrentPricesRecalculationRequiredFields existingItemNoSales = new ItemCurrentPricesRecalculationRequiredFields();
+        existingItemNoSales.setItemId("itemId3");
+        existingItemNoSales.setRarity(ItemRarity.UNKNOWN);
+        existingItemNoSales.setMaxBuyPrice(301);
+        existingItemNoSales.setMinSellPrice(302);
+        existingItemNoSales.setSellOrdersCount(303);
+        existingItemNoSales.setMonthMedianPrice(304);
+        existingItemNoSales.setMonthSalesPerDay(305);
+        existingItemNoSales.setMonthSales(306);
+
+        List<ItemCurrentPricesRecalculationRequiredFields> existingItems = List.of(existingItemToRecalculate1, existingItemToRecalculate2, existingItemNoSales);
+
+        when(itemDatabaseService.findAllItemsCurrentPricesRecalculationRequiredFields()).thenReturn(existingItems);
+
+        Item expectedRecalculatedItem1 = new Item();
+        expectedRecalculatedItem1.setItemId("itemId1");
+        expectedRecalculatedItem1.setRarity(ItemRarity.RARE);
+        expectedRecalculatedItem1.setMaxBuyPrice(101);
+        expectedRecalculatedItem1.setMinSellPrice(102);
+        expectedRecalculatedItem1.setSellOrdersCount(103);
+        expectedRecalculatedItem1.setMonthMedianPrice(104);
+        expectedRecalculatedItem1.setMonthSalesPerDay(105);
+        expectedRecalculatedItem1.setMonthSales(106);
+        PotentialTradeStats item1PotentialTradeStatsSellByMaxBuyPrice = new PotentialTradeStats(1, 1, 12L);
+        PotentialTradeStats item1PotentialTradeStatsSellByNextFancySellPrice = new PotentialTradeStats(2, 1, 13L);
+        PotentialTradeStats item1PotentialTradeStatsBuyByMinSellPrice = new PotentialTradeStats(3, 1, 14L);
+        when(potentialTradeStatsCalculator.calculatePotentialSellTradeStatsByMaxBuyPrice(new Item("itemId1"))).thenReturn(item1PotentialTradeStatsSellByMaxBuyPrice);
+        when(potentialTradeStatsCalculator.calculatePotentialSellTradeStatsByNextFancySellPrice(new Item("itemId1"))).thenReturn(item1PotentialTradeStatsSellByNextFancySellPrice);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsByMinSellPrice(new Item("itemId1"))).thenReturn(item1PotentialTradeStatsBuyByMinSellPrice);
+        expectedRecalculatedItem1.setPriorityToSellByMaxBuyPrice(12L);
+        expectedRecalculatedItem1.setPriorityToSellByNextFancySellPrice(13L);
+        expectedRecalculatedItem1.setPriorityToBuyByMinSellPrice(14L);
+
+        Item expectedRecalculatedItem2 = new Item();
+        expectedRecalculatedItem2.setItemId("itemId2");
+        expectedRecalculatedItem2.setRarity(ItemRarity.EPIC);
+        expectedRecalculatedItem2.setMaxBuyPrice(201);
+        expectedRecalculatedItem2.setMinSellPrice(202);
+        expectedRecalculatedItem2.setSellOrdersCount(203);
+        expectedRecalculatedItem2.setMonthMedianPrice(204);
+        expectedRecalculatedItem2.setMonthSalesPerDay(205);
+        expectedRecalculatedItem2.setMonthSales(206);
+        PotentialTradeStats item2PotentialTradeStatsSellByMaxBuyPrice = new PotentialTradeStats(2, 1, 13L);
+        PotentialTradeStats item2PotentialTradeStatsSellByNextFancySellPrice = new PotentialTradeStats(3, 1, 14L);
+        PotentialTradeStats item2PotentialTradeStatsBuyByMinSellPrice = new PotentialTradeStats(4, 1, 15L);
+        when(potentialTradeStatsCalculator.calculatePotentialSellTradeStatsByMaxBuyPrice(new Item("itemId2"))).thenReturn(item2PotentialTradeStatsSellByMaxBuyPrice);
+        when(potentialTradeStatsCalculator.calculatePotentialSellTradeStatsByNextFancySellPrice(new Item("itemId2"))).thenReturn(item2PotentialTradeStatsSellByNextFancySellPrice);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsByMinSellPrice(new Item("itemId2"))).thenReturn(item2PotentialTradeStatsBuyByMinSellPrice);
+        expectedRecalculatedItem2.setPriorityToSellByMaxBuyPrice(13L);
+        expectedRecalculatedItem2.setPriorityToSellByNextFancySellPrice(14L);
+        expectedRecalculatedItem2.setPriorityToBuyByMinSellPrice(15L);
+
+        Item expectedItemNoSales = new Item();
+        expectedItemNoSales.setItemId("itemId3");
+        expectedItemNoSales.setRarity(ItemRarity.UNKNOWN);
+        expectedItemNoSales.setMaxBuyPrice(301);
+        expectedItemNoSales.setMinSellPrice(302);
+        expectedItemNoSales.setSellOrdersCount(303);
+        expectedItemNoSales.setMonthMedianPrice(304);
+        expectedItemNoSales.setMonthSalesPerDay(305);
+        expectedItemNoSales.setMonthSales(306);
+        PotentialTradeStats item3PotentialTradeStatsSellByMaxBuyPrice = new PotentialTradeStats(2, 1, null);
+        PotentialTradeStats item3PotentialTradeStatsSellByNextFancySellPrice = new PotentialTradeStats(3, 1, null);
+        PotentialTradeStats item3PotentialTradeStatsBuyByMinSellPrice = new PotentialTradeStats(4, 1, null);
+        when(potentialTradeStatsCalculator.calculatePotentialSellTradeStatsByMaxBuyPrice(new Item("itemId3"))).thenReturn(item3PotentialTradeStatsSellByMaxBuyPrice);
+        when(potentialTradeStatsCalculator.calculatePotentialSellTradeStatsByNextFancySellPrice(new Item("itemId3"))).thenReturn(item3PotentialTradeStatsSellByNextFancySellPrice);
+        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsByMinSellPrice(new Item("itemId3"))).thenReturn(item3PotentialTradeStatsBuyByMinSellPrice);
+        expectedItemNoSales.setPriorityToSellByMaxBuyPrice(null);
+        expectedItemNoSales.setPriorityToSellByNextFancySellPrice(null);
+        expectedItemNoSales.setPriorityToBuyByMinSellPrice(null);
+
+        List<Item> expectedResult = List.of(expectedRecalculatedItem1, expectedRecalculatedItem2, expectedItemNoSales);
+
+        itemService.recalculateAndSaveAllItemsPotentialTradeStatsByCurrentPrices();
+
+        verify(itemDatabaseService).updateAllItemsCurrentPricesHistoryFields(argThat(arg -> {
+            arg.forEach(System.out::println);
+            return arg.size() == expectedResult.size() &&
+                   expectedResult.stream().allMatch(expectedItem ->
+                           arg.stream().anyMatch(actualItem ->
+                                   actualItem.itemHistoryFieldsAreEqual(expectedItem)
+                           )
+                   );
+        }));
     }
 
 }

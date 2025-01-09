@@ -3,7 +3,7 @@ package github.ricemonger.marketplace.databases.postgres.repositories;
 import github.ricemonger.marketplace.databases.postgres.dto_projections.ItemShowSettingsProjection;
 import github.ricemonger.marketplace.databases.postgres.dto_projections.ItemShownFieldsSettingsProjection;
 import github.ricemonger.marketplace.databases.postgres.dto_projections.NotificationsSettingsProjection;
-import github.ricemonger.marketplace.services.DTOs.TradeManagersSettings;
+import github.ricemonger.marketplace.databases.postgres.dto_projections.TradeManagersSettingsProjection;
 import github.ricemonger.utilspostgresschema.full_entities.user.ItemFilterEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
@@ -130,7 +130,8 @@ class UserPostgresRepositoryTest {
         telegramUserEntity1.setUser(userEntity1);
         telegramUserEntity1 = telegramUserPostgresRepository.save(telegramUserEntity1);
 
-        assertEquals(userPostgresRepository.findTradeManagersSettingsByTelegramUserChatId(telegramUserEntity1.getChatId()).get(), new TradeManagersSettings(true, false));
+        assertEquals(userPostgresRepository.findTradeManagersSettingsByTelegramUserChatId(telegramUserEntity1.getChatId()).get(),
+                new TradeManagersSettingsProjection(true, false));
     }
 
     @Test
@@ -374,6 +375,7 @@ class UserPostgresRepositoryTest {
     }
 
     @Test
+    @Disabled // H2 UNSUPPORTED
     public void invertPrivateNotificationsFlagByTelegramUserChatId_should_invert_flag() {
         UserEntity userEntity1 = new UserEntity();
         userEntity1.setPrivateNotificationsEnabledFlag(false);
@@ -390,6 +392,7 @@ class UserPostgresRepositoryTest {
     }
 
     @Test
+    @Disabled // H2 UNSUPPORTED
     public void invertPublicNotificationsFlagByTelegramUserChatId_should_invert_flag() {
         UserEntity userEntity1 = new UserEntity();
         userEntity1.setPublicNotificationsEnabledFlag(false);

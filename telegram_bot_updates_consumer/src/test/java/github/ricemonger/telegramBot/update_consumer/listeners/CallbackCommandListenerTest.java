@@ -20,6 +20,7 @@ import github.ricemonger.telegramBot.update_consumer.executors.items.settings.me
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.shownFields.ItemsShowSettingsChangeShownFieldsStage1AskNameFlagCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.items.show.ItemsShowStage1AskOffsetCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.notifications.NotificationsInvertPrivateFlagCallback;
+import github.ricemonger.telegramBot.update_consumer.executors.notifications.NotificationsInvertPublicFlagCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.start.startYes.StartYesCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.edit.TradeManagersEditAskManagerTypeCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.edit.itemFilter.TradeByFiltersManagerEditStage1AskNameCallback;
@@ -191,7 +192,7 @@ class CallbackCommandListenerTest {
     public void handleUpdate_should_notifications_settings_invert_public_flag() {
         callbackCommandListener.handleUpdate(updateInfo(Callbacks.NOTIFICATIONS_SETTINGS_INVERT_PUBLIC_FLAG));
 
-        verify(executorsService).execute(NotificationsInvertPrivateFlagCallback.class, updateInfo(Callbacks.NOTIFICATIONS_SETTINGS_INVERT_PUBLIC_FLAG));
+        verify(executorsService).execute(NotificationsInvertPublicFlagCallback.class, updateInfo(Callbacks.NOTIFICATIONS_SETTINGS_INVERT_PUBLIC_FLAG));
     }
 
     @Test

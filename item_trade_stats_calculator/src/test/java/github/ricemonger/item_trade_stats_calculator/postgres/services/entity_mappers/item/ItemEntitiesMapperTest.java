@@ -1,7 +1,10 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item;
 
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemCurrentPricesHistoryFieldsProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemCurrentPricesRecalculationRequiredFieldsProjection;
 import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemHistoryFieldsProjection;
 import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemRecalculationRequiredFieldsProjection;
+import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemCurrentPricesRecalculationRequiredFields;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemHistoryFields;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemRecalculationRequiredFields;
 import github.ricemonger.utils.DTOs.common.Item;
@@ -187,6 +190,45 @@ class ItemEntitiesMapperTest {
         assertEquals(entity.getPriceToBuyIn24Hours(), item.getPriceToBuyIn24Hours());
         assertEquals(entity.getPriceToBuyIn168Hours(), item.getPriceToBuyIn168Hours());
         assertEquals(entity.getPriceToBuyIn720Hours(), item.getPriceToBuyIn720Hours());
+    }
+
+    @Test
+    public void createCurrentPricesHistoryFieldsProjection_should_return_expected_result() {
+        ItemHistoryFieldsI item = new Item();
+        item.setItemId("itemId");
+        item.setPriorityToSellByMaxBuyPrice(12L);
+        item.setPriorityToSellByMaxBuyPrice(13L);
+        item.setPriorityToBuyByMinSellPrice(14L);
+
+        ItemCurrentPricesHistoryFieldsProjection result = itemEntitiesMapper.createCurrentPricesHistoryFieldsProjection(item);
+
+        assertEquals(item.getItemId(), result.getItemId());
+        assertEquals(item.getPriorityToSellByMaxBuyPrice(), result.getPriorityToSellByMaxBuyPrice());
+        assertEquals(item.getPriorityToSellByNextFancySellPrice(), result.getPriorityToSellByNextFancySellPrice());
+    }
+
+    @Test
+    public void createCurrentPricesRecalculationRequiredFields_should_return_expected_result() {
+        ItemCurrentPricesRecalculationRequiredFieldsProjection projection = new ItemCurrentPricesRecalculationRequiredFieldsProjection();
+        projection.setItemId("itemId");
+        projection.setRarity(ItemRarity.RARE);
+        projection.setMaxBuyPrice(1);
+        projection.setMinSellPrice(3);
+        projection.setSellOrdersCount(4);
+        projection.setMonthMedianPrice(7);
+        projection.setMonthSalesPerDay(10);
+        projection.setMonthSales(11);
+
+        ItemCurrentPricesRecalculationRequiredFields result = itemEntitiesMapper.createCurrentPricesRecalculationRequiredFields(projection);
+
+        assertEquals(projection.getItemId(), result.getItemId());
+        assertEquals(projection.getRarity(), result.getRarity());
+        assertEquals(projection.getMaxBuyPrice(), result.getMaxBuyPrice());
+        assertEquals(projection.getMinSellPrice(), result.getMinSellPrice());
+        assertEquals(projection.getSellOrdersCount(), result.getSellOrdersCount());
+        assertEquals(projection.getMonthMedianPrice(), result.getMonthMedianPrice());
+        assertEquals(projection.getMonthSalesPerDay(), result.getMonthSalesPerDay());
+        assertEquals(projection.getMonthSales(), result.getMonthSales());
     }
 
 }

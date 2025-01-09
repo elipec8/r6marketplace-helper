@@ -18,6 +18,7 @@ public interface ItemDaySalesUbiStatsPostgresRepository extends JpaRepository<It
         }
     }
 
+    @Transactional
     @Modifying
     @Query(value = "INSERT INTO item_day_sales_ubi_stats (item_id, date, lowest_price, average_price, highest_price, items_count) VALUES " +
                    "(:#{#entity.item.itemId}, :#{#entity.date}, :#{#entity.lowestPrice}, :#{#entity.averagePrice}, :#{#entity.highestPrice}, " +

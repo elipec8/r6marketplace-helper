@@ -20,7 +20,7 @@ app:
     stats:
       fixedRate: ${SCHEDULING_FIXED_DELAY_STATS:90000}
       initialDelay: ${SCHEDULING_INITIAL_DELAY_STATS:0}
-    # every 3m after 30s of delay
+
     price:
       fixedRate: ${SCHEDULING_FIXED_DELAY_PRICE:60000}
       initialDelay: ${SCHEDULING_INITIAL_DELAY_PRICE:0}

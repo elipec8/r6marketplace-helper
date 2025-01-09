@@ -27,7 +27,7 @@ public interface TradePostgresRepository extends JpaRepository<TradeEntity, Stri
     void prioritizeTrade(PrioritizedTradeProjection projection);
 
     @Transactional(readOnly = true)
-    @Query("SELECT new github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.UbiTradeDtoProjection(" +
+    @Query("SELECT new github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.UbiTradeProjection(" +
            "t.tradeId," +
            " t.state," +
            "t.category," +

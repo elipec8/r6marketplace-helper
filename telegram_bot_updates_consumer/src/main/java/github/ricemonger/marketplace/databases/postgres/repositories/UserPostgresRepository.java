@@ -94,18 +94,18 @@ public interface UserPostgresRepository extends JpaRepository<UserEntity, Long> 
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE helper_user u " +
-                   "SET public_notifications_enabled_flag = NOT (public_notifications_enabled_flag)" +
+    @Query(value = "UPDATE helper_user t " +
+                   "SET private_notifications_enabled_flag = NOT (private_notifications_enabled_flag) " +
                    "FROM telegram_user tu " +
-                   "WHERE u.id = tu.user_id AND tu.chat_id = :chatId", nativeQuery = true)
+                   "WHERE t.id = tu.user_id AND tu.chat_id = :chatId", nativeQuery = true)
     void invertPrivateNotificationsFlagByTelegramUserChatId(String chatId);
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE helper_user u " +
-                   "SET private_notifications_enabled_flag = NOT (private_notifications_enabled_flag)" +
+    @Query(value = "UPDATE helper_user t " +
+                   "SET public_notifications_enabled_flag = NOT (public_notifications_enabled_flag) " +
                    "FROM telegram_user tu " +
-                   "WHERE u.id = tu.user_id AND tu.chat_id = :chatId", nativeQuery = true)
+                   "WHERE t.id = tu.user_id AND tu.chat_id = :chatId", nativeQuery = true)
     void invertPublicNotificationsFlagByTelegramUserChatId(String chatId);
 
     @Transactional(readOnly = true)

@@ -1,5 +1,6 @@
 package github.ricemonger.item_trade_stats_calculator.services;
 
+import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemCurrentPricesRecalculationRequiredFields;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemDaySalesStatsByItemId;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemRecalculationRequiredFields;
 import github.ricemonger.item_trade_stats_calculator.services.abstractions.ItemDatabaseService;
@@ -57,8 +58,7 @@ public class ItemService {
             item.setMonthMinPrice(lastMonthStats.minPrice());
             item.setMonthMedianPrice(lastMonthStats.medianPrice());
 
-            PotentialTradeStats potentialTradeToBuyIn1Hour = potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(item,
-                    resultingPerDayStats, 60);
+            PotentialTradeStats potentialTradeToBuyIn1Hour = potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 60);
             PotentialTradeStats potentialTradeToBuyIn6Hours = potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 360);
             PotentialTradeStats potentialTradeToBuyIn24Hours = potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 1440);
             PotentialTradeStats potentialTradeToBuyIn168Hours = potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 10080);
@@ -87,6 +87,23 @@ public class ItemService {
             item.setPriceToBuyIn720Hours(potentialTradeToBuyIn720Hours.getPrice());
         }
         itemDatabaseService.updateAllItemsHistoryFields(itemWithRequiredFields);
+    }
+
+    public void recalculateAndSaveAllItemsPotentialTradeStatsByCurrentPrices() {
+        Set<Item> itemWithRequiredFields = itemDatabaseService.findAllItemsCurrentPricesRecalculationRequiredFields().stream().map(ItemCurrentPricesRecalculationRequiredFields::toItem).collect(Collectors.toSet());
+
+        for (Item item : itemWithRequiredFields) {
+            PotentialTradeStats potentialTradeToBuyInstantlyByMinSellPrice = potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsByMinSellPrice(item);
+
+            PotentialTradeStats potentialTradeToSellInstantlyByMaxBuyPrice = potentialTradeStatsCalculator.calculatePotentialSellTradeStatsByMaxBuyPrice(item);
+            PotentialTradeStats potentialTradeToSellByNextFancySellPrice = potentialTradeStatsCalculator.calculatePotentialSellTradeStatsByNextFancySellPrice(item);
+
+            item.setPriorityToBuyByMinSellPrice(potentialTradeToBuyInstantlyByMinSellPrice.getTradePriority());
+
+            item.setPriorityToSellByMaxBuyPrice(potentialTradeToSellInstantlyByMaxBuyPrice.getTradePriority());
+            item.setPriorityToSellByNextFancySellPrice(potentialTradeToSellByNextFancySellPrice.getTradePriority());
+        }
+        itemDatabaseService.updateAllItemsCurrentPricesHistoryFields(itemWithRequiredFields);
     }
 
     private TodayPriceStats recalculateTodayItemPriceStats(ItemDaySalesStatsByItemId todayStats) {
