@@ -93,7 +93,7 @@ public class CentralTradeManager {
             try {
                 executeCentralTradeManagerCommand(command);
             } catch (Exception e) {
-                log.error("Exception {} while executing command: {}", e, command);
+                log.error("Exception while executing command: {}", command, e);
             }
         }
     }
@@ -108,7 +108,7 @@ public class CentralTradeManager {
             case BUY_ORDER_UPDATE -> {
                 personalMutationBuyUpdateGraphQlClientService.updateBuyOrderForUser(command.getAuthorizationDTO(), command.getTradeId(), command.getNewPrice());
                 notificationService.sendPrivateNotification(command.getUserId(), String.format("Your buy order price for item %s has been updated" +
-                                                                                               "from %d to %d", command.getItemName(), command.getOldPrice(), command.getNewPrice()));
+                                                                                               " from %d to %d", command.getItemName(), command.getOldPrice(), command.getNewPrice()));
             }
             case BUY_ORDER_CREATE -> {
                 personalMutationBuyCreateGraphQlClientService.createBuyOrderForUser(command.getAuthorizationDTO(), command.getItemId(), command.getNewPrice());
@@ -124,7 +124,7 @@ public class CentralTradeManager {
             case SELL_ORDER_UPDATE -> {
                 personalMutationSellUpdateGraphQlClientService.updateSellOrderForUser(command.getAuthorizationDTO(), command.getTradeId(), command.getNewPrice());
                 notificationService.sendPrivateNotification(command.getUserId(), String.format("Your sell order price for item %s has been updated" +
-                                                                                               "from %d to %d", command.getItemName(), command.getOldPrice(), command.getNewPrice()));
+                                                                                               " from %d to %d", command.getItemName(), command.getOldPrice(), command.getNewPrice()));
             }
             case SELL_ORDER_CREATE -> {
                 personalMutationSellCreateGraphQlClientService.createSellOrderForUser(command.getAuthorizationDTO(), command.getItemId(), command.getNewPrice());
