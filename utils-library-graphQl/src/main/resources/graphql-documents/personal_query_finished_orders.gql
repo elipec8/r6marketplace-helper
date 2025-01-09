@@ -54,5 +54,6 @@ fragment TradeFragment on Trade {
 
 fragment SecondaryStoreItemFragment on SecondaryStoreItem {
     itemId
+    name
     __typename
 }

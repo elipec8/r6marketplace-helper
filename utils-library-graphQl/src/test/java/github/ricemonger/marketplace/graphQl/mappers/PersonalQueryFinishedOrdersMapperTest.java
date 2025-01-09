@@ -87,7 +87,9 @@ class PersonalQueryFinishedOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
+        github.ricemonger.utils.DTOs.common.Item expectedItem = new github.ricemonger.utils.DTOs.common.Item("1");
+        expectedItem.setName("name");
+        expected.setItem(expectedItem);
 
         ConfigTrades configTrades = new ConfigTrades();
         configTrades.setFeePercentage(10);
@@ -119,7 +121,9 @@ class PersonalQueryFinishedOrdersMapperTest {
         expected.setExpiresAt(date);
         expected.setLastModifiedAt(date2);
 
-        expected.setItem(new github.ricemonger.utils.DTOs.common.Item("1"));
+        github.ricemonger.utils.DTOs.common.Item expectedItem = new github.ricemonger.utils.DTOs.common.Item("1");
+        expectedItem.setName("name");
+        expected.setItem(expectedItem);
 
         ConfigTrades configTrades = new ConfigTrades();
         configTrades.setFeePercentage(10);
@@ -383,6 +387,23 @@ class PersonalQueryFinishedOrdersMapperTest {
     }
 
     @Test
+    public void mapFinishedOrder_should_throw_if_null_item_name() {
+        when(commonValuesService.getDateFormat()).thenReturn("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
+        LocalDateTime date = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
+        LocalDateTime date2 = LocalDateTime.now().withNano(0);
+
+        Nodes node = createNode(dtf, date, date2);
+        node.setPaymentProposal(null);
+        node.getTradeItems()[0].getItem().setItemId("itemId");
+        node.getTradeItems()[0].getItem().setName(null);
+
+        assertThrows(GraphQlPersonalFinishedOrdersMappingException.class, () -> {
+            personalQueryCurrentOrdersMapper.mapFinishedOrder(node);
+        });
+    }
+
+    @Test
     public void mapFinishedOrder_should_throw_if_null_payment_price() {
         when(commonValuesService.getDateFormat()).thenReturn("yyyy-MM-dd HH:mm:ss");
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(commonValuesService.getDateFormat());
@@ -481,6 +502,7 @@ class PersonalQueryFinishedOrdersMapperTest {
     private Nodes createNode(DateTimeFormatter dtf, LocalDateTime date1, LocalDateTime date2) {
         Item item = new Item();
         item.setItemId("1");
+        item.setName("name");
         TradeItems tradeItems = new TradeItems();
         tradeItems.setItem(item);
 

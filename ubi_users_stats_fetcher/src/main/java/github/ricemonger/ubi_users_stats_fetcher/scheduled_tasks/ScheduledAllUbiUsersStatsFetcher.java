@@ -16,6 +16,7 @@ import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.DTOs.personal.UserTradesLimitations;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.TradeCategory;
+import github.ricemonger.utils.enums.TradeState;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -77,10 +78,10 @@ public class ScheduledAllUbiUsersStatsFetcher {
         LocalDateTime lastDayPeriod = LocalDateTime.now().minusDays(1).withNano(0);
 
         List<UbiTrade> soldIn24h = finishedOrders.stream()
-                .filter(order -> order.getCategory().equals(TradeCategory.Sell) && order.getLastModifiedAt().isAfter(lastDayPeriod)).toList();
+                .filter(order -> order.getState() == TradeState.Succeeded && order.getCategory().equals(TradeCategory.Sell) && order.getLastModifiedAt().isAfter(lastDayPeriod)).toList();
 
         List<UbiTrade> boughtIn24h = finishedOrders.stream()
-                .filter(order -> order.getCategory().equals(TradeCategory.Buy) && order.getLastModifiedAt().isAfter(lastDayPeriod)).toList();
+                .filter(order -> order.getState() == TradeState.Succeeded && order.getCategory().equals(TradeCategory.Buy) && order.getLastModifiedAt().isAfter(lastDayPeriod)).toList();
 
         List<UbiTrade> currentSellTrades = currentOrders.stream().filter(order -> order.getCategory().equals(TradeCategory.Sell)).toList();
         List<UbiTrade> currentBuyTrades = currentOrders.stream().filter(order -> order.getCategory().equals(TradeCategory.Buy)).toList();
@@ -108,16 +109,16 @@ public class ScheduledAllUbiUsersStatsFetcher {
             StringBuilder message = new StringBuilder();
 
             if (creditsChanged) {
-                message.append("Your credit amount has changed. Old:").append(userUbiAccount.getCreditAmount()).append(" New : ").append(creditAmount).append("\n");
+                message.append("Your credit amount has changed. Old: ").append(userUbiAccount.getCreditAmount()).append(" New : ").append(creditAmount).append("\n");
             }
             if (soldIn24hChanged) {
-                message.append("You have additionally sold these items in the last 24 hours:\n");
+                message.append("You have additionally sold these items in the last 24 hours: \n");
                 for (UbiTrade trade : soldIn24h.stream().filter(trade -> trade.getLastModifiedAt().isAfter(commonValuesService.getLastUbiUsersStatsFetchTime())).toList()) {
                     message.append(getFinishedTradeString(trade)).append("\n");
                 }
             }
             if (boughtIn24hChanged) {
-                message.append("You have additionally bought these items in the last 24 hours:\n");
+                message.append("You have additionally bought these items in the last 24 hours: \n");
                 for (UbiTrade trade : boughtIn24h.stream().filter(trade -> trade.getLastModifiedAt().isAfter(commonValuesService.getLastUbiUsersStatsFetchTime())).toList()) {
                     message.append(getFinishedTradeString(trade)).append("\n");
                 }
@@ -137,6 +138,6 @@ public class ScheduledAllUbiUsersStatsFetcher {
             price = trade.getSuccessPaymentPrice() - trade.getSuccessPaymentFee();
         }
 
-        return item.getName() + " : " + item.getAssetUrl() + " for " + price;
+        return item.getName() + " for " + price;
     }
 }

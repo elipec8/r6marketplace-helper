@@ -48,7 +48,8 @@ public class PersonalQueryFinishedOrdersMapper {
             || node.getLastModifiedAt() == null
             || node.getTradeItems() == null || node.getTradeItems().length == 0
             || node.getTradeItems()[0].getItem() == null
-            || node.getTradeItems()[0].getItem().getItemId() == null) {
+            || node.getTradeItems()[0].getItem().getItemId() == null
+            || node.getTradeItems()[0].getItem().getName() == null) {
             throw new GraphQlPersonalFinishedOrdersMappingException("One of node fields is null-" + node);
         }
 
@@ -85,7 +86,11 @@ public class PersonalQueryFinishedOrdersMapper {
             log.error("Invalid lastModifiedAt for Node: {}", node);
         }
 
-        result.setItem(new Item(node.getTradeItems()[0].getItem().getItemId()));
+        Item item = new Item();
+        item.setItemId(node.getTradeItems()[0].getItem().getItemId());
+        item.setName(node.getTradeItems()[0].getItem().getName());
+
+        result.setItem(item);
 
         if (node.getPayment() != null) {
             if (node.getPayment().getPrice() == null || node.getPayment().getTransactionFee() == null) {

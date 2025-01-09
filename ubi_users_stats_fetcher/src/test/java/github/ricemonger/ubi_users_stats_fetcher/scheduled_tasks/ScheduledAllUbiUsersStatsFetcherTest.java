@@ -16,6 +16,7 @@ import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.DTOs.personal.UserTradesLimitations;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.TradeCategory;
+import github.ricemonger.utils.enums.TradeState;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -80,10 +81,12 @@ class ScheduledAllUbiUsersStatsFetcherTest {
         currentBuyTrade12.setCategory(TradeCategory.Buy);
 
         UbiTrade finishedSellTrade1 = new UbiTrade();
+        finishedSellTrade1.setState(TradeState.Succeeded);
         finishedSellTrade1.setCategory(TradeCategory.Sell);
         finishedSellTrade1.setLastModifiedAt(LocalDateTime.now().minusMinutes(15));
 
         UbiTrade finishedBuyTrade1 = new UbiTrade();
+        finishedBuyTrade1.setState(TradeState.Succeeded);
         finishedBuyTrade1.setCategory(TradeCategory.Buy);
         finishedBuyTrade1.setLastModifiedAt(LocalDateTime.now().minusMinutes(15));
 
@@ -139,10 +142,12 @@ class ScheduledAllUbiUsersStatsFetcherTest {
         currentBuyTrade22.setCategory(TradeCategory.Buy);
 
         UbiTrade finishedSellTrade2 = new UbiTrade();
+        finishedSellTrade2.setState(TradeState.Succeeded);
         finishedSellTrade2.setCategory(TradeCategory.Sell);
         finishedSellTrade2.setLastModifiedAt(LocalDateTime.now().minusMinutes(15));
 
         UbiTrade finishedBuyTrade2 = new UbiTrade();
+        finishedBuyTrade2.setState(TradeState.Succeeded);
         finishedBuyTrade2.setCategory(TradeCategory.Buy);
         finishedBuyTrade2.setLastModifiedAt(LocalDateTime.now().minusMinutes(15));
 
@@ -190,11 +195,13 @@ class ScheduledAllUbiUsersStatsFetcherTest {
         currentBuyTrade3.setCategory(TradeCategory.Buy);
 
         UbiTrade finishedSellTrade3 = new UbiTrade();
+        finishedSellTrade3.setState(TradeState.Succeeded);
         finishedSellTrade3.setCategory(TradeCategory.Sell);
         finishedSellTrade3.setItem(new Item());
         finishedSellTrade3.setLastModifiedAt(LocalDateTime.now().minusMinutes(8));
 
         UbiTrade finishedBuyTrade3 = new UbiTrade();
+        finishedBuyTrade3.setState(TradeState.Succeeded);
         finishedBuyTrade3.setCategory(TradeCategory.Buy);
         finishedBuyTrade3.setLastModifiedAt(LocalDateTime.now().minusMinutes(15));
 
@@ -236,10 +243,12 @@ class ScheduledAllUbiUsersStatsFetcherTest {
         currentBuyTrade4.setCategory(TradeCategory.Buy);
 
         UbiTrade finishedSellTrade4 = new UbiTrade();
+        finishedSellTrade4.setState(TradeState.Succeeded);
         finishedSellTrade4.setCategory(TradeCategory.Sell);
         finishedSellTrade4.setLastModifiedAt(LocalDateTime.now().minusMinutes(15));
 
         UbiTrade finishedBuyTrade4 = new UbiTrade();
+        finishedBuyTrade4.setState(TradeState.Succeeded);
         finishedBuyTrade4.setCategory(TradeCategory.Buy);
         finishedBuyTrade4.setItem(new Item());
         finishedBuyTrade4.setLastModifiedAt(LocalDateTime.now().minusMinutes(8));
