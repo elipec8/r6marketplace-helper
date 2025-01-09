@@ -1,8 +1,8 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.repositories;
 
 
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemHistoryFieldsDtoProjection;
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemRecalculationRequiredFieldsDtoProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemHistoryFieldsProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemRecalculationRequiredFieldsProjection;
 import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,8 +13,8 @@ import java.util.List;
 
 public interface ItemPostgresRepository extends JpaRepository<ItemEntity, String> {
     @Transactional
-    default void updateAllItemsHistoryFields(List<ItemHistoryFieldsDtoProjection> projections) {
-        for (ItemHistoryFieldsDtoProjection projection : projections) {
+    default void updateAllItemsHistoryFields(List<ItemHistoryFieldsProjection> projections) {
+        for (ItemHistoryFieldsProjection projection : projections) {
             updateHistoryFields(projection);
         }
     }
@@ -47,11 +47,11 @@ public interface ItemPostgresRepository extends JpaRepository<ItemEntity, String
                    "i.priceToBuyIn168Hours = :#{#projection.priceToBuyIn168Hours}, " +
                    "i.priceToBuyIn720Hours = :#{#projection.priceToBuyIn720Hours} " +
                    "WHERE i.itemId = :#{#projection.itemId}")
-    void updateHistoryFields(ItemHistoryFieldsDtoProjection projection);
+    void updateHistoryFields(ItemHistoryFieldsProjection projection);
 
     @Transactional(readOnly = true)
     @Query("SELECT new github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemRecalculationRequiredFieldsDtoProjection(" +
            "i.itemId, i.rarity, i.maxBuyPrice, i.buyOrdersCount, i.minSellPrice, i.sellOrdersCount) " +
            "FROM ItemEntity i")
-    List<ItemRecalculationRequiredFieldsDtoProjection> findAllItemsRecalculationRequiredFields();
+    List<ItemRecalculationRequiredFieldsProjection> findAllItemsRecalculationRequiredFields();
 }

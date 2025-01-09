@@ -2,7 +2,6 @@ package github.ricemonger.item_stats_fetcher.databases.postgres.repositories;
 
 import github.ricemonger.item_stats_fetcher.databases.postgres.entities.ItemMainFieldsEntity;
 import github.ricemonger.item_stats_fetcher.databases.postgres.entities.TagEntity;
-import github.ricemonger.utils.DTOs.common.ItemMainFieldsI;
 import github.ricemonger.utils.DTOs.common.ItemMinSellPrice;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;

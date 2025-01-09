@@ -1,7 +1,7 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.repositories;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.PrioritizedTradeDtoProjection;
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.UbiTradeDtoProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.PrioritizedTradeProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.UbiTradeProjection;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
 import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -20,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-
 class TradePostgresRepositoryTest {
     @Autowired
     private TradePostgresRepository tradePostgresRepository;
@@ -82,9 +80,9 @@ class TradePostgresRepositoryTest {
 
         tradePostgresRepository.saveAllAndFlush(Arrays.asList(trade1, trade2, trade3));
 
-        PrioritizedTradeDtoProjection projection1 = new PrioritizedTradeDtoProjection("tradeId1", 1001, 1002L);
-        PrioritizedTradeDtoProjection projection2 = new PrioritizedTradeDtoProjection("tradeId2", 2001, 2002L);
-        PrioritizedTradeDtoProjection projection4 = new PrioritizedTradeDtoProjection("tradeId4", 3001, 3002L);
+        PrioritizedTradeProjection projection1 = new PrioritizedTradeProjection("tradeId1", 1001, 1002L);
+        PrioritizedTradeProjection projection2 = new PrioritizedTradeProjection("tradeId2", 2001, 2002L);
+        PrioritizedTradeProjection projection4 = new PrioritizedTradeProjection("tradeId4", 3001, 3002L);
 
         tradePostgresRepository.prioritizeAllTrades(Arrays.asList(projection1, projection2, projection4));
 
@@ -175,7 +173,7 @@ class TradePostgresRepositoryTest {
 
         tradePostgresRepository.saveAllAndFlush(Arrays.asList(trade1, trade2, trade3));
 
-        PrioritizedTradeDtoProjection projection1 = new PrioritizedTradeDtoProjection("tradeId1", 1001, 1002L);
+        PrioritizedTradeProjection projection1 = new PrioritizedTradeProjection("tradeId1", 1001, 1002L);
 
         tradePostgresRepository.prioritizeTrade(projection1);
 
@@ -254,7 +252,7 @@ class TradePostgresRepositoryTest {
 
         tradePostgresRepository.saveAllAndFlush(Arrays.asList(trade1, trade2, trade3));
 
-        UbiTradeDtoProjection expected1 = new UbiTradeDtoProjection();
+        UbiTradeProjection expected1 = new UbiTradeProjection();
         expected1.setTradeId("tradeId1");
         expected1.setState(TradeState.Created);
         expected1.setCategory(TradeCategory.Sell);
@@ -266,7 +264,7 @@ class TradePostgresRepositoryTest {
         expected1.setProposedPaymentPrice(103);
         expected1.setProposedPaymentFee(104);
 
-        UbiTradeDtoProjection expected2 = new UbiTradeDtoProjection();
+        UbiTradeProjection expected2 = new UbiTradeProjection();
         expected2.setTradeId("tradeId2");
         expected2.setState(TradeState.Created);
         expected2.setCategory(TradeCategory.Sell);
@@ -278,7 +276,7 @@ class TradePostgresRepositoryTest {
         expected2.setProposedPaymentPrice(203);
         expected2.setProposedPaymentFee(204);
 
-        UbiTradeDtoProjection expected3 = new UbiTradeDtoProjection();
+        UbiTradeProjection expected3 = new UbiTradeProjection();
         expected3.setTradeId("tradeId3");
         expected3.setState(TradeState.Created);
         expected3.setCategory(TradeCategory.Sell);
@@ -290,7 +288,7 @@ class TradePostgresRepositoryTest {
         expected3.setProposedPaymentPrice(303);
         expected3.setProposedPaymentFee(304);
 
-        List<UbiTradeDtoProjection> result = tradePostgresRepository.findAllUbiTrades();
+        List<UbiTradeProjection> result = tradePostgresRepository.findAllUbiTrades();
 
         assertEquals(3, result.size());
         assertTrue(result.contains(expected1));

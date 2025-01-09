@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
+import github.ricemonger.marketplace.databases.postgres.dto_projections.UbiAccountAuthorizationEntryProjection;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountStatsPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry;
@@ -109,5 +110,29 @@ class UbiAccountEntryEntityMapperTest {
         account.setUbiRememberMeTicket("ubiRememberMeTicket");
 
         assertThrows(TelegramUserDoesntExistException.class, () -> ubiAccountEntryEntityMapper.createEntity("chatId", account));
+    }
+
+    @Test
+    public void createUbiAccountAuthorizationEntry_should_return_properly_mapped_entry() {
+        UbiAccountAuthorizationEntryProjection projection = new UbiAccountAuthorizationEntryProjection(
+                "ubiProfileId",
+                "email",
+                "encodedPassword",
+                "ubiSessionId",
+                "ubiSpaceId",
+                "ubiAuthTicket",
+                "ubiRememberDeviceTicket",
+                "ubiRememberMeTicket");
+
+        UbiAccountAuthorizationEntry entry = ubiAccountEntryEntityMapper.createUbiAccountAuthorizationEntry(projection);
+
+        assertEquals("ubiProfileId", entry.getUbiProfileId());
+        assertEquals("email", entry.getEmail());
+        assertEquals("encodedPassword", entry.getEncodedPassword());
+        assertEquals("ubiSessionId", entry.getUbiSessionId());
+        assertEquals("ubiSpaceId", entry.getUbiSpaceId());
+        assertEquals("ubiAuthTicket", entry.getUbiAuthTicket());
+        assertEquals("ubiRememberDeviceTicket", entry.getUbiRememberDeviceTicket());
+        assertEquals("ubiRememberMeTicket", entry.getUbiRememberMeTicket());
     }
 }

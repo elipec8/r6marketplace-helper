@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemHistoryFieldsDtoProjection {
+public class ItemHistoryFieldsProjection {
     private String itemId;
 
     private Integer monthAveragePrice;

@@ -62,6 +62,12 @@ public class Callbacks {
 
 //--------------------------------------------------------------------------------------------------
 
+    public static final String NOTIFICATIONS_SETTINGS_INVERT_PRIVATE_FLAG = "NOTIFICATIONS_SETTINGS_INVERT_PRIVATE_FLAG";
+
+    public static final String NOTIFICATIONS_SETTINGS_INVERT_PUBLIC_FLAG = "NOTIFICATIONS_SETTINGS_INVERT_PUBLIC_FLAG";
+
+//--------------------------------------------------------------------------------------------------
+
     public static final String START_YES = "START_YES";
 
 //--------------------------------------------------------------------------------------------------

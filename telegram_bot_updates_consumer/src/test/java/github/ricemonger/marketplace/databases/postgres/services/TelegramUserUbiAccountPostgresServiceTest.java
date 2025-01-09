@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
+import github.ricemonger.marketplace.databases.postgres.dto_projections.UbiAccountAuthorizationEntryProjection;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountEntryPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.UbiAccountEntryEntityMapper;
 import github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry;
@@ -87,10 +88,16 @@ class TelegramUserUbiAccountPostgresServiceTest {
     }
 
     @Test
-    public void findByChatId_should_return_ubi_acc_entry() {
-        UbiAccountAuthorizationEntry entry = Mockito.mock(UbiAccountAuthorizationEntry.class);
+    public void findByChatId_should_return_mapped_ubi_acc_entry() {
+        UbiAccountAuthorizationEntryProjection projection = Mockito.mock(UbiAccountAuthorizationEntryProjection.class);
 
-        when(ubiAccountAuthorizationEntryRepository.findUbiAccountAuthorizationEntryByUserTelegramUserChatId("chatId")).thenReturn(Optional.of(entry));
+        when(ubiAccountAuthorizationEntryRepository.findUbiAccountAuthorizationEntryByUserTelegramUserChatId("chatId")).thenReturn(Optional.of(projection));
+
+        UbiAccountAuthorizationEntry entry = Mockito.mock(UbiAccountAuthorizationEntry.class);
+        when(ubiAccountEntryEntityMapper.createUbiAccountAuthorizationEntry(same(projection))).thenReturn(entry);
+
+
+        when(ubiAccountAuthorizationEntryRepository.findUbiAccountAuthorizationEntryByUserTelegramUserChatId("chatId")).thenReturn(Optional.of(projection));
 
         assertSame(entry, telegramUserUbiAccountEntryService.findByChatId("chatId"));
     }

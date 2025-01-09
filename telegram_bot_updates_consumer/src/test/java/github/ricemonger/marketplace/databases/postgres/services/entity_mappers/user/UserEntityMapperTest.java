@@ -1,7 +1,13 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
 import github.ricemonger.marketplace.databases.postgres.dto_projections.ItemShowSettingsProjection;
+import github.ricemonger.marketplace.databases.postgres.dto_projections.ItemShownFieldsSettingsProjection;
+import github.ricemonger.marketplace.databases.postgres.dto_projections.NotificationsSettingsProjection;
+import github.ricemonger.marketplace.databases.postgres.dto_projections.TradeManagersSettingsProjection;
 import github.ricemonger.marketplace.services.DTOs.ItemShowSettings;
+import github.ricemonger.marketplace.services.DTOs.ItemShownFieldsSettings;
+import github.ricemonger.marketplace.services.DTOs.NotificationsSettings;
+import github.ricemonger.marketplace.services.DTOs.TradeManagersSettings;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utilspostgresschema.full_entities.user.ItemFilterEntity;
 import org.junit.jupiter.api.Test;
@@ -25,7 +31,7 @@ class UserEntityMapperTest {
     private ItemFilterEntityMapper itemFilterEntityMapper;
 
     @Test
-    public void mapItemShowSettings_should_properly_map_dto() {
+    public void createItemShowSettings_should_properly_create_dto() {
         ItemFilterEntity itemFilterEntity1 = Mockito.mock(ItemFilterEntity.class);
         ItemFilterEntity itemFilterEntity2 = Mockito.mock(ItemFilterEntity.class);
 
@@ -49,7 +55,7 @@ class UserEntityMapperTest {
         itemShowSettingsProjection.setItemShowPictureFlag(false);
         Collection<ItemFilterEntity> itemFilters = List.of(itemFilterEntity1, itemFilterEntity2);
 
-        ItemShowSettings itemShowSettings = userEntityMapper.mapItemShowSettings(itemShowSettingsProjection, itemFilters);
+        ItemShowSettings itemShowSettings = userEntityMapper.createItemShowSettings(itemShowSettingsProjection, itemFilters);
 
         assertEquals(itemShowSettingsProjection.getItemShowMessagesLimit(), itemShowSettings.getItemShowMessagesLimit());
         assertEquals(itemShowSettingsProjection.getItemShowFewInMessageFlag(), itemShowSettings.getItemShowFewInMessageFlag());
@@ -65,4 +71,49 @@ class UserEntityMapperTest {
         assertTrue(itemShowSettings.getItemShowAppliedFilters().contains(itemFilter2));
     }
 
+    @Test
+    public void createTradeManagersSettings_should_create_dto_by_projection() {
+        TradeManagersSettingsProjection tradeManagersSettingsProjection = new TradeManagersSettingsProjection();
+        tradeManagersSettingsProjection.setNewManagersAreActiveFlag(true);
+        tradeManagersSettingsProjection.setManagingEnabledFlag(false);
+
+        TradeManagersSettings tradeManagersSettings = userEntityMapper.createTradeManagersSettings(tradeManagersSettingsProjection);
+
+        assertEquals(tradeManagersSettingsProjection.getNewManagersAreActiveFlag(), tradeManagersSettings.getNewManagersAreActiveFlag());
+        assertEquals(tradeManagersSettingsProjection.getManagingEnabledFlag(), tradeManagersSettings.getManagingEnabledFlag());
+    }
+
+    @Test
+    public void createNotificationsSettings_should_create_dto_by_projection() {
+        NotificationsSettingsProjection notificationsSettingsProjection = new NotificationsSettingsProjection();
+        notificationsSettingsProjection.setPublicNotificationsEnabledFlag(true);
+        notificationsSettingsProjection.setPrivateNotificationsEnabledFlag(false);
+
+        NotificationsSettings notificationsSettings = userEntityMapper.createNotificationsSettings(notificationsSettingsProjection);
+
+        assertEquals(notificationsSettingsProjection.getPublicNotificationsEnabledFlag(), notificationsSettings.getPublicNotificationsEnabledFlag());
+        assertEquals(notificationsSettingsProjection.getPrivateNotificationsEnabledFlag(), notificationsSettings.getPrivateNotificationsEnabledFlag());
+    }
+
+    @Test
+    public void createItemShownFieldsSettingsProjection_should_create_projection_by_dto() {
+        ItemShownFieldsSettings settings = new ItemShownFieldsSettings();
+        settings.setItemShowNameFlag(true);
+        settings.setItemShowItemTypeFlag(false);
+        settings.setItemShowMaxBuyPrice(true);
+        settings.setItemShowBuyOrdersCountFlag(false);
+        settings.setItemShowMinSellPriceFlag(true);
+        settings.setItemsShowSellOrdersCountFlag(false);
+        settings.setItemShowPictureFlag(true);
+
+        ItemShownFieldsSettingsProjection itemShownFieldsSettingsProjection = userEntityMapper.createItemShownFieldsSettingsProjection(settings);
+
+        assertEquals(settings.getItemShowNameFlag(), itemShownFieldsSettingsProjection.getItemShowNameFlag());
+        assertEquals(settings.getItemShowItemTypeFlag(), itemShownFieldsSettingsProjection.getItemShowItemTypeFlag());
+        assertEquals(settings.getItemShowMaxBuyPrice(), itemShownFieldsSettingsProjection.getItemShowMaxBuyPrice());
+        assertEquals(settings.getItemShowBuyOrdersCountFlag(), itemShownFieldsSettingsProjection.getItemShowBuyOrdersCountFlag());
+        assertEquals(settings.getItemShowMinSellPriceFlag(), itemShownFieldsSettingsProjection.getItemShowMinSellPriceFlag());
+        assertEquals(settings.getItemsShowSellOrdersCountFlag(), itemShownFieldsSettingsProjection.getItemsShowSellOrdersCountFlag());
+        assertEquals(settings.getItemShowPictureFlag(), itemShownFieldsSettingsProjection.getItemShowPictureFlag());
+    }
 }

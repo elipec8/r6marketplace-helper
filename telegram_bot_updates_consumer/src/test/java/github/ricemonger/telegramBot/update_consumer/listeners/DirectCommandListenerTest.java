@@ -6,6 +6,7 @@ import github.ricemonger.telegramBot.update_consumer.executors.cancel.Cancel;
 import github.ricemonger.telegramBot.update_consumer.executors.help.HelpDirect;
 import github.ricemonger.telegramBot.update_consumer.executors.itemFilters.ItemFiltersDirect;
 import github.ricemonger.telegramBot.update_consumer.executors.items.ItemsDirect;
+import github.ricemonger.telegramBot.update_consumer.executors.notifications.NotificationsDirect;
 import github.ricemonger.telegramBot.update_consumer.executors.start.StartDirect;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.TradeManagersDirect;
 import github.ricemonger.telegramBot.update_consumer.executors.ubi_account_entry.UbiAccountEntryDirect;
@@ -45,6 +46,13 @@ class DirectCommandListenerTest {
         directCommandListener.handleUpdate(updateInfo(ITEMS_COMMAND));
 
         verify(executorsService).execute(ItemsDirect.class, updateInfo(ITEMS_COMMAND));
+    }
+
+    @Test
+    public void handleUpdate_should_notifications() {
+        directCommandListener.handleUpdate(updateInfo(NOTIFICATIONS_COMMAND));
+
+        verify(executorsService).execute(NotificationsDirect.class, updateInfo(NOTIFICATIONS_COMMAND));
     }
 
     @Test

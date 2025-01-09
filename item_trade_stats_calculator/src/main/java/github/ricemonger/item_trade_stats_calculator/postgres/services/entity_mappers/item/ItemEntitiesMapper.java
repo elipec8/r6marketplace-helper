@@ -1,7 +1,7 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemHistoryFieldsDtoProjection;
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemRecalculationRequiredFieldsDtoProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemHistoryFieldsProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemRecalculationRequiredFieldsProjection;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemRecalculationRequiredFields;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.ItemHistoryFieldsI;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemEntitiesMapper {
 
-    public ItemRecalculationRequiredFields createRecalculationRequiredFieldsDTO(ItemRecalculationRequiredFieldsDtoProjection projection) {
+    public ItemRecalculationRequiredFields createRecalculationRequiredFieldsDTO(ItemRecalculationRequiredFieldsProjection projection) {
         return new ItemRecalculationRequiredFields(
                 projection.getItemId(),
                 projection.getRarity(),
@@ -29,8 +29,8 @@ public class ItemEntitiesMapper {
                 projection.getSellOrdersCount());
     }
 
-    public ItemHistoryFieldsDtoProjection createHistoryFieldsDtoProjection(ItemHistoryFieldsI item) {
-        return new ItemHistoryFieldsDtoProjection(
+    public ItemHistoryFieldsProjection createHistoryFieldsDtoProjection(ItemHistoryFieldsI item) {
+        return new ItemHistoryFieldsProjection(
                 item.getItemId(),
                 item.getMonthAveragePrice(),
                 item.getMonthMedianPrice(),

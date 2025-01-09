@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
+import github.ricemonger.marketplace.databases.postgres.dto_projections.UbiAccountAuthorizationEntryProjection;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountStatsPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry;
@@ -45,5 +46,18 @@ public class UbiAccountEntryEntityMapper {
         ubiAccountEntryEntity.setUbiRememberMeTicket(account.getUbiRememberMeTicket());
         ubiAccountEntryEntity.setUbiAccountStats(ubiAccountStatsEntity);
         return ubiAccountEntryEntity;
+    }
+
+    public UbiAccountAuthorizationEntry createUbiAccountAuthorizationEntry(UbiAccountAuthorizationEntryProjection ubiAccountAuthorizationEntryProjection) {
+        return new UbiAccountAuthorizationEntry(
+                ubiAccountAuthorizationEntryProjection.getUbiProfileId(),
+                ubiAccountAuthorizationEntryProjection.getEmail(),
+                ubiAccountAuthorizationEntryProjection.getEncodedPassword(),
+                ubiAccountAuthorizationEntryProjection.getUbiSessionId(),
+                ubiAccountAuthorizationEntryProjection.getUbiSpaceId(),
+                ubiAccountAuthorizationEntryProjection.getUbiAuthTicket(),
+                ubiAccountAuthorizationEntryProjection.getUbiRememberDeviceTicket(),
+                ubiAccountAuthorizationEntryProjection.getUbiRememberMeTicket()
+        );
     }
 }

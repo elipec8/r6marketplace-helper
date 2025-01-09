@@ -7,6 +7,7 @@ import github.ricemonger.item_trade_stats_calculator.services.abstractions.Trade
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,12 +20,14 @@ public class TradePostgresService implements TradeDatabaseService {
     private final TradeEntityMapper tradesEntityMapper;
 
     @Override
-    public List<UbiTrade> findAllUbiTrades() {
-        return tradeRepository.findAllUbiTrades().stream().map(tradesEntityMapper::createUbiTrade).toList();
+    @Transactional
+    public void prioritizeAllTrades(List<PrioritizedTrade> trades) { //update
+        tradeRepository.prioritizeAllTrades(trades.stream().map(tradesEntityMapper::createPrioritizedTradeDtoProjection).toList());
     }
 
     @Override
-    public void prioritizeAllTrades(List<PrioritizedTrade> trades) { //update
-        tradeRepository.prioritizeAllTrades(trades.stream().map(tradesEntityMapper::createPrioritizedTradeDtoProjection).toList());
+    @Transactional(readOnly = true)
+    public List<UbiTrade> findAllUbiTrades() {
+        return tradeRepository.findAllUbiTrades().stream().map(tradesEntityMapper::createUbiTrade).toList();
     }
 }

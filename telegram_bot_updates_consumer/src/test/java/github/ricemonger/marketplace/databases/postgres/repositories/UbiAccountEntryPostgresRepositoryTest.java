@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.repositories;
 
-import github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry;
+import github.ricemonger.marketplace.databases.postgres.dto_projections.UbiAccountAuthorizationEntryProjection;
 import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountEntryEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountStatsEntity;
@@ -142,7 +142,7 @@ class UbiAccountEntryPostgresRepositoryTest {
 
         assertEquals(2, ubiAccountEntryPostgresRepository.count());
 
-        assertEquals(new UbiAccountAuthorizationEntry(
+        assertEquals(new UbiAccountAuthorizationEntryProjection(
                         ubiAccountEntryEntity1.getUbiAccountStats().getUbiProfileId(),
                         ubiAccountEntryEntity1.getEmail(),
                         ubiAccountEntryEntity1.getEncodedPassword(),

@@ -1,14 +1,14 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.dto_projections.ItemShowSettingsProjection;
+import github.ricemonger.marketplace.databases.postgres.dto_projections.ItemShownFieldsSettingsProjection;
+import github.ricemonger.marketplace.databases.postgres.dto_projections.NotificationsSettingsProjection;
+import github.ricemonger.marketplace.databases.postgres.dto_projections.TradeManagersSettingsProjection;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TelegramUserEntityMapper;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.UserEntityMapper;
-import github.ricemonger.marketplace.services.DTOs.ItemShowSettings;
-import github.ricemonger.marketplace.services.DTOs.ItemShownFieldsSettings;
-import github.ricemonger.marketplace.services.DTOs.TelegramUserInputStateAndGroup;
-import github.ricemonger.marketplace.services.DTOs.TradeManagersSettings;
+import github.ricemonger.marketplace.services.DTOs.*;
 import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
 import github.ricemonger.utils.exceptions.client.TelegramUserAlreadyExistsException;
@@ -130,11 +130,15 @@ class TelegramUserPostgresServiceTest {
     }
 
     @Test
-    public void setUserItemShowFieldsSettings_should_update_settings() {
+    public void setUserItemShowFieldsSettings_should_map_and_update_settings() {
         ItemShownFieldsSettings settings = Mockito.mock(ItemShownFieldsSettings.class);
+        ItemShownFieldsSettingsProjection projection = Mockito.mock(ItemShownFieldsSettingsProjection.class);
+
+        when(userEntityMapper.createItemShownFieldsSettingsProjection(same(settings))).thenReturn(projection);
+
         telegramUserService.setUserItemShowFieldsSettings("chatId", settings);
 
-        Mockito.verify(userRepository).updateItemShowFieldsSettingsByTelegramUserChatId(eq("chatId"), same(settings));
+        Mockito.verify(userRepository).updateItemShowFieldsSettingsByTelegramUserChatId(eq("chatId"), same(projection));
     }
 
     @Test
@@ -188,7 +192,7 @@ class TelegramUserPostgresServiceTest {
 
         ItemShowSettings settings = Mockito.mock(ItemShowSettings.class);
 
-        when(userEntityMapper.mapItemShowSettings(projection, filters)).thenReturn(settings);
+        when(userEntityMapper.createItemShowSettings(projection, filters)).thenReturn(settings);
 
         assertSame(settings, telegramUserService.findUserItemShowSettings("chatId"));
     }
@@ -229,9 +233,12 @@ class TelegramUserPostgresServiceTest {
     }
 
     @Test
-    public void findUserTradeManagersSettings_should_return_repository_result_if_user_exists() {
+    public void findUserTradeManagersSettings_should_map_and_return_repository_result_if_user_exists() {
+        TradeManagersSettingsProjection projection = Mockito.mock(TradeManagersSettingsProjection.class);
+        when(userRepository.findTradeManagersSettingsByTelegramUserChatId("chatId")).thenReturn(Optional.of(projection));
+
         TradeManagersSettings settings = Mockito.mock(TradeManagersSettings.class);
-        when(userRepository.findTradeManagersSettingsByTelegramUserChatId("chatId")).thenReturn(Optional.of(settings));
+        when(userEntityMapper.createTradeManagersSettings(projection)).thenReturn(settings);
 
         assertSame(settings, telegramUserService.findUserTradeManagersSettings("chatId"));
     }
@@ -241,5 +248,35 @@ class TelegramUserPostgresServiceTest {
         when(userRepository.findTradeManagersSettingsByTelegramUserChatId("chatId")).thenReturn(Optional.empty());
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.findUserTradeManagersSettings("chatId"));
+    }
+
+    @Test
+    public void invertUserPrivateNotificationsFlag_should_handle_to_repository() {
+        telegramUserService.invertUserPrivateNotificationsFlag("chatId");
+        Mockito.verify(userRepository).invertPrivateNotificationsFlagByTelegramUserChatId("chatId");
+    }
+
+    @Test
+    public void invertUserPublicNotificationsFlag_should_handle_to_repository() {
+        telegramUserService.invertUserPublicNotificationsFlag("chatId");
+        Mockito.verify(userRepository).invertPublicNotificationsFlagByTelegramUserChatId("chatId");
+    }
+
+    @Test
+    public void findUserNotificationsSettings_should_map_and_return_repository_result_if_user_exists() {
+        NotificationsSettingsProjection projection = Mockito.mock(NotificationsSettingsProjection.class);
+        when(userRepository.findNotificationsSettingsByTelegramUserChatId("chatId")).thenReturn(Optional.of(projection));
+
+        NotificationsSettings settings = Mockito.mock(NotificationsSettings.class);
+        when(userEntityMapper.createNotificationsSettings(projection)).thenReturn(settings);
+
+        assertSame(settings, telegramUserService.findUserNotificationsSettings("chatId"));
+    }
+
+    @Test
+    public void findUserNotificationsSettings_should_throw_if_user_doesnt_exist() {
+        when(userRepository.findNotificationsSettingsByTelegramUserChatId("chatId")).thenReturn(Optional.empty());
+
+        assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserService.findUserNotificationsSettings("chatId"));
     }
 }

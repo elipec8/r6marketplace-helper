@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemDaySalesUbiStatsDtoProjection implements ItemDaySalesUbiStatsDtoProjectionI {
+public class ItemDaySalesUbiStatsProjection implements ItemDaySalesUbiStatsProjectionI {
     private String itemId;
     private LocalDate date;
     private Integer lowestPrice;

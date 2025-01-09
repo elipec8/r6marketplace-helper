@@ -24,7 +24,7 @@ public class PersonalQueryFinishedOrdersGraphQlClientService {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
         Trades trades;
         int offset = 0;
-        int limit = 50;
+        int limit = 10;
 
         trades = client
                 .documentName(GraphQlDocuments.QUERY_FINISHED_ORDERS_DOCUMENT_NAME)

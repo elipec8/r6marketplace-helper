@@ -1,7 +1,8 @@
 package github.ricemonger.marketplace.databases.postgres.repositories;
 
 import github.ricemonger.marketplace.databases.postgres.dto_projections.ItemShowSettingsProjection;
-import github.ricemonger.marketplace.services.DTOs.ItemShownFieldsSettings;
+import github.ricemonger.marketplace.databases.postgres.dto_projections.ItemShownFieldsSettingsProjection;
+import github.ricemonger.marketplace.databases.postgres.dto_projections.NotificationsSettingsProjection;
 import github.ricemonger.marketplace.services.DTOs.TradeManagersSettings;
 import github.ricemonger.utilspostgresschema.full_entities.user.ItemFilterEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserEntity;
@@ -69,7 +70,7 @@ class UserPostgresRepositoryTest {
         telegramUserEntity1.setUser(userEntity1);
         telegramUserEntity1 = telegramUserPostgresRepository.save(telegramUserEntity1);
 
-        ItemShownFieldsSettings settings = new ItemShownFieldsSettings();
+        ItemShownFieldsSettingsProjection settings = new ItemShownFieldsSettingsProjection();
         settings.setItemShowNameFlag(false);
         settings.setItemShowItemTypeFlag(false);
         settings.setItemShowMaxBuyPrice(false);
@@ -370,5 +371,53 @@ class UserPostgresRepositoryTest {
 
         ItemShowSettingsProjection settings = userPostgresRepository.findItemShowSettingsByTelegramUserChatId(telegramUserEntity1.getChatId()).get();
         assertEquals(new ItemShowSettingsProjection(25, true, false, false, false, false, false, false, false), settings);
+    }
+
+    @Test
+    public void invertPrivateNotificationsFlagByTelegramUserChatId_should_invert_flag() {
+        UserEntity userEntity1 = new UserEntity();
+        userEntity1.setPrivateNotificationsEnabledFlag(false);
+        userEntity1 = userPostgresRepository.save(userEntity1);
+        TelegramUserEntity telegramUserEntity1 = new TelegramUserEntity();
+        telegramUserEntity1.setChatId("chatId1");
+        telegramUserEntity1.setUser(userEntity1);
+        telegramUserEntity1 = telegramUserPostgresRepository.save(telegramUserEntity1);
+
+        userPostgresRepository.invertPrivateNotificationsFlagByTelegramUserChatId(telegramUserEntity1.getChatId());
+
+        UserEntity userEntity2 = userPostgresRepository.findById(userEntity1.getId()).get();
+        assertTrue(userEntity2.getPrivateNotificationsEnabledFlag());
+    }
+
+    @Test
+    public void invertPublicNotificationsFlagByTelegramUserChatId_should_invert_flag() {
+        UserEntity userEntity1 = new UserEntity();
+        userEntity1.setPublicNotificationsEnabledFlag(false);
+        userEntity1 = userPostgresRepository.save(userEntity1);
+        TelegramUserEntity telegramUserEntity1 = new TelegramUserEntity();
+        telegramUserEntity1.setChatId("chatId1");
+        telegramUserEntity1.setUser(userEntity1);
+        telegramUserEntity1 = telegramUserPostgresRepository.save(telegramUserEntity1);
+
+        userPostgresRepository.invertPublicNotificationsFlagByTelegramUserChatId(telegramUserEntity1.getChatId());
+
+        UserEntity userEntity2 = userPostgresRepository.findById(userEntity1.getId()).get();
+        assertTrue(userEntity2.getPublicNotificationsEnabledFlag());
+    }
+
+    @Test
+    public void findNotificationsSettingsByTelegramUserChatId_should_return_expected_value() {
+        UserEntity userEntity1 = new UserEntity();
+        userEntity1.setPublicNotificationsEnabledFlag(false);
+        userEntity1.setPrivateNotificationsEnabledFlag(true);
+        userEntity1 = userPostgresRepository.save(userEntity1);
+        TelegramUserEntity telegramUserEntity1 = new TelegramUserEntity();
+        telegramUserEntity1.setChatId("chatId1");
+        telegramUserEntity1.setUser(userEntity1);
+        telegramUserEntity1 = telegramUserPostgresRepository.save(telegramUserEntity1);
+
+        NotificationsSettingsProjection settings =
+                userPostgresRepository.findNotificationsSettingsByTelegramUserChatId(telegramUserEntity1.getChatId()).get();
+        assertEquals(new NotificationsSettingsProjection(false, true), settings);
     }
 }

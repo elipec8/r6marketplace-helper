@@ -1,7 +1,7 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.repositories;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.PrioritizedTradeDtoProjection;
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.UbiTradeDtoProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.PrioritizedTradeProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.UbiTradeProjection;
 import github.ricemonger.utilspostgresschema.full_entities.user.TradeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -12,8 +12,8 @@ import java.util.List;
 
 public interface TradePostgresRepository extends JpaRepository<TradeEntity, String> {
     @Transactional
-    default void prioritizeAllTrades(List<PrioritizedTradeDtoProjection> projections) {
-        for (PrioritizedTradeDtoProjection projection : projections) {
+    default void prioritizeAllTrades(List<PrioritizedTradeProjection> projections) {
+        for (PrioritizedTradeProjection projection : projections) {
             prioritizeTrade(projection);
         }
     }
@@ -24,7 +24,7 @@ public interface TradePostgresRepository extends JpaRepository<TradeEntity, Stri
                    "t.minutesToTrade= :#{#projection.minutesToTrade}, " +
                    "t.tradePriority = :#{#projection.tradePriority} " +
                    "WHERE t.tradeId = :#{#projection.tradeId}")
-    void prioritizeTrade(PrioritizedTradeDtoProjection projection);
+    void prioritizeTrade(PrioritizedTradeProjection projection);
 
     @Transactional(readOnly = true)
     @Query("SELECT new github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.UbiTradeDtoProjection(" +
@@ -39,5 +39,5 @@ public interface TradePostgresRepository extends JpaRepository<TradeEntity, Stri
            "t.proposedPaymentPrice," +
            "t.proposedPaymentFee) " +
            "FROM TradeEntity t")
-    List<UbiTradeDtoProjection> findAllUbiTrades();
+    List<UbiTradeProjection> findAllUbiTrades();
 }

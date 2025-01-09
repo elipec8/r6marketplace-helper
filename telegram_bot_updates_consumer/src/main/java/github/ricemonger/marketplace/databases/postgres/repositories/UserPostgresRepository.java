@@ -1,8 +1,9 @@
 package github.ricemonger.marketplace.databases.postgres.repositories;
 
 import github.ricemonger.marketplace.databases.postgres.dto_projections.ItemShowSettingsProjection;
-import github.ricemonger.marketplace.services.DTOs.ItemShownFieldsSettings;
-import github.ricemonger.marketplace.services.DTOs.TradeManagersSettings;
+import github.ricemonger.marketplace.databases.postgres.dto_projections.ItemShownFieldsSettingsProjection;
+import github.ricemonger.marketplace.databases.postgres.dto_projections.NotificationsSettingsProjection;
+import github.ricemonger.marketplace.databases.postgres.dto_projections.TradeManagersSettingsProjection;
 import github.ricemonger.utilspostgresschema.full_entities.user.ItemFilterEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,7 +26,7 @@ public interface UserPostgresRepository extends JpaRepository<UserEntity, Long> 
            "u.itemsShowSellOrdersCountFlag = :#{#settings.itemsShowSellOrdersCountFlag}, " +
            "u.itemShowPictureFlag = :#{#settings.itemShowPictureFlag} " +
            "WHERE u.telegramUser.chatId = :chatId")
-    void updateItemShowFieldsSettingsByTelegramUserChatId(String chatId, ItemShownFieldsSettings settings);
+    void updateItemShowFieldsSettingsByTelegramUserChatId(String chatId, ItemShownFieldsSettingsProjection settings);
 
     @Transactional
     @Modifying
@@ -86,8 +87,30 @@ public interface UserPostgresRepository extends JpaRepository<UserEntity, Long> 
     Optional<ItemShowSettingsProjection> findItemShowSettingsByTelegramUserChatId(String chatId);
 
     @Transactional(readOnly = true)
-    @Query("SELECT new github.ricemonger.marketplace.services.DTOs.TradeManagersSettings(u.newManagersAreActiveFlag, u.managingEnabledFlag) " +
+    @Query("SELECT new github.ricemonger.marketplace.databases.postgres.dto_projections.TradeManagersSettingsProjection(u.newManagersAreActiveFlag, u" +
+           ".managingEnabledFlag) " +
            "FROM UserEntity u WHERE u.telegramUser.chatId = :chatId")
-    Optional<TradeManagersSettings> findTradeManagersSettingsByTelegramUserChatId(String chatId);
+    Optional<TradeManagersSettingsProjection> findTradeManagersSettingsByTelegramUserChatId(String chatId);
 
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE helper_user u " +
+                   "SET public_notifications_enabled_flag = NOT (public_notifications_enabled_flag)" +
+                   "FROM telegram_user tu " +
+                   "WHERE u.id = tu.user_id AND tu.chat_id = :chatId", nativeQuery = true)
+    void invertPrivateNotificationsFlagByTelegramUserChatId(String chatId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE helper_user u " +
+                   "SET private_notifications_enabled_flag = NOT (private_notifications_enabled_flag)" +
+                   "FROM telegram_user tu " +
+                   "WHERE u.id = tu.user_id AND tu.chat_id = :chatId", nativeQuery = true)
+    void invertPublicNotificationsFlagByTelegramUserChatId(String chatId);
+
+    @Transactional(readOnly = true)
+    @Query("SELECT new github.ricemonger.marketplace.databases.postgres.dto_projections.NotificationsSettingsProjection(u.publicNotificationsEnabledFlag, u" +
+           ".privateNotificationsEnabledFlag) " +
+           "FROM UserEntity u WHERE u.telegramUser.chatId = :chatId")
+    Optional<NotificationsSettingsProjection> findNotificationsSettingsByTelegramUserChatId(String chatId);
 }

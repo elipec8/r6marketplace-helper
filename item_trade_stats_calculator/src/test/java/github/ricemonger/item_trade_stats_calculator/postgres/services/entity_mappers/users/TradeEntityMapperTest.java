@@ -1,7 +1,7 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.users;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.PrioritizedTradeDtoProjection;
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.UbiTradeDtoProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.PrioritizedTradeProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.UbiTradeProjection;
 import github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item.ItemEntitiesMapper;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.PrioritizedTrade;
 import github.ricemonger.utils.DTOs.common.Item;
@@ -36,7 +36,7 @@ class TradeEntityMapperTest {
 
         when(itemEntitiesMapper.createItem(itemEntity)).thenReturn(item);
 
-        UbiTradeDtoProjection projection = new UbiTradeDtoProjection();
+        UbiTradeProjection projection = new UbiTradeProjection();
         projection.setTradeId("tradeId");
         projection.setState(TradeState.Created);
         projection.setCategory(TradeCategory.Buy);
@@ -69,7 +69,7 @@ class TradeEntityMapperTest {
         dto.setMinutesToTrade(1);
         dto.setTradePriority(2L);
 
-        PrioritizedTradeDtoProjection projection = tradeEntityMapper.createPrioritizedTradeDtoProjection(dto);
+        PrioritizedTradeProjection projection = tradeEntityMapper.createPrioritizedTradeDtoProjection(dto);
 
         assertEquals("tradeId", projection.getTradeId());
         assertEquals(1, projection.getMinutesToTrade());

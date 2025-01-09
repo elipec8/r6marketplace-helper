@@ -40,6 +40,6 @@ public class TelegramUserUbiAccountPostgresService implements TelegramUserUbiAcc
     @Override
     @Transactional(readOnly = true)
     public UbiAccountAuthorizationEntry findByChatId(String chatId) {
-        return ubiAccountEntryPostgresRepository.findUbiAccountAuthorizationEntryByUserTelegramUserChatId(chatId).orElseThrow(() -> new UbiAccountEntryDoesntExistException("Ubi account entry for chatId " + chatId + " doesn't exist"));
+        return ubiAccountEntryEntityMapper.createUbiAccountAuthorizationEntry(ubiAccountEntryPostgresRepository.findUbiAccountAuthorizationEntryByUserTelegramUserChatId(chatId).orElseThrow(() -> new UbiAccountEntryDoesntExistException("Ubi account entry for chatId " + chatId + " doesn't exist")));
     }
 }

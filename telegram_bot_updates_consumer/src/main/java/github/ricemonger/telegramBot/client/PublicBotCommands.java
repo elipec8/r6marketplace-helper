@@ -13,6 +13,7 @@ public class PublicBotCommands {
     public static final String MANAGERS_COMMAND = "/managers";
     public static final String FILTERS_COMMAND = "/filters";
     public static final String CREDENTIALS_COMMAND = "/credentials";
+    public static final String NOTIFICATIONS_COMMAND = "/notifications";
     public static final String CANCEL_COMMAND = "/cancel";
 
     public final static List<BotCommand> botCommands = List.of(
@@ -22,6 +23,7 @@ public class PublicBotCommands {
             new BotCommand(MANAGERS_COMMAND, "Operate on your trade managers"),
             new BotCommand(FILTERS_COMMAND, "Manage your item filters"),
             new BotCommand(CREDENTIALS_COMMAND, "Manage your linked Ubisoft account"),
+            new BotCommand(NOTIFICATIONS_COMMAND, "Change your notification settings"),
             new BotCommand(CANCEL_COMMAND, "Cancels current operation")
     );
 
@@ -54,6 +56,11 @@ public class PublicBotCommands {
                             One Ubisoft account can be linked to many Telegram accounts.
                             Each Telegram account can be linked to only one Ubisoft account.
                             Linked Ubisoft account is used to operate on your trades on Marketplace.
+                            """ +
+                    NOTIFICATIONS_COMMAND + " - Change your notification settings\n" +
+                    """
+                            You can change your notification settings for the bot.
+                            You can enable or disable notifications for different types of events.
                             """ +
                     CANCEL_COMMAND + " - Cancels current operation\n";
         return sb;

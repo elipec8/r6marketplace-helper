@@ -211,6 +211,25 @@ class TelegramUserServiceTest {
     }
 
     @Test
+    public void invertPrivateNotificationsFlag_should_handle_to_service() {
+        telegramUserService.invertPrivateNotificationsFlag(123L);
+        verify(telegramUserDatabaseService).invertUserPrivateNotificationsFlag("123");
+    }
+
+    @Test
+    public void invertPublicNotificationsFlag_should_handle_to_service() {
+        telegramUserService.invertPublicNotificationsFlag(123L);
+        verify(telegramUserDatabaseService).invertUserPublicNotificationsFlag("123");
+    }
+
+    @Test
+    public void getNotificationsSettings_should_return_service_result() {
+        NotificationsSettings notificationsSettings = Mockito.mock(NotificationsSettings.class);
+        when(telegramUserDatabaseService.findUserNotificationsSettings("123")).thenReturn(notificationsSettings);
+        assertSame(notificationsSettings, telegramUserService.getNotificationsSettings(123L));
+    }
+
+    @Test
     public void authorizeAndSaveUbiUserByUserInput_should_handle_to_service() {
         TelegramUserInput input1 = new TelegramUserInput("123", InputState.UBI_ACCOUNT_ENTRY_EMAIL, "email");
         TelegramUserInput input2 = new TelegramUserInput("123", InputState.UBI_ACCOUNT_ENTRY_PASSWORD, "password");

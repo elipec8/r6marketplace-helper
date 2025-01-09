@@ -2,7 +2,7 @@ package github.ricemonger.item_trade_stats_calculator.postgres.dto_projections;
 
 import java.time.LocalDateTime;
 
-public interface ItemSaleDtoProjectionI {
+public interface ItemSaleProjectionI {
     public String getItemId();
 
     public void setItemId(String itemId);

@@ -1,10 +1,7 @@
 package github.ricemonger.telegramBot.update_consumer;
 
 import github.ricemonger.marketplace.services.*;
-import github.ricemonger.marketplace.services.DTOs.ItemShowSettings;
-import github.ricemonger.marketplace.services.DTOs.TelegramUserInput;
-import github.ricemonger.marketplace.services.DTOs.TradeByFiltersManager;
-import github.ricemonger.marketplace.services.DTOs.TradeManagersSettings;
+import github.ricemonger.marketplace.services.DTOs.*;
 import github.ricemonger.telegramBot.CallbackButton;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.telegramBot.UpdateInfo;
@@ -277,6 +274,18 @@ public class BotInnerService {
 
     public void setUserTradeManagersSettingsManagingEnabledFlag(Long chatId, boolean flag) {
         telegramUserService.setTradeManagersSettingsManagingEnabledFlag(chatId, flag);
+    }
+
+    public void invertUserPrivateNotificationsFlag(Long chatId) {
+        telegramUserService.invertPrivateNotificationsFlag(chatId);
+    }
+
+    public void invertUserPublicNotificationsFlag(Long chatId) {
+        telegramUserService.invertPublicNotificationsFlag(chatId);
+    }
+
+    public NotificationsSettings getUserNotificationsSettings(Long chatId) {
+        return telegramUserService.getNotificationsSettings(chatId);
     }
 
     public void addUserUbiAccountEntryByUserInput(Long chatId) {

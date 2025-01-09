@@ -457,6 +457,29 @@ public class BotInnerServiceTest {
     }
 
     @Test
+    public void invertUserPrivateNotificationsFlag_should_handle_to_service() {
+        long chatId = 1L;
+        botInnerService.invertUserPrivateNotificationsFlag(chatId);
+        verify(telegramUserService).invertPrivateNotificationsFlag(chatId);
+    }
+
+    @Test
+    public void invertUserPublicNotificationsFlag_should_handle_to_service() {
+        long chatId = 1L;
+        botInnerService.invertUserPublicNotificationsFlag(chatId);
+        verify(telegramUserService).invertPublicNotificationsFlag(chatId);
+    }
+
+    @Test
+    public void getUserNotificationsSettings_should_return_service_result() {
+        NotificationsSettings settings = mock(NotificationsSettings.class);
+
+        when(telegramUserService.getNotificationsSettings(1L)).thenReturn(settings);
+
+        assertSame(settings, botInnerService.getUserNotificationsSettings(1L));
+    }
+
+    @Test
     public void addUserUbiAccountEntryByUserInput_should_get_both_email_and_password_from_two_inputs_if_conditions_doesnt_met() {
         botInnerService.addUserUbiAccountEntryByUserInput(1L);
         verify(telegramUserService).authorizeAndSaveUbiUserByUserInput(1L);

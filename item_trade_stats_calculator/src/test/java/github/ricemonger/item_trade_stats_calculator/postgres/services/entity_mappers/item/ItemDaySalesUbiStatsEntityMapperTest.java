@@ -1,6 +1,6 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemDaySalesUbiStatsDtoProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemDaySalesUbiStatsProjection;
 import github.ricemonger.utils.DTOs.common.ItemDaySalesUbiStats;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ class ItemDaySalesUbiStatsEntityMapperTest {
 
     @Test
     public void createDTO_should_return_expected_result() {
-        ItemDaySalesUbiStatsDtoProjection projection = new ItemDaySalesUbiStatsDtoProjection();
+        ItemDaySalesUbiStatsProjection projection = new ItemDaySalesUbiStatsProjection();
         projection.setItemId("itemId");
         projection.setDate(LocalDate.of(2021, 9, 1));
         projection.setLowestPrice(1);

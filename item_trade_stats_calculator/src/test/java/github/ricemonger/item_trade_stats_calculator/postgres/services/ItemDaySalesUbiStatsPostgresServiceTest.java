@@ -1,6 +1,6 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemDaySalesUbiStatsDtoProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemDaySalesUbiStatsProjection;
 import github.ricemonger.item_trade_stats_calculator.postgres.repositories.ItemDaySalesUbiStatsPostgresRepository;
 import github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item.ItemDaySalesUbiStatsEntityMapper;
 import github.ricemonger.utils.DTOs.common.ItemDaySalesUbiStats;
@@ -26,8 +26,8 @@ class ItemDaySalesUbiStatsPostgresServiceTest {
 
     @Test
     public void findAllForLastMonth_should_return_mapped_repository_result() {
-        ItemDaySalesUbiStatsDtoProjection projection1 = Mockito.mock(ItemDaySalesUbiStatsDtoProjection.class);
-        ItemDaySalesUbiStatsDtoProjection projection2 = Mockito.mock(ItemDaySalesUbiStatsDtoProjection.class);
+        ItemDaySalesUbiStatsProjection projection1 = Mockito.mock(ItemDaySalesUbiStatsProjection.class);
+        ItemDaySalesUbiStatsProjection projection2 = Mockito.mock(ItemDaySalesUbiStatsProjection.class);
 
         ItemDaySalesUbiStats dto1 = Mockito.mock(ItemDaySalesUbiStats.class);
         ItemDaySalesUbiStats dto2 = Mockito.mock(ItemDaySalesUbiStats.class);

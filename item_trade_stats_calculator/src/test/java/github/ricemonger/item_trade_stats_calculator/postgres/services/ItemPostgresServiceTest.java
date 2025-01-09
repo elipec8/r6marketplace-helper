@@ -1,8 +1,8 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services;
 
 
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemHistoryFieldsDtoProjection;
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemRecalculationRequiredFieldsDtoProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemHistoryFieldsProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemRecalculationRequiredFieldsProjection;
 import github.ricemonger.item_trade_stats_calculator.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item.ItemEntitiesMapper;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemRecalculationRequiredFields;
@@ -35,8 +35,8 @@ class ItemPostgresServiceTest {
         ItemHistoryFieldsI dto1 = Mockito.mock(ItemHistoryFieldsI.class);
         ItemHistoryFieldsI dto2 = Mockito.mock(ItemHistoryFieldsI.class);
 
-        ItemHistoryFieldsDtoProjection proj1 = Mockito.mock(ItemHistoryFieldsDtoProjection.class);
-        ItemHistoryFieldsDtoProjection proj2 = Mockito.mock(ItemHistoryFieldsDtoProjection.class);
+        ItemHistoryFieldsProjection proj1 = Mockito.mock(ItemHistoryFieldsProjection.class);
+        ItemHistoryFieldsProjection proj2 = Mockito.mock(ItemHistoryFieldsProjection.class);
 
         when(itemEntitiesMapper.createHistoryFieldsDtoProjection(dto1)).thenReturn(proj1);
         when(itemEntitiesMapper.createHistoryFieldsDtoProjection(dto2)).thenReturn(proj2);
@@ -52,8 +52,8 @@ class ItemPostgresServiceTest {
 
     @Test
     public void findAllItemsRecalculationRequiredFields_should_return_mapped_dtos() {
-        ItemRecalculationRequiredFieldsDtoProjection proj1 = Mockito.mock(ItemRecalculationRequiredFieldsDtoProjection.class);
-        ItemRecalculationRequiredFieldsDtoProjection proj2 = Mockito.mock(ItemRecalculationRequiredFieldsDtoProjection.class);
+        ItemRecalculationRequiredFieldsProjection proj1 = Mockito.mock(ItemRecalculationRequiredFieldsProjection.class);
+        ItemRecalculationRequiredFieldsProjection proj2 = Mockito.mock(ItemRecalculationRequiredFieldsProjection.class);
 
         ItemRecalculationRequiredFields dto1 = Mockito.mock(ItemRecalculationRequiredFields.class);
         ItemRecalculationRequiredFields dto2 = Mockito.mock(ItemRecalculationRequiredFields.class);

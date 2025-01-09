@@ -1,7 +1,6 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.repositories;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemDaySalesUbiStatsDtoProjection;
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemDaySalesUbiStatsDtoProjectionI;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemDaySalesUbiStatsProjectionI;
 import github.ricemonger.utilspostgresschema.full_entities.item.ItemDaySalesUbiStatsEntity;
 import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,8 +51,8 @@ class ItemDaySalesUbiStatsPostgresRepositoryTest {
         itemDaySalesUbiStatsPostgresRepository.save(entity2);
         itemDaySalesUbiStatsPostgresRepository.save(entity3);
 
-        List<ItemDaySalesUbiStatsDtoProjectionI> result = itemDaySalesUbiStatsPostgresRepository.findAllForLastMonth();
-        for (ItemDaySalesUbiStatsDtoProjectionI dto : result) {
+        List<ItemDaySalesUbiStatsProjectionI> result = itemDaySalesUbiStatsPostgresRepository.findAllForLastMonth();
+        for (ItemDaySalesUbiStatsProjectionI dto : result) {
             assertNotEquals(entity3.getItem().getItemId(), dto.getItemId());
         }
 

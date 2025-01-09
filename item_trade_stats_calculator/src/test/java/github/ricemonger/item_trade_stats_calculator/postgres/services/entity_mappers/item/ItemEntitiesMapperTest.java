@@ -1,7 +1,7 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemHistoryFieldsDtoProjection;
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemRecalculationRequiredFieldsDtoProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemHistoryFieldsProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemRecalculationRequiredFieldsProjection;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemHistoryFields;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemRecalculationRequiredFields;
 import github.ricemonger.utils.DTOs.common.Item;
@@ -28,7 +28,7 @@ class ItemEntitiesMapperTest {
 
     @Test
     public void createRecalculationRequiredFieldsDTO_should_return_expected_result() {
-        ItemRecalculationRequiredFieldsDtoProjection projection = new ItemRecalculationRequiredFieldsDtoProjection();
+        ItemRecalculationRequiredFieldsProjection projection = new ItemRecalculationRequiredFieldsProjection();
         projection.setItemId("itemId");
         projection.setRarity(ItemRarity.RARE);
         projection.setMaxBuyPrice(1);
@@ -76,7 +76,7 @@ class ItemEntitiesMapperTest {
         dto.setPriceToBuyIn168Hours(23);
         dto.setPriceToBuyIn720Hours(24);
 
-        ItemHistoryFieldsDtoProjection result = itemEntitiesMapper.createHistoryFieldsDtoProjection(dto);
+        ItemHistoryFieldsProjection result = itemEntitiesMapper.createHistoryFieldsDtoProjection(dto);
 
         assertEquals(dto.getItemId(), result.getItemId());
         assertEquals(dto.getMonthAveragePrice(), result.getMonthAveragePrice());

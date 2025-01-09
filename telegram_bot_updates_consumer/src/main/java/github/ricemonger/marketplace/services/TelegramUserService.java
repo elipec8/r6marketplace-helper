@@ -139,6 +139,18 @@ public class TelegramUserService {
         telegramUserDatabaseService.setUserTradeManagersSettingsManagingEnabledFlag(String.valueOf(chatId), flag);
     }
 
+    public void invertPrivateNotificationsFlag(Long chatId) {
+        telegramUserDatabaseService.invertUserPrivateNotificationsFlag(String.valueOf(chatId));
+    }
+
+    public void invertPublicNotificationsFlag(Long chatId) {
+        telegramUserDatabaseService.invertUserPublicNotificationsFlag(String.valueOf(chatId));
+    }
+
+    public NotificationsSettings getNotificationsSettings(Long chatId) {
+        return telegramUserDatabaseService.findUserNotificationsSettings(String.valueOf(chatId));
+    }
+
     public void authorizeAndSaveUbiUserByUserInput(Long chatId) {
         List<TelegramUserInput> inputs = inputDatabaseService.findAllByChatId(String.valueOf(chatId));
 

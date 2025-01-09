@@ -6,7 +6,7 @@ import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import java.util.List;
 
 public interface TradeDatabaseService {
-    List<UbiTrade> findAllUbiTrades();
-
     void prioritizeAllTrades(List<PrioritizedTrade> trades);
+
+    List<UbiTrade> findAllUbiTrades();
 }

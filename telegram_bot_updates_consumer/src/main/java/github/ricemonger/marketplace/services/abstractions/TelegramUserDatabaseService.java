@@ -1,10 +1,7 @@
 package github.ricemonger.marketplace.services.abstractions;
 
 
-import github.ricemonger.marketplace.services.DTOs.ItemShowSettings;
-import github.ricemonger.marketplace.services.DTOs.ItemShownFieldsSettings;
-import github.ricemonger.marketplace.services.DTOs.TelegramUserInputStateAndGroup;
-import github.ricemonger.marketplace.services.DTOs.TradeManagersSettings;
+import github.ricemonger.marketplace.services.DTOs.*;
 import github.ricemonger.utils.enums.InputGroup;
 import github.ricemonger.utils.enums.InputState;
 import github.ricemonger.utils.exceptions.client.TelegramUserAlreadyExistsException;
@@ -43,4 +40,10 @@ public interface TelegramUserDatabaseService {
     void setUserTradeManagersSettingsManagingEnabledFlag(String chatId, boolean flag) throws TelegramUserDoesntExistException;
 
     TradeManagersSettings findUserTradeManagersSettings(String chatId) throws TelegramUserDoesntExistException;
+
+    void invertUserPrivateNotificationsFlag(String chatId);
+
+    void invertUserPublicNotificationsFlag(String chatId);
+
+    NotificationsSettings findUserNotificationsSettings(String chatId) throws TelegramUserDoesntExistException;
 }

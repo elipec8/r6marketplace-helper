@@ -1,7 +1,7 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.PrioritizedTradeDtoProjection;
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.UbiTradeDtoProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.PrioritizedTradeProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.UbiTradeProjection;
 import github.ricemonger.item_trade_stats_calculator.postgres.repositories.TradePostgresRepository;
 import github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.users.TradeEntityMapper;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.PrioritizedTrade;
@@ -33,8 +33,8 @@ class TradePostgresServiceTest {
 
     @Test
     public void findAllUbiTrades_should_return_mapped_entities() {
-        UbiTradeDtoProjection projection1 = Mockito.mock(UbiTradeDtoProjection.class);
-        UbiTradeDtoProjection projection2 = Mockito.mock(UbiTradeDtoProjection.class);
+        UbiTradeProjection projection1 = Mockito.mock(UbiTradeProjection.class);
+        UbiTradeProjection projection2 = Mockito.mock(UbiTradeProjection.class);
 
         when(ubiTradeRepository.findAllUbiTrades()).thenReturn(List.of(projection1, projection2));
 
@@ -56,8 +56,8 @@ class TradePostgresServiceTest {
         PrioritizedTrade dto1 = Mockito.mock(PrioritizedTrade.class);
         PrioritizedTrade dto2 = Mockito.mock(PrioritizedTrade.class);
 
-        PrioritizedTradeDtoProjection projection1 = Mockito.mock(PrioritizedTradeDtoProjection.class);
-        PrioritizedTradeDtoProjection projection2 = Mockito.mock(PrioritizedTradeDtoProjection.class);
+        PrioritizedTradeProjection projection1 = Mockito.mock(PrioritizedTradeProjection.class);
+        PrioritizedTradeProjection projection2 = Mockito.mock(PrioritizedTradeProjection.class);
 
         when(tradesEntityMapper.createPrioritizedTradeDtoProjection(dto1)).thenReturn(projection1);
         when(tradesEntityMapper.createPrioritizedTradeDtoProjection(dto2)).thenReturn(projection2);

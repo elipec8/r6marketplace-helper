@@ -1,12 +1,10 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.repositories;
 
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemHistoryFieldsDtoProjection;
-import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemRecalculationRequiredFieldsDtoProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemHistoryFieldsProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemRecalculationRequiredFieldsProjection;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
-import github.ricemonger.utils.enums.TagGroup;
 import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
-import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,7 +139,7 @@ class ItemPostgresRepositoryTest {
         itemPostgresRepository.save(existingItem2);
         itemPostgresRepository.save(existingItem3);
 
-        ItemHistoryFieldsDtoProjection projection1 = new ItemHistoryFieldsDtoProjection();
+        ItemHistoryFieldsProjection projection1 = new ItemHistoryFieldsProjection();
         projection1.setItemId("itemId1");
         projection1.setMonthAveragePrice(1001);
         projection1.setMonthMedianPrice(1002);
@@ -168,7 +166,7 @@ class ItemPostgresRepositoryTest {
         projection1.setPriceToBuyIn168Hours(1023);
         projection1.setPriceToBuyIn720Hours(1024);
 
-        ItemHistoryFieldsDtoProjection projection2 = new ItemHistoryFieldsDtoProjection();
+        ItemHistoryFieldsProjection projection2 = new ItemHistoryFieldsProjection();
         projection2.setItemId("itemId2");
         projection2.setMonthAveragePrice(2001);
         projection2.setMonthMedianPrice(2002);
@@ -356,7 +354,7 @@ class ItemPostgresRepositoryTest {
         itemPostgresRepository.save(existingItem1);
         itemPostgresRepository.save(existingItem2);
 
-        ItemHistoryFieldsDtoProjection projection1 = new ItemHistoryFieldsDtoProjection();
+        ItemHistoryFieldsProjection projection1 = new ItemHistoryFieldsProjection();
         projection1.setItemId("itemId1");
         projection1.setMonthAveragePrice(1001);
         projection1.setMonthMedianPrice(1002);
@@ -472,9 +470,9 @@ class ItemPostgresRepositoryTest {
         itemPostgresRepository.save(existingItem2);
         itemPostgresRepository.save(existingItem3);
 
-        List<ItemRecalculationRequiredFieldsDtoProjection> result = itemPostgresRepository.findAllItemsRecalculationRequiredFields();
+        List<ItemRecalculationRequiredFieldsProjection> result = itemPostgresRepository.findAllItemsRecalculationRequiredFields();
 
-        ItemRecalculationRequiredFieldsDtoProjection expectedItem1 = new ItemRecalculationRequiredFieldsDtoProjection();
+        ItemRecalculationRequiredFieldsProjection expectedItem1 = new ItemRecalculationRequiredFieldsProjection();
         expectedItem1.setItemId("itemId1");
         expectedItem1.setRarity(ItemRarity.RARE);
         expectedItem1.setMaxBuyPrice(101);
@@ -482,7 +480,7 @@ class ItemPostgresRepositoryTest {
         expectedItem1.setMinSellPrice(103);
         expectedItem1.setSellOrdersCount(104);
 
-        ItemRecalculationRequiredFieldsDtoProjection expectedItem2 = new ItemRecalculationRequiredFieldsDtoProjection();
+        ItemRecalculationRequiredFieldsProjection expectedItem2 = new ItemRecalculationRequiredFieldsProjection();
         expectedItem2.setItemId("itemId2");
         expectedItem2.setRarity(ItemRarity.EPIC);
         expectedItem2.setMaxBuyPrice(201);
@@ -490,7 +488,7 @@ class ItemPostgresRepositoryTest {
         expectedItem2.setMinSellPrice(203);
         expectedItem2.setSellOrdersCount(204);
 
-        ItemRecalculationRequiredFieldsDtoProjection expectedItem3 = new ItemRecalculationRequiredFieldsDtoProjection();
+        ItemRecalculationRequiredFieldsProjection expectedItem3 = new ItemRecalculationRequiredFieldsProjection();
         expectedItem3.setItemId("itemId3");
         expectedItem3.setRarity(ItemRarity.LEGENDARY);
         expectedItem3.setMaxBuyPrice(301);

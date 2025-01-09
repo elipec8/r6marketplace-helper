@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface ItemDaySalesUbiStatsPostgresRepository extends JpaRepository<ItemDaySalesUbiStatsEntity, ItemDaySalesUbiStatsEntityId> {
     @Transactional
-    default void insertAll(List<ItemDaySalesUbiStatsEntity> entities){
+    default void insertAll(List<ItemDaySalesUbiStatsEntity> entities) {
         for (ItemDaySalesUbiStatsEntity entity : entities) {
             insert(entity);
         }

@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.repositories;
 
-import github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry;
+import github.ricemonger.marketplace.databases.postgres.dto_projections.UbiAccountAuthorizationEntryProjection;
 import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountEntryEntity;
 import github.ricemonger.utilspostgresschema.ids.user.UbiAccountEntryEntityId;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,7 +17,7 @@ public interface UbiAccountEntryPostgresRepository extends JpaRepository<UbiAcco
     Optional<UbiAccountEntryEntity> findByUserTelegramUserChatId(String chatId);
 
     @Transactional(readOnly = true)
-    @Query("SELECT new github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry(" +
+    @Query("SELECT new github.ricemonger.marketplace.databases.postgres.dto_projections.UbiAccountAuthorizationEntryProjection(" +
            "u.ubiAccountStats.ubiProfileId," +
            " u.email," +
            "u.encodedPassword," +
@@ -27,5 +27,5 @@ public interface UbiAccountEntryPostgresRepository extends JpaRepository<UbiAcco
            "u.ubiRememberDeviceTicket," +
            "u.ubiRememberMeTicket) " +
            "FROM UbiAccountEntryEntity u WHERE u.user.telegramUser.chatId = :chatId")
-    Optional<UbiAccountAuthorizationEntry> findUbiAccountAuthorizationEntryByUserTelegramUserChatId(String chatId);
+    Optional<UbiAccountAuthorizationEntryProjection> findUbiAccountAuthorizationEntryByUserTelegramUserChatId(String chatId);
 }
