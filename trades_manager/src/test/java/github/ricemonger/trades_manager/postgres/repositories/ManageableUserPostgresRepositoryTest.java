@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -209,7 +210,50 @@ class ManageableUserPostgresRepositoryTest {
         userRepository.save(userWithTradeByFiltersManagerFalse);
         userRepository.save(userWithBothManagersFalse);
 
-        assertEquals(9, userRepository.count());
+        // Have managers and true flag and ubi account entry but no ubi account stats
+
+        ManageableUserEntity userWithTradeByItemIdManagerTrueNoStats = new ManageableUserEntity();
+        ManageableUserUbiAccountEntryEntity ubiAccountEntryEntity1 = new ManageableUserUbiAccountEntryEntity();
+        ubiAccountEntryEntity1.setUser(userWithTradeByItemIdManagerTrueNoStats);
+        ubiAccountEntryEntity1.setEmail("email");
+        userWithTradeByItemIdManagerTrueNoStats.setUbiAccountEntry(ubiAccountEntryEntity1);
+        userWithTradeByItemIdManagerTrueNoStats.setManagingEnabledFlag(true);
+        TradeByItemIdManagerEntity tradeByItemIdManagerEntityTrueNoStats = new TradeByItemIdManagerEntity();
+        tradeByItemIdManagerEntityTrueNoStats.setItem(new ItemIdEntity("5"));
+        tradeByItemIdManagerEntityTrueNoStats.setUser(userWithTradeByItemIdManagerTrueNoStats);
+        userWithTradeByItemIdManagerTrueNoStats.getTradeByItemIdManagers().add(tradeByItemIdManagerEntityTrueNoStats);
+
+        ManageableUserEntity userWithTradeByFiltersManagerTrueNoStats = new ManageableUserEntity();
+        ManageableUserUbiAccountEntryEntity ubiAccountEntryEntity2 = new ManageableUserUbiAccountEntryEntity();
+        ubiAccountEntryEntity2.setUser(userWithTradeByFiltersManagerTrueNoStats);
+        ubiAccountEntryEntity2.setEmail("email");
+        userWithTradeByFiltersManagerTrueNoStats.setUbiAccountEntry(ubiAccountEntryEntity2);
+        userWithTradeByFiltersManagerTrueNoStats.setManagingEnabledFlag(true);
+        TradeByFiltersManagerEntity tradeByFiltersManagerEntityTrueNoStats = new TradeByFiltersManagerEntity();
+        tradeByFiltersManagerEntityTrueNoStats.setName("name");
+        tradeByFiltersManagerEntityTrueNoStats.setUser(userWithTradeByFiltersManagerTrueNoStats);
+        userWithTradeByFiltersManagerTrueNoStats.getTradeByFiltersManagers().add(tradeByFiltersManagerEntityTrueNoStats);
+
+        ManageableUserEntity userWithBothManagersTrueNoStats = new ManageableUserEntity();
+        ManageableUserUbiAccountEntryEntity ubiAccountEntryEntity3 = new ManageableUserUbiAccountEntryEntity();
+        ubiAccountEntryEntity3.setUser(userWithBothManagersTrueNoStats);
+        ubiAccountEntryEntity3.setEmail("email");
+        userWithBothManagersTrueNoStats.setUbiAccountEntry(ubiAccountEntryEntity3);
+        userWithBothManagersTrueNoStats.setManagingEnabledFlag(true);
+        TradeByItemIdManagerEntity tradeByItemIdManagerEntityForBothTrueNoStats = new TradeByItemIdManagerEntity();
+        tradeByItemIdManagerEntityForBothTrueNoStats.setItem(new ItemIdEntity("6"));
+        tradeByItemIdManagerEntityForBothTrueNoStats.setUser(userWithBothManagersTrueNoStats);
+        TradeByFiltersManagerEntity tradeByFiltersManagerEntityForBothTrueNoStats = new TradeByFiltersManagerEntity();
+        tradeByFiltersManagerEntityForBothTrueNoStats.setName("name");
+        tradeByFiltersManagerEntityForBothTrueNoStats.setUser(userWithBothManagersTrueNoStats);
+        userWithBothManagersTrueNoStats.getTradeByItemIdManagers().add(tradeByItemIdManagerEntityForBothTrueNoStats);
+        userWithBothManagersTrueNoStats.getTradeByFiltersManagers().add(tradeByFiltersManagerEntityForBothTrueNoStats);
+
+        userRepository.save(userWithTradeByItemIdManagerTrueNoStats);
+        userRepository.save(userWithTradeByFiltersManagerTrueNoStats);
+        userRepository.save(userWithBothManagersTrueNoStats);
+
+        assertEquals(12, userRepository.count());
         assertEquals(0, userRepository.findAllManageableUsers().size());
     }
 }

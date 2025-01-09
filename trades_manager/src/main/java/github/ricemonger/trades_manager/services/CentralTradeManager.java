@@ -45,7 +45,11 @@ public class CentralTradeManager {
         List<ManageableUser> manageableUsers = userService.getAllManageableUsers();
 
         for (ManageableUser manageableUser : manageableUsers) {
-            createAndExecuteCentralTradeManagerCommandsForUser(manageableUser, configTrades, items);
+            try {
+                createAndExecuteCentralTradeManagerCommandsForUser(manageableUser, configTrades, items);
+            } catch (Exception e) {
+                log.error("Exception while managing trades for user: {}", manageableUser, e);
+            }
         }
     }
 
