@@ -36,7 +36,7 @@ public class UbiAccountStatsEntity {
             inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "item_id"))
     private List<ItemIdEntity> ownedItems = new ArrayList<>();
 
-    @OneToMany(mappedBy = "ubiAccount", fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "ubiAccount", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<ItemResaleLockEntity> resaleLocks = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
