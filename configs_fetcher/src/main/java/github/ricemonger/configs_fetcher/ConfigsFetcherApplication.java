@@ -5,14 +5,17 @@ import github.ricemonger.marketplace.graphQl.config_query_marketplace.ConfigQuer
 import github.ricemonger.marketplace.graphQl.config_query_resolved_transactions_period.ConfigQueryResolvedTransactionPeriodGraphQlConfiguration;
 import github.ricemonger.marketplace.graphQl.config_query_trade.ConfigQueryTradeGraphQlConfiguration;
 import github.ricemonger.utils.SchedulingUtilsConfiguration;
+import jakarta.persistence.Entity;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"github.ricemonger.configs_fetcher"},
         basePackageClasses = github.ricemonger.utils.PublicMethodLogger.class)
+@EntityScan(basePackages = "github.ricemonger.utilspostgresschema")
 @Import({SchedulingUtilsConfiguration.class,
         RedisUtilsConfiguration.class,
         ConfigQueryMarketplaceGraphQlConfiguration.class,

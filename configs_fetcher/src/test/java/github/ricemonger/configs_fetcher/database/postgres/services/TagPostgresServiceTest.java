@@ -1,9 +1,9 @@
 package github.ricemonger.configs_fetcher.database.postgres.services;
 
-import github.ricemonger.configs_fetcher.database.postgres.entities.TagEntity;
 import github.ricemonger.configs_fetcher.database.postgres.repositories.TagPostgresRepository;
 import github.ricemonger.configs_fetcher.database.postgres.services.entity_mappers.item.TagEntityMapper;
 import github.ricemonger.utils.DTOs.common.Tag;
+import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
