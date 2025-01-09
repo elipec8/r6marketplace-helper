@@ -14,13 +14,13 @@ public class UbiAccountEntryEntityMapper {
     public UserUbiAccount createUserUbiAccountEntry(UserUbiAccountEntryEntity entity) {
         return new UserUbiAccount(
                 entity.getId(),
-                entity.getUbiAccountEntry().getProfileId_(),
-                entity.getUbiAccountEntry().getUbiAccountStats().getCreditAmount(),
-                entity.getUbiAccountEntry().getUbiAuthTicket(),
-                entity.getUbiAccountEntry().getUbiSpaceId(),
-                entity.getUbiAccountEntry().getUbiSessionId(),
-                entity.getUbiAccountEntry().getUbiRememberDeviceTicket(),
-                entity.getUbiAccountEntry().getUbiRememberMeTicket()
+                entity.getProfileId_(),
+                entity.getCreditAmount_(),
+                entity.getUbiAuthTicket_(),
+                entity.getUbiSpaceId_(),
+                entity.getUbiSessionId_(),
+                entity.getUbiRememberDeviceTicket_(),
+                entity.getUbiRememberMeTicket_()
         );
     }
 }

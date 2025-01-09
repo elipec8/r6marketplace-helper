@@ -1,7 +1,7 @@
 package github.ricemonger.users_ubi_accs_reauthorizer.services;
 
 import github.ricemonger.users_ubi_accs_reauthorizer.authorization.AuthorizationService;
-import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserToNotify;
+import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UnauthorizedAccount;
 import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserUbiCredentials;
 import github.ricemonger.users_ubi_accs_reauthorizer.services.abstractions.UbiAccountEntryDatabaseService;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
@@ -123,7 +123,7 @@ class UserUbiAccountEntryServiceTest {
 
         when(ubiAccountEntryDatabaseService.findAllUsersUbiCredentials()).thenReturn(allUsers);
 
-        List<UserToNotify> result = telegramUserUbiAccountEntryService.reauthorizeAllUbiUsersAndGetUnauthorizedList();
+        List<UnauthorizedAccount> result = telegramUserUbiAccountEntryService.reauthorizeAllUbiUsersAndGetUnauthorizedList();
 
         assertEquals(result.size(), unAuthUsers.size());
         assertTrue(result.stream().anyMatch(u -> u.getId().equals(clientErrorEntry.getUserId()) && u.getEmail().equals(clientErrorEntry.getEmail())));
@@ -131,6 +131,8 @@ class UserUbiAccountEntryServiceTest {
         assertTrue(result.stream().anyMatch(u -> u.getId().equals(invalidRememberDeviceTicketEntry.getUserId()) && u.getEmail().equals(invalidRememberDeviceTicketEntry.getEmail())));
 
         verify(ubiAccountEntryDatabaseService).findAllUsersUbiCredentials();
+        verify(ubiAccountEntryDatabaseService).deleteUbiAccountStatsForUnauthorizedUsers(any());
+
 
         verify(authorizationService, times(8)).reauthorizeAndGet2FaAuthorizedDtoForEncodedPasswordWithRememberDeviceTicket(any(), any(), any());
 

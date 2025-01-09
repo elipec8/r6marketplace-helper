@@ -25,6 +25,6 @@ public class UbiAccountService {
     }
 
     public List<UserUbiAccount> findAllUsersUbiAccountEntries() {
-        return ubiAccountEntryDatabaseService.findAll();
+        return ubiAccountEntryDatabaseService.findAllUserWithUbiAccounts();
     }
 }

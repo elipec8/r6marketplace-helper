@@ -6,6 +6,7 @@ import github.ricemonger.users_ubi_accs_reauthorizer.postgres.entities.UbiAccoun
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.repositories.UbiAccountEntryCredentialsPostgresRepository;
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.repositories.UbiAccountEntryPostgresRepository;
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.services.entity_mappers.user.UbiAccountEntryEntityMapper;
+import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UnauthorizedAccount;
 import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserUbiCredentials;
 import github.ricemonger.users_ubi_accs_reauthorizer.services.abstractions.UbiAccountEntryDatabaseService;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
@@ -43,6 +44,12 @@ public class UbiAccountPostgresService implements UbiAccountEntryDatabaseService
         } else {
             throw new UbiAccountEntryAlreadyExistsException("User with Id " + userId + " already has another Ubi account");
         }
+    }
+
+    @Override
+    @Transactional
+    public void deleteUbiAccountStatsForUnauthorizedUsers(List<UnauthorizedAccount> unauthorizedUsers) {
+        ubiAccountEntryPostgresRepository.deleteAllUbiAccountStatsForUnauthorizedUsers(unauthorizedUsers.stream().map(ubiAccountEntryEntityMapper::createUnauthorizedAccountProjection).toList());
     }
 
     @Override

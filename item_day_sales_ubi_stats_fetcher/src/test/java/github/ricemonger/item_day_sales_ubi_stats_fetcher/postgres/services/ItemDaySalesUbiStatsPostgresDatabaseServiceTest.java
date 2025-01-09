@@ -21,13 +21,13 @@ class ItemDaySalesUbiStatsPostgresDatabaseServiceTest {
     private ItemDaySalesUbiStatsEntityMapper itemDaySalesUbiStatsEntityMapper;
 
     @Test
-    public void insertAll_should_handle_to_service_mapped_entities() {
+    public void saveAll_should_handle_to_service_mapped_entities() {
         List mockedList = mock(List.class);
         List entities = mock(List.class);
         when(itemDaySalesUbiStatsEntityMapper.createEntities(mockedList)).thenReturn(entities);
 
-        itemDaySalesUbiStatsPostgresDatabaseService.insertAll(mockedList);
+        itemDaySalesUbiStatsPostgresDatabaseService.saveAll(mockedList);
 
-        verify(itemDaySalesUbiStatsRepository).insertAll(entities);
+        verify(itemDaySalesUbiStatsRepository).saveAll(entities);
     }
 }

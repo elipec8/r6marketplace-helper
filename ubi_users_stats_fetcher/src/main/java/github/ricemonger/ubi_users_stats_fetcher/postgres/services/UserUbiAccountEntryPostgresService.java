@@ -21,7 +21,7 @@ public class UserUbiAccountEntryPostgresService implements UserUbiAccountEntryDa
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserUbiAccount> findAll() {
-        return userUbiAccountEntryPostgresRepository.findAll().stream().map(ubiAccountEntryEntityMapper::createUserUbiAccountEntry).toList();
+    public List<UserUbiAccount> findAllUserWithUbiAccounts() {
+        return userUbiAccountEntryPostgresRepository.findAllUserWithAuthorizedUbiAccounts().stream().map(ubiAccountEntryEntityMapper::createUserUbiAccountEntry).toList();
     }
 }

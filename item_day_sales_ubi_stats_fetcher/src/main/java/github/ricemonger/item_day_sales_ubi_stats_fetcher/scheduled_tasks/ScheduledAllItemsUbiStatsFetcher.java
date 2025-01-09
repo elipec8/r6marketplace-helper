@@ -24,6 +24,6 @@ public class ScheduledAllItemsUbiStatsFetcher {
     public void fetchAllItemSalesUbiStats() {
         List<GroupedItemDaySalesUbiStats> ubiStats = commonQueryItemsSaleStatsGraphQlClientService.fetchAllItemSalesUbiStats();
 
-        itemSaleUbiStatsService.insertAllItemSaleUbiStats(ubiStats);
+        itemSaleUbiStatsService.saveAllItemSaleUbiStats(ubiStats);
     }
 }

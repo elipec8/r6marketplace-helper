@@ -43,4 +43,32 @@ public class UserUbiAccountEntryEntity {
         }
         return Objects.equals(id, userEntity.id);
     }
+
+    public String getProfileId_() {
+        return ubiAccountEntry == null ? null : ubiAccountEntry.getProfileId_();
+    }
+
+    public Integer getCreditAmount_() {
+        return ubiAccountEntry == null ? null : ubiAccountEntry.getCreditAmount_();
+    }
+
+    public String getUbiAuthTicket_() {
+        return ubiAccountEntry == null ? null : ubiAccountEntry.getUbiAuthTicket();
+    }
+
+    public String getUbiSpaceId_() {
+        return ubiAccountEntry == null ? null : ubiAccountEntry.getUbiSpaceId();
+    }
+
+    public String getUbiSessionId_() {
+        return ubiAccountEntry == null ? null : ubiAccountEntry.getUbiSessionId();
+    }
+
+    public String getUbiRememberDeviceTicket_() {
+        return ubiAccountEntry == null ? null : ubiAccountEntry.getUbiRememberDeviceTicket();
+    }
+
+    public String getUbiRememberMeTicket_() {
+        return ubiAccountEntry == null ? null : ubiAccountEntry.getUbiRememberMeTicket();
+    }
 }

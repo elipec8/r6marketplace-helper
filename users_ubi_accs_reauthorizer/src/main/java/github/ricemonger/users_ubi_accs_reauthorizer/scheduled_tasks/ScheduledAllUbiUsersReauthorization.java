@@ -1,7 +1,7 @@
 package github.ricemonger.users_ubi_accs_reauthorizer.scheduled_tasks;
 
 
-import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserToNotify;
+import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UnauthorizedAccount;
 import github.ricemonger.users_ubi_accs_reauthorizer.services.NotificationService;
 import github.ricemonger.users_ubi_accs_reauthorizer.services.UserUbiAccountEntryService;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +20,9 @@ public class ScheduledAllUbiUsersReauthorization {
 
     @Scheduled(fixedRateString = "${app.scheduling.fixedRate}", initialDelayString = "${app.scheduling.initialDelay}")
     public void reauthorizeAllUbiUsersAndNotifyAboutFailures() {
-        Collection<UserToNotify> toNotify = userUbiAccountEntryService.reauthorizeAllUbiUsersAndGetUnauthorizedList();
+        Collection<UnauthorizedAccount> toNotify = userUbiAccountEntryService.reauthorizeAllUbiUsersAndGetUnauthorizedList();
 
-        for (UserToNotify user : toNotify) {
+        for (UnauthorizedAccount user : toNotify) {
             telegramBotService.sendPrivateNotification(user.getId(), String.format("Your Ubisoft account with email:%s could no be authorized. Please check for errors.", user.getEmail()));
         }
     }

@@ -1,6 +1,6 @@
 package github.ricemonger.users_ubi_accs_reauthorizer.scheduled_tasks;
 
-import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserToNotify;
+import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UnauthorizedAccount;
 import github.ricemonger.users_ubi_accs_reauthorizer.services.NotificationService;
 import github.ricemonger.users_ubi_accs_reauthorizer.services.UserUbiAccountEntryService;
 import org.junit.jupiter.api.Test;
@@ -27,8 +27,8 @@ class ScheduledAllUbiUsersReauthorizationTest {
 
     @Test
     public void reauthorizeUbiUsersAndNotifyAboutFailures_should_reauthorize_All_and_notify_via_services() {
-        List<UserToNotify> toNotify = new ArrayList<>();
-        toNotify.add(new UserToNotify(1L, "email"));
+        List<UnauthorizedAccount> toNotify = new ArrayList<>();
+        toNotify.add(new UnauthorizedAccount(1L, "email"));
         when(userUbiAccountEntryService.reauthorizeAllUbiUsersAndGetUnauthorizedList()).thenReturn(toNotify);
 
         scheduledAllUbiUsersReauthorization.reauthorizeAllUbiUsersAndNotifyAboutFailures();

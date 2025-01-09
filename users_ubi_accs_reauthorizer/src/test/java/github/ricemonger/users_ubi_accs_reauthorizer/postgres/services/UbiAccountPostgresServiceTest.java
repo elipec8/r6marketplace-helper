@@ -1,11 +1,13 @@
 package github.ricemonger.users_ubi_accs_reauthorizer.postgres.services;
 
+import github.ricemonger.users_ubi_accs_reauthorizer.postgres.dto_projections.UnauthorizedAccountProjection;
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.entities.UbiAccountEntryCredentialsEntity;
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.entities.UbiAccountEntryEntity;
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.entities.UbiAccountStatsIdEntity;
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.repositories.UbiAccountEntryCredentialsPostgresRepository;
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.repositories.UbiAccountEntryPostgresRepository;
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.services.entity_mappers.user.UbiAccountEntryEntityMapper;
+import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UnauthorizedAccount;
 import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserUbiCredentials;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
@@ -21,6 +23,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -68,6 +71,22 @@ class UbiAccountPostgresServiceTest {
         verify(entity).setAuthorizationDTOFields(authDTO);
 
         verify(ubiAccountEntryPostgresRepository).save(entity);
+    }
+
+    @Test
+    public void deleteUbiAccountStatsForUnauthorizedUsers_should_delete_all_ubi_account_stats_for_unauthorized_users() {
+        UnauthorizedAccount unauthorizedAccount1 = Mockito.mock(UnauthorizedAccount.class);
+        UnauthorizedAccount unauthorizedAccount2 = Mockito.mock(UnauthorizedAccount.class);
+
+        UnauthorizedAccountProjection projection1 = Mockito.mock(UnauthorizedAccountProjection.class);
+        UnauthorizedAccountProjection projection2 = Mockito.mock(UnauthorizedAccountProjection.class);
+
+        when(ubiAccountEntryEntityMapper.createUnauthorizedAccountProjection(unauthorizedAccount1)).thenReturn(projection1);
+        when(ubiAccountEntryEntityMapper.createUnauthorizedAccountProjection(unauthorizedAccount2)).thenReturn(projection2);
+
+        ubiAccountPostgresService.deleteUbiAccountStatsForUnauthorizedUsers(List.of(unauthorizedAccount1, unauthorizedAccount2));
+
+        verify(ubiAccountEntryPostgresRepository).deleteAllUbiAccountStatsForUnauthorizedUsers(argThat(arg-> arg.stream().anyMatch(p -> p == projection1) && arg.stream().anyMatch(p -> p == projection2) && arg.size() == 2));
     }
 
     @Test

@@ -44,7 +44,11 @@ public class UbiAccountEntryEntity {
     private UbiAccountStatsIdCreditAmountEntity ubiAccountStats;
 
     public String getProfileId_() {
-        return this.ubiAccountStats.getUbiProfileId();
+        return this.ubiAccountStats == null ? null : this.ubiAccountStats.getUbiProfileId();
+    }
+
+    public Integer getCreditAmount_() {
+        return this.ubiAccountStats == null ? null : this.ubiAccountStats.getCreditAmount();
     }
 
     @Override

@@ -53,7 +53,11 @@ public class ScheduledAllUbiUsersStatsFetcher {
         List<UbiAccountStats> updatedUbiAccountsStats = new ArrayList<>();
 
         for (UserUbiAccount userUbiAccount : userUbiAccounts) {
-            updatedUbiAccountsStats.add(fetchAndGetUserPersonalStats(userUbiAccount));
+            try {
+                updatedUbiAccountsStats.add(fetchAndGetUserPersonalStats(userUbiAccount));
+            } catch (Exception e) {
+                log.error("Error while fetching user stats for user : {}", userUbiAccount, e);
+            }
         }
 
         commonValuesService.setLastUbiUsersStatsFetchTime(LocalDateTime.now().withNano(0));

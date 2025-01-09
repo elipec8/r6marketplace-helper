@@ -1,7 +1,7 @@
 package github.ricemonger.users_ubi_accs_reauthorizer.services;
 
 import github.ricemonger.users_ubi_accs_reauthorizer.authorization.AuthorizationService;
-import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserToNotify;
+import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UnauthorizedAccount;
 import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserUbiCredentials;
 import github.ricemonger.users_ubi_accs_reauthorizer.services.abstractions.UbiAccountEntryDatabaseService;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
@@ -25,24 +25,26 @@ public class UserUbiAccountEntryService {
 
     private final UbiAccountEntryDatabaseService ubiAccountEntryDatabaseService;
 
-    public List<UserToNotify> reauthorizeAllUbiUsersAndGetUnauthorizedList() {
+    public List<UnauthorizedAccount> reauthorizeAllUbiUsersAndGetUnauthorizedList() {
         List<UserUbiCredentials> users = new ArrayList<>(ubiAccountEntryDatabaseService.findAllUsersUbiCredentials());
 
-        List<UserToNotify> unauthorizedUsers = new ArrayList<>();
+        List<UnauthorizedAccount> unauthorizedUsers = new ArrayList<>();
 
         for (UserUbiCredentials user : users) {
             try {
                 AuthorizationDTO dto = authorizationService.reauthorizeAndGet2FaAuthorizedDtoForEncodedPasswordWithRememberDeviceTicket(user.getEmail(), user.getEncodedPassword(), user.getRememberDeviceTicket());
                 if (dto.getProfileId() == null) {
                     log.error("User with Id {} could not be reauthorized, because of invalid rememberDeviceTicket", user.getUserId());
-                    unauthorizedUsers.add(new UserToNotify(user.getUserId(), user.getEmail()));
+                    unauthorizedUsers.add(new UnauthorizedAccount(user.getUserId(), user.getEmail()));
                     continue;
                 }
                 saveAuthorizationInfo(user.getUserId(), user.getEmail(), dto);
             } catch (UbiUserAuthorizationClientErrorException | UbiUserAuthorizationServerErrorException e) {
-                unauthorizedUsers.add(new UserToNotify(user.getUserId(), user.getEmail()));
+                unauthorizedUsers.add(new UnauthorizedAccount(user.getUserId(), user.getEmail()));
             }
         }
+
+        ubiAccountEntryDatabaseService.deleteUbiAccountStatsForUnauthorizedUsers(unauthorizedUsers);
 
         return unauthorizedUsers;
     }

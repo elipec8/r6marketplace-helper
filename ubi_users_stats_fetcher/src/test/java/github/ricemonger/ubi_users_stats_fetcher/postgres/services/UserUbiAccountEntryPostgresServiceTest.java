@@ -25,18 +25,18 @@ class UserUbiAccountEntryPostgresServiceTest {
     private UbiAccountEntryEntityMapper ubiAccountEntryEntityMapper;
 
     @Test
-    public void findAll_should_return_mapped_service_result() {
+    public void findAll_UserWithUbiAccounts_should_return_mapped_service_result() {
         UserUbiAccountEntryEntity entity1 = Mockito.mock(UserUbiAccountEntryEntity.class);
         UserUbiAccountEntryEntity entity2 = Mockito.mock(UserUbiAccountEntryEntity.class);
 
         UserUbiAccount dto1 = Mockito.mock(UserUbiAccount.class);
         UserUbiAccount dto2 = Mockito.mock(UserUbiAccount.class);
 
-        Mockito.when(userUbiAccountEntryPostgresRepository.findAll()).thenReturn(List.of(entity1, entity2));
+        Mockito.when(userUbiAccountEntryPostgresRepository.findAllUserWithAuthorizedUbiAccounts()).thenReturn(List.of(entity1, entity2));
         Mockito.when(ubiAccountEntryEntityMapper.createUserUbiAccountEntry(entity1)).thenReturn(dto1);
         Mockito.when(ubiAccountEntryEntityMapper.createUserUbiAccountEntry(entity2)).thenReturn(dto2);
 
-        List<UserUbiAccount> result = userUbiAccountEntryPostgresService.findAll();
+        List<UserUbiAccount> result = userUbiAccountEntryPostgresService.findAllUserWithUbiAccounts();
 
         assertEquals(2, result.size());
         assertTrue(result.stream().anyMatch(d -> d == dto1));
