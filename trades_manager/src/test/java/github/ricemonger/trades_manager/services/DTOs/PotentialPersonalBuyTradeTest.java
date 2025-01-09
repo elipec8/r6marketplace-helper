@@ -63,16 +63,16 @@ class PotentialPersonalBuyTradeTest {
     }
 
     @Test
-    public void compareTo_should_compare_tradePriority_first() {
+    public void compareTo_should_compare_desc_by_tradePriority_first_for_same_multiplier() {
         PersonalItem personalItem1 = new PersonalItem();
         personalItem1.setItem(new Item("itemId1"));
         PersonalItem personalItem2 = new PersonalItem();
-        personalItem2.setItem(new Item("itemId2"));
+        personalItem2.setItem(new Item("itemId1"));
         PotentialTradeStats potentialTradeStats1 = new PotentialTradeStats();
-        potentialTradeStats1.setTradePriority(1L);
+        potentialTradeStats1.setTradePriority(10L);
         personalItem1.setPriorityMultiplier(1);
         PotentialTradeStats potentialTradeStats2 = new PotentialTradeStats();
-        potentialTradeStats2.setTradePriority(1L);
+        potentialTradeStats2.setTradePriority(5L);
         personalItem2.setPriorityMultiplier(1);
 
         PotentialPersonalBuyTrade potentialTrade1 = new PotentialPersonalBuyTrade(personalItem1, potentialTradeStats1);
@@ -80,7 +80,70 @@ class PotentialPersonalBuyTradeTest {
 
         int result = potentialTrade1.compareTo(potentialTrade2);
 
-        assertEquals("itemId1".compareTo("itemId2"), result);
+        assertEquals(-1, result);
+    }
+
+    @Test
+    public void compareTo_should_compare_desc_by_tradePriority_first_for_different_multiplier() {
+        PersonalItem personalItem1 = new PersonalItem();
+        personalItem1.setItem(new Item("itemId1"));
+        PersonalItem personalItem2 = new PersonalItem();
+        personalItem2.setItem(new Item("itemId1"));
+        PotentialTradeStats potentialTradeStats1 = new PotentialTradeStats();
+        potentialTradeStats1.setTradePriority(10L);
+        personalItem1.setPriorityMultiplier(1);
+        PotentialTradeStats potentialTradeStats2 = new PotentialTradeStats();
+        potentialTradeStats2.setTradePriority(5L);
+        personalItem2.setPriorityMultiplier(3);
+
+        PotentialPersonalBuyTrade potentialTrade1 = new PotentialPersonalBuyTrade(personalItem1, potentialTradeStats1);
+        PotentialPersonalBuyTrade potentialTrade2 = new PotentialPersonalBuyTrade(personalItem2, potentialTradeStats2);
+
+        int result = potentialTrade1.compareTo(potentialTrade2);
+
+        assertEquals(1, result);
+    }
+
+    @Test
+    public void compareTo_should_compare_desc_by_tradePriority_first_for_negative() {
+        PersonalItem personalItem1 = new PersonalItem();
+        personalItem1.setItem(new Item("itemId1"));
+        PersonalItem personalItem2 = new PersonalItem();
+        personalItem2.setItem(new Item("itemId1"));
+        PotentialTradeStats potentialTradeStats1 = new PotentialTradeStats();
+        potentialTradeStats1.setTradePriority(-10L);
+        personalItem1.setPriorityMultiplier(1);
+        PotentialTradeStats potentialTradeStats2 = new PotentialTradeStats();
+        potentialTradeStats2.setTradePriority(-5L);
+        personalItem2.setPriorityMultiplier(1);
+
+        PotentialPersonalBuyTrade potentialTrade1 = new PotentialPersonalBuyTrade(personalItem1, potentialTradeStats1);
+        PotentialPersonalBuyTrade potentialTrade2 = new PotentialPersonalBuyTrade(personalItem2, potentialTradeStats2);
+
+        int result = potentialTrade1.compareTo(potentialTrade2);
+
+        assertEquals(1, result);
+    }
+
+    @Test
+    public void compareTo_should_compare_desc_by_tradePriority_first_for_negative_diff_multiplier() {
+        PersonalItem personalItem1 = new PersonalItem();
+        personalItem1.setItem(new Item("itemId1"));
+        PersonalItem personalItem2 = new PersonalItem();
+        personalItem2.setItem(new Item("itemId1"));
+        PotentialTradeStats potentialTradeStats1 = new PotentialTradeStats();
+        potentialTradeStats1.setTradePriority(-10L);
+        personalItem1.setPriorityMultiplier(3);
+        PotentialTradeStats potentialTradeStats2 = new PotentialTradeStats();
+        potentialTradeStats2.setTradePriority(-5L);
+        personalItem2.setPriorityMultiplier(1);
+
+        PotentialPersonalBuyTrade potentialTrade1 = new PotentialPersonalBuyTrade(personalItem1, potentialTradeStats1);
+        PotentialPersonalBuyTrade potentialTrade2 = new PotentialPersonalBuyTrade(personalItem2, potentialTradeStats2);
+
+        int result = potentialTrade1.compareTo(potentialTrade2);
+
+        assertEquals(-1, result);
     }
 
     @Test
