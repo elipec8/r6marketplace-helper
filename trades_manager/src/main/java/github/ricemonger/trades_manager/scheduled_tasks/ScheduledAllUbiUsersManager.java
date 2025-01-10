@@ -11,8 +11,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ScheduledAllUbiUsersManager {
 
-    public static final int TRADE_MANAGER_FIXED_RATE_MINUTES = 1;
-
     private final CentralTradeManager centralTradeManager;
 
     @Scheduled(fixedRateString = "${app.scheduling.fixedRate}", initialDelayString = "${app.scheduling.initialDelay}")

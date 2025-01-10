@@ -9,7 +9,6 @@ mutation UpdateBuyOrder($spaceId: String!, $tradeId: String!, $paymentProposal: 
     }
     __typename
 }
-}
 
 fragment TradeFragment on Trade {
     id
