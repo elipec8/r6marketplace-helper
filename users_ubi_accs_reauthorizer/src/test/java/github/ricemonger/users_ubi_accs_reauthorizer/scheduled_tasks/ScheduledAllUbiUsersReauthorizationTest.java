@@ -1,8 +1,8 @@
 package github.ricemonger.users_ubi_accs_reauthorizer.scheduled_tasks;
 
-import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UnauthorizedAccount;
+import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserUnauthorizedUbiAccount;
 import github.ricemonger.users_ubi_accs_reauthorizer.services.NotificationService;
-import github.ricemonger.users_ubi_accs_reauthorizer.services.UserUbiAccountEntryService;
+import github.ricemonger.users_ubi_accs_reauthorizer.services.UserUbiAccountEntryAuthorizationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,19 +21,19 @@ class ScheduledAllUbiUsersReauthorizationTest {
     @Autowired
     private ScheduledAllUbiUsersReauthorization scheduledAllUbiUsersReauthorization;
     @MockBean
-    private UserUbiAccountEntryService userUbiAccountEntryService;
+    private UserUbiAccountEntryAuthorizationService userUbiAccountEntryAuthorizationService;
     @MockBean
     private NotificationService telegramBotService;
 
     @Test
     public void reauthorizeUbiUsersAndNotifyAboutFailures_should_reauthorize_All_and_notify_via_services() {
-        List<UnauthorizedAccount> toNotify = new ArrayList<>();
-        toNotify.add(new UnauthorizedAccount(1L, "email"));
-        when(userUbiAccountEntryService.reauthorizeAllUbiUsersAndGetUnauthorizedList()).thenReturn(toNotify);
+        List<UserUnauthorizedUbiAccount> toNotify = new ArrayList<>();
+        toNotify.add(new UserUnauthorizedUbiAccount(1L, "email"));
+        when(userUbiAccountEntryAuthorizationService.reauthorizeAllUbiUsersAndGetUnauthorizedList()).thenReturn(toNotify);
 
         scheduledAllUbiUsersReauthorization.reauthorizeAllUbiUsersAndNotifyAboutFailures();
 
-        verify(userUbiAccountEntryService).reauthorizeAllUbiUsersAndGetUnauthorizedList();
+        verify(userUbiAccountEntryAuthorizationService).reauthorizeAllUbiUsersAndGetUnauthorizedList();
 
         verify(telegramBotService).sendPrivateNotification(eq(1L), anyString());
     }

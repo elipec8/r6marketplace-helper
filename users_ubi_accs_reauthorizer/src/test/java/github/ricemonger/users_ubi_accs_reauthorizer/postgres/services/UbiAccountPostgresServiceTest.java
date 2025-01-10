@@ -1,19 +1,16 @@
 package github.ricemonger.users_ubi_accs_reauthorizer.postgres.services;
 
-import github.ricemonger.users_ubi_accs_reauthorizer.postgres.dto_projections.UnauthorizedAccountProjection;
-import github.ricemonger.users_ubi_accs_reauthorizer.postgres.entities.UbiAccountEntryCredentialsEntity;
-import github.ricemonger.users_ubi_accs_reauthorizer.postgres.entities.UbiAccountEntryEntity;
-import github.ricemonger.users_ubi_accs_reauthorizer.postgres.entities.UbiAccountStatsIdEntity;
-import github.ricemonger.users_ubi_accs_reauthorizer.postgres.repositories.UbiAccountEntryCredentialsPostgresRepository;
+import github.ricemonger.users_ubi_accs_reauthorizer.postgres.dto_projections.UserUbiAccountAuthorizedProjection;
+import github.ricemonger.users_ubi_accs_reauthorizer.postgres.dto_projections.UserUbiAccountCredentialsProjection;
+import github.ricemonger.users_ubi_accs_reauthorizer.postgres.dto_projections.UserUnauthorizedUbiAccountProjection;
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.repositories.UbiAccountEntryPostgresRepository;
+import github.ricemonger.users_ubi_accs_reauthorizer.postgres.repositories.UbiAccountStatsPostgresRepository;
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.services.entity_mappers.user.UbiAccountEntryEntityMapper;
-import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UnauthorizedAccount;
-import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserUbiCredentials;
+import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserUnauthorizedUbiAccount;
+import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserUbiAccountCredentials;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
-import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
-import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
+import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountStatsEntity;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,8 +21,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class UbiAccountPostgresServiceTest {
@@ -34,78 +30,146 @@ class UbiAccountPostgresServiceTest {
     @MockBean
     private UbiAccountEntryPostgresRepository ubiAccountEntryPostgresRepository;
     @MockBean
-    private UbiAccountEntryCredentialsPostgresRepository ubiAccountEntryCredentialsRepository;
+    private UbiAccountStatsPostgresRepository ubiAccountStatsPostgresRepository;
     @MockBean
     private UbiAccountEntryEntityMapper ubiAccountEntryEntityMapper;
 
     @Test
-    public void saveAuthorizationInfo_should_throw_exception_when_user_doesnt_exist() {
-        assertThrows(TelegramUserDoesntExistException.class, () -> ubiAccountPostgresService.saveAuthorizationInfo(1L, "email", new AuthorizationDTO()));
+    public void updateAuthorizedUserCredntialsAndLinkUbiAccountStats_should_only_update_ubi_credentials_if_same_ubi_account_stats_linked(){
+        Long userId=  1L;
+        String email = "email";
+        AuthorizationDTO dto = new AuthorizationDTO();
+        dto.setProfileId("profileId");
+        when(ubiAccountEntryPostgresRepository.findUbiAccountStatsProfileIdByUserIdAndEmail(userId, email)).thenReturn(Optional.of("profileId"));
+
+        UserUbiAccountAuthorizedProjection proj = mock(UserUbiAccountAuthorizedProjection.class);
+        when(ubiAccountEntryEntityMapper.createUserUbiAccountAuthorizedProjection(userId, email, dto)).thenReturn(proj);
+
+        ubiAccountPostgresService.updateCredentialsAndLinkUbiAccountStatsForAuthorizedUser(1L, "email", dto);
+
+        verify(ubiAccountEntryPostgresRepository).updateUserUbiCredentials(proj);
+
+        verify(ubiAccountStatsPostgresRepository, never()).save(any(UbiAccountStatsEntity.class));
+        verify(ubiAccountEntryPostgresRepository, never()).linkUbiAccountStatsByUserIdAndEmail(any(Long.class), any(String.class), any(String.class));
     }
 
     @Test
-    public void saveAuthorizationInfo_should_throw_exception_when_user_has_another_ubi_account() {
-        UbiAccountEntryEntity entity = new UbiAccountEntryEntity();
-        entity.setUbiAccountStats(new UbiAccountStatsIdEntity("profileId1"));
+    public void saveAuthorizationInfo_should_save_new_ubi_account_stats_and_link_it_if_different_ubi_account_stats_linked_and_authorized_doesnt_exist_another_linked(){
+        Long userId=  1L;
+        String email = "email";
+        AuthorizationDTO dto = new AuthorizationDTO();
+        dto.setProfileId("profileId");
+        when(ubiAccountEntryPostgresRepository.findUbiAccountStatsProfileIdByUserIdAndEmail(userId, email)).thenReturn(Optional.of("differentProfileId"));
 
-        when(ubiAccountEntryPostgresRepository.findById(any())).thenReturn(Optional.of(entity));
+        UserUbiAccountAuthorizedProjection proj = mock(UserUbiAccountAuthorizedProjection.class);
+        when(ubiAccountEntryEntityMapper.createUserUbiAccountAuthorizedProjection(userId, email, dto)).thenReturn(proj);
 
-        AuthorizationDTO authDTO = new AuthorizationDTO();
-        authDTO.setProfileId("profileId2");
+        when(ubiAccountStatsPostgresRepository.existsById("profileId")).thenReturn(false);
 
-        assertThrows(UbiAccountEntryAlreadyExistsException.class, () -> ubiAccountPostgresService.saveAuthorizationInfo(1L, "email", authDTO));
+        ubiAccountPostgresService.updateCredentialsAndLinkUbiAccountStatsForAuthorizedUser(1L, "email", dto);
+
+        verify(ubiAccountEntryPostgresRepository).updateUserUbiCredentials(proj);
+
+        verify(ubiAccountStatsPostgresRepository).save(argThat((UbiAccountStatsEntity e) -> e.getUbiProfileId().equals("profileId")));
+        verify(ubiAccountEntryPostgresRepository).linkUbiAccountStatsByUserIdAndEmail(userId, email, "profileId");
     }
 
     @Test
-    public void saveAuthorizationInfo_should_save_new_authorization_dto_if_same_ubi_acc() {
-        UbiAccountEntryEntity entity = Mockito.mock(UbiAccountEntryEntity.class);
-        when(entity.getUbiProfileId_()).thenReturn("profileId1");
+    public void updateCredentialsAndLinkUbiAccountStats_should_link_to_different_ubi_account_stats_ForAuthorizedUser_if_another_existing_profileId_another_linked(){
+        Long userId=  1L;
+        String email = "email";
+        AuthorizationDTO dto = new AuthorizationDTO();
+        dto.setProfileId("profileId");
+        when(ubiAccountEntryPostgresRepository.findUbiAccountStatsProfileIdByUserIdAndEmail(userId, email)).thenReturn(Optional.of("differentProfileId"));
 
-        when(ubiAccountEntryPostgresRepository.findById(any())).thenReturn(Optional.of(entity));
+        UserUbiAccountAuthorizedProjection proj = mock(UserUbiAccountAuthorizedProjection.class);
+        when(ubiAccountEntryEntityMapper.createUserUbiAccountAuthorizedProjection(userId, email, dto)).thenReturn(proj);
 
-        AuthorizationDTO authDTO = new AuthorizationDTO();
-        authDTO.setProfileId("profileId1");
+        when(ubiAccountStatsPostgresRepository.existsById("profileId")).thenReturn(true);
 
-        ubiAccountPostgresService.saveAuthorizationInfo(1L, "email", authDTO);
+        ubiAccountPostgresService.updateCredentialsAndLinkUbiAccountStatsForAuthorizedUser(1L, "email", dto);
 
-        verify(entity).setAuthorizationDTOFields(authDTO);
+        verify(ubiAccountEntryPostgresRepository).updateUserUbiCredentials(proj);
 
-        verify(ubiAccountEntryPostgresRepository).save(entity);
+        verify(ubiAccountStatsPostgresRepository, never()).save(any(UbiAccountStatsEntity.class));
+        verify(ubiAccountEntryPostgresRepository).linkUbiAccountStatsByUserIdAndEmail(userId, email, "profileId");
     }
 
     @Test
-    public void deleteUbiAccountStatsForUnauthorizedUsers_should_delete_all_ubi_account_stats_for_unauthorized_users() {
-        UnauthorizedAccount unauthorizedAccount1 = Mockito.mock(UnauthorizedAccount.class);
-        UnauthorizedAccount unauthorizedAccount2 = Mockito.mock(UnauthorizedAccount.class);
+    public void saveAuthorizationInfo_should_save_new_ubi_account_stats_and_link_it_if_different_ubi_account_stats_linked_and_authorized_doesnt_exist_null_exists(){
+        Long userId=  1L;
+        String email = "email";
+        AuthorizationDTO dto = new AuthorizationDTO();
+        dto.setProfileId("profileId");
+        when(ubiAccountEntryPostgresRepository.findUbiAccountStatsProfileIdByUserIdAndEmail(userId, email)).thenReturn(Optional.empty());
 
-        UnauthorizedAccountProjection projection1 = Mockito.mock(UnauthorizedAccountProjection.class);
-        UnauthorizedAccountProjection projection2 = Mockito.mock(UnauthorizedAccountProjection.class);
+        UserUbiAccountAuthorizedProjection proj = mock(UserUbiAccountAuthorizedProjection.class);
+        when(ubiAccountEntryEntityMapper.createUserUbiAccountAuthorizedProjection(userId, email, dto)).thenReturn(proj);
 
-        when(ubiAccountEntryEntityMapper.createUnauthorizedAccountProjection(unauthorizedAccount1)).thenReturn(projection1);
-        when(ubiAccountEntryEntityMapper.createUnauthorizedAccountProjection(unauthorizedAccount2)).thenReturn(projection2);
+        when(ubiAccountStatsPostgresRepository.existsById("profileId")).thenReturn(false);
 
-        ubiAccountPostgresService.deleteUbiAccountStatsForUnauthorizedUsers(List.of(unauthorizedAccount1, unauthorizedAccount2));
+        ubiAccountPostgresService.updateCredentialsAndLinkUbiAccountStatsForAuthorizedUser(1L, "email", dto);
 
-        verify(ubiAccountEntryPostgresRepository).deleteAllUbiAccountStatsForUnauthorizedUsers(argThat(arg-> arg.stream().anyMatch(p -> p == projection1) && arg.stream().anyMatch(p -> p == projection2) && arg.size() == 2));
+        verify(ubiAccountEntryPostgresRepository).updateUserUbiCredentials(proj);
+
+        verify(ubiAccountStatsPostgresRepository).save(argThat((UbiAccountStatsEntity e) -> e.getUbiProfileId().equals("profileId")));
+        verify(ubiAccountEntryPostgresRepository).linkUbiAccountStatsByUserIdAndEmail(userId, email, "profileId");
     }
 
     @Test
-    public void findAllUsersUbiCredentials_should_return_all_mapped_users_ubi_credentials() {
-        UbiAccountEntryCredentialsEntity entity1 = Mockito.mock(UbiAccountEntryCredentialsEntity.class);
-        UbiAccountEntryCredentialsEntity entity2 = Mockito.mock(UbiAccountEntryCredentialsEntity.class);
+    public void updateCredentialsAndLinkUbiAccountStats_should_link_to_different_ubi_account_stats_ForAuthorizedUser_if_another_existing_profileId_null_exists(){
+        Long userId=  1L;
+        String email = "email";
+        AuthorizationDTO dto = new AuthorizationDTO();
+        dto.setProfileId("profileId");
+        when(ubiAccountEntryPostgresRepository.findUbiAccountStatsProfileIdByUserIdAndEmail(userId, email)).thenReturn(Optional.empty());
 
-        when(ubiAccountEntryCredentialsRepository.findAll()).thenReturn(java.util.List.of(entity1, entity2));
+        UserUbiAccountAuthorizedProjection proj = mock(UserUbiAccountAuthorizedProjection.class);
+        when(ubiAccountEntryEntityMapper.createUserUbiAccountAuthorizedProjection(userId, email, dto)).thenReturn(proj);
 
-        UserUbiCredentials userUbiCredentials1 = Mockito.mock(UserUbiCredentials.class);
-        UserUbiCredentials userUbiCredentials2 = Mockito.mock(UserUbiCredentials.class);
+        when(ubiAccountStatsPostgresRepository.existsById("profileId")).thenReturn(true);
 
-        when(ubiAccountEntryEntityMapper.createUserUbiCredentials(entity1)).thenReturn(userUbiCredentials1);
-        when(ubiAccountEntryEntityMapper.createUserUbiCredentials(entity2)).thenReturn(userUbiCredentials2);
+        ubiAccountPostgresService.updateCredentialsAndLinkUbiAccountStatsForAuthorizedUser(1L, "email", dto);
 
-        List<UserUbiCredentials> result = ubiAccountPostgresService.findAllUsersUbiCredentials();
+        verify(ubiAccountEntryPostgresRepository).updateUserUbiCredentials(proj);
 
+        verify(ubiAccountStatsPostgresRepository, never()).save(any(UbiAccountStatsEntity.class));
+        verify(ubiAccountEntryPostgresRepository).linkUbiAccountStatsByUserIdAndEmail(userId, email, "profileId");
+    }
+
+    @Test
+    public void unlinkUbiAccountStatsForUnauthorizedUsers_should_unlink_all_ubi_account_stats_for_unauthorized_users(){
+        UserUnauthorizedUbiAccount user1 = mock(UserUnauthorizedUbiAccount.class);
+        UserUnauthorizedUbiAccount user2 = mock(UserUnauthorizedUbiAccount.class);
+
+        UserUnauthorizedUbiAccountProjection proj1 = mock(UserUnauthorizedUbiAccountProjection.class);
+        UserUnauthorizedUbiAccountProjection proj2 = mock(UserUnauthorizedUbiAccountProjection.class);
+
+        when(ubiAccountEntryEntityMapper.createUnauthorizedAccountProjection(user1)).thenReturn(proj1);
+        when(ubiAccountEntryEntityMapper.createUnauthorizedAccountProjection(user2)).thenReturn(proj2);
+
+        ubiAccountPostgresService.unlinkUbiAccountStatsForUnauthorizedUsers(List.of(user1, user2));
+
+        verify(ubiAccountEntryPostgresRepository).unlinkAllUbiAccountStatsForUnauthorizedUsers(argThat((List<UserUnauthorizedUbiAccountProjection> projections) -> projections.contains(proj1) && projections.contains(proj2) && projections.size() == 2));
+    }
+
+    @Test
+    public void findAllUsersUbiCredentials_should_return_all_users_ubi_Account_credentials(){
+        UserUbiAccountCredentials cred1 = mock(UserUbiAccountCredentials.class);
+        UserUbiAccountCredentials cred2 = mock(UserUbiAccountCredentials.class);
+
+        UserUbiAccountCredentialsProjection proj1 = mock(UserUbiAccountCredentialsProjection.class);
+        UserUbiAccountCredentialsProjection proj2 = mock(UserUbiAccountCredentialsProjection.class);
+
+        when(ubiAccountEntryEntityMapper.createUserUbiAccountCredentials(proj1)).thenReturn(cred1);
+        when(ubiAccountEntryEntityMapper.createUserUbiAccountCredentials(proj2)).thenReturn(cred2);
+
+        when(ubiAccountEntryPostgresRepository.findAllUsersUbiCredentials()).thenReturn(List.of(proj1, proj2));
+
+        List<UserUbiAccountCredentials> result = ubiAccountPostgresService.findAllUsersUbiAccountCredentials();
+
+        assertTrue(result.contains(cred1));
+        assertTrue(result.contains(cred2));
         assertEquals(2, result.size());
-        assertTrue(result.contains(userUbiCredentials1));
-        assertTrue(result.contains(userUbiCredentials2));
     }
 }

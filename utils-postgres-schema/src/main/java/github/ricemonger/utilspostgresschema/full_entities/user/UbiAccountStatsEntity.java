@@ -40,17 +40,21 @@ public class UbiAccountStatsEntity {
     @OneToMany(mappedBy = "ubiAccount", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<ItemResaleLockEntity> resaleLocks = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinTable(name = "ubi_account_current_sell_trades",
             joinColumns = {@JoinColumn(name = "ubi_profile_id", referencedColumnName = "ubi_profile_id")},
             inverseJoinColumns = @JoinColumn(name = "trade_id", referencedColumnName = "trade_id"))
     private List<TradeEntity> currentSellTrades = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER ,orphanRemoval = true)
     @JoinTable(name = "ubi_account_current_buy_trades",
             joinColumns = {@JoinColumn(name = "ubi_profile_id", referencedColumnName = "ubi_profile_id")},
             inverseJoinColumns = @JoinColumn(name = "trade_id", referencedColumnName = "trade_id"))
     private List<TradeEntity> currentBuyTrades = new ArrayList<>();
+
+    public UbiAccountStatsEntity(String ubiProfileId) {
+        this.ubiProfileId = ubiProfileId;
+    }
 
     @Override
     public int hashCode() {

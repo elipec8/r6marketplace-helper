@@ -1,7 +1,7 @@
 package github.ricemonger.users_ubi_accs_reauthorizer.services.abstractions;
 
-import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UnauthorizedAccount;
-import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserUbiCredentials;
+import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserUnauthorizedUbiAccount;
+import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserUbiAccountCredentials;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
@@ -9,9 +9,9 @@ import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsExc
 import java.util.List;
 
 public interface UbiAccountEntryDatabaseService {
-    void saveAuthorizationInfo(Long userId, String email, AuthorizationDTO authDTO) throws TelegramUserDoesntExistException, UbiAccountEntryAlreadyExistsException;
+    void updateCredentialsAndLinkUbiAccountStatsForAuthorizedUser(Long userId, String email, AuthorizationDTO authDTO) throws TelegramUserDoesntExistException, UbiAccountEntryAlreadyExistsException;
 
-    void deleteUbiAccountStatsForUnauthorizedUsers(List<UnauthorizedAccount> unauthorizedUsers);
+    void unlinkUbiAccountStatsForUnauthorizedUsers(List<UserUnauthorizedUbiAccount> unauthorizedUsers);
 
-    List<UserUbiCredentials> findAllUsersUbiCredentials();
+    List<UserUbiAccountCredentials> findAllUsersUbiAccountCredentials();
 }

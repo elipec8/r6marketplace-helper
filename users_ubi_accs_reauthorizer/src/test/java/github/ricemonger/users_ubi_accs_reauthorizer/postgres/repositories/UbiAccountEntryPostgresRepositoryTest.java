@@ -1,9 +1,9 @@
 package github.ricemonger.users_ubi_accs_reauthorizer.postgres.repositories;
 
-import github.ricemonger.users_ubi_accs_reauthorizer.postgres.dto_projections.UnauthorizedAccountProjection;
-import github.ricemonger.users_ubi_accs_reauthorizer.postgres.entities.UbiAccountEntryEntity;
-import github.ricemonger.users_ubi_accs_reauthorizer.postgres.entities.UbiAccountStatsIdEntity;
-import github.ricemonger.users_ubi_accs_reauthorizer.postgres.entities.UserIdEntity;
+import github.ricemonger.users_ubi_accs_reauthorizer.postgres.dto_projections.UserUnauthorizedUbiAccountProjection;
+import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountEntryEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountStatsEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,55 +19,59 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-@Disabled // EntityExistsException: detached entity passed to persist UserIdEntity, UbiAccountEntryEntity
 class UbiAccountEntryPostgresRepositoryTest {
     @Autowired
     private UbiAccountEntryPostgresRepository ubiAccountEntryPostgresRepository;
+    @Autowired
+    private UbiAccountEntryPostgresRepository ubiAccountStatsPostgresRepository;
     @Autowired
     private EntityManagerFactory entityManagerFactory;
 
     @BeforeEach
     @Transactional
     void setUp() {
+        ubiAccountStatsPostgresRepository.deleteAll();
         ubiAccountEntryPostgresRepository.deleteAll();
     }
 
     @Test
-    public void deleteAllUbiAccountStatsForUnauthorizedUsers_should_remove_ubi_account_stats_only_for_unauthorized_users() {
+    @Transactional
+    @Disabled // EntityExistsException: detached entity passed to persist UserEntity, UbiAccountEntryEntity
+    public void unlinkAllUbiAccountStatsForUnauthorizedUsers_should_remove_ubi_account_stats_only_for_unauthorized_users() {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
         try {
             entityManager.getTransaction().begin();
 
-            UserIdEntity user1 = new UserIdEntity(1L);
+            UserEntity user1 = new UserEntity(1L);
             entityManager.persist(user1);
 
             UbiAccountEntryEntity entry1 = new UbiAccountEntryEntity();
             entry1.setUser(user1);
             entry1.setEmail("email1");
-            UbiAccountStatsIdEntity stats1 = new UbiAccountStatsIdEntity("ubiProfileId1");
+            UbiAccountStatsEntity stats1 = new UbiAccountStatsEntity("ubiProfileId1");
             entityManager.persist(stats1);
             entry1.setUbiAccountStats(stats1);
             entityManager.persist(entry1);
 
-            UserIdEntity user2 = new UserIdEntity(2L);
+            UserEntity user2 = new UserEntity(2L);
             entityManager.persist(user2);
 
             UbiAccountEntryEntity entry2 = new UbiAccountEntryEntity();
             entry2.setUser(user2);
             entry2.setEmail("email2");
-            UbiAccountStatsIdEntity stats2 = new UbiAccountStatsIdEntity("ubiProfileId2");
+            UbiAccountStatsEntity stats2 = new UbiAccountStatsEntity("ubiProfileId2");
             entityManager.persist(stats2);
             entry2.setUbiAccountStats(stats2);
             entityManager.persist(entry2);
 
-            UserIdEntity user3 = new UserIdEntity(3L);
+            UserEntity user3 = new UserEntity(3L);
             entityManager.persist(user3);
 
             UbiAccountEntryEntity entry3 = new UbiAccountEntryEntity();
             entry3.setUser(user3);
             entry3.setEmail("email3");
-            UbiAccountStatsIdEntity stats3 = new UbiAccountStatsIdEntity("ubiProfileId3");
+            UbiAccountStatsEntity stats3 = new UbiAccountStatsEntity("ubiProfileId3");
             entityManager.persist(stats3);
             entry3.setUbiAccountStats(stats3);
             entityManager.persist(entry3);
@@ -76,9 +80,9 @@ class UbiAccountEntryPostgresRepositoryTest {
 
             entityManager.clear();
 
-            List<UnauthorizedAccountProjection> projectionList = List.of(new UnauthorizedAccountProjection(1L, "email1"), new UnauthorizedAccountProjection(2L, "email2"));
+            List<UserUnauthorizedUbiAccountProjection> projectionList = List.of(new UserUnauthorizedUbiAccountProjection(1L, "email1"), new UserUnauthorizedUbiAccountProjection(2L, "email2"));
 
-            ubiAccountEntryPostgresRepository.deleteAllUbiAccountStatsForUnauthorizedUsers(projectionList);
+            ubiAccountEntryPostgresRepository.unlinkAllUbiAccountStatsForUnauthorizedUsers(projectionList);
 
             List<UbiAccountEntryEntity> result = ubiAccountEntryPostgresRepository.findAll();
 
@@ -92,43 +96,43 @@ class UbiAccountEntryPostgresRepositoryTest {
     }
 
     @Test
-
-    public void deleteUbiAccountStatsForUnauthorizedUser_should_remove_ubi_account_stats_only_for_unauthorized_users() {
+    @Disabled // EntityExistsException: detached entity passed to persist UserEntity, UbiAccountEntryEntity
+    public void unlinkUbiAccountStatsForUnauthorizedUser_should_remove_ubi_account_stats_only_for_unauthorized_users() {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
         try {
             entityManager.clear();
             entityManager.getTransaction().begin();
 
-            UserIdEntity user1 = new UserIdEntity(1L);
+            UserEntity user1 = new UserEntity(1L);
             entityManager.persist(user1);
 
             UbiAccountEntryEntity entry1 = new UbiAccountEntryEntity();
             entry1.setUser(user1);
             entry1.setEmail("email1");
-            UbiAccountStatsIdEntity stats1 = new UbiAccountStatsIdEntity("ubiProfileId1");
+            UbiAccountStatsEntity stats1 = new UbiAccountStatsEntity("ubiProfileId1");
             entityManager.persist(stats1);
             entry1.setUbiAccountStats(stats1);
             entityManager.persist(entry1);
 
-            UserIdEntity user2 = new UserIdEntity(2L);
+            UserEntity user2 = new UserEntity(2L);
             entityManager.persist(user2);
 
             UbiAccountEntryEntity entry2 = new UbiAccountEntryEntity();
             entry2.setUser(user2);
             entry2.setEmail("email2");
-            UbiAccountStatsIdEntity stats2 = new UbiAccountStatsIdEntity("ubiProfileId2");
+            UbiAccountStatsEntity stats2 = new UbiAccountStatsEntity("ubiProfileId2");
             entityManager.persist(stats2);
             entry2.setUbiAccountStats(stats2);
             entityManager.persist(entry2);
 
-            UserIdEntity user3 = new UserIdEntity(3L);
+            UserEntity user3 = new UserEntity(3L);
             entityManager.persist(user3);
 
             UbiAccountEntryEntity entry3 = new UbiAccountEntryEntity();
             entry3.setUser(user3);
             entry3.setEmail("email3");
-            UbiAccountStatsIdEntity stats3 = new UbiAccountStatsIdEntity("ubiProfileId3");
+            UbiAccountStatsEntity stats3 = new UbiAccountStatsEntity("ubiProfileId3");
             entityManager.persist(stats3);
             entry3.setUbiAccountStats(stats3);
             entityManager.persist(entry3);
@@ -137,10 +141,10 @@ class UbiAccountEntryPostgresRepositoryTest {
 
             entityManager.clear();
 
-            List<UnauthorizedAccountProjection> projectionList = List.of(new UnauthorizedAccountProjection(1L, "email1"), new UnauthorizedAccountProjection(2L, "email2"));
+            List<UserUnauthorizedUbiAccountProjection> projectionList = List.of(new UserUnauthorizedUbiAccountProjection(1L, "email1"), new UserUnauthorizedUbiAccountProjection(2L, "email2"));
 
-            ubiAccountEntryPostgresRepository.deleteUbiAccountStatsForUnauthorizedUser(projectionList.get(0));
-            ubiAccountEntryPostgresRepository.deleteUbiAccountStatsForUnauthorizedUser(projectionList.get(1));
+            ubiAccountEntryPostgresRepository.unlinkUbiAccountStatsForUnauthorizedUser(projectionList.get(0));
+            ubiAccountEntryPostgresRepository.unlinkUbiAccountStatsForUnauthorizedUser(projectionList.get(1));
 
             List<UbiAccountEntryEntity> result = ubiAccountEntryPostgresRepository.findAll();
 

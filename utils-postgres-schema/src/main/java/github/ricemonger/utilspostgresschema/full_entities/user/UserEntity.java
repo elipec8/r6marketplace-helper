@@ -69,6 +69,10 @@ public class UserEntity {
     @Column(name = "managing_enabled_flag")
     private Boolean managingEnabledFlag = true;
 
+    public UserEntity(Long userId) {
+        this.id = userId;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(id);

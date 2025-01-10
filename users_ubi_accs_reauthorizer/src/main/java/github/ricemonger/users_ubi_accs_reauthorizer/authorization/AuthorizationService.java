@@ -24,6 +24,51 @@ public class AuthorizationService {
 
     private final AesPasswordEncoder AESPasswordEncoder;
 
+    public AuthorizationDTO reauthorizeAndGet2FaAuthorizedDTOWithAuthorizeTicket(String ticket) throws UbiUserAuthorizationClientErrorException,
+            UbiUserAuthorizationServerErrorException {
+        String ticketWithPrefix = ticket;
+        if (!ticketWithPrefix.startsWith(AUTH_TICKET_PREFIX)) {
+            ticketWithPrefix = AUTH_TICKET_PREFIX + ticket;
+        }
+
+        WebClient webClient = WebClient.builder()
+                .baseUrl(commonValuesService.getAuthorizationUrl())
+                .defaultHeader("Content-Type", commonValuesService.getContentType())
+                .defaultHeader("User-Agent", commonValuesService.getUserAgent())
+                .defaultHeader("Authorization", ticketWithPrefix)
+                .defaultHeader("Ubi-Appid", commonValuesService.getUbiTwoFaAppId())
+                .build();
+
+        AuthorizationDTO dto = webClient
+                .post()
+                .bodyValue(new TwoFaAuthorizationBodyValue(true, new TwoFaAuthorizationBodyValueTrustedDevice(commonValuesService.getTrustedDeviceId(), commonValuesService.getTrustedDeviceFriendlyName())))
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,
+                        clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
+                            @Override
+                            public Throwable apply(String s) {
+                                log.error("Client error during ubi 2fa reauthorization for ticket {} : {}", ticket, s);
+                                return new UbiUserAuthorizationClientErrorException(s);
+                            }
+                        }))
+                .onStatus(HttpStatusCode::is5xxServerError,
+                        clientResponse -> clientResponse.bodyToMono(String.class).map(new Function<String, Throwable>() {
+                            @Override
+                            public Throwable apply(String s) {
+                                log.error("Server error during ubi 2fa reauthorization for ticket {} : {}", ticket, s);
+                                return new UbiUserAuthorizationServerErrorException(s);
+                            }
+                        }))
+                .bodyToMono(AuthorizationDTO.class)
+                .block();
+
+        if (dto != null) {
+            dto.setTicket(AUTH_TICKET_PREFIX + dto.getTicket());
+        }
+
+        return dto;
+    }
+
     public AuthorizationDTO reauthorizeAndGet2FaAuthorizedDtoForEncodedPasswordWithRememberDeviceTicket(String email, String encodedPassword,
                                                                                                         String rememberDeviceTicket) throws UbiUserAuthorizationClientErrorException,
             UbiUserAuthorizationServerErrorException {

@@ -7,12 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserUbiCredentials {
-    private Long userId;
-
+public class UserUnauthorizedUbiAccount {
+    private Long id;
     private String email;
-
-    private String encodedPassword;
-
-    private String rememberDeviceTicket;
 }

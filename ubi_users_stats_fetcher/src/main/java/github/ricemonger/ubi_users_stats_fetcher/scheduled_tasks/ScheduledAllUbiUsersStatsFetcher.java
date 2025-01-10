@@ -61,7 +61,7 @@ public class ScheduledAllUbiUsersStatsFetcher {
             }
         }
 
-        commonValuesService.setLastUbiUsersStatsFetchTime(LocalDateTime.now().withNano(0));
+        commonValuesService.setLastUbiUsersStatsFetchTime(LocalDateTime.now().withNano(0).plusSeconds(6));
 
         ubiAccountService.saveAllUbiAccountStats(updatedUbiAccountsStats);
     }
@@ -129,15 +129,6 @@ public class ScheduledAllUbiUsersStatsFetcher {
     }
 
     private String getFinishedTradeString(UbiTrade trade) {
-        Item item = trade.getItem();
-        Integer price;
-
-        if (trade.getSuccessPaymentPrice() == null || trade.getSuccessPaymentFee() == null) {
-            price = trade.getSuccessPaymentPrice();
-        } else {
-            price = trade.getSuccessPaymentPrice() - trade.getSuccessPaymentFee();
-        }
-
-        return item.getName() + " for " + price;
+        return trade.getItem().getName() + " for " + trade.getSuccessPaymentPrice();
     }
 }
