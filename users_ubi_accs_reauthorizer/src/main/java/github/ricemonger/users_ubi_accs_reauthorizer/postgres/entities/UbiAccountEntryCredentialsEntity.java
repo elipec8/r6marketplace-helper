@@ -28,8 +28,8 @@ public class UbiAccountEntryCredentialsEntity {
     @Column(name = "encoded_password")
     private String encodedPassword;
 
-    @Column(columnDefinition = "TEXT", name = "ubi_remember_me_ticket")
-    private String ubiRememberMeTicket;
+    @Column(columnDefinition = "TEXT", name = "ubi_remember_device_ticket")
+    private String ubiRememberDeviceTicket;
 
     public Long getUserId_() {
         return user.getId();

@@ -17,7 +17,7 @@ public class UbiAccountEntryEntityMapper {
         return new UserUbiCredentials(ubiAccountEntryCredentialsEntity.getUserId_(),
                 ubiAccountEntryCredentialsEntity.getEmail(),
                 ubiAccountEntryCredentialsEntity.getEncodedPassword(),
-                ubiAccountEntryCredentialsEntity.getUbiRememberMeTicket());
+                ubiAccountEntryCredentialsEntity.getUbiRememberDeviceTicket());
     }
 
     public UnauthorizedAccountProjection createUnauthorizedAccountProjection(UnauthorizedAccount unauthorizedAccount) {

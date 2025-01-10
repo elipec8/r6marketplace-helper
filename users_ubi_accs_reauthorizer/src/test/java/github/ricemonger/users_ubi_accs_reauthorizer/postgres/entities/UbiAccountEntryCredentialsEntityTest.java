@@ -21,7 +21,7 @@ class UbiAccountEntryCredentialsEntityTest {
         entity1.setUser(new UserIdEntity(1L));
         entity1.setEmail("email");
         entity1.setEncodedPassword("encodedPassword");
-        entity1.setUbiRememberMeTicket("ubiRememberMeTicket");
+        entity1.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
 
         UbiAccountEntryCredentialsEntity entity2 = new UbiAccountEntryCredentialsEntity();
         entity2.setUser(new UserIdEntity(1L));
@@ -42,7 +42,7 @@ class UbiAccountEntryCredentialsEntityTest {
         entity1.setUser(new UserIdEntity(1L));
         entity1.setEmail("email");
         entity1.setEncodedPassword("encodedPassword");
-        entity1.setUbiRememberMeTicket("ubiRememberMeTicket");
+        entity1.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
 
         UbiAccountEntryCredentialsEntity entity2 = new UbiAccountEntryCredentialsEntity();
         entity2.setUser(new UserIdEntity(1L));

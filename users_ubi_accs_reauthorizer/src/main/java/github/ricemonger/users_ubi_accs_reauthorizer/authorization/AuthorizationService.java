@@ -31,7 +31,6 @@ public class AuthorizationService {
         WebClient webClient = WebClient.builder()
                 .baseUrl(commonValuesService.getAuthorizationUrl())
                 .defaultHeader("Content-Type", commonValuesService.getContentType())
-                .defaultHeader("User-Agent", commonValuesService.getUserAgent())
                 .defaultHeader("Authorization", createBasicTokenForCredentials(email, AESPasswordEncoder.decode(encodedPassword)))
                 .defaultHeader("Ubi-Appid", commonValuesService.getUbiTwoFaAppId())
                 .defaultHeader("Ubi-RememberDeviceTicket", rememberDeviceTicket)

@@ -290,7 +290,7 @@ class PotentialTradeStatsCalculatorTest {
         int price = 500;
         int minutesToTrade = 432;
 
-        long expectedPriority = 400000000000L;
+        long expectedPriority = 100000000000L;
 
         assertEquals(new PotentialTradeStats(price, minutesToTrade, expectedPriority), potentialTradeStatsCalculator.calculateBuyTradeStats(item, price, minutesToTrade));
     }
@@ -306,7 +306,7 @@ class PotentialTradeStatsCalculatorTest {
         int price = 1500;
         int minutesToTrade = 432;
 
-        long expectedPriority = -132000000000L;
+        long expectedPriority = -33000000000L;
 
         assertEquals(new PotentialTradeStats(price, minutesToTrade, expectedPriority), potentialTradeStatsCalculator.calculateBuyTradeStats(item, price, minutesToTrade));
     }
@@ -338,7 +338,7 @@ class PotentialTradeStatsCalculatorTest {
         int price = 500;
         int minutesToTrade = 432;
 
-        long expectedPriority = -16000000L;
+        long expectedPriority = -4000000L;
 
         assertEquals(new PotentialTradeStats(price, minutesToTrade, expectedPriority), potentialTradeStatsCalculator.calculateBuyTradeStats(item, price, minutesToTrade));
     }
