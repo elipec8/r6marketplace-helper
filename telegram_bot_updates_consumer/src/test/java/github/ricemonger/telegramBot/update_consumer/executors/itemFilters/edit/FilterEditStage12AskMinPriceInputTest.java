@@ -12,19 +12,19 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-class FilterEditStage8AskItemTagsOperatorsInputTest {
+class FilterEditStage12AskMinPriceInputTest {
     @MockBean
     private BotInnerService botInnerService;
 
     @Test
     public void initAndExecute_should_process_middle_input_with_skip_button() {
-        FilterEditStage8AskItemTagsOperatorsInput commandExecutor = new FilterEditStage8AskItemTagsOperatorsInput();
+        FilterEditStage12AskMinPriceInput commandExecutor = new FilterEditStage12AskMinPriceInput();
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
         verify(botInnerService, times(0)).sendText(any(), anyString());
 
         verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO);
-        verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.ITEM_FILTER_ITEM_TAGS_OPERATORS);
+        verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO.getChatId(), InputState.ITEM_FILTER_MIN_PRICE);
 
         verify(botInnerService).askFromInlineKeyboard(
                 eq(MockUpdateInfos.UPDATE_INFO),

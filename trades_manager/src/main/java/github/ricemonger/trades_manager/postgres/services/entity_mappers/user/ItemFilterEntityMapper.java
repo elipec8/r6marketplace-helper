@@ -5,7 +5,6 @@ import github.ricemonger.trades_manager.postgres.services.entity_mappers.item.Ta
 import github.ricemonger.utils.DTOs.common.Tag;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.enums.FilterType;
-import github.ricemonger.utils.enums.IsOwnedFilter;
 import github.ricemonger.utils.enums.ItemType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +24,6 @@ public class ItemFilterEntityMapper {
     public ItemFilter createDTO(ItemFilterEntity entity) {
         String name = entity.getName();
         FilterType filterType = entity.getFilterType();
-        IsOwnedFilter isOwned = entity.getIsOwned();
 
         List<String> namePatterns = new ArrayList<>();
         if (entity.getItemNamePatterns() != null && !entity.getItemNamePatterns().isEmpty()) {
@@ -52,6 +50,6 @@ public class ItemFilterEntityMapper {
         Integer minSellPrice = entity.getMinSellPrice();
         Integer maxBuyPrice = entity.getMaxBuyPrice();
 
-        return new ItemFilter(name, filterType, isOwned, namePatterns, itemTypes, tags, minSellPrice, maxBuyPrice);
+        return new ItemFilter(name, filterType, namePatterns, itemTypes, tags, minSellPrice, maxBuyPrice);
     }
 }

@@ -2,7 +2,6 @@ package github.ricemonger.utilspostgresschema.full_entities.user;
 
 
 import github.ricemonger.utils.enums.FilterType;
-import github.ricemonger.utils.enums.IsOwnedFilter;
 import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +19,6 @@ class ItemFilterEntityTest {
         filter1.getUser().setId(1L);
         filter1.setName("filterName");
         filter1.setFilterType(FilterType.ALLOW);
-        filter1.setIsOwned(IsOwnedFilter.OWNED);
         filter1.setItemNamePatterns("pattern1");
         filter1.setItemTypes("type1");
         filter1.setTags(Set.of(new TagEntity()));
@@ -32,7 +30,6 @@ class ItemFilterEntityTest {
         filter2.getUser().setId(1L);
         filter2.setName("filterName");
         filter2.setFilterType(FilterType.DENY);
-        filter2.setIsOwned(IsOwnedFilter.NOT_OWNED);
         filter2.setItemNamePatterns("pattern2");
         filter2.setItemTypes("type2");
         filter2.setTags(null);
@@ -55,7 +52,6 @@ class ItemFilterEntityTest {
         filter1.getUser().setId(1L);
         filter1.setName("filterName");
         filter1.setFilterType(FilterType.ALLOW);
-        filter1.setIsOwned(IsOwnedFilter.OWNED);
         filter1.setItemNamePatterns("pattern1");
         filter1.setItemTypes("type1");
         filter1.setTags(Set.of(new TagEntity()));
@@ -67,7 +63,6 @@ class ItemFilterEntityTest {
         filter2.getUser().setId(1L);
         filter2.setName("filterName");
         filter2.setFilterType(FilterType.DENY);
-        filter2.setIsOwned(IsOwnedFilter.NOT_OWNED);
         filter2.setItemNamePatterns("pattern2");
         filter2.setItemTypes("type2");
         filter2.setTags(null);
@@ -109,7 +104,6 @@ class ItemFilterEntityTest {
         filter1.getUser().setId(1L);
         filter1.setName("filterName");
         filter1.setFilterType(FilterType.ALLOW);
-        filter1.setIsOwned(IsOwnedFilter.OWNED);
         filter1.setItemNamePatterns("pattern1");
         filter1.setItemTypes("type1");
         filter1.setTags(new HashSet<>(Set.of(new TagEntity())));
@@ -121,7 +115,6 @@ class ItemFilterEntityTest {
         filter2.getUser().setId(1L);
         filter2.setName("filterName");
         filter2.setFilterType(FilterType.ALLOW);
-        filter2.setIsOwned(IsOwnedFilter.OWNED);
         filter2.setItemNamePatterns("pattern1");
         filter2.setItemTypes("type1");
         filter2.setTags(new HashSet<>(Set.of(new TagEntity())));
@@ -144,7 +137,6 @@ class ItemFilterEntityTest {
         filter1.getUser().setId(1L);
         filter1.setName("filterName1");
         filter1.setFilterType(FilterType.ALLOW);
-        filter1.setIsOwned(IsOwnedFilter.OWNED);
         filter1.setItemNamePatterns("pattern1");
         filter1.setItemTypes("type1");
         filter1.setTags(new HashSet<>(Set.of(new TagEntity())));
@@ -156,7 +148,6 @@ class ItemFilterEntityTest {
         filter2.getUser().setId(1L);
         filter2.setName("filterName1");
         filter2.setFilterType(FilterType.ALLOW);
-        filter2.setIsOwned(IsOwnedFilter.OWNED);
         filter2.setItemNamePatterns("pattern1");
         filter2.setItemTypes("type1");
         filter2.setTags(new HashSet<>(Set.of(new TagEntity())));
@@ -172,9 +163,6 @@ class ItemFilterEntityTest {
         filter1.setFilterType(FilterType.DENY);
         assertFalse(filter1.isFullyEqual(filter2));
         filter1.setFilterType(FilterType.ALLOW);
-        filter1.setIsOwned(IsOwnedFilter.NOT_OWNED);
-        assertFalse(filter1.isFullyEqual(filter2));
-        filter1.setIsOwned(IsOwnedFilter.OWNED);
         filter1.setItemNamePatterns("pattern2");
         assertFalse(filter1.isFullyEqual(filter2));
         filter1.setItemNamePatterns("pattern1");

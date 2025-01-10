@@ -7,7 +7,6 @@ import github.ricemonger.utils.enums.TradeCategory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 class PotentialPersonalBuyTradeTest {
 
@@ -270,7 +269,7 @@ class PotentialPersonalBuyTradeTest {
 
     @Test
     public void getItemName_should_return_null_when_personalItem_is_null() {
-        PotentialPersonalBuyTrade PotentialPersonalBuyTrade = new PotentialPersonalBuyTrade(null, null) ;
+        PotentialPersonalBuyTrade PotentialPersonalBuyTrade = new PotentialPersonalBuyTrade(null, null);
         String result = PotentialPersonalBuyTrade.getItemName();
 
         assertNull(result);

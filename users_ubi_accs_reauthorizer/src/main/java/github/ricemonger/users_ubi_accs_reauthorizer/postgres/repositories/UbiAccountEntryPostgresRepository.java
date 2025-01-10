@@ -51,7 +51,8 @@ public interface UbiAccountEntryPostgresRepository extends JpaRepository<UbiAcco
            "u.encodedPassword, " +
            "u.ubiAuthTicket, " +
            "u.ubiRememberDeviceTicket) " +
-           "FROM UbiAccountEntryEntity u")List<UserUbiAccountCredentialsProjection> findAllUsersUbiCredentials();
+           "FROM UbiAccountEntryEntity u")
+    List<UserUbiAccountCredentialsProjection> findAllUsersUbiCredentials();
 
     @Transactional(readOnly = true)
     @Query("SELECT u.ubiAccountStats.ubiProfileId FROM UbiAccountEntryEntity u WHERE u.user.id = :userId AND u.email = :email")

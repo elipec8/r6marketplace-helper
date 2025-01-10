@@ -13,7 +13,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class FilterEditStage15FinishRequestInputTest {
+class FilterEditStage14FinishRequestInputTest {
     @MockBean
     private BotInnerService botInnerService;
 
@@ -21,7 +21,7 @@ class FilterEditStage15FinishRequestInputTest {
     public void initAndExecute_should_process_last_input_with_save_confirmation() {
         when(botInnerService.generateItemFilterByUserInput(MockUpdateInfos.UPDATE_INFO.getChatId())).thenReturn(new ItemFilter());
 
-        FilterEditStage15FinishRequestInput commandExecutor = new FilterEditStage15FinishRequestInput();
+        FilterEditStage14FinishRequestInput commandExecutor = new FilterEditStage14FinishRequestInput();
         commandExecutor.initAndExecute(MockUpdateInfos.UPDATE_INFO, botInnerService);
 
         verify(botInnerService).generateItemFilterByUserInput(MockUpdateInfos.UPDATE_INFO.getChatId());

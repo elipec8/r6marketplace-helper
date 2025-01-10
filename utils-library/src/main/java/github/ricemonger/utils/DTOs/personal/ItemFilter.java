@@ -3,7 +3,6 @@ package github.ricemonger.utils.DTOs.personal;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.Tag;
 import github.ricemonger.utils.enums.FilterType;
-import github.ricemonger.utils.enums.IsOwnedFilter;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TagGroup;
 import lombok.AllArgsConstructor;
@@ -20,8 +19,6 @@ public class ItemFilter {
     private String name;
 
     private FilterType filterType;
-
-    private IsOwnedFilter isOwned;
 
     private List<String> itemNamePatterns;
 
@@ -135,43 +132,6 @@ public class ItemFilter {
         this.tags.addAll(tagsFromNames);
     }
 
-    public String toString() {
-        String name = this.name;
-        String filterType = this.filterType == null ? null : this.filterType.name();
-        String isOwned = String.valueOf(this.isOwned);
-        String itemNamePatterns = this.getItemNamePatternsAsString();
-        String itemTypes = this.getItemTypesAsString();
-        List<Tag> tagsList = tags;
-        if (tags == null) {
-            tagsList = new ArrayList<>();
-        }
-        String rarityTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Rarity)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
-        String seasonTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Season)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
-        String operatorTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Operator)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
-        String weaponTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Weapon)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
-        String eventTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Event)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
-        String esportsTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Esports_Team)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
-        String otherTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Other)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
-        String minPrice = String.valueOf(this.minSellPrice);
-        String maxPrice = String.valueOf(this.maxBuyPrice);
-
-        String sb = "Name: " + name + "\n" +
-                    "Filter type: " + filterType + "\n" +
-                    "Is owned: " + isOwned + "\n" +
-                    "Item name pattern: " + itemNamePatterns + "\n" +
-                    "Item types: " + itemTypes + "\n" +
-                    "Rarity tags: " + rarityTags + "\n" +
-                    "Season tags: " + seasonTags + "\n" +
-                    "Operator tags: " + operatorTags + "\n" +
-                    "Weapon tags: " + weaponTags + "\n" +
-                    "Event tags: " + eventTags + "\n" +
-                    "Esports tags: " + esportsTags + "\n" +
-                    "Other tags: " + otherTags + "\n" +
-                    "Min price: " + minPrice + "\n" +
-                    "Max price: " + maxPrice + "\n";
-        return sb;
-    }
-
     private String getListAsString(List<String> list) {
         if (list == null || list.isEmpty()) {
             return "";
@@ -191,6 +151,37 @@ public class ItemFilter {
     }
 
     public String toHandsomeString() {
-        return this.toString();
+        String name = this.name;
+        String filterType = this.filterType == null ? null : this.filterType.name();
+        String itemNamePatterns = this.getItemNamePatternsAsString();
+        String itemTypes = this.getItemTypesAsString();
+        List<Tag> tagsList = tags;
+        if (tags == null) {
+            tagsList = new ArrayList<>();
+        }
+        String rarityTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Rarity)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
+        String seasonTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Season)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
+        String operatorTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Operator)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
+        String weaponTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Weapon)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
+        String eventTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Event)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
+        String esportsTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Esports_Team)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
+        String otherTags = tagsList.stream().filter(tag -> tag.getTagGroup().equals(TagGroup.Other)).map(Tag::getName).reduce((s, s2) -> s + "," + s2).orElse("");
+        String minPrice = String.valueOf(this.minSellPrice);
+        String maxPrice = String.valueOf(this.maxBuyPrice);
+
+        String sb = "Name: " + name + "\n" +
+                    "Filter type: " + filterType + "\n" +
+                    "Item name pattern: " + itemNamePatterns + "\n" +
+                    "Item types: " + itemTypes + "\n" +
+                    "Rarity tags: " + rarityTags + "\n" +
+                    "Season tags: " + seasonTags + "\n" +
+                    "Operator tags: " + operatorTags + "\n" +
+                    "Weapon tags: " + weaponTags + "\n" +
+                    "Event tags: " + eventTags + "\n" +
+                    "Esports tags: " + esportsTags + "\n" +
+                    "Other tags: " + otherTags + "\n" +
+                    "Min price: " + minPrice + "\n" +
+                    "Max price: " + maxPrice + "\n";
+        return sb;
     }
 }

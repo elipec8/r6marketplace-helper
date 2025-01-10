@@ -5,7 +5,6 @@ import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.
 import github.ricemonger.utils.DTOs.common.Tag;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.enums.FilterType;
-import github.ricemonger.utils.enums.IsOwnedFilter;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TagGroup;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
@@ -43,7 +42,6 @@ class ItemFilterEntityMapperTest {
         ItemFilter filter = new ItemFilter();
         filter.setName("name");
         filter.setFilterType(FilterType.ALLOW);
-        filter.setIsOwned(IsOwnedFilter.OWNED);
         filter.setItemNamePatterns(List.of("pattern1", "pattern2"));
         filter.setItemTypes(List.of(ItemType.Charm, ItemType.CharacterHeadgear));
         filter.setTags(List.of(new Tag("value", "name", TagGroup.Rarity)));
@@ -54,7 +52,6 @@ class ItemFilterEntityMapperTest {
         expected.setUser(userEntity);
         expected.setName("name");
         expected.setFilterType(FilterType.ALLOW);
-        expected.setIsOwned(IsOwnedFilter.OWNED);
         expected.setItemNamePatterns("pattern1,pattern2");
         expected.setItemTypes("Charm,CharacterHeadgear");
         expected.setTags(Set.of(new TagEntity("value", "name", TagGroup.Rarity)));
@@ -83,7 +80,6 @@ class ItemFilterEntityMapperTest {
         ItemFilterEntity entity = new ItemFilterEntity();
         entity.setName("name");
         entity.setFilterType(FilterType.ALLOW);
-        entity.setIsOwned(IsOwnedFilter.OWNED);
         entity.setItemNamePatterns("pattern1,pattern2");
         entity.setItemTypes("Charm,CharacterHeadgear");
         entity.setTags(Set.of(tagEntity));
@@ -93,7 +89,6 @@ class ItemFilterEntityMapperTest {
         ItemFilter expected = new ItemFilter();
         expected.setName("name");
         expected.setFilterType(FilterType.ALLOW);
-        expected.setIsOwned(IsOwnedFilter.OWNED);
         expected.setItemNamePatterns(List.of("pattern1", "pattern2"));
         expected.setItemTypes(List.of(ItemType.Charm, ItemType.CharacterHeadgear));
         expected.setTags(List.of(new Tag("value", "name", TagGroup.Rarity)));

@@ -319,7 +319,6 @@ class ItemFilterTest {
         filter.setTags(null);
         filter.setMinSellPrice(null);
         filter.setMaxBuyPrice(null);
-        filter.setIsOwned(null);
         filter.setFilterType(null);
         filter.setName(null);
 

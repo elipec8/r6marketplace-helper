@@ -6,7 +6,6 @@ import github.ricemonger.trades_manager.postgres.services.entity_mappers.item.Ta
 import github.ricemonger.utils.DTOs.common.Tag;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.enums.FilterType;
-import github.ricemonger.utils.enums.IsOwnedFilter;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TagGroup;
 import org.junit.jupiter.api.Test;
@@ -35,7 +34,6 @@ class ItemFilterEntityMapperTest {
         ItemFilterEntity entity = new ItemFilterEntity();
         entity.setName("name");
         entity.setFilterType(FilterType.ALLOW);
-        entity.setIsOwned(IsOwnedFilter.OWNED);
         entity.setItemNamePatterns("pattern1,pattern2");
         entity.setItemTypes("Charm,CharacterHeadgear");
         entity.setTags(Set.of(tagEntity));
@@ -45,7 +43,6 @@ class ItemFilterEntityMapperTest {
         ItemFilter expected = new ItemFilter();
         expected.setName("name");
         expected.setFilterType(FilterType.ALLOW);
-        expected.setIsOwned(IsOwnedFilter.OWNED);
         expected.setItemNamePatterns(List.of("pattern1", "pattern2"));
         expected.setItemTypes(List.of(ItemType.Charm, ItemType.CharacterHeadgear));
         expected.setTags(List.of(new Tag("value", "name", TagGroup.Rarity)));

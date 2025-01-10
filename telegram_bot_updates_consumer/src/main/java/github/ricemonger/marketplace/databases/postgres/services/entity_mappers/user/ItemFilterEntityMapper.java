@@ -5,7 +5,6 @@ import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.
 import github.ricemonger.utils.DTOs.common.Tag;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.enums.FilterType;
-import github.ricemonger.utils.enums.IsOwnedFilter;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
@@ -38,7 +37,6 @@ public class ItemFilterEntityMapper {
 
         String name = filter.getName();
         FilterType filterType = filter.getFilterType();
-        IsOwnedFilter isOwned = filter.getIsOwned();
 
         String itemNamePatterns;
 
@@ -71,7 +69,6 @@ public class ItemFilterEntityMapper {
         entity.setUser(userEntity);
         entity.setName(name);
         entity.setFilterType(filterType);
-        entity.setIsOwned(isOwned);
         entity.setItemNamePatterns(itemNamePatterns);
         entity.setItemTypes(itemTypes);
         entity.setTags(tags);
@@ -83,7 +80,6 @@ public class ItemFilterEntityMapper {
     public ItemFilter createDTO(ItemFilterEntity entity) {
         String name = entity.getName();
         FilterType filterType = entity.getFilterType();
-        IsOwnedFilter isOwned = entity.getIsOwned();
 
         List<String> namePatterns = new ArrayList<>();
         if (entity.getItemNamePatterns() != null && !entity.getItemNamePatterns().isEmpty()) {
@@ -110,6 +106,6 @@ public class ItemFilterEntityMapper {
         Integer minSellPrice = entity.getMinSellPrice();
         Integer maxBuyPrice = entity.getMaxBuyPrice();
 
-        return new ItemFilter(name, filterType, isOwned, namePatterns, itemTypes, tags, minSellPrice, maxBuyPrice);
+        return new ItemFilter(name, filterType, namePatterns, itemTypes, tags, minSellPrice, maxBuyPrice);
     }
 }

@@ -2,7 +2,6 @@ package github.ricemonger.trades_manager.postgres.entities.manageable_users;
 
 import github.ricemonger.trades_manager.postgres.entities.items.TagEntity;
 import github.ricemonger.utils.enums.FilterType;
-import github.ricemonger.utils.enums.IsOwnedFilter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,10 +32,6 @@ public class ItemFilterEntity {
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "filter_type")
     private FilterType filterType;
-
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "is_owned")
-    private IsOwnedFilter isOwned;
 
     @Column(columnDefinition = "TEXT", name = "item_name_patterns")
     private String itemNamePatterns;
@@ -89,7 +84,6 @@ public class ItemFilterEntity {
 
             return equals(entity) &&
                    filterType == entity.filterType &&
-                   isOwned == entity.isOwned &&
                    Objects.equals(itemNamePatterns, entity.itemNamePatterns) &&
                    Objects.equals(itemTypes, entity.itemTypes) &&
                    tagsAreEqual &&
@@ -101,6 +95,6 @@ public class ItemFilterEntity {
 
     @Override
     public String toString() {
-        return "ItemFilterEntity(userId=" + getUserId_() + ", name=" + name + ", filterType=" + filterType + ", isOwned=" + isOwned + ", itemNamePatterns=" + itemNamePatterns + ", itemTypes=" + itemTypes + ", tags=" + tags + ", minSellPrice=" + minSellPrice + ", maxBuyPrice=" + maxBuyPrice + ")";
+        return "ItemFilterEntity(userId=" + getUserId_() + ", name=" + name + ", filterType=" + filterType + ", itemNamePatterns=" + itemNamePatterns + ", itemTypes=" + itemTypes + ", tags=" + tags + ", minSellPrice=" + minSellPrice + ", maxBuyPrice=" + maxBuyPrice + ")";
     }
 }

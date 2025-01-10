@@ -11,7 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class UserUbiAccountEntryPostgresRepositoryTest {
@@ -48,7 +49,6 @@ class UserUbiAccountEntryPostgresRepositoryTest {
         ubiAccountEntryEntity1.setUbiAccountStats(ubiAccountStatsEntity1);
 
 
-
         UserUbiAccountEntryEntity userUbiAccountEntryEntity2 = new UserUbiAccountEntryEntity();
 
         UbiAccountEntryEntity ubiAccountEntryEntity2 = new UbiAccountEntryEntity();
@@ -70,7 +70,6 @@ class UserUbiAccountEntryPostgresRepositoryTest {
         ubiAccountEntryEntity2.setUbiAccountStats(ubiAccountStatsEntity2);
 
 
-
         UserUbiAccountEntryEntity userUbiAccountEntryEntity3 = new UserUbiAccountEntryEntity();
 
         UbiAccountEntryEntity ubiAccountEntryEntity3 = new UbiAccountEntryEntity();
@@ -86,9 +85,7 @@ class UserUbiAccountEntryPostgresRepositoryTest {
         userUbiAccountEntryEntity3.setUbiAccountEntry(ubiAccountEntryEntity3);
 
 
-
         UserUbiAccountEntryEntity userUbiAccountEntryEntity4 = new UserUbiAccountEntryEntity();
-
 
 
         userUbiAccountEntryPostgresRepository.save(userUbiAccountEntryEntity1);

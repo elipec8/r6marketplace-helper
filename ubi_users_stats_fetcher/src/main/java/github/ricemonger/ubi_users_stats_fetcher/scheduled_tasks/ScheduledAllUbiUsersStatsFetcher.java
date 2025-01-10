@@ -10,7 +10,6 @@ import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UbiAccountStats;
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UserUbiAccount;
 import github.ricemonger.ubi_users_stats_fetcher.services.NotificationService;
 import github.ricemonger.ubi_users_stats_fetcher.services.UbiAccountService;
-import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.DTOs.personal.UserTradesLimitations;

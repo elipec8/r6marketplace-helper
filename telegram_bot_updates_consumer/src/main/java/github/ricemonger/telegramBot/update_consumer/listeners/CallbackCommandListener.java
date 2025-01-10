@@ -5,7 +5,7 @@ import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.update_consumer.executors.ExecutorsService;
 import github.ricemonger.telegramBot.update_consumer.executors.cancel.Cancel;
 import github.ricemonger.telegramBot.update_consumer.executors.cancel.SilentCancel;
-import github.ricemonger.telegramBot.update_consumer.executors.itemFilters.edit.FilterEditStage16FinishConfirmedFinishCallback;
+import github.ricemonger.telegramBot.update_consumer.executors.itemFilters.edit.FilterEditStage15FinishConfirmedFinishCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.itemFilters.edit.FilterEditStage1AskNameCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.itemFilters.showOrRemove.FilterRemoveStage3ConfirmedFinishCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.itemFilters.showOrRemove.FiltersShowAllNamesStage1AskNameCallback;
@@ -77,7 +77,7 @@ public class CallbackCommandListener {
             case Callbacks.ITEM_FILTER_EDIT -> executorsService.execute(FilterEditStage1AskNameCallback.class, updateInfo);
 
             case Callbacks.ITEM_FILTER_EDIT_FINISH_CONFIRMED ->
-                    executorsService.execute(FilterEditStage16FinishConfirmedFinishCallback.class, updateInfo);
+                    executorsService.execute(FilterEditStage15FinishConfirmedFinishCallback.class, updateInfo);
 
             case Callbacks.ITEM_FILTERS_SHOW_ALL -> executorsService.execute(FiltersShowAllNamesStage1AskNameCallback.class, updateInfo);
 

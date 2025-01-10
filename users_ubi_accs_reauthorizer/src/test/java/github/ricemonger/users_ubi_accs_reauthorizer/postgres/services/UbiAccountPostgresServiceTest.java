@@ -6,8 +6,8 @@ import github.ricemonger.users_ubi_accs_reauthorizer.postgres.dto_projections.Us
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.repositories.UbiAccountEntryPostgresRepository;
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.repositories.UbiAccountStatsPostgresRepository;
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.services.entity_mappers.user.UbiAccountEntryEntityMapper;
-import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserUnauthorizedUbiAccount;
 import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserUbiAccountCredentials;
+import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserUnauthorizedUbiAccount;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountStatsEntity;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
@@ -35,8 +36,8 @@ class UbiAccountPostgresServiceTest {
     private UbiAccountEntryEntityMapper ubiAccountEntryEntityMapper;
 
     @Test
-    public void updateAuthorizedUserCredntialsAndLinkUbiAccountStats_should_only_update_ubi_credentials_if_same_ubi_account_stats_linked(){
-        Long userId=  1L;
+    public void updateAuthorizedUserCredntialsAndLinkUbiAccountStats_should_only_update_ubi_credentials_if_same_ubi_account_stats_linked() {
+        Long userId = 1L;
         String email = "email";
         AuthorizationDTO dto = new AuthorizationDTO();
         dto.setProfileId("profileId");
@@ -54,8 +55,8 @@ class UbiAccountPostgresServiceTest {
     }
 
     @Test
-    public void saveAuthorizationInfo_should_save_new_ubi_account_stats_and_link_it_if_different_ubi_account_stats_linked_and_authorized_doesnt_exist_another_linked(){
-        Long userId=  1L;
+    public void saveAuthorizationInfo_should_save_new_ubi_account_stats_and_link_it_if_different_ubi_account_stats_linked_and_authorized_doesnt_exist_another_linked() {
+        Long userId = 1L;
         String email = "email";
         AuthorizationDTO dto = new AuthorizationDTO();
         dto.setProfileId("profileId");
@@ -75,8 +76,8 @@ class UbiAccountPostgresServiceTest {
     }
 
     @Test
-    public void updateCredentialsAndLinkUbiAccountStats_should_link_to_different_ubi_account_stats_ForAuthorizedUser_if_another_existing_profileId_another_linked(){
-        Long userId=  1L;
+    public void updateCredentialsAndLinkUbiAccountStats_should_link_to_different_ubi_account_stats_ForAuthorizedUser_if_another_existing_profileId_another_linked() {
+        Long userId = 1L;
         String email = "email";
         AuthorizationDTO dto = new AuthorizationDTO();
         dto.setProfileId("profileId");
@@ -96,8 +97,8 @@ class UbiAccountPostgresServiceTest {
     }
 
     @Test
-    public void saveAuthorizationInfo_should_save_new_ubi_account_stats_and_link_it_if_different_ubi_account_stats_linked_and_authorized_doesnt_exist_null_exists(){
-        Long userId=  1L;
+    public void saveAuthorizationInfo_should_save_new_ubi_account_stats_and_link_it_if_different_ubi_account_stats_linked_and_authorized_doesnt_exist_null_exists() {
+        Long userId = 1L;
         String email = "email";
         AuthorizationDTO dto = new AuthorizationDTO();
         dto.setProfileId("profileId");
@@ -117,8 +118,8 @@ class UbiAccountPostgresServiceTest {
     }
 
     @Test
-    public void updateCredentialsAndLinkUbiAccountStats_should_link_to_different_ubi_account_stats_ForAuthorizedUser_if_another_existing_profileId_null_exists(){
-        Long userId=  1L;
+    public void updateCredentialsAndLinkUbiAccountStats_should_link_to_different_ubi_account_stats_ForAuthorizedUser_if_another_existing_profileId_null_exists() {
+        Long userId = 1L;
         String email = "email";
         AuthorizationDTO dto = new AuthorizationDTO();
         dto.setProfileId("profileId");
@@ -138,7 +139,7 @@ class UbiAccountPostgresServiceTest {
     }
 
     @Test
-    public void unlinkUbiAccountStatsForUnauthorizedUsers_should_unlink_all_ubi_account_stats_for_unauthorized_users(){
+    public void unlinkUbiAccountStatsForUnauthorizedUsers_should_unlink_all_ubi_account_stats_for_unauthorized_users() {
         UserUnauthorizedUbiAccount user1 = mock(UserUnauthorizedUbiAccount.class);
         UserUnauthorizedUbiAccount user2 = mock(UserUnauthorizedUbiAccount.class);
 
@@ -154,7 +155,7 @@ class UbiAccountPostgresServiceTest {
     }
 
     @Test
-    public void findAllUsersUbiCredentials_should_return_all_users_ubi_Account_credentials(){
+    public void findAllUsersUbiCredentials_should_return_all_users_ubi_Account_credentials() {
         UserUbiAccountCredentials cred1 = mock(UserUbiAccountCredentials.class);
         UserUbiAccountCredentials cred2 = mock(UserUbiAccountCredentials.class);
 

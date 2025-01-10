@@ -2,7 +2,8 @@ package github.ricemonger.ubi_users_stats_fetcher.postgres.entities.user_ubi_acc
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class UbiAccountEntryEntityTest {
 

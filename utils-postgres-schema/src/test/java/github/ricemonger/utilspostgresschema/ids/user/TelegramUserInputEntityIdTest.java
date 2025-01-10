@@ -44,7 +44,7 @@ class TelegramUserInputEntityIdTest {
         TelegramUserEntity user = new TelegramUserEntity();
         user.setChatId("chat1");
         InputState state1 = InputState.BASE;
-        InputState state2 = InputState.ITEM_FILTER_IS_OWNED;
+        InputState state2 = InputState.ITEM_FILTER_NAME;
 
         TelegramUserInputEntityId id1 = new TelegramUserInputEntityId(user, state1);
         TelegramUserInputEntityId id2 = new TelegramUserInputEntityId(user, state2);
@@ -87,7 +87,7 @@ class TelegramUserInputEntityIdTest {
         TelegramUserEntity user = new TelegramUserEntity();
         user.setChatId("chat1");
         InputState state1 = InputState.BASE;
-        InputState state2 = InputState.ITEM_FILTER_IS_OWNED;
+        InputState state2 = InputState.ITEM_FILTER_NAME;
 
         TelegramUserInputEntityId id1 = new TelegramUserInputEntityId(user, state1);
         TelegramUserInputEntityId id2 = new TelegramUserInputEntityId(user, state2);

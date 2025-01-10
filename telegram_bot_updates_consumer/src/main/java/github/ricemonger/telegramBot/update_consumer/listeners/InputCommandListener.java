@@ -101,31 +101,29 @@ public class InputCommandListener {
         switch (inputState) {
             case ITEM_FILTER_NAME -> executorsService.execute(FilterEditStage2AskFilterTypeInput.class, updateInfo);
 
-            case ITEM_FILTER_TYPE -> executorsService.execute(FilterEditStage3AskIsOwnedInput.class, updateInfo);
+            case ITEM_FILTER_TYPE -> executorsService.execute(FilterEditStage3AskItemNamePatternsInput.class, updateInfo);
 
-            case ITEM_FILTER_IS_OWNED -> executorsService.execute(FilterEditStage4AskItemNamePatternsInput.class, updateInfo);
+            case ITEM_FILTER_ITEM_NAME_PATTERNS -> executorsService.execute(FilterEditStage4AskItemTypesInput.class, updateInfo);
 
-            case ITEM_FILTER_ITEM_NAME_PATTERNS -> executorsService.execute(FilterEditStage5AskItemTypesInput.class, updateInfo);
+            case ITEM_FILTER_ITEM_TYPES -> executorsService.execute(FilterEditStage5AskItemTagsRarityInput.class, updateInfo);
 
-            case ITEM_FILTER_ITEM_TYPES -> executorsService.execute(FilterEditStage6AskItemTagsRarityInput.class, updateInfo);
+            case ITEM_FILTER_ITEM_TAGS_RARITY -> executorsService.execute(FilterEditStage6AskItemTagsSeasonsInput.class, updateInfo);
 
-            case ITEM_FILTER_ITEM_TAGS_RARITY -> executorsService.execute(FilterEditStage7AskItemTagsSeasonsInput.class, updateInfo);
+            case ITEM_FILTER_ITEM_TAGS_SEASONS -> executorsService.execute(FilterEditStage7AskItemTagsOperatorsInput.class, updateInfo);
 
-            case ITEM_FILTER_ITEM_TAGS_SEASONS -> executorsService.execute(FilterEditStage8AskItemTagsOperatorsInput.class, updateInfo);
+            case ITEM_FILTER_ITEM_TAGS_OPERATORS -> executorsService.execute(FilterEditStage8AskItemTagsWeaponsInput.class, updateInfo);
 
-            case ITEM_FILTER_ITEM_TAGS_OPERATORS -> executorsService.execute(FilterEditStage9AskItemTagsWeaponsInput.class, updateInfo);
+            case ITEM_FILTER_ITEM_TAGS_WEAPONS -> executorsService.execute(FilterEditStage9AskItemTagsEventsInput.class, updateInfo);
 
-            case ITEM_FILTER_ITEM_TAGS_WEAPONS -> executorsService.execute(FilterEditStage10AskItemTagsEventsInput.class, updateInfo);
+            case ITEM_FILTER_ITEM_TAGS_EVENTS -> executorsService.execute(FilterEditStage10AskItemTagsEsportsInput.class, updateInfo);
 
-            case ITEM_FILTER_ITEM_TAGS_EVENTS -> executorsService.execute(FilterEditStage11AskItemTagsEsportsInput.class, updateInfo);
+            case ITEM_FILTER_ITEM_TAGS_ESPORTS -> executorsService.execute(FilterEditStage11AskItemTagsOtherInput.class, updateInfo);
 
-            case ITEM_FILTER_ITEM_TAGS_ESPORTS -> executorsService.execute(FilterEditStage12AskItemTagsOtherInput.class, updateInfo);
+            case ITEM_FILTER_ITEM_TAGS_OTHER -> executorsService.execute(FilterEditStage12AskMinPriceInput.class, updateInfo);
 
-            case ITEM_FILTER_ITEM_TAGS_OTHER -> executorsService.execute(FilterEditStage13AskMinPriceInput.class, updateInfo);
+            case ITEM_FILTER_MIN_PRICE -> executorsService.execute(FilterEditStage13AskMaxPriceInput.class, updateInfo);
 
-            case ITEM_FILTER_MIN_PRICE -> executorsService.execute(FilterEditStage14AskMaxPriceInput.class, updateInfo);
-
-            case ITEM_FILTER_MAX_PRICE -> executorsService.execute(FilterEditStage15FinishRequestInput.class, updateInfo);
+            case ITEM_FILTER_MAX_PRICE -> executorsService.execute(FilterEditStage14FinishRequestInput.class, updateInfo);
 
             default ->
                     throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());

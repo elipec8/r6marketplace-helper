@@ -6,7 +6,7 @@ import github.ricemonger.utils.enums.ItemType;
 
 import java.util.Arrays;
 
-public class FilterEditStage5AskItemTypesInput extends AbstractBotCommandExecutor {
+public class FilterEditStage4AskItemTypesInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
         processMiddleInput(InputState.ITEM_FILTER_ITEM_TYPES);

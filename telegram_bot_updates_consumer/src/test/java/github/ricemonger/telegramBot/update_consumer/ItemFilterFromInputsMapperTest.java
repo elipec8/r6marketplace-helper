@@ -6,7 +6,10 @@ import github.ricemonger.marketplace.services.TagService;
 import github.ricemonger.telegramBot.Callbacks;
 import github.ricemonger.utils.DTOs.common.Tag;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
-import github.ricemonger.utils.enums.*;
+import github.ricemonger.utils.enums.FilterType;
+import github.ricemonger.utils.enums.InputState;
+import github.ricemonger.utils.enums.ItemType;
+import github.ricemonger.utils.enums.TagGroup;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,7 +49,6 @@ class ItemFilterFromInputsMapperTest {
 
         inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_NAME, "name"));
         inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_TYPE, Callbacks.ITEM_FILTER_TYPE_DENY));
-        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_IS_OWNED, Callbacks.ITEM_FILTER_ITEM_IS_OWNED));
         inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_NAME_PATTERNS, "pattern1,pattern2"));
         inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_TYPES, ItemType.WeaponSkin.name() + "," + ItemType.DroneSkin.name()));
         inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_TAGS_RARITY, rarities));
@@ -84,7 +86,6 @@ class ItemFilterFromInputsMapperTest {
 
         inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_NAME, "name"));
         inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_TYPE, Callbacks.ITEM_FILTER_TYPE_ALLOW));
-        inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_IS_OWNED, Callbacks.ITEM_FILTER_ITEM_IS_NOT_OWNED));
         inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_NAME_PATTERNS, "pattern1,pattern2"));
         inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_TYPES, ItemType.WeaponSkin.name() + "," + ItemType.DroneSkin.name()));
         inputs.add(new TelegramUserInput(chatId, InputState.ITEM_FILTER_ITEM_TAGS_SEASONS, seasons));
@@ -93,7 +94,6 @@ class ItemFilterFromInputsMapperTest {
 
         ItemFilter expectedFilter = getDefaultFilter(tags);
         expectedFilter.setFilterType(FilterType.ALLOW);
-        expectedFilter.setIsOwned(IsOwnedFilter.NOT_OWNED);
         expectedFilter.setMinSellPrice(150_000);
         expectedFilter.setMaxBuyPrice(150_000);
 
@@ -127,7 +127,6 @@ class ItemFilterFromInputsMapperTest {
         ItemFilter expectedFilter = getDefaultFilter(tags);
         expectedFilter.setName("");
         expectedFilter.setFilterType(FilterType.ALLOW);
-        expectedFilter.setIsOwned(IsOwnedFilter.ANY);
         expectedFilter.setItemNamePatternsFromString("pattern1");
         expectedFilter.setMinSellPrice(120);
         expectedFilter.setMaxBuyPrice(120);
@@ -141,7 +140,6 @@ class ItemFilterFromInputsMapperTest {
         ItemFilter itemFilter = new ItemFilter();
         itemFilter.setName("name");
         itemFilter.setFilterType(FilterType.DENY);
-        itemFilter.setIsOwned(IsOwnedFilter.OWNED);
         itemFilter.setItemNamePatternsFromString("pattern1,pattern2");
         itemFilter.setItemTypesFromString(ItemType.WeaponSkin.name() + "," + ItemType.DroneSkin.name());
         itemFilter.addTags(tags);

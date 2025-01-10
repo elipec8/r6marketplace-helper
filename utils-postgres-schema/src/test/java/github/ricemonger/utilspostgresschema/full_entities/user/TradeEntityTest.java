@@ -82,7 +82,7 @@ class TradeEntityTest {
     }
 
     @Test
-    public void isFullyEqual_should_return_true_if_same(){
+    public void isFullyEqual_should_return_true_if_same() {
         TradeEntity tradeEntity1 = new TradeEntity();
 
         assertTrue(tradeEntity1.isFullyEqual(tradeEntity1));
@@ -123,7 +123,7 @@ class TradeEntityTest {
     }
 
     @Test
-    public void isFullyEqual_should_return_false_if_null(){
+    public void isFullyEqual_should_return_false_if_null() {
         TradeEntity tradeEntity1 = new TradeEntity();
 
         assertFalse(tradeEntity1.isFullyEqual(null));

@@ -4,7 +4,7 @@ import github.ricemonger.telegramBot.update_consumer.executors.AbstractBotComman
 import github.ricemonger.utils.enums.InputState;
 import github.ricemonger.utils.enums.TagGroup;
 
-public class FilterEditStage9AskItemTagsWeaponsInput extends AbstractBotCommandExecutor {
+public class FilterEditStage8AskItemTagsWeaponsInput extends AbstractBotCommandExecutor {
     @Override
     protected void executeCommand() {
         processMiddleInput(InputState.ITEM_FILTER_ITEM_TAGS_WEAPONS);

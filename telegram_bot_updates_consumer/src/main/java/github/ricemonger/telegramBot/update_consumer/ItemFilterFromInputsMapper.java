@@ -8,7 +8,6 @@ import github.ricemonger.utils.DTOs.common.Tag;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.InputState;
-import github.ricemonger.utils.enums.IsOwnedFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -32,7 +31,6 @@ public class ItemFilterFromInputsMapper {
     public ItemFilter generateItemFilterByUserInput(Collection<TelegramUserInput> inputs) {
         String name = getValueByState(inputs, InputState.ITEM_FILTER_NAME);
         String filterTypeString = getValueByState(inputs, InputState.ITEM_FILTER_TYPE);
-        String isOwnedString = getValueByState(inputs, InputState.ITEM_FILTER_IS_OWNED);
         String itemNamePatternsString = getValueByState(inputs, InputState.ITEM_FILTER_ITEM_NAME_PATTERNS);
         String itemTypesString = getValueByState(inputs, InputState.ITEM_FILTER_ITEM_TYPES);
         String rarityTagsString = getValueByState(inputs, InputState.ITEM_FILTER_ITEM_TAGS_RARITY);
@@ -53,14 +51,6 @@ public class ItemFilterFromInputsMapper {
             itemFilter.setFilterType(FilterType.DENY);
         } else {
             itemFilter.setFilterType(FilterType.ALLOW);
-        }
-
-        if (isOwnedString.equals(Callbacks.ITEM_FILTER_ITEM_IS_OWNED)) {
-            itemFilter.setIsOwned(IsOwnedFilter.OWNED);
-        } else if (isOwnedString.equals(Callbacks.ITEM_FILTER_ITEM_IS_NOT_OWNED)) {
-            itemFilter.setIsOwned(IsOwnedFilter.NOT_OWNED);
-        } else {
-            itemFilter.setIsOwned(IsOwnedFilter.ANY);
         }
 
         if (itemNamePatternsString.equals(SKIPPED) || itemNamePatternsString.isBlank()) {

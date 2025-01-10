@@ -1,7 +1,6 @@
 package github.ricemonger.utilspostgresschema.full_entities.user;
 
 import github.ricemonger.utils.enums.FilterType;
-import github.ricemonger.utils.enums.IsOwnedFilter;
 import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
 import github.ricemonger.utilspostgresschema.ids.user.ItemFilterEntityId;
 import jakarta.persistence.*;
@@ -34,10 +33,6 @@ public class ItemFilterEntity {
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "filter_type")
     private FilterType filterType;
-
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "is_owned")
-    private IsOwnedFilter isOwned;
 
     @Column(columnDefinition = "TEXT", name = "item_name_patterns")
     private String itemNamePatterns;
@@ -87,7 +82,6 @@ public class ItemFilterEntity {
 
         return equals(filter) &&
                Objects.equals(this.filterType, filter.filterType) &&
-               Objects.equals(this.isOwned, filter.isOwned) &&
                Objects.equals(this.itemNamePatterns, filter.itemNamePatterns) &&
                Objects.equals(this.itemTypes, filter.itemTypes) &&
                tagsAreEqual &&

@@ -7,7 +7,6 @@ import github.ricemonger.utils.enums.TradeCategory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 class PotentialPersonalSellTradeTest {
 
@@ -284,7 +283,7 @@ class PotentialPersonalSellTradeTest {
         ubiTrade.setUbiTrade(new UbiTrade());
         ubiTrade.setTradeId("tradeId");
         personalItem.setExistingTrade(ubiTrade);
-        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(personalItem, null) ;
+        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(personalItem, null);
 
         assertEquals("tradeId", PotentialPersonalSellTrade.getTradeId());
     }
@@ -297,5 +296,5 @@ class PotentialPersonalSellTradeTest {
 
         assertNull(result);
     }
-    
+
 }

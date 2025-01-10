@@ -103,15 +103,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_TYPE);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(FilterEditStage3AskIsOwnedInput.class, updateInfo);
-    }
-
-    @Test
-    public void handleUpdate_should_item_filter_edit_is_owned() {
-        UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_IS_OWNED);
-        inputCommandListener.handleUpdate(updateInfo);
-
-        verify(executorsService).execute(FilterEditStage4AskItemNamePatternsInput.class, updateInfo);
+        verify(executorsService).execute(FilterEditStage3AskItemNamePatternsInput.class, updateInfo);
     }
 
     @Test
@@ -119,7 +111,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_ITEM_NAME_PATTERNS);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(FilterEditStage5AskItemTypesInput.class, updateInfo);
+        verify(executorsService).execute(FilterEditStage4AskItemTypesInput.class, updateInfo);
     }
 
     @Test
@@ -127,7 +119,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_ITEM_TYPES);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(FilterEditStage6AskItemTagsRarityInput.class, updateInfo);
+        verify(executorsService).execute(FilterEditStage5AskItemTagsRarityInput.class, updateInfo);
     }
 
     @Test
@@ -135,7 +127,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_ITEM_TAGS_RARITY);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(FilterEditStage7AskItemTagsSeasonsInput.class, updateInfo);
+        verify(executorsService).execute(FilterEditStage6AskItemTagsSeasonsInput.class, updateInfo);
     }
 
     @Test
@@ -143,7 +135,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_ITEM_TAGS_SEASONS);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(FilterEditStage8AskItemTagsOperatorsInput.class, updateInfo);
+        verify(executorsService).execute(FilterEditStage7AskItemTagsOperatorsInput.class, updateInfo);
     }
 
     @Test
@@ -151,7 +143,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_ITEM_TAGS_OPERATORS);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(FilterEditStage9AskItemTagsWeaponsInput.class, updateInfo);
+        verify(executorsService).execute(FilterEditStage8AskItemTagsWeaponsInput.class, updateInfo);
     }
 
     @Test
@@ -159,7 +151,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_ITEM_TAGS_WEAPONS);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(FilterEditStage10AskItemTagsEventsInput.class, updateInfo);
+        verify(executorsService).execute(FilterEditStage9AskItemTagsEventsInput.class, updateInfo);
     }
 
     @Test
@@ -167,7 +159,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_ITEM_TAGS_EVENTS);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(FilterEditStage11AskItemTagsEsportsInput.class, updateInfo);
+        verify(executorsService).execute(FilterEditStage10AskItemTagsEsportsInput.class, updateInfo);
     }
 
     @Test
@@ -175,7 +167,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_ITEM_TAGS_ESPORTS);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(FilterEditStage12AskItemTagsOtherInput.class, updateInfo);
+        verify(executorsService).execute(FilterEditStage11AskItemTagsOtherInput.class, updateInfo);
     }
 
     @Test
@@ -183,7 +175,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_ITEM_TAGS_OTHER);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(FilterEditStage13AskMinPriceInput.class, updateInfo);
+        verify(executorsService).execute(FilterEditStage12AskMinPriceInput.class, updateInfo);
     }
 
     @Test
@@ -191,7 +183,7 @@ class InputCommandListenerTest {
         UpdateInfo updateInfo = updateInfo(InputGroup.ITEM_FILTER_EDIT, InputState.ITEM_FILTER_MIN_PRICE);
         inputCommandListener.handleUpdate(updateInfo);
 
-        verify(executorsService).execute(FilterEditStage14AskMaxPriceInput.class, updateInfo);
+        verify(executorsService).execute(FilterEditStage13AskMaxPriceInput.class, updateInfo);
     }
 
     @Test
