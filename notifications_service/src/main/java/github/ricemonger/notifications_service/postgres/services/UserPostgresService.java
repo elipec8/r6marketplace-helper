@@ -15,13 +15,15 @@ public class UserPostgresService implements UserDatabaseService {
 
     private final UserPostgresRepository userPostgresRepository;
 
+    private final UserEntityMapper userEntityMapper;
+
     @Override
     public ToBeNotifiedUser getToBeNotifiedUser(Long userId) {
-        return userPostgresRepository.findToBeNotifiedUserIdById(userId).orElseThrow(() -> new UserDoesntExistException("User with id " + userId + " doesn't exist"));
+        return userEntityMapper.createToBeNotifiedUser(userPostgresRepository.findToBeNotifiedUserIdById(userId).orElseThrow(() -> new UserDoesntExistException("User with id " + userId + " doesn't exist")));
     }
 
     @Override
     public List<ToBeNotifiedUser> getAllToBeNotifiedUsers() {
-        return userPostgresRepository.findAllToBeNotifiedUsers();
+        return userPostgresRepository.findAllToBeNotifiedUsers().stream().map(userEntityMapper::createToBeNotifiedUser).toList();
     }
 }

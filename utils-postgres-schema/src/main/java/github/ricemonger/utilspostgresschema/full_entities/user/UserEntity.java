@@ -42,6 +42,12 @@ public class UserEntity {
     private Boolean publicNotificationsEnabledFlag = true;
     @Column(name = "private_notifications_enabled_flag")
     private Boolean privateNotificationsEnabledFlag = false;
+    @Column(name = "ubi_stats_updated_notifications_enabled_flag")
+    private Boolean ubiStatsUpdatedNotificationsEnabledFlag = true;
+    @Column(name = "trade_manager_notifications_enabled_flag")
+    private Boolean tradeManagerNotificationsEnabledFlag = false;
+    @Column(name = "authorization_notifications_enabled_flag")
+    private Boolean authorizationNotificationsEnabledFlag = true;
 
     @Column(name = "item_show_name_flag")
     private Boolean itemShowNameFlag = true;

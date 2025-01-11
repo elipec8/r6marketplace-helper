@@ -40,4 +40,28 @@ public class NotificationService {
             }
         }
     }
+
+    public void sendUbiStatsUpdateNotificationToUser(Long userId, String text) {
+        ToBeNotifiedUser user = userDatabaseService.getToBeNotifiedUser(userId);
+
+        if (user.ubiStatsUpdateNotificationsEnabled() != null && user.ubiStatsUpdateNotificationsEnabled()) {
+            telegramBotClientService.sendText(user.chatId(), text);
+        }
+    }
+
+    public void sendTradeManagerNotificationToUser(Long userId, String text) {
+        ToBeNotifiedUser user = userDatabaseService.getToBeNotifiedUser(userId);
+
+        if (user.tradeManagerNotificationsEnabled() != null && user.tradeManagerNotificationsEnabled()) {
+            telegramBotClientService.sendText(user.chatId(), text);
+        }
+    }
+
+    public void sendAuthorizationNotificationToUser(Long userId, String text) {
+        ToBeNotifiedUser user = userDatabaseService.getToBeNotifiedUser(userId);
+
+        if (user.authorizationNotificationsEnabled() != null && user.authorizationNotificationsEnabled()) {
+            telegramBotClientService.sendText(user.chatId(), text);
+        }
+    }
 }

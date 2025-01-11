@@ -24,4 +24,19 @@ public class NotificationKafkaConsumer {
     public void consumePublicNotificationToAllUsers(String message) {
         notificationService.sendPublicNotificationToAllUsers(message);
     }
+
+    @KafkaListener(topics = "private.ubi_stats_updated.notification", groupId = "r6s-helper-notifications-service")
+    public void consumeUbiStatsUpdateNotification(SendTextDTO sendTextDTO) {
+        notificationService.sendUbiStatsUpdateNotificationToUser(sendTextDTO.userId(), sendTextDTO.text());
+    }
+
+    @KafkaListener(topics = "private.trade_manager.notification", groupId = "r6s-helper-notifications-service")
+    public void consumeTradeManagerNotification(SendTextDTO sendTextDTO) {
+        notificationService.sendTradeManagerNotificationToUser(sendTextDTO.userId(), sendTextDTO.text());
+    }
+
+    @KafkaListener(topics = "private.authorization.notification", groupId = "r6s-helper-notifications-service")
+    public void consumeAuthorizationNotification(SendTextDTO sendTextDTO) {
+        notificationService.sendAuthorizationNotificationToUser(sendTextDTO.userId(), sendTextDTO.text());
+    }
 }
