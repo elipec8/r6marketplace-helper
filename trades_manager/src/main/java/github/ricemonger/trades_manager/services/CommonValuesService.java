@@ -4,6 +4,7 @@ import github.ricemonger.trades_manager.services.configurations.UbiServiceConfig
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.abstract_services.CommonValuesDatabaseService;
 import github.ricemonger.utils.enums.ItemRarity;
+import github.ricemonger.utils.services.calculators.CalculatorsCommonValuesService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class CommonValuesService {
+public class CommonValuesService implements CalculatorsCommonValuesService {
 
     private final CommonValuesDatabaseService commonValuesDatabaseService;
 
@@ -21,7 +22,7 @@ public class CommonValuesService {
         return commonValuesDatabaseService.getConfigTrades();
     }
 
-    public int getMinimumPriceByRarity(ItemRarity rarity) {
+    public Integer getMinimumPriceByRarity(ItemRarity rarity) {
         if (rarity == null) {
             return getMinimumMarketplacePrice();
         }
@@ -34,7 +35,7 @@ public class CommonValuesService {
         };
     }
 
-    public int getMaximumPriceByRarity(ItemRarity rarity) {
+    public Integer getMaximumPriceByRarity(ItemRarity rarity) {
         if (rarity == null) {
             return getMaximumMarketplacePrice();
         }

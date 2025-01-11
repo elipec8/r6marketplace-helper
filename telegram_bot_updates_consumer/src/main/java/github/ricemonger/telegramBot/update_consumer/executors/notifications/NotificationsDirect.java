@@ -17,11 +17,11 @@ public class NotificationsDirect extends AbstractBotCommandExecutor {
         boolean authorizationFlag = settings.getAuthorizationNotificationsEnabledFlag() != null && settings.getAuthorizationNotificationsEnabledFlag();
 
         StringBuilder text = new StringBuilder().append("Notifications settings:\n").
-                append("Generic Private notifications: ").append(privateFlag ? "enabled" : "disabled").append("\n").
-                append("Generic Public notifications: ").append(publicFlag ? "enabled" : "disabled").append("\n").
-                append("Your Ubi account stats updated notifications: ").append(ubiStatsUpdatedFlag ? "enabled" : "disabled").append("\n").
-                append("Trade manager notifications: ").append(tradeManagerFlag ? "enabled" : "disabled").append("\n").
-                append("Authorization notifications: ").append(authorizationFlag ? "enabled" : "disabled");
+                append("Generic Private notifications: ").append(privateFlag ? "Enabled" : "Disabled").append("\n").
+                append("Generic Public notifications: ").append(publicFlag ? "Enabled" : "Disabled").append("\n").
+                append("Your Ubi account stats updated notifications: ").append(ubiStatsUpdatedFlag ? "Enabled" : "Disabled").append("\n").
+                append("Trade manager notifications: ").append(tradeManagerFlag ? "Enabled" : "Disabled").append("\n").
+                append("Authorization notifications: ").append(authorizationFlag ? "Enabled" : "Disabled");
 
         CallbackButton changePrivateFlag = new CallbackButton((privateFlag ? "Disable" : "Enable") + " private notifications", Callbacks.NOTIFICATIONS_SETTINGS_INVERT_PRIVATE_FLAG);
         CallbackButton changePublicFlag = new CallbackButton((publicFlag ? "Disable" : "Enable") + " public notifications", Callbacks.NOTIFICATIONS_SETTINGS_INVERT_PUBLIC_FLAG);

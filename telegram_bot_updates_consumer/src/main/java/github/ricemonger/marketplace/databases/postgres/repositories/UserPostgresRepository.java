@@ -135,7 +135,7 @@ public interface UserPostgresRepository extends JpaRepository<UserEntity, Long> 
     @Transactional(readOnly = true)
     @Query("SELECT new github.ricemonger.marketplace.databases.postgres.dto_projections.NotificationsSettingsProjection(" +
            "u.publicNotificationsEnabledFlag," +
-           " u.privateNotificationsEnabledFlag," +
+           "u.privateNotificationsEnabledFlag," +
            "u.ubiStatsUpdatedNotificationsEnabledFlag," +
            "u.tradeManagerNotificationsEnabledFlag," +
            "u.authorizationNotificationsEnabledFlag) " +

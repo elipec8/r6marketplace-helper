@@ -1,26 +1,24 @@
-package github.ricemonger.trades_manager.services.factories;
+package github.ricemonger.trades_manager.services;
 
-import github.ricemonger.trades_manager.services.CommonValuesService;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.PotentialTradePriceAndTimeStats;
 import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
+import github.ricemonger.utils.services.calculators.ItemTradeTimeCalculator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static github.ricemonger.utils.services.calculators.ItemTradeTimeCalculator.*;
+
 @Service
 @RequiredArgsConstructor
 public class PotentialTradeStatsService {
-    public static final int MINUTES_IN_A_MONTH = 43200;
-    public static final int MINUTES_IN_A_WEEK = 10080;
-    public static final int MINUTES_IN_A_DAY = 1440;
-    public static final int MINUTES_IN_6_HOURS = 360;
-    public static final int MINUTES_IN_AN_HOUR = 60;
-    public static final int TRADE_MANAGER_FIXED_RATE_MINUTES = 1;
 
     private final CommonValuesService commonValuesService;
+
+    private final ItemTradeTimeCalculator itemTradeTimeCalculator;
 
     public List<PotentialTradeStats> getPotentialBuyTradesStatsOfItem(Item item) {
         List<PotentialTradeStats> result = new ArrayList<>();
@@ -57,7 +55,7 @@ public class PotentialTradeStatsService {
         List<PotentialTradeStats> result = new ArrayList<>();
 
         if (item.getPriorityToSellByNextFancySellPrice() != null) {
-            PotentialTradePriceAndTimeStats priceAndTime = calculatePriceAndTimeForNextFancySellPriceSale(item);
+            PotentialTradePriceAndTimeStats priceAndTime = itemTradeTimeCalculator.calculatePriceAndTimeForNextFancySellPriceSale(item);
             result.add(new PotentialTradeStats(priceAndTime.price(), priceAndTime.time(), item.getPriorityToSellByNextFancySellPrice()));
         }
 
@@ -66,35 +64,5 @@ public class PotentialTradeStatsService {
         }
 
         return result;
-    }
-
-    public PotentialTradePriceAndTimeStats calculatePriceAndTimeForNextFancySellPriceSale(Item item) {
-        int nextFancySellPrice = getNextFancySellPrice(item);
-        int timeToSellByNextFancySellPrice = calculatePrognosedTimeToSellItemByNextSellPrice(item);
-
-        return new PotentialTradePriceAndTimeStats(nextFancySellPrice, timeToSellByNextFancySellPrice);
-    }
-
-    private Integer calculatePrognosedTimeToSellItemByNextSellPrice(Item item) {
-        int monthSalesPerDay = item.getMonthSalesPerDay() == null || item.getMonthSalesPerDay() <= 0 ? 1 : item.getMonthSalesPerDay();
-
-        if (item.getMinSellPrice() != null && item.getMinSellPrice() == commonValuesService.getMinimumPriceByRarity(item.getRarity())) {
-            int sellOrdersCount = item.getSellOrdersCount() == null || item.getSellOrdersCount() <= 0 ? 1 : item.getSellOrdersCount();
-            return sellOrdersCount * MINUTES_IN_A_DAY / monthSalesPerDay;
-        } else {
-            return MINUTES_IN_A_DAY / monthSalesPerDay;
-        }
-    }
-
-    private int getNextFancySellPrice(Item item) {
-        int limitMaxPrice = commonValuesService.getMaximumPriceByRarity(item.getRarity());
-
-        int limitMinPrice = commonValuesService.getMinimumPriceByRarity(item.getRarity());
-
-        if (item.getMinSellPrice() == null || item.getMinSellPrice() <= 0) {
-            return limitMaxPrice;
-        } else {
-            return Math.max(limitMinPrice, item.getMinSellPrice() - 1);
-        }
     }
 }

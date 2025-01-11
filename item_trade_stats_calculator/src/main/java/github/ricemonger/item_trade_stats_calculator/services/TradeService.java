@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TradeService {
 
-    private final PotentialTradeStatsCalculator potentialTradeStatsCalculator;
+    private final PotentialTradeStatsService potentialTradeStatsService;
 
     private final TradeDatabaseService tradeDatabaseService;
 
@@ -23,9 +23,9 @@ public class TradeService {
 
         for (UbiTrade ubiTrade : tradeDatabaseService.findAllUbiTrades()) {
             if (ubiTrade.getCategory() == TradeCategory.Buy) {
-                prioritizedTrades.add(new PrioritizedTrade(ubiTrade, potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForExistingTrade(ubiTrade)));
+                prioritizedTrades.add(new PrioritizedTrade(ubiTrade, potentialTradeStatsService.calculatePotentialBuyTradeStatsForExistingTrade(ubiTrade)));
             } else if (ubiTrade.getCategory() == TradeCategory.Sell) {
-                prioritizedTrades.add(new PrioritizedTrade(ubiTrade, potentialTradeStatsCalculator.calculatePotentialSellTradeStatsForExistingTrade(ubiTrade)));
+                prioritizedTrades.add(new PrioritizedTrade(ubiTrade, potentialTradeStatsService.calculatePotentialSellTradeStatsForExistingTrade(ubiTrade)));
             }
         }
 

@@ -21,7 +21,7 @@ class TradeServiceTest {
     @Autowired
     private TradeService tradeService;
     @MockBean
-    private PotentialTradeStatsCalculator potentialTradeStatsCalculator;
+    private PotentialTradeStatsService potentialTradeStatsService;
     @MockBean
     private TradeDatabaseService tradeDatabaseService;
 
@@ -46,8 +46,8 @@ class TradeServiceTest {
         sellTradeStats.setPrognosedTradeSuccessMinutes(20);
         sellTradeStats.setTradePriority(2L);
 
-        when(potentialTradeStatsCalculator.calculatePotentialBuyTradeStatsForExistingTrade(buyTrade)).thenReturn(buyTradeStats);
-        when(potentialTradeStatsCalculator.calculatePotentialSellTradeStatsForExistingTrade(sellTrade)).thenReturn(sellTradeStats);
+        when(potentialTradeStatsService.calculatePotentialBuyTradeStatsForExistingTrade(buyTrade)).thenReturn(buyTradeStats);
+        when(potentialTradeStatsService.calculatePotentialSellTradeStatsForExistingTrade(sellTrade)).thenReturn(sellTradeStats);
 
         PrioritizedTrade buyPrioritizedTrade = new PrioritizedTrade();
         buyPrioritizedTrade.setTradeId(buyTrade.getTradeId());

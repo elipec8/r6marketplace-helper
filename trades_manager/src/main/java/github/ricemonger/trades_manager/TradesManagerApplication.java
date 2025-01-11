@@ -12,6 +12,7 @@ import github.ricemonger.marketplace.graphQl.personal_query_finished_orders.Pers
 import github.ricemonger.marketplace.graphQl.personal_query_locked_items.PersonalQueryLockedItemsGraphQlConfiguration;
 import github.ricemonger.marketplace.graphQl.personal_query_owned_items.PersonalQueryOwnedItemsGraphQlConfiguration;
 import github.ricemonger.utils.SchedulingUtilsConfiguration;
+import github.ricemonger.utils.services.calculators.TradeStatsCalculatorUtilsConfiguration;
 import github.ricemonger.utilslibrarykafka.KafkaUtilsConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -34,7 +35,8 @@ import org.springframework.context.annotation.Import;
         PersonalQueryOwnedItemsGraphQlConfiguration.class,
         PersonalQueryCurrentOrdersGraphQlConfiguration.class,
         PersonalQueryFinishedOrdersGraphQlConfiguration.class,
-        PersonalQueryCreditAmountGraphQlConfiguration.class
+        PersonalQueryCreditAmountGraphQlConfiguration.class,
+        TradeStatsCalculatorUtilsConfiguration.class
 })
 public class TradesManagerApplication {
 

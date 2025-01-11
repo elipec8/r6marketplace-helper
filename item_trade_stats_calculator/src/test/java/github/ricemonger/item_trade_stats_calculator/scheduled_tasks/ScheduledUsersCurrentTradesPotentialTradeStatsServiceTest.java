@@ -9,7 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-class ScheduledUsersCurrentTradesPotentialTradeStatsCalculatorTest {
+class ScheduledUsersCurrentTradesPotentialTradeStatsServiceTest {
     @Autowired
     private ScheduledUsersCurrentTradesPotentialTradeStatsCalculator scheduledUsersCurrentTradesPotentialTradeStatsCalculator;
     @MockBean

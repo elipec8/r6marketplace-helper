@@ -1,10 +1,12 @@
 package github.ricemonger.trades_manager.services.factories;
 
 import github.ricemonger.trades_manager.services.CommonValuesService;
+import github.ricemonger.trades_manager.services.PotentialTradeStatsService;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.PotentialTradePriceAndTimeStats;
 import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
 import github.ricemonger.utils.enums.ItemRarity;
+import github.ricemonger.utils.services.calculators.ItemTradeTimeCalculator;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -12,7 +14,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.util.List;
 
-import static github.ricemonger.trades_manager.services.factories.PotentialTradeStatsService.*;
+import static github.ricemonger.utils.services.calculators.ItemTradeTimeCalculator.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.doReturn;
@@ -24,6 +26,8 @@ class PotentialTradeStatsServiceTest {
     private PotentialTradeStatsService potentialTradeStatsService;
     @MockBean
     private CommonValuesService commonValuesService;
+    @MockBean
+    private ItemTradeTimeCalculator itemTradeTimeCalculator;
 
     @Test
     public void getPotentialBuyTradesStatsOfItem_should_return_expected_result() {
@@ -88,7 +92,7 @@ class PotentialTradeStatsServiceTest {
 
         item.setPriorityToSellByNextFancySellPrice(3L);
         PotentialTradeStats fancyStats = new PotentialTradeStats(1, 2, item.getPriorityToSellByNextFancySellPrice());
-        doReturn(new PotentialTradePriceAndTimeStats(fancyStats.getPrice(), fancyStats.getPrognosedTradeSuccessMinutes())).when(potentialTradeStatsService).calculatePriceAndTimeForNextFancySellPriceSale(same(item));
+        doReturn(new PotentialTradePriceAndTimeStats(fancyStats.getPrice(), fancyStats.getPrognosedTradeSuccessMinutes())).when(itemTradeTimeCalculator).calculatePriceAndTimeForNextFancySellPriceSale(same(item));
 
         List<PotentialTradeStats> result = potentialTradeStatsService.getPotentialSellTradesStatsOfItem(item);
         assertEquals(1, result.size());
@@ -116,58 +120,5 @@ class PotentialTradeStatsServiceTest {
         result = potentialTradeStatsService.getPotentialSellTradesStatsOfItem(item);
         assertEquals(1, result.size());
         assertEquals(fancyStats, result.get(0));
-    }
-
-    @Test
-    public void calculatePriceAndTimeForNextFancySellPriceSale_should_return_expected_result() {
-        when(commonValuesService.getMinimumPriceByRarity(ItemRarity.UNCOMMON)).thenReturn(10);
-
-        Item item = new Item();
-        item.setRarity(ItemRarity.UNCOMMON);
-        item.setMinSellPrice(1000);
-        item.setMonthSalesPerDay(1440);
-
-        int price = 999;
-        int minutesToTrade = 1;
-        PotentialTradePriceAndTimeStats expected = new PotentialTradePriceAndTimeStats(price, minutesToTrade);
-        assertEquals(expected, potentialTradeStatsService.calculatePriceAndTimeForNextFancySellPriceSale(item));
-
-        item.setMonthSalesPerDay(1);
-        price = 999;
-        minutesToTrade = 1440;
-        expected = new PotentialTradePriceAndTimeStats(price, minutesToTrade);
-        assertEquals(expected, potentialTradeStatsService.calculatePriceAndTimeForNextFancySellPriceSale(item));
-
-        item.setMinSellPrice(10);
-        item.setMonthSalesPerDay(100);
-        item.setSellOrdersCount(10);
-        price = 10;
-        minutesToTrade = 144;
-        expected = new PotentialTradePriceAndTimeStats(price, minutesToTrade);
-        assertEquals(expected, potentialTradeStatsService.calculatePriceAndTimeForNextFancySellPriceSale(item));
-
-        item.setMinSellPrice(10);
-        item.setMonthSalesPerDay(null);
-        item.setSellOrdersCount(null);
-        price = 10;
-        minutesToTrade = 1440;
-        expected = new PotentialTradePriceAndTimeStats(price, minutesToTrade);
-        assertEquals(expected, potentialTradeStatsService.calculatePriceAndTimeForNextFancySellPriceSale(item));
-
-        item.setMinSellPrice(10);
-        item.setMonthSalesPerDay(0);
-        item.setSellOrdersCount(0);
-        price = 10;
-        minutesToTrade = 1440;
-        expected = new PotentialTradePriceAndTimeStats(price, minutesToTrade);
-        assertEquals(expected, potentialTradeStatsService.calculatePriceAndTimeForNextFancySellPriceSale(item));
-
-        item.setMinSellPrice(10);
-        item.setMonthSalesPerDay(-1);
-        item.setSellOrdersCount(-1);
-        price = 10;
-        minutesToTrade = 1440;
-        expected = new PotentialTradePriceAndTimeStats(price, minutesToTrade);
-        assertEquals(expected, potentialTradeStatsService.calculatePriceAndTimeForNextFancySellPriceSale(item));
     }
 }

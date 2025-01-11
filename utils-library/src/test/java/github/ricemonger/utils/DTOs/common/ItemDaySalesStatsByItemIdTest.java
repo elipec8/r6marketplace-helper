@@ -1,8 +1,5 @@
-package github.ricemonger.item_trade_stats_calculator.services.DTOs;
+package github.ricemonger.utils.DTOs.common;
 
-import github.ricemonger.utils.DTOs.common.ItemDaySalesStatsByItemId;
-import github.ricemonger.utils.DTOs.common.ItemDaySalesUbiStats;
-import github.ricemonger.utils.DTOs.common.ItemSale;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
