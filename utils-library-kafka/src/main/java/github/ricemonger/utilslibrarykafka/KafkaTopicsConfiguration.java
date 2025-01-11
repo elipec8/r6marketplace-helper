@@ -1,5 +1,6 @@
 package github.ricemonger.utilslibrarykafka;
 
+import github.ricemonger.utils.DTOs.personal.SendTextDTO;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,5 +20,20 @@ public class KafkaTopicsConfiguration {
     @Bean
     public PublicAllUsersNotificationKafkaTopic publicAllUsersNotificationKafkaTopic() {
         return new PublicAllUsersNotificationKafkaTopic("public.all.users.notification", 2, (short) 1);
+    }
+
+    @Bean
+    public UbiStatsUpdatedNotificationKafkaTopic ubiStatsUpdatedNotificationKafkaTopic() {
+        return new UbiStatsUpdatedNotificationKafkaTopic("private.ubi_stats_updated.notification", 2, (short) 1);
+    }
+
+    @Bean
+    public TradeManagerNotificationKafkaTopic tradeManagerNotificationKafkaTopic() {
+        return new TradeManagerNotificationKafkaTopic("private.trade_manager.notification", 2, (short) 1);
+    }
+
+    @Bean
+    public AuthorizationNotificationKafkaTopic authorizationNotificationKafkaTopic() {
+        return new AuthorizationNotificationKafkaTopic("private.authorization.notification", 2, (short) 1);
     }
 }
