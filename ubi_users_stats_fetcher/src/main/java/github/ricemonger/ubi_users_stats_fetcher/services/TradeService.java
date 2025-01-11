@@ -24,10 +24,7 @@ public class TradeService {
 
         List<Item> existingItems = itemDatabaseService.findItemsByIds(itemIds);
 
-        List<Trade> trades =
-                ubiTrades.stream().map(Trade::new).filter(trade -> existingItems.stream().anyMatch(item -> item.getItemId().equals(trade.getItem().getItemId()))).toList();
-
-        System.out.println(trades);
+        List<Trade> trades = ubiTrades.stream().map(Trade::new).filter(trade -> existingItems.stream().anyMatch(item -> item.getItemId().equals(trade.getItem().getItemId()))).toList();
 
         for (Trade trade : trades) {
             Item item = existingItems.stream().filter(existingItem -> existingItem.equals(trade.getItem())).findFirst().get();

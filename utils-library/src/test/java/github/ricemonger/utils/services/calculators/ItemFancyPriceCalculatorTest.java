@@ -33,6 +33,7 @@ class ItemFancyPriceCalculatorTest {
         item.setMinSellPrice(0);
 
         when(commonValuesService.getMaximumPriceByRarity(ItemRarity.UNCOMMON)).thenReturn(100);
+        when(commonValuesService.getMinimumPriceByRarity(ItemRarity.UNCOMMON)).thenReturn(10);
 
         int result = itemFancyPriceCalculator.getNextFancySellPrice(item);
 
@@ -44,6 +45,20 @@ class ItemFancyPriceCalculatorTest {
         Item item = new Item();
         item.setRarity(ItemRarity.UNCOMMON);
         item.setMinSellPrice(100);
+
+        when(commonValuesService.getMinimumPriceByRarity(ItemRarity.UNCOMMON)).thenReturn(100);
+        when(commonValuesService.getMaximumPriceByRarity(ItemRarity.UNCOMMON)).thenReturn(1000);
+
+        int result = itemFancyPriceCalculator.getNextFancySellPrice(item);
+
+        assertEquals(100, result);
+    }
+
+    @Test
+    public void getNextFancySellPrice_should_return_limitMaxPrice_when_itemMinSellPrice_is_less_than_min() {
+        Item item = new Item();
+        item.setRarity(ItemRarity.UNCOMMON);
+        item.setMinSellPrice(99);
 
         when(commonValuesService.getMinimumPriceByRarity(ItemRarity.UNCOMMON)).thenReturn(100);
         when(commonValuesService.getMaximumPriceByRarity(ItemRarity.UNCOMMON)).thenReturn(1000);

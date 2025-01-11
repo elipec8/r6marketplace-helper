@@ -6,7 +6,7 @@ public interface CalculatorsCommonValuesService {
 
     default Integer getMinimumPriceByRarity(ItemRarity rarity) {
         if (rarity == null) {
-            return getMinimumMarketplacePrice();
+            return getMinimumLegendaryPrice();
         }
         return switch (rarity) {
             case UNCOMMON -> getMinimumUncommonPrice();
@@ -19,7 +19,7 @@ public interface CalculatorsCommonValuesService {
 
     default Integer getMaximumPriceByRarity(ItemRarity rarity) {
         if (rarity == null) {
-            return getMaximumMarketplacePrice();
+            return getMaximumUncommonPrice();
         }
         return switch (rarity) {
             case UNCOMMON -> getMaximumUncommonPrice();

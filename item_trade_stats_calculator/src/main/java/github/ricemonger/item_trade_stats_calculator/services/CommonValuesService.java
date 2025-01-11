@@ -14,32 +14,6 @@ public class CommonValuesService implements CalculatorsCommonValuesService {
 
     private final UbiServiceConfiguration ubiServiceConfiguration;
 
-    public Integer getMinimumPriceByRarity(ItemRarity rarity) {
-        if (rarity == null) {
-            return getMinimumMarketplacePrice();
-        }
-        return switch (rarity) {
-            case UNCOMMON -> getMinimumUncommonPrice();
-            case RARE -> getMinimumRarePrice();
-            case EPIC -> getMinimumEpicPrice();
-            case LEGENDARY -> getMinimumLegendaryPrice();
-            default -> getMinimumLegendaryPrice();
-        };
-    }
-
-    public Integer getMaximumPriceByRarity(ItemRarity rarity) {
-        if (rarity == null) {
-            return getMaximumMarketplacePrice();
-        }
-        return switch (rarity) {
-            case UNCOMMON -> getMaximumUncommonPrice();
-            case RARE -> getMaximumRarePrice();
-            case EPIC -> getMaximumEpicPrice();
-            case LEGENDARY -> getMaximumLegendaryPrice();
-            default -> getMaximumUncommonPrice();
-        };
-    }
-
     public Integer getMinimumUncommonPrice() {
         return ubiServiceConfiguration.getMinUncommonPrice();
     }

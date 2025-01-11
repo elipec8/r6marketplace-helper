@@ -13,7 +13,7 @@ public class ItemFancyPriceCalculator {
 
         int limitMinPrice = commonValuesService.getMinimumPriceByRarity(item.getRarity());
 
-        if (item.getMinSellPrice() == null || item.getMinSellPrice() <= limitMinPrice) {
+        if (item.getMinSellPrice() == null || item.getMinSellPrice() < limitMinPrice) {
             return limitMaxPrice;
         } else {
             return Math.max(limitMinPrice, item.getMinSellPrice() - 1);
