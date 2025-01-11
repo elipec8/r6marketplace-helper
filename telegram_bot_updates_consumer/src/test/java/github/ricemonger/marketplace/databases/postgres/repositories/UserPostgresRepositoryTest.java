@@ -409,18 +409,71 @@ class UserPostgresRepositoryTest {
     }
 
     @Test
-    public void findNotificationsSettingsByTelegramUserChatId_should_return_expected_value() {
+    @Disabled // H2 UNSUPPORTED
+    public void invertUbiStatsUpdatedNotificationsFlagByTelegramUserChatId_should_invert_flag() {
         UserEntity userEntity1 = new UserEntity();
-        userEntity1.setPublicNotificationsEnabledFlag(false);
-        userEntity1.setPrivateNotificationsEnabledFlag(true);
+        userEntity1.setUbiStatsUpdatedNotificationsEnabledFlag(false);
         userEntity1 = userPostgresRepository.save(userEntity1);
         TelegramUserEntity telegramUserEntity1 = new TelegramUserEntity();
         telegramUserEntity1.setChatId("chatId1");
         telegramUserEntity1.setUser(userEntity1);
         telegramUserEntity1 = telegramUserPostgresRepository.save(telegramUserEntity1);
 
-        NotificationsSettingsProjection settings =
-                userPostgresRepository.findNotificationsSettingsByTelegramUserChatId(telegramUserEntity1.getChatId()).get();
-        assertEquals(new NotificationsSettingsProjection(false, true), settings);
+        userPostgresRepository.invertUbiStatsUpdatedNotificationsFlagByTelegramUserChatId(telegramUserEntity1.getChatId());
+
+        UserEntity userEntity2 = userPostgresRepository.findById(userEntity1.getId()).get();
+        assertTrue(userEntity2.getUbiStatsUpdatedNotificationsEnabledFlag());
+    }
+
+    @Test
+    @Disabled // H2 UNSUPPORTED
+    public void invertTradeManagerNotificationsFlagByTelegramUserChatId_should_invert_flag() {
+        UserEntity userEntity1 = new UserEntity();
+        userEntity1.setTradeManagerNotificationsEnabledFlag(false);
+        userEntity1 = userPostgresRepository.save(userEntity1);
+        TelegramUserEntity telegramUserEntity1 = new TelegramUserEntity();
+        telegramUserEntity1.setChatId("chatId1");
+        telegramUserEntity1.setUser(userEntity1);
+        telegramUserEntity1 = telegramUserPostgresRepository.save(telegramUserEntity1);
+
+        userPostgresRepository.invertTradeManagerNotificationsFlagByTelegramUserChatId(telegramUserEntity1.getChatId());
+
+        UserEntity userEntity2 = userPostgresRepository.findById(userEntity1.getId()).get();
+        assertTrue(userEntity2.getTradeManagerNotificationsEnabledFlag());
+    }
+
+    @Test
+    @Disabled // H2 UNSUPPORTED
+    public void invertAuthorizationNotificationsFlagByTelegramUserChatId_should_invert_flag() {
+        UserEntity userEntity1 = new UserEntity();
+        userEntity1.setAuthorizationNotificationsEnabledFlag(false);
+        userEntity1 = userPostgresRepository.save(userEntity1);
+        TelegramUserEntity telegramUserEntity1 = new TelegramUserEntity();
+        telegramUserEntity1.setChatId("chatId1");
+        telegramUserEntity1.setUser(userEntity1);
+        telegramUserEntity1 = telegramUserPostgresRepository.save(telegramUserEntity1);
+
+        userPostgresRepository.invertAuthorizationNotificationsFlagByTelegramUserChatId(telegramUserEntity1.getChatId());
+
+        UserEntity userEntity2 = userPostgresRepository.findById(userEntity1.getId()).get();
+        assertTrue(userEntity2.getAuthorizationNotificationsEnabledFlag());
+    }
+
+    @Test
+    public void findNotificationsSettingsByTelegramUserChatId_should_return_expected_value() {
+        UserEntity userEntity1 = new UserEntity();
+        userEntity1.setPublicNotificationsEnabledFlag(false);
+        userEntity1.setPrivateNotificationsEnabledFlag(true);
+        userEntity1.setUbiStatsUpdatedNotificationsEnabledFlag(false);
+        userEntity1.setTradeManagerNotificationsEnabledFlag(false);
+        userEntity1.setAuthorizationNotificationsEnabledFlag(true);
+        userEntity1 = userPostgresRepository.save(userEntity1);
+        TelegramUserEntity telegramUserEntity1 = new TelegramUserEntity();
+        telegramUserEntity1.setChatId("chatId1");
+        telegramUserEntity1.setUser(userEntity1);
+        telegramUserEntity1 = telegramUserPostgresRepository.save(telegramUserEntity1);
+
+        NotificationsSettingsProjection settings = userPostgresRepository.findNotificationsSettingsByTelegramUserChatId(telegramUserEntity1.getChatId()).get();
+        assertEquals(new NotificationsSettingsProjection(false, true, false, false, true), settings);
     }
 }

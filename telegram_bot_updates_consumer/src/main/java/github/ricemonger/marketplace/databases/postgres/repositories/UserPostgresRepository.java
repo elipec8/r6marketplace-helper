@@ -108,9 +108,37 @@ public interface UserPostgresRepository extends JpaRepository<UserEntity, Long> 
                    "WHERE t.id = tu.user_id AND tu.chat_id = :chatId", nativeQuery = true)
     void invertPublicNotificationsFlagByTelegramUserChatId(String chatId);
 
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE helper_user t " +
+                   "SET ubi_stats_updated_notifications_enabled_flag = NOT (ubi_stats_updated_notifications_enabled_flag) " +
+                   "FROM telegram_user tu " +
+                   "WHERE t.id = tu.user_id AND tu.chat_id = :chatId", nativeQuery = true)
+    void invertUbiStatsUpdatedNotificationsFlagByTelegramUserChatId(String chatId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE helper_user t " +
+                   "SET trade_manager_notifications_enabled_flag = NOT (trade_manager_notifications_enabled_flag) " +
+                   "FROM telegram_user tu " +
+                   "WHERE t.id = tu.user_id AND tu.chat_id = :chatId", nativeQuery = true)
+    void invertTradeManagerNotificationsFlagByTelegramUserChatId(String chatId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE helper_user t " +
+                   "SET authorization_notifications_enabled_flag = NOT (authorization_notifications_enabled_flag) " +
+                   "FROM telegram_user tu " +
+                   "WHERE t.id = tu.user_id AND tu.chat_id = :chatId", nativeQuery = true)
+    void invertAuthorizationNotificationsFlagByTelegramUserChatId(String chatId);
+
     @Transactional(readOnly = true)
-    @Query("SELECT new github.ricemonger.marketplace.databases.postgres.dto_projections.NotificationsSettingsProjection(u.publicNotificationsEnabledFlag, u" +
-           ".privateNotificationsEnabledFlag) " +
+    @Query("SELECT new github.ricemonger.marketplace.databases.postgres.dto_projections.NotificationsSettingsProjection(" +
+           "u.publicNotificationsEnabledFlag," +
+           " u.privateNotificationsEnabledFlag," +
+           "u.ubiStatsUpdatedNotificationsEnabledFlag," +
+           "u.tradeManagerNotificationsEnabledFlag," +
+           "u.authorizationNotificationsEnabledFlag) " +
            "FROM UserEntity u WHERE u.telegramUser.chatId = :chatId")
     Optional<NotificationsSettingsProjection> findNotificationsSettingsByTelegramUserChatId(String chatId);
 }

@@ -19,8 +19,7 @@ import github.ricemonger.telegramBot.update_consumer.executors.items.settings.it
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.messageLimit.ItemsShowSettingsChangeMessageLimitCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.shownFields.ItemsShowSettingsChangeShownFieldsStage1AskNameFlagCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.items.show.ItemsShowStage1AskOffsetCallback;
-import github.ricemonger.telegramBot.update_consumer.executors.notifications.NotificationsInvertPrivateFlagCallback;
-import github.ricemonger.telegramBot.update_consumer.executors.notifications.NotificationsInvertPublicFlagCallback;
+import github.ricemonger.telegramBot.update_consumer.executors.notifications.*;
 import github.ricemonger.telegramBot.update_consumer.executors.start.startYes.StartYesCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.edit.TradeManagersEditAskManagerTypeCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.edit.itemFilter.TradeByFiltersManagerEditStage1AskNameCallback;
@@ -124,6 +123,15 @@ public class CallbackCommandListener {
 
             case Callbacks.NOTIFICATIONS_SETTINGS_INVERT_PUBLIC_FLAG ->
                     executorsService.execute(NotificationsInvertPublicFlagCallback.class, updateInfo);
+
+            case Callbacks.NOTIFICATIONS_SETTINGS_INVERT_AUTHORIZATION_FLAG ->
+                    executorsService.execute(NotificationsInvertAuthorizationFlagCallback.class, updateInfo);
+
+            case Callbacks.NOTIFICATIONS_SETTINGS_INVERT_UBI_STATS_UPDATED_FLAG ->
+                    executorsService.execute(NotificationsInvertUbiStatsUpdatedFlagCallback.class, updateInfo);
+
+            case Callbacks.NOTIFICATIONS_SETTINGS_INVERT_TRADE_MANAGER_FLAG ->
+                    executorsService.execute(NotificationsInvertTradeManagerFlagCallback.class, updateInfo);
 
 //--------------------------------------------------------------------------------------------------
 

@@ -10,4 +10,7 @@ import lombok.NoArgsConstructor;
 public class NotificationsSettings {
     private Boolean publicNotificationsEnabledFlag;
     private Boolean privateNotificationsEnabledFlag;
+    private Boolean ubiStatsUpdatedNotificationsEnabledFlag;
+    private Boolean tradeManagerNotificationsEnabledFlag;
+    private Boolean authorizationNotificationsEnabledFlag;
 }

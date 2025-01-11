@@ -19,8 +19,7 @@ import github.ricemonger.telegramBot.update_consumer.executors.items.settings.it
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.messageLimit.ItemsShowSettingsChangeMessageLimitCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.items.settings.shownFields.ItemsShowSettingsChangeShownFieldsStage1AskNameFlagCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.items.show.ItemsShowStage1AskOffsetCallback;
-import github.ricemonger.telegramBot.update_consumer.executors.notifications.NotificationsInvertPrivateFlagCallback;
-import github.ricemonger.telegramBot.update_consumer.executors.notifications.NotificationsInvertPublicFlagCallback;
+import github.ricemonger.telegramBot.update_consumer.executors.notifications.*;
 import github.ricemonger.telegramBot.update_consumer.executors.start.startYes.StartYesCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.edit.TradeManagersEditAskManagerTypeCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.edit.itemFilter.TradeByFiltersManagerEditStage1AskNameCallback;
@@ -193,6 +192,27 @@ class CallbackCommandListenerTest {
         callbackCommandListener.handleUpdate(updateInfo(Callbacks.NOTIFICATIONS_SETTINGS_INVERT_PUBLIC_FLAG));
 
         verify(executorsService).execute(NotificationsInvertPublicFlagCallback.class, updateInfo(Callbacks.NOTIFICATIONS_SETTINGS_INVERT_PUBLIC_FLAG));
+    }
+
+    @Test
+    public void handleUpdate_should_notifications_settings_invert_ubi_stats_updated_flag() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.NOTIFICATIONS_SETTINGS_INVERT_UBI_STATS_UPDATED_FLAG));
+
+        verify(executorsService).execute(NotificationsInvertUbiStatsUpdatedFlagCallback.class, updateInfo(Callbacks.NOTIFICATIONS_SETTINGS_INVERT_UBI_STATS_UPDATED_FLAG));
+    }
+
+    @Test
+    public void handleUpdate_should_notifications_settings_invert_trade_manager_flag() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.NOTIFICATIONS_SETTINGS_INVERT_TRADE_MANAGER_FLAG));
+
+        verify(executorsService).execute(NotificationsInvertTradeManagerFlagCallback.class, updateInfo(Callbacks.NOTIFICATIONS_SETTINGS_INVERT_TRADE_MANAGER_FLAG));
+    }
+
+    @Test
+    public void handleUpdate_should_notifications_settings_invert_authorization_flag() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.NOTIFICATIONS_SETTINGS_INVERT_AUTHORIZATION_FLAG));
+
+        verify(executorsService).execute(NotificationsInvertAuthorizationFlagCallback.class, updateInfo(Callbacks.NOTIFICATIONS_SETTINGS_INVERT_AUTHORIZATION_FLAG));
     }
 
     @Test

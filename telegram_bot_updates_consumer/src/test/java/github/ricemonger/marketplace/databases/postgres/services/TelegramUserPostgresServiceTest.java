@@ -263,6 +263,24 @@ class TelegramUserPostgresServiceTest {
     }
 
     @Test
+    public void invertUserUbiStatsUpdatedNotificationsFlag_should_handle_to_repository() {
+        telegramUserService.invertUserUbiStatsUpdatedNotificationsFlag("chatId");
+        Mockito.verify(userRepository).invertUbiStatsUpdatedNotificationsFlagByTelegramUserChatId("chatId");
+    }
+
+    @Test
+    public void invertUserTradeManagerNotificationsFlag_should_handle_to_repository() {
+        telegramUserService.invertUserTradeManagerNotificationsFlag("chatId");
+        Mockito.verify(userRepository).invertTradeManagerNotificationsFlagByTelegramUserChatId("chatId");
+    }
+
+    @Test
+    public void invertUserAuthorizationNotificationsFlag_should_handle_to_repository() {
+        telegramUserService.invertUserAuthorizationNotificationsFlag("chatId");
+        Mockito.verify(userRepository).invertAuthorizationNotificationsFlagByTelegramUserChatId("chatId");
+    }
+
+    @Test
     public void findUserNotificationsSettings_should_map_and_return_repository_result_if_user_exists() {
         NotificationsSettingsProjection projection = Mockito.mock(NotificationsSettingsProjection.class);
         when(userRepository.findNotificationsSettingsByTelegramUserChatId("chatId")).thenReturn(Optional.of(projection));

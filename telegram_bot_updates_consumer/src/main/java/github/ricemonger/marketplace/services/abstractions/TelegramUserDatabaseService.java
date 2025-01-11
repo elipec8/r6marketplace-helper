@@ -45,5 +45,11 @@ public interface TelegramUserDatabaseService {
 
     void invertUserPublicNotificationsFlag(String chatId);
 
+    void invertUserAuthorizationNotificationsFlag(String chatId);
+
+    void invertUserTradeManagerNotificationsFlag(String chatId);
+
+    void invertUserUbiStatsUpdatedNotificationsFlag(String chatId);
+
     NotificationsSettings findUserNotificationsSettings(String chatId) throws TelegramUserDoesntExistException;
 }

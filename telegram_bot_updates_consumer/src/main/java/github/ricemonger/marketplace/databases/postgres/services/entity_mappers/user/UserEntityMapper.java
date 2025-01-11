@@ -40,7 +40,11 @@ public class UserEntityMapper {
     }
 
     public NotificationsSettings createNotificationsSettings(NotificationsSettingsProjection notificationsSettingsProjection) {
-        return new NotificationsSettings(notificationsSettingsProjection.getPublicNotificationsEnabledFlag(), notificationsSettingsProjection.getPrivateNotificationsEnabledFlag());
+        return new NotificationsSettings(notificationsSettingsProjection.getPublicNotificationsEnabledFlag(),
+                notificationsSettingsProjection.getPrivateNotificationsEnabledFlag(),
+                notificationsSettingsProjection.getUbiStatsUpdatedNotificationsEnabledFlag(),
+                notificationsSettingsProjection.getTradeManagerNotificationsEnabledFlag(),
+                notificationsSettingsProjection.getAuthorizationNotificationsEnabledFlag());
     }
 
     public ItemShownFieldsSettingsProjection createItemShownFieldsSettingsProjection(ItemShownFieldsSettings settings) {

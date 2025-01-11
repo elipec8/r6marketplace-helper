@@ -471,6 +471,27 @@ public class BotInnerServiceTest {
     }
 
     @Test
+    public void invertUserUbiStatsUpdatedNotificationsFlag_should_handle_to_service() {
+        long chatId = 1L;
+        botInnerService.invertUserUbiStatsUpdatedNotificationsFlag(chatId);
+        verify(telegramUserService).invertUbiStatsUpdatedNotificationsFlag(chatId);
+    }
+
+    @Test
+    public void invertUserTradeManagerNotificationsFlag_should_handle_to_service() {
+        long chatId = 1L;
+        botInnerService.invertUserTradeManagerNotificationsFlag(chatId);
+        verify(telegramUserService).invertTradeManagerNotificationsFlag(chatId);
+    }
+
+    @Test
+    public void invertUserAuthorizationNotificationsFlag_should_handle_to_service() {
+        long chatId = 1L;
+        botInnerService.invertUserAuthorizationNotificationsFlag(chatId);
+        verify(telegramUserService).invertAuthorizationNotificationsFlag(chatId);
+    }
+
+    @Test
     public void getUserNotificationsSettings_should_return_service_result() {
         NotificationsSettings settings = mock(NotificationsSettings.class);
 

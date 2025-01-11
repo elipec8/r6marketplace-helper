@@ -88,11 +88,17 @@ class UserEntityMapperTest {
         NotificationsSettingsProjection notificationsSettingsProjection = new NotificationsSettingsProjection();
         notificationsSettingsProjection.setPublicNotificationsEnabledFlag(true);
         notificationsSettingsProjection.setPrivateNotificationsEnabledFlag(false);
+        notificationsSettingsProjection.setUbiStatsUpdatedNotificationsEnabledFlag(true);
+        notificationsSettingsProjection.setTradeManagerNotificationsEnabledFlag(false);
+        notificationsSettingsProjection.setAuthorizationNotificationsEnabledFlag(true);
 
         NotificationsSettings notificationsSettings = userEntityMapper.createNotificationsSettings(notificationsSettingsProjection);
 
         assertEquals(notificationsSettingsProjection.getPublicNotificationsEnabledFlag(), notificationsSettings.getPublicNotificationsEnabledFlag());
         assertEquals(notificationsSettingsProjection.getPrivateNotificationsEnabledFlag(), notificationsSettings.getPrivateNotificationsEnabledFlag());
+        assertEquals(notificationsSettingsProjection.getUbiStatsUpdatedNotificationsEnabledFlag(), notificationsSettings.getUbiStatsUpdatedNotificationsEnabledFlag());
+        assertEquals(notificationsSettingsProjection.getTradeManagerNotificationsEnabledFlag(), notificationsSettings.getTradeManagerNotificationsEnabledFlag());
+        assertEquals(notificationsSettingsProjection.getAuthorizationNotificationsEnabledFlag(), notificationsSettings.getAuthorizationNotificationsEnabledFlag());
     }
 
     @Test

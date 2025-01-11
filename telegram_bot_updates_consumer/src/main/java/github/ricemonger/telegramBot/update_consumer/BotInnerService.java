@@ -284,6 +284,18 @@ public class BotInnerService {
         telegramUserService.invertPublicNotificationsFlag(chatId);
     }
 
+    public void invertUserAuthorizationNotificationsFlag(Long chatId) {
+        telegramUserService.invertAuthorizationNotificationsFlag(chatId);
+    }
+
+    public void invertUserTradeManagerNotificationsFlag(Long chatId) {
+        telegramUserService.invertTradeManagerNotificationsFlag(chatId);
+    }
+
+    public void invertUserUbiStatsUpdatedNotificationsFlag(Long chatId) {
+        telegramUserService.invertUbiStatsUpdatedNotificationsFlag(chatId);
+    }
+
     public NotificationsSettings getUserNotificationsSettings(Long chatId) {
         return telegramUserService.getNotificationsSettings(chatId);
     }

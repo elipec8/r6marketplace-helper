@@ -145,9 +145,26 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     }
 
     @Override
+    @Transactional
+    public void invertUserUbiStatsUpdatedNotificationsFlag(String chatId) {
+        userRepository.invertUbiStatsUpdatedNotificationsFlagByTelegramUserChatId(chatId);
+    }
+
+    @Override
+    @Transactional
+    public void invertUserTradeManagerNotificationsFlag(String chatId) {
+        userRepository.invertTradeManagerNotificationsFlagByTelegramUserChatId(chatId);
+    }
+
+    @Override
+    @Transactional
+    public void invertUserAuthorizationNotificationsFlag(String chatId) {
+        userRepository.invertAuthorizationNotificationsFlagByTelegramUserChatId(chatId);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public NotificationsSettings findUserNotificationsSettings(String chatId) throws TelegramUserDoesntExistException {
-        return userEntityMapper.createNotificationsSettings(userRepository.findNotificationsSettingsByTelegramUserChatId(chatId).orElseThrow(() -> new TelegramUserDoesntExistException(
-                "Telegram user with chatId " + chatId + " not found")));
+        return userEntityMapper.createNotificationsSettings(userRepository.findNotificationsSettingsByTelegramUserChatId(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found")));
     }
 }

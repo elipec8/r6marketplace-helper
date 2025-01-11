@@ -223,6 +223,24 @@ class TelegramUserServiceTest {
     }
 
     @Test
+    public void invertUbiStatsUpdatedNotificationsFlag_should_handle_to_service() {
+        telegramUserService.invertUbiStatsUpdatedNotificationsFlag(123L);
+        verify(telegramUserDatabaseService).invertUserUbiStatsUpdatedNotificationsFlag("123");
+    }
+
+    @Test
+    public void invertTradeManagerNotificationsFlag_should_handle_to_service() {
+        telegramUserService.invertTradeManagerNotificationsFlag(123L);
+        verify(telegramUserDatabaseService).invertUserTradeManagerNotificationsFlag("123");
+    }
+
+    @Test
+    public void invertAuthorizationNotificationsFlag_should_handle_to_service() {
+        telegramUserService.invertAuthorizationNotificationsFlag(123L);
+        verify(telegramUserDatabaseService).invertUserAuthorizationNotificationsFlag("123");
+    }
+
+    @Test
     public void getNotificationsSettings_should_return_service_result() {
         NotificationsSettings notificationsSettings = Mockito.mock(NotificationsSettings.class);
         when(telegramUserDatabaseService.findUserNotificationsSettings("123")).thenReturn(notificationsSettings);

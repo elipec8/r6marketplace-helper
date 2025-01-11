@@ -147,6 +147,18 @@ public class TelegramUserService {
         telegramUserDatabaseService.invertUserPublicNotificationsFlag(String.valueOf(chatId));
     }
 
+    public void invertUbiStatsUpdatedNotificationsFlag(Long chatId) {
+        telegramUserDatabaseService.invertUserUbiStatsUpdatedNotificationsFlag(String.valueOf(chatId));
+    }
+
+    public void invertTradeManagerNotificationsFlag(Long chatId) {
+        telegramUserDatabaseService.invertUserTradeManagerNotificationsFlag(String.valueOf(chatId));
+    }
+
+    public void invertAuthorizationNotificationsFlag(Long chatId) {
+        telegramUserDatabaseService.invertUserAuthorizationNotificationsFlag(String.valueOf(chatId));
+    }
+
     public NotificationsSettings getNotificationsSettings(Long chatId) {
         return telegramUserDatabaseService.findUserNotificationsSettings(String.valueOf(chatId));
     }
