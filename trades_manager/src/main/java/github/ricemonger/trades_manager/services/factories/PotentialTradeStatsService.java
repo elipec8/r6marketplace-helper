@@ -69,17 +69,21 @@ public class PotentialTradeStatsService {
     }
 
     public PotentialTradePriceAndTimeStats calculatePriceAndTimeForNextFancySellPriceSale(Item item) {
-        int monthSalesPerDay = item.getMonthSalesPerDay() == null || item.getMonthSalesPerDay() <= 0 ? 1 : item.getMonthSalesPerDay();
         int nextFancySellPrice = getNextFancySellPrice(item);
-        int timeToSellByNextFancySellPrice;
-        if (item.getMinSellPrice() != null && item.getMinSellPrice() == commonValuesService.getMinimumPriceByRarity(item.getRarity())) {
-            int sellOrdersCount = item.getSellOrdersCount() == null || item.getSellOrdersCount() <= 0 ? 1 : item.getSellOrdersCount();
-            timeToSellByNextFancySellPrice = sellOrdersCount * MINUTES_IN_A_DAY / monthSalesPerDay;
-        } else {
-            timeToSellByNextFancySellPrice = MINUTES_IN_A_DAY / monthSalesPerDay;
-        }
+        int timeToSellByNextFancySellPrice = calculatePrognosedTimeToSellItemByNextSellPrice(item);
 
         return new PotentialTradePriceAndTimeStats(nextFancySellPrice, timeToSellByNextFancySellPrice);
+    }
+
+    private Integer calculatePrognosedTimeToSellItemByNextSellPrice(Item item) {
+        int monthSalesPerDay = item.getMonthSalesPerDay() == null || item.getMonthSalesPerDay() <= 0 ? 1 : item.getMonthSalesPerDay();
+
+        if (item.getMinSellPrice() != null && item.getMinSellPrice() == commonValuesService.getMinimumPriceByRarity(item.getRarity())) {
+            int sellOrdersCount = item.getSellOrdersCount() == null || item.getSellOrdersCount() <= 0 ? 1 : item.getSellOrdersCount();
+            return sellOrdersCount * MINUTES_IN_A_DAY / monthSalesPerDay;
+        } else {
+            return MINUTES_IN_A_DAY / monthSalesPerDay;
+        }
     }
 
     private int getNextFancySellPrice(Item item) {

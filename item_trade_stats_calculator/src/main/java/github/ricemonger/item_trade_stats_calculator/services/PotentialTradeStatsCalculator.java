@@ -72,17 +72,15 @@ public class PotentialTradeStatsCalculator {
     }
 
     public PotentialTradeStats calculatePotentialSellTradeStatsForExistingTrade(UbiTrade existingTrade) {
-        return calculateSellTradeStats(existingTrade.getItem(), existingTrade.getProposedPaymentPrice(),
-                getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(existingTrade));
+        return calculateSellTradeStats(existingTrade.getItem(), existingTrade.getProposedPaymentPrice(), getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(existingTrade));
     }
 
     public PotentialTradeStats calculatePotentialBuyTradeStatsForExistingTrade(UbiTrade existingTrade) {
-        return calculateBuyTradeStats(existingTrade.getItem(), existingTrade.getProposedPaymentPrice(),
-                getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(existingTrade));
+        return calculateBuyTradeStats(existingTrade.getItem(), existingTrade.getProposedPaymentPrice(), getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(existingTrade));
     }
 
     public Integer getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(UbiTrade ubiTrade) {
-        int minutesTradeExists = (int) Duration.between(ubiTrade.getLastModifiedAt(), LocalDateTime.now()).toMinutes();
+        int minutesTradeExists = (int) Duration.between(ubiTrade.getLastModifiedAt(), LocalDateTime.now().plusMinutes(10)).toMinutes();
 
         Integer prognosedTradeSuccessMinutes = getPrognosedTradeSuccessMinutesByPriceOrNull(ubiTrade.getItem(), ubiTrade.getProposedPaymentPrice(), ubiTrade.getCategory());
 
@@ -114,8 +112,7 @@ public class PotentialTradeStatsCalculator {
             if (item.getMaxBuyPrice() != null && proposedPaymentPrice <= item.getMaxBuyPrice()) {
                 return TRADE_MANAGER_FIXED_RATE_MINUTES;
             } else {
-                int monthSalesPerDay = item.getMonthSalesPerDay() == null || item.getMonthSalesPerDay() <= 0 ? 1 : item.getMonthSalesPerDay();
-                return MINUTES_IN_A_DAY / monthSalesPerDay;
+                return calculatePrognosedTimeToSellItemByNextSellPrice(item);
             }
         } else {
             log.error("getPrognosedTradeSuccessMinutes:Trade category is Unknown or null for itemId: {}, proposedPrice: {} and tradeCategory: {} ",
@@ -123,7 +120,6 @@ public class PotentialTradeStatsCalculator {
             return null;
         }
     }
-
 
     public PotentialTradeStats calculateSellTradeStats(Item item, Integer price, Integer minutesToTrade) {
         if (price != null && price > 0) {
@@ -139,7 +135,7 @@ public class PotentialTradeStatsCalculator {
                 long tradePriority = getPriceFactor(price, 0.5) *
                                      getPriceDifferenceFactor(price, monthMedianPrice, 1) *
                                      getPriceRatioFactorPercent(price, monthMedianPrice, 1) *
-                                     getTimeFactor(minutesToTrade, 0.66);
+                                     getTimeFactor(minutesToTrade, 0.4);
 
                 if (price < monthMedianPrice) {
                     tradePriority = -tradePriority;
@@ -163,11 +159,11 @@ public class PotentialTradeStatsCalculator {
                 return new PotentialTradeStats(price, null, null);
             }
 
-            long tradePriority = (constant / getPriceFactor(price, 1.0)) *
+            long tradePriority = (constant / getPriceFactor(price, 0.8)) *
                                  getPriceDifferenceFactor(price, monthMedianPrice, 1) *
                                  getPriceRatioFactorPercent(price, monthMedianPrice, 1) *
                                  getTimeToResellFactor(item, 0.7) *
-                                 getTimeFactor(minutesToTrade, 0.66);
+                                 getTimeFactor(minutesToTrade, 0.8);
 
             if (item.getMonthMedianPrice() != null && price > monthMedianPrice) {
                 tradePriority = -tradePriority;
@@ -208,17 +204,21 @@ public class PotentialTradeStatsCalculator {
     }
 
     public PotentialTradePriceAndTimeStats calculatePriceAndTimeForNextFancySellPriceSale(Item item) {
-        int monthSalesPerDay = item.getMonthSalesPerDay() == null || item.getMonthSalesPerDay() <= 0 ? 1 : item.getMonthSalesPerDay();
         int nextFancySellPrice = getNextFancySellPrice(item);
-        int timeToSellByNextFancySellPrice;
-        if (item.getMinSellPrice() != null && item.getMinSellPrice() == commonValuesService.getMinimumPriceByRarity(item.getRarity())) {
-            int sellOrdersCount = item.getSellOrdersCount() == null || item.getSellOrdersCount() <= 0 ? 1 : item.getSellOrdersCount();
-            timeToSellByNextFancySellPrice = sellOrdersCount * MINUTES_IN_A_DAY / monthSalesPerDay;
-        } else {
-            timeToSellByNextFancySellPrice = MINUTES_IN_A_DAY / monthSalesPerDay;
-        }
+        int timeToSellByNextFancySellPrice = calculatePrognosedTimeToSellItemByNextSellPrice(item);
 
         return new PotentialTradePriceAndTimeStats(nextFancySellPrice, timeToSellByNextFancySellPrice);
+    }
+
+    private Integer calculatePrognosedTimeToSellItemByNextSellPrice(Item item) {
+        int monthSalesPerDay = item.getMonthSalesPerDay() == null || item.getMonthSalesPerDay() <= 0 ? 1 : item.getMonthSalesPerDay();
+
+        if (item.getMinSellPrice() != null && item.getMinSellPrice() == commonValuesService.getMinimumPriceByRarity(item.getRarity())) {
+            int sellOrdersCount = item.getSellOrdersCount() == null || item.getSellOrdersCount() <= 0 ? 1 : item.getSellOrdersCount();
+            return sellOrdersCount * MINUTES_IN_A_DAY / monthSalesPerDay;
+        } else {
+            return MINUTES_IN_A_DAY / monthSalesPerDay;
+        }
     }
 
     private long getPriceFactor(int price, double pow) {

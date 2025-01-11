@@ -60,7 +60,7 @@ public class ScheduledAllUbiUsersStatsFetcher {
             }
         }
 
-        commonValuesService.setLastUbiUsersStatsFetchTime(LocalDateTime.now().withNano(0).plusSeconds(6));
+        commonValuesService.setLastUbiUsersStatsFetchTime(LocalDateTime.now().withNano(0).plusSeconds(10));
 
         ubiAccountService.saveAllUbiAccountStats(updatedUbiAccountsStats);
     }
