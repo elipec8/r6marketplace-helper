@@ -15,6 +15,38 @@ class ItemTradePriorityCalculatorTest {
     private final ItemTradePriorityCalculator itemTradePriorityCalculator = new ItemTradePriorityCalculator(commonValuesService);
 
     @Test
+    public void calculatePotentialSellTradePriority_should_return_min_value_if_price_is_higher_than_minSellPrice() {
+        when(commonValuesService.getMaximumMarketplacePrice()).thenReturn(100_000);
+
+        Item item = new Item();
+        item.setMinSellPrice(1500);
+        item.setMonthMedianPrice(1000);
+
+        int price = 1501;
+        int minutesToTrade = 432;
+
+        long expectedPriority = Long.MIN_VALUE;
+
+        assertEquals(expectedPriority, itemTradePriorityCalculator.calculatePotentialSellTradePriority(item, price, minutesToTrade));
+    }
+
+    @Test
+    public void calculatePotentialSellTradePriority_should_return_expected_result_if_price_equals_min_sell_price() {
+        when(commonValuesService.getMaximumMarketplacePrice()).thenReturn(100_000);
+
+        Item item = new Item();
+        item.setMinSellPrice(1500);
+        item.setMonthMedianPrice(1000);
+
+        int price = 1500;
+        int minutesToTrade = 432;
+
+        long expectedPriority = 3730650000L;
+
+        assertEquals(expectedPriority, itemTradePriorityCalculator.calculatePotentialSellTradePriority(item, price, minutesToTrade));
+    }
+
+    @Test
     public void calculatePotentialSellTradePriority_should_return_expected_object_for_profitable_trade() {
         when(commonValuesService.getMaximumMarketplacePrice()).thenReturn(100_000);
 

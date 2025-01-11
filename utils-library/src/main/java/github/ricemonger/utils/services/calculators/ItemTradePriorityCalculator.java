@@ -13,6 +13,10 @@ public class ItemTradePriorityCalculator {
     public Long calculatePotentialSellTradePriority(Item item, Integer price, Integer minutesToTrade) {
         if (price != null && price > 0) {
 
+            if (item.getMinSellPrice() != null && item.getMinSellPrice() < price) {
+                return Long.MIN_VALUE;
+            }
+
             int monthMedianPrice = item.getMonthMedianPrice() == null ? 0 : item.getMonthMedianPrice();
 
             if (minutesToTrade == null) {
