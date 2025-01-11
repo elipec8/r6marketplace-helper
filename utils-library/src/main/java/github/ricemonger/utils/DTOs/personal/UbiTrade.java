@@ -13,7 +13,7 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UbiTrade implements UbiTradeI{
+public class UbiTrade implements UbiTradeI {
     private String tradeId;
     private TradeState state;
     private TradeCategory category;

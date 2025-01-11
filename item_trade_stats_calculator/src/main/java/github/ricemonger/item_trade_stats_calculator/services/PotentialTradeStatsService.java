@@ -3,7 +3,6 @@ package github.ricemonger.item_trade_stats_calculator.services;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.ItemDaySalesStatsByItemId;
 import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
-import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.services.calculators.ItemTradeStatsCalculator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -40,7 +40,7 @@ class TradeServiceTest {
         ubiTrade4.setItem(new Item("nonExistingItemId"));
         ubiTrade4.setCategory(TradeCategory.Buy);
 
-        List<UbiTrade> ubiTrades = List.of(ubiTrade1, ubiTrade2,  ubiTrade4);
+        List<UbiTrade> ubiTrades = List.of(ubiTrade1, ubiTrade2, ubiTrade4);
 
         Item existingItem1 = new Item("itemId1");
         existingItem1.setName("existingItemId1");
@@ -48,7 +48,7 @@ class TradeServiceTest {
         existingItem2.setName("existingItemId2");
         List<Item> existingItems = List.of(existingItem1, existingItem2);
 
-        when(itemDatabaseService.findItemsByIds(argThat(arg-> arg.containsAll(List.of("itemId1","itemId2"))))).thenReturn(existingItems);
+        when(itemDatabaseService.findItemsByIds(argThat(arg -> arg.containsAll(List.of("itemId1", "itemId2"))))).thenReturn(existingItems);
 
         PotentialTradeStats potentialTradeStats1 = new PotentialTradeStats();
         potentialTradeStats1.setPrognosedTradeSuccessMinutes(101);
@@ -86,7 +86,7 @@ class TradeServiceTest {
         result.forEach(System.out::println);
 
         assertEquals(2, result.size());
-        assertTrue(result.stream().anyMatch(res-> res.equals(expected1) && res.getItemName().equals("existingItemId1")));
-        assertTrue(result.stream().anyMatch(res-> res.equals(expected2) && res.getItemName().equals("existingItemId2")));
+        assertTrue(result.stream().anyMatch(res -> res.equals(expected1) && res.getItemName().equals("existingItemId1")));
+        assertTrue(result.stream().anyMatch(res -> res.equals(expected2) && res.getItemName().equals("existingItemId2")));
     }
 }

@@ -14,7 +14,7 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Trade implements UbiTradeI{
+public class Trade implements UbiTradeI {
     private String tradeId;
     private TradeState state;
     private TradeCategory category;

@@ -3,7 +3,6 @@ package github.ricemonger.item_trade_stats_calculator.services;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.ItemDaySalesStatsByItemId;
 import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
-import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.services.calculators.ItemTradeStatsCalculator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
