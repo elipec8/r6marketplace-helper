@@ -10,12 +10,14 @@ import github.ricemonger.utils.SchedulingUtilsConfiguration;
 import github.ricemonger.utilslibrarykafka.KafkaUtilsConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"github.ricemonger.ubi_users_stats_fetcher"},
         basePackageClasses = github.ricemonger.utils.PublicMethodLogger.class)
+@EntityScan(basePackages = "github.ricemonger.utilspostgresschema")
 @Import({
         KafkaUtilsConfiguration.class,
         RedisUtilsConfiguration.class,

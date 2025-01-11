@@ -1,9 +1,7 @@
 package github.ricemonger.ubi_users_stats_fetcher.postgres.services.entity_mappers.user;
 
-import github.ricemonger.ubi_users_stats_fetcher.postgres.entities.user_ubi_account_entry.UbiAccountEntryEntity;
-import github.ricemonger.ubi_users_stats_fetcher.postgres.entities.user_ubi_account_entry.UbiAccountStatsIdCreditAmountEntity;
-import github.ricemonger.ubi_users_stats_fetcher.postgres.entities.user_ubi_account_entry.UserUbiAccountEntryEntity;
-import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UserUbiAccount;
+import github.ricemonger.ubi_users_stats_fetcher.postgres.dto_projections.UserAuthorizedUbiAccountProjection;
+import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UserAuthorizedUbiAccount;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,28 +14,26 @@ class UbiAccountEntryEntityMapperTest {
     private UbiAccountEntryEntityMapper ubiAccountEntryEntityMapper;
 
     @Test
-    public void createUserUbiAccountEntry_should_map_entity_to_dto() {
-        UserUbiAccountEntryEntity entity = new UserUbiAccountEntryEntity();
-        entity.setId(1L);
-        entity.setUbiAccountEntry(new UbiAccountEntryEntity());
-        entity.getUbiAccountEntry().setUbiAccountStats(new UbiAccountStatsIdCreditAmountEntity());
-        entity.getUbiAccountEntry().getUbiAccountStats().setUbiProfileId("ubiProfileId");
-        entity.getUbiAccountEntry().getUbiAccountStats().setCreditAmount(3);
-        entity.getUbiAccountEntry().setUbiAuthTicket("ubiAuthTicket");
-        entity.getUbiAccountEntry().setUbiSpaceId("ubiSpaceId");
-        entity.getUbiAccountEntry().setUbiSessionId("ubiSessionId");
-        entity.getUbiAccountEntry().setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
-        entity.getUbiAccountEntry().setUbiRememberMeTicket("ubiRememberMeTicket");
+    public void createUserUbiAccountEntry_should_map_projection_to_dto() {
+        UserAuthorizedUbiAccountProjection projection = new UserAuthorizedUbiAccountProjection();
+        projection.setUserId(1L);
+        projection.setProfileId("ubiProfileId");
+        projection.setCreditAmount(3);
+        projection.setTicket("ubiAuthTicket");
+        projection.setSpaceId("ubiSpaceId");
+        projection.setSessionId("ubiSessionId");
+        projection.setRememberDeviceTicket("ubiRememberDeviceTicket");
+        projection.setRememberMeTicket("ubiRememberMeTicket");
 
-        UserUbiAccount userUbiAccount = ubiAccountEntryEntityMapper.createUserUbiAccountEntry(entity);
+        UserAuthorizedUbiAccount userAuthorizedUbiAccount = ubiAccountEntryEntityMapper.createUserUbiAccountEntry(projection);
 
-        assertEquals(1L, userUbiAccount.getUserId());
-        assertEquals("ubiProfileId", userUbiAccount.getProfileId());
-        assertEquals(3, userUbiAccount.getCreditAmount());
-        assertEquals("ubiAuthTicket", userUbiAccount.getTicket());
-        assertEquals("ubiSpaceId", userUbiAccount.getSpaceId());
-        assertEquals("ubiSessionId", userUbiAccount.getSessionId());
-        assertEquals("ubiRememberDeviceTicket", userUbiAccount.getRememberDeviceTicket());
-        assertEquals("ubiRememberMeTicket", userUbiAccount.getRememberMeTicket());
+        assertEquals(1L, userAuthorizedUbiAccount.getUserId());
+        assertEquals("ubiProfileId", userAuthorizedUbiAccount.getProfileId());
+        assertEquals(3, userAuthorizedUbiAccount.getCreditAmount());
+        assertEquals("ubiAuthTicket", userAuthorizedUbiAccount.getTicket());
+        assertEquals("ubiSpaceId", userAuthorizedUbiAccount.getSpaceId());
+        assertEquals("ubiSessionId", userAuthorizedUbiAccount.getSessionId());
+        assertEquals("ubiRememberDeviceTicket", userAuthorizedUbiAccount.getRememberDeviceTicket());
+        assertEquals("ubiRememberMeTicket", userAuthorizedUbiAccount.getRememberMeTicket());
     }
 }

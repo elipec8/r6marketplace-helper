@@ -19,10 +19,6 @@ app:
       fixedRate: ${SCHEDULING_FIXED_DELAY_ITEMS:180000}
       initialDelay: ${SCHEDULING_INITIAL_DELAY_ITEMS:0}
 
-    trades:
-      fixedRate: ${SCHEDULING_FIXED_DELAY_TRADES:60000}
-      initialDelay: ${SCHEDULING_INITIAL_DELAY_TRADES:0}
-
     current_prices:
       fixedRate: ${SCHEDULING_FIXED_DELAY_CURRENT_PRICES:60000}
       initialDelay: ${SCHEDULING_INITIAL_DELAY_CURRENT_PRICES:0}

@@ -19,14 +19,6 @@ public class PotentialTradeStatsService {
 
     private final ItemTradeStatsCalculator itemTradeStatsCalculator;
 
-    public PotentialTradeStats calculatePotentialBuyTradeStatsForExistingTrade(UbiTrade ubiTrade) {
-        return itemTradeStatsCalculator.calculatePotentialBuyTradeStatsForExistingTrade(ubiTrade);
-    }
-
-    public PotentialTradeStats calculatePotentialSellTradeStatsForExistingTrade(UbiTrade ubiTrade) {
-        return itemTradeStatsCalculator.calculatePotentialSellTradeStatsForExistingTrade(ubiTrade);
-    }
-
     public PotentialTradeStats calculatePotentialBuyTradeStatsForTime(Item item, List<ItemDaySalesStatsByItemId> resultingPerDayStats, Integer minutesToTrade) {
         return itemTradeStatsCalculator.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, minutesToTrade);
     }

@@ -3,7 +3,7 @@ package github.ricemonger.ubi_users_stats_fetcher.postgres.services;
 
 import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.UserUbiAccountEntryPostgresRepository;
 import github.ricemonger.ubi_users_stats_fetcher.postgres.services.entity_mappers.user.UbiAccountEntryEntityMapper;
-import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UserUbiAccount;
+import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UserAuthorizedUbiAccount;
 import github.ricemonger.ubi_users_stats_fetcher.services.abstractions.UserUbiAccountEntryDatabaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class UserUbiAccountEntryPostgresService implements UserUbiAccountEntryDa
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserUbiAccount> findAllUserWithUbiAccounts() {
-        return userUbiAccountEntryPostgresRepository.findAllUserWithAuthorizedUbiAccounts().stream().map(ubiAccountEntryEntityMapper::createUserUbiAccountEntry).toList();
+    public List<UserAuthorizedUbiAccount> findAllUserAuthorizedUbiAccounts() {
+        return userUbiAccountEntryPostgresRepository.findAllUserAuthorizedUbiAccounts().stream().map(ubiAccountEntryEntityMapper::createUserUbiAccountEntry).toList();
     }
 }

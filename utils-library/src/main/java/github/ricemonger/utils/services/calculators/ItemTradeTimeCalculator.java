@@ -3,6 +3,7 @@ package github.ricemonger.utils.services.calculators;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.PotentialTradePriceAndTimeStats;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
+import github.ricemonger.utils.DTOs.personal.UbiTradeI;
 import github.ricemonger.utils.enums.TradeCategory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,7 @@ public class ItemTradeTimeCalculator {
 
     private final ItemFancyPriceCalculator itemFancyPriceCalculator;
 
-    public Integer getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(UbiTrade ubiTrade) {
+    public Integer getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(UbiTradeI ubiTrade) {
         int minutesTradeExists = (int) Duration.between(ubiTrade.getLastModifiedAt(), LocalDateTime.now().plusMinutes(10)).toMinutes();
 
         Integer prognosedTradeSuccessMinutes = getPrognosedTradeSuccessMinutesByPriceOrNull(ubiTrade.getItem(), ubiTrade.getProposedPaymentPrice(), ubiTrade.getCategory());

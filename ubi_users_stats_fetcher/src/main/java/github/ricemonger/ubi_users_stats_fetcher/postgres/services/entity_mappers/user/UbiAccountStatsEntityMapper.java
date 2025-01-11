@@ -1,14 +1,14 @@
 package github.ricemonger.ubi_users_stats_fetcher.postgres.services.entity_mappers.user;
 
 
-import github.ricemonger.ubi_users_stats_fetcher.postgres.entities.ubi_account_stats.ItemIdEntity;
-import github.ricemonger.ubi_users_stats_fetcher.postgres.entities.ubi_account_stats.ItemResaleLockEntity;
-import github.ricemonger.ubi_users_stats_fetcher.postgres.entities.ubi_account_stats.UbiAccountStatsEntity;
-import github.ricemonger.ubi_users_stats_fetcher.postgres.entities.ubi_account_stats.UbiTradeEntity;
-import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.ItemIdPostgresRepository;
+import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.UbiAccountStatsPostgresRepository;
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UbiAccountStats;
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
+import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.ItemResaleLockEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.TradeEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountStatsEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,14 +21,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UbiAccountStatsEntityMapper {
 
-    private final ItemIdPostgresRepository itemIdPostgresRepository;
+    private final ItemPostgresRepository itemPostgresRepository;
 
-    private final UbiTradeEntityMapper ubiTradeEntityMapper;
+    private final TradeEntityMapper tradeEntityMapper;
 
     private final UbiAccountStatsPostgresRepository ubiAccountStatsPostgresRepository;
 
     public List<UbiAccountStatsEntity> createEntities(List<UbiAccountStats> ubiAccounts) {
-        List<ItemIdEntity> existingItems = itemIdPostgresRepository.findAll();
+        List<String> existingItems = itemPostgresRepository.findAllItemIds();
 
         List<UbiAccountStatsEntity> entities = new LinkedList<>();
 
@@ -50,13 +50,13 @@ public class UbiAccountStatsEntityMapper {
             entity.setSoldIn24h(ubiAccount.getSoldIn24h());
             entity.setBoughtIn24h(ubiAccount.getBoughtIn24h());
 
-            List<ItemIdEntity> ownedItemsIds = existingItems.stream().filter(item -> ubiAccount.getOwnedItemsIds().contains(item.getItemId())).toList();
-            List<UbiTradeEntity> currentSellTrades = ubiAccount.getCurrentSellTrades().stream().map(ubiTrade -> ubiTradeEntityMapper.createEntity(ubiTrade, existingItems)).toList();
-            List<UbiTradeEntity> currentBuyTrades = ubiAccount.getCurrentBuyTrades().stream().map(ubiTrade -> ubiTradeEntityMapper.createEntity(ubiTrade, existingItems)).toList();
+            List<ItemEntity> ownedItemsIds = existingItems.stream().filter(ex -> ubiAccount.getOwnedItemsIds().contains(ex)).map(itemPostgresRepository::getReferenceById).toList();
+            List<TradeEntity> currentSellTrades = ubiAccount.getCurrentSellTrades().stream().map(ubiTrade -> tradeEntityMapper.createEntity(ubiTrade, existingItems)).toList();
+            List<TradeEntity> currentBuyTrades = ubiAccount.getCurrentBuyTrades().stream().map(ubiTrade -> tradeEntityMapper.createEntity(ubiTrade, existingItems)).toList();
             List<ItemResaleLockEntity> resaleLocksEntities = new LinkedList<>();
 
             for (ItemResaleLock resaleLock : ubiAccount.getResaleLocks()) {
-                ItemIdEntity item = existingItems.stream().filter(itemIdEntity -> itemIdEntity.getItemId().equals(resaleLock.getItemId())).findFirst().orElse(null);
+                ItemEntity item = existingItems.stream().filter(ex -> ex.equals(resaleLock.getItemId())).map(itemPostgresRepository::getReferenceById).findFirst().orElse(null);
                 if (item != null) {
                     resaleLocksEntities.add(new ItemResaleLockEntity(entity, item, resaleLock.getExpiresAt()));
                 } else {

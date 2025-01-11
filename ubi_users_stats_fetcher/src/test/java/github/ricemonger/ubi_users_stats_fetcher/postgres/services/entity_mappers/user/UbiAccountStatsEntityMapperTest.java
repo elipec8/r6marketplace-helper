@@ -1,14 +1,14 @@
 package github.ricemonger.ubi_users_stats_fetcher.postgres.services.entity_mappers.user;
 
-import github.ricemonger.ubi_users_stats_fetcher.postgres.entities.ubi_account_stats.ItemIdEntity;
-import github.ricemonger.ubi_users_stats_fetcher.postgres.entities.ubi_account_stats.ItemResaleLockEntity;
-import github.ricemonger.ubi_users_stats_fetcher.postgres.entities.ubi_account_stats.UbiAccountStatsEntity;
-import github.ricemonger.ubi_users_stats_fetcher.postgres.entities.ubi_account_stats.UbiTradeEntity;
-import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.ItemIdPostgresRepository;
+import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.UbiAccountStatsPostgresRepository;
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UbiAccountStats;
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
-import github.ricemonger.utils.DTOs.personal.UbiTrade;
+import github.ricemonger.utils.DTOs.personal.Trade;
+import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.ItemResaleLockEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.TradeEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountStatsEntity;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,37 +29,39 @@ class UbiAccountStatsEntityMapperTest {
     @Autowired
     private UbiAccountStatsEntityMapper ubiAccountStatsEntityMapper;
     @MockBean
-    private ItemIdPostgresRepository itemIdPostgresRepository;
+    private ItemPostgresRepository itemIdPostgresRepository;
     @MockBean
-    private UbiTradeEntityMapper ubiTradeEntityMapper;
+    private TradeEntityMapper TradeEntityMapper;
     @MockBean
     private UbiAccountStatsPostgresRepository ubiAccountStatsPostgresRepository;
 
     @Test
     public void createEntities_should_return_expected_result_if_user_doesnt_exist() {
-        List<ItemIdEntity> existingItems = List.of(new ItemIdEntity("itemId1"), new ItemIdEntity("itemId2"));
-        when(itemIdPostgresRepository.findAll()).thenReturn(existingItems);
+        List<String> existingItems = List.of("itemId1", "itemId2");
+        when(itemIdPostgresRepository.findAllItemIds()).thenReturn(existingItems);
+        when(itemIdPostgresRepository.getReferenceById("itemId1")).thenReturn(new ItemEntity("itemId1"));
+        when(itemIdPostgresRepository.getReferenceById("itemId2")).thenReturn(new ItemEntity("itemId2"));
 
         when(ubiAccountStatsPostgresRepository.existsById("ubiProfileId1")).thenReturn(false);
         when(ubiAccountStatsPostgresRepository.existsById("ubiProfileId2")).thenReturn(false);
 
-        UbiTrade currentSellTrade11 = Mockito.mock(UbiTrade.class);
-        UbiTrade currentSellTrade12 = Mockito.mock(UbiTrade.class);
+        Trade currentSellTrade11 = Mockito.mock(Trade.class);
+        Trade currentSellTrade12 = Mockito.mock(Trade.class);
 
-        UbiTrade currentBuyTrade11 = Mockito.mock(UbiTrade.class);
+        Trade currentBuyTrade11 = Mockito.mock(Trade.class);
 
-        UbiTradeEntity currentSellTradeEntity11 = new UbiTradeEntity();
+        TradeEntity currentSellTradeEntity11 = new TradeEntity();
         currentSellTradeEntity11.setTradeId("currentSellTradeEntity11");
 
-        UbiTradeEntity currentSellTradeEntity12 = new UbiTradeEntity();
+        TradeEntity currentSellTradeEntity12 = new TradeEntity();
         currentSellTradeEntity12.setTradeId("currentSellTradeEntity12");
 
-        UbiTradeEntity currentBuyTradeEntity11 = new UbiTradeEntity();
+        TradeEntity currentBuyTradeEntity11 = new TradeEntity();
         currentBuyTradeEntity11.setTradeId("currentBuyTradeEntity11");
 
-        when(ubiTradeEntityMapper.createEntity(currentSellTrade11, existingItems)).thenReturn(currentSellTradeEntity11);
-        when(ubiTradeEntityMapper.createEntity(currentSellTrade12, existingItems)).thenReturn(currentSellTradeEntity12);
-        when(ubiTradeEntityMapper.createEntity(currentBuyTrade11, existingItems)).thenReturn(currentBuyTradeEntity11);
+        when(TradeEntityMapper.createEntity(currentSellTrade11, existingItems)).thenReturn(currentSellTradeEntity11);
+        when(TradeEntityMapper.createEntity(currentSellTrade12, existingItems)).thenReturn(currentSellTradeEntity12);
+        when(TradeEntityMapper.createEntity(currentBuyTrade11, existingItems)).thenReturn(currentBuyTradeEntity11);
 
         UbiAccountStats dto1 = new UbiAccountStats();
         dto1.setUbiProfileId("ubiProfileId1");
@@ -78,28 +80,28 @@ class UbiAccountStatsEntityMapperTest {
         entity1.setCreditAmount(100);
         entity1.setSoldIn24h(11);
         entity1.setBoughtIn24h(12);
-        entity1.setOwnedItems(List.of(existingItems.get(0), existingItems.get(1)));
+        entity1.setOwnedItems(List.of(new ItemEntity("itemId1"), new ItemEntity("itemId2")));
         entity1.setResaleLocks(List.of());
         entity1.setCurrentSellTrades(List.of(currentSellTradeEntity11, currentSellTradeEntity12));
         entity1.setCurrentBuyTrades(List.of(currentBuyTradeEntity11));
 
-        UbiTrade currentSellTrade21 = Mockito.mock(UbiTrade.class);
+        Trade currentSellTrade21 = Mockito.mock(Trade.class);
 
-        UbiTrade currentBuyTrade21 = Mockito.mock(UbiTrade.class);
-        UbiTrade currentBuyTrade22 = Mockito.mock(UbiTrade.class);
+        Trade currentBuyTrade21 = Mockito.mock(Trade.class);
+        Trade currentBuyTrade22 = Mockito.mock(Trade.class);
 
-        UbiTradeEntity currentSellTradeEntity21 = new UbiTradeEntity();
+        TradeEntity currentSellTradeEntity21 = new TradeEntity();
         currentSellTradeEntity21.setTradeId("currentSellTradeEntity21");
 
-        UbiTradeEntity currentBuyTradeEntity21 = new UbiTradeEntity();
+        TradeEntity currentBuyTradeEntity21 = new TradeEntity();
         currentBuyTradeEntity21.setTradeId("currentBuyTradeEntity21");
 
-        UbiTradeEntity currentBuyTradeEntity22 = new UbiTradeEntity();
+        TradeEntity currentBuyTradeEntity22 = new TradeEntity();
         currentBuyTradeEntity22.setTradeId("currentBuyTradeEntity22");
 
-        when(ubiTradeEntityMapper.createEntity(currentSellTrade21, existingItems)).thenReturn(currentSellTradeEntity21);
-        when(ubiTradeEntityMapper.createEntity(currentBuyTrade21, existingItems)).thenReturn(currentBuyTradeEntity21);
-        when(ubiTradeEntityMapper.createEntity(currentBuyTrade22, existingItems)).thenReturn(currentBuyTradeEntity22);
+        when(TradeEntityMapper.createEntity(currentSellTrade21, existingItems)).thenReturn(currentSellTradeEntity21);
+        when(TradeEntityMapper.createEntity(currentBuyTrade21, existingItems)).thenReturn(currentBuyTradeEntity21);
+        when(TradeEntityMapper.createEntity(currentBuyTrade22, existingItems)).thenReturn(currentBuyTradeEntity22);
 
         UbiAccountStats dto2 = new UbiAccountStats();
         dto2.setUbiProfileId("ubiProfileId2");
@@ -118,8 +120,8 @@ class UbiAccountStatsEntityMapperTest {
         entity2.setCreditAmount(200);
         entity2.setSoldIn24h(21);
         entity2.setBoughtIn24h(22);
-        ItemResaleLockEntity resaleLockEntity21 = new ItemResaleLockEntity(entity2, existingItems.get(0), LocalDateTime.of(2022, 1, 1, 0, 0));
-        ItemResaleLockEntity resaleLockEntity22 = new ItemResaleLockEntity(entity2, existingItems.get(1), LocalDateTime.of(2022, 2, 1, 0, 0));
+        ItemResaleLockEntity resaleLockEntity21 = new ItemResaleLockEntity(entity2, new ItemEntity("itemId1"), LocalDateTime.of(2022, 1, 1, 0, 0));
+        ItemResaleLockEntity resaleLockEntity22 = new ItemResaleLockEntity(entity2, new ItemEntity("itemId2"), LocalDateTime.of(2022, 2, 1, 0, 0));
         entity2.setOwnedItems(List.of());
         entity2.setResaleLocks(List.of(resaleLockEntity21, resaleLockEntity22));
         entity2.setCurrentSellTrades(List.of(currentSellTradeEntity21));
@@ -143,16 +145,18 @@ class UbiAccountStatsEntityMapperTest {
 
     @Test
     public void createEntities_should_return_expected_result_if_user_already_exists() {
-        List<ItemIdEntity> existingItems = List.of(new ItemIdEntity("itemId1"), new ItemIdEntity("itemId2"));
-        when(itemIdPostgresRepository.findAll()).thenReturn(existingItems);
+        List<String> existingItems = List.of("itemId1", "itemId2");
+        when(itemIdPostgresRepository.findAllItemIds()).thenReturn(existingItems);
+        when(itemIdPostgresRepository.getReferenceById("itemId1")).thenReturn(new ItemEntity("itemId1"));
+        when(itemIdPostgresRepository.getReferenceById("itemId2")).thenReturn(new ItemEntity("itemId2"));
 
         when(ubiAccountStatsPostgresRepository.existsById("ubiProfileId11")).thenReturn(true);
         when(ubiAccountStatsPostgresRepository.existsById("ubiProfileId22")).thenReturn(true);
 
-        List<ItemIdEntity> itemIdSpy1 = spy(new ArrayList<>());
+        List<ItemEntity> itemIdSpy1 = spy(new ArrayList<>());
         List<ItemResaleLockEntity> resaleLockSpy1 = spy(new ArrayList<>());
-        List<UbiTradeEntity> currentSellTradeSpy1 = spy(new ArrayList<>());
-        List<UbiTradeEntity> currentBuyTradeSpy1 = spy(new ArrayList<>());
+        List<TradeEntity> currentSellTradeSpy1 = spy(new ArrayList<>());
+        List<TradeEntity> currentBuyTradeSpy1 = spy(new ArrayList<>());
 
         UbiAccountStatsEntity existingEntity1 = new UbiAccountStatsEntity();
         existingEntity1.setUbiProfileId("ubiProfileId1");
@@ -161,10 +165,10 @@ class UbiAccountStatsEntityMapperTest {
         existingEntity1.setCurrentSellTrades(currentSellTradeSpy1);
         existingEntity1.setCurrentBuyTrades(currentBuyTradeSpy1);
 
-        List<ItemIdEntity> itemIdSpy2 = spy(new ArrayList<>());
+        List<ItemEntity> itemIdSpy2 = spy(new ArrayList<>());
         List<ItemResaleLockEntity> resaleLockSpy2 = spy(new ArrayList<>());
-        List<UbiTradeEntity> currentSellTradeSpy2 = spy(new ArrayList<>());
-        List<UbiTradeEntity> currentBuyTradeSpy2 = spy(new ArrayList<>());
+        List<TradeEntity> currentSellTradeSpy2 = spy(new ArrayList<>());
+        List<TradeEntity> currentBuyTradeSpy2 = spy(new ArrayList<>());
 
         UbiAccountStatsEntity existingEntity2 = new UbiAccountStatsEntity();
         existingEntity2.setUbiProfileId("ubiProfileId2");
@@ -176,23 +180,23 @@ class UbiAccountStatsEntityMapperTest {
         when(ubiAccountStatsPostgresRepository.findById("ubiProfileId11")).thenReturn(Optional.of(existingEntity1));
         when(ubiAccountStatsPostgresRepository.findById("ubiProfileId22")).thenReturn(Optional.of(existingEntity2));
 
-        UbiTrade currentSellTrade11 = Mockito.mock(UbiTrade.class);
-        UbiTrade currentSellTrade12 = Mockito.mock(UbiTrade.class);
+        Trade currentSellTrade11 = Mockito.mock(Trade.class);
+        Trade currentSellTrade12 = Mockito.mock(Trade.class);
 
-        UbiTrade currentBuyTrade11 = Mockito.mock(UbiTrade.class);
+        Trade currentBuyTrade11 = Mockito.mock(Trade.class);
 
-        UbiTradeEntity currentSellTradeEntity11 = new UbiTradeEntity();
+        TradeEntity currentSellTradeEntity11 = new TradeEntity();
         currentSellTradeEntity11.setTradeId("currentSellTradeEntity11");
 
-        UbiTradeEntity currentSellTradeEntity12 = new UbiTradeEntity();
+        TradeEntity currentSellTradeEntity12 = new TradeEntity();
         currentSellTradeEntity12.setTradeId("currentSellTradeEntity12");
 
-        UbiTradeEntity currentBuyTradeEntity11 = new UbiTradeEntity();
+        TradeEntity currentBuyTradeEntity11 = new TradeEntity();
         currentBuyTradeEntity11.setTradeId("currentBuyTradeEntity11");
 
-        when(ubiTradeEntityMapper.createEntity(currentSellTrade11, existingItems)).thenReturn(currentSellTradeEntity11);
-        when(ubiTradeEntityMapper.createEntity(currentSellTrade12, existingItems)).thenReturn(currentSellTradeEntity12);
-        when(ubiTradeEntityMapper.createEntity(currentBuyTrade11, existingItems)).thenReturn(currentBuyTradeEntity11);
+        when(TradeEntityMapper.createEntity(currentSellTrade11, existingItems)).thenReturn(currentSellTradeEntity11);
+        when(TradeEntityMapper.createEntity(currentSellTrade12, existingItems)).thenReturn(currentSellTradeEntity12);
+        when(TradeEntityMapper.createEntity(currentBuyTrade11, existingItems)).thenReturn(currentBuyTradeEntity11);
 
         UbiAccountStats dto1 = new UbiAccountStats();
         dto1.setUbiProfileId("ubiProfileId11");
@@ -211,28 +215,28 @@ class UbiAccountStatsEntityMapperTest {
         entity1.setCreditAmount(100);
         entity1.setSoldIn24h(11);
         entity1.setBoughtIn24h(12);
-        entity1.setOwnedItems(List.of(existingItems.get(0), existingItems.get(1)));
+        entity1.setOwnedItems(List.of(new ItemEntity("itemId1"), new ItemEntity("itemId2")));
         entity1.setResaleLocks(List.of());
         entity1.setCurrentSellTrades(List.of(currentSellTradeEntity11, currentSellTradeEntity12));
         entity1.setCurrentBuyTrades(List.of(currentBuyTradeEntity11));
 
-        UbiTrade currentSellTrade21 = Mockito.mock(UbiTrade.class);
+        Trade currentSellTrade21 = Mockito.mock(Trade.class);
 
-        UbiTrade currentBuyTrade21 = Mockito.mock(UbiTrade.class);
-        UbiTrade currentBuyTrade22 = Mockito.mock(UbiTrade.class);
+        Trade currentBuyTrade21 = Mockito.mock(Trade.class);
+        Trade currentBuyTrade22 = Mockito.mock(Trade.class);
 
-        UbiTradeEntity currentSellTradeEntity21 = new UbiTradeEntity();
+        TradeEntity currentSellTradeEntity21 = new TradeEntity();
         currentSellTradeEntity21.setTradeId("currentSellTradeEntity21");
 
-        UbiTradeEntity currentBuyTradeEntity21 = new UbiTradeEntity();
+        TradeEntity currentBuyTradeEntity21 = new TradeEntity();
         currentBuyTradeEntity21.setTradeId("currentBuyTradeEntity21");
 
-        UbiTradeEntity currentBuyTradeEntity22 = new UbiTradeEntity();
+        TradeEntity currentBuyTradeEntity22 = new TradeEntity();
         currentBuyTradeEntity22.setTradeId("currentBuyTradeEntity22");
 
-        when(ubiTradeEntityMapper.createEntity(currentSellTrade21, existingItems)).thenReturn(currentSellTradeEntity21);
-        when(ubiTradeEntityMapper.createEntity(currentBuyTrade21, existingItems)).thenReturn(currentBuyTradeEntity21);
-        when(ubiTradeEntityMapper.createEntity(currentBuyTrade22, existingItems)).thenReturn(currentBuyTradeEntity22);
+        when(TradeEntityMapper.createEntity(currentSellTrade21, existingItems)).thenReturn(currentSellTradeEntity21);
+        when(TradeEntityMapper.createEntity(currentBuyTrade21, existingItems)).thenReturn(currentBuyTradeEntity21);
+        when(TradeEntityMapper.createEntity(currentBuyTrade22, existingItems)).thenReturn(currentBuyTradeEntity22);
 
         UbiAccountStats dto2 = new UbiAccountStats();
         dto2.setUbiProfileId("ubiProfileId22");
@@ -251,8 +255,8 @@ class UbiAccountStatsEntityMapperTest {
         entity2.setCreditAmount(200);
         entity2.setSoldIn24h(21);
         entity2.setBoughtIn24h(22);
-        ItemResaleLockEntity resaleLockEntity21 = new ItemResaleLockEntity(entity2, existingItems.get(0), LocalDateTime.of(2022, 1, 1, 0, 0));
-        ItemResaleLockEntity resaleLockEntity22 = new ItemResaleLockEntity(entity2, existingItems.get(1), LocalDateTime.of(2022, 2, 1, 0, 0));
+        ItemResaleLockEntity resaleLockEntity21 = new ItemResaleLockEntity(entity2, new ItemEntity("itemId1"), LocalDateTime.of(2022, 1, 1, 0, 0));
+        ItemResaleLockEntity resaleLockEntity22 = new ItemResaleLockEntity(entity2, new ItemEntity("itemId2"), LocalDateTime.of(2022, 2, 1, 0, 0));
         entity2.setOwnedItems(List.of());
         entity2.setResaleLocks(List.of(resaleLockEntity21, resaleLockEntity22));
         entity2.setCurrentSellTrades(List.of(currentSellTradeEntity21));

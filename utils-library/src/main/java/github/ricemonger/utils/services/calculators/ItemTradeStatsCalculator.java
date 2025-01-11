@@ -5,6 +5,7 @@ import github.ricemonger.utils.DTOs.common.ItemDaySalesStatsByItemId;
 import github.ricemonger.utils.DTOs.common.PotentialTradePriceAndTimeStats;
 import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
+import github.ricemonger.utils.DTOs.personal.UbiTradeI;
 import lombok.RequiredArgsConstructor;
 
 import java.util.*;
@@ -63,11 +64,11 @@ public class ItemTradeStatsCalculator {
         return calculatePotentialBuyTradeStats(item, null, minutesToBuy);
     }
 
-    public PotentialTradeStats calculatePotentialSellTradeStatsForExistingTrade(UbiTrade existingTrade) {
+    public PotentialTradeStats calculatePotentialSellTradeStatsForExistingTrade(UbiTradeI existingTrade) {
         return calculatePotentialSellTradeStats(existingTrade.getItem(), existingTrade.getProposedPaymentPrice(), itemTradeTimeCalculator.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(existingTrade));
     }
 
-    public PotentialTradeStats calculatePotentialBuyTradeStatsForExistingTrade(UbiTrade existingTrade) {
+    public PotentialTradeStats calculatePotentialBuyTradeStatsForExistingTrade(UbiTradeI existingTrade) {
         return calculatePotentialBuyTradeStats(existingTrade.getItem(), existingTrade.getProposedPaymentPrice(), itemTradeTimeCalculator.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(existingTrade));
     }
 

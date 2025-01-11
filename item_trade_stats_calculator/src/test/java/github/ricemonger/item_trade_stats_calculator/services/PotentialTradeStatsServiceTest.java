@@ -25,32 +25,6 @@ class PotentialTradeStatsServiceTest {
     private ItemTradeStatsCalculator itemTradeStatsCalculator;
 
     @Test
-    public void calculatePotentialBuyTradeStatsForExistingTrade_should_return_calculator_result() {
-        UbiTrade ubiTrade = mock(UbiTrade.class);
-
-        PotentialTradeStats stats = mock(PotentialTradeStats.class);
-
-        when(itemTradeStatsCalculator.calculatePotentialBuyTradeStatsForExistingTrade(same(ubiTrade))).thenReturn(stats);
-
-        PotentialTradeStats result = potentialTradeStatsService.calculatePotentialBuyTradeStatsForExistingTrade(ubiTrade);
-
-        assertSame(stats, result);
-    }
-
-    @Test
-    public void calculatePotentialSellTradeStatsForExistingTrade_should_return_calculator_result() {
-        UbiTrade ubiTrade = mock(UbiTrade.class);
-
-        PotentialTradeStats stats = mock(PotentialTradeStats.class);
-
-        when(itemTradeStatsCalculator.calculatePotentialSellTradeStatsForExistingTrade(same(ubiTrade))).thenReturn(stats);
-
-        PotentialTradeStats result = potentialTradeStatsService.calculatePotentialSellTradeStatsForExistingTrade(ubiTrade);
-
-        assertSame(stats, result);
-    }
-
-    @Test
     public void calculatePotentialBuyTradeStatsForTime_should_return_calculator_result() {
         Item item = mock(Item.class);
         List<ItemDaySalesStatsByItemId> resultingPerDayStats = mock(List.class);

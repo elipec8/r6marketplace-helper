@@ -7,10 +7,12 @@ import github.ricemonger.marketplace.graphQl.personal_query_locked_items.Persona
 import github.ricemonger.marketplace.graphQl.personal_query_owned_items.PersonalQueryOwnedItemsGraphQlClientService;
 import github.ricemonger.ubi_users_stats_fetcher.services.CommonValuesService;
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UbiAccountStats;
-import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UserUbiAccount;
+import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UserAuthorizedUbiAccount;
 import github.ricemonger.ubi_users_stats_fetcher.services.NotificationService;
+import github.ricemonger.ubi_users_stats_fetcher.services.TradeService;
 import github.ricemonger.ubi_users_stats_fetcher.services.UbiAccountService;
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
+import github.ricemonger.utils.DTOs.personal.Trade;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.DTOs.personal.UserTradesLimitations;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
@@ -46,17 +48,19 @@ public class ScheduledAllUbiUsersStatsFetcher {
 
     private final CommonValuesService commonValuesService;
 
+    private final TradeService tradeService;
+
     @Scheduled(fixedRateString = "${app.scheduling.fixedRate}", initialDelayString = "${app.scheduling.initialDelay}")
     public void fetchAllAuthorizedUbiUsersStats() {
-        List<UserUbiAccount> userUbiAccounts = ubiAccountService.findAllUsersUbiAccountEntries();
+        List<UserAuthorizedUbiAccount> userAuthorizedUbiAccounts = ubiAccountService.findAllUsersUbiAccountEntries();
 
         List<UbiAccountStats> updatedUbiAccountsStats = new ArrayList<>();
 
-        for (UserUbiAccount userUbiAccount : userUbiAccounts) {
+        for (UserAuthorizedUbiAccount userAuthorizedUbiAccount : userAuthorizedUbiAccounts) {
             try {
-                updatedUbiAccountsStats.add(fetchAndGetUserPersonalStats(userUbiAccount));
+                updatedUbiAccountsStats.add(fetchAndGetUserPersonalStats(userAuthorizedUbiAccount));
             } catch (Exception e) {
-                log.error("Error while fetching user stats for user : {}", userUbiAccount, e);
+                log.error("Error while fetching user stats for user : {}", userAuthorizedUbiAccount, e);
             }
         }
 
@@ -65,8 +69,8 @@ public class ScheduledAllUbiUsersStatsFetcher {
         ubiAccountService.saveAllUbiAccountStats(updatedUbiAccountsStats);
     }
 
-    private UbiAccountStats fetchAndGetUserPersonalStats(UserUbiAccount userUbiAccount) {
-        AuthorizationDTO authorizationDTO = userUbiAccount.toAuthorizationDTO();
+    private UbiAccountStats fetchAndGetUserPersonalStats(UserAuthorizedUbiAccount userAuthorizedUbiAccount) {
+        AuthorizationDTO authorizationDTO = userAuthorizedUbiAccount.toAuthorizationDTO();
         int creditAmount = personalQueryCreditAmountGraphQlClientService.fetchCreditAmountForUser(authorizationDTO);
         List<UbiTrade> currentOrders = personalQueryCurrentOrdersGraphQlClientService.fetchCurrentOrdersForUser(authorizationDTO);
         List<UbiTrade> finishedOrders = personalQueryFinishedOrdersGraphQlClientService.fetchLastFinishedOrdersForUser(authorizationDTO);
@@ -85,22 +89,25 @@ public class ScheduledAllUbiUsersStatsFetcher {
         List<UbiTrade> currentSellTrades = currentOrders.stream().filter(order -> order.getCategory().equals(TradeCategory.Sell)).toList();
         List<UbiTrade> currentBuyTrades = currentOrders.stream().filter(order -> order.getCategory().equals(TradeCategory.Buy)).toList();
 
-        notifyUser(userUbiAccount, creditAmount, soldIn24h, boughtIn24h);
+        List<Trade> calculatedCurrentSellTrades = tradeService.calculateTradeStatsForUbiTrades(currentSellTrades);
+        List<Trade> calculatedCurrentBuyTrades = tradeService.calculateTradeStatsForUbiTrades(currentBuyTrades);
+
+        notifyUser(userAuthorizedUbiAccount, creditAmount, soldIn24h, boughtIn24h);
 
         return new UbiAccountStats(
-                userUbiAccount.getProfileId(),
+                userAuthorizedUbiAccount.getProfileId(),
                 creditAmount,
                 userTradesLimitations.getResolvedSellTransactionCount(),
                 userTradesLimitations.getResolvedBuyTransactionCount(),
                 ownedItemsIds,
                 itemResaleLocks,
-                currentSellTrades,
-                currentBuyTrades);
+                calculatedCurrentSellTrades,
+                calculatedCurrentBuyTrades);
     }
 
-    private void notifyUser(UserUbiAccount userUbiAccount, int creditAmount, List<UbiTrade> soldIn24h, List<UbiTrade> boughtIn24h) {
+    private void notifyUser(UserAuthorizedUbiAccount userAuthorizedUbiAccount, int creditAmount, List<UbiTrade> soldIn24h, List<UbiTrade> boughtIn24h) {
 
-        boolean creditsChanged = userUbiAccount.getCreditAmount() != null && userUbiAccount.getCreditAmount() != creditAmount;
+        boolean creditsChanged = userAuthorizedUbiAccount.getCreditAmount() != null && userAuthorizedUbiAccount.getCreditAmount() != creditAmount;
         boolean soldIn24hChanged = soldIn24h.stream().anyMatch(trade -> trade.getLastModifiedAt().isAfter(commonValuesService.getLastUbiUsersStatsFetchTime()));
         boolean boughtIn24hChanged = boughtIn24h.stream().anyMatch(trade -> trade.getLastModifiedAt().isAfter(commonValuesService.getLastUbiUsersStatsFetchTime()));
 
@@ -108,7 +115,7 @@ public class ScheduledAllUbiUsersStatsFetcher {
             StringBuilder message = new StringBuilder();
 
             if (creditsChanged) {
-                message.append("Your credit amount has changed. Old: ").append(userUbiAccount.getCreditAmount()).append(" New : ").append(creditAmount).append("\n");
+                message.append("Your credit amount has changed. Old: ").append(userAuthorizedUbiAccount.getCreditAmount()).append(" New : ").append(creditAmount).append("\n");
             }
             if (soldIn24hChanged) {
                 message.append("You have additionally sold these items in the last 24 hours: \n");
@@ -123,7 +130,7 @@ public class ScheduledAllUbiUsersStatsFetcher {
                 }
             }
 
-            notificationService.sendUbiStatsUpdatedNotification(userUbiAccount.getUserId(), message.toString());
+            notificationService.sendUbiStatsUpdatedNotification(userAuthorizedUbiAccount.getUserId(), message.toString());
         }
     }
 

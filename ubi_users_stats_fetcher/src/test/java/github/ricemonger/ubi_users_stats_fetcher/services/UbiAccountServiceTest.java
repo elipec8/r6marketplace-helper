@@ -34,7 +34,7 @@ class UbiAccountServiceTest {
     public void findAllUsersUbiAccountEntries_should_handle_to_service() {
         List userUbiAccount = Mockito.mock(List.class);
 
-        Mockito.when(ubiAccountEntryDatabaseService.findAllUserWithUbiAccounts()).thenReturn(userUbiAccount);
+        Mockito.when(ubiAccountEntryDatabaseService.findAllUserAuthorizedUbiAccounts()).thenReturn(userUbiAccount);
 
         assertSame(userUbiAccount, ubiAccountService.findAllUsersUbiAccountEntries());
     }

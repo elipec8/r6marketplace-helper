@@ -1,7 +1,7 @@
 package github.ricemonger.ubi_users_stats_fetcher.postgres.services.entity_mappers.user;
 
-import github.ricemonger.ubi_users_stats_fetcher.postgres.entities.user_ubi_account_entry.UserUbiAccountEntryEntity;
-import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UserUbiAccount;
+import github.ricemonger.ubi_users_stats_fetcher.postgres.dto_projections.UserAuthorizedUbiAccountProjection;
+import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UserAuthorizedUbiAccount;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -11,16 +11,16 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UbiAccountEntryEntityMapper {
 
-    public UserUbiAccount createUserUbiAccountEntry(UserUbiAccountEntryEntity entity) {
-        return new UserUbiAccount(
-                entity.getId(),
-                entity.getProfileId_(),
-                entity.getCreditAmount_(),
-                entity.getUbiAuthTicket_(),
-                entity.getUbiSpaceId_(),
-                entity.getUbiSessionId_(),
-                entity.getUbiRememberDeviceTicket_(),
-                entity.getUbiRememberMeTicket_()
+    public UserAuthorizedUbiAccount createUserUbiAccountEntry(UserAuthorizedUbiAccountProjection projection) {
+        return new UserAuthorizedUbiAccount(
+                projection.getUserId(),
+                projection.getProfileId(),
+                projection.getCreditAmount(),
+                projection.getTicket(),
+                projection.getSpaceId(),
+                projection.getSessionId(),
+                projection.getRememberDeviceTicket(),
+                projection.getRememberMeTicket()
         );
     }
 }

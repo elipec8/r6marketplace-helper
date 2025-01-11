@@ -48,4 +48,18 @@ public class ItemResaleLockEntity {
         return Objects.equals(ubiAccount, itemResaleLockEntity.ubiAccount) &&
                Objects.equals(item, itemResaleLockEntity.item);
     }
+
+    @Override
+    public String toString() {
+
+        String itemId = item == null || item.getItemId() == null ? "null" : item.getItemId();
+
+        String profileId = ubiAccount == null || ubiAccount.getUbiProfileId() == null ? "null" : ubiAccount.getUbiProfileId();
+
+        return "ItemResaleLockEntity{" +
+               "profileId=" + profileId +
+               ", itemId=" + itemId +
+               ", expiresAt=" + expiresAt +
+               '}';
+    }
 }

@@ -11,4 +11,20 @@ import org.springframework.context.annotation.Configuration;
 public class UbiServiceConfiguration {
     @Value("${ubi.session.dateFormat}")
     private String dateFormat;
+    @Value("${ubi.session.minUncommonPrice}")
+    private Integer minUncommonPrice;
+    @Value("${ubi.session.maxUncommonPrice}")
+    private Integer maxUncommonPrice;
+    @Value("${ubi.session.minRarePrice}")
+    private Integer minRarePrice;
+    @Value("${ubi.session.maxRarePrice}")
+    private Integer maxRarePrice;
+    @Value("${ubi.session.minEpicPrice}")
+    private Integer minEpicPrice;
+    @Value("${ubi.session.maxEpicPrice}")
+    private Integer maxEpicPrice;
+    @Value("${ubi.session.minLegendaryPrice}")
+    private Integer minLegendaryPrice;
+    @Value("${ubi.session.maxLegendaryPrice}")
+    private Integer maxLegendaryPrice;
 }

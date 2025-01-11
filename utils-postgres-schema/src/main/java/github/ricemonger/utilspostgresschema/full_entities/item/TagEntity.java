@@ -2,10 +2,7 @@ package github.ricemonger.utilspostgresschema.full_entities.item;
 
 import github.ricemonger.utils.enums.TagGroup;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Objects;
 
@@ -13,6 +10,7 @@ import java.util.Objects;
 @Entity(name = "tag")
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class TagEntity {

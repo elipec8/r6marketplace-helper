@@ -69,6 +69,27 @@ public class TradeEntity {
         return false;
     }
 
+    @Override
+    public String toString() {
+
+        String itemId = item == null || item.getItemId() == null ? "null" : item.toString();
+
+        return "TradeEntity{" +
+               "tradeId='" + tradeId + '\'' +
+               ", state=" + state +
+               ", category=" + category +
+               ", expiresAt=" + expiresAt +
+               ", lastModifiedAt=" + lastModifiedAt +
+               ", item=" + itemId +
+               ", successPaymentPrice=" + successPaymentPrice +
+               ", successPaymentFee=" + successPaymentFee +
+               ", proposedPaymentPrice=" + proposedPaymentPrice +
+               ", proposedPaymentFee=" + proposedPaymentFee +
+               ", minutesToTrade=" + minutesToTrade +
+               ", tradePriority=" + tradePriority +
+               '}';
+    }
+
     public boolean isFullyEqual(TradeEntity trade) {
         return equals(trade) &&
                state == trade.state &&

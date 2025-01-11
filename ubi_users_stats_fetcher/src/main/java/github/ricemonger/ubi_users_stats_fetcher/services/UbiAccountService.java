@@ -2,7 +2,7 @@ package github.ricemonger.ubi_users_stats_fetcher.services;
 
 
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UbiAccountStats;
-import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UserUbiAccount;
+import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UserAuthorizedUbiAccount;
 import github.ricemonger.ubi_users_stats_fetcher.services.abstractions.UbiAccountStatsDatabaseService;
 import github.ricemonger.ubi_users_stats_fetcher.services.abstractions.UserUbiAccountEntryDatabaseService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class UbiAccountService {
         ubiAccountStatsDatabaseService.saveAll(ubiAccounts);
     }
 
-    public List<UserUbiAccount> findAllUsersUbiAccountEntries() {
-        return ubiAccountEntryDatabaseService.findAllUserWithUbiAccounts();
+    public List<UserAuthorizedUbiAccount> findAllUsersUbiAccountEntries() {
+        return ubiAccountEntryDatabaseService.findAllUserAuthorizedUbiAccounts();
     }
 }

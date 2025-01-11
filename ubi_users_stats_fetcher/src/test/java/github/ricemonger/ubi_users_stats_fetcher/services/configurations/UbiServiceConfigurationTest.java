@@ -14,5 +14,13 @@ class UbiServiceConfigurationTest {
     @Test
     public void values_should_be_initialized() {
         assertNotNull(ubiServiceConfiguration);
+        assertNotNull(ubiServiceConfiguration.getMinUncommonPrice());
+        assertNotNull(ubiServiceConfiguration.getMaxUncommonPrice());
+        assertNotNull(ubiServiceConfiguration.getMinRarePrice());
+        assertNotNull(ubiServiceConfiguration.getMaxRarePrice());
+        assertNotNull(ubiServiceConfiguration.getMinEpicPrice());
+        assertNotNull(ubiServiceConfiguration.getMaxEpicPrice());
+        assertNotNull(ubiServiceConfiguration.getMinLegendaryPrice());
+        assertNotNull(ubiServiceConfiguration.getMaxLegendaryPrice());
     }
 }

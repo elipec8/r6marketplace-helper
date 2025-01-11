@@ -10,6 +10,14 @@ ubi:
     localeCode: ${UBI_LOCALE_CODE:en-US}
     dateFormat: ${UBI_DATE_FORMAT:yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}
     itemSaleStatsDateFormat: ${UBI_ITEM_SALE_DATE_FORMAT:yyyy-MM-dd}
+    minUncommonPrice: ${UBI_MIN_UNCOMMON_PRICE:10}
+    maxUncommonPrice: ${UBI_MAX_UNCOMMON_PRICE:25000}
+    minRarePrice: ${UBI_MIN_RARE_PRICE:10}
+    maxRarePrice: ${UBI_MAX_RARE_PRICE:250000}
+    minEpicPrice: ${UBI_MIN_EPIC_PRICE:10}
+    maxEpicPrice: ${UBI_MAX_EPIC_PRICE:1000000}
+    minLegendaryPrice: ${UBI_MIN_LEGENDARY_PRICE:10}
+    maxLegendaryPrice: ${UBI_MAX_LEGENDARY_PRICE:1000000}
 
 server:
   port: ${SERVER_PORT:8089}
