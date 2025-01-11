@@ -16,8 +16,8 @@ class NotificationServiceTest {
     private NotificationKafkaProducer notificationKafkaProducer;
 
     @Test
-    public void sendPrivateNotification_should_handle_to_kafka() {
-        notificationService.sendPrivateNotification(1L, "text");
-        verify(notificationKafkaProducer).producePrivateNotification(1L, "text");
+    public void sendUbiStatsUpdatedNotification_should_handle_to_kafka() {
+        notificationService.sendUbiStatsUpdatedNotification(1L, "text");
+        verify(notificationKafkaProducer).produceUbiStatsUpdatedNotification(1L, "text");
     }
 }

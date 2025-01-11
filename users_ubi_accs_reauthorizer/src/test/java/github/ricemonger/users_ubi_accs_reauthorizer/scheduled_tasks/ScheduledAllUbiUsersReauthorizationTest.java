@@ -35,6 +35,6 @@ class ScheduledAllUbiUsersReauthorizationTest {
 
         verify(userUbiAccountEntryAuthorizationService).reauthorizeAllUbiUsersAndGetUnauthorizedList();
 
-        verify(telegramBotService).sendPrivateNotification(eq(1L), anyString());
+        verify(telegramBotService).sendAuthorizationNotification(eq(1L), anyString());
     }
 }

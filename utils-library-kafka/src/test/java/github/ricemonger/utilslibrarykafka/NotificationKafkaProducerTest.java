@@ -54,4 +54,46 @@ class NotificationKafkaProducerTest {
 
         assertDoesNotThrow(() -> notificationKafkaProducer.producePublicNotificationToAllUsers("Test message"));
     }
+
+    @Test
+    void produceUbiStatsUpdatedNotification_should_handle_to_template() {
+        notificationKafkaProducer.produceUbiStatsUpdatedNotification(1L, "Test message");
+
+        verify(kafkaTemplate).send("private.ubi_stats_updated.notification", new SendTextDTO(1L, "Test message"));
+    }
+
+    @Test
+    void produceUbiStatsUpdatedNotification_should_handle_exception_in_template() {
+        when(kafkaTemplate.send(anyString(), any())).thenThrow(new RuntimeException("Kafka error"));
+
+        assertDoesNotThrow(() -> notificationKafkaProducer.produceUbiStatsUpdatedNotification(1L, "Test message"));
+    }
+
+    @Test
+    void produceTradeManagerNotification_should_handle_to_template() {
+        notificationKafkaProducer.produceTradeManagerNotification(1L, "Test message");
+
+        verify(kafkaTemplate).send("private.trade_manager.notification", new SendTextDTO(1L, "Test message"));
+    }
+
+    @Test
+    void produceTradeManagerNotification_should_handle_exception_in_template() {
+        when(kafkaTemplate.send(anyString(), any())).thenThrow(new RuntimeException("Kafka error"));
+
+        assertDoesNotThrow(() -> notificationKafkaProducer.produceTradeManagerNotification(1L, "Test message"));
+    }
+
+    @Test
+    void produceAuthorizationNotification_should_handle_to_template() {
+        notificationKafkaProducer.produceAuthorizationNotification(1L, "Test message");
+
+        verify(kafkaTemplate).send("private.authorization.notification", new SendTextDTO(1L, "Test message"));
+    }
+
+    @Test
+    void produceAuthorizationNotification_should_handle_exception_in_template() {
+        when(kafkaTemplate.send(anyString(), any())).thenThrow(new RuntimeException("Kafka error"));
+
+        assertDoesNotThrow(() -> notificationKafkaProducer.produceAuthorizationNotification(1L, "Test message"));
+    }
 }

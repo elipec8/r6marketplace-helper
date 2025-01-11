@@ -323,9 +323,9 @@ class ScheduledAllUbiUsersStatsFetcherTest {
 
         verify(ubiAccountService).saveAllUbiAccountStats(argThat(arg -> arg.containsAll(expectedUpdatedUbiAccountsStats) && arg.size() == 4));
 
-        verify(notificationService, times(0)).sendPrivateNotification(eq(noNotificationUbiAccount.getUserId()), anyString());
-        verify(notificationService, times(1)).sendPrivateNotification(eq(creditAmountNotificationUbiAccount.getUserId()), anyString());
-        verify(notificationService, times(1)).sendPrivateNotification(eq(soldIn24hNotificationUbiAccount.getUserId()), anyString());
-        verify(notificationService, times(1)).sendPrivateNotification(eq(boughtIn24hNotificationUbiAccount.getUserId()), anyString());
+        verify(notificationService, times(0)).sendUbiStatsUpdatedNotification(eq(noNotificationUbiAccount.getUserId()), anyString());
+        verify(notificationService, times(1)).sendUbiStatsUpdatedNotification(eq(creditAmountNotificationUbiAccount.getUserId()), anyString());
+        verify(notificationService, times(1)).sendUbiStatsUpdatedNotification(eq(soldIn24hNotificationUbiAccount.getUserId()), anyString());
+        verify(notificationService, times(1)).sendUbiStatsUpdatedNotification(eq(boughtIn24hNotificationUbiAccount.getUserId()), anyString());
     }
 }

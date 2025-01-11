@@ -294,7 +294,7 @@ class CentralTradeManagerTest {
         verify(personalMutationSellCreateGraphQlClientService).createSellOrderForUser(same(authDTO1), eq("sellCreateItemId1"), eq(1));
         verify(personalMutationSellCreateGraphQlClientService).createSellOrderForUser(same(authDTO1), eq("sellCreateItemId12"), eq(2));
 
-        verify(notificationService, times(12)).sendPrivateNotification(eq(1L), anyString());
+        verify(notificationService, times(12)).sendTradeManagerNotification(eq(1L), anyString());
 
         verify(personalMutationCancelGraphQlClientService).cancelOrderForUser(same(authDTO2), eq("buyCancelTradeId2"));
         verify(personalMutationBuyUpdateGraphQlClientService).updateBuyOrderForUser(same(authDTO2), eq("buyUpdateTradeId2"), eq(3));
@@ -303,6 +303,6 @@ class CentralTradeManagerTest {
         verify(personalMutationSellUpdateGraphQlClientService).updateSellOrderForUser(same(authDTO2), eq("sellUpdateTradeId2"), eq(3));
         verify(personalMutationSellCreateGraphQlClientService).createSellOrderForUser(same(authDTO2), eq("sellCreateItemId2"), eq(3));
 
-        verify(notificationService, times(6)).sendPrivateNotification(eq(2L), anyString());
+        verify(notificationService, times(6)).sendTradeManagerNotification(eq(2L), anyString());
     }
 }

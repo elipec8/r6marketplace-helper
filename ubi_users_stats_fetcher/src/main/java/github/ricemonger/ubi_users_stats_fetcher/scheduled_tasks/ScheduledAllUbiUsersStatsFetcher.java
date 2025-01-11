@@ -123,7 +123,7 @@ public class ScheduledAllUbiUsersStatsFetcher {
                 }
             }
 
-            notificationService.sendPrivateNotification(userUbiAccount.getUserId(), message.toString());
+            notificationService.sendUbiStatsUpdatedNotification(userUbiAccount.getUserId(), message.toString());
         }
     }
 

@@ -18,7 +18,7 @@ public class NotificationKafkaProducer {
         try {
             kafkaTemplate.send("private.notification", new SendTextDTO(userId, message));
         } catch (Exception e) {
-            log.warn("Failed to send private notification to user {} cause of: {}", userId, e.getMessage());
+            log.warn("Failed to send private notification to user {} cause of: ", userId, e);
         }
     }
 
@@ -27,7 +27,7 @@ public class NotificationKafkaProducer {
         try {
             kafkaTemplate.send("public.notification", new SendTextDTO(userId, message));
         } catch (Exception e) {
-            log.warn("Failed to send public notification to user {} cause of: {}", userId, e.getMessage());
+            log.warn("Failed to send public notification to user {} cause of: ", userId, e);
         }
     }
 
@@ -36,7 +36,34 @@ public class NotificationKafkaProducer {
         try {
             kafkaTemplate.send("public.all.users.notification", message);
         } catch (Exception e) {
-            log.warn("Failed to send public notification no all users cause of: {}", e.getMessage());
+            log.warn("Failed to send public notification no all users cause of: ", e);
+        }
+    }
+
+    public void produceUbiStatsUpdatedNotification(Long userId, String string) {
+        log.info("Producing ubi stats updated notification for user with id: " + userId + " with message: " + string);
+        try {
+            kafkaTemplate.send("private.ubi_stats_updated.notification", new SendTextDTO(userId, string));
+        } catch (Exception e) {
+            log.warn("Failed to send ubi stats updated notification to user {} cause of: ", userId, e);
+        }
+    }
+
+    public void produceTradeManagerNotification(Long userId, String string) {
+        log.info("Producing trade manager notification for user with id: " + userId + " with message: " + string);
+        try {
+            kafkaTemplate.send("private.trade_manager.notification", new SendTextDTO(userId, string));
+        } catch (Exception e) {
+            log.warn("Failed to send trade manager notification to user {} cause of: ", userId, e);
+        }
+    }
+
+    public void produceAuthorizationNotification(Long userId, String string) {
+        log.info("Producing authorization notification for user with id: " + userId + " with message: " + string);
+        try {
+            kafkaTemplate.send("private.authorization.notification", new SendTextDTO(userId, string));
+        } catch (Exception e) {
+            log.warn("Failed to send authorization notification to user {} cause of: ", userId, e);
         }
     }
 }

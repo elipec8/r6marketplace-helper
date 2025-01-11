@@ -12,7 +12,7 @@ public class NotificationService {
 
     private final NotificationKafkaProducer notificationKafkaProducer;
 
-    public void sendPrivateNotification(Long userId, String string) {
-        notificationKafkaProducer.producePrivateNotification(userId, string);
+    public void sendAuthorizationNotification(Long userId, String string) {
+        notificationKafkaProducer.produceAuthorizationNotification(userId, string);
     }
 }

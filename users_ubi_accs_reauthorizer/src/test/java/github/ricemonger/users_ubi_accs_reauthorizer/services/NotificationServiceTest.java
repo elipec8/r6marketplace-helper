@@ -17,7 +17,7 @@ class NotificationServiceTest {
 
     @Test
     public void sendNotificationToUser_should_send_Private_notification() {
-        notificationService.sendPrivateNotification(1L, "text");
-        verify(notificationKafkaProducer).producePrivateNotification(1L, "text");
+        notificationService.sendAuthorizationNotification(1L, "text");
+        verify(notificationKafkaProducer).produceAuthorizationNotification(1L, "text");
     }
 }

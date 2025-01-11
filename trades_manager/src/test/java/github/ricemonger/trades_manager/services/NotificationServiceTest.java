@@ -17,7 +17,7 @@ class NotificationServiceTest {
 
     @Test
     public void sendPrivateNotification_should_send_notification() {
-        notificationService.sendPrivateNotification(1L, "text");
-        verify(notificationKafkaProducer).producePrivateNotification(1L, "text");
+        notificationService.sendTradeManagerNotification(1L, "text");
+        verify(notificationKafkaProducer).produceTradeManagerNotification(1L, "text");
     }
 }
