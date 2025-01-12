@@ -3,7 +3,6 @@ package github.ricemonger.ubi_users_stats_fetcher.services;
 
 import github.ricemonger.ubi_users_stats_fetcher.services.configurations.UbiServiceConfiguration;
 import github.ricemonger.utils.abstract_services.CommonValuesDatabaseService;
-import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.services.calculators.CalculatorsCommonValuesService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,7 +1,6 @@
 package github.ricemonger.item_trade_stats_calculator.services;
 
 import github.ricemonger.item_trade_stats_calculator.services.configurations.UbiServiceConfiguration;
-import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.services.calculators.CalculatorsCommonValuesService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

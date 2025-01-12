@@ -1,6 +1,5 @@
 package github.ricemonger.utilslibrarykafka;
 
-import github.ricemonger.utils.DTOs.personal.SendTextDTO;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

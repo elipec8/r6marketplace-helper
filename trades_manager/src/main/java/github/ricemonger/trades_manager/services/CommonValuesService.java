@@ -3,7 +3,6 @@ package github.ricemonger.trades_manager.services;
 import github.ricemonger.trades_manager.services.configurations.UbiServiceConfiguration;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.abstract_services.CommonValuesDatabaseService;
-import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.services.calculators.CalculatorsCommonValuesService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
