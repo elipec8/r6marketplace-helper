@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.repositories;
 
+import github.ricemonger.marketplace.databases.postgres.dto_projections.TelegramUserInputProjection;
 import github.ricemonger.utils.enums.InputState;
 import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserInputEntity;
@@ -104,12 +105,15 @@ class TelegramUserInputPostgresRepositoryTest {
         telegramUserInputEntity21.setValue("value21");
         telegramUserInputPostgresRepository.save(telegramUserInputEntity21);
 
+        TelegramUserInputProjection expectedProjection1 = new TelegramUserInputProjection("chatId1", InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_SELL_PRICE, "value11");
+        TelegramUserInputProjection expectedProjection2 = new TelegramUserInputProjection("chatId1", InputState.TRADE_BY_ITEM_ID_MANAGER_BOUNDARY_BUY_PRICE, "value12");
+
         assertEquals(3, telegramUserInputPostgresRepository.count());
 
-        List<TelegramUserInputEntity> result = telegramUserInputPostgresRepository.findAllByTelegramUserChatId("chatId1");
+        List<TelegramUserInputProjection> result = telegramUserInputPostgresRepository.findAllByChatId("chatId1");
 
         assertEquals(2, result.size());
-        assertTrue(result.contains(telegramUserInputEntity11));
-        assertTrue(result.contains(telegramUserInputEntity12));
+        assertTrue(result.contains(expectedProjection1));
+        assertTrue(result.contains(expectedProjection2));
     }
 }

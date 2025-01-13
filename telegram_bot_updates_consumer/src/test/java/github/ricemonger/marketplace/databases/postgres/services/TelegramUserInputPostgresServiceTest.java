@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
+import github.ricemonger.marketplace.databases.postgres.dto_projections.TelegramUserInputProjection;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserInputPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TelegramUserInputEntityMapper;
 import github.ricemonger.marketplace.services.DTOs.TelegramUserInput;
@@ -72,17 +73,17 @@ class TelegramUserInputPostgresServiceTest {
 
     @Test
     public void findAllByChatId_should_return_mapped_dtos() throws TelegramUserDoesntExistException {
-        List<TelegramUserInputEntity> entities = new ArrayList<>();
-        TelegramUserInputEntity entity1 = new TelegramUserInputEntity();
-        TelegramUserInputEntity entity2 = new TelegramUserInputEntity();
-        entities.add(entity1);
-        entities.add(entity2);
+        List<TelegramUserInputProjection> entities = new ArrayList<>();
+        TelegramUserInputProjection projection1 = new TelegramUserInputProjection();
+        TelegramUserInputProjection projection2 = new TelegramUserInputProjection();
+        entities.add(projection1);
+        entities.add(projection2);
         TelegramUserInput input1 = new TelegramUserInput("chatId", InputState.UBI_ACCOUNT_ENTRY_2FA_CODE, "value");
         TelegramUserInput input2 = new TelegramUserInput("chatId", InputState.ITEM_FILTER_ITEM_NAME_PATTERNS, "value1");
 
-        when(telegramUserInputRepository.findAllByTelegramUserChatId("chatId")).thenReturn(entities);
-        when(telegramUserInputEntityMapper.createDTO(same(entity1))).thenReturn(input1);
-        when(telegramUserInputEntityMapper.createDTO(same(entity2))).thenReturn(input2);
+        when(telegramUserInputRepository.findAllByChatId("chatId")).thenReturn(entities);
+        when(telegramUserInputEntityMapper.createDTO(same(projection1))).thenReturn(input1);
+        when(telegramUserInputEntityMapper.createDTO(same(projection2))).thenReturn(input2);
 
         List<TelegramUserInput> result = inputService.findAllByChatId("chatId");
 

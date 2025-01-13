@@ -55,4 +55,15 @@ class TelegramUserInputEntityMapperTest {
 
         assertEquals(new TelegramUserInput("chatId", InputState.ITEM_FILTER_NAME, "value"), telegramUserInputEntityMapper.createDTO(entity));
     }
+
+    @Test
+    public void createDTO_by_projection_should_properly_map_dto() {
+        TelegramUserInputEntity entity = new TelegramUserInputEntity();
+        entity.setTelegramUser(new TelegramUserEntity());
+        entity.getTelegramUser().setChatId("chatId");
+        entity.setInputState(InputState.ITEM_FILTER_NAME);
+        entity.setValue("value");
+
+        assertEquals(new TelegramUserInput("chatId", InputState.ITEM_FILTER_NAME, "value"), telegramUserInputEntityMapper.createDTO(entity));
+    }
 }

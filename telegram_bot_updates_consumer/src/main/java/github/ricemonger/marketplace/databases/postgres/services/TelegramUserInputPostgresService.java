@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
+import github.ricemonger.marketplace.databases.postgres.dto_projections.TelegramUserInputProjection;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserInputPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TelegramUserInputEntityMapper;
 import github.ricemonger.marketplace.services.DTOs.TelegramUserInput;
@@ -50,7 +51,7 @@ public class TelegramUserInputPostgresService implements TelegramUserInputDataba
     @Override
     @Transactional(readOnly = true)
     public List<TelegramUserInput> findAllByChatId(String chatId) throws TelegramUserDoesntExistException {
-        Collection<TelegramUserInputEntity> entities = telegramUserInputRepository.findAllByTelegramUserChatId(chatId);
+        Collection<TelegramUserInputProjection> entities = telegramUserInputRepository.findAllByChatId(chatId);
 
         if (entities == null || entities.isEmpty()) {
             return new ArrayList<>();

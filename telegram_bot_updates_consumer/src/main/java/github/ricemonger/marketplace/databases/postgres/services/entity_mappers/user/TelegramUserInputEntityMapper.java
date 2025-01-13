@@ -1,6 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
 
+import github.ricemonger.marketplace.databases.postgres.dto_projections.TelegramUserInputProjection;
 import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
 import github.ricemonger.marketplace.services.DTOs.TelegramUserInput;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
@@ -31,5 +32,9 @@ public class TelegramUserInputEntityMapper {
 
     public TelegramUserInput createDTO(TelegramUserInputEntity entity) {
         return new TelegramUserInput(entity.getChatId_(), entity.getInputState(), entity.getValue());
+    }
+
+    public TelegramUserInput createDTO(TelegramUserInputProjection projection) {
+        return new TelegramUserInput(projection.getChatId(), projection.getInputState(), projection.getValue());
     }
 }
