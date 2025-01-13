@@ -66,7 +66,7 @@ class TelegramUserInputPostgresRepositoryTest {
 
         assertEquals(3, telegramUserInputPostgresRepository.count());
 
-        telegramUserInputPostgresRepository.deleteAllByTelegramUserChatId("chatId1");
+        telegramUserInputPostgresRepository.deleteAllByChatId("chatId1");
 
         assertEquals(1, telegramUserInputPostgresRepository.count());
         assertEquals(telegramUserInputEntity21, telegramUserInputPostgresRepository.findAll().get(0));

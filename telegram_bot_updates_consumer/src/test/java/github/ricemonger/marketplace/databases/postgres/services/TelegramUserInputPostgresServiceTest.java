@@ -51,7 +51,7 @@ class TelegramUserInputPostgresServiceTest {
     public void deleteAllByChatId_should_clear_and_save_user() throws TelegramUserDoesntExistException {
         inputService.deleteAllByChatId("chatId");
 
-        verify(telegramUserInputRepository).deleteAllByTelegramUserChatId("chatId");
+        verify(telegramUserInputRepository).deleteAllByChatId("chatId");
     }
 
     @Test

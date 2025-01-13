@@ -28,7 +28,7 @@ public class TelegramUserInputEntity {
     @Column(name = "input_state")
     private InputState inputState;
 
-    @Column(name = "input_value")
+    @Column(columnDefinition = "TEXT", name = "input_value")
     private String value;
 
     public String getChatId_() {

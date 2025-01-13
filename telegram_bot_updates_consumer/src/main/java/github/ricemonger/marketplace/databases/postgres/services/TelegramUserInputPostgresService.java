@@ -36,7 +36,7 @@ public class TelegramUserInputPostgresService implements TelegramUserInputDataba
     @Override
     @Transactional
     public void deleteAllByChatId(String chatId) throws TelegramUserDoesntExistException {
-        telegramUserInputRepository.deleteAllByTelegramUserChatId(chatId);
+        telegramUserInputRepository.deleteAllByChatId(chatId);
     }
 
     @Override
