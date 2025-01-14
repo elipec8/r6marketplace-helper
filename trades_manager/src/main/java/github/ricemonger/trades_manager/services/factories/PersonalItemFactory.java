@@ -21,7 +21,7 @@ public class PersonalItemFactory {
                                                      Collection<Trade> existingBuyTrades,
                                                      Collection<String> ownedItemsId,
                                                      Collection<Item> existingItems) {
-        Set<PersonalItem> personalItems = new HashSet<>();
+        HashSet<PersonalItem> personalItems = new HashSet<>();
         personalItems.addAll(getPersonalItemsFromTradeByItemIdManagersByPriority(
                 tradeByItemIdManagers,
                 existingSellTrades,

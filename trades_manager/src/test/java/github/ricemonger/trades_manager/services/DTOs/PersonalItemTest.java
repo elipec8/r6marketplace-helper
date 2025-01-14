@@ -156,9 +156,11 @@ class PersonalItemTest {
     }
 
     @Test
-    public void equals_should_return_true_for_same_item_and_tradeOperationType() {
-        Item item = new Item();
-        item.setItemId("itemId");
+    public void equals_should_return_true_for_equal_objects() {
+        Item item = Mockito.mock(Item.class);
+        Trade ubiTrade1 = Mockito.mock(Trade.class);
+        Trade ubiTrade2 = Mockito.mock(Trade.class);
+
         PersonalItem personalItem1 = new PersonalItem();
         personalItem1.setItem(item);
         personalItem1.setTradeOperationType(TradeOperationType.BUY);
@@ -169,27 +171,30 @@ class PersonalItemTest {
         personalItem1.setPriorityMultiplier(500);
         personalItem1.setIsOwned(true);
         personalItem1.setTradeAlreadyExists(true);
-        personalItem1.setExistingTrade(new Trade());
+        personalItem1.setExistingTrade(ubiTrade1);
 
         PersonalItem personalItem2 = new PersonalItem();
         personalItem2.setItem(item);
         personalItem2.setTradeOperationType(TradeOperationType.BUY);
-        personalItem2.setSellBoundaryPrice(1000);
-        personalItem2.setBuyBoundaryPrice(2000);
-        personalItem2.setMinMedianPriceDifference(3000);
-        personalItem2.setMinMedianPriceDifferencePercent(4000);
+        personalItem2.setSellBoundaryPrice(100);
+        personalItem2.setBuyBoundaryPrice(200);
+        personalItem2.setMinMedianPriceDifference(300);
+        personalItem2.setMinMedianPriceDifferencePercent(400);
         personalItem2.setPriorityMultiplier(5000);
         personalItem2.setIsOwned(false);
         personalItem2.setTradeAlreadyExists(false);
-        personalItem2.setExistingTrade(null);
+        personalItem2.setExistingTrade(ubiTrade2);
 
         assertEquals(personalItem1, personalItem2);
     }
 
     @Test
-    public void equals_should_return_false_for_different_itemId_or_tradeOperation_Type() {
-        Item item = new Item();
-        item.setItemId("itemId");
+    public void equals_should_return_false_for_different_objects() {
+        Item item = Mockito.mock(Item.class);
+        Trade ubiTrade = Mockito.mock(Trade.class);
+
+        when(item.isFullyEquals(any())).thenReturn(true);
+        when(ubiTrade.isFullyEqual(any())).thenReturn(true);
 
         PersonalItem personalItem1 = new PersonalItem();
         personalItem1.setItem(item);
@@ -201,7 +206,7 @@ class PersonalItemTest {
         personalItem1.setPriorityMultiplier(500);
         personalItem1.setIsOwned(true);
         personalItem1.setTradeAlreadyExists(true);
-        personalItem1.setExistingTrade(new Trade());
+        personalItem1.setExistingTrade(ubiTrade);
 
         PersonalItem personalItem2 = new PersonalItem();
         personalItem2.setItem(item);
@@ -213,13 +218,25 @@ class PersonalItemTest {
         personalItem2.setPriorityMultiplier(500);
         personalItem2.setIsOwned(true);
         personalItem2.setTradeAlreadyExists(true);
-        personalItem2.setExistingTrade(new Trade());
+        personalItem2.setExistingTrade(ubiTrade);
 
-        personalItem1.setItem(new Item("itemId2"));
-        assertNotEquals(personalItem1, personalItem2);
-        personalItem1.setItem(item);
+        when(item.isFullyEquals(any())).thenReturn(false);
+        assertFalse(personalItem1.isFullyEqual(personalItem2));
+        when(item.isFullyEquals(any())).thenReturn(true);
         personalItem1.setTradeOperationType(TradeOperationType.SELL);
-        assertNotEquals(personalItem1, personalItem2);
+        assertFalse(personalItem1.isFullyEqual(personalItem2));
+        personalItem1.setTradeOperationType(TradeOperationType.BUY);
+        personalItem1.setSellBoundaryPrice(1000);
+        assertFalse(personalItem1.isFullyEqual(personalItem2));
+        personalItem1.setSellBoundaryPrice(100);
+        personalItem1.setBuyBoundaryPrice(2000);
+        assertFalse(personalItem1.isFullyEqual(personalItem2));
+        personalItem1.setBuyBoundaryPrice(200);
+        personalItem1.setMinMedianPriceDifference(3000);
+        assertFalse(personalItem1.isFullyEqual(personalItem2));
+        personalItem1.setMinMedianPriceDifference(300);
+        personalItem1.setMinMedianPriceDifferencePercent(4000);
+        assertFalse(personalItem1.isFullyEqual(personalItem2));
     }
 
     @Test

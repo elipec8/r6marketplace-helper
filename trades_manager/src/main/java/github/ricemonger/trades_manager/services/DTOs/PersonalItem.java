@@ -66,7 +66,12 @@ public class PersonalItem {
         if (!(obj instanceof PersonalItem itemForTradeDTO)) {
             return false;
         }
-        return Objects.equals(item, itemForTradeDTO.item) && Objects.equals(tradeOperationType, itemForTradeDTO.tradeOperationType);
+        return Objects.equals(item, itemForTradeDTO.item) &&
+               Objects.equals(tradeOperationType, itemForTradeDTO.tradeOperationType) &&
+               Objects.equals(sellBoundaryPrice, itemForTradeDTO.sellBoundaryPrice) &&
+               Objects.equals(buyBoundaryPrice, itemForTradeDTO.buyBoundaryPrice) &&
+               Objects.equals(minMedianPriceDifference, itemForTradeDTO.minMedianPriceDifference) &&
+               Objects.equals(minMedianPriceDifferencePercent, itemForTradeDTO.minMedianPriceDifferencePercent);
     }
 
     public boolean isFullyEqual(PersonalItem other) {
@@ -78,7 +83,6 @@ public class PersonalItem {
 
         boolean existingTradesAreEqual =
                 existingTrade == null && other.existingTrade == null || existingTrade != null && existingTrade.isFullyEqual(other.existingTrade);
-
 
         return itemsAreEqual &&
                Objects.equals(sellBoundaryPrice, other.sellBoundaryPrice) &&
