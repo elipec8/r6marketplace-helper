@@ -25,7 +25,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 
-class PersonalQueryCurrentOrdersMapperTest {
+class PersonalQueryCurrentSellOrdersMapperTest {
     private final GraphQlCommonValuesService commonValuesService = mock(GraphQlCommonValuesService.class);
 
     private final PersonalQueryCurrentOrdersMapper personalQueryCurrentOrdersMapper = spy(new PersonalQueryCurrentOrdersMapper(commonValuesService));

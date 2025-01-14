@@ -1,0 +1,80 @@
+ubi:
+  urls:
+    graphql: ${UBI_GRAPHQL_URL:https://public-ubiservices.ubi.com/v1/profiles/me/uplay/graphql}
+  session:
+    contentType: ${UBI_CONTENT_TYPE:application/json}
+    userAgent: ${UBI_USER_AGENT:UbiServices_SDK_2020.Release.58_PC64_ansi_static}
+    baseAppId: ${UBI_APP_ID:80a4a0e8-8797-440f-8f4c-eaba87d0fdda}
+    spaceId: ${UBI_SPACE_ID:0d2ae42d-4c27-4cb7-af6c-2099062302bb}
+    regionId: ${UBI_REGION_ID:WW}
+    localeCode: ${UBI_LOCALE_CODE:en-US}
+    dateFormat: ${UBI_DATE_FORMAT:yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}
+    itemSaleStatsDateFormat: ${UBI_ITEM_SALE_DATE_FORMAT:yyyy-MM-dd}
+    minUncommonPrice: ${UBI_MIN_UNCOMMON_PRICE:10}
+    maxUncommonPrice: ${UBI_MAX_UNCOMMON_PRICE:25000}
+    minRarePrice: ${UBI_MIN_RARE_PRICE:10}
+    maxRarePrice: ${UBI_MAX_RARE_PRICE:250000}
+    minEpicPrice: ${UBI_MIN_EPIC_PRICE:10}
+    maxEpicPrice: ${UBI_MAX_EPIC_PRICE:1000000}
+    minLegendaryPrice: ${UBI_MIN_LEGENDARY_PRICE:10}
+    maxLegendaryPrice: ${UBI_MAX_LEGENDARY_PRICE:1000000}
+
+server:
+  port: ${SERVER_PORT:8079}
+
+app:
+  scheduling:
+    enabled: ${SCHEDULING_ENABLED:true}
+    management:
+      fixedRate: ${SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT:1000}
+      initialDelay: ${SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT:10500}
+    median_prices_fetch:
+      fixedRate: ${SCHEDULING_FIXED_DELAY:600000}
+      initialDelay: ${SCHEDULING_INITIAL_DELAY:5000}
+    user_fetch:
+      fixedRate: ${SCHEDULING_FIXED_DELAY:600000}
+      initialDelay: ${SCHEDULING_INITIAL_DELAY:0}
+
+fast_sell_management:
+  userId: ${FAST_SELL_USER_ID:1}
+  email: ${FAST_SELL_EMAIL:leskotr23@gmail.com}
+  min_median_price_difference: ${FAST_SELL_MIN_MEDIAN_PRICE_DIFFERENCE:400}
+  min_median_price_difference_percentage: ${FAST_SELL_MIN_MEDIAN_PRICE_DIFFERENCE_PERCENTAGE:100}
+
+logging:
+  level:
+    github: \${logging_level:debug}
+  file:
+    name: ./logs/${LOG_FILE_DIRECTORY:prod}/${spring.application.name}.log
+
+spring:
+  application:
+    name: r6s-helper
+  data:
+    redis:
+      repositories:
+        enabled: false
+      url: redis://${REDIS_SERVER_HOST:localhost}:${REDIS_SERVER_PORT:6379}
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${POSTGRES_SERVER_HOST:localhost}:${POSTGRES_SERVER_PORT:5432}/${POSTGRES_DB:postgres}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:1234}
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+  kafka:
+    admin:
+      auto-create: true
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVER_HOST:localhost}:${KAFKA_BOOTSTRAP_SERVER_PORT:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      retries: 1
+    properties:
+      request.timeout.ms: 3000
+  config:
+    import:
+      - test-values.yaml

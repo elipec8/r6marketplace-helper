@@ -159,6 +159,23 @@ public class GraphQlVariablesServiceTest {
     }
 
     @Test
+    public void getFetchItemsVariables_with_limit_should_have_provided_variables() {
+        String mainUserSpaceId = "mainUserSpaceId";
+        String paymentItemId = "paymentItemId";
+        int offset = 0;
+        int limit = 10;
+
+        when(commonValuesService.getUbiGameSpaceId()).thenReturn(mainUserSpaceId);
+        when(commonValuesService.getPaymentItemId()).thenReturn("paymentItemId");
+
+        Map<String, Object> result = graphQlVariablesService.getFetchItemsVariables(offset);
+
+        assertTrue(mapContainsEntries(result, Map.entry("spaceId", mainUserSpaceId), Map.entry("offset", offset), Map.entry("limit", limit)));
+
+        assertTrue(mapContainsEntries((Map) result.get("sortBy"), Map.entry("paymentItemId", paymentItemId)));
+    }
+
+    @Test
     public void getFetchItemsUbiSaleStats_should_have_provided_variables() {
         String mainUserSpaceId = "mainUserSpaceId";
         String paymentItemId = "paymentItemId";

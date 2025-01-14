@@ -28,6 +28,8 @@ public class GraphQlDocuments {
 
     public final static String QUERY_CURRENT_ORDERS_DOCUMENT_NAME = "personal_query_current_orders";
 
+    public final static String QUERY_CURRENT_SELL_ORDERS_DOCUMENT_NAME = "personal_query_current_sell_orders";
+
     public final static String QUERY_FINISHED_ORDERS_DOCUMENT_NAME = "personal_query_finished_orders";
 
     public final static String QUERY_LOCKED_ITEMS_DOCUMENT_NAME = "personal_query_locked_items";
@@ -35,4 +37,6 @@ public class GraphQlDocuments {
     public final static String QUERY_ONE_ITEM_STATS_DOCUMENT_NAME = "personal_query_one_item";
 
     public final static String QUERY_OWNED_ITEMS_DOCUMENT_NAME = "personal_query_owned_items";
+
+    public final static String QUERY_OWNED_ITEMS_PRICES_DOCUMENT_NAME = "personal_query_owned_items_prices";
 }
