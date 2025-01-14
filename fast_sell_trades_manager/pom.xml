@@ -10,7 +10,7 @@
         <relativePath>../utils-dependencies/pom.xml</relativePath>
     </parent>
 
-    <artifactId>fast_sell_trade_manager</artifactId>
+    <artifactId>fast_sell_trades_manager</artifactId>
 
     <dependencies>
         <dependency>
@@ -21,11 +21,6 @@
         <dependency>
             <groupId>github.ricemonger</groupId>
             <artifactId>utils-library-graphQl</artifactId>
-            <version>${utils.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>github.ricemonger</groupId>
-            <artifactId>utils-library-kafka</artifactId>
             <version>${utils.version}</version>
         </dependency>
         <dependency>

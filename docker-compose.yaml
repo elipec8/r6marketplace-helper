@@ -202,6 +202,34 @@ services:
       - postgres
       - redis
 
+  fast_sell_trades_manager:
+    container_name: r6helper-fast-sell-trades-manager
+    build:
+      context: .
+      dockerfile: fast_sell_trades_manager/Dockerfile
+    image: r6helper-fast-sell-trades-manager
+    ports:
+      - "8101:8079"
+    env_file:
+      - ubi_constants.env
+      - containers_constants.env
+      - auth_constants.env
+    environment:
+      SCHEDULING_ENABLED: true
+      SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT: 1000
+      SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT: 10500
+      SCHEDULING_FIXED_DELAY_MEDIAN_PRICES_FETCH: 600000
+      SCHEDULING_INITIAL_MEDIAN_PRICES_FETCH: 5000
+      SCHEDULING_FIXED_DELAY_USER_FETCH: 600000
+      SCHEDULING_INITIAL_DELAY_USER_FETCH: 0
+    networks:
+      - postgres-net
+      - redis-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+
   ubi_users_stats_fetcher:
     container_name: r6helper-ubi-users-stats-fetcher
     build:

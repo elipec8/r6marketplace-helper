@@ -35,7 +35,6 @@ public class ScheduledOneUserFastSellTradeManager {
     private final TradeManagementItemsFactory tradeManagementItemsFactory;
 
     private FastSellManagedUser managedUser;
-
     private List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity = new ArrayList<>();
 
     @Scheduled(fixedRateString = "${app.scheduling.management.fixedRate}", initialDelayString = "${app.scheduling.management.initialDelay}")
