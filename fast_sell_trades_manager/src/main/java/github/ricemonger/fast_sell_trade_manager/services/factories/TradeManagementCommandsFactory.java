@@ -1,7 +1,6 @@
 package github.ricemonger.fast_sell_trade_manager.services.factories;
 
 import github.ricemonger.fast_sell_trade_manager.services.DTOs.*;
-import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.DTOs.personal.SellTrade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +55,7 @@ public class TradeManagementCommandsFactory {
                 continue;
             }
             SellTrade sellTrade = currentSellTrades.stream().filter(trade -> trade.getItemId().equals(potential.getItemId())).findFirst().orElse(null);
-            if (sellTrade != null) {
+            if (sellTrade != null && sellTrade.getPrice() > potential.getPrice() + 1) {
                 commands.add(new FastTradeManagerCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_UPDATE, potential.getItemId(), sellTrade.getTradeId(), potential.getPrice()));
             } else {
                 commands.add(new FastTradeManagerCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CREATE, potential.getItemId(), potential.getPrice()));
