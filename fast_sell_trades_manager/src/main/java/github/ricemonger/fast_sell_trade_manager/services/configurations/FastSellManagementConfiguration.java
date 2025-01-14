@@ -11,13 +11,12 @@ import org.springframework.context.annotation.Configuration;
 public class FastSellManagementConfiguration {
     @Value("${fast_sell_management.userId}")
     private Long userId;
-
     @Value("${fast_sell_management.email}")
     private String email;
-
     @Value("${fast_sell_management.min_median_price_difference}")
     private Integer minMedianPriceDifference;
-
     @Value("${fast_sell_management.min_median_price_difference_percentage}")
     private Integer minMedianPriceDifferencePercentage;
+    @Value("${fast_sell_management.owned_items_limit}")
+    private Integer ownedItemsLimit;
 }

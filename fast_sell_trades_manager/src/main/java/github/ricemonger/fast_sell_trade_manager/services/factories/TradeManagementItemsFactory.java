@@ -30,7 +30,7 @@ public class TradeManagementItemsFactory {
                     .orElse(null);
 
             if (itemMedianPriceAndRarity != null && itemPrices.getMaxBuyPrice() != null) {
-                Integer buyPriceMedianPriceDifference = itemMedianPriceAndRarity.getMonthMedianPrice() - itemPrices.getMaxBuyPrice();
+                Integer buyPriceMedianPriceDifference = itemPrices.getMaxBuyPrice() - itemMedianPriceAndRarity.getMonthMedianPrice();
                 Integer buyPriceMedianPriceDifferencePercentage = (buyPriceMedianPriceDifference * 100) / itemPrices.getMaxBuyPrice();
 
                 if (buyPriceMedianPriceDifference >= minMedianPriceDifference && buyPriceMedianPriceDifferencePercentage >= minMedianPriceDifferencePercentage) {
@@ -43,15 +43,15 @@ public class TradeManagementItemsFactory {
                     ));
                 }
             } else if (itemMedianPriceAndRarity != null) {
-                int sellPrice = itemPrices.getMinSellPrice() == null ? commonValuesService.getMaximumPriceByRarity(itemMedianPriceAndRarity.getRarity()) : itemPrices.getMinSellPrice() - 1;
+                int sellPrice = itemPrices.getMinSellPrice() == null ? commonValuesService.getMaximumPriceByRarity(itemMedianPriceAndRarity.getRarity()) : itemPrices.getMinSellPrice();
 
-                Integer sellPriceMedianPriceDifference = itemMedianPriceAndRarity.getMonthMedianPrice() - sellPrice;
+                Integer sellPriceMedianPriceDifference = sellPrice - itemMedianPriceAndRarity.getMonthMedianPrice();
                 Integer sellPriceMedianPriceDifferencePercentage = (sellPriceMedianPriceDifference * 100) / sellPrice;
 
                 if (sellPriceMedianPriceDifference >= minMedianPriceDifference && sellPriceMedianPriceDifferencePercentage >= minMedianPriceDifferencePercentage) {
                     potentialTrade.add(new PotentialTrade(
                             itemPrices.getItemId(),
-                            sellPrice,
+                            sellPrice - 1,
                             sellPriceMedianPriceDifference,
                             sellPriceMedianPriceDifferencePercentage,
                             false

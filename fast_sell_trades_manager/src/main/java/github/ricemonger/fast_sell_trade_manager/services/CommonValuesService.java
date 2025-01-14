@@ -79,4 +79,8 @@ public class CommonValuesService implements CalculatorsCommonValuesService {
     public Integer getMinMedianPriceDifferencePercentage() {
         return fastSellManagementConfiguration.getMinMedianPriceDifferencePercentage();
     }
+
+    public Integer getFastTradeOwnedItemsLimit() {
+        return fastSellManagementConfiguration.getOwnedItemsLimit();
+    }
 }
