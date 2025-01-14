@@ -20,15 +20,484 @@ public class GraphQlDocuments {
 
     public final static String MUTATION_ORDER_CANCEL_DOCUMENT_NAME = "personal_mutation_order_cancel";
 
+    public static final String MUTATION_ORDER_CANCEL_DOCUMENT = """
+            mutation CancelOrder($spaceId: String!, $tradeId: String!) {
+                cancelOrder(spaceId: $spaceId, tradeId: $tradeId) {
+                    trade {
+                        ...TradeFragment
+                        __typename
+                    }
+                    __typename
+                }
+            }
+            
+            fragment TradeFragment on Trade {
+                id
+                tradeId
+                state
+                category
+                createdAt
+                expiresAt
+                lastModifiedAt
+                failures
+                tradeItems {
+                    id
+                    item {
+                        ...SecondaryStoreItemFragment
+                        ...SecondaryStoreItemOwnershipFragment
+                        __typename
+                    }
+                    __typename
+                }
+                payment {
+                    id
+                    item {
+                        ...SecondaryStoreItemQuantityFragment
+                        __typename
+                    }
+                    price
+                    transactionFee
+                    __typename
+                }
+                paymentOptions {
+                    id
+                    item {
+                        ...SecondaryStoreItemQuantityFragment
+                        __typename
+                    }
+                    price
+                    transactionFee
+                    __typename
+                }
+                paymentProposal {
+                    id
+                    item {
+                        ...SecondaryStoreItemQuantityFragment
+                        __typename
+                    }
+                    price
+                    __typename
+                }
+                viewer {
+                    meta {
+                        id
+                        tradesLimitations {
+                            ...TradesLimitationsFragment
+                            __typename
+                        }
+                        __typename
+                    }
+                    __typename
+                }
+                __typename
+            }
+            
+            fragment SecondaryStoreItemFragment on SecondaryStoreItem {
+                id
+                assetUrl
+                itemId
+                name
+                tags
+                type
+                viewer {
+                    meta {
+                        id
+                        isReserved
+                        __typename
+                    }
+                    __typename
+                }
+                __typename
+            }
+            
+            fragment SecondaryStoreItemOwnershipFragment on SecondaryStoreItem {
+                viewer {
+                    meta {
+                        id
+                        isOwned
+                        quantity
+                        __typename
+                    }
+                    __typename
+                }
+                __typename
+            }
+            
+            fragment SecondaryStoreItemQuantityFragment on SecondaryStoreItem {
+                viewer {
+                    meta {
+                        id
+                        quantity
+                        __typename
+                    }
+                    __typename
+                }
+                __typename
+            }
+            
+            fragment TradesLimitationsFragment on UserGameTradesLimitations {
+                id
+                buy {
+                    resolvedTransactionCount
+                    resolvedTransactionPeriodInMinutes
+                    activeTransactionCount
+                    __typename
+                }
+                sell {
+                    resolvedTransactionCount
+                    resolvedTransactionPeriodInMinutes
+                    activeTransactionCount
+                    resaleLocks {
+                        itemId
+                        expiresAt
+                        __typename
+                    }
+                    __typename
+                }
+                __typename
+            }
+            """;
+
     public final static String MUTATION_ORDER_SELL_CREATE_DOCUMENT_NAME = "personal_mutation_order_sell_create";
 
+    public static final String MUTATION_ORDER_SELL_CREATE_DOCUMENT = """
+            mutation CreateSellOrder($spaceId: String!, $tradeItems: [TradeOrderItem!]!, $paymentOptions: [PaymentItem!]!) {
+                createSellOrder(
+                    spaceId: $spaceId
+                    tradeItems: $tradeItems
+                    paymentOptions: $paymentOptions
+                ) {
+                    trade {
+                        ...TradeFragment
+                        __typename
+                    }
+                    __typename
+                }
+            }
+            
+            fragment TradeFragment on Trade {
+                id
+                tradeId
+                state
+                category
+                createdAt
+                expiresAt
+                lastModifiedAt
+                failures
+                tradeItems {
+                    id
+                    item {
+                        ...SecondaryStoreItemFragment
+                        ...SecondaryStoreItemOwnershipFragment
+                        __typename
+                    }
+                    __typename
+                }
+                payment {
+                    id
+                    item {
+                        ...SecondaryStoreItemQuantityFragment
+                        __typename
+                    }
+                    price
+                    transactionFee
+                    __typename
+                }
+                paymentOptions {
+                    id
+                    item {
+                        ...SecondaryStoreItemQuantityFragment
+                        __typename
+                    }
+                    price
+                    transactionFee
+                    __typename
+                }
+                paymentProposal {
+                    id
+                    item {
+                        ...SecondaryStoreItemQuantityFragment
+                        __typename
+                    }
+                    price
+                    __typename
+                }
+                viewer {
+                    meta {
+                        id
+                        tradesLimitations {
+                            ...TradesLimitationsFragment
+                            __typename
+                        }
+                        __typename
+                    }
+                    __typename
+                }
+                __typename
+            }
+            
+            fragment SecondaryStoreItemFragment on SecondaryStoreItem {
+                id
+                assetUrl
+                itemId
+                name
+                tags
+                type
+                viewer {
+                    meta {
+                        id
+                        isReserved
+                        __typename
+                    }
+                    __typename
+                }
+                __typename
+            }
+            
+            fragment SecondaryStoreItemOwnershipFragment on SecondaryStoreItem {
+                viewer {
+                    meta {
+                        id
+                        isOwned
+                        quantity
+                        __typename
+                    }
+                    __typename
+                }
+                __typename
+            }
+            
+            fragment SecondaryStoreItemQuantityFragment on SecondaryStoreItem {
+                viewer {
+                    meta {
+                        id
+                        quantity
+                        __typename
+                    }
+                    __typename
+                }
+                __typename
+            }
+            
+            fragment TradesLimitationsFragment on UserGameTradesLimitations {
+                id
+                buy {
+                    resolvedTransactionCount
+                    resolvedTransactionPeriodInMinutes
+                    activeTransactionCount
+                    __typename
+                }
+                sell {
+                    resolvedTransactionCount
+                    resolvedTransactionPeriodInMinutes
+                    activeTransactionCount
+                    resaleLocks {
+                        itemId
+                        expiresAt
+                        __typename
+                    }
+                    __typename
+                }
+                __typename
+            }
+            """;
+
     public final static String MUTATION_ORDER_SELL_UPDATE_DOCUMENT_NAME = "personal_mutation_order_sell_update";
+
+    public static final String MUTATION_ORDER_SELL_UPDATE_DOCUMENT = """
+            mutation UpdateSellOrder($spaceId: String!, $tradeId: String!, $paymentOptions: [PaymentItem!]!) {
+                updateSellOrder(
+                    spaceId: $spaceId
+                    tradeId: $tradeId
+                    paymentOptions: $paymentOptions
+                ) {
+                    trade {
+                        ...TradeFragment
+                        __typename
+                    }
+                    __typename
+                }
+            }
+            
+            fragment TradeFragment on Trade {
+                id
+                tradeId
+                state
+                category
+                createdAt
+                expiresAt
+                lastModifiedAt
+                failures
+                tradeItems {
+                    id
+                    item {
+                        ...SecondaryStoreItemFragment
+                        ...SecondaryStoreItemOwnershipFragment
+                        __typename
+                    }
+                    __typename
+                }
+                payment {
+                    id
+                    item {
+                        ...SecondaryStoreItemQuantityFragment
+                        __typename
+                    }
+                    price
+                    transactionFee
+                    __typename
+                }
+                paymentOptions {
+                    id
+                    item {
+                        ...SecondaryStoreItemQuantityFragment
+                        __typename
+                    }
+                    price
+                    transactionFee
+                    __typename
+                }
+                paymentProposal {
+                    id
+                    item {
+                        ...SecondaryStoreItemQuantityFragment
+                        __typename
+                    }
+                    price
+                    __typename
+                }
+                viewer {
+                    meta {
+                        id
+                        tradesLimitations {
+                            ...TradesLimitationsFragment
+                            __typename
+                        }
+                        __typename
+                    }
+                    __typename
+                }
+                __typename
+            }
+            
+            fragment SecondaryStoreItemFragment on SecondaryStoreItem {
+                id
+                assetUrl
+                itemId
+                name
+                tags
+                type
+                viewer {
+                    meta {
+                        id
+                        isReserved
+                        __typename
+                    }
+                    __typename
+                }
+                __typename
+            }
+            
+            fragment SecondaryStoreItemOwnershipFragment on SecondaryStoreItem {
+                viewer {
+                    meta {
+                        id
+                        isOwned
+                        quantity
+                        __typename
+                    }
+                    __typename
+                }
+                __typename
+            }
+            
+            fragment SecondaryStoreItemQuantityFragment on SecondaryStoreItem {
+                viewer {
+                    meta {
+                        id
+                        quantity
+                        __typename
+                    }
+                    __typename
+                }
+                __typename
+            }
+            
+            fragment TradesLimitationsFragment on UserGameTradesLimitations {
+                id
+                buy {
+                    resolvedTransactionCount
+                    resolvedTransactionPeriodInMinutes
+                    activeTransactionCount
+                    __typename
+                }
+                sell {
+                    resolvedTransactionCount
+                    resolvedTransactionPeriodInMinutes
+                    activeTransactionCount
+                    resaleLocks {
+                        itemId
+                        expiresAt
+                        __typename
+                    }
+                    __typename
+                }
+                __typename
+            }""";
 
     public final static String QUERY_CREDITS_AMOUNT_DOCUMENT_NAME = "personal_query_credits_amount";
 
     public final static String QUERY_CURRENT_ORDERS_DOCUMENT_NAME = "personal_query_current_orders";
 
     public final static String QUERY_CURRENT_SELL_ORDERS_DOCUMENT_NAME = "personal_query_current_sell_orders";
+
+    public static final String QUERY_CURRENT_SELL_ORDERS_DOCUMENT = """
+            query GetTransactionsPending($spaceId: String!, $limit: Int!, $offset: Int) {
+                game(spaceId: $spaceId) {
+                    viewer {
+                        meta {
+                            trades(
+                                limit: $limit
+                                offset: $offset
+                                filterBy: {states: [Created], category: Sell}
+                                sortBy: {field: LAST_MODIFIED_AT}
+                            ) {
+                                nodes {
+                                    ...TradeFragment
+                                    __typename
+                                }
+                                __typename
+                            }
+                            __typename
+                        }
+                        __typename
+                    }
+                    __typename
+                }
+            }
+            
+            fragment TradeFragment on Trade {
+                tradeId
+                tradeItems {
+                    item {
+                        ...SecondaryStoreItemFragment
+                        __typename
+                    }
+                    __typename
+                }
+                paymentOptions {
+                    price
+                    __typename
+                }
+                __typename
+            }
+            
+            fragment SecondaryStoreItemFragment on SecondaryStoreItem {
+                itemId
+                __typename
+            }
+            
+            """;
 
     public final static String QUERY_FINISHED_ORDERS_DOCUMENT_NAME = "personal_query_finished_orders";
 
@@ -39,4 +508,60 @@ public class GraphQlDocuments {
     public final static String QUERY_OWNED_ITEMS_DOCUMENT_NAME = "personal_query_owned_items";
 
     public final static String QUERY_OWNED_ITEMS_PRICES_DOCUMENT_NAME = "personal_query_owned_items_prices";
+
+    public final static String QUERY_OWNED_ITEMS_PRICES_DOCUMENT = """
+            query GetSellableItems($spaceId: String!, $limit: Int!, $offset: Int, $sortBy: MarketableItemSort) {
+                game(spaceId: $spaceId) {
+                    viewer {
+                        meta {
+                            marketableItems(
+                                limit: $limit
+                                offset: $offset
+                                sortBy: $sortBy
+                                withMarketData: true
+                            ) {
+                                nodes {
+                                    ...MarketableItemFragment
+                                    __typename
+                                }
+                                totalCount
+                                __typename
+                            }
+                            __typename
+                        }
+                        __typename
+                    }
+                    __typename
+                }
+            }
+            
+            fragment MarketableItemFragment on MarketableItem {
+                item {
+                    ...SecondaryStoreItemFragment
+                    __typename
+                }
+                marketData {
+                    ...MarketDataFragment
+                    __typename
+                }
+                __typename
+            }
+            
+            fragment SecondaryStoreItemFragment on SecondaryStoreItem {
+                itemId
+                __typename
+            }
+            
+            fragment MarketDataFragment on MarketableItemMarketData {
+                sellStats {
+                    lowestPrice
+                    __typename
+                }
+                buyStats {
+                    highestPrice
+                    __typename
+                }
+                __typename
+            }
+            """;
 }

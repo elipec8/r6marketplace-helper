@@ -9,14 +9,14 @@ import org.springframework.context.annotation.Import;
 @Import(AbstractGraphQlConfiguration.class)
 public class PersonalQueryOwnedItemsPricesGraphQlConfiguration {
     @Bean
-    public PersonalQueryOwnedItemsPricesMapper personalQueryOwnedItemsMapper() {
+    public PersonalQueryOwnedItemsPricesMapper personalQueryOwnedItemsPricesMapper() {
         return new PersonalQueryOwnedItemsPricesMapper();
     }
 
     @Bean
-    public PersonalQueryOwnedItemsPricesGraphQlClientService personalQueryOwnedItemsGraphQlClientService(GraphQlClientFactory graphQlClientFactory,
-                                                                                                         GraphQlVariablesService graphQlVariablesService,
-                                                                                                         PersonalQueryOwnedItemsPricesMapper personalQueryOwnedItemsPricesMapper) {
+    public PersonalQueryOwnedItemsPricesGraphQlClientService personalQueryOwnedItemsPricesGraphQlClientService(GraphQlClientFactory graphQlClientFactory,
+                                                                                                               GraphQlVariablesService graphQlVariablesService,
+                                                                                                               PersonalQueryOwnedItemsPricesMapper personalQueryOwnedItemsPricesMapper) {
         return new PersonalQueryOwnedItemsPricesGraphQlClientService(graphQlClientFactory, graphQlVariablesService, personalQueryOwnedItemsPricesMapper);
     }
 }

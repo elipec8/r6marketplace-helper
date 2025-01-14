@@ -38,7 +38,7 @@ public class PersonalQueryOwnedItemsPricesGraphQlClientService {
             }
 
             marketableItems = client
-                    .documentName(GraphQlDocuments.QUERY_OWNED_ITEMS_PRICES_DOCUMENT_NAME)
+                    .document(GraphQlDocuments.QUERY_OWNED_ITEMS_PRICES_DOCUMENT)
                     .variables(graphQlVariablesService.getFetchOwnedItemsPricesVariables(offset, limit))
                     .retrieve("game.viewer.meta.marketableItems")
                     .toEntity(MarketableItems.class)

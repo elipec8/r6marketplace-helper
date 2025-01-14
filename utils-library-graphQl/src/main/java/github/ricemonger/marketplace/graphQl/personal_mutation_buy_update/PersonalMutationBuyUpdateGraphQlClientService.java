@@ -18,6 +18,14 @@ public class PersonalMutationBuyUpdateGraphQlClientService {
 
         client.documentName(GraphQlDocuments.MUTATION_ORDER_BUY_UPDATE_DOCUMENT_NAME)
                 .variables(graphQlVariablesService.getUpdateBuyOrderVariables(tradeId, price))
+                .execute().block();
+    }
+
+    public void nonBlockingUpdateBuyOrderForUser(AuthorizationDTO authorizationDTO, String tradeId, int price) {
+        HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
+
+        client.documentName(GraphQlDocuments.MUTATION_ORDER_BUY_UPDATE_DOCUMENT_NAME)
+                .variables(graphQlVariablesService.getUpdateBuyOrderVariables(tradeId, price))
                 .execute().subscribe();
     }
 }

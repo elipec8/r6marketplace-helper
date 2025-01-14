@@ -192,7 +192,7 @@ services:
     environment:
       SCHEDULING_ENABLED: true
       SCHEDULING_FIXED_RATE: 60000
-      SCHEDULING_INITIAL_DELAY: 360000
+      SCHEDULING_INITIAL_DELAY: 375000
     networks:
       - postgres-net
       - redis-net
@@ -202,8 +202,8 @@ services:
       - postgres
       - redis
 
-  fast_sell_trades_manager_1:
-    container_name: r6helper-fast-sell-trades-manager-1
+  fast_sell_trades_manager:
+    container_name: r6helper-fast-sell-trades-manager
     build:
       context: .
       dockerfile: fast_sell_trades_manager/Dockerfile
@@ -216,113 +216,8 @@ services:
       - auth_constants.env
     environment:
       SCHEDULING_ENABLED: true
-      SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT: 300
+      SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT: 450
       SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT: 10500
-      SCHEDULING_FIXED_DELAY_MEDIAN_PRICES_FETCH: 600000
-      SCHEDULING_INITIAL_MEDIAN_PRICES_FETCH: 5000
-      SCHEDULING_FIXED_DELAY_USER_FETCH: 600000
-      SCHEDULING_INITIAL_DELAY_USER_FETCH: 0
-
-      FAST_SELL_USER_ID: 1
-      FAST_SELL_EMAIL: leskotr23@gmail.com
-
-      FAST_SELL_MIN_MEDIAN_PRICE_DIFFERENCE: 500
-      FAST_SELL_MIN_MEDIAN_PRICE_DIFFERENCE_PERCENTAGE: 100
-      FAST_SELL_OWNED_ITEMS_LIMIT: 140
-    networks:
-      - postgres-net
-      - redis-net
-    restart: unless-stopped
-    depends_on:
-      - postgres
-      - redis
-
-  fast_sell_trades_manager_2:
-    container_name: r6helper-fast-sell-trades-manager-2
-    build:
-      context: .
-      dockerfile: fast_sell_trades_manager/Dockerfile
-    image: r6helper-fast-sell-trades-manager
-    ports:
-      - "8102:8079"
-    env_file:
-      - ubi_constants.env
-      - containers_constants.env
-      - auth_constants.env
-    environment:
-      SCHEDULING_ENABLED: true
-      SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT: 300
-      SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT: 10600
-      SCHEDULING_FIXED_DELAY_MEDIAN_PRICES_FETCH: 600000
-      SCHEDULING_INITIAL_MEDIAN_PRICES_FETCH: 0
-      SCHEDULING_FIXED_DELAY_USER_FETCH: 600000
-      SCHEDULING_INITIAL_DELAY_USER_FETCH: 0
-
-      FAST_SELL_USER_ID: 1
-      FAST_SELL_EMAIL: leskotr23@gmail.com
-
-      FAST_SELL_MIN_MEDIAN_PRICE_DIFFERENCE: 500
-      FAST_SELL_MIN_MEDIAN_PRICE_DIFFERENCE_PERCENTAGE: 100
-      FAST_SELL_OWNED_ITEMS_LIMIT: 140
-    networks:
-      - postgres-net
-      - redis-net
-    restart: unless-stopped
-    depends_on:
-      - postgres
-      - redis
-
-  fast_sell_trades_manager_3:
-    container_name: r6helper-fast-sell-trades-manager-3
-    build:
-      context: .
-      dockerfile: fast_sell_trades_manager/Dockerfile
-    image: r6helper-fast-sell-trades-manager
-    ports:
-      - "8103:8079"
-    env_file:
-      - ubi_constants.env
-      - containers_constants.env
-      - auth_constants.env
-    environment:
-      SCHEDULING_ENABLED: true
-      SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT: 300
-      SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT: 10700
-      SCHEDULING_FIXED_DELAY_MEDIAN_PRICES_FETCH: 600000
-      SCHEDULING_INITIAL_MEDIAN_PRICES_FETCH: 5000
-      SCHEDULING_FIXED_DELAY_USER_FETCH: 600000
-      SCHEDULING_INITIAL_DELAY_USER_FETCH: 0
-
-      FAST_SELL_USER_ID: 1
-      FAST_SELL_EMAIL: leskotr23@gmail.com
-
-      FAST_SELL_MIN_MEDIAN_PRICE_DIFFERENCE: 500
-      FAST_SELL_MIN_MEDIAN_PRICE_DIFFERENCE_PERCENTAGE: 100
-      FAST_SELL_OWNED_ITEMS_LIMIT: 140
-    networks:
-      - postgres-net
-      - redis-net
-    restart: unless-stopped
-    depends_on:
-      - postgres
-      - redis
-
-  fast_sell_trades_manager_4:
-    container_name: r6helper-fast-sell-trades-manager-4
-    build:
-      context: .
-      dockerfile: fast_sell_trades_manager/Dockerfile
-    image: r6helper-fast-sell-trades-manager
-    ports:
-      - "8104:8079"
-    env_file:
-      - ubi_constants.env
-      - containers_constants.env
-      - auth_constants.env
-    environment:
-      SCHEDULING_ENABLED: true
-      SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT: 300
-      SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT: 10800
       SCHEDULING_FIXED_DELAY_MEDIAN_PRICES_FETCH: 600000
       SCHEDULING_INITIAL_MEDIAN_PRICES_FETCH: 5000
       SCHEDULING_FIXED_DELAY_USER_FETCH: 600000
@@ -357,7 +252,7 @@ services:
     environment:
       SCHEDULING_ENABLED: true
       SCHEDULING_FIXED_DELAY: 45000
-      SCHEDULING_INITIAL_DELAY: 315000
+      SCHEDULING_INITIAL_DELAY: 345000
     networks:
       - postgres-net
       - redis-net

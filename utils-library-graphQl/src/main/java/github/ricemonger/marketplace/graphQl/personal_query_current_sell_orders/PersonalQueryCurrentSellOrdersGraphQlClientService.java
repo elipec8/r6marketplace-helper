@@ -27,7 +27,7 @@ public class PersonalQueryCurrentSellOrdersGraphQlClientService {
         Trades trades;
 
         trades = client
-                .documentName(GraphQlDocuments.QUERY_CURRENT_SELL_ORDERS_DOCUMENT_NAME)
+                .document(GraphQlDocuments.QUERY_CURRENT_SELL_ORDERS_DOCUMENT)
                 .variables(graphQlVariablesService.getFetchOrdersVariables(0))
                 .retrieve("game.viewer.meta.trades")
                 .toEntity(Trades.class)
