@@ -113,6 +113,10 @@ public class BotInnerService {
         return offset;
     }
 
+    public void deleteMessage(UpdateInfo updateInfo) {
+        telegramBotClientService.deleteMessage(updateInfo);
+    }
+
     public void registerUser(Long chatId) {
         telegramUserService.registerTelegramUser(chatId);
     }

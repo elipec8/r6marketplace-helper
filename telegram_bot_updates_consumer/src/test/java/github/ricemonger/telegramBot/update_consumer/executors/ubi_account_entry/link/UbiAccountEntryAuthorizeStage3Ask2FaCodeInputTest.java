@@ -17,12 +17,13 @@ class UbiAccountEntryAuthorizeStage3Ask2FaCodeInputTest {
     private BotInnerService botInnerService;
 
     @Test
-    public void initAndExecute_should_process_middle_input() {
+    public void initAndExecute_should_process_middle_input_and_delete_message() {
         UbiAccountEntryAuthorizeStage3Ask2FaCodeInput ubiAccountEntryAuthorizeStage3Ask2FaCodeInput = new UbiAccountEntryAuthorizeStage3Ask2FaCodeInput();
         ubiAccountEntryAuthorizeStage3Ask2FaCodeInput.initAndExecute(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT, botInnerService);
 
         verify(botInnerService).sendText(eq(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT), anyString());
         verify(botInnerService).saveUserInput(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT);
         verify(botInnerService).setUserInputState(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT.getChatId(), InputState.UBI_ACCOUNT_ENTRY_2FA_CODE);
+        verify(botInnerService).deleteMessage(MockUpdateInfos.UPDATE_INFO_PASSWORD_INPUT);
     }
 }

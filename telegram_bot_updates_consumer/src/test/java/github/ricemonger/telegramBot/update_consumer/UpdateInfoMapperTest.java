@@ -30,6 +30,7 @@ public class UpdateInfoMapperTest {
     @Test
     public void mapToUpdateInfo_should_map_update_to_updateInfo_if_has_message_not_registered() {
         Message message = new Message();
+        message.setMessageId(2);
         message.setChat(new Chat(1L, "private"));
         message.setText("message_text");
         Update update = new Update();
@@ -40,6 +41,7 @@ public class UpdateInfoMapperTest {
 
         UpdateInfo expected = new UpdateInfo();
         expected.setUpdateId(88);
+        expected.setMessageId(2);
         expected.setChatId(1L);
         expected.setHasMessage(true);
         expected.setMessageText("message_text");
@@ -79,6 +81,7 @@ public class UpdateInfoMapperTest {
         expected.setChatId(1L);
         expected.setHasMessage(false);
         expected.setMessageText(null);
+        expected.setMessageId(null);
         expected.setInputState(InputState.BASE);
         expected.setInputGroup(InputGroup.BASE);
         expected.setHasCallBackQuery(true);
@@ -92,6 +95,7 @@ public class UpdateInfoMapperTest {
     @Test
     public void mapToUpdateInfo_should_map_update_to_updateInfo_if_has_callback_and_message_registered() {
         Message message = new Message();
+        message.setMessageId(2);
         message.setChat(new Chat(1L, "private"));
         message.setText("message_text");
 
@@ -117,11 +121,13 @@ public class UpdateInfoMapperTest {
 
         UpdateInfo expected = new UpdateInfo();
         expected.setUpdateId(88);
+        expected.setMessageId(2);
         expected.setChatId(2L);
         expected.setHasMessage(true);
         expected.setMessageText("callback_message_text");
         expected.setInputState(InputState.ITEMS_SHOW_OFFSET);
         expected.setInputGroup(InputGroup.UBI_ACCOUNT_ENTRY_LINK);
         expected.setHasCallBackQuery(true);
+        expected.setCallbackQueryData("callback_data");
     }
 }

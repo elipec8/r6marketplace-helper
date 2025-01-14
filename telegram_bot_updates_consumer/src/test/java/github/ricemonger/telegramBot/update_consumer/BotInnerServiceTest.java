@@ -87,6 +87,13 @@ public class BotInnerServiceTest {
     }
 
     @Test
+    public void deleteMessage_should_handle_to_service() {
+        UpdateInfo updateInfo = new UpdateInfo();
+        botInnerService.deleteMessage(updateInfo);
+        verify(telegramBotClientService).deleteMessage(same(updateInfo));
+    }
+
+    @Test
     public void registerUser_should_handle_to_service() {
         long chatId = 1L;
         botInnerService.registerUser(chatId);

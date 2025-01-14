@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
@@ -33,6 +34,19 @@ class TelegramBotClientServiceTest {
     private CommonValuesService commonValuesService;
 
     @Test
+    public void deleteMessage_should_handle_delete_message_command_to_client() throws Exception {
+        UpdateInfo updateInfo = new UpdateInfo();
+        updateInfo.setChatId(1L);
+        updateInfo.setMessageId(2);
+
+        telegramBotClientService.deleteMessage(updateInfo);
+
+        DeleteMessage deleteMessage = new DeleteMessage(String.valueOf(updateInfo.getChatId()), updateInfo.getMessageId());
+
+        verify(telegramBotClient).executeAsync(deleteMessage);
+    }
+
+    @Test
     public void askFromInlineKeyboardShouldCreateKeyboardMarkupAndHandleItToClient() throws Exception {
         UpdateInfo updateInfo = new UpdateInfo();
         updateInfo.setChatId(1L);
@@ -46,7 +60,7 @@ class TelegramBotClientServiceTest {
         SendMessage sendMessage = new SendMessage(String.valueOf(updateInfo.getChatId()), text);
         sendMessage.setReplyMarkup(createInlineKeyboardMarkup(buttonsInLine, button1, button2));
 
-        verify(telegramBotClient).execute(sendMessage);
+        verify(telegramBotClient).executeAsync(sendMessage);
     }
 
     private InlineKeyboardMarkup createInlineKeyboardMarkup(int buttonsInLine,
@@ -75,7 +89,7 @@ class TelegramBotClientServiceTest {
     @Test
     public void askFromInlineKeyboardShouldThrowExceptionWhenClientThrowsException() throws Exception {
 
-        doThrow(new TelegramApiException("message")).when(telegramBotClient).execute(any(SendMessage.class));
+        doThrow(new TelegramApiException("message")).when(telegramBotClient).executeAsync(any(SendMessage.class));
 
         assertThrows(TelegramApiRuntimeException.class, () -> telegramBotClientService.askFromInlineKeyboard(new UpdateInfo(), "message", 1,
                 new CallbackButton("text", "data")));
@@ -91,7 +105,7 @@ class TelegramBotClientServiceTest {
 
         SendMessage sendMessage = new SendMessage(String.valueOf(updateInfo.getChatId()), answer);
 
-        verify(telegramBotClient).execute(sendMessage);
+        verify(telegramBotClient).executeAsync(sendMessage);
     }
 
     @Test
@@ -104,7 +118,7 @@ class TelegramBotClientServiceTest {
 
         SendMessage sendMessage = new SendMessage(String.valueOf(updateInfo.getChatId()), answer);
 
-        verify(telegramBotClient).execute(sendMessage);
+        verify(telegramBotClient).executeAsync(sendMessage);
     }
 
     @Test
@@ -113,7 +127,7 @@ class TelegramBotClientServiceTest {
         updateInfo.setChatId(1L);
         SendMessage sendMessage = new SendMessage(String.valueOf(updateInfo.getChatId()), "message");
 
-        doThrow(new TelegramApiException("message")).when(telegramBotClient).execute(sendMessage);
+        doThrow(new TelegramApiException("message")).when(telegramBotClient).executeAsync(sendMessage);
 
         assertThrows(TelegramApiRuntimeException.class, () -> telegramBotClientService.sendText(updateInfo, "message"));
         assertThrows(TelegramApiRuntimeException.class, () -> telegramBotClientService.sendText(String.valueOf(updateInfo.getChatId()), "message"));

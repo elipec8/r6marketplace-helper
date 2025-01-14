@@ -7,6 +7,7 @@ import github.ricemonger.utils.exceptions.server.TelegramApiRuntimeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
@@ -26,6 +27,14 @@ public class TelegramBotClientService {
 
     public void sendText(UpdateInfo updateInfo, String message) throws TelegramApiRuntimeException {
         sendText(String.valueOf(updateInfo.getChatId()), message);
+    }
+
+    public void deleteMessage(UpdateInfo updateInfo) throws TelegramApiRuntimeException {
+        try {
+            telegramBotClient.executeAsync(new DeleteMessage(String.valueOf(updateInfo.getChatId()), updateInfo.getMessageId()));
+        } catch (TelegramApiException e) {
+            throw new TelegramApiRuntimeException(e);
+        }
     }
 
     public void sendText(String chatId, String message) throws TelegramApiRuntimeException {
@@ -87,7 +96,7 @@ public class TelegramBotClientService {
 
     private void executeMessageOnBot(SendMessage sendMessage) throws TelegramApiRuntimeException {
         try {
-            telegramBotClient.execute(sendMessage);
+            telegramBotClient.executeAsync(sendMessage);
         } catch (TelegramApiException e) {
             throw new TelegramApiRuntimeException(e);
         }

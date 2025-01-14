@@ -11,7 +11,7 @@ public class UbiAccountEntryAuthorizeStage4FinishInput extends AbstractBotComman
 
         sendText("""
                 Credentials successfully provided. Be aware:
-                Do not check "Remember this device" box on the Ubisoft 2FA login page, as it will cause the bot to fail to login.
+                2FA reauthorization is required after every login(when you enter your credentials) in Ubisoft log in page.
                 """);
     }
 }

@@ -19,7 +19,7 @@ public class TelegramBotClientService {
 
     private void executeMessageOnBot(SendMessage sendMessage) throws TelegramApiRuntimeException {
         try {
-            telegramBotClient.execute(sendMessage);
+            telegramBotClient.executeAsync(sendMessage);
         } catch (TelegramApiException e) {
             throw new TelegramApiRuntimeException(e);
         }

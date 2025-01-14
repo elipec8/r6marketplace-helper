@@ -24,6 +24,7 @@ public class UpdateInfoMapper {
         updateInfo.setHasCallBackQuery(update.hasCallbackQuery());
 
         if (update.hasMessage()) {
+            updateInfo.setMessageId(update.getMessage().getMessageId());
             updateInfo.setChatId(update.getMessage().getChatId());
             updateInfo.setMessageText(update.getMessage().getText());
         }

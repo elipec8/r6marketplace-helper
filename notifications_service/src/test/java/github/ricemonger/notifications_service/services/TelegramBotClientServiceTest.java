@@ -23,6 +23,6 @@ class TelegramBotClientServiceTest {
 
         telegramBotClientService.sendText(chatId, message);
 
-        verify(telegramBotClient).execute(new SendMessage(chatId, message));
+        verify(telegramBotClient).executeAsync(new SendMessage(chatId, message));
     }
 }

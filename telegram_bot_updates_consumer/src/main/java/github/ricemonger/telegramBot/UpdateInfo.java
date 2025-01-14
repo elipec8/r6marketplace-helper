@@ -17,6 +17,7 @@ public class UpdateInfo {
     private Long chatId;
 
     private boolean hasMessage;
+    private Integer messageId;
     private String messageText;
 
     private boolean hasCallBackQuery;
