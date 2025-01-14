@@ -18,6 +18,6 @@ public class PersonalMutationBuyUpdateGraphQlClientService {
 
         client.documentName(GraphQlDocuments.MUTATION_ORDER_BUY_UPDATE_DOCUMENT_NAME)
                 .variables(graphQlVariablesService.getUpdateBuyOrderVariables(tradeId, price))
-                .execute().block();
+                .execute().subscribe();
     }
 }

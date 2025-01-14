@@ -18,6 +18,6 @@ public class PersonalMutationCancelGraphQlClientService {
 
         client.documentName(GraphQlDocuments.MUTATION_ORDER_CANCEL_DOCUMENT_NAME)
                 .variables(graphQlVariablesService.getCancelOrderVariables(tradeId))
-                .execute().block();
+                .execute().subscribe();
     }
 }

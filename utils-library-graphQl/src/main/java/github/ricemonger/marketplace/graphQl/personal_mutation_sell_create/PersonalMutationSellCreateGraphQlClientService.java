@@ -18,6 +18,6 @@ public class PersonalMutationSellCreateGraphQlClientService {
 
         client.documentName(GraphQlDocuments.MUTATION_ORDER_SELL_CREATE_DOCUMENT_NAME)
                 .variables(graphQlVariablesService.getCreateSellOrderVariables(itemId, price))
-                .execute().block();
+                .execute().subscribe();
     }
 }
