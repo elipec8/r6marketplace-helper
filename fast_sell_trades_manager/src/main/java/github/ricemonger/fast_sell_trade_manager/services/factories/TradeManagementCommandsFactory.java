@@ -21,12 +21,10 @@ public class TradeManagementCommandsFactory {
                                                                                    List<SellTrade> currentSellTrades,
                                                                                    List<PotentialTrade> items,
                                                                                    List<ItemMedianPriceAndRarity> medianPriceAndRarities,
-                                                                                   ConfigTrades configTrades) {
+                                                                                   int sellLimit,
+                                                                                   int sellSlots) {
         List<FastTradeManagerCommand> commands = new LinkedList<>();
         int createdOrders = 0;
-
-        int sellLimit = configTrades.getSellLimit();
-        int sellSlots = configTrades.getSellSlots();
 
         if (user.getSoldIn24h() > sellLimit) {
             log.info("User has reached the sell limit for 24h, skipping commands creation");

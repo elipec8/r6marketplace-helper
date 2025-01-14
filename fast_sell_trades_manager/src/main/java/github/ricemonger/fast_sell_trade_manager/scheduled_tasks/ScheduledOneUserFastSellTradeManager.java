@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Component
 @Slf4j
@@ -34,28 +35,36 @@ public class ScheduledOneUserFastSellTradeManager {
     private final PersonalQueryCurrentSellOrdersGraphQlClientService personalQueryCurrentSellOrdersGraphQlClientService;
     private final TradeManagementItemsFactory tradeManagementItemsFactory;
 
+    private int sellSlots;
+    private int sellLimit;
     private FastSellManagedUser managedUser;
     private List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity = new ArrayList<>();
 
     @Scheduled(fixedRateString = "${app.scheduling.management.fixedRate}", initialDelayString = "${app.scheduling.management.initialDelay}")
     public void manageOneUserFastSellTrades() {
-        List<SellTrade> sellTrades = personalQueryCurrentSellOrdersGraphQlClientService.fetchCurrentSellOrdersForUser(managedUser.toAuthorizationDTO());
+        CompletableFuture<List<ItemCurrentPrices>> itemsCurrentPricesFuture = CompletableFuture.supplyAsync(() -> personalQueryOwnedItemsPricesGraphQlClientService.fetchOwnedItemsCurrentPricesForUser(managedUser.toAuthorizationDTO(), 120));
 
-        ConfigTrades configTrades = commonValuesService.getConfigTrades();
+        CompletableFuture<List<SellTrade>> sellTradesFuture = CompletableFuture.supplyAsync(() -> personalQueryCurrentSellOrdersGraphQlClientService.fetchCurrentSellOrdersForUser(managedUser.toAuthorizationDTO()));
 
-        List<ItemCurrentPrices> itemCurrentPrices = personalQueryOwnedItemsPricesGraphQlClientService.fetchOwnedItemsCurrentPricesForUser(managedUser.toAuthorizationDTO(), 120);
-        List<PotentialTrade> items = tradeManagementItemsFactory.createFilteredTradeManagementItemsForUser(itemCurrentPrices, itemsMedianPriceAndRarity, commonValuesService.getMinMedianPriceDifference(), commonValuesService.getMinMedianPriceDifferencePercentage());
+        try {
+            List<PotentialTrade> items = tradeManagementItemsFactory.createFilteredTradeManagementItemsForUser(itemsCurrentPricesFuture.get(), itemsMedianPriceAndRarity, commonValuesService.getMinMedianPriceDifference(), commonValuesService.getMinMedianPriceDifferencePercentage());
 
-        List<FastTradeManagerCommand> commands = tradeManagementCommandsFactory.createFastSellTradeManagerCommandsForUser(managedUser, sellTrades,
-                items, itemsMedianPriceAndRarity, configTrades);
+            List<FastTradeManagerCommand> commands = tradeManagementCommandsFactory.createFastSellTradeManagerCommandsForUser(managedUser, sellTradesFuture.get(), items, itemsMedianPriceAndRarity, sellLimit, sellSlots);
 
-        for (FastTradeManagerCommand command : commands) {
-            fastTradeManagementCommandExecutor.executeCommand(command);
+            for (FastTradeManagerCommand command : commands.stream().sorted().toList()) {
+                fastTradeManagementCommandExecutor.executeCommand(command);
+                log.info("Executed command: {}", command);
+            }
+        } catch (Exception e) {
+            log.error("Error while managing fast sell trades for user with id: " + managedUser.getUbiProfileId(), e);
         }
     }
 
     @Scheduled(fixedRateString = "${app.scheduling.median_prices_fetch.fixedRate}", initialDelayString = "${app.scheduling.median_prices_fetch.initialDelay}")
     public void fetchItemMedianPriceFromDb() {
+        ConfigTrades configTrades = commonValuesService.getConfigTrades();
+        sellSlots = configTrades.getSellSlots();
+        sellLimit = configTrades.getSellLimit();
         itemsMedianPriceAndRarity = ubiAccountEntryService.getOwnedItemsMedianPriceAndRarity(managedUser.getUbiProfileId());
     }
 
