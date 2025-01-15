@@ -109,9 +109,6 @@ public class TradeManagementCommandsFactory {
                             }
                         }).toList();
 
-        System.out.println("Sorted not updated trades: ");
-        System.out.println(sortedNotUpdatedTrades);
-
         if (sortedNotUpdatedTrades.isEmpty()) {
             return pairCommands;
         } else {

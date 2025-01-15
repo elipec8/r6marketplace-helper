@@ -41,7 +41,8 @@ class CustomUbiAccountStatsPostgresRepositoryTest {
 
     @Test
     @Transactional
-    @Disabled //Cannot project java.lang.Byte to github.ricemonger.utils.enums.ItemRarity; Target type is not an interface and no matching Converter found
+    @Disabled
+    //Cannot project java.lang.Byte to github.ricemonger.utils.enums.ItemRarity; Target type is not an interface and no matching Converter found
     public void findOwnedItemsMedianPriceAndRarity_should_return_expected_projection_only_for_owned_items() {
         ItemEntity item1 = new ItemEntity();
         item1.setItemId("item1");

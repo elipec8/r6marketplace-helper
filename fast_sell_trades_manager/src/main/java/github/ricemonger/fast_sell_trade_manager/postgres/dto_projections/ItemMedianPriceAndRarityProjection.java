@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemMedianPriceAndRarityProjection implements ItemMedianPriceAndRarityProjectionI{
+public class ItemMedianPriceAndRarityProjection implements ItemMedianPriceAndRarityProjectionI {
     private String itemId;
     private ItemRarity rarity;
     private Integer monthMedianPrice;

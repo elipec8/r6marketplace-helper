@@ -4,11 +4,8 @@ import github.ricemonger.fast_sell_trade_manager.postgres.dto_projections.FastSe
 import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountEntryEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountStatsEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
-import github.ricemonger.utilspostgresschema.repositories.user.UbiAccountEntryPostgresRepository;
 import github.ricemonger.utilspostgresschema.repositories.user.UbiAccountStatsPostgresRepository;
 import github.ricemonger.utilspostgresschema.repositories.user.UserPostgresRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

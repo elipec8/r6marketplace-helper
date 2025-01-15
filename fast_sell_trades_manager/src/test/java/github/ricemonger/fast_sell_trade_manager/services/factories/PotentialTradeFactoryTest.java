@@ -6,14 +6,14 @@ import github.ricemonger.fast_sell_trade_manager.services.DTOs.PotentialTrade;
 import github.ricemonger.utils.DTOs.common.ItemCurrentPrices;
 import github.ricemonger.utils.enums.ItemRarity;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
@@ -57,7 +57,7 @@ class PotentialTradeFactoryTest {
 
         List<ItemCurrentPrices> currentPrices = List.of(currentPrices1, currentPrices2, currentPrices3, currentPrices4);
 
-        List<ItemMedianPriceAndRarity> medianPriceAndRarities = List.of(medianPriceAndRarity1,medianPriceAndRarity2,medianPriceAndRarity3, medianPriceAndRarity5);
+        List<ItemMedianPriceAndRarity> medianPriceAndRarities = List.of(medianPriceAndRarity1, medianPriceAndRarity2, medianPriceAndRarity3, medianPriceAndRarity5);
 
         Integer minMedianPriceDifference = 500;
         Integer minMedianPriceDifferencePercentage = 100;

@@ -7,8 +7,8 @@ import github.ricemonger.fast_sell_trade_manager.services.DTOs.ItemMedianPriceAn
 import github.ricemonger.fast_sell_trade_manager.services.DTOs.PotentialTrade;
 import github.ricemonger.fast_sell_trade_manager.services.TradeManagementCommandsExecutor;
 import github.ricemonger.fast_sell_trade_manager.services.UbiAccountEntryService;
-import github.ricemonger.fast_sell_trade_manager.services.factories.TradeManagementCommandsFactory;
 import github.ricemonger.fast_sell_trade_manager.services.factories.PotentialTradeFactory;
+import github.ricemonger.fast_sell_trade_manager.services.factories.TradeManagementCommandsFactory;
 import github.ricemonger.marketplace.graphQl.personal_query_current_sell_orders.PersonalQueryCurrentSellOrdersGraphQlClientService;
 import github.ricemonger.marketplace.graphQl.personal_query_owned_items_prices.PersonalQueryOwnedItemsPricesGraphQlClientService;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
@@ -54,12 +54,13 @@ public class ScheduledOneUserFastSellTradeManager {
 
             List<FastTradeManagerCommand> commands = tradeManagementCommandsFactory.createFastSellTradeManagerCommandsForUser(managedUser, sellTradesFuture.get(), items, itemsMedianPriceAndRarity, sellLimit, sellSlots);
 
+            System.out.println("commands: " + commands);
+
             for (FastTradeManagerCommand command : commands.stream().sorted().toList()) {
                 fastTradeManagementCommandExecutor.executeCommand(command);
                 log.info("Executed command: {}", command);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("Error while managing fast sell trades for user with id: " + managedUser.getUbiProfileId(), e);
         }
     }
