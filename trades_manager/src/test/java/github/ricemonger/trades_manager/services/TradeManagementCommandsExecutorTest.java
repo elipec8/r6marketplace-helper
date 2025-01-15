@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.graphQl.personal_mutation_buy_update.Person
 import github.ricemonger.marketplace.graphQl.personal_mutation_cancel.PersonalMutationCancelGraphQlClientService;
 import github.ricemonger.marketplace.graphQl.personal_mutation_sell_create.PersonalMutationSellCreateGraphQlClientService;
 import github.ricemonger.marketplace.graphQl.personal_mutation_sell_update.PersonalMutationSellUpdateGraphQlClientService;
-import github.ricemonger.trades_manager.services.DTOs.CentralTradeManagerCommand;
+import github.ricemonger.trades_manager.services.DTOs.TradeManagerCommand;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.CentralTradeManagerCommandType;
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,7 @@ class TradeManagementCommandsExecutorTest {
     @Test
     public void executeCommand_should_execute_buy_cancel_command() {
         AuthorizationDTO authDTO1 = new AuthorizationDTO("ticket1", "profileId1", "spaceId1", "sessionId1", "rememberDeviceTicket1", "rememberMeTicket1");
-        CentralTradeManagerCommand buyCancelCommand1 = Mockito.mock(CentralTradeManagerCommand.class);
+        TradeManagerCommand buyCancelCommand1 = Mockito.mock(TradeManagerCommand.class);
         when(buyCancelCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_CANCEL);
         when(buyCancelCommand1.getAuthorizationDTO()).thenReturn(authDTO1);
         when(buyCancelCommand1.getTradeId()).thenReturn("buyCancelTradeId1");
@@ -54,7 +54,7 @@ class TradeManagementCommandsExecutorTest {
     public void executeCommand_should_execute_buy_update_command() {
         AuthorizationDTO authDTO1 = new AuthorizationDTO("ticket1", "profileId1", "spaceId1", "sessionId1", "rememberDeviceTicket1", "rememberMeTicket1");
 
-        CentralTradeManagerCommand buyUpdateCommand1 = Mockito.mock(CentralTradeManagerCommand.class);
+        TradeManagerCommand buyUpdateCommand1 = Mockito.mock(TradeManagerCommand.class);
         when(buyUpdateCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_UPDATE);
         when(buyUpdateCommand1.getAuthorizationDTO()).thenReturn(authDTO1);
         when(buyUpdateCommand1.getTradeId()).thenReturn("buyUpdateTradeId1");
@@ -71,7 +71,7 @@ class TradeManagementCommandsExecutorTest {
     public void executeCommand_should_execute_buy_create_command() {
         AuthorizationDTO authDTO1 = new AuthorizationDTO("ticket1", "profileId1", "spaceId1", "sessionId1", "rememberDeviceTicket1", "rememberMeTicket1");
 
-        CentralTradeManagerCommand buyCreateCommand1 = Mockito.mock(CentralTradeManagerCommand.class);
+        TradeManagerCommand buyCreateCommand1 = Mockito.mock(TradeManagerCommand.class);
         when(buyCreateCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_CREATE);
         when(buyCreateCommand1.getAuthorizationDTO()).thenReturn(authDTO1);
         when(buyCreateCommand1.getItemId()).thenReturn("buyCreateItemId1");
@@ -88,7 +88,7 @@ class TradeManagementCommandsExecutorTest {
     public void executeCommand_should_execute_sell_cancel_command() {
         AuthorizationDTO authDTO1 = new AuthorizationDTO("ticket1", "profileId1", "spaceId1", "sessionId1", "rememberDeviceTicket1", "rememberMeTicket1");
 
-        CentralTradeManagerCommand sellCancelCommand1 = Mockito.mock(CentralTradeManagerCommand.class);
+        TradeManagerCommand sellCancelCommand1 = Mockito.mock(TradeManagerCommand.class);
         when(sellCancelCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_CANCEL);
         when(sellCancelCommand1.getAuthorizationDTO()).thenReturn(authDTO1);
         when(sellCancelCommand1.getTradeId()).thenReturn("sellCancelTradeId1");
@@ -104,7 +104,7 @@ class TradeManagementCommandsExecutorTest {
     public void executeCommand_should_execute_sell_update_command() {
         AuthorizationDTO authDTO1 = new AuthorizationDTO("ticket1", "profileId1", "spaceId1", "sessionId1", "rememberDeviceTicket1", "rememberMeTicket1");
 
-        CentralTradeManagerCommand sellUpdateCommand1 = Mockito.mock(CentralTradeManagerCommand.class);
+        TradeManagerCommand sellUpdateCommand1 = Mockito.mock(TradeManagerCommand.class);
         when(sellUpdateCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_UPDATE);
         when(sellUpdateCommand1.getAuthorizationDTO()).thenReturn(authDTO1);
         when(sellUpdateCommand1.getTradeId()).thenReturn("sellUpdateTradeId1");
@@ -121,7 +121,7 @@ class TradeManagementCommandsExecutorTest {
     public void executeCommand_should_execute_sell_create_command() {
         AuthorizationDTO authDTO1 = new AuthorizationDTO("ticket1", "profileId1", "spaceId1", "sessionId1", "rememberDeviceTicket1", "rememberMeTicket1");
 
-        CentralTradeManagerCommand sellCreateCommand1 = Mockito.mock(CentralTradeManagerCommand.class);
+        TradeManagerCommand sellCreateCommand1 = Mockito.mock(TradeManagerCommand.class);
         when(sellCreateCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_CREATE);
         when(sellCreateCommand1.getAuthorizationDTO()).thenReturn(authDTO1);
         when(sellCreateCommand1.getItemId()).thenReturn("sellCreateItemId1");

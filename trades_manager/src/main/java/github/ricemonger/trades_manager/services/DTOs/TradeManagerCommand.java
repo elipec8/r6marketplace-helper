@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class CentralTradeManagerCommand implements Comparable<CentralTradeManagerCommand> {
+public class TradeManagerCommand implements Comparable<TradeManagerCommand> {
     private final Long userId;
     private final AuthorizationDTO authorizationDTO;
     private final CentralTradeManagerCommandType commandType;
@@ -19,7 +19,7 @@ public class CentralTradeManagerCommand implements Comparable<CentralTradeManage
     private final Integer oldPrice;
     private final Integer newPrice;
 
-    public CentralTradeManagerCommand(Long userId, AuthorizationDTO authorizationDTO, CentralTradeManagerCommandType commandType, String itemId, String itemName, String tradeId, Integer oldPrice) {
+    public TradeManagerCommand(Long userId, AuthorizationDTO authorizationDTO, CentralTradeManagerCommandType commandType, String itemId, String itemName, String tradeId, Integer oldPrice) {
         this.userId = userId;
         this.authorizationDTO = authorizationDTO;
         this.commandType = commandType;
@@ -30,7 +30,7 @@ public class CentralTradeManagerCommand implements Comparable<CentralTradeManage
         this.newPrice = null;
     }
 
-    public CentralTradeManagerCommand(Long userId, AuthorizationDTO authorizationDTO, CentralTradeManagerCommandType commandType, String itemId, String itemName, String tradeId, Integer oldPrice, Integer newPrice) {
+    public TradeManagerCommand(Long userId, AuthorizationDTO authorizationDTO, CentralTradeManagerCommandType commandType, String itemId, String itemName, String tradeId, Integer oldPrice, Integer newPrice) {
         this.userId = userId;
         this.authorizationDTO = authorizationDTO;
         this.commandType = commandType;
@@ -42,7 +42,7 @@ public class CentralTradeManagerCommand implements Comparable<CentralTradeManage
 
     }
 
-    public CentralTradeManagerCommand(Long userId, AuthorizationDTO authorizationDTO, CentralTradeManagerCommandType commandType, String itemId, String itemName, Integer newPrice) {
+    public TradeManagerCommand(Long userId, AuthorizationDTO authorizationDTO, CentralTradeManagerCommandType commandType, String itemId, String itemName, Integer newPrice) {
         this.userId = userId;
         this.authorizationDTO = authorizationDTO;
 
@@ -55,7 +55,7 @@ public class CentralTradeManagerCommand implements Comparable<CentralTradeManage
     }
 
     @Override
-    public int compareTo(CentralTradeManagerCommand o) {
+    public int compareTo(TradeManagerCommand o) {
         return this.commandType.compareTo(o.commandType);
     }
 }

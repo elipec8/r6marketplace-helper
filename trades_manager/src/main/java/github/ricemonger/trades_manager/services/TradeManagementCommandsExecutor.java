@@ -5,7 +5,7 @@ import github.ricemonger.marketplace.graphQl.personal_mutation_buy_update.Person
 import github.ricemonger.marketplace.graphQl.personal_mutation_cancel.PersonalMutationCancelGraphQlClientService;
 import github.ricemonger.marketplace.graphQl.personal_mutation_sell_create.PersonalMutationSellCreateGraphQlClientService;
 import github.ricemonger.marketplace.graphQl.personal_mutation_sell_update.PersonalMutationSellUpdateGraphQlClientService;
-import github.ricemonger.trades_manager.services.DTOs.CentralTradeManagerCommand;
+import github.ricemonger.trades_manager.services.DTOs.TradeManagerCommand;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class TradeManagementCommandsExecutor {
     private final PersonalMutationCancelGraphQlClientService personalMutationCancelGraphQlClientService;
     private final NotificationService notificationService;
 
-    public void executeCommand(CentralTradeManagerCommand command) {
+    public void executeCommand(TradeManagerCommand command) {
         try {
             switch (command.getCommandType()) {
                 case BUY_ORDER_CANCEL -> {

@@ -88,7 +88,7 @@ class PersonalQueryOwnedItemsPricesMapperTest {
         ItemCurrentPrices expectedItem = new ItemCurrentPrices();
         expectedItem.setItemId("1");
         expectedItem.setMaxBuyPrice(100);
-        expectedItem.setMinSellPrice(0);
+        expectedItem.setMinSellPrice(null);
 
         ItemCurrentPrices resultItem = personalQueryOwnedItemsPricesMapper.mapItem(node);
 

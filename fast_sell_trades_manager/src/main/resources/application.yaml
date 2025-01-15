@@ -26,8 +26,8 @@ app:
   scheduling:
     enabled: ${SCHEDULING_ENABLED:true}
     management:
-      fixedRate: ${SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT:450} # 900ms - no errors for too many requests, 67 manages per minute
-      # 450ms - 40s 90 manages per minute, 20s of errors, 375ms - 40s 107 manages per minute, 20-30s of errors for every request to graphql, from other services too
+      fixedRate: ${SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT:975} # 900ms - rare 1s errors, 67 manages per minute
+      # 450ms - 30s 90 manages per minute, 30s of errors for every request to graphql, fromother services too
       initialDelay: ${SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT:10500}
     median_prices_fetch:
       fixedRate: ${SCHEDULING_FIXED_DELAY_MEDIAN_PRICES_FETCH:600000}
@@ -45,13 +45,13 @@ fast_sell_management:
 
 logging:
   level:
-    github: \${logging_level:debug}
+    github: \${LOGGING_LEVEL:debug}
   file:
     name: ./logs/${LOG_FILE_DIRECTORY:prod}/${spring.application.name}.log
 
 spring:
   application:
-    name: r6s-helper
+    name: r6s-helper-fast-sell-trades-manager
   data:
     redis:
       repositories:

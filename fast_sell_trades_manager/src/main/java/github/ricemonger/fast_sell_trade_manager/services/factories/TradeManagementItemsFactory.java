@@ -31,7 +31,7 @@ public class TradeManagementItemsFactory {
 
             if (itemMedianPriceAndRarity != null && itemPrices.getMaxBuyPrice() != null) {
                 Integer buyPriceMedianPriceDifference = itemPrices.getMaxBuyPrice() - itemMedianPriceAndRarity.getMonthMedianPrice();
-                Integer buyPriceMedianPriceDifferencePercentage = (buyPriceMedianPriceDifference * 100) / itemPrices.getMaxBuyPrice();
+                Integer buyPriceMedianPriceDifferencePercentage = (buyPriceMedianPriceDifference * 100) / itemMedianPriceAndRarity.getMonthMedianPrice();
 
                 if (buyPriceMedianPriceDifference >= minMedianPriceDifference && buyPriceMedianPriceDifferencePercentage >= minMedianPriceDifferencePercentage) {
                     potentialTrade.add(new PotentialTrade(
@@ -46,7 +46,7 @@ public class TradeManagementItemsFactory {
                 int sellPrice = itemPrices.getMinSellPrice() == null ? commonValuesService.getMaximumPriceByRarity(itemMedianPriceAndRarity.getRarity()) : itemPrices.getMinSellPrice();
 
                 Integer sellPriceMedianPriceDifference = sellPrice - itemMedianPriceAndRarity.getMonthMedianPrice();
-                Integer sellPriceMedianPriceDifferencePercentage = (sellPriceMedianPriceDifference * 100) / sellPrice;
+                Integer sellPriceMedianPriceDifferencePercentage = (sellPriceMedianPriceDifference * 100) / itemMedianPriceAndRarity.getMonthMedianPrice();
 
                 if (sellPriceMedianPriceDifference >= minMedianPriceDifference && sellPriceMedianPriceDifferencePercentage >= minMedianPriceDifferencePercentage) {
                     potentialTrade.add(new PotentialTrade(

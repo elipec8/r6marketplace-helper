@@ -159,7 +159,7 @@ public class GraphQlVariablesServiceTest {
     }
 
     @Test
-    public void getFetchItemsVariables_with_limit_should_have_provided_variables() {
+    public void getFetchOwnedItemsPricesVariables_should_have_provided_variables() {
         String mainUserSpaceId = "mainUserSpaceId";
         String paymentItemId = "paymentItemId";
         int offset = 0;
@@ -168,7 +168,7 @@ public class GraphQlVariablesServiceTest {
         when(commonValuesService.getUbiGameSpaceId()).thenReturn(mainUserSpaceId);
         when(commonValuesService.getPaymentItemId()).thenReturn("paymentItemId");
 
-        Map<String, Object> result = graphQlVariablesService.getFetchItemsVariables(offset);
+        Map<String, Object> result = graphQlVariablesService.getFetchOwnedItemsPricesVariables(offset,limit);
 
         assertTrue(mapContainsEntries(result, Map.entry("spaceId", mainUserSpaceId), Map.entry("offset", offset), Map.entry("limit", limit)));
 

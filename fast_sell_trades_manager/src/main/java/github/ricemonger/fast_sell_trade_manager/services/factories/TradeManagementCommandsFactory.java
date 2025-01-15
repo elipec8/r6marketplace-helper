@@ -78,8 +78,8 @@ public class TradeManagementCommandsFactory {
                     medianPrice1 = medianPrice1 == null ? price1 : medianPrice1;
                     medianPrice2 = medianPrice2 == null ? price2 : medianPrice2;
 
-                    Integer medianPriceDiff1 = (medianPrice1 - price1) * (medianPrice1 - price1) / price1;
-                    Integer medianPriceDiff2 = (medianPrice2 - price2) * (medianPrice2 - price2) / price2;
+                    Integer medianPriceDiff1 = (price1 - medianPrice1) * (price1 - medianPrice1) / medianPrice1;
+                    Integer medianPriceDiff2 = (price2 - medianPrice2) * (price2 - medianPrice2) / medianPrice2;
 
                     return medianPriceDiff1.compareTo(medianPriceDiff2);
                 }

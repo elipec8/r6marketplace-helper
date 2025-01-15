@@ -16,7 +16,6 @@ import github.ricemonger.utils.DTOs.common.ItemCurrentPrices;
 import github.ricemonger.utils.DTOs.personal.SellTrade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.graphql.client.FieldAccessException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -57,8 +56,7 @@ public class ScheduledOneUserFastSellTradeManager {
                 fastTradeManagementCommandExecutor.executeCommand(command);
                 log.info("Executed command: {}", command);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("Error while managing fast sell trades for user with id: " + managedUser.getUbiProfileId(), e);
         }
     }

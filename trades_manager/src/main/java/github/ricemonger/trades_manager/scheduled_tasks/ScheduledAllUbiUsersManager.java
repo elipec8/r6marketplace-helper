@@ -5,7 +5,7 @@ import github.ricemonger.trades_manager.services.DTOs.*;
 import github.ricemonger.trades_manager.services.ItemService;
 import github.ricemonger.trades_manager.services.TradeManagementCommandsExecutor;
 import github.ricemonger.trades_manager.services.UserService;
-import github.ricemonger.trades_manager.services.factories.CentralTradeManagerCommandFactory;
+import github.ricemonger.trades_manager.services.factories.TradeManagerCommandsFactory;
 import github.ricemonger.trades_manager.services.factories.PersonalItemFactory;
 import github.ricemonger.trades_manager.services.factories.PotentialTradeFactory;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
@@ -29,7 +29,7 @@ public class ScheduledAllUbiUsersManager {
     private final UserService userService;
     private final PersonalItemFactory personalItemFactory;
     private final PotentialTradeFactory potentialTradeFactory;
-    private final CentralTradeManagerCommandFactory centralTradeManagerCommandFactory;
+    private final TradeManagerCommandsFactory tradeManagerCommandsFactory;
     private final TradeManagementCommandsExecutor tradeManagementCommandsExecutor;
 
     @Scheduled(fixedRateString = "${app.scheduling.fixedRate}", initialDelayString = "${app.scheduling.initialDelay}")
@@ -75,15 +75,16 @@ public class ScheduledAllUbiUsersManager {
                 configTrades.getBuySlots(),
                 configTrades.getBuyLimit());
 
-        List<CentralTradeManagerCommand> commands = new ArrayList<>(centralTradeManagerCommandFactory.createCommandsForCentralTradeManagerForUser(
+        List<TradeManagerCommand> commands = new ArrayList<>(tradeManagerCommandsFactory.createTradeManagerCommandsForUser(
                 resultingSellTrades,
                 currentSellTrades,
                 resultingBuyTrades,
                 currentBuyTrades,
                 manageableUser.getId(),
-                manageableUser.toAuthorizationDTO()));
+                manageableUser.toAuthorizationDTO(),
+                configTrades));
 
-        for (CentralTradeManagerCommand command : commands.stream().sorted().toList()) {
+        for (TradeManagerCommand command : commands.stream().sorted().toList()) {
             tradeManagementCommandsExecutor.executeCommand(command);
         }
     }
