@@ -30,8 +30,6 @@ public class TradeManagementCommandsFactory {
             return new ArrayList<>();
         }
 
-        int availableSlots = sellSlots - currentSellTrades.size();
-
         for (PotentialTrade potential : items.stream().sorted(new Comparator<PotentialTrade>() {
             @Override
             public int compare(PotentialTrade o1, PotentialTrade o2) {
@@ -57,36 +55,39 @@ public class TradeManagementCommandsFactory {
             SellTrade sellTrade = currentSellTrades.stream().filter(trade -> trade.getItemId().equals(potential.getItemId())).findFirst().orElse(null);
             if (sellTrade != null && sellTrade.getPrice() > potential.getPrice() + 1) {
                 commands.add(new FastTradeManagerCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_UPDATE, potential.getItemId(), sellTrade.getTradeId(), potential.getPrice()));
-            } else {
+            } else if (sellTrade == null){
                 commands.add(new FastTradeManagerCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CREATE, potential.getItemId(), potential.getPrice()));
                 createdOrders++;
             }
         }
 
+        List<SellTrade> sortedNotUpdatedTrades = currentSellTrades.stream().filter(trade -> commands.stream().noneMatch(c -> trade.getTradeId().equals(c.getTradeId()))).sorted(new Comparator<SellTrade>() {
+
+            @Override
+            public int compare(SellTrade o1, SellTrade o2) {
+                int price1 = o1.getPrice();
+                int price2 = o2.getPrice();
+
+                Integer medianPrice1 = medianPriceAndRarities.stream().filter(item -> item.getItemId().equals(o1.getItemId())).findFirst().orElse(new ItemMedianPriceAndRarity()).getMonthMedianPrice();
+                Integer medianPrice2 = medianPriceAndRarities.stream().filter(item -> item.getItemId().equals(o2.getItemId())).findFirst().orElse(new ItemMedianPriceAndRarity()).getMonthMedianPrice();
+
+                medianPrice1 = medianPrice1 == null ? price1 : medianPrice1;
+                medianPrice2 = medianPrice2 == null ? price2 : medianPrice2;
+
+                Integer medianPriceDiff1 = (price1 - medianPrice1) * (price1 - medianPrice1) / medianPrice1;
+                Integer medianPriceDiff2 = (price2 - medianPrice2) * (price2 - medianPrice2) / medianPrice2;
+
+                return medianPriceDiff1.compareTo(medianPriceDiff2);
+            }
+        }).toList();
+
+        int availableSlots = sellSlots - currentSellTrades.size();
+
         if (availableSlots >= createdOrders) {
             return commands;
         } else {
-            List<SellTrade> sortedTrades = currentSellTrades.stream().sorted(new Comparator<SellTrade>() {
-                @Override
-                public int compare(SellTrade o1, SellTrade o2) {
-                    int price1 = o1.getPrice();
-                    int price2 = o2.getPrice();
-
-                    Integer medianPrice1 = medianPriceAndRarities.stream().filter(item -> item.getItemId().equals(o1.getItemId())).findFirst().orElse(new ItemMedianPriceAndRarity()).getMonthMedianPrice();
-                    Integer medianPrice2 = medianPriceAndRarities.stream().filter(item -> item.getItemId().equals(o2.getItemId())).findFirst().orElse(new ItemMedianPriceAndRarity()).getMonthMedianPrice();
-
-                    medianPrice1 = medianPrice1 == null ? price1 : medianPrice1;
-                    medianPrice2 = medianPrice2 == null ? price2 : medianPrice2;
-
-                    Integer medianPriceDiff1 = (price1 - medianPrice1) * (price1 - medianPrice1) / medianPrice1;
-                    Integer medianPriceDiff2 = (price2 - medianPrice2) * (price2 - medianPrice2) / medianPrice2;
-
-                    return medianPriceDiff1.compareTo(medianPriceDiff2);
-                }
-            }).toList();
-
             for (int i = 0; i < createdOrders - availableSlots; i++) {
-                commands.add(new FastTradeManagerCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CANCEL, sortedTrades.get(i).getItemId(), sortedTrades.get(i).getTradeId()));
+                commands.add(new FastTradeManagerCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CANCEL, sortedNotUpdatedTrades.get(i).getItemId(), sortedNotUpdatedTrades.get(i).getTradeId()));
             }
             return commands;
         }
