@@ -2,12 +2,14 @@ mutation UpdateBuyOrder($spaceId: String!, $tradeId: String!, $paymentProposal: 
     updateBuyOrder(
         spaceId: $spaceId
         tradeId: $tradeId
-        paymentProposal: $paymentProposal )
-    trade {
-        ...TradeFragment
+        paymentProposal: $paymentProposal
+    ) {
+        trade {
+            ...TradeFragment
+            __typename
+        }
         __typename
     }
-    __typename
 }
 
 fragment TradeFragment on Trade {

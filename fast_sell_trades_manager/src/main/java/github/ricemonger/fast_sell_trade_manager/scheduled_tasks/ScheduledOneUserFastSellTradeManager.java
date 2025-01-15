@@ -16,6 +16,7 @@ import github.ricemonger.utils.DTOs.common.ItemCurrentPrices;
 import github.ricemonger.utils.DTOs.personal.SellTrade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.graphql.client.FieldAccessException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -40,10 +41,12 @@ public class ScheduledOneUserFastSellTradeManager {
     private FastSellManagedUser managedUser;
     private List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity = new ArrayList<>();
 
+    // for CompletableFuture throws java.lang.IllegalStateException: Failed to find document, name='personal_query_owned_items_prices', under location
+    //  (s)=[class path resource [graphql-documents/]] in docker container, no exception occurs in local environment or if .document() used instead
+    //  of .documentName()
     @Scheduled(fixedRateString = "${app.scheduling.management.fixedRate}", initialDelayString = "${app.scheduling.management.initialDelay}")
     public void manageOneUserFastSellTrades() {
-        CompletableFuture<List<ItemCurrentPrices>> itemsCurrentPricesFuture =
-                CompletableFuture.supplyAsync(() -> personalQueryOwnedItemsPricesGraphQlClientService.fetchOwnedItemsCurrentPricesForUser(managedUser.toAuthorizationDTO(), commonValuesService.getFastTradeOwnedItemsLimit()));
+        CompletableFuture<List<ItemCurrentPrices>> itemsCurrentPricesFuture = CompletableFuture.supplyAsync(() -> personalQueryOwnedItemsPricesGraphQlClientService.fetchOwnedItemsCurrentPricesForUser(managedUser.toAuthorizationDTO(), commonValuesService.getFastTradeOwnedItemsLimit()));
 
         CompletableFuture<List<SellTrade>> sellTradesFuture = CompletableFuture.supplyAsync(() -> personalQueryCurrentSellOrdersGraphQlClientService.fetchCurrentSellOrdersForUser(managedUser.toAuthorizationDTO()));
 
@@ -56,7 +59,8 @@ public class ScheduledOneUserFastSellTradeManager {
                 fastTradeManagementCommandExecutor.executeCommand(command);
                 log.info("Executed command: {}", command);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             log.error("Error while managing fast sell trades for user with id: " + managedUser.getUbiProfileId(), e);
         }
     }

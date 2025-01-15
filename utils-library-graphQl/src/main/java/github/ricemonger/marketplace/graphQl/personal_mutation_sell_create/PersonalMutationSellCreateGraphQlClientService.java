@@ -16,7 +16,7 @@ public class PersonalMutationSellCreateGraphQlClientService {
     public void createSellOrderForUser(AuthorizationDTO authorizationDTO, String itemId, int price) {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
-        client.document(GraphQlDocuments.MUTATION_ORDER_SELL_CREATE_DOCUMENT)
+        client.documentName(GraphQlDocuments.MUTATION_ORDER_SELL_CREATE_DOCUMENT_NAME)
                 .variables(graphQlVariablesService.getCreateSellOrderVariables(itemId, price))
                 .execute().block();
     }

@@ -16,7 +16,7 @@ public class PersonalMutationSellUpdateGraphQlClientService {
     public void updateSellOrderForUser(AuthorizationDTO authorizationDTO, String tradeId, int price) {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
-        client.document(GraphQlDocuments.MUTATION_ORDER_SELL_UPDATE_DOCUMENT)
+        client.documentName(GraphQlDocuments.MUTATION_ORDER_SELL_UPDATE_DOCUMENT_NAME)
                 .variables(graphQlVariablesService.getUpdateSellOrderVariables(tradeId, price))
                 .execute().block();
     }

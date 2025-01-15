@@ -16,7 +16,7 @@ public class PersonalMutationCancelGraphQlClientService {
     public void cancelOrderForUser(AuthorizationDTO authorizationDTO, String tradeId) {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
-        client.document(GraphQlDocuments.MUTATION_ORDER_CANCEL_DOCUMENT)
+        client.documentName(GraphQlDocuments.MUTATION_ORDER_CANCEL_DOCUMENT_NAME)
                 .variables(graphQlVariablesService.getCancelOrderVariables(tradeId))
                 .execute().block();
     }
