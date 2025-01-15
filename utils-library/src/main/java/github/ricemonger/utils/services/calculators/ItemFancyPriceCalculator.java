@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ItemFancyPriceCalculator {
 
-    private final CalculatorsCommonValuesService commonValuesService;
+    private final PricesCommonValuesService commonValuesService;
 
     public int getNextFancySellPrice(Item item) {
         int limitMaxPrice = commonValuesService.getMaximumPriceByRarity(item.getRarity());

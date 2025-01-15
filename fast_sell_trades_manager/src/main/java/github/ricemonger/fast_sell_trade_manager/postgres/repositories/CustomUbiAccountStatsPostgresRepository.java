@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface UbiAccountStatsPostgresRepository extends JpaRepository<UbiAccountStatsEntity, String> {
+public interface CustomUbiAccountStatsPostgresRepository extends JpaRepository<UbiAccountStatsEntity, String> {
     @Transactional(readOnly = true)
     @Query(value = "SELECT i.item_id AS itemId, i.rarity AS rarity, i.month_median_price AS monthMedianPrice " +
                    "FROM item i " +

@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-public interface UbiAccountEntryPostgresRepository extends JpaRepository<UbiAccountEntryEntity, String> {
+public interface CustomUbiAccountEntryPostgresRepository extends JpaRepository<UbiAccountEntryEntity, String> {
     @Transactional(readOnly = true)
     @Query("SELECT new github.ricemonger.fast_sell_trade_manager.postgres.dto_projections.FastSellManagedUserProjection(" +
            "u.ubiAuthTicket, " +

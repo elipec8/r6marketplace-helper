@@ -229,4 +229,12 @@ class CommonValuesServiceTest {
 
         assertEquals(minPrice, commonValuesService.getMinMedianPriceDifferencePercentage());
     }
+
+    @Test
+    public void getFastTradeOwnedItemsLimit_should_handle_to_service() {
+        Integer limit = 10;
+        when(fastSellManagementConfiguration.getOwnedItemsLimit()).thenReturn(limit);
+
+        assertEquals(limit, commonValuesService.getFastTradeOwnedItemsLimit());
+    }
 }

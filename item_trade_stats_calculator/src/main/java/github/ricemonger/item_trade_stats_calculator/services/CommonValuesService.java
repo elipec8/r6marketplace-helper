@@ -1,7 +1,7 @@
 package github.ricemonger.item_trade_stats_calculator.services;
 
 import github.ricemonger.item_trade_stats_calculator.services.configurations.UbiServiceConfiguration;
-import github.ricemonger.utils.services.calculators.CalculatorsCommonValuesService;
+import github.ricemonger.utils.services.calculators.PricesCommonValuesService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class CommonValuesService implements CalculatorsCommonValuesService {
+public class CommonValuesService implements PricesCommonValuesService {
 
     private final UbiServiceConfiguration ubiServiceConfiguration;
 

@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 
 class ItemTradeTimeCalculatorTest {
 
-    private final CalculatorsCommonValuesService commonValuesService = mock(CalculatorsCommonValuesService.class);
+    private final PricesCommonValuesService commonValuesService = mock(PricesCommonValuesService.class);
 
     private final ItemFancyPriceCalculator itemFancyPriceCalculator = mock(ItemFancyPriceCalculator.class);
 

@@ -8,7 +8,7 @@ import static github.ricemonger.utils.services.calculators.ItemTradeTimeCalculat
 
 @RequiredArgsConstructor
 public class ItemTradePriorityCalculator {
-    private final CalculatorsCommonValuesService commonValuesService;
+    private final PricesCommonValuesService commonValuesService;
 
     public Long calculatePotentialSellTradePriority(Item item, Integer price, Integer minutesToTrade) {
         if (price != null && price > 0) {

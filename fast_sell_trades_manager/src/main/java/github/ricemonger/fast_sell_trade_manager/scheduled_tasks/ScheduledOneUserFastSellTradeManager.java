@@ -8,7 +8,7 @@ import github.ricemonger.fast_sell_trade_manager.services.DTOs.PotentialTrade;
 import github.ricemonger.fast_sell_trade_manager.services.TradeManagementCommandsExecutor;
 import github.ricemonger.fast_sell_trade_manager.services.UbiAccountEntryService;
 import github.ricemonger.fast_sell_trade_manager.services.factories.TradeManagementCommandsFactory;
-import github.ricemonger.fast_sell_trade_manager.services.factories.TradeManagementItemsFactory;
+import github.ricemonger.fast_sell_trade_manager.services.factories.PotentialTradeFactory;
 import github.ricemonger.marketplace.graphQl.personal_query_current_sell_orders.PersonalQueryCurrentSellOrdersGraphQlClientService;
 import github.ricemonger.marketplace.graphQl.personal_query_owned_items_prices.PersonalQueryOwnedItemsPricesGraphQlClientService;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
@@ -16,7 +16,6 @@ import github.ricemonger.utils.DTOs.common.ItemCurrentPrices;
 import github.ricemonger.utils.DTOs.personal.SellTrade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.graphql.client.FieldAccessException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -34,7 +33,7 @@ public class ScheduledOneUserFastSellTradeManager {
     private final TradeManagementCommandsExecutor fastTradeManagementCommandExecutor;
     private final PersonalQueryOwnedItemsPricesGraphQlClientService personalQueryOwnedItemsPricesGraphQlClientService;
     private final PersonalQueryCurrentSellOrdersGraphQlClientService personalQueryCurrentSellOrdersGraphQlClientService;
-    private final TradeManagementItemsFactory tradeManagementItemsFactory;
+    private final PotentialTradeFactory potentialTradeFactory;
 
     private int sellSlots;
     private int sellLimit;
@@ -51,7 +50,7 @@ public class ScheduledOneUserFastSellTradeManager {
         CompletableFuture<List<SellTrade>> sellTradesFuture = CompletableFuture.supplyAsync(() -> personalQueryCurrentSellOrdersGraphQlClientService.fetchCurrentSellOrdersForUser(managedUser.toAuthorizationDTO()));
 
         try {
-            List<PotentialTrade> items = tradeManagementItemsFactory.createFilteredTradeManagementItemsForUser(itemsCurrentPricesFuture.get(), itemsMedianPriceAndRarity, commonValuesService.getMinMedianPriceDifference(), commonValuesService.getMinMedianPriceDifferencePercentage());
+            List<PotentialTrade> items = potentialTradeFactory.createPotentialTradesForUser(itemsCurrentPricesFuture.get(), itemsMedianPriceAndRarity, commonValuesService.getMinMedianPriceDifference(), commonValuesService.getMinMedianPriceDifferencePercentage());
 
             List<FastTradeManagerCommand> commands = tradeManagementCommandsFactory.createFastSellTradeManagerCommandsForUser(managedUser, sellTradesFuture.get(), items, itemsMedianPriceAndRarity, sellLimit, sellSlots);
 

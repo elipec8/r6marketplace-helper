@@ -10,7 +10,7 @@ import static org.mockito.Mockito.when;
 
 class ItemTradePriorityCalculatorTest {
 
-    private final CalculatorsCommonValuesService commonValuesService = mock(CalculatorsCommonValuesService.class);
+    private final PricesCommonValuesService commonValuesService = mock(PricesCommonValuesService.class);
 
     private final ItemTradePriorityCalculator itemTradePriorityCalculator = new ItemTradePriorityCalculator(commonValuesService);
 

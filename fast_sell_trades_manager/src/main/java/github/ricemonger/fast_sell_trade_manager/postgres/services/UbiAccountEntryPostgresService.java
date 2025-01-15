@@ -1,8 +1,8 @@
 package github.ricemonger.fast_sell_trade_manager.postgres.services;
 
 import github.ricemonger.fast_sell_trade_manager.postgres.dto_projections.FastSellManagedUserProjection;
-import github.ricemonger.fast_sell_trade_manager.postgres.repositories.UbiAccountEntryPostgresRepository;
-import github.ricemonger.fast_sell_trade_manager.postgres.repositories.UbiAccountStatsPostgresRepository;
+import github.ricemonger.fast_sell_trade_manager.postgres.repositories.CustomUbiAccountEntryPostgresRepository;
+import github.ricemonger.fast_sell_trade_manager.postgres.repositories.CustomUbiAccountStatsPostgresRepository;
 import github.ricemonger.fast_sell_trade_manager.postgres.services.entity_mappers.item.ItemEntityMapper;
 import github.ricemonger.fast_sell_trade_manager.postgres.services.entity_mappers.user.UbiAccountStatsEntityMapper;
 import github.ricemonger.fast_sell_trade_manager.services.DTOs.FastSellManagedUser;
@@ -19,9 +19,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UbiAccountEntryPostgresService implements UbiAccountEntryDatabaseService {
 
-    private final UbiAccountEntryPostgresRepository ubiAccountEntryPostgresRepository;
+    private final CustomUbiAccountEntryPostgresRepository customUbiAccountEntryPostgresRepository;
 
-    private final UbiAccountStatsPostgresRepository ubiAccountStatsPostgresRepository;
+    private final CustomUbiAccountStatsPostgresRepository customUbiAccountStatsPostgresRepository;
 
     private final UbiAccountStatsEntityMapper ubiAccountStatsEntityMapper;
 
@@ -29,13 +29,13 @@ public class UbiAccountEntryPostgresService implements UbiAccountEntryDatabaseSe
 
     @Override
     public FastSellManagedUser getFastSellManagedUserById(Long fastSellManagedUserId, String email) {
-        FastSellManagedUserProjection projection = ubiAccountEntryPostgresRepository.findFastSellManagedUserById(fastSellManagedUserId, email).get();
-        return ubiAccountStatsEntityMapper.createFastSellManagedUser(projection, ubiAccountStatsPostgresRepository.findAllUserResaleLocksItemIds(projection.getUbiProfileId()));
+        FastSellManagedUserProjection projection = customUbiAccountEntryPostgresRepository.findFastSellManagedUserById(fastSellManagedUserId, email).get();
+        return ubiAccountStatsEntityMapper.createFastSellManagedUser(projection, customUbiAccountStatsPostgresRepository.findAllUserResaleLocksItemIds(projection.getUbiProfileId()));
     }
 
     @Override
     public List<ItemMedianPriceAndRarity> getOwnedItemsMedianPriceAndRarity(String ubiProfileId) {
-        return ubiAccountStatsPostgresRepository.findOwnedItemsMedianPriceAndRarity(ubiProfileId).stream()
+        return customUbiAccountStatsPostgresRepository.findOwnedItemsMedianPriceAndRarity(ubiProfileId).stream()
                 .map(itemEntityMapper::createItemMedianPriceAndRarity)
                 .toList();
     }

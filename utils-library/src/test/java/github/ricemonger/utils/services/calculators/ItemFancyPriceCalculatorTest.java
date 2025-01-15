@@ -9,7 +9,7 @@ import static org.mockito.Mockito.*;
 
 class ItemFancyPriceCalculatorTest {
 
-    private final CalculatorsCommonValuesService commonValuesService = mock(CalculatorsCommonValuesService.class);
+    private final PricesCommonValuesService commonValuesService = mock(PricesCommonValuesService.class);
 
     private final ItemFancyPriceCalculator itemFancyPriceCalculator = spy(new ItemFancyPriceCalculator(commonValuesService));
 

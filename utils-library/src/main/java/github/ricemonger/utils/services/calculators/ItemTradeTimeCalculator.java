@@ -20,7 +20,7 @@ public class ItemTradeTimeCalculator {
     public static final int MINUTES_IN_AN_HOUR = 60;
     public static final int TRADE_MANAGER_FIXED_RATE_MINUTES = 1;
 
-    private final CalculatorsCommonValuesService commonValuesService;
+    private final PricesCommonValuesService commonValuesService;
 
     private final ItemFancyPriceCalculator itemFancyPriceCalculator;
 

@@ -5,18 +5,18 @@ import org.springframework.context.annotation.Bean;
 public class TradeStatsCalculatorUtilsConfiguration {
 
     @Bean
-    public ItemFancyPriceCalculator itemFancyPriceCalculator(CalculatorsCommonValuesService calculatorsCommonValuesService) {
-        return new ItemFancyPriceCalculator(calculatorsCommonValuesService);
+    public ItemFancyPriceCalculator itemFancyPriceCalculator(PricesCommonValuesService pricesCommonValuesService) {
+        return new ItemFancyPriceCalculator(pricesCommonValuesService);
     }
 
     @Bean
-    public ItemTradeTimeCalculator itemTradeTimeCalculator(CalculatorsCommonValuesService calculatorsCommonValuesService, ItemFancyPriceCalculator itemFancyPriceCalculator) {
-        return new ItemTradeTimeCalculator(calculatorsCommonValuesService, itemFancyPriceCalculator);
+    public ItemTradeTimeCalculator itemTradeTimeCalculator(PricesCommonValuesService pricesCommonValuesService, ItemFancyPriceCalculator itemFancyPriceCalculator) {
+        return new ItemTradeTimeCalculator(pricesCommonValuesService, itemFancyPriceCalculator);
     }
 
     @Bean
-    ItemTradePriorityCalculator itemTradePriorityCalculator(CalculatorsCommonValuesService calculatorsCommonValuesService) {
-        return new ItemTradePriorityCalculator(calculatorsCommonValuesService);
+    ItemTradePriorityCalculator itemTradePriorityCalculator(PricesCommonValuesService pricesCommonValuesService) {
+        return new ItemTradePriorityCalculator(pricesCommonValuesService);
     }
 
     @Bean

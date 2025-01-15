@@ -2,7 +2,7 @@ package github.ricemonger.utils.services.calculators;
 
 import github.ricemonger.utils.enums.ItemRarity;
 
-public interface CalculatorsCommonValuesService {
+public interface PricesCommonValuesService {
 
     default Integer getMinimumPriceByRarity(ItemRarity rarity) {
         if (rarity == null) {

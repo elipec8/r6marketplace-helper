@@ -8,8 +8,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemMedianPriceAndRarityProjection {
+public class ItemMedianPriceAndRarityProjection implements ItemMedianPriceAndRarityProjectionI{
     private String itemId;
     private ItemRarity rarity;
     private Integer monthMedianPrice;
+
+    public ItemMedianPriceAndRarityProjection(ItemMedianPriceAndRarityProjectionI projectionI) {
+        this.itemId = projectionI.getItemId();
+        this.rarity = projectionI.getRarity();
+        this.monthMedianPrice = projectionI.getMonthMedianPrice();
+    }
 }
