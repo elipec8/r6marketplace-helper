@@ -7,9 +7,9 @@ import github.ricemonger.fast_sell_trade_manager.services.TradeManagementCommand
 import github.ricemonger.fast_sell_trade_manager.services.UbiAccountEntryService;
 import github.ricemonger.fast_sell_trade_manager.services.factories.PotentialTradeFactory;
 import github.ricemonger.fast_sell_trade_manager.services.factories.TradeManagementCommandsFactory;
-import github.ricemonger.marketplace.graphQl.personal_query_current_sell_orders.PersonalQueryCurrentSellOrdersGraphQlClientService;
-import github.ricemonger.marketplace.graphQl.personal_query_owned_items_prices.PersonalQueryOwnedItemsPricesGraphQlClientService;
+import github.ricemonger.marketplace.graphQl.personal_query_owned_items_prices_and_current_sell_orders.PersonalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientService;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
+import github.ricemonger.utils.DTOs.personal.FastUserUbiStats;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -36,14 +36,12 @@ class ScheduledOneUserFastSellTradeManagerTest {
     @MockBean
     private TradeManagementCommandsExecutor fastTradeManagementCommandExecutor;
     @MockBean
-    private PersonalQueryOwnedItemsPricesGraphQlClientService personalQueryOwnedItemsPricesGraphQlClientService;
-    @MockBean
-    private PersonalQueryCurrentSellOrdersGraphQlClientService personalQueryCurrentSellOrdersGraphQlClientService;
+    private PersonalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientService graphQlClientService;
     @MockBean
     private PotentialTradeFactory potentialTradeFactory;
 
     @Test
-    public void manageOneUserFastSellTrades_should_fetch_info_and_execute_commands() throws Exception {
+    public void manageOneUserFastSellTrades_should_fetch_info_and_execute_commands() {
         List itemCurrentPrices = Mockito.mock(List.class);
         List sellTrades = Mockito.mock(List.class);
 
@@ -62,9 +60,11 @@ class ScheduledOneUserFastSellTradeManagerTest {
 
         when(commonValuesService.getFastTradeOwnedItemsLimit()).thenReturn(120);
 
-        when(personalQueryOwnedItemsPricesGraphQlClientService.fetchOwnedItemsCurrentPricesForUser(same(authorizationDTO), eq(120))).thenReturn(itemCurrentPrices);
+        FastUserUbiStats ubiStats = new FastUserUbiStats();
+        ubiStats.setItemsCurrentPrices(itemCurrentPrices);
+        ubiStats.setCurrentSellOrders(sellTrades);
 
-        when(personalQueryCurrentSellOrdersGraphQlClientService.fetchCurrentSellOrdersForUser(same(authorizationDTO))).thenReturn(sellTrades);
+        when(graphQlClientService.fetchOwnedItemsCurrentPricesAndSellOrdersForUser(same(authorizationDTO), eq(120))).thenReturn(ubiStats);
 
         when(commonValuesService.getMinMedianPriceDifference()).thenReturn(1);
         when(commonValuesService.getMinMedianPriceDifferencePercentage()).thenReturn(2);

@@ -168,7 +168,7 @@ public class GraphQlVariablesServiceTest {
         when(commonValuesService.getUbiGameSpaceId()).thenReturn(mainUserSpaceId);
         when(commonValuesService.getPaymentItemId()).thenReturn("paymentItemId");
 
-        Map<String, Object> result = graphQlVariablesService.getFetchOwnedItemsPricesVariables(offset,limit);
+        Map<String, Object> result = graphQlVariablesService.getFetchOwnedItemsPricesVariables(offset, limit);
 
         assertTrue(mapContainsEntries(result, Map.entry("spaceId", mainUserSpaceId), Map.entry("offset", offset), Map.entry("limit", limit)));
 

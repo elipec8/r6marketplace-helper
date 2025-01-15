@@ -30,54 +30,6 @@ public class GraphQlDocuments {
 
     public final static String QUERY_CURRENT_SELL_ORDERS_DOCUMENT_NAME = "personal_query_current_sell_orders";
 
-    public static final String QUERY_CURRENT_SELL_ORDERS_DOCUMENT = """
-            query GetTransactionsPending($spaceId: String!, $limit: Int!, $offset: Int) {
-                game(spaceId: $spaceId) {
-                    viewer {
-                        meta {
-                            trades(
-                                limit: $limit
-                                offset: $offset
-                                filterBy: {states: [Created], category: Sell}
-                                sortBy: {field: LAST_MODIFIED_AT}
-                            ) {
-                                nodes {
-                                    ...TradeFragment
-                                    __typename
-                                }
-                                __typename
-                            }
-                            __typename
-                        }
-                        __typename
-                    }
-                    __typename
-                }
-            }
-            
-            fragment TradeFragment on Trade {
-                tradeId
-                tradeItems {
-                    item {
-                        ...SecondaryStoreItemFragment
-                        __typename
-                    }
-                    __typename
-                }
-                paymentOptions {
-                    price
-                    __typename
-                }
-                __typename
-            }
-            
-            fragment SecondaryStoreItemFragment on SecondaryStoreItem {
-                itemId
-                __typename
-            }
-            
-            """;
-
     public final static String QUERY_FINISHED_ORDERS_DOCUMENT_NAME = "personal_query_finished_orders";
 
     public final static String QUERY_LOCKED_ITEMS_DOCUMENT_NAME = "personal_query_locked_items";
@@ -88,59 +40,5 @@ public class GraphQlDocuments {
 
     public final static String QUERY_OWNED_ITEMS_PRICES_DOCUMENT_NAME = "personal_query_owned_items_prices";
 
-    public final static String QUERY_OWNED_ITEMS_PRICES_DOCUMENT = """
-            query GetSellableItems($spaceId: String!, $limit: Int!, $offset: Int, $sortBy: MarketableItemSort) {
-                game(spaceId: $spaceId) {
-                    viewer {
-                        meta {
-                            marketableItems(
-                                limit: $limit
-                                offset: $offset
-                                sortBy: $sortBy
-                                withMarketData: true
-                            ) {
-                                nodes {
-                                    ...MarketableItemFragment
-                                    __typename
-                                }
-                                totalCount
-                                __typename
-                            }
-                            __typename
-                        }
-                        __typename
-                    }
-                    __typename
-                }
-            }
-            
-            fragment MarketableItemFragment on MarketableItem {
-                item {
-                    ...SecondaryStoreItemFragment
-                    __typename
-                }
-                marketData {
-                    ...MarketDataFragment
-                    __typename
-                }
-                __typename
-            }
-            
-            fragment SecondaryStoreItemFragment on SecondaryStoreItem {
-                itemId
-                __typename
-            }
-            
-            fragment MarketDataFragment on MarketableItemMarketData {
-                sellStats {
-                    lowestPrice
-                    __typename
-                }
-                buyStats {
-                    highestPrice
-                    __typename
-                }
-                __typename
-            }
-            """;
+    public final static String QUERY_OWNED_ITEMS_PRICES_AND_CURRENT_SELL_ORDERS_DOCUMENT_NAME = "personal_query_owned_items_prices_and_current_sell_orders";
 }

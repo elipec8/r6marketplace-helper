@@ -9,11 +9,9 @@ import github.ricemonger.fast_sell_trade_manager.services.TradeManagementCommand
 import github.ricemonger.fast_sell_trade_manager.services.UbiAccountEntryService;
 import github.ricemonger.fast_sell_trade_manager.services.factories.PotentialTradeFactory;
 import github.ricemonger.fast_sell_trade_manager.services.factories.TradeManagementCommandsFactory;
-import github.ricemonger.marketplace.graphQl.personal_query_current_sell_orders.PersonalQueryCurrentSellOrdersGraphQlClientService;
-import github.ricemonger.marketplace.graphQl.personal_query_owned_items_prices.PersonalQueryOwnedItemsPricesGraphQlClientService;
+import github.ricemonger.marketplace.graphQl.personal_query_owned_items_prices_and_current_sell_orders.PersonalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientService;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
-import github.ricemonger.utils.DTOs.common.ItemCurrentPrices;
-import github.ricemonger.utils.DTOs.personal.SellTrade;
+import github.ricemonger.utils.DTOs.personal.FastUserUbiStats;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,7 +19,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @Component
 @Slf4j
@@ -31,8 +28,7 @@ public class ScheduledOneUserFastSellTradeManager {
     private final UbiAccountEntryService ubiAccountEntryService;
     private final TradeManagementCommandsFactory tradeManagementCommandsFactory;
     private final TradeManagementCommandsExecutor fastTradeManagementCommandExecutor;
-    private final PersonalQueryOwnedItemsPricesGraphQlClientService personalQueryOwnedItemsPricesGraphQlClientService;
-    private final PersonalQueryCurrentSellOrdersGraphQlClientService personalQueryCurrentSellOrdersGraphQlClientService;
+    private final PersonalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientService personalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientService;
     private final PotentialTradeFactory potentialTradeFactory;
 
     private int sellSlots;
@@ -40,21 +36,13 @@ public class ScheduledOneUserFastSellTradeManager {
     private FastSellManagedUser managedUser;
     private List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity = new ArrayList<>();
 
-    // for CompletableFuture throws java.lang.IllegalStateException: Failed to find document, name='personal_query_owned_items_prices', under location
-    //  (s)=[class path resource [graphql-documents/]] in docker container, no exception occurs in local environment or if .document() used instead
-    //  of .documentName()
     @Scheduled(fixedRateString = "${app.scheduling.management.fixedRate}", initialDelayString = "${app.scheduling.management.initialDelay}")
     public void manageOneUserFastSellTrades() {
-        CompletableFuture<List<ItemCurrentPrices>> itemsCurrentPricesFuture = CompletableFuture.supplyAsync(() -> personalQueryOwnedItemsPricesGraphQlClientService.fetchOwnedItemsCurrentPricesForUser(managedUser.toAuthorizationDTO(), commonValuesService.getFastTradeOwnedItemsLimit()));
-
-        CompletableFuture<List<SellTrade>> sellTradesFuture = CompletableFuture.supplyAsync(() -> personalQueryCurrentSellOrdersGraphQlClientService.fetchCurrentSellOrdersForUser(managedUser.toAuthorizationDTO()));
-
+        FastUserUbiStats userStats = personalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientService.fetchOwnedItemsCurrentPricesAndSellOrdersForUser(managedUser.toAuthorizationDTO(), commonValuesService.getFastTradeOwnedItemsLimit());
         try {
-            List<PotentialTrade> items = potentialTradeFactory.createPotentialTradesForUser(itemsCurrentPricesFuture.get(), itemsMedianPriceAndRarity, commonValuesService.getMinMedianPriceDifference(), commonValuesService.getMinMedianPriceDifferencePercentage());
+            List<PotentialTrade> items = potentialTradeFactory.createPotentialTradesForUser(userStats.getItemsCurrentPrices(), itemsMedianPriceAndRarity, commonValuesService.getMinMedianPriceDifference(), commonValuesService.getMinMedianPriceDifferencePercentage());
 
-            List<FastTradeManagerCommand> commands = tradeManagementCommandsFactory.createFastSellTradeManagerCommandsForUser(managedUser, sellTradesFuture.get(), items, itemsMedianPriceAndRarity, sellLimit, sellSlots);
-
-            System.out.println("commands: " + commands);
+            List<FastTradeManagerCommand> commands = tradeManagementCommandsFactory.createFastSellTradeManagerCommandsForUser(managedUser, userStats.getCurrentSellOrders(), items, itemsMedianPriceAndRarity, sellLimit, sellSlots);
 
             for (FastTradeManagerCommand command : commands.stream().sorted().toList()) {
                 fastTradeManagementCommandExecutor.executeCommand(command);

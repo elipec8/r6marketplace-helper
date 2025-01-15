@@ -4,8 +4,7 @@ import github.ricemonger.marketplace.databases.redis.services.RedisUtilsConfigur
 import github.ricemonger.marketplace.graphQl.personal_mutation_cancel.PersonalMutationCancelGraphQlConfiguration;
 import github.ricemonger.marketplace.graphQl.personal_mutation_sell_create.PersonalMutationSellCreateGraphQlConfiguration;
 import github.ricemonger.marketplace.graphQl.personal_mutation_sell_update.PersonalMutationSellUpdateGraphQlConfiguration;
-import github.ricemonger.marketplace.graphQl.personal_query_current_sell_orders.PersonalQueryCurrentSellOrdersGraphQlConfiguration;
-import github.ricemonger.marketplace.graphQl.personal_query_owned_items_prices.PersonalQueryOwnedItemsPricesGraphQlConfiguration;
+import github.ricemonger.marketplace.graphQl.personal_query_owned_items_prices_and_current_sell_orders.PersonalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlConfiguration;
 import github.ricemonger.utils.SchedulingUtilsConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,8 +22,7 @@ import org.springframework.context.annotation.Import;
         PersonalMutationSellCreateGraphQlConfiguration.class,
         PersonalMutationSellUpdateGraphQlConfiguration.class,
         PersonalMutationCancelGraphQlConfiguration.class,
-        PersonalQueryOwnedItemsPricesGraphQlConfiguration.class,
-        PersonalQueryCurrentSellOrdersGraphQlConfiguration.class
+        PersonalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlConfiguration.class
 })
 public class FastSellTradeManagerApplication {
 

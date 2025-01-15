@@ -26,8 +26,7 @@ app:
   scheduling:
     enabled: ${SCHEDULING_ENABLED:true}
     management:
-      fixedRate: ${SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT:1000} # 900ms - rare 1s errors, 67 manages per minute
-      # 450ms - 30s 90 manages per minute, 30s of errors for every request to graphql, fromother services too
+      fixedRate: ${SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT:500}
       initialDelay: ${SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT:10500}
     median_prices_fetch:
       fixedRate: ${SCHEDULING_FIXED_DELAY_MEDIAN_PRICES_FETCH:600000}
