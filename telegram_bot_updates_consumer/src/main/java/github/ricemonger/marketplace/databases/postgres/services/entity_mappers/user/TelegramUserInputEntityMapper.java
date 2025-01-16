@@ -2,7 +2,7 @@ package github.ricemonger.marketplace.databases.postgres.services.entity_mappers
 
 
 import github.ricemonger.marketplace.databases.postgres.dto_projections.TelegramUserInputProjection;
-import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomTelegramUserPostgresRepository;
 import github.ricemonger.marketplace.services.DTOs.TelegramUserInput;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserEntity;
@@ -15,11 +15,11 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class TelegramUserInputEntityMapper {
-    private final TelegramUserPostgresRepository telegramUserPostgresRepository;
+    private final CustomTelegramUserPostgresRepository customTelegramUserPostgresRepository;
 
     public TelegramUserInputEntity createEntity(TelegramUserInput input) {
-        if (telegramUserPostgresRepository.existsById(input.getChatId())) {
-            TelegramUserEntity telegramUserEntity = telegramUserPostgresRepository.getReferenceById(input.getChatId());
+        if (customTelegramUserPostgresRepository.existsById(input.getChatId())) {
+            TelegramUserEntity telegramUserEntity = customTelegramUserPostgresRepository.getReferenceById(input.getChatId());
             TelegramUserInputEntity entity = new TelegramUserInputEntity();
             entity.setTelegramUser(telegramUserEntity);
             entity.setInputState(input.getInputState());

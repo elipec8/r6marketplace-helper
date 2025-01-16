@@ -1,8 +1,8 @@
 package github.ricemonger.item_stats_fetcher.databases.postgres.services.entity_mappers;
 
-import github.ricemonger.item_stats_fetcher.databases.postgres.entities.ItemMainFieldsEntity;
-import github.ricemonger.item_stats_fetcher.databases.postgres.entities.TagEntity;
-import github.ricemonger.item_stats_fetcher.databases.postgres.repositories.TagValuePostgresRepository;
+import github.ricemonger.item_stats_fetcher.databases.postgres.custom_entities.ItemMainFieldsEntity;
+import github.ricemonger.item_stats_fetcher.databases.postgres.custom_entities.TagEntity;
+import github.ricemonger.item_stats_fetcher.databases.postgres.repositories.CustomTagValuePostgresRepository;
 import github.ricemonger.utils.DTOs.common.ItemMainFieldsI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemMainFieldsPostgresMapper {
 
-    private final TagValuePostgresRepository tagValueRepository;
+    private final CustomTagValuePostgresRepository tagValueRepository;
 
     public List<ItemMainFieldsEntity> mapToEntities(Collection<? extends ItemMainFieldsI> items) {
         List<TagEntity> existingTagValues = tagValueRepository.findAll();

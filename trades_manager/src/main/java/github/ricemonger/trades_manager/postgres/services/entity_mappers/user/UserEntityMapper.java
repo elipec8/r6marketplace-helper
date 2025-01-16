@@ -1,6 +1,6 @@
 package github.ricemonger.trades_manager.postgres.services.entity_mappers.user;
 
-import github.ricemonger.trades_manager.postgres.entities.manageable_users.ManageableUserEntity;
+import github.ricemonger.trades_manager.postgres.custom_entities.manageable_users.CustomManageableUserEntity;
 import github.ricemonger.trades_manager.services.DTOs.ManageableUser;
 import github.ricemonger.trades_manager.services.DTOs.UbiAccountStats;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class UserEntityMapper {
 
     private final UbiAccountStatsEntityMapper ubiAccountStatsEntityMapper;
 
-    public ManageableUser createManageableUser(ManageableUserEntity entity) {
+    public ManageableUser createManageableUser(CustomManageableUserEntity entity) {
 
         UbiAccountStats ubiAccountStats = ubiAccountStatsEntityMapper.createDTO(entity.getUbiAccountEntry().getUbiAccountStats());
 
@@ -31,7 +31,9 @@ public class UserEntityMapper {
                 entity.getUbiAccountEntry().getUbiRememberDeviceTicket(),
                 entity.getUbiAccountEntry().getUbiRememberMeTicket(),
                 entity.getTradeByFiltersManagers().stream().map(tradeByFiltersManagerEntityMapper::createDTO).toList(),
-                entity.getTradeByItemIdManagers().stream().map(tradeByItemIdManagerEntityMapper::createDTO).toList()
+                entity.getTradeByItemIdManagers().stream().map(tradeByItemIdManagerEntityMapper::createDTO).toList(),
+                entity.getSellTradesManagingEnabledFlag(),
+                entity.getBuyTradesManagingEnabledFlag()
         );
     }
 }

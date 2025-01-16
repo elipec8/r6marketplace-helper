@@ -1,7 +1,7 @@
 package github.ricemonger.ubi_users_stats_fetcher.postgres.services;
 
 
-import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.UserUbiAccountEntryPostgresRepository;
+import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.CustomUserUbiAccountEntryPostgresRepository;
 import github.ricemonger.ubi_users_stats_fetcher.postgres.services.entity_mappers.user.UbiAccountEntryEntityMapper;
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UserAuthorizedUbiAccount;
 import github.ricemonger.ubi_users_stats_fetcher.services.abstractions.UserUbiAccountEntryDatabaseService;
@@ -15,13 +15,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserUbiAccountEntryPostgresService implements UserUbiAccountEntryDatabaseService {
 
-    private final UserUbiAccountEntryPostgresRepository userUbiAccountEntryPostgresRepository;
+    private final CustomUserUbiAccountEntryPostgresRepository customUserUbiAccountEntryPostgresRepository;
 
     private final UbiAccountEntryEntityMapper ubiAccountEntryEntityMapper;
 
     @Override
     @Transactional(readOnly = true)
     public List<UserAuthorizedUbiAccount> findAllUserAuthorizedUbiAccounts() {
-        return userUbiAccountEntryPostgresRepository.findAllUserAuthorizedUbiAccounts().stream().map(ubiAccountEntryEntityMapper::createUserUbiAccountEntry).toList();
+        return customUserUbiAccountEntryPostgresRepository.findAllUserAuthorizedUbiAccounts().stream().map(ubiAccountEntryEntityMapper::createUserUbiAccountEntry).toList();
     }
 }

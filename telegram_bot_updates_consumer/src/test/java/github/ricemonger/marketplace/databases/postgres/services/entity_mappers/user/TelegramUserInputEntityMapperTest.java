@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
-import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomTelegramUserPostgresRepository;
 import github.ricemonger.marketplace.services.DTOs.TelegramUserInput;
 import github.ricemonger.utils.enums.InputState;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
@@ -20,7 +20,7 @@ class TelegramUserInputEntityMapperTest {
     @Autowired
     private TelegramUserInputEntityMapper telegramUserInputEntityMapper;
     @MockBean
-    private TelegramUserPostgresRepository telegramUserPostgresRepository;
+    private CustomTelegramUserPostgresRepository customTelegramUserPostgresRepository;
 
     @Test
     public void createEntity_should_properly_map_entity() {
@@ -30,8 +30,8 @@ class TelegramUserInputEntityMapperTest {
         telegramUserEntity.setChatId("chatId");
         telegramUserEntity.setUser(new UserEntity());
         telegramUserEntity.getUser().setId(1L);
-        when(telegramUserPostgresRepository.existsById("chatId")).thenReturn(true);
-        when(telegramUserPostgresRepository.getReferenceById("chatId")).thenReturn(telegramUserEntity);
+        when(customTelegramUserPostgresRepository.existsById("chatId")).thenReturn(true);
+        when(customTelegramUserPostgresRepository.getReferenceById("chatId")).thenReturn(telegramUserEntity);
 
         assertTrue(new TelegramUserInputEntity(telegramUserEntity, InputState.ITEM_FILTER_NAME, "value").isFullyEqual(telegramUserInputEntityMapper.createEntity(input)));
     }
@@ -40,7 +40,7 @@ class TelegramUserInputEntityMapperTest {
     public void createEntity_should_throw_if_user_doesnt_exist() {
         TelegramUserInput input = new TelegramUserInput("chatId", InputState.ITEM_FILTER_NAME, "value");
 
-        when(telegramUserPostgresRepository.existsById("chatId")).thenReturn(false);
+        when(customTelegramUserPostgresRepository.existsById("chatId")).thenReturn(false);
 
         assertThrows(TelegramUserDoesntExistException.class, () -> telegramUserInputEntityMapper.createEntity(input));
     }

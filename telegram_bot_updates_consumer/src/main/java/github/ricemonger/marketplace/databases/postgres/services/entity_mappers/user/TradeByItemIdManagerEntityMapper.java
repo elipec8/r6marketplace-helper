@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
 import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
@@ -17,15 +17,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class TradeByItemIdManagerEntityMapper {
 
-    private final UserPostgresRepository userPostgresRepository;
+    private final CustomUserPostgresRepository customUserPostgresRepository;
 
     private final ItemPostgresRepository itemPostgresRepository;
 
     public TradeByItemIdManagerEntity createEntity(String chatId, TradeByItemIdManager tradeManager) {
-        if (!userPostgresRepository.existsByTelegramUserChatId(chatId)) {
+        if (!customUserPostgresRepository.existsByTelegramUserChatId(chatId)) {
             throw new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found");
         }
-        UserEntity userEntity = userPostgresRepository.getReferenceByTelegramUserChatId(chatId);
+        UserEntity userEntity = customUserPostgresRepository.getReferenceByTelegramUserChatId(chatId);
 
         if (!itemPostgresRepository.existsById(tradeManager.getItemId())) {
             throw new ItemDoesntExistException("Item with id " + tradeManager.getItemId() + " doesn't exist");

@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"github.ricemonger.notifications_service"},
+@ComponentScan(basePackages = {"github.ricemonger.notifications_service", "github.ricemonger.utilspostgresschema"},
         basePackageClasses = github.ricemonger.utils.PublicMethodLogger.class)
 @EntityScan(basePackages = "github.ricemonger.utilspostgresschema")
 public class NotificationsServiceApplication {

@@ -292,7 +292,7 @@ public class BotInnerServiceTest {
     @Test
     public void saveUserTradeByItemIdManagerByUserInput_should_handle_to_service() {
         TradeByItemIdManager manager = Mockito.mock(TradeByItemIdManager.class);
-        TradeManagersSettings settings = new TradeManagersSettings(true, true);
+        TradeManagersSettings settings = new TradeManagersSettings(true, true, true, true);
         when(telegramUserService.getTradeManagersSettings(1L)).thenReturn(settings);
         doReturn(manager).when(botInnerService).generateTradeByItemIdManagerByUserInput(1L, TradeOperationType.SELL);
 
@@ -304,7 +304,7 @@ public class BotInnerServiceTest {
     @Test
     public void saveUserTradeByFiltersManagerByUserInput_should_handle_to_service() {
         TradeByFiltersManager manager = Mockito.mock(TradeByFiltersManager.class);
-        TradeManagersSettings settings = new TradeManagersSettings(true, true);
+        TradeManagersSettings settings = new TradeManagersSettings(true, true, true, true);
         when(telegramUserService.getTradeManagersSettings(1L)).thenReturn(settings);
         doReturn(manager).when(botInnerService).generateTradeByFiltersManagerByUserInput(1L);
 
@@ -318,7 +318,7 @@ public class BotInnerServiceTest {
         List inputs = Mockito.mock(List.class);
         when(telegramUserService.getAllUserInputs(1L)).thenReturn(inputs);
 
-        TradeManagersSettings settings = new TradeManagersSettings(true, true);
+        TradeManagersSettings settings = new TradeManagersSettings(true, true, true, false);
         doReturn(settings).when(botInnerService).getUserTradeManagersSettings(1L);
 
         TradeByItemIdManager tradeManager = Mockito.mock(TradeByItemIdManager.class);
@@ -332,7 +332,7 @@ public class BotInnerServiceTest {
         List inputs = Mockito.mock(List.class);
         when(telegramUserService.getAllUserInputs(1L)).thenReturn(inputs);
 
-        TradeManagersSettings settings = new TradeManagersSettings(true, true);
+        TradeManagersSettings settings = new TradeManagersSettings(true, true, true, false);
         doReturn(settings).when(botInnerService).getUserTradeManagersSettings(1L);
 
         TradeByFiltersManager tradeManager = Mockito.mock(TradeByFiltersManager.class);
@@ -461,6 +461,30 @@ public class BotInnerServiceTest {
     public void setUserTradeManagersSettingsManagingEnabledFlag_should_handle_to_service_false_flag() {
         botInnerService.setUserTradeManagersSettingsManagingEnabledFlag(1L, false);
         verify(telegramUserService).setTradeManagersSettingsManagingEnabledFlag(1L, false);
+    }
+
+    @Test
+    public void setUserTradeManagersSellSettingsManagingEnabledFlag_should_handle_to_service_true_flag() {
+        botInnerService.setUserTradeManagersSellSettingsManagingEnabledFlag(1L, true);
+        verify(telegramUserService).setTradeManagersSellSettingsManagingEnabledFlag(1L, true);
+    }
+
+    @Test
+    public void setUserTradeManagersSellSettingsManagingEnabledFlag_should_handle_to_service_false_flag() {
+        botInnerService.setUserTradeManagersSellSettingsManagingEnabledFlag(1L, false);
+        verify(telegramUserService).setTradeManagersSellSettingsManagingEnabledFlag(1L, false);
+    }
+
+    @Test
+    public void setUserTradeManagersBuySettingsManagingEnabledFlag_should_handle_to_service_true_flag() {
+        botInnerService.setUserTradeManagersBuySettingsManagingEnabledFlag(1L, true);
+        verify(telegramUserService).setTradeManagersBuySettingsManagingEnabledFlag(1L, true);
+    }
+
+    @Test
+    public void setUserTradeManagersBuySettingsManagingEnabledFlag_should_handle_to_service_false_flag() {
+        botInnerService.setUserTradeManagersBuySettingsManagingEnabledFlag(1L, false);
+        verify(telegramUserService).setTradeManagersBuySettingsManagingEnabledFlag(1L, false);
     }
 
     @Test

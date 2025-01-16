@@ -28,6 +28,10 @@ public class ManageableUser {
 
     private List<TradeByItemIdManager> tradeByItemIdManagers = new ArrayList<>();
 
+    private Boolean sellTradesManagingEnabledFlag;
+
+    private Boolean buyTradesManagingEnabledFlag;
+
     public String getUbiProfileId() {
         return ubiAccountStats == null ? null : ubiAccountStats.getUbiProfileId();
     }

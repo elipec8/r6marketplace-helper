@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomTelegramUserPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TelegramUserEntityMapper;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.UserEntityMapper;
 import github.ricemonger.marketplace.services.DTOs.*;
@@ -22,13 +22,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TelegramUserPostgresService implements TelegramUserDatabaseService {
 
-    private final TelegramUserPostgresRepository telegramUserRepository;
+    private final CustomTelegramUserPostgresRepository telegramUserRepository;
 
     private final TelegramUserEntityMapper telegramUserEntityMapper;
 
     private final UserEntityMapper userEntityMapper;
 
-    private final UserPostgresRepository userRepository;
+    private final CustomUserPostgresRepository userRepository;
 
     @Override
     @Transactional
@@ -126,10 +126,21 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     }
 
     @Override
+    @Transactional
+    public void setUserTradeManagersSellSettingsManagingEnabledFlag(String chatId, boolean flag) {
+        userRepository.updateTradeManagersSellSettingsManagingEnabledFlagByTelegramUserChatId(chatId, flag);
+    }
+
+    @Override
+    @Transactional
+    public void setUserTradeManagersBuySettingsManagingEnabledFlag(String chatId, boolean flag) {
+        userRepository.updateTradeManagersBuySettingsManagingEnabledFlagByTelegramUserChatId(chatId, flag);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public TradeManagersSettings findUserTradeManagersSettings(String chatId) throws TelegramUserDoesntExistException {
-        return userEntityMapper.createTradeManagersSettings(userRepository.findTradeManagersSettingsByTelegramUserChatId(chatId).orElseThrow(() -> new TelegramUserDoesntExistException(
-                "Telegram user with chatId " + chatId + " not found")));
+        return userEntityMapper.createTradeManagersSettings(userRepository.findTradeManagersSettingsByTelegramUserChatId(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found")));
     }
 
     @Override

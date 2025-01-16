@@ -5,9 +5,9 @@ import github.ricemonger.trades_manager.services.DTOs.*;
 import github.ricemonger.trades_manager.services.ItemService;
 import github.ricemonger.trades_manager.services.TradeManagementCommandsExecutor;
 import github.ricemonger.trades_manager.services.UserService;
-import github.ricemonger.trades_manager.services.factories.TradeManagerCommandsFactory;
 import github.ricemonger.trades_manager.services.factories.PersonalItemFactory;
 import github.ricemonger.trades_manager.services.factories.PotentialTradeFactory;
+import github.ricemonger.trades_manager.services.factories.TradeManagerCommandsFactory;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.DTOs.common.Item;
 import lombok.RequiredArgsConstructor;
@@ -62,18 +62,29 @@ public class ScheduledAllUbiUsersManager {
                 manageableUser.getOwnedItemsIds(),
                 existingItems);
 
-        List<PotentialPersonalSellTrade> resultingSellTrades = potentialTradeFactory.getResultingPersonalSellTrades(
-                personalItems,
-                manageableUser.getResaleLocks(),
-                manageableUser.getSoldIn24h(),
-                configTrades.getSellSlots(),
-                configTrades.getSellLimit());
-        List<PotentialPersonalBuyTrade> resultingBuyTrades = potentialTradeFactory.getResultingPersonalBuyTrades(
-                personalItems,
-                manageableUser.getCreditAmount(),
-                manageableUser.getBoughtIn24h(),
-                configTrades.getBuySlots(),
-                configTrades.getBuyLimit());
+        List<PotentialPersonalSellTrade> resultingSellTrades;
+        if (manageableUser.getSellTradesManagingEnabledFlag() != null && manageableUser.getSellTradesManagingEnabledFlag()) {
+            resultingSellTrades = potentialTradeFactory.getResultingPersonalSellTrades(
+                    personalItems,
+                    manageableUser.getResaleLocks(),
+                    manageableUser.getSoldIn24h(),
+                    configTrades.getSellSlots(),
+                    configTrades.getSellLimit());
+        } else {
+            resultingSellTrades = new ArrayList<>();
+        }
+
+        List<PotentialPersonalBuyTrade> resultingBuyTrades;
+        if (manageableUser.getBuyTradesManagingEnabledFlag() != null && manageableUser.getBuyTradesManagingEnabledFlag()) {
+            resultingBuyTrades = potentialTradeFactory.getResultingPersonalBuyTrades(
+                    personalItems,
+                    manageableUser.getCreditAmount(),
+                    manageableUser.getBoughtIn24h(),
+                    configTrades.getBuySlots(),
+                    configTrades.getBuyLimit());
+        } else {
+            resultingBuyTrades = new ArrayList<>();
+        }
 
         List<TradeManagerCommand> commands = new ArrayList<>(tradeManagerCommandsFactory.createTradeManagerCommandsForUser(
                 resultingSellTrades,

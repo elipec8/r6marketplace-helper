@@ -1,8 +1,8 @@
 package github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.services.entity_mappers.item;
 
-import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.entities.ItemDaySalesUbiStatsEntity;
-import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.entities.ItemEntity;
-import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.repositories.ItemPostgresRepository;
+import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.custom_entities.ItemDaySalesUbiStatsEntity;
+import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.custom_entities.ItemEntity;
+import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.repositories.CustomItemPostgresRepository;
 import github.ricemonger.utils.DTOs.common.GroupedItemDaySalesUbiStats;
 import github.ricemonger.utils.DTOs.common.ItemDaySalesUbiStats;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ class ItemDaySalesUbiStatsEntityMapperTest {
     @Autowired
     private ItemDaySalesUbiStatsEntityMapper itemDaySalesUbiStatsEntityMapper;
     @MockBean
-    private ItemPostgresRepository itemPostgresRepository;
+    private CustomItemPostgresRepository customItemPostgresRepository;
 
     @Test
     public void createEntities_should_return_empty_list_when_input_is_empty() {
@@ -38,7 +38,7 @@ class ItemDaySalesUbiStatsEntityMapperTest {
         entities.add(new ItemEntity("itemId1"));
         entities.add(new ItemEntity("itemId2"));
         entities.add(new ItemEntity("itemId4"));
-        when(itemPostgresRepository.findAll()).thenReturn(entities);
+        when(customItemPostgresRepository.findAll()).thenReturn(entities);
 
         ItemDaySalesUbiStats daySales11 = new ItemDaySalesUbiStats("itemId1", LocalDate.of(2021, 1, 1), 1, 2, 3, 4);
         ItemDaySalesUbiStats daySales12 = new ItemDaySalesUbiStats("itemId1", LocalDate.of(2021, 1, 2), 5, 6, 7, 8);

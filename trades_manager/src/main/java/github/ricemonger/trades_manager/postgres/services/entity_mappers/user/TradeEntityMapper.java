@@ -1,6 +1,6 @@
 package github.ricemonger.trades_manager.postgres.services.entity_mappers.user;
 
-import github.ricemonger.trades_manager.postgres.entities.manageable_users.TradeEntity;
+import github.ricemonger.trades_manager.postgres.custom_entities.manageable_users.CustomTradeEntity;
 import github.ricemonger.trades_manager.postgres.services.entity_mappers.item.ItemEntityMapper;
 import github.ricemonger.trades_manager.services.DTOs.Trade;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ public class TradeEntityMapper {
 
     private final ItemEntityMapper itemEntityMapper;
 
-    public Trade createDTO(TradeEntity entity) {
+    public Trade createDTO(CustomTradeEntity entity) {
         return new Trade(
                 entity.getTradeId(),
                 entity.getState(),

@@ -9,11 +9,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TradeManagersSettings {
     private Boolean newManagersAreActiveFlag;
-
     private Boolean managingEnabledFlag;
+    private Boolean sellTradesManagingEnabledFlag;
+    private Boolean buyTradesManagingEnabledFlag;
 
     public String toHandsomeString() {
         return "New managers are active: " + newManagersAreActiveFlag + "\n" +
-               "Managing enabled: " + managingEnabledFlag + "\n";
+               "Managing enabled: " + managingEnabledFlag + "\n" +
+               "Sell trades managing enabled: " + sellTradesManagingEnabledFlag + "\n" +
+               "Buy trades managing enabled: " + buyTradesManagingEnabledFlag;
     }
 }

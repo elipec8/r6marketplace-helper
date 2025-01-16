@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
-import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item.TagEntityMapper;
 import github.ricemonger.utils.DTOs.common.Tag;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
@@ -25,15 +25,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ItemFilterEntityMapper {
 
-    private final UserPostgresRepository userPostgresRepository;
+    private final CustomUserPostgresRepository customUserPostgresRepository;
 
     private final TagEntityMapper tagEntityMapper;
 
     public ItemFilterEntity createEntity(String chatId, ItemFilter filter) {
-        if (!userPostgresRepository.existsByTelegramUserChatId(chatId)) {
+        if (!customUserPostgresRepository.existsByTelegramUserChatId(chatId)) {
             throw new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found");
         }
-        UserEntity userEntity = userPostgresRepository.getReferenceByTelegramUserChatId(chatId);
+        UserEntity userEntity = customUserPostgresRepository.getReferenceByTelegramUserChatId(chatId);
 
         String name = filter.getName();
         FilterType filterType = filter.getFilterType();

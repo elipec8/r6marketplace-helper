@@ -3,7 +3,7 @@ package github.ricemonger.users_ubi_accs_reauthorizer.postgres.services;
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.dto_projections.UserUbiAccountAuthorizedProjection;
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.dto_projections.UserUbiAccountCredentialsProjection;
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.dto_projections.UserUnauthorizedUbiAccountProjection;
-import github.ricemonger.users_ubi_accs_reauthorizer.postgres.repositories.UbiAccountEntryPostgresRepository;
+import github.ricemonger.users_ubi_accs_reauthorizer.postgres.repositories.CustomUbiAccountEntryPostgresRepository;
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.repositories.UbiAccountStatsPostgresRepository;
 import github.ricemonger.users_ubi_accs_reauthorizer.postgres.services.entity_mappers.user.UbiAccountEntryEntityMapper;
 import github.ricemonger.users_ubi_accs_reauthorizer.services.DTOs.UserUbiAccountCredentials;
@@ -29,7 +29,7 @@ class UbiAccountPostgresServiceTest {
     @Autowired
     private UbiAccountPostgresService ubiAccountPostgresService;
     @MockBean
-    private UbiAccountEntryPostgresRepository ubiAccountEntryPostgresRepository;
+    private CustomUbiAccountEntryPostgresRepository customUbiAccountEntryPostgresRepository;
     @MockBean
     private UbiAccountStatsPostgresRepository ubiAccountStatsPostgresRepository;
     @MockBean
@@ -41,17 +41,17 @@ class UbiAccountPostgresServiceTest {
         String email = "email";
         AuthorizationDTO dto = new AuthorizationDTO();
         dto.setProfileId("profileId");
-        when(ubiAccountEntryPostgresRepository.findUbiAccountStatsProfileIdByUserIdAndEmail(userId, email)).thenReturn(Optional.of("profileId"));
+        when(customUbiAccountEntryPostgresRepository.findUbiAccountStatsProfileIdByUserIdAndEmail(userId, email)).thenReturn(Optional.of("profileId"));
 
         UserUbiAccountAuthorizedProjection proj = mock(UserUbiAccountAuthorizedProjection.class);
         when(ubiAccountEntryEntityMapper.createUserUbiAccountAuthorizedProjection(userId, email, dto)).thenReturn(proj);
 
         ubiAccountPostgresService.updateCredentialsAndLinkUbiAccountStatsForAuthorizedUser(1L, "email", dto);
 
-        verify(ubiAccountEntryPostgresRepository).updateUserUbiCredentials(proj);
+        verify(customUbiAccountEntryPostgresRepository).updateUserUbiCredentials(proj);
 
         verify(ubiAccountStatsPostgresRepository, never()).save(any(UbiAccountStatsEntity.class));
-        verify(ubiAccountEntryPostgresRepository, never()).linkUbiAccountStatsByUserIdAndEmail(any(Long.class), any(String.class), any(String.class));
+        verify(customUbiAccountEntryPostgresRepository, never()).linkUbiAccountStatsByUserIdAndEmail(any(Long.class), any(String.class), any(String.class));
     }
 
     @Test
@@ -60,7 +60,7 @@ class UbiAccountPostgresServiceTest {
         String email = "email";
         AuthorizationDTO dto = new AuthorizationDTO();
         dto.setProfileId("profileId");
-        when(ubiAccountEntryPostgresRepository.findUbiAccountStatsProfileIdByUserIdAndEmail(userId, email)).thenReturn(Optional.of("differentProfileId"));
+        when(customUbiAccountEntryPostgresRepository.findUbiAccountStatsProfileIdByUserIdAndEmail(userId, email)).thenReturn(Optional.of("differentProfileId"));
 
         UserUbiAccountAuthorizedProjection proj = mock(UserUbiAccountAuthorizedProjection.class);
         when(ubiAccountEntryEntityMapper.createUserUbiAccountAuthorizedProjection(userId, email, dto)).thenReturn(proj);
@@ -69,10 +69,10 @@ class UbiAccountPostgresServiceTest {
 
         ubiAccountPostgresService.updateCredentialsAndLinkUbiAccountStatsForAuthorizedUser(1L, "email", dto);
 
-        verify(ubiAccountEntryPostgresRepository).updateUserUbiCredentials(proj);
+        verify(customUbiAccountEntryPostgresRepository).updateUserUbiCredentials(proj);
 
         verify(ubiAccountStatsPostgresRepository).save(argThat((UbiAccountStatsEntity e) -> e.getUbiProfileId().equals("profileId")));
-        verify(ubiAccountEntryPostgresRepository).linkUbiAccountStatsByUserIdAndEmail(userId, email, "profileId");
+        verify(customUbiAccountEntryPostgresRepository).linkUbiAccountStatsByUserIdAndEmail(userId, email, "profileId");
     }
 
     @Test
@@ -81,7 +81,7 @@ class UbiAccountPostgresServiceTest {
         String email = "email";
         AuthorizationDTO dto = new AuthorizationDTO();
         dto.setProfileId("profileId");
-        when(ubiAccountEntryPostgresRepository.findUbiAccountStatsProfileIdByUserIdAndEmail(userId, email)).thenReturn(Optional.of("differentProfileId"));
+        when(customUbiAccountEntryPostgresRepository.findUbiAccountStatsProfileIdByUserIdAndEmail(userId, email)).thenReturn(Optional.of("differentProfileId"));
 
         UserUbiAccountAuthorizedProjection proj = mock(UserUbiAccountAuthorizedProjection.class);
         when(ubiAccountEntryEntityMapper.createUserUbiAccountAuthorizedProjection(userId, email, dto)).thenReturn(proj);
@@ -90,10 +90,10 @@ class UbiAccountPostgresServiceTest {
 
         ubiAccountPostgresService.updateCredentialsAndLinkUbiAccountStatsForAuthorizedUser(1L, "email", dto);
 
-        verify(ubiAccountEntryPostgresRepository).updateUserUbiCredentials(proj);
+        verify(customUbiAccountEntryPostgresRepository).updateUserUbiCredentials(proj);
 
         verify(ubiAccountStatsPostgresRepository, never()).save(any(UbiAccountStatsEntity.class));
-        verify(ubiAccountEntryPostgresRepository).linkUbiAccountStatsByUserIdAndEmail(userId, email, "profileId");
+        verify(customUbiAccountEntryPostgresRepository).linkUbiAccountStatsByUserIdAndEmail(userId, email, "profileId");
     }
 
     @Test
@@ -102,7 +102,7 @@ class UbiAccountPostgresServiceTest {
         String email = "email";
         AuthorizationDTO dto = new AuthorizationDTO();
         dto.setProfileId("profileId");
-        when(ubiAccountEntryPostgresRepository.findUbiAccountStatsProfileIdByUserIdAndEmail(userId, email)).thenReturn(Optional.empty());
+        when(customUbiAccountEntryPostgresRepository.findUbiAccountStatsProfileIdByUserIdAndEmail(userId, email)).thenReturn(Optional.empty());
 
         UserUbiAccountAuthorizedProjection proj = mock(UserUbiAccountAuthorizedProjection.class);
         when(ubiAccountEntryEntityMapper.createUserUbiAccountAuthorizedProjection(userId, email, dto)).thenReturn(proj);
@@ -111,10 +111,10 @@ class UbiAccountPostgresServiceTest {
 
         ubiAccountPostgresService.updateCredentialsAndLinkUbiAccountStatsForAuthorizedUser(1L, "email", dto);
 
-        verify(ubiAccountEntryPostgresRepository).updateUserUbiCredentials(proj);
+        verify(customUbiAccountEntryPostgresRepository).updateUserUbiCredentials(proj);
 
         verify(ubiAccountStatsPostgresRepository).save(argThat((UbiAccountStatsEntity e) -> e.getUbiProfileId().equals("profileId")));
-        verify(ubiAccountEntryPostgresRepository).linkUbiAccountStatsByUserIdAndEmail(userId, email, "profileId");
+        verify(customUbiAccountEntryPostgresRepository).linkUbiAccountStatsByUserIdAndEmail(userId, email, "profileId");
     }
 
     @Test
@@ -123,7 +123,7 @@ class UbiAccountPostgresServiceTest {
         String email = "email";
         AuthorizationDTO dto = new AuthorizationDTO();
         dto.setProfileId("profileId");
-        when(ubiAccountEntryPostgresRepository.findUbiAccountStatsProfileIdByUserIdAndEmail(userId, email)).thenReturn(Optional.empty());
+        when(customUbiAccountEntryPostgresRepository.findUbiAccountStatsProfileIdByUserIdAndEmail(userId, email)).thenReturn(Optional.empty());
 
         UserUbiAccountAuthorizedProjection proj = mock(UserUbiAccountAuthorizedProjection.class);
         when(ubiAccountEntryEntityMapper.createUserUbiAccountAuthorizedProjection(userId, email, dto)).thenReturn(proj);
@@ -132,10 +132,10 @@ class UbiAccountPostgresServiceTest {
 
         ubiAccountPostgresService.updateCredentialsAndLinkUbiAccountStatsForAuthorizedUser(1L, "email", dto);
 
-        verify(ubiAccountEntryPostgresRepository).updateUserUbiCredentials(proj);
+        verify(customUbiAccountEntryPostgresRepository).updateUserUbiCredentials(proj);
 
         verify(ubiAccountStatsPostgresRepository, never()).save(any(UbiAccountStatsEntity.class));
-        verify(ubiAccountEntryPostgresRepository).linkUbiAccountStatsByUserIdAndEmail(userId, email, "profileId");
+        verify(customUbiAccountEntryPostgresRepository).linkUbiAccountStatsByUserIdAndEmail(userId, email, "profileId");
     }
 
     @Test
@@ -151,7 +151,7 @@ class UbiAccountPostgresServiceTest {
 
         ubiAccountPostgresService.unlinkUbiAccountStatsForUnauthorizedUsers(List.of(user1, user2));
 
-        verify(ubiAccountEntryPostgresRepository).unlinkAllUbiAccountStatsForUnauthorizedUsers(argThat((List<UserUnauthorizedUbiAccountProjection> projections) -> projections.contains(proj1) && projections.contains(proj2) && projections.size() == 2));
+        verify(customUbiAccountEntryPostgresRepository).unlinkAllUbiAccountStatsForUnauthorizedUsers(argThat((List<UserUnauthorizedUbiAccountProjection> projections) -> projections.contains(proj1) && projections.contains(proj2) && projections.size() == 2));
     }
 
     @Test
@@ -165,7 +165,7 @@ class UbiAccountPostgresServiceTest {
         when(ubiAccountEntryEntityMapper.createUserUbiAccountCredentials(proj1)).thenReturn(cred1);
         when(ubiAccountEntryEntityMapper.createUserUbiAccountCredentials(proj2)).thenReturn(cred2);
 
-        when(ubiAccountEntryPostgresRepository.findAllUsersUbiCredentials()).thenReturn(List.of(proj1, proj2));
+        when(customUbiAccountEntryPostgresRepository.findAllUsersUbiCredentials()).thenReturn(List.of(proj1, proj2));
 
         List<UserUbiAccountCredentials> result = ubiAccountPostgresService.findAllUsersUbiAccountCredentials();
 

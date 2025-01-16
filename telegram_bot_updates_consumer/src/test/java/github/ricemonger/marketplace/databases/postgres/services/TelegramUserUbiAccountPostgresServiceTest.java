@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.dto_projections.UbiAccountAuthorizationEntryProjection;
-import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountEntryPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomUbiAccountEntryPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.UbiAccountEntryEntityMapper;
 import github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry;
 import github.ricemonger.utils.exceptions.client.UbiAccountEntryAlreadyExistsException;
@@ -25,7 +25,7 @@ class TelegramUserUbiAccountPostgresServiceTest {
     @Autowired
     private TelegramUserUbiAccountPostgresService telegramUserUbiAccountEntryService;
     @MockBean
-    private UbiAccountEntryPostgresRepository ubiAccountAuthorizationEntryRepository;
+    private CustomUbiAccountEntryPostgresRepository ubiAccountAuthorizationEntryRepository;
     @MockBean
     private UbiAccountEntryEntityMapper ubiAccountEntryEntityMapper;
 

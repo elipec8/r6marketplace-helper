@@ -1,8 +1,8 @@
 package github.ricemonger.trades_manager.postgres.services.entity_mappers.user;
 
 
-import github.ricemonger.trades_manager.postgres.entities.items.ItemIdEntity;
-import github.ricemonger.trades_manager.postgres.entities.manageable_users.UbiAccountStatsEntity;
+import github.ricemonger.trades_manager.postgres.custom_entities.items.CustomItemIdEntity;
+import github.ricemonger.trades_manager.postgres.custom_entities.manageable_users.CustomUbiAccountStatsEntity;
 import github.ricemonger.trades_manager.services.DTOs.UbiAccountStats;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,13 +17,13 @@ public class UbiAccountStatsEntityMapper {
 
     private final TradeEntityMapper tradeEntityMapper;
 
-    public UbiAccountStats createDTO(UbiAccountStatsEntity entity) {
+    public UbiAccountStats createDTO(CustomUbiAccountStatsEntity entity) {
         return new UbiAccountStats(
                 entity.getUbiProfileId(),
                 entity.getCreditAmount(),
                 entity.getSoldIn24h(),
                 entity.getBoughtIn24h(),
-                entity.getOwnedItems().stream().map(ItemIdEntity::getItemId).toList(),
+                entity.getOwnedItems().stream().map(CustomItemIdEntity::getItemId).toList(),
                 entity.getResaleLocks().stream().map(itemResaleLockEntityMapper::createDTO).toList(),
                 entity.getCurrentSellTrades().stream().map(tradeEntityMapper::createDTO).toList(),
                 entity.getCurrentBuyTrades().stream().map(tradeEntityMapper::createDTO).toList()

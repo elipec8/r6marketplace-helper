@@ -76,11 +76,15 @@ class UserEntityMapperTest {
         TradeManagersSettingsProjection tradeManagersSettingsProjection = new TradeManagersSettingsProjection();
         tradeManagersSettingsProjection.setNewManagersAreActiveFlag(true);
         tradeManagersSettingsProjection.setManagingEnabledFlag(false);
+        tradeManagersSettingsProjection.setSellTradesManagingEnabledFlag(true);
+        tradeManagersSettingsProjection.setBuyTradesManagingEnabledFlag(false);
 
         TradeManagersSettings tradeManagersSettings = userEntityMapper.createTradeManagersSettings(tradeManagersSettingsProjection);
 
         assertEquals(tradeManagersSettingsProjection.getNewManagersAreActiveFlag(), tradeManagersSettings.getNewManagersAreActiveFlag());
         assertEquals(tradeManagersSettingsProjection.getManagingEnabledFlag(), tradeManagersSettings.getManagingEnabledFlag());
+        assertEquals(tradeManagersSettingsProjection.getSellTradesManagingEnabledFlag(), tradeManagersSettings.getSellTradesManagingEnabledFlag());
+        assertEquals(tradeManagersSettingsProjection.getBuyTradesManagingEnabledFlag(), tradeManagersSettings.getBuyTradesManagingEnabledFlag());
     }
 
     @Test

@@ -34,4 +34,8 @@ public class TradeByFiltersManager {
              "Priority: " + priorityMultiplier + "\n";
         return sb;
     }
+
+    public String toString() {
+        return toHandsomeString();
+    }
 }

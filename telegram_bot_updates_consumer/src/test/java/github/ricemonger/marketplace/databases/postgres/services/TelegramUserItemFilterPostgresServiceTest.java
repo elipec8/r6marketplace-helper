@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.repositories.ItemFilterPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomItemFilterPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.ItemFilterEntityMapper;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.exceptions.client.ItemFilterDoesntExistException;
@@ -30,7 +30,7 @@ class TelegramUserItemFilterPostgresServiceTest {
     @Autowired
     private TelegramUserItemFilterPostgresService telegramUserItemFilterService;
     @MockBean
-    private ItemFilterPostgresRepository itemFilterRepository;
+    private CustomItemFilterPostgresRepository itemFilterRepository;
     @MockBean
     private ItemFilterEntityMapper itemFilterEntityMapper;
 

@@ -74,6 +74,10 @@ public class UserEntity {
     private Boolean newManagersAreActiveFlag = true;
     @Column(name = "managing_enabled_flag")
     private Boolean managingEnabledFlag = true;
+    @Column(name = "sell_trades_managing_enabled_flag")
+    private Boolean sellTradesManagingEnabledFlag = true;
+    @Column(name = "buy_trades_managing_enabled_flag")
+    private Boolean buyTradesManagingEnabledFlag = true;
 
     public UserEntity(Long userId) {
         this.id = userId;

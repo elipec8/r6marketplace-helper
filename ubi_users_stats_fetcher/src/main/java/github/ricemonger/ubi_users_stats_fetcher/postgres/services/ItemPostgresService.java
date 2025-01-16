@@ -1,6 +1,6 @@
 package github.ricemonger.ubi_users_stats_fetcher.postgres.services;
 
-import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.ItemPostgresRepository;
+import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.CustomItemPostgresRepository;
 import github.ricemonger.ubi_users_stats_fetcher.postgres.services.entity_mappers.common.ItemEntityMapper;
 import github.ricemonger.ubi_users_stats_fetcher.services.ItemDatabaseService;
 import github.ricemonger.utils.DTOs.common.Item;
@@ -14,13 +14,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemPostgresService implements ItemDatabaseService {
 
-    private final ItemPostgresRepository itemPostgresRepository;
+    private final CustomItemPostgresRepository customItemPostgresRepository;
 
     private final ItemEntityMapper itemEntityMapper;
 
     @Override
     @Transactional(readOnly = true)
     public List<Item> findItemsByIds(List<String> itemIds) {
-        return itemPostgresRepository.findAllByItemIdIn(itemIds).stream().map(itemEntityMapper::createItem).toList();
+        return customItemPostgresRepository.findAllByItemIdIn(itemIds).stream().map(itemEntityMapper::createItem).toList();
     }
 }

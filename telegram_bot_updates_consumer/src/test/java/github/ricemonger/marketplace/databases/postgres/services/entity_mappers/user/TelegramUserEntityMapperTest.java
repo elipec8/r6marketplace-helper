@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
-import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomUserPostgresRepository;
 import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ class TelegramUserEntityMapperTest {
     @Autowired
     private TelegramUserEntityMapper telegramUserEntityMapper;
     @MockBean
-    private UserPostgresRepository userRepository;
+    private CustomUserPostgresRepository userRepository;
 
     @Test
     public void createNewEntityForNewUser_should_create_and_return_new_entity_and_create_new_user() {

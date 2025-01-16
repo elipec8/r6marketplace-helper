@@ -1,8 +1,8 @@
 package github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.services.entity_mappers.item;
 
-import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.entities.ItemDaySalesUbiStatsEntity;
-import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.entities.ItemEntity;
-import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.repositories.ItemPostgresRepository;
+import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.custom_entities.ItemDaySalesUbiStatsEntity;
+import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.custom_entities.ItemEntity;
+import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.repositories.CustomItemPostgresRepository;
 import github.ricemonger.utils.DTOs.common.GroupedItemDaySalesUbiStats;
 import github.ricemonger.utils.DTOs.common.ItemDaySalesUbiStats;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemDaySalesUbiStatsEntityMapper {
 
-    private final ItemPostgresRepository itemPostgresRepository;
+    private final CustomItemPostgresRepository customItemPostgresRepository;
 
     public List<ItemDaySalesUbiStatsEntity> createEntities(Collection<GroupedItemDaySalesUbiStats> groupedItemDaySalesUbiStatsList) {
         if (groupedItemDaySalesUbiStatsList == null || groupedItemDaySalesUbiStatsList.isEmpty()) {
@@ -26,7 +26,7 @@ public class ItemDaySalesUbiStatsEntityMapper {
             return new LinkedList<>();
         }
 
-        List<ItemEntity> existingItemsIds = itemPostgresRepository.findAll();
+        List<ItemEntity> existingItemsIds = customItemPostgresRepository.findAll();
 
         List<ItemDaySalesUbiStatsEntity> result = new LinkedList<>();
 

@@ -1,7 +1,7 @@
 package github.ricemonger.item_stats_fetcher.databases.postgres.services.entity_mappers;
 
-import github.ricemonger.item_stats_fetcher.databases.postgres.entities.ItemSaleEntity;
-import github.ricemonger.item_stats_fetcher.databases.postgres.repositories.ItemMainFieldsPostgresRepository;
+import github.ricemonger.item_stats_fetcher.databases.postgres.custom_entities.ItemSaleEntity;
+import github.ricemonger.item_stats_fetcher.databases.postgres.repositories.CustomItemMainFieldsPostgresRepository;
 import github.ricemonger.utils.DTOs.common.SoldItemDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class ItemSalePostgresMapper {
 
-    private final ItemMainFieldsPostgresRepository itemMainFieldsRepository;
+    private final CustomItemMainFieldsPostgresRepository itemMainFieldsRepository;
 
     public List<ItemSaleEntity> mapToSaleEntities(Collection<? extends SoldItemDetails> items) {
 

@@ -17,8 +17,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.same;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class PersonalItemFactoryTest {
@@ -27,12 +26,12 @@ class PersonalItemFactoryTest {
 
     @Test
     public void getPersonalItemsForUser_should_return_sets_from_byFilters_and_itemId_managers_with_higher_priority_for_itemId_managers() {
-        Collection<TradeByFiltersManager> tradeByFiltersManagers = Mockito.mock(Collection.class);
-        Collection<TradeByItemIdManager> tradeByItemIdManagers = Mockito.mock(Collection.class);
-        Collection<Trade> existingSellTrades = Mockito.mock(Collection.class);
-        Collection<Trade> existingBuyTrades = Mockito.mock(Collection.class);
-        Collection<String> ownedItemsId = Mockito.mock(Collection.class);
-        Collection<Item> existingItems = Mockito.mock(Collection.class);
+        Collection<TradeByFiltersManager> tradeByFiltersManagers = mock(Collection.class);
+        Collection<TradeByItemIdManager> tradeByItemIdManagers = mock(Collection.class);
+        Collection<Trade> existingSellTrades = mock(Collection.class);
+        Collection<Trade> existingBuyTrades = mock(Collection.class);
+        Collection<String> ownedItemsId = mock(Collection.class);
+        Collection<Item> existingItems = mock(Collection.class);
 
         PersonalItem personalItem1Sell = new PersonalItem();
         personalItem1Sell.setItem(new Item("1"));
@@ -100,13 +99,13 @@ class PersonalItemFactoryTest {
 
     @Test
     public void getPersonalItemsFromTradeByFiltersManagersByPriority_should_return_empty_list_for_empty_or_null_appliedFilters_or_existingItems() {
-        Collection<Trade> existingSellTrades = Mockito.mock(Collection.class);
-        Collection<Trade> existingBuyTrades = Mockito.mock(Collection.class);
-        Collection<String> ownedItemsId = Mockito.mock(Collection.class);
-        Collection<Item> existingItems = Mockito.mock(Collection.class);
+        Collection<Trade> existingSellTrades = mock(Collection.class);
+        Collection<Trade> existingBuyTrades = mock(Collection.class);
+        Collection<String> ownedItemsId = mock(Collection.class);
+        Collection<Item> existingItems = mock(Collection.class);
         when(existingItems.isEmpty()).thenReturn(false);
 
-        TradeByFiltersManager tradeByFiltersManager = Mockito.mock(TradeByFiltersManager.class);
+        TradeByFiltersManager tradeByFiltersManager = mock(TradeByFiltersManager.class);
 
         assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManagersByPriority(List.of(), existingSellTrades, existingBuyTrades, ownedItemsId, existingItems).isEmpty());
         assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManagersByPriority(null, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems).isEmpty());
@@ -118,19 +117,19 @@ class PersonalItemFactoryTest {
     @Test
     public void getPersonalItemsFromTradeByFiltersManagersByPriority_should_create_set_of_non_null_personal_items_from_tradeByFiltersManagers_skip_lower_priority_dupes() {
         try (MockedStatic<ItemFilter> mockedStaticFilter = Mockito.mockStatic(ItemFilter.class)) {
-            Collection<Trade> existingSellTrades = Mockito.mock(Collection.class);
-            Collection<Trade> existingBuyTrades = Mockito.mock(Collection.class);
-            Collection<String> ownedItemsId = Mockito.mock(Collection.class);
-            Collection<Item> existingItems = Mockito.mock(Collection.class);
+            Collection<Trade> existingSellTrades = mock(Collection.class);
+            Collection<Trade> existingBuyTrades = mock(Collection.class);
+            Collection<String> ownedItemsId = mock(Collection.class);
+            Collection<Item> existingItems = mock(Collection.class);
             when(existingItems.isEmpty()).thenReturn(false);
 
-            TradeByFiltersManager tradeByFiltersManagerItemSet1 = Mockito.mock(TradeByFiltersManager.class);
-            TradeByFiltersManager tradeByFiltersManagerItemSet1LowerPriority = Mockito.mock(TradeByFiltersManager.class);
-            TradeByFiltersManager tradeByFiltersManagerItemSet1OtherOperation = Mockito.mock(TradeByFiltersManager.class);
-            TradeByFiltersManager tradeByFiltersManagerItemSet2 = Mockito.mock(TradeByFiltersManager.class);
+            TradeByFiltersManager tradeByFiltersManagerItemSet1 = mock(TradeByFiltersManager.class);
+            TradeByFiltersManager tradeByFiltersManagerItemSet1LowerPriority = mock(TradeByFiltersManager.class);
+            TradeByFiltersManager tradeByFiltersManagerItemSet1OtherOperation = mock(TradeByFiltersManager.class);
+            TradeByFiltersManager tradeByFiltersManagerItemSet2 = mock(TradeByFiltersManager.class);
 
-            List itemSet1Filters = Mockito.mock(List.class);
-            List itemSet2Filters = Mockito.mock(List.class);
+            List itemSet1Filters = mock(List.class);
+            List itemSet2Filters = mock(List.class);
 
             when(tradeByFiltersManagerItemSet1.getAppliedFilters()).thenReturn(itemSet1Filters);
             when(tradeByFiltersManagerItemSet1LowerPriority.getAppliedFilters()).thenReturn(itemSet1Filters);
@@ -219,23 +218,38 @@ class PersonalItemFactoryTest {
     }
 
     @Test
-    public void getPersonalItemsFromTradeByFiltersManager_should_return_empty_list_for_empty_or_null_appliedFilters_or_existingItems() {
-        Collection<Trade> existingSellTrades = Mockito.mock(Collection.class);
-        Collection<Trade> existingBuyTrades = Mockito.mock(Collection.class);
-        Collection<String> ownedItemsId = Mockito.mock(Collection.class);
-        Collection<Item> existingItems = Mockito.mock(Collection.class);
-        when(existingItems.isEmpty()).thenReturn(false);
+    public void getPersonalItemsFromTradeByFiltersManager_should_return_empty_list_for_empty_or_null_appliedFilters_or_existingItems_or_disabled() {
+        try (MockedStatic<ItemFilter> mockedStatic = Mockito.mockStatic(ItemFilter.class)) {
 
-        TradeByFiltersManager tradeByFiltersManager = Mockito.mock(TradeByFiltersManager.class);
-        when(tradeByFiltersManager.getAppliedFilters()).thenReturn(null);
+            List<Item> items = List.of(new Item("1"), new Item("2"));
+            mockedStatic.when(() -> ItemFilter.filterItems(Mockito.any(), Mockito.any())).thenReturn(items);
 
-        assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems).isEmpty());
-        when(tradeByFiltersManager.getAppliedFilters()).thenReturn(new ArrayList<>());
-        assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems).isEmpty());
-        when(tradeByFiltersManager.getAppliedFilters()).thenReturn(List.of(new ItemFilter()));
-        assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellTrades, existingBuyTrades, ownedItemsId, null).isEmpty());
-        when(existingItems.isEmpty()).thenReturn(true);
-        assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems).isEmpty());
+            Collection<Trade> existingSellTrades = mock(Collection.class);
+            Collection<Trade> existingBuyTrades = mock(Collection.class);
+            Collection<String> ownedItemsId = mock(Collection.class);
+            Collection<Item> existingItems = mock(Collection.class);
+            when(existingItems.isEmpty()).thenReturn(false);
+
+            TradeByFiltersManager tradeByFiltersManager = mock(TradeByFiltersManager.class);
+            when(tradeByFiltersManager.getAppliedFilters()).thenReturn(List.of(new ItemFilter()));
+            when(tradeByFiltersManager.getEnabled()).thenReturn(true);
+
+            assertFalse(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems).isEmpty());
+
+            when(tradeByFiltersManager.getAppliedFilters()).thenReturn(new ArrayList<>());
+            assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems).isEmpty());
+            when(tradeByFiltersManager.getAppliedFilters()).thenReturn(null);
+            assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems).isEmpty());
+            when(tradeByFiltersManager.getAppliedFilters()).thenReturn(List.of(new ItemFilter()));
+            assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellTrades, existingBuyTrades, ownedItemsId, null).isEmpty());
+            when(existingItems.isEmpty()).thenReturn(true);
+            assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems).isEmpty());
+            when(existingItems.isEmpty()).thenReturn(false);
+            when(tradeByFiltersManager.getEnabled()).thenReturn(false);
+            assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems).isEmpty());
+            when(tradeByFiltersManager.getEnabled()).thenReturn(null);
+            assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems).isEmpty());
+        }
     }
 
     @Test
@@ -250,6 +264,7 @@ class PersonalItemFactoryTest {
             manager.setMinDifferenceFromMedianPricePercent(200);
             manager.setTradeOperationType(TradeOperationType.SELL);
             manager.setPriorityMultiplier(3);
+            manager.setEnabled(true);
 
             Trade sellTrade = new Trade();
             sellTrade.setTradeId("sellTradeId1");
@@ -310,6 +325,7 @@ class PersonalItemFactoryTest {
             manager.setMinDifferenceFromMedianPricePercent(200);
             manager.setTradeOperationType(TradeOperationType.SELL);
             manager.setPriorityMultiplier(3);
+            manager.setEnabled(true);
 
             Trade sellTrade = new Trade();
             sellTrade.setTradeId("sellTradeId1");
@@ -360,12 +376,12 @@ class PersonalItemFactoryTest {
 
     @Test
     public void getPersonalItemsFromTradeByItemIdManagersByPriority_should_return_empty_list_if_managers_or_existing_items_is_null_or_empty() {
-        TradeByItemIdManager tradeByItemIdManagerItem1 = Mockito.mock(TradeByItemIdManager.class);
+        TradeByItemIdManager tradeByItemIdManagerItem1 = mock(TradeByItemIdManager.class);
 
-        Collection<Trade> existingSellTrades = Mockito.mock(Collection.class);
-        Collection<Trade> existingBuyTrades = Mockito.mock(Collection.class);
-        Collection<String> ownedItemsId = Mockito.mock(Collection.class);
-        Collection<Item> existingItems = Mockito.mock(Collection.class);
+        Collection<Trade> existingSellTrades = mock(Collection.class);
+        Collection<Trade> existingBuyTrades = mock(Collection.class);
+        Collection<String> ownedItemsId = mock(Collection.class);
+        Collection<Item> existingItems = mock(Collection.class);
         when(existingItems.isEmpty()).thenReturn(false);
 
         assertTrue(personalItemFactory.getPersonalItemsFromTradeByItemIdManagersByPriority(null, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems).isEmpty());
@@ -378,16 +394,16 @@ class PersonalItemFactoryTest {
 
     @Test
     public void getPersonalItemsFromTradeByItemIdManagersByPriority_should_create_set_of_non_null_personal_items_from_trade_by_item_id_managers_skip_lower_priority_dupes() {
-        TradeByItemIdManager tradeByItemIdManagerItem1 = Mockito.mock(TradeByItemIdManager.class);
-        TradeByItemIdManager tradeByItemIdManagerItem1OtherOperation = Mockito.mock(TradeByItemIdManager.class);
-        TradeByItemIdManager tradeByItemIdManagerItem1LowerPriority = Mockito.mock(TradeByItemIdManager.class);
-        TradeByItemIdManager tradeByItemIdManagerItem2 = Mockito.mock(TradeByItemIdManager.class);
-        TradeByItemIdManager tradeByItemIdManagerNull = Mockito.mock(TradeByItemIdManager.class);
+        TradeByItemIdManager tradeByItemIdManagerItem1 = mock(TradeByItemIdManager.class);
+        TradeByItemIdManager tradeByItemIdManagerItem1OtherOperation = mock(TradeByItemIdManager.class);
+        TradeByItemIdManager tradeByItemIdManagerItem1LowerPriority = mock(TradeByItemIdManager.class);
+        TradeByItemIdManager tradeByItemIdManagerItem2 = mock(TradeByItemIdManager.class);
+        TradeByItemIdManager tradeByItemIdManagerNull = mock(TradeByItemIdManager.class);
 
-        Collection<Trade> existingSellTrades = Mockito.mock(Collection.class);
-        Collection<Trade> existingBuyTrades = Mockito.mock(Collection.class);
-        Collection<String> ownedItemsId = Mockito.mock(Collection.class);
-        Collection<Item> existingItems = Mockito.mock(Collection.class);
+        Collection<Trade> existingSellTrades = mock(Collection.class);
+        Collection<Trade> existingBuyTrades = mock(Collection.class);
+        Collection<String> ownedItemsId = mock(Collection.class);
+        Collection<Item> existingItems = mock(Collection.class);
         when(existingItems.isEmpty()).thenReturn(false);
 
         when(tradeByItemIdManagerItem1LowerPriority.getPriorityMultiplier()).thenReturn(1);
@@ -414,17 +430,17 @@ class PersonalItemFactoryTest {
         personalItem2.setItem(new Item("2"));
         personalItem2.setTradeOperationType(TradeOperationType.SELL);
 
-        doReturn(personalItem1).when(personalItemFactory).getPersonalItemFromTradeByItemIdManager(tradeByItemIdManagerItem1, existingSellTrades,
+        doReturn(personalItem1).when(personalItemFactory).getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManagerItem1, existingSellTrades,
                 existingBuyTrades,
                 ownedItemsId, existingItems);
-        doReturn(personalItem1OtherOperation).when(personalItemFactory).getPersonalItemFromTradeByItemIdManager(tradeByItemIdManagerItem1OtherOperation, existingSellTrades,
+        doReturn(personalItem1OtherOperation).when(personalItemFactory).getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManagerItem1OtherOperation, existingSellTrades,
                 existingBuyTrades, ownedItemsId, existingItems);
-        doReturn(personalItem1LowerPriority).when(personalItemFactory).getPersonalItemFromTradeByItemIdManager(tradeByItemIdManagerItem1LowerPriority, existingSellTrades,
+        doReturn(personalItem1LowerPriority).when(personalItemFactory).getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManagerItem1LowerPriority, existingSellTrades,
                 existingBuyTrades, ownedItemsId, existingItems);
-        doReturn(personalItem2).when(personalItemFactory).getPersonalItemFromTradeByItemIdManager(tradeByItemIdManagerItem2, existingSellTrades,
+        doReturn(personalItem2).when(personalItemFactory).getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManagerItem2, existingSellTrades,
                 existingBuyTrades,
                 ownedItemsId, existingItems);
-        doReturn(null).when(personalItemFactory).getPersonalItemFromTradeByItemIdManager(tradeByItemIdManagerNull, existingSellTrades,
+        doReturn(null).when(personalItemFactory).getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManagerNull, existingSellTrades,
                 existingBuyTrades,
                 ownedItemsId, existingItems);
 
@@ -449,18 +465,29 @@ class PersonalItemFactoryTest {
     }
 
     @Test
-    public void getPersonalItemFromTradeByItemIdManager_should_return_expected_null_if_item_doesnt_exist() {
+    public void getPersonalItemFromTradeByItemIdManager_should_return_expected_null_if_item_doesnt_existOrNull_or_disabled_manager() {
         TradeByItemIdManager tradeByItemIdManager = getDefaultItemIdManager();
         Collection<Trade> existingSellTrades = new HashSet<>();
         Collection<Trade> existingBuyTrades = new HashSet<>();
         Collection<String> ownedItemsId = new HashSet<>();
-        Collection<Item> existingItems = Set.of();
+        Collection<Item> existingItems = Set.of(new Item("1"));
+        tradeByItemIdManager.setEnabled(true);
 
-        assertNull(personalItemFactory.getPersonalItemFromTradeByItemIdManager(tradeByItemIdManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems));
+        assertNotNull(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems));
+
+        existingItems = Set.of(new Item("12"));
+        assertNull(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems));
+
+        existingItems = null;
+        assertNull(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems));
+
+        existingItems = Set.of(new Item("1"));
+        tradeByItemIdManager.setEnabled(false);
+        assertNull(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems));
     }
 
     @Test
-    public void getPersonalItemFromTradeByItemIdManager_should_return_expected_object_isOwned_false_and_buy_trade_doesnt_exist() {
+    public void getPersonalItemFromTradeByItemIdManager_should_return_expected_object_isOwned_false_and_buy_trade_doesnt_existOrNull() {
         TradeByItemIdManager tradeByItemIdManager = getDefaultItemIdManager();
 
         Trade sellTrade = new Trade();
@@ -489,11 +516,11 @@ class PersonalItemFactoryTest {
         expected.setTradeAlreadyExists(false);
         expected.setExistingTrade(null);
 
-        assertTrue(expected.isFullyEqual(personalItemFactory.getPersonalItemFromTradeByItemIdManager(tradeByItemIdManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems)));
+        assertTrue(expected.isFullyEqual(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems)));
     }
 
     @Test
-    public void getPersonalItemFromTradeByItemIdManager_should_return_expected_object_isOwned_false_and_buy_trade_exists() {
+    public void getPersonalItemFromTradeByItemIdManager_should_return_expected_object_isOwned_false_and_buy_trade_existsOrNull() {
         TradeByItemIdManager tradeByItemIdManager = getDefaultItemIdManager();
 
         Trade sellTrade = new Trade();
@@ -522,11 +549,11 @@ class PersonalItemFactoryTest {
         expected.setTradeAlreadyExists(true);
         expected.setExistingTrade(buyTrade);
 
-        assertTrue(expected.isFullyEqual(personalItemFactory.getPersonalItemFromTradeByItemIdManager(tradeByItemIdManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems)));
+        assertTrue(expected.isFullyEqual(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems)));
     }
 
     @Test
-    public void getPersonalItemFromTradeByItemIdManager_should_return_expected_object_all_other_category_trade() {
+    public void getPersonalItemFromTradeByItemIdManager_should_return_expected_object_all_other_category_tradeOrNull() {
         TradeByItemIdManager tradeByItemIdManager = getDefaultItemIdManager();
 
         Trade sellTrade = new Trade();
@@ -556,11 +583,11 @@ class PersonalItemFactoryTest {
         expected.setTradeAlreadyExists(false);
         expected.setExistingTrade(null);
 
-        assertTrue(expected.isFullyEqual(personalItemFactory.getPersonalItemFromTradeByItemIdManager(tradeByItemIdManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems)));
+        assertTrue(expected.isFullyEqual(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems)));
     }
 
     @Test
-    public void getPersonalItemFromTradeByItemIdManager_should_return_expected_object_all_fields() {
+    public void getPersonalItemFromTradeByItemIdManager_OrNull_should_return_expected_object_all_fields() {
         TradeByItemIdManager tradeByItemIdManager = getDefaultItemIdManager();
 
         Trade sellTrade = new Trade();
@@ -590,7 +617,7 @@ class PersonalItemFactoryTest {
         expected.setTradeAlreadyExists(true);
         expected.setExistingTrade(sellTrade);
 
-        assertTrue(expected.isFullyEqual(personalItemFactory.getPersonalItemFromTradeByItemIdManager(tradeByItemIdManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems)));
+        assertTrue(expected.isFullyEqual(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems)));
     }
 
     private TradeByItemIdManager getDefaultItemIdManager() {

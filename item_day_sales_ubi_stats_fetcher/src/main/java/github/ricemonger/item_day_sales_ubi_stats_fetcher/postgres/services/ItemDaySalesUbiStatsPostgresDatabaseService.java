@@ -1,6 +1,6 @@
 package github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.services;
 
-import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.repositories.ItemDaySalesUbiStatsPostgresRepository;
+import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.repositories.CustomItemDaySalesUbiStatsPostgresRepository;
 import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.services.entity_mappers.item.ItemDaySalesUbiStatsEntityMapper;
 import github.ricemonger.item_day_sales_ubi_stats_fetcher.services.abstractions.ItemSaleUbiStatsDatabaseService;
 import github.ricemonger.utils.DTOs.common.GroupedItemDaySalesUbiStats;
@@ -16,7 +16,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class ItemDaySalesUbiStatsPostgresDatabaseService implements ItemSaleUbiStatsDatabaseService {
 
-    private final ItemDaySalesUbiStatsPostgresRepository itemDaySalesUbiStatsRepository;
+    private final CustomItemDaySalesUbiStatsPostgresRepository itemDaySalesUbiStatsRepository;
 
     private final ItemDaySalesUbiStatsEntityMapper itemDaySalesUbiStatsEntityMapper;
 

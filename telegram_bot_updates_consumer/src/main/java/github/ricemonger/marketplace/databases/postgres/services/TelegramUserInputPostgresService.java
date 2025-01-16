@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.dto_projections.TelegramUserInputProjection;
-import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserInputPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomTelegramUserInputPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TelegramUserInputEntityMapper;
 import github.ricemonger.marketplace.services.DTOs.TelegramUserInput;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserInputDatabaseService;
@@ -23,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TelegramUserInputPostgresService implements TelegramUserInputDatabaseService {
 
-    private final TelegramUserInputPostgresRepository telegramUserInputRepository;
+    private final CustomTelegramUserInputPostgresRepository telegramUserInputRepository;
 
     private final TelegramUserInputEntityMapper telegramUserInputEntityMapper;
 

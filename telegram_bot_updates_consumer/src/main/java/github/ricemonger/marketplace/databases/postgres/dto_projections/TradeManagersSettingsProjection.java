@@ -10,4 +10,6 @@ import lombok.NoArgsConstructor;
 public class TradeManagersSettingsProjection {
     private Boolean newManagersAreActiveFlag;
     private Boolean managingEnabledFlag;
+    private Boolean sellTradesManagingEnabledFlag;
+    private Boolean buyTradesManagingEnabledFlag;
 }

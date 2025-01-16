@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
 
-import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomUserPostgresRepository;
 import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class TelegramUserEntityMapper {
 
-    private final UserPostgresRepository userRepository;
+    private final CustomUserPostgresRepository userRepository;
 
     public TelegramUserEntity createNewEntityForNewUser(String chatId) {
         UserEntity user = userRepository.save(new UserEntity());

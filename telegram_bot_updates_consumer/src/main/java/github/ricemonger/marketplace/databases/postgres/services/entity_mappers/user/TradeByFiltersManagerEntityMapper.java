@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
-import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomUserPostgresRepository;
 import github.ricemonger.marketplace.services.DTOs.TradeByFiltersManager;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utilspostgresschema.full_entities.user.ItemFilterEntity;
@@ -15,13 +15,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class TradeByFiltersManagerEntityMapper {
 
-    private final UserPostgresRepository userPostgresRepository;
+    private final CustomUserPostgresRepository customUserPostgresRepository;
 
     public TradeByFiltersManagerEntity createEntity(String chatId, TradeByFiltersManager tradeManager) {
-        if (!userPostgresRepository.existsByTelegramUserChatId(chatId)) {
+        if (!customUserPostgresRepository.existsByTelegramUserChatId(chatId)) {
             throw new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found");
         }
-        UserEntity userEntity = userPostgresRepository.getReferenceByTelegramUserChatId(chatId);
+        UserEntity userEntity = customUserPostgresRepository.getReferenceByTelegramUserChatId(chatId);
 
         TradeByFiltersManagerEntity entity = new TradeByFiltersManagerEntity();
         entity.setUser(userEntity);

@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.ItemPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
 import github.ricemonger.utils.enums.TradeOperationType;
 import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
@@ -22,7 +22,7 @@ class TradeByItemIdManagerEntityMapperTest {
     @Autowired
     private TradeByItemIdManagerEntityMapper tradeByItemIdManagerEntityMapper;
     @MockBean
-    private UserPostgresRepository userRepository;
+    private CustomUserPostgresRepository userRepository;
     @MockBean
     private ItemPostgresRepository itemRepository;
 

@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"github.ricemonger.users_ubi_accs_reauthorizer"},
+@ComponentScan(basePackages = {"github.ricemonger.users_ubi_accs_reauthorizer", "github.ricemonger.utilspostgresschema"},
         basePackageClasses = github.ricemonger.utils.PublicMethodLogger.class)
 @EntityScan(basePackages = "github.ricemonger.utilspostgresschema")
 @Import({

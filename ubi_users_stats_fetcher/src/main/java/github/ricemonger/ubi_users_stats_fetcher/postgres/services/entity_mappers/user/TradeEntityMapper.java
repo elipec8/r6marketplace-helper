@@ -1,6 +1,6 @@
 package github.ricemonger.ubi_users_stats_fetcher.postgres.services.entity_mappers.user;
 
-import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.ItemPostgresRepository;
+import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.CustomItemPostgresRepository;
 import github.ricemonger.utils.DTOs.personal.Trade;
 import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
 import github.ricemonger.utilspostgresschema.full_entities.user.TradeEntity;
@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TradeEntityMapper {
 
-    private final ItemPostgresRepository itemPostgresRepository;
+    private final CustomItemPostgresRepository customItemPostgresRepository;
 
     public TradeEntity createEntity(Trade trade, List<String> existingItemsIds) {
         return new TradeEntity(
@@ -22,7 +22,7 @@ public class TradeEntityMapper {
                 trade.getCategory(),
                 trade.getExpiresAt(),
                 trade.getLastModifiedAt(),
-                existingItemsIds.stream().filter(ex -> ex.equals(trade.getItemId())).map(itemPostgresRepository::getReferenceById).findFirst().orElseThrow(() -> new ItemDoesntExistException("Item with id " + trade.getItemId() + " not found")),
+                existingItemsIds.stream().filter(ex -> ex.equals(trade.getItemId())).map(customItemPostgresRepository::getReferenceById).findFirst().orElseThrow(() -> new ItemDoesntExistException("Item with id " + trade.getItemId() + " not found")),
                 trade.getSuccessPaymentPrice(),
                 trade.getSuccessPaymentFee(),
                 trade.getProposedPaymentPrice(),

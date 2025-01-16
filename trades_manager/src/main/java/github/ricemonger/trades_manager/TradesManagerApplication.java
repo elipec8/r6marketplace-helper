@@ -20,7 +20,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"github.ricemonger.trades_manager"},
+@ComponentScan(basePackages = {"github.ricemonger.trades_manager", "github.ricemonger.utilspostgresschema"},
         basePackageClasses = github.ricemonger.utils.PublicMethodLogger.class)
 @Import({
         KafkaUtilsConfiguration.class,

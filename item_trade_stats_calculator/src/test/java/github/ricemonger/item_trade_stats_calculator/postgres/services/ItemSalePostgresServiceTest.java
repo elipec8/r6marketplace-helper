@@ -1,7 +1,7 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services;
 
 import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemSaleProjection;
-import github.ricemonger.item_trade_stats_calculator.postgres.repositories.ItemSalePostgresRepository;
+import github.ricemonger.item_trade_stats_calculator.postgres.repositories.CustomItemSalePostgresRepository;
 import github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item.ItemSaleEntityMapper;
 import github.ricemonger.utils.DTOs.common.ItemSale;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ class ItemSalePostgresServiceTest {
     @Autowired
     private ItemSalePostgresService itemSalePostgresService;
     @MockBean
-    private ItemSalePostgresRepository itemSaleRepository;
+    private CustomItemSalePostgresRepository itemSaleRepository;
     @MockBean
     private ItemSaleEntityMapper itemSaleEntityMapper;
 

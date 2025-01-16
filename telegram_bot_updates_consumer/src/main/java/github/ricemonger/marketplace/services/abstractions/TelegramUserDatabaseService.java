@@ -39,6 +39,10 @@ public interface TelegramUserDatabaseService {
 
     void setUserTradeManagersSettingsManagingEnabledFlag(String chatId, boolean flag) throws TelegramUserDoesntExistException;
 
+    void setUserTradeManagersSellSettingsManagingEnabledFlag(String chatId, boolean flag);
+
+    void setUserTradeManagersBuySettingsManagingEnabledFlag(String chatId, boolean flag);
+
     TradeManagersSettings findUserTradeManagersSettings(String chatId) throws TelegramUserDoesntExistException;
 
     void invertUserPrivateNotificationsFlag(String chatId);

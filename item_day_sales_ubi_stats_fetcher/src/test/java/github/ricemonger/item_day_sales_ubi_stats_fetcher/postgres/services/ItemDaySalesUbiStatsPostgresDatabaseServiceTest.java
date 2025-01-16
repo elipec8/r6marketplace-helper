@@ -1,6 +1,6 @@
 package github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.services;
 
-import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.repositories.ItemDaySalesUbiStatsPostgresRepository;
+import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.repositories.CustomItemDaySalesUbiStatsPostgresRepository;
 import github.ricemonger.item_day_sales_ubi_stats_fetcher.postgres.services.entity_mappers.item.ItemDaySalesUbiStatsEntityMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ class ItemDaySalesUbiStatsPostgresDatabaseServiceTest {
     @Autowired
     private ItemDaySalesUbiStatsPostgresDatabaseService itemDaySalesUbiStatsPostgresDatabaseService;
     @MockBean
-    private ItemDaySalesUbiStatsPostgresRepository itemDaySalesUbiStatsRepository;
+    private CustomItemDaySalesUbiStatsPostgresRepository itemDaySalesUbiStatsRepository;
     @MockBean
     private ItemDaySalesUbiStatsEntityMapper itemDaySalesUbiStatsEntityMapper;
 

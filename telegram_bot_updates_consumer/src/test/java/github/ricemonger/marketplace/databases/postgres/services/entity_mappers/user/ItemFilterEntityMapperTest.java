@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
-import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item.TagEntityMapper;
 import github.ricemonger.utils.DTOs.common.Tag;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
@@ -28,7 +28,7 @@ class ItemFilterEntityMapperTest {
     @Autowired
     private ItemFilterEntityMapper itemFilterEntityMapper;
     @MockBean
-    private UserPostgresRepository userPostgresRepository;
+    private CustomUserPostgresRepository customUserPostgresRepository;
     @MockBean
     private TagEntityMapper tagEntityMapper;
 
@@ -36,8 +36,8 @@ class ItemFilterEntityMapperTest {
     public void createEntity_should_properly_map_entity() {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(1L);
-        when(userPostgresRepository.existsByTelegramUserChatId("chatId")).thenReturn(true);
-        when(userPostgresRepository.getReferenceByTelegramUserChatId("chatId")).thenReturn(userEntity);
+        when(customUserPostgresRepository.existsByTelegramUserChatId("chatId")).thenReturn(true);
+        when(customUserPostgresRepository.getReferenceByTelegramUserChatId("chatId")).thenReturn(userEntity);
 
         ItemFilter filter = new ItemFilter();
         filter.setName("name");
@@ -69,7 +69,7 @@ class ItemFilterEntityMapperTest {
 
     @Test
     public void createEntity_should_trow_if_user_doesnt_exist() {
-        when(userPostgresRepository.existsByTelegramUserChatId("chatId")).thenReturn(false);
+        when(customUserPostgresRepository.existsByTelegramUserChatId("chatId")).thenReturn(false);
         assertThrows(TelegramUserDoesntExistException.class, () -> itemFilterEntityMapper.createEntity("chatId", new ItemFilter()));
     }
 

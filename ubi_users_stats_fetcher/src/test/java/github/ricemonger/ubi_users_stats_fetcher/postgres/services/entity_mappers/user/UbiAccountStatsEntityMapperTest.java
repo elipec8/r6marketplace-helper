@@ -1,6 +1,7 @@
 package github.ricemonger.ubi_users_stats_fetcher.postgres.services.entity_mappers.user;
 
-import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.ItemPostgresRepository;
+
+import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.CustomItemPostgresRepository;
 import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.UbiAccountStatsPostgresRepository;
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UbiAccountStats;
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
@@ -29,7 +30,7 @@ class UbiAccountStatsEntityMapperTest {
     @Autowired
     private UbiAccountStatsEntityMapper ubiAccountStatsEntityMapper;
     @MockBean
-    private ItemPostgresRepository itemIdPostgresRepository;
+    private CustomItemPostgresRepository itemIdPostgresRepository;
     @MockBean
     private TradeEntityMapper TradeEntityMapper;
     @MockBean

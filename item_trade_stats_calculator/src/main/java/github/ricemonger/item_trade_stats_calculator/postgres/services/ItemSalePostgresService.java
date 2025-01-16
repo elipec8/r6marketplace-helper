@@ -1,7 +1,7 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services;
 
 
-import github.ricemonger.item_trade_stats_calculator.postgres.repositories.ItemSalePostgresRepository;
+import github.ricemonger.item_trade_stats_calculator.postgres.repositories.CustomItemSalePostgresRepository;
 import github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item.ItemSaleEntityMapper;
 import github.ricemonger.item_trade_stats_calculator.services.abstractions.ItemSaleDatabaseService;
 import github.ricemonger.utils.DTOs.common.ItemSale;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemSalePostgresService implements ItemSaleDatabaseService {
 
-    private final ItemSalePostgresRepository itemSaleRepository;
+    private final CustomItemSalePostgresRepository itemSaleRepository;
 
     private final ItemSaleEntityMapper itemSaleEntityMapper;
 

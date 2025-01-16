@@ -19,14 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 class UserAuthorizedUbiAccountEntryPostgresRepositoryTest {
     @Autowired
-    private UserUbiAccountEntryPostgresRepository userUbiAccountEntryPostgresRepository;
+    private CustomUserUbiAccountEntryPostgresRepository customUserUbiAccountEntryPostgresRepository;
     @Autowired
     private EntityManager entityManager;
 
     @BeforeEach
     @Transactional
     public void setUp() {
-        userUbiAccountEntryPostgresRepository.deleteAll();
+        customUserUbiAccountEntryPostgresRepository.deleteAll();
     }
 
     @Test
@@ -89,7 +89,7 @@ class UserAuthorizedUbiAccountEntryPostgresRepositoryTest {
 
         entityManager.flush();
 
-        List<UserAuthorizedUbiAccountProjection> userAuthorizedUbiAccountProjections = userUbiAccountEntryPostgresRepository.findAllUserAuthorizedUbiAccounts();
+        List<UserAuthorizedUbiAccountProjection> userAuthorizedUbiAccountProjections = customUserUbiAccountEntryPostgresRepository.findAllUserAuthorizedUbiAccounts();
 
         UserAuthorizedUbiAccountProjection projection1 = new UserAuthorizedUbiAccountProjection();
         projection1.setUserId(userEntity1.getId());

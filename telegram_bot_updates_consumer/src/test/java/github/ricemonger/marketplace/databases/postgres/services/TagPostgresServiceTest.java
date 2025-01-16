@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.repositories.TagPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomTagPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.item.TagEntityMapper;
 import github.ricemonger.utils.DTOs.common.Tag;
 import github.ricemonger.utils.enums.TagGroup;
@@ -23,7 +23,7 @@ class TagPostgresServiceTest {
     @SpyBean
     private TagPostgresService tagService;
     @MockBean
-    private TagPostgresRepository tagRepository;
+    private CustomTagPostgresRepository tagRepository;
     @MockBean
     private TagEntityMapper tagEntityMapper;
 

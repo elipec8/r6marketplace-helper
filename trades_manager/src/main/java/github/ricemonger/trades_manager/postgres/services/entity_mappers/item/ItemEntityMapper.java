@@ -1,7 +1,7 @@
 package github.ricemonger.trades_manager.postgres.services.entity_mappers.item;
 
-import github.ricemonger.trades_manager.postgres.entities.items.ItemEntity;
-import github.ricemonger.trades_manager.postgres.entities.items.TagValueEntity;
+import github.ricemonger.trades_manager.postgres.custom_entities.items.CustomItemEntity;
+import github.ricemonger.trades_manager.postgres.custom_entities.items.CustomTagValueEntity;
 import github.ricemonger.utils.DTOs.common.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +15,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemEntityMapper {
 
-    public Item createDTO(ItemEntity itemEntity) {
+    public Item createDTO(CustomItemEntity itemEntity) {
         List<String> tags = new ArrayList<>();
         if (itemEntity.getTags() != null && !itemEntity.getTags().isEmpty()) {
-            tags = itemEntity.getTags().stream().map(TagValueEntity::getValue).toList();
+            tags = itemEntity.getTags().stream().map(CustomTagValueEntity::getValue).toList();
         }
         return new Item(
                 itemEntity.getItemId(),

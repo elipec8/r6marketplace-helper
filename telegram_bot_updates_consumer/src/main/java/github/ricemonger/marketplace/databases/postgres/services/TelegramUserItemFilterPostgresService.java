@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.repositories.ItemFilterPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomItemFilterPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.ItemFilterEntityMapper;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserItemFilterDatabaseService;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TelegramUserItemFilterPostgresService implements TelegramUserItemFilterDatabaseService {
 
-    private final ItemFilterPostgresRepository itemFilterRepository;
+    private final CustomItemFilterPostgresRepository itemFilterRepository;
 
     private final ItemFilterEntityMapper itemFilterEntityMapper;
 

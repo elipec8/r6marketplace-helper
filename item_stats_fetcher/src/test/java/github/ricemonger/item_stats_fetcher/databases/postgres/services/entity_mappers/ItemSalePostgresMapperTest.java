@@ -1,8 +1,8 @@
 package github.ricemonger.item_stats_fetcher.databases.postgres.services.entity_mappers;
 
-import github.ricemonger.item_stats_fetcher.databases.postgres.entities.ItemMainFieldsEntity;
-import github.ricemonger.item_stats_fetcher.databases.postgres.entities.ItemSaleEntity;
-import github.ricemonger.item_stats_fetcher.databases.postgres.repositories.ItemMainFieldsPostgresRepository;
+import github.ricemonger.item_stats_fetcher.databases.postgres.custom_entities.ItemMainFieldsEntity;
+import github.ricemonger.item_stats_fetcher.databases.postgres.custom_entities.ItemSaleEntity;
+import github.ricemonger.item_stats_fetcher.databases.postgres.repositories.CustomItemMainFieldsPostgresRepository;
 import github.ricemonger.utils.DTOs.common.ItemSale;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ class ItemSalePostgresMapperTest {
     private ItemSalePostgresMapper itemSalePostgresMapper;
 
     @MockBean
-    private ItemMainFieldsPostgresRepository itemMainFieldsRepository;
+    private CustomItemMainFieldsPostgresRepository itemMainFieldsRepository;
 
     @Test
     public void createEntities_should_properly_map_entities() {

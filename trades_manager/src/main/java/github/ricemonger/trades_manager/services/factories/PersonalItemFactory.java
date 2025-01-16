@@ -68,7 +68,12 @@ public class PersonalItemFactory {
                                                                        Collection<Trade> existingBuyTrades,
                                                                        Collection<String> ownedItemsIds,
                                                                        Collection<Item> existingItems) {
-        if (existingItems == null || existingItems.isEmpty() || tradeByFiltersManager.getAppliedFilters() == null || tradeByFiltersManager.getAppliedFilters().isEmpty()) {
+        if (tradeByFiltersManager.getEnabled() == null ||
+            !tradeByFiltersManager.getEnabled() ||
+            existingItems == null ||
+            existingItems.isEmpty() ||
+            tradeByFiltersManager.getAppliedFilters() == null ||
+            tradeByFiltersManager.getAppliedFilters().isEmpty()) {
             return new HashSet<>();
         } else {
             return new HashSet<>(ItemFilter.filterItems(existingItems, tradeByFiltersManager.getAppliedFilters())
@@ -119,7 +124,7 @@ public class PersonalItemFactory {
                 tradeByItemIdManagers.stream().filter(m -> m.getPriorityMultiplier() != null).sorted(Comparator.comparingInt(TradeByItemIdManager::getPriorityMultiplier).reversed()).toList();
 
         for (TradeByItemIdManager tradeByItemIdManager : sortedTradeByItemIdManagers) {
-            PersonalItem personalItem = getPersonalItemFromTradeByItemIdManager(
+            PersonalItem personalItem = getPersonalItemFromTradeByItemIdManagerOrNull(
                     tradeByItemIdManager,
                     existingSellTrades,
                     existingBuyTrades,
@@ -132,11 +137,16 @@ public class PersonalItemFactory {
         return personalItems;
     }
 
-    public PersonalItem getPersonalItemFromTradeByItemIdManager(TradeByItemIdManager tradeByItemIdManager,
-                                                                Collection<Trade> existingSellTrades,
-                                                                Collection<Trade> existingBuyTrades,
-                                                                Collection<String> ownedItemsIds,
-                                                                Collection<Item> existingItems) {
+    public PersonalItem getPersonalItemFromTradeByItemIdManagerOrNull(TradeByItemIdManager tradeByItemIdManager,
+                                                                      Collection<Trade> existingSellTrades,
+                                                                      Collection<Trade> existingBuyTrades,
+                                                                      Collection<String> ownedItemsIds,
+                                                                      Collection<Item> existingItems) {
+
+        if (tradeByItemIdManager.getEnabled() == null || !tradeByItemIdManager.getEnabled() || existingItems == null || existingItems.isEmpty()) {
+            return null;
+        }
+
         Item item = existingItems.stream().filter(i -> i.getItemId().equals(tradeByItemIdManager.getItemId())).findFirst().orElse(null);
         if (item != null) {
             int minMedianPriceDifference = Integer.MIN_VALUE;

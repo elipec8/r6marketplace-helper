@@ -1,6 +1,6 @@
 package github.ricemonger.item_stats_fetcher.databases.postgres.services;
 
-import github.ricemonger.item_stats_fetcher.databases.postgres.repositories.ItemMainFieldsPostgresRepository;
+import github.ricemonger.item_stats_fetcher.databases.postgres.repositories.CustomItemMainFieldsPostgresRepository;
 import github.ricemonger.item_stats_fetcher.databases.postgres.services.entity_mappers.ItemMainFieldsPostgresMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -18,7 +18,7 @@ class ItemPostgresServiceTest {
     @Autowired
     private ItemPostgresService itemPostgresService;
     @MockBean
-    private ItemMainFieldsPostgresRepository itemMainFieldsRepository;
+    private CustomItemMainFieldsPostgresRepository itemMainFieldsRepository;
     @MockBean
     private ItemMainFieldsPostgresMapper itemMainFieldsPostgresMapper;
 

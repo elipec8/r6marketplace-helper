@@ -1,6 +1,6 @@
 package github.ricemonger.ubi_users_stats_fetcher.postgres.services;
 
-import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.ItemPostgresRepository;
+import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.CustomItemPostgresRepository;
 import github.ricemonger.ubi_users_stats_fetcher.postgres.services.entity_mappers.common.ItemEntityMapper;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
@@ -22,7 +22,7 @@ class ItemPostgresServiceTest {
     @Autowired
     private ItemPostgresService itemPostgresService;
     @MockBean
-    private ItemPostgresRepository itemPostgresRepository;
+    private CustomItemPostgresRepository customItemPostgresRepository;
     @MockBean
     private ItemEntityMapper itemEntityMapper;
 
@@ -36,7 +36,7 @@ class ItemPostgresServiceTest {
 
         List list = mock(List.class);
 
-        when(itemPostgresRepository.findAllByItemIdIn(same(list))).thenReturn(List.of(itemEntity1, itemEntity2));
+        when(customItemPostgresRepository.findAllByItemIdIn(same(list))).thenReturn(List.of(itemEntity1, itemEntity2));
         when(itemEntityMapper.createItem(itemEntity1)).thenReturn(item1);
         when(itemEntityMapper.createItem(itemEntity2)).thenReturn(item2);
 

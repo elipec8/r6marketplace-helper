@@ -1,6 +1,6 @@
 package github.ricemonger.item_stats_fetcher.databases.postgres.services;
 
-import github.ricemonger.item_stats_fetcher.databases.postgres.repositories.ItemMainFieldsPostgresRepository;
+import github.ricemonger.item_stats_fetcher.databases.postgres.repositories.CustomItemMainFieldsPostgresRepository;
 import github.ricemonger.item_stats_fetcher.databases.postgres.services.entity_mappers.ItemMainFieldsPostgresMapper;
 import github.ricemonger.item_stats_fetcher.services.abstractions.ItemDatabaseService;
 import github.ricemonger.utils.DTOs.common.ItemMainFieldsI;
@@ -17,7 +17,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class ItemPostgresService implements ItemDatabaseService {
 
-    private final ItemMainFieldsPostgresRepository itemMainFieldsRepository;
+    private final CustomItemMainFieldsPostgresRepository itemMainFieldsRepository;
 
     private final ItemMainFieldsPostgresMapper itemMainFieldsPostgresMapper;
 

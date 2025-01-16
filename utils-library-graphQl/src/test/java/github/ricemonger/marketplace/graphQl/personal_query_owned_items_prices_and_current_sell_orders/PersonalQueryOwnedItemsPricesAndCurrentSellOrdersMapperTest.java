@@ -16,7 +16,6 @@ import github.ricemonger.utils.DTOs.personal.FastUserUbiStats;
 import github.ricemonger.utils.DTOs.personal.SellTrade;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalOwnedItemPricesAndCurrentSellOrdersMappingException;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.text.ParseException;
 import java.util.ArrayList;

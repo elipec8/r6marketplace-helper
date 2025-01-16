@@ -1,8 +1,8 @@
 package github.ricemonger.item_stats_fetcher.databases.postgres.services.entity_mappers;
 
-import github.ricemonger.item_stats_fetcher.databases.postgres.entities.ItemMainFieldsEntity;
-import github.ricemonger.item_stats_fetcher.databases.postgres.entities.TagEntity;
-import github.ricemonger.item_stats_fetcher.databases.postgres.repositories.TagValuePostgresRepository;
+import github.ricemonger.item_stats_fetcher.databases.postgres.custom_entities.ItemMainFieldsEntity;
+import github.ricemonger.item_stats_fetcher.databases.postgres.custom_entities.TagEntity;
+import github.ricemonger.item_stats_fetcher.databases.postgres.repositories.CustomTagValuePostgresRepository;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
@@ -24,7 +24,7 @@ class ItemMainFieldsPostgresMapperTest {
     private ItemMainFieldsPostgresMapper itemMainFieldsPostgresMapper;
 
     @MockBean
-    private TagValuePostgresRepository tagValueRepository;
+    private CustomTagValuePostgresRepository tagValueRepository;
 
     @Test
     public void createEntities_should_properly_map_entities() {

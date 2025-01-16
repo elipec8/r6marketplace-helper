@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
 import github.ricemonger.marketplace.databases.postgres.dto_projections.TelegramUserInputProjection;
-import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserInputPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomTelegramUserInputPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TelegramUserInputEntityMapper;
 import github.ricemonger.marketplace.services.DTOs.TelegramUserInput;
 import github.ricemonger.utils.enums.InputState;
@@ -32,7 +32,7 @@ class TelegramUserInputPostgresServiceTest {
     @Autowired
     private TelegramUserInputPostgresService inputService;
     @MockBean
-    private TelegramUserInputPostgresRepository telegramUserInputRepository;
+    private CustomTelegramUserInputPostgresRepository telegramUserInputRepository;
     @MockBean
     private TelegramUserInputEntityMapper telegramUserInputEntityMapper;
 

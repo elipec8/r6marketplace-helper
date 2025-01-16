@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"github.ricemonger.item_day_sales_ubi_stats_fetcher"},
+@ComponentScan(basePackages = {"github.ricemonger.item_day_sales_ubi_stats_fetcher", "github.ricemonger.utilspostgresschema"},
         basePackageClasses = github.ricemonger.utils.PublicMethodLogger.class)
 @Import({
         SchedulingUtilsConfiguration.class,

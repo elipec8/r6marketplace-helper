@@ -1,7 +1,7 @@
 package github.ricemonger.notifications_service.postgres.services;
 
 import github.ricemonger.notifications_service.postgres.dto_projections.ToBeNotifiedUserProjection;
-import github.ricemonger.notifications_service.postgres.repositories.UserPostgresRepository;
+import github.ricemonger.notifications_service.postgres.repositories.CustomUserPostgresRepository;
 import github.ricemonger.notifications_service.services.DTOs.ToBeNotifiedUser;
 import github.ricemonger.utils.exceptions.client.UserDoesntExistException;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class UserPostgresServiceTest {
     @Autowired
     private UserPostgresService userPostgresService;
     @MockBean
-    private UserPostgresRepository userPostgresRepository;
+    private CustomUserPostgresRepository customUserPostgresRepository;
     @MockBean
     private UserEntityMapper userEntityMapper;
 
@@ -31,7 +31,7 @@ class UserPostgresServiceTest {
 
         ToBeNotifiedUser user = mock(ToBeNotifiedUser.class);
 
-        when(userPostgresRepository.findToBeNotifiedUserIdById(1L)).thenReturn(Optional.of(projection));
+        when(customUserPostgresRepository.findToBeNotifiedUserIdById(1L)).thenReturn(Optional.of(projection));
         when(userEntityMapper.createToBeNotifiedUser(projection)).thenReturn(user);
 
         assertSame(user, userPostgresService.getToBeNotifiedUser(1L));
@@ -39,7 +39,7 @@ class UserPostgresServiceTest {
 
     @Test
     public void getToBeNotifiedUser_should_throw_if_user_doesnt_exist() {
-        when(userPostgresRepository.findToBeNotifiedUserIdById(1L)).thenReturn(Optional.empty());
+        when(customUserPostgresRepository.findToBeNotifiedUserIdById(1L)).thenReturn(Optional.empty());
 
         assertThrows(UserDoesntExistException.class, () -> userPostgresService.getToBeNotifiedUser(1L));
     }
@@ -52,7 +52,7 @@ class UserPostgresServiceTest {
         ToBeNotifiedUser user1 = mock(ToBeNotifiedUser.class);
         ToBeNotifiedUser user2 = mock(ToBeNotifiedUser.class);
 
-        when(userPostgresRepository.findAllToBeNotifiedUsers()).thenReturn(List.of(projection1, projection2));
+        when(customUserPostgresRepository.findAllToBeNotifiedUsers()).thenReturn(List.of(projection1, projection2));
         when(userEntityMapper.createToBeNotifiedUser(projection1)).thenReturn(user1);
         when(userEntityMapper.createToBeNotifiedUser(projection2)).thenReturn(user2);
 

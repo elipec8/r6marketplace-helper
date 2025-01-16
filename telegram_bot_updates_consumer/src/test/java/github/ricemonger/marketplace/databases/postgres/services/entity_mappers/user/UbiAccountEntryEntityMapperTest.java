@@ -1,8 +1,8 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
 import github.ricemonger.marketplace.databases.postgres.dto_projections.UbiAccountAuthorizationEntryProjection;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.repositories.UbiAccountStatsPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
 import github.ricemonger.marketplace.services.DTOs.UbiAccountAuthorizationEntry;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountEntryEntity;
@@ -24,7 +24,7 @@ class UbiAccountEntryEntityMapperTest {
     @Autowired
     private UbiAccountEntryEntityMapper ubiAccountEntryEntityMapper;
     @MockBean
-    private UserPostgresRepository userPostgresRepository;
+    private CustomUserPostgresRepository customUserPostgresRepository;
     @MockBean
     private UbiAccountStatsPostgresRepository ubiAccountStatsPostgresRepository;
 
@@ -32,8 +32,8 @@ class UbiAccountEntryEntityMapperTest {
     public void createEntity_should_properly_map_entity_if_ubi_stats_exists() {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(1L);
-        when(userPostgresRepository.existsByTelegramUserChatId("chatId")).thenReturn(true);
-        when(userPostgresRepository.getReferenceByTelegramUserChatId("chatId")).thenReturn(userEntity);
+        when(customUserPostgresRepository.existsByTelegramUserChatId("chatId")).thenReturn(true);
+        when(customUserPostgresRepository.getReferenceByTelegramUserChatId("chatId")).thenReturn(userEntity);
 
         UbiAccountStatsEntity ubiAccountStatsEntity = new UbiAccountStatsEntity();
         ubiAccountStatsEntity.setUbiProfileId("ubiProfileId");
@@ -66,8 +66,8 @@ class UbiAccountEntryEntityMapperTest {
     public void createEntity_should_properly_map_entity_if_ubi_stats_doesnt_exist() {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(1L);
-        when(userPostgresRepository.existsByTelegramUserChatId("chatId")).thenReturn(true);
-        when(userPostgresRepository.getReferenceByTelegramUserChatId("chatId")).thenReturn(userEntity);
+        when(customUserPostgresRepository.existsByTelegramUserChatId("chatId")).thenReturn(true);
+        when(customUserPostgresRepository.getReferenceByTelegramUserChatId("chatId")).thenReturn(userEntity);
 
         UbiAccountStatsEntity ubiAccountStatsEntity = new UbiAccountStatsEntity();
         ubiAccountStatsEntity.setUbiProfileId("ubiProfileId");
@@ -98,7 +98,7 @@ class UbiAccountEntryEntityMapperTest {
 
     @Test
     public void createEntity_should_throw_if_user_doesnt_exist() {
-        when(userPostgresRepository.existsByTelegramUserChatId("chatId")).thenReturn(false);
+        when(customUserPostgresRepository.existsByTelegramUserChatId("chatId")).thenReturn(false);
         UbiAccountAuthorizationEntry account = new UbiAccountAuthorizationEntry();
         account.setUbiProfileId("ubiProfileId1");
         account.setEmail("email");

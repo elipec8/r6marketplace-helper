@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.repositories.TradeByItemIdManagerPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomTradeByItemIdManagerPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TradeByItemIdManagerEntityMapper;
 import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
 import github.ricemonger.utils.exceptions.client.TradeByItemIdManagerDoesntExistException;
@@ -24,7 +24,7 @@ class TelegramUserTradeByItemIdManagerPostgresServiceTest {
     @Autowired
     private TelegramUserTradeByItemIdManagerPostgresService telegramUserTradeByItemIdManagerService;
     @MockBean
-    private TradeByItemIdManagerPostgresRepository TradeByItemIdManagerRepository;
+    private CustomTradeByItemIdManagerPostgresRepository TradeByItemIdManagerRepository;
     @MockBean
     private TradeByItemIdManagerEntityMapper TradeByItemIdManagerEntityMapper;
 

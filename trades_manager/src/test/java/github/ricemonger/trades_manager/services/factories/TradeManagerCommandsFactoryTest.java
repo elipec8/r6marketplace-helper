@@ -113,7 +113,6 @@ class TradeManagerCommandsFactoryTest {
         Collection<Trade> currentBuyTrades = List.of(currentBuyTradeBeUpdated, currentBuyTradeBeLeft, currentBuyTradeBeCanceled);
 
 
-
         TradeManagerCommand commandCreateSell = new TradeManagerCommand(userId, authorizationDTO,
                 CentralTradeManagerCommandType.SELL_ORDER_CREATE, potentialSellTradeCreate.getItemId(), potentialSellTradeCreate.getItemName(),
                 potentialSellTradeCreate.getNewPrice());
@@ -240,7 +239,6 @@ class TradeManagerCommandsFactoryTest {
         currentBuyTradeBeCanceled.getItem().setName("name77");
         currentBuyTradeBeCanceled.setProposedPaymentPrice(77);
         Collection<Trade> currentBuyTrades = List.of(currentBuyTradeBeUpdated, currentBuyTradeBeLeft, currentBuyTradeBeCanceled);
-
 
 
         TradeManagerCommand commandCreateSell = new TradeManagerCommand(userId, authorizationDTO,

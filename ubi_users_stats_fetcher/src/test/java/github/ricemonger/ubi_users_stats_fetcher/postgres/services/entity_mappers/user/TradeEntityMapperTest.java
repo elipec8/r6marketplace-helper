@@ -1,6 +1,6 @@
 package github.ricemonger.ubi_users_stats_fetcher.postgres.services.entity_mappers.user;
 
-import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.ItemPostgresRepository;
+import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.CustomItemPostgresRepository;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.personal.Trade;
 import github.ricemonger.utils.enums.TradeCategory;
@@ -27,7 +27,7 @@ class TradeEntityMapperTest {
     @Autowired
     private TradeEntityMapper tradeEntityMapper;
     @MockBean
-    private ItemPostgresRepository itemPostgresRepository;
+    private CustomItemPostgresRepository customItemPostgresRepository;
 
     @Test
     public void createEntity_should_return_expected_result_for_existing_item() {
@@ -45,7 +45,7 @@ class TradeEntityMapperTest {
 
         List<String> existingItems = List.of("itemId1", "itemId2");
         ItemEntity itemEntity = new ItemEntity("itemId1");
-        when(itemPostgresRepository.getReferenceById("itemId1")).thenReturn(itemEntity);
+        when(customItemPostgresRepository.getReferenceById("itemId1")).thenReturn(itemEntity);
 
         TradeEntity entity = new TradeEntity();
         entity.setTradeId("tradeId");

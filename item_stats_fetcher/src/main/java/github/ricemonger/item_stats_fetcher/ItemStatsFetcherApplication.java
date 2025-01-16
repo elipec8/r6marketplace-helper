@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"github.ricemonger.item_stats_fetcher"},
+@ComponentScan(basePackages = {"github.ricemonger.item_stats_fetcher", "github.ricemonger.utilspostgresschema"},
         basePackageClasses = github.ricemonger.utils.PublicMethodLogger.class)
 @Import({SchedulingUtilsConfiguration.class,
         RedisUtilsConfiguration.class,

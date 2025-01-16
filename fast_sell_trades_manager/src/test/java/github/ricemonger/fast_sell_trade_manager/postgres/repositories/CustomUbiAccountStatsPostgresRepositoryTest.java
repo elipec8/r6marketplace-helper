@@ -6,8 +6,6 @@ import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.ItemResaleLockEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountStatsEntity;
-import github.ricemonger.utilspostgresschema.repositories.item.ItemPostgresRepository;
-import github.ricemonger.utilspostgresschema.repositories.user.ItemResaleLockPostgresRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

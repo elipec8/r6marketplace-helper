@@ -1,7 +1,7 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services;
 
 
-import github.ricemonger.item_trade_stats_calculator.postgres.repositories.ItemDaySalesUbiStatsPostgresRepository;
+import github.ricemonger.item_trade_stats_calculator.postgres.repositories.CustomItemDaySalesUbiStatsPostgresRepository;
 import github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item.ItemDaySalesUbiStatsEntityMapper;
 import github.ricemonger.item_trade_stats_calculator.services.abstractions.ItemSaleUbiStatsDatabaseService;
 import github.ricemonger.utils.DTOs.common.ItemDaySalesUbiStats;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemDaySalesUbiStatsPostgresService implements ItemSaleUbiStatsDatabaseService {
 
-    private final ItemDaySalesUbiStatsPostgresRepository itemDaySalesUbiStatsRepository;
+    private final CustomItemDaySalesUbiStatsPostgresRepository itemDaySalesUbiStatsRepository;
 
     private final ItemDaySalesUbiStatsEntityMapper itemDaySalesUbiStatsEntityMapper;
 

@@ -1,7 +1,7 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
 
-import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomUserPostgresRepository;
 import github.ricemonger.marketplace.services.DTOs.TradeByFiltersManager;
 import github.ricemonger.utils.enums.TradeOperationType;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
@@ -23,7 +23,7 @@ class TradeByFiltersManagerEntityMapperTest {
     @Autowired
     private TradeByFiltersManagerEntityMapper tradeByFiltersManagerEntityMapper;
     @MockBean
-    private UserPostgresRepository userPostgresRepository;
+    private CustomUserPostgresRepository customUserPostgresRepository;
 
     @Test
     public void createEntity_should_properly_map_entity() {
@@ -36,8 +36,8 @@ class TradeByFiltersManagerEntityMapperTest {
         ItemFilterEntity itemFilterEntity3 = new ItemFilterEntity();
         itemFilterEntity3.setName("filter3");
         userEntity.setItemFilters(List.of(itemFilterEntity1, itemFilterEntity2, itemFilterEntity3));
-        when(userPostgresRepository.existsByTelegramUserChatId("chatId")).thenReturn(true);
-        when(userPostgresRepository.getReferenceByTelegramUserChatId("chatId")).thenReturn(userEntity);
+        when(customUserPostgresRepository.existsByTelegramUserChatId("chatId")).thenReturn(true);
+        when(customUserPostgresRepository.getReferenceByTelegramUserChatId("chatId")).thenReturn(userEntity);
 
         TradeByFiltersManager dto = new TradeByFiltersManager();
         dto.setName("name");
@@ -63,7 +63,7 @@ class TradeByFiltersManagerEntityMapperTest {
 
     @Test
     public void createEntity_should_throw_if_user_doesnt_exist() {
-        when(userPostgresRepository.existsByTelegramUserChatId("chatId")).thenReturn(false);
+        when(customUserPostgresRepository.existsByTelegramUserChatId("chatId")).thenReturn(false);
         TradeByFiltersManager dto = new TradeByFiltersManager();
         dto.setName("name");
         dto.setEnabled(true);

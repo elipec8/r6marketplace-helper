@@ -1,6 +1,6 @@
 package github.ricemonger.trades_manager.postgres.services.entity_mappers.user;
 
-import github.ricemonger.trades_manager.postgres.entities.manageable_users.*;
+import github.ricemonger.trades_manager.postgres.custom_entities.manageable_users.*;
 import github.ricemonger.trades_manager.services.DTOs.ManageableUser;
 import github.ricemonger.trades_manager.services.DTOs.TradeByFiltersManager;
 import github.ricemonger.trades_manager.services.DTOs.UbiAccountStats;
@@ -28,8 +28,8 @@ class UserEntityMapperTest {
 
     @Test
     public void createManageableUser_should_return_expected_result() {
-        TradeByFiltersManagerEntity tradeByFiltersManagerEntity1 = Mockito.mock(TradeByFiltersManagerEntity.class);
-        TradeByFiltersManagerEntity tradeByFiltersManagerEntity2 = Mockito.mock(TradeByFiltersManagerEntity.class);
+        CustomTradeByFiltersManagerEntity tradeByFiltersManagerEntity1 = Mockito.mock(CustomTradeByFiltersManagerEntity.class);
+        CustomTradeByFiltersManagerEntity tradeByFiltersManagerEntity2 = Mockito.mock(CustomTradeByFiltersManagerEntity.class);
 
         TradeByFiltersManager tradeByFiltersManager1 = Mockito.mock(TradeByFiltersManager.class);
         TradeByFiltersManager tradeByFiltersManager2 = Mockito.mock(TradeByFiltersManager.class);
@@ -37,8 +37,8 @@ class UserEntityMapperTest {
         Mockito.when(tradeByFiltersManagerEntityMapper.createDTO(tradeByFiltersManagerEntity1)).thenReturn(tradeByFiltersManager1);
         Mockito.when(tradeByFiltersManagerEntityMapper.createDTO(tradeByFiltersManagerEntity2)).thenReturn(tradeByFiltersManager2);
 
-        TradeByItemIdManagerEntity tradeByItemIdManagerEntity1 = Mockito.mock(TradeByItemIdManagerEntity.class);
-        TradeByItemIdManagerEntity tradeByItemIdManagerEntity2 = Mockito.mock(TradeByItemIdManagerEntity.class);
+        CustomTradeByItemIdManagerEntity tradeByItemIdManagerEntity1 = Mockito.mock(CustomTradeByItemIdManagerEntity.class);
+        CustomTradeByItemIdManagerEntity tradeByItemIdManagerEntity2 = Mockito.mock(CustomTradeByItemIdManagerEntity.class);
 
         TradeByItemIdManager tradeByItemIdManager1 = Mockito.mock(TradeByItemIdManager.class);
         TradeByItemIdManager tradeByItemIdManager2 = Mockito.mock(TradeByItemIdManager.class);
@@ -46,21 +46,23 @@ class UserEntityMapperTest {
         Mockito.when(tradeByItemIdManagerEntityMapper.createDTO(tradeByItemIdManagerEntity1)).thenReturn(tradeByItemIdManager1);
         Mockito.when(tradeByItemIdManagerEntityMapper.createDTO(tradeByItemIdManagerEntity2)).thenReturn(tradeByItemIdManager2);
 
-        UbiAccountStatsEntity ubiAccountStatsEntity = Mockito.mock(UbiAccountStatsEntity.class);
+        CustomUbiAccountStatsEntity ubiAccountStatsEntity = Mockito.mock(CustomUbiAccountStatsEntity.class);
 
         UbiAccountStats ubiAccountStats = Mockito.mock(UbiAccountStats.class);
 
         Mockito.when(ubiAccountStatsEntityMapper.createDTO(ubiAccountStatsEntity)).thenReturn(ubiAccountStats);
 
-        ManageableUserEntity entity = new ManageableUserEntity();
+        CustomManageableUserEntity entity = new CustomManageableUserEntity();
         entity.setId(1L);
-        entity.setUbiAccountEntry(new ManageableUserUbiAccountEntryEntity());
+        entity.setUbiAccountEntry(new CustomManageableUserUbiAccountEntryEntity());
         entity.getUbiAccountEntry().setUbiAccountStats(ubiAccountStatsEntity);
         entity.getUbiAccountEntry().setUbiAuthTicket("ubiAuthTicket");
         entity.getUbiAccountEntry().setUbiSpaceId("ubiSpaceId");
         entity.getUbiAccountEntry().setUbiSessionId("ubiSessionId");
         entity.getUbiAccountEntry().setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
         entity.getUbiAccountEntry().setUbiRememberMeTicket("ubiRememberMeTicket");
+        entity.setSellTradesManagingEnabledFlag(true);
+        entity.setBuyTradesManagingEnabledFlag(false);
         entity.setTradeByFiltersManagers(List.of(tradeByFiltersManagerEntity1, tradeByFiltersManagerEntity2));
         entity.setTradeByItemIdManagers(List.of(tradeByItemIdManagerEntity1, tradeByItemIdManagerEntity2));
 
@@ -77,5 +79,7 @@ class UserEntityMapperTest {
         assertTrue(result.getTradeByFiltersManagers().stream().anyMatch(tm -> tm == tradeByFiltersManager2));
         assertTrue(result.getTradeByItemIdManagers().stream().anyMatch(tm -> tm == tradeByItemIdManager1));
         assertTrue(result.getTradeByItemIdManagers().stream().anyMatch(tm -> tm == tradeByItemIdManager2));
+        assertTrue(result.getSellTradesManagingEnabledFlag());
+        assertFalse(result.getBuyTradesManagingEnabledFlag());
     }
 }

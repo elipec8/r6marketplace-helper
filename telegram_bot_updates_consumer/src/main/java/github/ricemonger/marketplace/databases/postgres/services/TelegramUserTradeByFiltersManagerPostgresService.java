@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.repositories.TradeByFiltersManagerPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomTradeByFiltersManagerPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TradeByFiltersManagerEntityMapper;
 import github.ricemonger.marketplace.services.DTOs.TradeByFiltersManager;
 import github.ricemonger.marketplace.services.abstractions.TelegramUserTradeByFiltersManagerDatabaseService;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TelegramUserTradeByFiltersManagerPostgresService implements TelegramUserTradeByFiltersManagerDatabaseService {
 
-    private final TradeByFiltersManagerPostgresRepository tradeByFiltersManagerRepository;
+    private final CustomTradeByFiltersManagerPostgresRepository tradeByFiltersManagerRepository;
 
     private final TradeByFiltersManagerEntityMapper tradeByFiltersManagerEntityMapper;
 

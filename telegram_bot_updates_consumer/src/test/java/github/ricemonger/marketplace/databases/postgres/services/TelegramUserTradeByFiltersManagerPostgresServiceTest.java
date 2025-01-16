@@ -1,6 +1,6 @@
 package github.ricemonger.marketplace.databases.postgres.services;
 
-import github.ricemonger.marketplace.databases.postgres.repositories.TradeByFiltersManagerPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomTradeByFiltersManagerPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TradeByFiltersManagerEntityMapper;
 import github.ricemonger.marketplace.services.DTOs.TradeByFiltersManager;
 import github.ricemonger.utils.exceptions.client.TradeByFiltersManagerDoesntExistException;
@@ -24,7 +24,7 @@ class TelegramUserTradeByFiltersManagerPostgresServiceTest {
     @Autowired
     private TelegramUserTradeByFiltersManagerPostgresService telegramUserTradeByFiltersManagerService;
     @MockBean
-    private TradeByFiltersManagerPostgresRepository tradeByFiltersManagerRepository;
+    private CustomTradeByFiltersManagerPostgresRepository tradeByFiltersManagerRepository;
     @MockBean
     private TradeByFiltersManagerEntityMapper tradeByFiltersManagerEntityMapper;
 

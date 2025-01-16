@@ -1,6 +1,6 @@
 package github.ricemonger.item_stats_fetcher.databases.postgres.services;
 
-import github.ricemonger.item_stats_fetcher.databases.postgres.repositories.ItemSalePostgresRepository;
+import github.ricemonger.item_stats_fetcher.databases.postgres.repositories.CustomItemSalePostgresRepository;
 import github.ricemonger.item_stats_fetcher.databases.postgres.services.entity_mappers.ItemSalePostgresMapper;
 import github.ricemonger.item_stats_fetcher.services.abstractions.ItemSaleDatabaseService;
 import github.ricemonger.utils.DTOs.common.SoldItemDetails;
@@ -16,7 +16,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class ItemSalePostgresService implements ItemSaleDatabaseService {
 
-    private final ItemSalePostgresRepository itemSaleRepository;
+    private final CustomItemSalePostgresRepository itemSaleRepository;
 
     private final ItemSalePostgresMapper itemSalePostgresMapper;
 

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"github.ricemonger.marketplace", "github.ricemonger.telegramBot"},
+@ComponentScan(basePackages = {"github.ricemonger.marketplace", "github.ricemonger.telegramBot", "github.ricemonger.utilspostgresschema"},
         basePackageClasses = {github.ricemonger.utils.PublicMethodLogger.class,
                 TelegramBotUpdatesConsumerApplication.class})
 @EntityScan(basePackages = "github.ricemonger.utilspostgresschema")

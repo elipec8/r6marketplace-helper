@@ -4,8 +4,8 @@ import github.ricemonger.marketplace.databases.postgres.dto_projections.ItemShow
 import github.ricemonger.marketplace.databases.postgres.dto_projections.ItemShownFieldsSettingsProjection;
 import github.ricemonger.marketplace.databases.postgres.dto_projections.NotificationsSettingsProjection;
 import github.ricemonger.marketplace.databases.postgres.dto_projections.TradeManagersSettingsProjection;
-import github.ricemonger.marketplace.databases.postgres.repositories.TelegramUserPostgresRepository;
-import github.ricemonger.marketplace.databases.postgres.repositories.UserPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomTelegramUserPostgresRepository;
+import github.ricemonger.marketplace.databases.postgres.repositories.CustomUserPostgresRepository;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.TelegramUserEntityMapper;
 import github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user.UserEntityMapper;
 import github.ricemonger.marketplace.services.DTOs.*;
@@ -35,13 +35,13 @@ class TelegramUserPostgresServiceTest {
     @Autowired
     private TelegramUserPostgresService telegramUserService;
     @MockBean
-    private TelegramUserPostgresRepository telegramUserRepository;
+    private CustomTelegramUserPostgresRepository telegramUserRepository;
     @MockBean
     private TelegramUserEntityMapper telegramUserEntityMapper;
     @MockBean
     private UserEntityMapper userEntityMapper;
     @MockBean
-    private UserPostgresRepository userRepository;
+    private CustomUserPostgresRepository userRepository;
 
     @Test
     public void register_should_save_new_user_if_doesnt_exist() {
@@ -230,6 +230,34 @@ class TelegramUserPostgresServiceTest {
         telegramUserService.setUserTradeManagersSettingsManagingEnabledFlag("chatId", false);
 
         Mockito.verify(userRepository).updateTradeManagersSettingsManagingEnabledFlagByTelegramUserChatId("chatId", false);
+    }
+
+    @Test
+    public void setUserTradeManagersSellSettingsManagingEnabledFlag_should_update_flag_true() {
+        telegramUserService.setUserTradeManagersSellSettingsManagingEnabledFlag("chatId", true);
+
+        Mockito.verify(userRepository).updateTradeManagersSellSettingsManagingEnabledFlagByTelegramUserChatId("chatId", true);
+    }
+
+    @Test
+    public void setUserTradeManagersSellSettingsManagingEnabledFlag_should_update_flag_false() {
+        telegramUserService.setUserTradeManagersSellSettingsManagingEnabledFlag("chatId", false);
+
+        Mockito.verify(userRepository).updateTradeManagersSellSettingsManagingEnabledFlagByTelegramUserChatId("chatId", false);
+    }
+
+    @Test
+    public void setUserTradeManagersBuySettingsManagingEnabledFlag_should_update_flag_true() {
+        telegramUserService.setUserTradeManagersBuySettingsManagingEnabledFlag("chatId", true);
+
+        Mockito.verify(userRepository).updateTradeManagersBuySettingsManagingEnabledFlagByTelegramUserChatId("chatId", true);
+    }
+
+    @Test
+    public void setUserTradeManagersBuySettingsManagingEnabledFlag_should_update_flag_false() {
+        telegramUserService.setUserTradeManagersBuySettingsManagingEnabledFlag("chatId", false);
+
+        Mockito.verify(userRepository).updateTradeManagersBuySettingsManagingEnabledFlagByTelegramUserChatId("chatId", false);
     }
 
     @Test

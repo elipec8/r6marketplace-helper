@@ -280,6 +280,14 @@ public class BotInnerService {
         telegramUserService.setTradeManagersSettingsManagingEnabledFlag(chatId, flag);
     }
 
+    public void setUserTradeManagersSellSettingsManagingEnabledFlag(Long chatId, boolean flag) {
+        telegramUserService.setTradeManagersSellSettingsManagingEnabledFlag(chatId, flag);
+    }
+
+    public void setUserTradeManagersBuySettingsManagingEnabledFlag(Long chatId, boolean flag) {
+        telegramUserService.setTradeManagersBuySettingsManagingEnabledFlag(chatId, flag);
+    }
+
     public void invertUserPrivateNotificationsFlag(Long chatId) {
         telegramUserService.invertPrivateNotificationsFlag(chatId);
     }

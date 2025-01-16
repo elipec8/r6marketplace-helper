@@ -211,6 +211,18 @@ class TelegramUserServiceTest {
     }
 
     @Test
+    public void setTradeManagersSellSettingsManagingEnabledFlag_should_handle_to_service() {
+        telegramUserService.setTradeManagersSellSettingsManagingEnabledFlag(123L, true);
+        verify(telegramUserDatabaseService).setUserTradeManagersSellSettingsManagingEnabledFlag("123", true);
+    }
+
+    @Test
+    public void setTradeManagersBuySettingsManagingEnabledFlag_should_handle_to_service() {
+        telegramUserService.setTradeManagersBuySettingsManagingEnabledFlag(123L, false);
+        verify(telegramUserDatabaseService).setUserTradeManagersBuySettingsManagingEnabledFlag("123", false);
+    }
+
+    @Test
     public void invertPrivateNotificationsFlag_should_handle_to_service() {
         telegramUserService.invertPrivateNotificationsFlag(123L);
         verify(telegramUserDatabaseService).invertUserPrivateNotificationsFlag("123");
