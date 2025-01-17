@@ -1,6 +1,7 @@
 package github.ricemonger.fast_sell_trade_manager.services.factories;
 
 import github.ricemonger.fast_sell_trade_manager.services.DTOs.*;
+import github.ricemonger.utils.DTOs.common.ItemCurrentPrices;
 import github.ricemonger.utils.DTOs.personal.SellTrade;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import org.junit.jupiter.api.Test;
@@ -72,6 +73,8 @@ class TradeManagementCommandsFactoryTest {
 
         List<PotentialTrade> items = List.of(updateExistingPotentialTrade, createNewPotentialTrade, alreadySamePotentialTrade, skipCauseResaleLockPotentialTrade);
 
+        List<ItemCurrentPrices> currentPrices = List.of();
+
         ItemMedianPriceAndRarity cancelMedianPriceAndRarity = new ItemMedianPriceAndRarity();
         cancelMedianPriceAndRarity.setItemId("cancelSellTradeItemId");
         cancelMedianPriceAndRarity.setMonthMedianPrice(48);
@@ -85,7 +88,7 @@ class TradeManagementCommandsFactoryTest {
         int sellLimit = 20;
         int sellSlots = 4;
 
-        List<FastTradeManagerCommand> result = tradeManagementCommandsFactory.createFastSellTradeManagerCommandsForUser(user, sellTrades, items, medianPriceAndRarities, sellLimit, sellSlots);
+        List<FastTradeManagerCommand> result = tradeManagementCommandsFactory.createFastSellTradeManagerCommandsForUser(user, sellTrades, currentPrices, medianPriceAndRarities, items, sellLimit, sellSlots);
 
         AuthorizationDTO authorizationDTO = new AuthorizationDTO();
         authorizationDTO.setProfileId("profileId");
@@ -172,6 +175,16 @@ class TradeManagementCommandsFactoryTest {
         List<PotentialTrade> items = List.of(updateExistingPotentialTrade, createNewPotentialTrade, alreadySamePotentialTrade,
                 skipCauseResaleLockPotentialTrade, createNewPotentialTradeLowerProfit, createNewPotentialTradeByBuyPrice);
 
+        ItemCurrentPrices cancelCurrentPrices = new ItemCurrentPrices();
+        cancelCurrentPrices.setItemId("cancelSellTradeItemId");
+        cancelCurrentPrices.setMinSellPrice(49);
+
+        ItemCurrentPrices leaveCurrentPrices = new ItemCurrentPrices();
+        leaveCurrentPrices.setItemId("leaveSellTradeItemId");
+        leaveCurrentPrices.setMinSellPrice(48);
+
+        List<ItemCurrentPrices> currentPrices = List.of(cancelCurrentPrices, leaveCurrentPrices);
+
         ItemMedianPriceAndRarity cancelMedianPriceAndRarity = new ItemMedianPriceAndRarity();
         cancelMedianPriceAndRarity.setItemId("cancelSellTradeItemId");
         cancelMedianPriceAndRarity.setMonthMedianPrice(50);
@@ -193,7 +206,7 @@ class TradeManagementCommandsFactoryTest {
         int sellLimit = 20;
         int sellSlots = 4;
 
-        List<FastTradeManagerCommand> result = tradeManagementCommandsFactory.createFastSellTradeManagerCommandsForUser(user, sellTrades, items, medianPriceAndRarities, sellLimit, sellSlots);
+        List<FastTradeManagerCommand> result = tradeManagementCommandsFactory.createFastSellTradeManagerCommandsForUser(user, sellTrades, currentPrices, medianPriceAndRarities, items, sellLimit, sellSlots);
 
         AuthorizationDTO authorizationDTO = new AuthorizationDTO();
         authorizationDTO.setProfileId("profileId");
@@ -277,6 +290,8 @@ class TradeManagementCommandsFactoryTest {
         List<PotentialTrade> items = List.of(updateExistingPotentialTrade, createNewPotentialTrade, alreadySamePotentialTrade,
                 skipCauseResaleLockPotentialTrade, createNewPotentialTradeLowerProfit);
 
+        List<ItemCurrentPrices> currentPrices = List.of();
+
         ItemMedianPriceAndRarity cancelMedianPriceAndRarity = new ItemMedianPriceAndRarity();
         cancelMedianPriceAndRarity.setItemId("cancelSellTradeItemId");
         cancelMedianPriceAndRarity.setMonthMedianPrice(48);
@@ -290,7 +305,7 @@ class TradeManagementCommandsFactoryTest {
         int sellLimit = 20;
         int sellSlots = 4;
 
-        List<FastTradeManagerCommand> result = tradeManagementCommandsFactory.createFastSellTradeManagerCommandsForUser(user, sellTrades, items, medianPriceAndRarities, sellLimit, sellSlots);
+        List<FastTradeManagerCommand> result = tradeManagementCommandsFactory.createFastSellTradeManagerCommandsForUser(user, sellTrades, currentPrices, medianPriceAndRarities, items, sellLimit, sellSlots);
 
         AuthorizationDTO authorizationDTO = new AuthorizationDTO();
         authorizationDTO.setProfileId("profileId");
@@ -302,5 +317,211 @@ class TradeManagementCommandsFactoryTest {
 
         assertEquals(1, result.size());
         assertTrue(result.contains(updateExpectedCommand));
+    }
+
+    @Test
+    public void createKeepUnusedSlotCommandForUser_should_return_expected_commands_by_median_prices() {
+        SellTrade leaveSellTrade1 = new SellTrade();
+        leaveSellTrade1.setItemId("leaveSellTradeItemId1");
+        leaveSellTrade1.setTradeId("leaveSellTradeId1");
+        leaveSellTrade1.setPrice(50);
+
+        SellTrade leaveSellTrade2 = new SellTrade();
+        leaveSellTrade2.setItemId("leaveSellTradeItemId2");
+        leaveSellTrade2.setTradeId("leaveSellTradeId2");
+        leaveSellTrade2.setPrice(50);
+
+        SellTrade cancelSellTrade = new SellTrade();
+        cancelSellTrade.setItemId("cancelSellTradeItemId");
+        cancelSellTrade.setTradeId("cancelSellTradeId");
+        cancelSellTrade.setPrice(50);
+
+        FastSellManagedUser user = new FastSellManagedUser();
+        user.setUbiProfileId("profileId");
+        user.setSoldIn24h(19);
+
+        ItemCurrentPrices leaveCurrentPrices1 = new ItemCurrentPrices();
+        leaveCurrentPrices1.setItemId("leaveSellTradeItemId1");
+        leaveCurrentPrices1.setMinSellPrice(50);
+
+        List<ItemCurrentPrices> currentPrices = List.of(leaveCurrentPrices1);
+
+        ItemMedianPriceAndRarity leaveMedianPriceAndRarity2 = new ItemMedianPriceAndRarity();
+        leaveMedianPriceAndRarity2.setItemId("leaveSellTradeItemId2");
+        leaveMedianPriceAndRarity2.setMonthMedianPrice(15);
+
+        ItemMedianPriceAndRarity cancelMedianPriceAndRarity = new ItemMedianPriceAndRarity();
+        cancelMedianPriceAndRarity.setItemId("cancelSellTradeItemId");
+        cancelMedianPriceAndRarity.setMonthMedianPrice(35);
+
+        List<ItemMedianPriceAndRarity> medianPriceAndRarities = List.of(leaveMedianPriceAndRarity2, cancelMedianPriceAndRarity);
+
+        int sellLimit = 20;
+        int sellSlots = 3;
+
+        List<FastTradeManagerCommand> result = tradeManagementCommandsFactory.createKeepUnusedSlotCommandForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, cancelSellTrade), currentPrices, medianPriceAndRarities, sellLimit, sellSlots);
+
+        assertEquals(1, result.size());
+        assertEquals(new FastTradeManagerCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CANCEL, "cancelSellTradeItemId", "cancelSellTradeId"), result.get(0));
+    }
+
+    @Test
+    public void createKeepUnusedSlotCommandForUser_should_return_expected_commands_by_current_prices() {
+        SellTrade leaveSellTrade1 = new SellTrade();
+        leaveSellTrade1.setItemId("leaveSellTradeItemId1");
+        leaveSellTrade1.setTradeId("leaveSellTradeId1");
+        leaveSellTrade1.setPrice(50);
+
+        SellTrade leaveSellTrade2 = new SellTrade();
+        leaveSellTrade2.setItemId("leaveSellTradeItemId2");
+        leaveSellTrade2.setTradeId("leaveSellTradeId2");
+        leaveSellTrade2.setPrice(50);
+
+        SellTrade cancelSellTrade = new SellTrade();
+        cancelSellTrade.setItemId("cancelSellTradeItemId");
+        cancelSellTrade.setTradeId("cancelSellTradeId");
+        cancelSellTrade.setPrice(50);
+
+        FastSellManagedUser user = new FastSellManagedUser();
+        user.setUbiProfileId("profileId");
+        user.setSoldIn24h(19);
+
+        ItemCurrentPrices leaveCurrentPrices1 = new ItemCurrentPrices();
+        leaveCurrentPrices1.setItemId("leaveSellTradeItemId1");
+        leaveCurrentPrices1.setMinSellPrice(50);
+
+        ItemCurrentPrices leaveCurrentPrices2 = new ItemCurrentPrices();
+        leaveCurrentPrices2.setItemId("leaveSellTradeItemId2");
+        leaveCurrentPrices2.setMinSellPrice(50);
+
+        ItemCurrentPrices cancelCurrentPrices = new ItemCurrentPrices();
+        cancelCurrentPrices.setItemId("cancelSellTradeItemId");
+        cancelCurrentPrices.setMinSellPrice(49);
+
+        List<ItemCurrentPrices> currentPrices = List.of(leaveCurrentPrices1, leaveCurrentPrices2, cancelCurrentPrices);
+
+        ItemMedianPriceAndRarity leaveMedianPriceAndRarity2 = new ItemMedianPriceAndRarity();
+        leaveMedianPriceAndRarity2.setItemId("leaveSellTradeItemId2");
+        leaveMedianPriceAndRarity2.setMonthMedianPrice(35);
+
+        ItemMedianPriceAndRarity cancelMedianPriceAndRarity = new ItemMedianPriceAndRarity();
+        cancelMedianPriceAndRarity.setItemId("cancelSellTradeItemId");
+        cancelMedianPriceAndRarity.setMonthMedianPrice(15);
+
+        List<ItemMedianPriceAndRarity> medianPriceAndRarities = List.of(leaveMedianPriceAndRarity2, cancelMedianPriceAndRarity);
+
+        int sellLimit = 20;
+        int sellSlots = 3;
+
+        List<FastTradeManagerCommand> result = tradeManagementCommandsFactory.createKeepUnusedSlotCommandForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, cancelSellTrade), currentPrices, medianPriceAndRarities, sellLimit, sellSlots);
+
+        assertEquals(1, result.size());
+        assertEquals(new FastTradeManagerCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CANCEL, "cancelSellTradeItemId", "cancelSellTradeId"), result.get(0));
+    }
+
+    @Test
+    public void createKeepUnusedSlotCommandForUser_should_return_empty_if_slots_available() {
+        SellTrade leaveSellTrade1 = new SellTrade();
+        leaveSellTrade1.setItemId("leaveSellTradeItemId1");
+        leaveSellTrade1.setTradeId("leaveSellTradeId1");
+        leaveSellTrade1.setPrice(50);
+
+        SellTrade leaveSellTrade2 = new SellTrade();
+        leaveSellTrade2.setItemId("leaveSellTradeItemId2");
+        leaveSellTrade2.setTradeId("leaveSellTradeId2");
+        leaveSellTrade2.setPrice(50);
+
+        SellTrade cancelSellTrade = new SellTrade();
+        cancelSellTrade.setItemId("cancelSellTradeItemId");
+        cancelSellTrade.setTradeId("cancelSellTradeId");
+        cancelSellTrade.setPrice(50);
+
+        FastSellManagedUser user = new FastSellManagedUser();
+        user.setUbiProfileId("profileId");
+        user.setSoldIn24h(19);
+
+        ItemCurrentPrices leaveCurrentPrices1 = new ItemCurrentPrices();
+        leaveCurrentPrices1.setItemId("leaveSellTradeItemId1");
+        leaveCurrentPrices1.setMinSellPrice(50);
+
+        ItemCurrentPrices leaveCurrentPrices2 = new ItemCurrentPrices();
+        leaveCurrentPrices2.setItemId("leaveSellTradeItemId2");
+        leaveCurrentPrices2.setMinSellPrice(50);
+
+        ItemCurrentPrices cancelCurrentPrices = new ItemCurrentPrices();
+        cancelCurrentPrices.setItemId("cancelSellTradeItemId");
+        cancelCurrentPrices.setMinSellPrice(49);
+
+        List<ItemCurrentPrices> currentPrices = List.of(leaveCurrentPrices1, leaveCurrentPrices2, cancelCurrentPrices);
+
+        ItemMedianPriceAndRarity leaveMedianPriceAndRarity2 = new ItemMedianPriceAndRarity();
+        leaveMedianPriceAndRarity2.setItemId("leaveSellTradeItemId2");
+        leaveMedianPriceAndRarity2.setMonthMedianPrice(35);
+
+        ItemMedianPriceAndRarity cancelMedianPriceAndRarity = new ItemMedianPriceAndRarity();
+        cancelMedianPriceAndRarity.setItemId("cancelSellTradeItemId");
+        cancelMedianPriceAndRarity.setMonthMedianPrice(15);
+
+        List<ItemMedianPriceAndRarity> medianPriceAndRarities = List.of(leaveMedianPriceAndRarity2, cancelMedianPriceAndRarity);
+
+        int sellLimit = 20;
+        int sellSlots = 4;
+
+        List<FastTradeManagerCommand> result = tradeManagementCommandsFactory.createKeepUnusedSlotCommandForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, cancelSellTrade), currentPrices, medianPriceAndRarities, sellLimit, sellSlots);
+
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    public void createKeepUnusedSlotCommandForUser_should_return_empty_if_sell_limit_exceeded() {
+        SellTrade leaveSellTrade1 = new SellTrade();
+        leaveSellTrade1.setItemId("leaveSellTradeItemId1");
+        leaveSellTrade1.setTradeId("leaveSellTradeId1");
+        leaveSellTrade1.setPrice(50);
+
+        SellTrade leaveSellTrade2 = new SellTrade();
+        leaveSellTrade2.setItemId("leaveSellTradeItemId2");
+        leaveSellTrade2.setTradeId("leaveSellTradeId2");
+        leaveSellTrade2.setPrice(50);
+
+        SellTrade cancelSellTrade = new SellTrade();
+        cancelSellTrade.setItemId("cancelSellTradeItemId");
+        cancelSellTrade.setTradeId("cancelSellTradeId");
+        cancelSellTrade.setPrice(50);
+
+        FastSellManagedUser user = new FastSellManagedUser();
+        user.setUbiProfileId("profileId");
+        user.setSoldIn24h(20);
+
+        ItemCurrentPrices leaveCurrentPrices1 = new ItemCurrentPrices();
+        leaveCurrentPrices1.setItemId("leaveSellTradeItemId1");
+        leaveCurrentPrices1.setMinSellPrice(50);
+
+        ItemCurrentPrices leaveCurrentPrices2 = new ItemCurrentPrices();
+        leaveCurrentPrices2.setItemId("leaveSellTradeItemId2");
+        leaveCurrentPrices2.setMinSellPrice(50);
+
+        ItemCurrentPrices cancelCurrentPrices = new ItemCurrentPrices();
+        cancelCurrentPrices.setItemId("cancelSellTradeItemId");
+        cancelCurrentPrices.setMinSellPrice(49);
+
+        List<ItemCurrentPrices> currentPrices = List.of(leaveCurrentPrices1, leaveCurrentPrices2, cancelCurrentPrices);
+
+        ItemMedianPriceAndRarity leaveMedianPriceAndRarity2 = new ItemMedianPriceAndRarity();
+        leaveMedianPriceAndRarity2.setItemId("leaveSellTradeItemId2");
+        leaveMedianPriceAndRarity2.setMonthMedianPrice(35);
+
+        ItemMedianPriceAndRarity cancelMedianPriceAndRarity = new ItemMedianPriceAndRarity();
+        cancelMedianPriceAndRarity.setItemId("cancelSellTradeItemId");
+        cancelMedianPriceAndRarity.setMonthMedianPrice(15);
+
+        List<ItemMedianPriceAndRarity> medianPriceAndRarities = List.of(leaveMedianPriceAndRarity2, cancelMedianPriceAndRarity);
+
+        int sellLimit = 20;
+        int sellSlots = 3;
+
+        List<FastTradeManagerCommand> result = tradeManagementCommandsFactory.createKeepUnusedSlotCommandForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, cancelSellTrade), currentPrices, medianPriceAndRarities, sellLimit, sellSlots);
+
+        assertEquals(0, result.size());
     }
 }

@@ -42,7 +42,7 @@ public class ScheduledOneUserFastSellTradeManager {
         try {
             List<PotentialTrade> items = potentialTradeFactory.createPotentialTradesForUser(userStats.getItemsCurrentPrices(), itemsMedianPriceAndRarity, commonValuesService.getMinMedianPriceDifference(), commonValuesService.getMinMedianPriceDifferencePercentage());
 
-            List<FastTradeManagerCommand> commands = tradeManagementCommandsFactory.createFastSellTradeManagerCommandsForUser(managedUser, userStats.getCurrentSellOrders(), items, itemsMedianPriceAndRarity, sellLimit, sellSlots);
+            List<FastTradeManagerCommand> commands = tradeManagementCommandsFactory.createFastSellTradeManagerCommandsForUser(managedUser, userStats.getCurrentSellOrders(), userStats.getItemsCurrentPrices(), itemsMedianPriceAndRarity, items, sellLimit, sellSlots);
 
             for (FastTradeManagerCommand command : commands.stream().sorted().toList()) {
                 fastTradeManagementCommandExecutor.executeCommand(command);
@@ -50,6 +50,22 @@ public class ScheduledOneUserFastSellTradeManager {
             }
         } catch (Exception e) {
             log.error("Error while managing fast sell trades for user with id: " + managedUser.getUbiProfileId(), e);
+        }
+    }
+
+    @Scheduled(fixedRateString = "${app.scheduling.keep_unused_slot.fixedRate}", initialDelayString = "${app.scheduling.keep_unused_slot.initialDelay}")
+    public void keepUnusedOneSellSlotForManagedUser() {
+        FastUserUbiStats userStats = personalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientService.fetchOwnedItemsCurrentPricesAndSellOrdersForUser(managedUser.toAuthorizationDTO(), commonValuesService.getFastTradeOwnedItemsLimit());
+        try {
+            List<FastTradeManagerCommand> commands = tradeManagementCommandsFactory.createKeepUnusedSlotCommandForUser(managedUser,
+                    userStats.getCurrentSellOrders(), userStats.getItemsCurrentPrices(), itemsMedianPriceAndRarity, sellLimit, sellSlots);
+
+            for (FastTradeManagerCommand command : commands.stream().sorted().toList()) {
+                fastTradeManagementCommandExecutor.executeCommand(command);
+                log.info("Executed command: {}", command);
+            }
+        } catch (Exception e) {
+            log.error("Error while keeping unused slot for user with id: " + managedUser.getUbiProfileId(), e);
         }
     }
 

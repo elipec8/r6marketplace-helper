@@ -90,9 +90,62 @@ class ScheduledOneUserFastSellTradeManagerTest {
         FastTradeManagerCommand command2 = Mockito.mock(FastTradeManagerCommand.class);
 
         List commands = List.of(command1, command2);
-        when(tradeManagementCommandsFactory.createFastSellTradeManagerCommandsForUser(same(user), same(sellTrades), same(potentialTrades), same(medianPricesAndRarity), eq(4), eq(3))).thenReturn(commands);
+        when(tradeManagementCommandsFactory.createFastSellTradeManagerCommandsForUser(same(user), same(sellTrades), same(itemCurrentPrices), same(medianPricesAndRarity), same(potentialTrades), eq(4), eq(3))).thenReturn(commands);
 
         scheduledOneUserFastSellTradeManager.manageOneUserFastSellTrades();
+
+        Mockito.verify(fastTradeManagementCommandExecutor).executeCommand(same(command1));
+        Mockito.verify(fastTradeManagementCommandExecutor).executeCommand(same(command2));
+    }
+
+    @Test
+    public void keepUnusedOneSellSlotForManagedUser_should_fetch_info_and_execute_commands() {
+        List itemCurrentPrices = Mockito.mock(List.class);
+        List sellTrades = Mockito.mock(List.class);
+
+        AuthorizationDTO authorizationDTO = Mockito.mock(AuthorizationDTO.class);
+
+        FastSellManagedUser user = Mockito.mock(FastSellManagedUser.class);
+        when(user.toAuthorizationDTO()).thenReturn(authorizationDTO);
+        when(user.getUbiProfileId()).thenReturn("profileId");
+
+        when(commonValuesService.getFastSellManagedUserId()).thenReturn(33L);
+        when(commonValuesService.getFastSellManagedUserEmail()).thenReturn("email");
+
+        when(ubiAccountEntryService.getFastSellManagedUserById(33L, "email")).thenReturn(user);
+
+        scheduledOneUserFastSellTradeManager.fetchManagedUserAuthorizationFromDb();
+
+        when(commonValuesService.getFastTradeOwnedItemsLimit()).thenReturn(120);
+
+        FastUserUbiStats ubiStats = new FastUserUbiStats();
+        ubiStats.setItemsCurrentPrices(itemCurrentPrices);
+        ubiStats.setCurrentSellOrders(sellTrades);
+
+        when(graphQlClientService.fetchOwnedItemsCurrentPricesAndSellOrdersForUser(same(authorizationDTO), eq(120))).thenReturn(ubiStats);
+
+        when(commonValuesService.getMinMedianPriceDifference()).thenReturn(1);
+        when(commonValuesService.getMinMedianPriceDifferencePercentage()).thenReturn(2);
+
+        ConfigTrades configTrades = new ConfigTrades();
+        configTrades.setSellSlots(3);
+        configTrades.setSellLimit(4);
+
+        when(commonValuesService.getConfigTrades()).thenReturn(configTrades);
+
+        List medianPricesAndRarity = Mockito.mock(List.class);
+
+        when(ubiAccountEntryService.getOwnedItemsMedianPriceAndRarity("profileId")).thenReturn(medianPricesAndRarity);
+
+        scheduledOneUserFastSellTradeManager.fetchItemMedianPriceFromDb();
+
+        FastTradeManagerCommand command1 = Mockito.mock(FastTradeManagerCommand.class);
+        FastTradeManagerCommand command2 = Mockito.mock(FastTradeManagerCommand.class);
+
+        List commands = List.of(command1, command2);
+        when(tradeManagementCommandsFactory.createKeepUnusedSlotCommandForUser(same(user), same(sellTrades), same(itemCurrentPrices), same(medianPricesAndRarity), eq(4), eq(3))).thenReturn(commands);
+
+        scheduledOneUserFastSellTradeManager.keepUnusedOneSellSlotForManagedUser();
 
         Mockito.verify(fastTradeManagementCommandExecutor).executeCommand(same(command1));
         Mockito.verify(fastTradeManagementCommandExecutor).executeCommand(same(command2));
