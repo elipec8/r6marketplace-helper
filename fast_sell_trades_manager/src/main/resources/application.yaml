@@ -26,7 +26,8 @@ app:
   scheduling:
     enabled: ${SCHEDULING_ENABLED:true}
     management:
-      fixedRate: ${SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT:525}
+      fixedRate: ${SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT:300} # without multithreading, executes approx 315-400ms for bare
+      # 1 user current stats fetch, 1-10s of too many requests errors per minute
       initialDelay: ${SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT:10500}
     keep_unused_slot:
       fixedRate: ${SCHEDULING_FIXED_DELAY_KEEP_UNUSED_SLOT:600000}
