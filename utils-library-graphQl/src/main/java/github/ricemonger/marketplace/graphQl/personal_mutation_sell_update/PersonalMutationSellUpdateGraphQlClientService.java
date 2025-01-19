@@ -16,7 +16,7 @@ public class PersonalMutationSellUpdateGraphQlClientService {
     public void updateSellOrderForUser(AuthorizationDTO authorizationDTO, String tradeId, int price) {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
-        client.documentName(GraphQlDocuments.MUTATION_ORDER_SELL_UPDATE_DOCUMENT_NAME)
+        client.document(GraphQlDocuments.MUTATION_ORDER_SELL_UPDATE_DOCUMENT)
                 .variables(graphQlVariablesService.getUpdateSellOrderVariables(tradeId, price))
                 .execute().block();
     }
@@ -24,7 +24,7 @@ public class PersonalMutationSellUpdateGraphQlClientService {
     public void nonBlockingUpdateSellOrderForUser(AuthorizationDTO authorizationDTO, String tradeId, int price) {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
-        client.documentName(GraphQlDocuments.MUTATION_ORDER_SELL_UPDATE_DOCUMENT_NAME)
+        client.document(GraphQlDocuments.MUTATION_ORDER_SELL_UPDATE_DOCUMENT)
                 .variables(graphQlVariablesService.getUpdateSellOrderVariables(tradeId, price))
                 .execute().subscribe();
     }

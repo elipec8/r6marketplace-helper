@@ -25,7 +25,7 @@ public class PersonalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientServi
         int limit = Math.min(ownedItemsLimit, GraphQlVariablesService.MAX_LIMIT);
 
         Meta meta = client
-                .documentName(GraphQlDocuments.QUERY_OWNED_ITEMS_PRICES_AND_CURRENT_SELL_ORDERS_DOCUMENT_NAME)
+                .document(GraphQlDocuments.QUERY_OWNED_ITEMS_PRICES_AND_CURRENT_SELL_ORDERS_DOCUMENT)
                 .variables(graphQlVariablesService.getFetchOwnedItemsPricesAndCurrentSellOrdersVariables(offset, limit, 0, GraphQlVariablesService.MAX_LIMIT))
                 .retrieve("game.viewer.meta")
                 .toEntity(Meta.class)

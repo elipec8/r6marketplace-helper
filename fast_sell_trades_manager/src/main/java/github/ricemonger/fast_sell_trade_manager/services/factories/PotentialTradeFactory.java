@@ -6,12 +6,14 @@ import github.ricemonger.fast_sell_trade_manager.services.DTOs.PotentialTrade;
 import github.ricemonger.utils.DTOs.common.ItemCurrentPrices;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PotentialTradeFactory {
@@ -22,7 +24,7 @@ public class PotentialTradeFactory {
                                                              Collection<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity,
                                                              Integer minMedianPriceDifference,
                                                              Integer minMedianPriceDifferencePercentage) {
-        List<PotentialTrade> potentialTrade = new ArrayList<>();
+        List<PotentialTrade> potentialTrades = new ArrayList<>();
 
         for (ItemCurrentPrices itemPrices : itemsCurrentPrices) {
             ItemMedianPriceAndRarity itemMedianPriceAndRarity = itemsMedianPriceAndRarity.stream()
@@ -33,11 +35,16 @@ public class PotentialTradeFactory {
             if (itemMedianPriceAndRarity != null && itemMedianPriceAndRarity.getMonthMedianPrice() != null) {
                 PotentialTrade trade = createPotentialTradeForUserOrNull(itemPrices, itemMedianPriceAndRarity, minMedianPriceDifference, minMedianPriceDifferencePercentage);
                 if (trade != null) {
-                    potentialTrade.add(trade);
+                    potentialTrades.add(trade);
                 }
             }
         }
-        return potentialTrade;
+
+        if (!potentialTrades.isEmpty()) {
+            log.info("Potential trades for user: {}", potentialTrades);
+        }
+
+        return potentialTrades;
     }
 
     public PotentialTrade createPotentialTradeForUserOrNull(@NonNull ItemCurrentPrices itemsCurrentPrices,

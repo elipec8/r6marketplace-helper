@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Component
 @Slf4j
@@ -38,9 +39,15 @@ public class ScheduledOneUserFastSellTradeManager {
 
     @Scheduled(fixedRateString = "${app.scheduling.management.fixedRate}", initialDelayString = "${app.scheduling.management.initialDelay}")
     public void manageOneUserFastSellTrades() {
-        FastUserUbiStats userStats = personalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientService.fetchOwnedItemsCurrentPricesAndSellOrdersForUser(managedUser.toAuthorizationDTO(), commonValuesService.getFastTradeOwnedItemsLimit());
+        CompletableFuture.runAsync(this::manageOneUserFastSellTradesAsync);
+    }
+
+    private void manageOneUserFastSellTradesAsync() {
         try {
-            List<PotentialTrade> items = potentialTradeFactory.createPotentialTradesForUser(userStats.getItemsCurrentPrices(), itemsMedianPriceAndRarity, commonValuesService.getMinMedianPriceDifference(), commonValuesService.getMinMedianPriceDifferencePercentage());
+            FastUserUbiStats userStats = personalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientService.fetchOwnedItemsCurrentPricesAndSellOrdersForUser(managedUser.toAuthorizationDTO(), commonValuesService.getFastTradeOwnedItemsLimit());
+
+            List<PotentialTrade> items = potentialTradeFactory.createPotentialTradesForUser(userStats.getItemsCurrentPrices(),
+                    itemsMedianPriceAndRarity, commonValuesService.getMinMedianPriceDifference(), commonValuesService.getMinMedianPriceDifferencePercentage());
 
             List<FastTradeManagerCommand> commands = tradeManagementCommandsFactory.createFastSellTradeManagerCommandsForUser(managedUser, userStats.getCurrentSellOrders(), userStats.getItemsCurrentPrices(), itemsMedianPriceAndRarity, items, sellLimit, sellSlots);
 
@@ -49,14 +56,14 @@ public class ScheduledOneUserFastSellTradeManager {
                 log.info("Executed command: {}", command);
             }
         } catch (Exception e) {
-            log.error("Error while managing fast sell trades for user with id: " + managedUser.getUbiProfileId(), e);
+            log.error("Error while managing fast sell trades for user with id: {} : {}", managedUser.getUbiProfileId(), e.getMessage());
         }
     }
 
     @Scheduled(fixedRateString = "${app.scheduling.keep_unused_slot.fixedRate}", initialDelayString = "${app.scheduling.keep_unused_slot.initialDelay}")
     public void keepUnusedOneSellSlotForManagedUser() {
-        FastUserUbiStats userStats = personalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientService.fetchOwnedItemsCurrentPricesAndSellOrdersForUser(managedUser.toAuthorizationDTO(), commonValuesService.getFastTradeOwnedItemsLimit());
         try {
+            FastUserUbiStats userStats = personalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientService.fetchOwnedItemsCurrentPricesAndSellOrdersForUser(managedUser.toAuthorizationDTO(), commonValuesService.getFastTradeOwnedItemsLimit());
             List<FastTradeManagerCommand> commands = tradeManagementCommandsFactory.createKeepUnusedSlotCommandForUser(managedUser,
                     userStats.getCurrentSellOrders(), userStats.getItemsCurrentPrices(), itemsMedianPriceAndRarity, sellLimit, sellSlots);
 
@@ -65,7 +72,7 @@ public class ScheduledOneUserFastSellTradeManager {
                 log.info("Executed command: {}", command);
             }
         } catch (Exception e) {
-            log.error("Error while keeping unused slot for user with id: " + managedUser.getUbiProfileId(), e);
+            log.error("Error while keeping unused sell slot for user with id: {} : {}", managedUser.getUbiProfileId(), e.getMessage());
         }
     }
 

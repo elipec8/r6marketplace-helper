@@ -29,5 +29,4 @@ public class FastSellTradeManagerApplication {
     public static void main(String[] args) {
         SpringApplication.run(FastSellTradeManagerApplication.class, args);
     }
-
 }
