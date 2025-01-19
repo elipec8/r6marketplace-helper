@@ -3,7 +3,7 @@ package github.ricemonger.ubi_users_stats_fetcher.scheduled_tasks;
 import github.ricemonger.marketplace.graphQl.personal_query_credits_amount.PersonalQueryCreditAmountGraphQlClientService;
 import github.ricemonger.marketplace.graphQl.personal_query_current_orders.PersonalQueryCurrentOrdersGraphQlClientService;
 import github.ricemonger.marketplace.graphQl.personal_query_finished_orders.PersonalQueryFinishedOrdersGraphQlClientService;
-import github.ricemonger.marketplace.graphQl.personal_query_locked_items.PersonalQueryLockedItemsGraphQlClientService;
+import github.ricemonger.marketplace.graphQl.personal_query_trades_limitations.PersonalQueryTradesLimitationsGraphQlClientService;
 import github.ricemonger.marketplace.graphQl.personal_query_owned_items.PersonalQueryOwnedItemsGraphQlClientService;
 import github.ricemonger.ubi_users_stats_fetcher.services.CommonValuesService;
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UbiAccountStats;
@@ -44,7 +44,7 @@ public class ScheduledAllUbiUsersStatsFetcher {
 
     private final PersonalQueryOwnedItemsGraphQlClientService personalQueryOwnedItemsGraphQlClientService;
 
-    private final PersonalQueryLockedItemsGraphQlClientService personalQueryLockedItemsGraphQlClientService;
+    private final PersonalQueryTradesLimitationsGraphQlClientService personalQueryTradesLimitationsGraphQlClientService;
 
     private final CommonValuesService commonValuesService;
 
@@ -74,7 +74,7 @@ public class ScheduledAllUbiUsersStatsFetcher {
         int creditAmount = personalQueryCreditAmountGraphQlClientService.fetchCreditAmountForUser(authorizationDTO);
         List<UbiTrade> currentOrders = personalQueryCurrentOrdersGraphQlClientService.fetchCurrentOrdersForUser(authorizationDTO);
         List<UbiTrade> finishedOrders = personalQueryFinishedOrdersGraphQlClientService.fetchLastFinishedOrdersForUser(authorizationDTO);
-        UserTradesLimitations userTradesLimitations = personalQueryLockedItemsGraphQlClientService.fetchTradesLimitationsForUser(authorizationDTO);
+        UserTradesLimitations userTradesLimitations = personalQueryTradesLimitationsGraphQlClientService.fetchTradesLimitationsForUser(authorizationDTO);
         List<ItemResaleLock> itemResaleLocks = userTradesLimitations.getResaleLocks();
         List<String> ownedItemsIds = personalQueryOwnedItemsGraphQlClientService.fetchAllOwnedItemsIdsForUser(authorizationDTO);
 

@@ -73,7 +73,9 @@ public class GraphQlDocuments {
 
     public final static String QUERY_FINISHED_ORDERS_DOCUMENT_NAME = "personal_query_finished_orders";
 
-    public final static String QUERY_LOCKED_ITEMS_DOCUMENT_NAME = "personal_query_locked_items";
+    public final static String QUERY_TRADE_LIMITATIONS_DOCUMENT_NAME = "personal_query_trades_limitations";
+
+    public final static String QUERY_USER_STATS_DOCUMENT_NAME = "personal_query_user_stats";
 
     public final static String QUERY_ONE_ITEM_STATS_DOCUMENT_NAME = "personal_query_one_item";
 

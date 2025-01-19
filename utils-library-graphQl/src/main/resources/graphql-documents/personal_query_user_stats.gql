@@ -1,0 +1,117 @@
+query GetUserStats(
+    $spaceId: String!,
+    $ownedItemsLimit: Int!,
+    $ownedItemsOffset: Int!,
+    $ownedItemsSortBy: MarketableItemSort!,
+    $paymentItemId :String!,
+    $tradesLimit: Int!,
+    $tradesOffset: Int!) {
+    game(spaceId: $spaceId) {
+        viewer {
+            meta {
+                tradesLimitations {
+                    ...TradesLimitationsFragment
+                    __typename
+                }
+
+                marketableItems(
+                    limit: $ownedItemsLimit
+                    offset: $ownedItemsOffset
+                    sortBy: $ownedItemsSortBy
+                    withMarketData: false
+                ) {
+                    nodes {
+                        ...MarketableItemFragment
+                        __typename
+                    }
+                    totalCount
+                    __typename
+                }
+
+                secondaryStoreItem(itemId: $paymentItemId) {
+                    meta {
+                        quantity
+                        __typename
+                    }
+                    __typename
+                }
+
+                trades(
+                    limit: $tradesLimit
+                    offset: $tradesOffset
+                    filterBy: {states: [Created, Succeeded, Failed]}
+                    sortBy: {field: LAST_MODIFIED_AT}
+                ) {
+                    nodes {
+                        ...TradeFragment
+                        __typename
+                    }
+                    __typename
+                }
+
+                __typename
+            }
+            __typename
+        }
+        __typename
+    }
+}
+
+fragment TradesLimitationsFragment on UserGameTradesLimitations {
+    buy {
+        resolvedTransactionCount
+        activeTransactionCount
+        __typename
+    }
+    sell {
+        resolvedTransactionCount
+        activeTransactionCount
+        resaleLocks {
+            itemId
+            expiresAt
+            __typename
+        }
+        __typename
+    }
+    __typename
+}
+
+fragment MarketableItemFragment on MarketableItem {
+    item {
+        ...SecondaryStoreItemFragment
+        __typename
+    }
+    __typename
+}
+
+fragment SecondaryStoreItemFragment on SecondaryStoreItem {
+    id
+}
+
+fragment TradeFragment on Trade {
+    tradeId
+    state
+    category
+    expiresAt
+    lastModifiedAt
+    tradeItems {
+        item {
+            ...SecondaryStoreItemFragment
+            __typename
+        }
+        __typename
+    }
+    paymentOptions {
+        price
+        __typename
+    }
+    paymentProposal {
+        price
+        __typename
+    }
+    __typename
+}
+
+
+
+

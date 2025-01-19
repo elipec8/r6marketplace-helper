@@ -9,7 +9,7 @@ import github.ricemonger.marketplace.graphQl.personal_mutation_sell_update.Perso
 import github.ricemonger.marketplace.graphQl.personal_query_credits_amount.PersonalQueryCreditAmountGraphQlConfiguration;
 import github.ricemonger.marketplace.graphQl.personal_query_current_orders.PersonalQueryCurrentOrdersGraphQlConfiguration;
 import github.ricemonger.marketplace.graphQl.personal_query_finished_orders.PersonalQueryFinishedOrdersGraphQlConfiguration;
-import github.ricemonger.marketplace.graphQl.personal_query_locked_items.PersonalQueryLockedItemsGraphQlConfiguration;
+import github.ricemonger.marketplace.graphQl.personal_query_trades_limitations.PersonalQueryTradesLimitationsGraphQlConfiguration;
 import github.ricemonger.marketplace.graphQl.personal_query_owned_items.PersonalQueryOwnedItemsGraphQlConfiguration;
 import github.ricemonger.utils.SchedulingUtilsConfiguration;
 import github.ricemonger.utils.services.calculators.TradeStatsCalculatorUtilsConfiguration;
@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Import;
         PersonalMutationSellCreateGraphQlConfiguration.class,
         PersonalMutationSellUpdateGraphQlConfiguration.class,
         PersonalMutationCancelGraphQlConfiguration.class,
-        PersonalQueryLockedItemsGraphQlConfiguration.class,
+        PersonalQueryTradesLimitationsGraphQlConfiguration.class,
         PersonalQueryOwnedItemsGraphQlConfiguration.class,
         PersonalQueryCurrentOrdersGraphQlConfiguration.class,
         PersonalQueryFinishedOrdersGraphQlConfiguration.class,
