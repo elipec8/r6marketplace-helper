@@ -25,7 +25,7 @@ public class PersonalQueryTradesLimitationsGraphQlClientService {
 
         tradesLimitations = client
                 .documentName(GraphQlDocuments.QUERY_TRADE_LIMITATIONS_DOCUMENT_NAME)
-                .variables(graphQlVariablesService.getFetchLockedItemsVariables())
+                .variables(graphQlVariablesService.getFetchTradesLimitationsVariables())
                 .retrieve("game.viewer.meta.tradesLimitations")
                 .toEntity(TradesLimitations.class)
                 .block();

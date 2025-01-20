@@ -132,12 +132,12 @@ public class GraphQlVariablesServiceTest {
     }
 
     @Test
-    public void getFetchLockedItemsVariables_should_have_provided_variables() {
+    public void getFetchTradesLimitationsVariables_should_have_provided_variables() {
         String mainUserSpaceId = "mainUserSpaceId";
 
         when(commonValuesService.getUbiGameSpaceId()).thenReturn(mainUserSpaceId);
 
-        Map<String, Object> result = graphQlVariablesService.getFetchLockedItemsVariables();
+        Map<String, Object> result = graphQlVariablesService.getFetchTradesLimitationsVariables();
 
         assertTrue(mapContainsEntries(result, Map.entry("spaceId", mainUserSpaceId)));
     }

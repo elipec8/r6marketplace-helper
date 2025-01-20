@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.graphQl.personal_query_user_stats.DTO.tradeLimitations;
+package github.ricemonger.marketplace.graphQl.personal_query_user_stats.DTO.meta.tradeLimitations;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

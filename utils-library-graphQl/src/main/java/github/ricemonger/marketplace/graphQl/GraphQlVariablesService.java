@@ -103,7 +103,7 @@ public class GraphQlVariablesService {
                 "spaceId", graphQlCommonValuesService.getUbiGameSpaceId());
     }
 
-    public Map<String, Object> getFetchLockedItemsVariables() {
+    public Map<String, Object> getFetchTradesLimitationsVariables() {
         return Map.of(
                 "spaceId", graphQlCommonValuesService.getUbiGameSpaceId());
     }
@@ -162,5 +162,9 @@ public class GraphQlVariablesService {
                         "orderType", "Sell",
                         "direction", "DESC",
                         "paymentItemId", graphQlCommonValuesService.getPaymentItemId()));
+    }
+
+    public Map<String, Object> getDefaultFetchUserStatsVariables() {
+        return null;
     }
 }

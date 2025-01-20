@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @Component
 @Slf4j
@@ -39,10 +38,6 @@ public class ScheduledOneUserFastSellTradeManager {
 
     @Scheduled(fixedRateString = "${app.scheduling.management.fixedRate}", initialDelayString = "${app.scheduling.management.initialDelay}")
     public void manageOneUserFastSellTrades() {
-        CompletableFuture.runAsync(this::manageOneUserFastSellTradesAsync);
-    }
-
-    private void manageOneUserFastSellTradesAsync() {
         try {
             FastUserUbiStats userStats = personalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientService.fetchOwnedItemsCurrentPricesAndSellOrdersForUser(managedUser.toAuthorizationDTO(), commonValuesService.getFastTradeOwnedItemsLimit());
 

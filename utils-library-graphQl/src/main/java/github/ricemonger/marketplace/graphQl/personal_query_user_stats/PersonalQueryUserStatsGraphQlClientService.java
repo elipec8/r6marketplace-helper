@@ -1,9 +1,8 @@
 package github.ricemonger.marketplace.graphQl.personal_query_user_stats;
 
 import github.ricemonger.marketplace.graphQl.GraphQlClientFactory;
-import github.ricemonger.marketplace.graphQl.GraphQlDocuments;
-import github.ricemonger.marketplace.graphQl.GraphQlVariablesService;
-import github.ricemonger.marketplace.graphQl.personal_query_user_stats.DTO.TradesLimitations;
+import github.ricemonger.marketplace.graphQl.GraphQlDocumentsBuilder;
+import github.ricemonger.marketplace.graphQl.personal_query_user_stats.DTO.Meta;
 import github.ricemonger.utils.DTOs.personal.UserTradesLimitations;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalLockedItemsMappingException;
@@ -14,22 +13,22 @@ import org.springframework.graphql.client.HttpGraphQlClient;
 public class PersonalQueryUserStatsGraphQlClientService {
     private final GraphQlClientFactory graphQlClientFactory;
 
-    private final GraphQlVariablesService graphQlVariablesService;
+    private final GraphQlDocumentsBuilder graphQlDocumentsBuilder;
 
     private final PersonalQueryUserStatsMapper personalQueryUserStatsMapper;
 
-    public UserTradesLimitations fetchTradesLimitationsForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalLockedItemsMappingException {
+    public UserTradesLimitations fetchUserStatsForUser(AuthorizationDTO authorizationDTO, Integer ownedItemsExpectedAmount) throws GraphQlPersonalLockedItemsMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
-        TradesLimitations tradesLimitations;
+        BuiltGraphQlDocuments builtGraphQlDocuments = graphQlDocumentsBuilder.buildPersonalQueryUserStatsDocument(ownedItemsExpectedAmount);
 
-        tradesLimitations = client
-                .documentName(GraphQlDocuments.QUERY_USER_STATS_DOCUMENT_NAME)
-                .variables(graphQlVariablesService.getFetchLockedItemsVariables())
-                .retrieve("game.viewer.meta.tradesLimitations")
-                .toEntity(TradesLimitations.class)
+        Meta meta = client
+                .document(builtGraphQlDocuments.getDocument())
+                .variables(builtGraphQlDocuments.getVariables())
+                .retrieve("game.viewer.meta")
+                .toEntity(Meta.class)
                 .block();
 
-        return personalQueryUserStatsMapper.mapTradesLimitationsForUser(tradesLimitations, authorizationDTO.getProfileId());
+        return personalQueryUserStatsMapper.mapUserStats(meta, builtGraphQlDocuments.getAliasesToFields(), authorizationDTO.getProfileId());
     }
 }
