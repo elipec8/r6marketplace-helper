@@ -19,7 +19,7 @@ class TradeManagementCommandsFactoryTest {
     private TradeManagementCommandsFactory tradeManagementCommandsFactory;
 
     @Test
-    public void createFastSellTradeManagerCommandsForUser_should_return_expected_commands() {
+    public void createFastSellCommandsForUser_should_return_expected_commands() {
         FastSellManagedUser user = new FastSellManagedUser();
         user.setUbiProfileId("profileId");
         user.setResaleLocks(List.of("lockedItemId1"));
@@ -88,14 +88,14 @@ class TradeManagementCommandsFactoryTest {
         int sellLimit = 20;
         int sellSlots = 4;
 
-        List<FastTradeManagerCommand> result = tradeManagementCommandsFactory.createFastSellTradeManagerCommandsForUser(user, sellTrades, currentPrices, medianPriceAndRarities, items, sellLimit, sellSlots);
+        List<FastSellCommand> result = tradeManagementCommandsFactory.createFastSellCommandsForUser(user, sellTrades, currentPrices, medianPriceAndRarities, items, sellLimit, sellSlots);
 
         AuthorizationDTO authorizationDTO = new AuthorizationDTO();
         authorizationDTO.setProfileId("profileId");
 
-        FastTradeManagerCommand updateExpectedCommand = new FastTradeManagerCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_UPDATE, "updateSellTradeItemId", "updateSellTradeId", 98);
-        FastTradeManagerCommand createExpectedCommand = new FastTradeManagerCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_CREATE, "createNewPotentialTradeItemId", 50);
-        FastTradeManagerCommand cancelExpectedCommand = new FastTradeManagerCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_CANCEL, "cancelSellTradeItemId", "cancelSellTradeId");
+        FastSellCommand updateExpectedCommand = new FastSellCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_UPDATE, "updateSellTradeItemId", "updateSellTradeId", 98);
+        FastSellCommand createExpectedCommand = new FastSellCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_CREATE, "createNewPotentialTradeItemId", 50);
+        FastSellCommand cancelExpectedCommand = new FastSellCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_CANCEL, "cancelSellTradeItemId", "cancelSellTradeId");
 
         System.out.println("Result:");
         result.forEach(System.out::println);
@@ -107,7 +107,7 @@ class TradeManagementCommandsFactoryTest {
     }
 
     @Test
-    public void createFastSellTradeManagerCommandsForUser_should_return_expected_commands_if_too_many_potentialTrades() {
+    public void createFastSellCommandsForUser_should_return_expected_commands_if_too_many_potentialTrades() {
         FastSellManagedUser user = new FastSellManagedUser();
         user.setUbiProfileId("profileId");
         user.setResaleLocks(List.of("lockedItemId1"));
@@ -206,16 +206,16 @@ class TradeManagementCommandsFactoryTest {
         int sellLimit = 20;
         int sellSlots = 4;
 
-        List<FastTradeManagerCommand> result = tradeManagementCommandsFactory.createFastSellTradeManagerCommandsForUser(user, sellTrades, currentPrices, medianPriceAndRarities, items, sellLimit, sellSlots);
+        List<FastSellCommand> result = tradeManagementCommandsFactory.createFastSellCommandsForUser(user, sellTrades, currentPrices, medianPriceAndRarities, items, sellLimit, sellSlots);
 
         AuthorizationDTO authorizationDTO = new AuthorizationDTO();
         authorizationDTO.setProfileId("profileId");
 
-        FastTradeManagerCommand updateExpectedCommand = new FastTradeManagerCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_UPDATE, "updateSellTradeItemId", "updateSellTradeId", 98);
-        FastTradeManagerCommand createExpectedCommand = new FastTradeManagerCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_CREATE, "createNewPotentialTradeItemId", 50);
-        FastTradeManagerCommand createExpectedCommandByBuyPrice = new FastTradeManagerCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_CREATE, "createNewPotentialTradeByBuyPriceItemId", 1);
-        FastTradeManagerCommand cancelExpectedCommand = new FastTradeManagerCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_CANCEL, "cancelSellTradeItemId", "cancelSellTradeId");
-        FastTradeManagerCommand cancelLeftExpectedCommand = new FastTradeManagerCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_CANCEL, "leaveSellTradeItemId", "leaveSellTradeId");
+        FastSellCommand updateExpectedCommand = new FastSellCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_UPDATE, "updateSellTradeItemId", "updateSellTradeId", 98);
+        FastSellCommand createExpectedCommand = new FastSellCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_CREATE, "createNewPotentialTradeItemId", 50);
+        FastSellCommand createExpectedCommandByBuyPrice = new FastSellCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_CREATE, "createNewPotentialTradeByBuyPriceItemId", 1);
+        FastSellCommand cancelExpectedCommand = new FastSellCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_CANCEL, "cancelSellTradeItemId", "cancelSellTradeId");
+        FastSellCommand cancelLeftExpectedCommand = new FastSellCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_CANCEL, "leaveSellTradeItemId", "leaveSellTradeId");
 
         System.out.println("Result:");
         result.forEach(System.out::println);
@@ -229,7 +229,7 @@ class TradeManagementCommandsFactoryTest {
     }
 
     @Test
-    public void createFastSellTradeManagerCommandsForUser_should_return_only_update_list_if_day_limit_exceeded() {
+    public void createFastSellCommandsForUser_should_return_only_update_list_if_day_limit_exceeded() {
         FastSellManagedUser user = new FastSellManagedUser();
         user.setUbiProfileId("profileId");
         user.setResaleLocks(List.of("lockedItemId1"));
@@ -305,12 +305,12 @@ class TradeManagementCommandsFactoryTest {
         int sellLimit = 20;
         int sellSlots = 4;
 
-        List<FastTradeManagerCommand> result = tradeManagementCommandsFactory.createFastSellTradeManagerCommandsForUser(user, sellTrades, currentPrices, medianPriceAndRarities, items, sellLimit, sellSlots);
+        List<FastSellCommand> result = tradeManagementCommandsFactory.createFastSellCommandsForUser(user, sellTrades, currentPrices, medianPriceAndRarities, items, sellLimit, sellSlots);
 
         AuthorizationDTO authorizationDTO = new AuthorizationDTO();
         authorizationDTO.setProfileId("profileId");
 
-        FastTradeManagerCommand updateExpectedCommand = new FastTradeManagerCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_UPDATE, "updateSellTradeItemId", "updateSellTradeId", 98);
+        FastSellCommand updateExpectedCommand = new FastSellCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_UPDATE, "updateSellTradeItemId", "updateSellTradeId", 98);
 
         System.out.println("Result:");
         result.forEach(System.out::println);
@@ -359,10 +359,10 @@ class TradeManagementCommandsFactoryTest {
         int sellLimit = 20;
         int sellSlots = 3;
 
-        List<FastTradeManagerCommand> result = tradeManagementCommandsFactory.createKeepUnusedSlotCommandForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, cancelSellTrade), currentPrices, medianPriceAndRarities, sellLimit, sellSlots);
+        List<FastSellCommand> result = tradeManagementCommandsFactory.createKeepUnusedSlotCommandForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, cancelSellTrade), currentPrices, medianPriceAndRarities, sellLimit, sellSlots);
 
         assertEquals(1, result.size());
-        assertEquals(new FastTradeManagerCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CANCEL, "cancelSellTradeItemId", "cancelSellTradeId"), result.get(0));
+        assertEquals(new FastSellCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CANCEL, "cancelSellTradeItemId", "cancelSellTradeId"), result.get(0));
     }
 
     @Test
@@ -413,10 +413,10 @@ class TradeManagementCommandsFactoryTest {
         int sellLimit = 20;
         int sellSlots = 3;
 
-        List<FastTradeManagerCommand> result = tradeManagementCommandsFactory.createKeepUnusedSlotCommandForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, cancelSellTrade), currentPrices, medianPriceAndRarities, sellLimit, sellSlots);
+        List<FastSellCommand> result = tradeManagementCommandsFactory.createKeepUnusedSlotCommandForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, cancelSellTrade), currentPrices, medianPriceAndRarities, sellLimit, sellSlots);
 
         assertEquals(1, result.size());
-        assertEquals(new FastTradeManagerCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CANCEL, "cancelSellTradeItemId", "cancelSellTradeId"), result.get(0));
+        assertEquals(new FastSellCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CANCEL, "cancelSellTradeItemId", "cancelSellTradeId"), result.get(0));
     }
 
     @Test
@@ -467,7 +467,7 @@ class TradeManagementCommandsFactoryTest {
         int sellLimit = 20;
         int sellSlots = 4;
 
-        List<FastTradeManagerCommand> result = tradeManagementCommandsFactory.createKeepUnusedSlotCommandForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, cancelSellTrade), currentPrices, medianPriceAndRarities, sellLimit, sellSlots);
+        List<FastSellCommand> result = tradeManagementCommandsFactory.createKeepUnusedSlotCommandForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, cancelSellTrade), currentPrices, medianPriceAndRarities, sellLimit, sellSlots);
 
         assertEquals(0, result.size());
     }
@@ -520,7 +520,7 @@ class TradeManagementCommandsFactoryTest {
         int sellLimit = 20;
         int sellSlots = 3;
 
-        List<FastTradeManagerCommand> result = tradeManagementCommandsFactory.createKeepUnusedSlotCommandForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, cancelSellTrade), currentPrices, medianPriceAndRarities, sellLimit, sellSlots);
+        List<FastSellCommand> result = tradeManagementCommandsFactory.createKeepUnusedSlotCommandForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, cancelSellTrade), currentPrices, medianPriceAndRarities, sellLimit, sellSlots);
 
         assertEquals(0, result.size());
     }

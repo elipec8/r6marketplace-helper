@@ -165,6 +165,16 @@ public class GraphQlVariablesService {
     }
 
     public Map<String, Object> getDefaultFetchUserStatsVariables() {
-        return null;
+        return Map.of(
+                "spaceId", graphQlCommonValuesService.getUbiGameSpaceId(),
+                "tradesLimit", 20,
+                "tradesOffset", 0,
+                "ownedItemsLimit", MAX_LIMIT,
+                "paymentItemId", graphQlCommonValuesService.getPaymentItemId(),
+                "ownedItemsSortBy", Map.of(
+                        "field", "ACTIVE_COUNT",
+                        "orderType", "Sell",
+                        "direction", "DESC",
+                        "paymentItemId", graphQlCommonValuesService.getPaymentItemId()));
     }
 }

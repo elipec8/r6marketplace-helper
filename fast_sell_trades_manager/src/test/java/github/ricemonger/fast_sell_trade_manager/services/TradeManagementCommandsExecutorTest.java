@@ -1,6 +1,6 @@
 package github.ricemonger.fast_sell_trade_manager.services;
 
-import github.ricemonger.fast_sell_trade_manager.services.DTOs.FastTradeManagerCommand;
+import github.ricemonger.fast_sell_trade_manager.services.DTOs.FastSellCommand;
 import github.ricemonger.fast_sell_trade_manager.services.DTOs.FastTradeManagerCommandType;
 import github.ricemonger.marketplace.graphQl.personal_mutation_cancel.PersonalMutationCancelGraphQlClientService;
 import github.ricemonger.marketplace.graphQl.personal_mutation_sell_create.PersonalMutationSellCreateGraphQlClientService;
@@ -33,7 +33,7 @@ class TradeManagementCommandsExecutorTest {
         String itemId = "itemId";
         Integer newPrice = 100;
 
-        FastTradeManagerCommand command = new FastTradeManagerCommand(dto, FastTradeManagerCommandType.SELL_ORDER_CANCEL, itemId, tradeId);
+        FastSellCommand command = new FastSellCommand(dto, FastTradeManagerCommandType.SELL_ORDER_CANCEL, itemId, tradeId);
 
         tradeManagementCommandsExecutor.executeCommand(command);
 
@@ -48,7 +48,7 @@ class TradeManagementCommandsExecutorTest {
         String itemId = "itemId";
         Integer newPrice = 100;
 
-        FastTradeManagerCommand command = new FastTradeManagerCommand(dto, FastTradeManagerCommandType.SELL_ORDER_UPDATE, itemId, tradeId, newPrice);
+        FastSellCommand command = new FastSellCommand(dto, FastTradeManagerCommandType.SELL_ORDER_UPDATE, itemId, tradeId, newPrice);
 
         tradeManagementCommandsExecutor.executeCommand(command);
 
@@ -63,7 +63,7 @@ class TradeManagementCommandsExecutorTest {
         String itemId = "itemId";
         Integer newPrice = 100;
 
-        FastTradeManagerCommand command = new FastTradeManagerCommand(dto, FastTradeManagerCommandType.SELL_ORDER_CREATE, itemId, newPrice);
+        FastSellCommand command = new FastSellCommand(dto, FastTradeManagerCommandType.SELL_ORDER_CREATE, itemId, newPrice);
 
         tradeManagementCommandsExecutor.executeCommand(command);
 

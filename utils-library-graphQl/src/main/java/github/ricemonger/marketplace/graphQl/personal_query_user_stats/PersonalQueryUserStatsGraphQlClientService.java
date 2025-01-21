@@ -1,7 +1,6 @@
 package github.ricemonger.marketplace.graphQl.personal_query_user_stats;
 
 import github.ricemonger.marketplace.graphQl.GraphQlClientFactory;
-import github.ricemonger.marketplace.graphQl.GraphQlDocumentsBuilder;
 import github.ricemonger.marketplace.graphQl.personal_query_user_stats.DTO.Meta;
 import github.ricemonger.utils.DTOs.personal.UserTradesLimitations;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
@@ -13,14 +12,14 @@ import org.springframework.graphql.client.HttpGraphQlClient;
 public class PersonalQueryUserStatsGraphQlClientService {
     private final GraphQlClientFactory graphQlClientFactory;
 
-    private final GraphQlDocumentsBuilder graphQlDocumentsBuilder;
+    private final PersonalQueryUserStatsGraphQlDocumentBuilder personalQueryUserStatsGraphQlDocumentBuilder;
 
     private final PersonalQueryUserStatsMapper personalQueryUserStatsMapper;
 
     public UserTradesLimitations fetchUserStatsForUser(AuthorizationDTO authorizationDTO, Integer ownedItemsExpectedAmount) throws GraphQlPersonalLockedItemsMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
-        BuiltGraphQlDocuments builtGraphQlDocuments = graphQlDocumentsBuilder.buildPersonalQueryUserStatsDocument(ownedItemsExpectedAmount);
+        BuiltGraphQlDocuments builtGraphQlDocuments = personalQueryUserStatsGraphQlDocumentBuilder.buildPersonalQueryUserStatsDocument(ownedItemsExpectedAmount);
 
         Meta meta = client
                 .document(builtGraphQlDocuments.getDocument())

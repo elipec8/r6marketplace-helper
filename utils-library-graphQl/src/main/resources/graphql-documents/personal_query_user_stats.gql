@@ -9,11 +9,6 @@ query GetUserStats(
     game(spaceId: $spaceId) {
         viewer {
             meta {
-                tradesLimitations {
-                    ...TradesLimitationsFragment
-                    __typename
-                }
-
                 marketableItems(
                     limit: $ownedItemsLimit
                     offset: $ownedItemsOffset
@@ -25,6 +20,11 @@ query GetUserStats(
                         __typename
                     }
                     totalCount
+                    __typename
+                }
+
+                tradesLimitations {
+                    ...TradesLimitationsFragment
                     __typename
                 }
 

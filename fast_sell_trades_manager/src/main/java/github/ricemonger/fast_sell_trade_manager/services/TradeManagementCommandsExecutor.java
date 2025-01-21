@@ -1,6 +1,6 @@
 package github.ricemonger.fast_sell_trade_manager.services;
 
-import github.ricemonger.fast_sell_trade_manager.services.DTOs.FastTradeManagerCommand;
+import github.ricemonger.fast_sell_trade_manager.services.DTOs.FastSellCommand;
 import github.ricemonger.marketplace.graphQl.personal_mutation_cancel.PersonalMutationCancelGraphQlClientService;
 import github.ricemonger.marketplace.graphQl.personal_mutation_sell_create.PersonalMutationSellCreateGraphQlClientService;
 import github.ricemonger.marketplace.graphQl.personal_mutation_sell_update.PersonalMutationSellUpdateGraphQlClientService;
@@ -16,7 +16,7 @@ public class TradeManagementCommandsExecutor {
     private final PersonalMutationSellUpdateGraphQlClientService personalMutationSellUpdateGraphQlClientService;
     private final PersonalMutationCancelGraphQlClientService personalMutationCancelGraphQlClientService;
 
-    public void executeCommand(FastTradeManagerCommand command) {
+    public void executeCommand(FastSellCommand command) {
         try {
             switch (command.getCommandType()) {
                 case SELL_ORDER_CANCEL -> {

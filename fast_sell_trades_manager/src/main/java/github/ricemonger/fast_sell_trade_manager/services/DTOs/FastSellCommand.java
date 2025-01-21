@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class FastTradeManagerCommand implements Comparable<FastTradeManagerCommand> {
+public class FastSellCommand implements Comparable<FastSellCommand> {
     private final AuthorizationDTO authorizationDTO;
     private final FastTradeManagerCommandType commandType;
     private final String itemId;
@@ -17,7 +17,7 @@ public class FastTradeManagerCommand implements Comparable<FastTradeManagerComma
     private final Integer newPrice;
 
     // CANCEL
-    public FastTradeManagerCommand(AuthorizationDTO authorizationDTO, FastTradeManagerCommandType commandType, String itemId, String tradeId) {
+    public FastSellCommand(AuthorizationDTO authorizationDTO, FastTradeManagerCommandType commandType, String itemId, String tradeId) {
         this.authorizationDTO = authorizationDTO;
         this.commandType = commandType;
         this.itemId = itemId;
@@ -26,7 +26,7 @@ public class FastTradeManagerCommand implements Comparable<FastTradeManagerComma
     }
 
     // UPDATE
-    public FastTradeManagerCommand(AuthorizationDTO authorizationDTO, FastTradeManagerCommandType commandType, String itemId, String tradeId, Integer newPrice) {
+    public FastSellCommand(AuthorizationDTO authorizationDTO, FastTradeManagerCommandType commandType, String itemId, String tradeId, Integer newPrice) {
         this.authorizationDTO = authorizationDTO;
         this.commandType = commandType;
         this.itemId = itemId;
@@ -35,7 +35,7 @@ public class FastTradeManagerCommand implements Comparable<FastTradeManagerComma
     }
 
     // CREATE
-    public FastTradeManagerCommand(AuthorizationDTO authorizationDTO, FastTradeManagerCommandType commandType, String itemId, Integer newPrice) {
+    public FastSellCommand(AuthorizationDTO authorizationDTO, FastTradeManagerCommandType commandType, String itemId, Integer newPrice) {
         this.authorizationDTO = authorizationDTO;
         this.commandType = commandType;
         this.itemId = itemId;
@@ -44,7 +44,11 @@ public class FastTradeManagerCommand implements Comparable<FastTradeManagerComma
     }
 
     @Override
-    public int compareTo(FastTradeManagerCommand o) {
+    public int compareTo(FastSellCommand o) {
         return this.commandType.compareTo(o.commandType);
+    }
+
+    public String toLogString() {
+        return "Command(Type=" + commandType + ", ItemId=" + itemId + ", TradeId=" + tradeId + ", Price=" + newPrice + ")";
     }
 }

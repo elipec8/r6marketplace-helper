@@ -14,9 +14,9 @@ import java.util.*;
 @RequiredArgsConstructor
 public class TradeManagementCommandsFactory {
 
-    public List<FastTradeManagerCommand> createFastSellTradeManagerCommandsForUser(FastSellManagedUser user, List<SellTrade> currentSellTrades, List<ItemCurrentPrices> currentPrices, List<ItemMedianPriceAndRarity> medianPricesAndRarities, List<PotentialTrade> items, int sellLimit, int sellSlots) {
+    public List<FastSellCommand> createFastSellCommandsForUser(FastSellManagedUser user, List<SellTrade> currentSellTrades, List<ItemCurrentPrices> currentPrices, List<ItemMedianPriceAndRarity> medianPricesAndRarities, List<PotentialTrade> items, int sellLimit, int sellSlots) {
 
-        List<FastTradeManagerCommand> commands = new LinkedList<>();
+        List<FastSellCommand> commands = new LinkedList<>();
 
         int freeSlots = sellSlots - currentSellTrades.size();
         List<String> leaveUntouchedTradesIds = new ArrayList<>();
@@ -48,10 +48,10 @@ public class TradeManagementCommandsFactory {
             if (sellTrade != null && sellTrade.getPrice() <= potential.getPrice() + 1) {
                 leaveUntouchedTradesIds.add(sellTrade.getTradeId());
             } else if (sellTrade != null && sellTrade.getPrice() > potential.getPrice() + 1) {
-                commands.add(new FastTradeManagerCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_UPDATE, potential.getItemId(), sellTrade.getTradeId(), potential.getPrice()));
+                commands.add(new FastSellCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_UPDATE, potential.getItemId(), sellTrade.getTradeId(), potential.getPrice()));
             } else if (sellTrade == null && sellLimit > user.getSoldIn24h()) {
                 if (freeSlots > 0) {
-                    commands.add(new FastTradeManagerCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CREATE, potential.getItemId(), potential.getPrice()));
+                    commands.add(new FastSellCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CREATE, potential.getItemId(), potential.getPrice()));
                     freeSlots--;
                 } else {
                     commands.addAll(createCancelCreatePairCommandsOrEmpty(user, currentSellTrades, leaveUntouchedTradesIds, commands, currentPrices,
@@ -63,13 +63,13 @@ public class TradeManagementCommandsFactory {
         return commands;
     }
 
-    public List<FastTradeManagerCommand> createKeepUnusedSlotCommandForUser(FastSellManagedUser user,
-                                                                            Collection<SellTrade> currentSellTrades,
-                                                                            Collection<ItemCurrentPrices> itemsCurrentPrices,
-                                                                            List<ItemMedianPriceAndRarity> medianPriceAndRarities,
-                                                                            int sellLimit,
-                                                                            int sellSlots) {
-        List<FastTradeManagerCommand> commands = new ArrayList<>();
+    public List<FastSellCommand> createKeepUnusedSlotCommandForUser(FastSellManagedUser user,
+                                                                    Collection<SellTrade> currentSellTrades,
+                                                                    Collection<ItemCurrentPrices> itemsCurrentPrices,
+                                                                    List<ItemMedianPriceAndRarity> medianPriceAndRarities,
+                                                                    int sellLimit,
+                                                                    int sellSlots) {
+        List<FastSellCommand> commands = new ArrayList<>();
 
         if (user.getSoldIn24h() >= sellLimit || currentSellTrades.size() < sellSlots) {
             log.info("User has reached the sell limit for 24h or not all slots are used, skipping commands for slot cleaning");
@@ -79,21 +79,21 @@ public class TradeManagementCommandsFactory {
         List<SellTrade> sortedTrades = getCurrentSellTradesByPriorityAsc(currentSellTrades, itemsCurrentPrices, medianPriceAndRarities);
 
         if (!sortedTrades.isEmpty()) {
-            commands.add(new FastTradeManagerCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CANCEL, sortedTrades.get(0).getItemId(), sortedTrades.get(0).getTradeId()));
+            commands.add(new FastSellCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CANCEL, sortedTrades.get(0).getItemId(), sortedTrades.get(0).getTradeId()));
         }
 
         return commands;
     }
 
-    private List<FastTradeManagerCommand> createCancelCreatePairCommandsOrEmpty(FastSellManagedUser user,
-                                                                                Collection<SellTrade> currentSellTrades,
-                                                                                Collection<String> higherPriorityExistingTrades,
-                                                                                Collection<FastTradeManagerCommand> higherPriorityExistingCommands,
-                                                                                Collection<ItemCurrentPrices> currentPrices,
-                                                                                Collection<ItemMedianPriceAndRarity> medianPriceAndRarities,
-                                                                                PotentialTrade item) {
+    private List<FastSellCommand> createCancelCreatePairCommandsOrEmpty(FastSellManagedUser user,
+                                                                        Collection<SellTrade> currentSellTrades,
+                                                                        Collection<String> higherPriorityExistingTrades,
+                                                                        Collection<FastSellCommand> higherPriorityExistingCommands,
+                                                                        Collection<ItemCurrentPrices> currentPrices,
+                                                                        Collection<ItemMedianPriceAndRarity> medianPriceAndRarities,
+                                                                        PotentialTrade item) {
 
-        List<FastTradeManagerCommand> pairCommands = new ArrayList<>();
+        List<FastSellCommand> pairCommands = new ArrayList<>();
 
         List<SellTrade> sortedNotUpdatedTrades =
                 getCurrentSellTradesByPriorityAsc(currentSellTrades, currentPrices, medianPriceAndRarities).stream().filter(trade ->
@@ -103,8 +103,8 @@ public class TradeManagementCommandsFactory {
         if (sortedNotUpdatedTrades.isEmpty()) {
             return pairCommands;
         } else {
-            pairCommands.add(new FastTradeManagerCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CANCEL, sortedNotUpdatedTrades.get(0).getItemId(), sortedNotUpdatedTrades.get(0).getTradeId()));
-            pairCommands.add(new FastTradeManagerCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CREATE, item.getItemId(), item.getPrice()));
+            pairCommands.add(new FastSellCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CANCEL, sortedNotUpdatedTrades.get(0).getItemId(), sortedNotUpdatedTrades.get(0).getTradeId()));
+            pairCommands.add(new FastSellCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CREATE, item.getItemId(), item.getPrice()));
         }
 
         return pairCommands;

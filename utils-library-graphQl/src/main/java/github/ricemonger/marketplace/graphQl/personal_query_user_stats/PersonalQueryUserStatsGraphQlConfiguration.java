@@ -3,7 +3,6 @@ package github.ricemonger.marketplace.graphQl.personal_query_user_stats;
 import github.ricemonger.marketplace.graphQl.AbstractGraphQlConfiguration;
 import github.ricemonger.marketplace.graphQl.GraphQlClientFactory;
 import github.ricemonger.marketplace.graphQl.GraphQlCommonValuesService;
-import github.ricemonger.marketplace.graphQl.GraphQlDocumentsBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
@@ -17,8 +16,8 @@ public class PersonalQueryUserStatsGraphQlConfiguration {
 
     @Bean
     public PersonalQueryUserStatsGraphQlClientService personalQueryLockedItemsGraphQlClientService(GraphQlClientFactory graphQlClientFactory,
-                                                                                                   GraphQlDocumentsBuilder graphQlDocumentsBuilder,
+                                                                                                   PersonalQueryUserStatsGraphQlDocumentBuilder personalQueryUserStatsGraphQlDocumentBuilder,
                                                                                                    PersonalQueryUserStatsMapper personalQueryUserStatsMapper) {
-        return new PersonalQueryUserStatsGraphQlClientService(graphQlClientFactory, graphQlDocumentsBuilder, personalQueryUserStatsMapper);
+        return new PersonalQueryUserStatsGraphQlClientService(graphQlClientFactory, personalQueryUserStatsGraphQlDocumentBuilder, personalQueryUserStatsMapper);
     }
 }
