@@ -33,10 +33,14 @@ public class UserFastSellTradesManager {
     private final List<CompletableFuture<?>> createFastSellCommandsTasks = new CopyOnWriteArrayList<>();
     private final List<FastSellCommand> fastSellCommands = new CopyOnWriteArrayList<>();
 
-    public void executeFastSellCommandsOrSubmitCreateCommandsTask(FastSellManagedUser managedUser, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
+    public void submitAsyncCreateCommandsTask(FastSellManagedUser managedUser, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
         if (fastSellCommands.isEmpty()) {
-            submitCreateFastSellCommandsTask(managedUser, itemsMedianPriceAndRarity, sellLimit, sellSlots);
-        } else {
+            submitAsyncCreateFastSellCommandsTask(managedUser, itemsMedianPriceAndRarity, sellLimit, sellSlots);
+        }
+    }
+
+    public void executeFastSellCommands() {
+        if (!fastSellCommands.isEmpty()) {
             cancelAllCreateFastSellCommandsTasks();
 
             executeCommandsInOrder(fastSellCommands);
@@ -65,7 +69,7 @@ public class UserFastSellTradesManager {
         }
     }
 
-    private void submitCreateFastSellCommandsTask(FastSellManagedUser managedUser, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
+    private void submitAsyncCreateFastSellCommandsTask(FastSellManagedUser managedUser, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
         CompletableFuture<?> task = CompletableFuture.supplyAsync(() -> fastSellCommands.addAll(createFastSellCommandsByCurrentStats(managedUser, itemsMedianPriceAndRarity, sellLimit, sellSlots)));
         createFastSellCommandsTasks.add(task);
     }

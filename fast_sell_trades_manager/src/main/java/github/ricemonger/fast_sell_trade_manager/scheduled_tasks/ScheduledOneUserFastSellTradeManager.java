@@ -28,9 +28,14 @@ public class ScheduledOneUserFastSellTradeManager {
     private FastSellManagedUser managedUser;
     private List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity = new ArrayList<>();
 
-    @Scheduled(fixedRateString = "${app.scheduling.management.fixedRate}", initialDelayString = "${app.scheduling.management.initialDelay}")
-    public void manageOneUserFastSellTrades() {
-        userFastSellTradesManager.executeFastSellCommandsOrSubmitCreateCommandsTask(managedUser, itemsMedianPriceAndRarity, sellLimit, sellSlots);
+    @Scheduled(fixedRateString = "${app.scheduling.management_submit.fixedRate}", initialDelayString = "${app.scheduling.management_submit.initialDelay}")
+    public void createFastSellCommands() {
+        userFastSellTradesManager.submitAsyncCreateCommandsTask(managedUser, itemsMedianPriceAndRarity, sellLimit, sellSlots);
+    }
+
+    @Scheduled(fixedRateString = "${app.scheduling.management_execute.fixedRate}", initialDelayString = "${app.scheduling.management_execute.initialDelay}")
+    public void executeFastSellCommands() {
+        userFastSellTradesManager.executeFastSellCommands();
     }
 
     @Scheduled(fixedRateString = "${app.scheduling.keep_unused_slot.fixedRate}", initialDelayString = "${app.scheduling.keep_unused_slot.initialDelay}")

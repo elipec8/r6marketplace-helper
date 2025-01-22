@@ -31,7 +31,7 @@ class ScheduledOneUserFastSellTradeManagerTest {
     private UbiAccountEntryService ubiAccountEntryService;
 
     @Test
-    public void manageOneUserFastSellTrades_should_executeFastSellCommandsOrSubmitCreateCommandsTask() {
+    public void createFastSellTrades_should_sumbitAsyncCreateCommandsTask() {
         List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity = Mockito.mock(List.class);
 
         AuthorizationDTO authorizationDTO = Mockito.mock(AuthorizationDTO.class);
@@ -57,9 +57,16 @@ class ScheduledOneUserFastSellTradeManagerTest {
 
         scheduledOneUserFastSellTradeManager.fetchItemMedianPriceAndConfigTradesFromDb();
 
-        scheduledOneUserFastSellTradeManager.manageOneUserFastSellTrades();
+        scheduledOneUserFastSellTradeManager.createFastSellCommands();
 
-        verify(userFastSellTradesManager).executeFastSellCommandsOrSubmitCreateCommandsTask(eq(user), same(itemsMedianPriceAndRarity), eq(3), eq(4));
+        verify(userFastSellTradesManager).submitAsyncCreateCommandsTask(eq(user), same(itemsMedianPriceAndRarity), eq(3), eq(4));
+    }
+
+    @Test
+    public void executeFastSellCommands_should_executeFastSellCommands() {
+        scheduledOneUserFastSellTradeManager.executeFastSellCommands();
+
+        verify(userFastSellTradesManager).executeFastSellCommands();
     }
 
     @Test

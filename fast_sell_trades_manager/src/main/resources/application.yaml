@@ -25,10 +25,13 @@ server:
 app:
   scheduling:
     enabled: ${SCHEDULING_ENABLED:true}
-    management:
-      fixedRate: ${SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT:315} # 100ms - 20s trade, 40s errors cycle. Too many requests error is
+    management_submit:
+      fixedRate: ${SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_SUBMIT:100} # 100ms - 20s trade, 40s errors cycle. Too many requests error is
       # account specific, approx 200 requests in 1min allowed, orders alter commands limit approx 300/day, including failed tries
-      initialDelay: ${SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT:10500}
+      initialDelay: ${SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_SUBMIT:10500}
+    management_execute:
+      fixedRate: ${SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_EXECUTE:5} # checks arrayList, doesnt do any requests if no commands
+      initialDelay: ${SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_EXECUTE:10500}
     keep_unused_slot:
       fixedRate: ${SCHEDULING_FIXED_DELAY_KEEP_UNUSED_SLOT:600000}
       initialDelay: ${SCHEDULING_INITIAL_DELAY_KEEP_UNUSED_SLOT:7500}
