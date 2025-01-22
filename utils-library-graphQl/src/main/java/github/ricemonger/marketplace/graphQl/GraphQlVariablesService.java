@@ -121,8 +121,7 @@ public class GraphQlVariablesService {
                         "paymentItemId", graphQlCommonValuesService.getPaymentItemId()));
     }
 
-    public Map<String, Object> getFetchOwnedItemsPricesAndCurrentSellOrdersVariables(int offsetItems, int limitItems, int offsetOrders,
-                                                                                     int limitOrders) {
+    public Map<String, Object> getFetchOwnedItemsPricesAndCurrentSellOrdersVariables(int offsetItems, int limitItems, int offsetOrders, int limitOrders) {
         return Map.of(
                 "withOwnership", false,
                 "spaceId", graphQlCommonValuesService.getUbiGameSpaceId(),

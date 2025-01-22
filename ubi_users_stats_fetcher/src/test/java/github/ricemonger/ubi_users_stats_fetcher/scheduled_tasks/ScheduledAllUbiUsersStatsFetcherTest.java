@@ -1,10 +1,6 @@
 package github.ricemonger.ubi_users_stats_fetcher.scheduled_tasks;
 
-import github.ricemonger.marketplace.graphQl.personal_query_credits_amount.PersonalQueryCreditAmountGraphQlClientService;
-import github.ricemonger.marketplace.graphQl.personal_query_current_orders.PersonalQueryCurrentOrdersGraphQlClientService;
-import github.ricemonger.marketplace.graphQl.personal_query_finished_orders.PersonalQueryFinishedOrdersGraphQlClientService;
-import github.ricemonger.marketplace.graphQl.personal_query_trades_limitations.PersonalQueryTradesLimitationsGraphQlClientService;
-import github.ricemonger.marketplace.graphQl.personal_query_owned_items.PersonalQueryOwnedItemsGraphQlClientService;
+import github.ricemonger.marketplace.graphQl.personal_query_user_stats.PersonalQueryUserStatsGraphQlClientService;
 import github.ricemonger.ubi_users_stats_fetcher.services.CommonValuesService;
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UbiAccountStats;
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UserAuthorizedUbiAccount;
@@ -12,10 +8,7 @@ import github.ricemonger.ubi_users_stats_fetcher.services.NotificationService;
 import github.ricemonger.ubi_users_stats_fetcher.services.TradeService;
 import github.ricemonger.ubi_users_stats_fetcher.services.UbiAccountService;
 import github.ricemonger.utils.DTOs.common.Item;
-import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
-import github.ricemonger.utils.DTOs.personal.Trade;
-import github.ricemonger.utils.DTOs.personal.UbiTrade;
-import github.ricemonger.utils.DTOs.personal.UserTradesLimitations;
+import github.ricemonger.utils.DTOs.personal.*;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
@@ -40,15 +33,7 @@ class ScheduledAllUbiUsersStatsFetcherTest {
     @MockBean
     private NotificationService notificationService;
     @MockBean
-    private PersonalQueryCreditAmountGraphQlClientService personalQueryCreditAmountGraphQlClientService;
-    @MockBean
-    private PersonalQueryCurrentOrdersGraphQlClientService personalQueryCurrentOrdersGraphQlClientService;
-    @MockBean
-    private PersonalQueryFinishedOrdersGraphQlClientService personalQueryFinishedOrdersGraphQlClientService;
-    @MockBean
-    private PersonalQueryOwnedItemsGraphQlClientService personalQueryOwnedItemsGraphQlClientService;
-    @MockBean
-    private PersonalQueryTradesLimitationsGraphQlClientService personalQueryTradesLimitationsGraphQlClientService;
+    private PersonalQueryUserStatsGraphQlClientService personalQueryUserStatsGraphQlClientService;
     @MockBean
     private CommonValuesService commonValuesService;
     @MockBean
@@ -60,6 +45,7 @@ class ScheduledAllUbiUsersStatsFetcherTest {
         noNotificationUbiAccount.setUserId(1L);
         noNotificationUbiAccount.setProfileId("profileId1");
         noNotificationUbiAccount.setCreditAmount(100);
+        noNotificationUbiAccount.setOwnedItemsIdsCount(1);
         noNotificationUbiAccount.setTicket("ticket1");
         noNotificationUbiAccount.setSpaceId("spaceId1");
         noNotificationUbiAccount.setSessionId("sessionId1");
@@ -123,16 +109,20 @@ class ScheduledAllUbiUsersStatsFetcherTest {
         userTradesLimitations1.setResolvedBuyTransactionCount(12);
         userTradesLimitations1.setResaleLocks(resaleLocks1);
 
-        when(personalQueryCreditAmountGraphQlClientService.fetchCreditAmountForUser(authDTO1)).thenReturn(100);
-        when(personalQueryCurrentOrdersGraphQlClientService.fetchCurrentOrdersForUser(authDTO1)).thenReturn(List.of(currentSellTrade11, currentSellTrade12, currentBuyTrade11, currentBuyTrade12));
-        when(personalQueryFinishedOrdersGraphQlClientService.fetchLastFinishedOrdersForUser(authDTO1)).thenReturn(List.of(finishedSellTrade1, finishedBuyTrade1));
-        when(personalQueryOwnedItemsGraphQlClientService.fetchAllOwnedItemsIdsForUser(authDTO1)).thenReturn(ownedItemsIds1);
-        when(personalQueryTradesLimitationsGraphQlClientService.fetchTradesLimitationsForUser(authDTO1)).thenReturn(userTradesLimitations1);
+        UbiUserStats stats = new UbiUserStats();
+        stats.setCreditAmount(100);
+        stats.setCurrentOrders(List.of(currentSellTrade11, currentSellTrade12, currentBuyTrade11, currentBuyTrade12));
+        stats.setFinishedOrders(List.of(finishedSellTrade1, finishedBuyTrade1));
+        stats.setUserTradesLimitations(userTradesLimitations1);
+        stats.setOwnedItemsIds(ownedItemsIds1);
+
+        when(personalQueryUserStatsGraphQlClientService.fetchUbiUserStatsForUser(authDTO1, 1)).thenReturn(stats);
 
         UserAuthorizedUbiAccount creditAmountNotificationUbiAccount = new UserAuthorizedUbiAccount();
         creditAmountNotificationUbiAccount.setUserId(2L);
         creditAmountNotificationUbiAccount.setProfileId("profileId2");
         creditAmountNotificationUbiAccount.setCreditAmount(200);
+        creditAmountNotificationUbiAccount.setOwnedItemsIdsCount(2);
         creditAmountNotificationUbiAccount.setTicket("ticket2");
         creditAmountNotificationUbiAccount.setSpaceId("spaceId2");
         creditAmountNotificationUbiAccount.setSessionId("sessionId2");
@@ -196,16 +186,20 @@ class ScheduledAllUbiUsersStatsFetcherTest {
         userTradesLimitations2.setResolvedBuyTransactionCount(22);
         userTradesLimitations2.setResaleLocks(resaleLocks2);
 
-        when(personalQueryCreditAmountGraphQlClientService.fetchCreditAmountForUser(authDTO2)).thenReturn(201);
-        when(personalQueryCurrentOrdersGraphQlClientService.fetchCurrentOrdersForUser(authDTO2)).thenReturn(List.of(currentSellTrade21, currentSellTrade22, currentBuyTrade21, currentBuyTrade22));
-        when(personalQueryFinishedOrdersGraphQlClientService.fetchLastFinishedOrdersForUser(authDTO2)).thenReturn(List.of(finishedSellTrade2, finishedBuyTrade2));
-        when(personalQueryOwnedItemsGraphQlClientService.fetchAllOwnedItemsIdsForUser(authDTO2)).thenReturn(ownedItemsIds2);
-        when(personalQueryTradesLimitationsGraphQlClientService.fetchTradesLimitationsForUser(authDTO2)).thenReturn(userTradesLimitations2);
+        UbiUserStats stats2 = new UbiUserStats();
+        stats2.setCreditAmount(201);
+        stats2.setCurrentOrders(List.of(currentSellTrade21, currentSellTrade22, currentBuyTrade21, currentBuyTrade22));
+        stats2.setFinishedOrders(List.of(finishedSellTrade2, finishedBuyTrade2));
+        stats2.setUserTradesLimitations(userTradesLimitations2);
+        stats2.setOwnedItemsIds(ownedItemsIds2);
+
+        when(personalQueryUserStatsGraphQlClientService.fetchUbiUserStatsForUser(authDTO2, 2)).thenReturn(stats2);
 
         UserAuthorizedUbiAccount soldIn24hNotificationUbiAccount = new UserAuthorizedUbiAccount();
         soldIn24hNotificationUbiAccount.setUserId(3L);
         soldIn24hNotificationUbiAccount.setProfileId("profileId3");
         soldIn24hNotificationUbiAccount.setCreditAmount(300);
+        soldIn24hNotificationUbiAccount.setOwnedItemsIdsCount(3);
         soldIn24hNotificationUbiAccount.setTicket("ticket3");
         soldIn24hNotificationUbiAccount.setSpaceId("spaceId3");
         soldIn24hNotificationUbiAccount.setSessionId("sessionId3");
@@ -252,16 +246,20 @@ class ScheduledAllUbiUsersStatsFetcherTest {
         userTradesLimitations3.setResolvedBuyTransactionCount(32);
         userTradesLimitations3.setResaleLocks(List.of(resaleLock3));
 
-        when(personalQueryCreditAmountGraphQlClientService.fetchCreditAmountForUser(authDTO3)).thenReturn(300);
-        when(personalQueryCurrentOrdersGraphQlClientService.fetchCurrentOrdersForUser(authDTO3)).thenReturn(List.of(currentSellTrade3, currentBuyTrade3));
-        when(personalQueryFinishedOrdersGraphQlClientService.fetchLastFinishedOrdersForUser(authDTO3)).thenReturn(List.of(finishedSellTrade3, finishedBuyTrade3));
-        when(personalQueryOwnedItemsGraphQlClientService.fetchAllOwnedItemsIdsForUser(authDTO3)).thenReturn(ownedItemsIds3);
-        when(personalQueryTradesLimitationsGraphQlClientService.fetchTradesLimitationsForUser(authDTO3)).thenReturn(userTradesLimitations3);
+        UbiUserStats stats3 = new UbiUserStats();
+        stats3.setCreditAmount(300);
+        stats3.setCurrentOrders(List.of(currentSellTrade3, currentBuyTrade3));
+        stats3.setFinishedOrders(List.of(finishedSellTrade3, finishedBuyTrade3));
+        stats3.setUserTradesLimitations(userTradesLimitations3);
+        stats3.setOwnedItemsIds(ownedItemsIds3);
+
+        when(personalQueryUserStatsGraphQlClientService.fetchUbiUserStatsForUser(authDTO3, 3)).thenReturn(stats3);
 
         UserAuthorizedUbiAccount boughtIn24hNotificationUbiAccount = new UserAuthorizedUbiAccount();
         boughtIn24hNotificationUbiAccount.setUserId(4L);
         boughtIn24hNotificationUbiAccount.setProfileId("profileId4");
         boughtIn24hNotificationUbiAccount.setCreditAmount(400);
+        boughtIn24hNotificationUbiAccount.setOwnedItemsIdsCount(4);
         boughtIn24hNotificationUbiAccount.setTicket("ticket4");
         boughtIn24hNotificationUbiAccount.setSpaceId("spaceId4");
         boughtIn24hNotificationUbiAccount.setSessionId("sessionId4");
@@ -308,11 +306,14 @@ class ScheduledAllUbiUsersStatsFetcherTest {
         userTradesLimitations4.setResolvedBuyTransactionCount(42);
         userTradesLimitations4.setResaleLocks(List.of(resaleLock4));
 
-        when(personalQueryCreditAmountGraphQlClientService.fetchCreditAmountForUser(authDTO4)).thenReturn(400);
-        when(personalQueryCurrentOrdersGraphQlClientService.fetchCurrentOrdersForUser(authDTO4)).thenReturn(List.of(currentSellTrade4, currentBuyTrade4));
-        when(personalQueryFinishedOrdersGraphQlClientService.fetchLastFinishedOrdersForUser(authDTO4)).thenReturn(List.of(finishedSellTrade4, finishedBuyTrade4));
-        when(personalQueryOwnedItemsGraphQlClientService.fetchAllOwnedItemsIdsForUser(authDTO4)).thenReturn(ownedItemsIds4);
-        when(personalQueryTradesLimitationsGraphQlClientService.fetchTradesLimitationsForUser(authDTO4)).thenReturn(userTradesLimitations4);
+        UbiUserStats stats4 = new UbiUserStats();
+        stats4.setCreditAmount(400);
+        stats4.setCurrentOrders(List.of(currentSellTrade4, currentBuyTrade4));
+        stats4.setFinishedOrders(List.of(finishedSellTrade4, finishedBuyTrade4));
+        stats4.setUserTradesLimitations(userTradesLimitations4);
+        stats4.setCurrentOrders(List.of(currentSellTrade4, currentBuyTrade4));
+
+        when(personalQueryUserStatsGraphQlClientService.fetchUbiUserStatsForUser(authDTO4, 4)).thenReturn(stats4);
 
         List<UserAuthorizedUbiAccount> existingUsersUbiAccounts = List.of(noNotificationUbiAccount, creditAmountNotificationUbiAccount, soldIn24hNotificationUbiAccount, boughtIn24hNotificationUbiAccount);
 

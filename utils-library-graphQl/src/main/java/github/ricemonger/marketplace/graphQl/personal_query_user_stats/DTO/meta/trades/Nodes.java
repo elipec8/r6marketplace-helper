@@ -1,5 +1,7 @@
 package github.ricemonger.marketplace.graphQl.personal_query_user_stats.DTO.meta.trades;
 
+
+import github.ricemonger.marketplace.graphQl.personal_query_user_stats.DTO.meta.trades.nodes.Payment;
 import github.ricemonger.marketplace.graphQl.personal_query_user_stats.DTO.meta.trades.nodes.PaymentOptions;
 import github.ricemonger.marketplace.graphQl.personal_query_user_stats.DTO.meta.trades.nodes.PaymentProposal;
 import github.ricemonger.marketplace.graphQl.personal_query_user_stats.DTO.meta.trades.nodes.TradeItems;
@@ -17,6 +19,7 @@ public class Nodes {
     private String expiresAt;
     private String lastModifiedAt;
     private TradeItems[] tradeItems;
+    private Payment payment;
     private PaymentOptions[] paymentOptions;
     private PaymentProposal paymentProposal;
 }

@@ -12,6 +12,7 @@ public class UserAuthorizedUbiAccountProjection {
 
     private String profileId;
     private Integer creditAmount;
+    private Integer ownedItemsIdsCount;
 
     private String ticket;
     private String spaceId;

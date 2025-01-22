@@ -1,5 +1,6 @@
 package github.ricemonger.marketplace.graphQl.personal_query_user_stats;
 
+import github.ricemonger.marketplace.graphQl.BuiltGraphQlDocument;
 import github.ricemonger.marketplace.graphQl.GraphQlVariablesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,16 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PersonalQueryUserStatsGraphQlDocumentBuilder {
 
-    private final static String personalQueryFetchUserStatsPartBeforeOwnedItemsOffsetVariables = "query GetUserStats(";
+    private final static String personalQueryFetchUserStatsPartBeforeOwnedItemsOffsetVariables =
+            """
+                    query GetUserStats(
+                     $spaceId: String!,
+                     $tradesLimit: Int!,
+                     $tradesOffset: Int,
+                     $paymentItemId: String!,
+                     $ownedItemsSortBy: MarketableItemSort,
+                     $ownedItemsLimit: Int!
+                    """;
 
     private final static String personalQueryFetchUserStatsPartAfterOwnedItemsOffsetVariablesBeforeQueries = """ 
             ) {
@@ -34,18 +44,31 @@ public class PersonalQueryUserStatsGraphQlDocumentBuilder {
                                 __typename
                             }
             
-                            trades(
-                                limit: $tradesLimit
-                                offset: $tradesOffset
-                                filterBy: {states: [Created, Succeeded, Failed]}
-                                sortBy: {field: LAST_MODIFIED_AT}
-                            ) {
-                                nodes {
-                                    ...TradeFragment
-                                    __typename
-                                }
-                                __typename
-                            }
+                            currentTrades: trades(
+                                                 limit: $tradesLimit
+                                                 offset: $tradesOffset
+                                                 filterBy: {states: [Created]}
+                                                 sortBy: {field: LAST_MODIFIED_AT}
+                                             ) {
+                                                 nodes {
+                                                     ...TradeFragment
+                                                     __typename
+                                                 }
+                                                 __typename
+                                             }
+            
+                            finishedTrades: trades(
+                                                 limit: $tradesLimit
+                                                 offset: $tradesOffset
+                                                 filterBy: {states: [Succeeded, Failed]}
+                                                 sortBy: {field: LAST_MODIFIED_AT}
+                                             ) {
+                                                 nodes {
+                                                     ...TradeFragment
+                                                     __typename
+                                                 }
+                                                 __typename
+                                             }
             
                             __typename
                         }
@@ -82,10 +105,6 @@ public class PersonalQueryUserStatsGraphQlDocumentBuilder {
                 __typename
             }
             
-            fragment SecondaryStoreItemFragment on SecondaryStoreItem {
-                id
-            }
-            
             fragment TradeFragment on Trade {
                 tradeId
                 state
@@ -113,7 +132,11 @@ public class PersonalQueryUserStatsGraphQlDocumentBuilder {
                     __typename
                 }
                 __typename
-            } 
+            }
+            
+            fragment SecondaryStoreItemFragment on SecondaryStoreItem {
+                 itemId
+            }
             """;
 
     private final static String ownedItemsQueryName = "marketableItems";
@@ -121,7 +144,7 @@ public class PersonalQueryUserStatsGraphQlDocumentBuilder {
     private final static String ownedItemsQuery = """
             marketableItems(
                                 limit: $ownedItemsLimit
-                                offset: $ownedItemsOffset
+                                offset: $defaultVarKey
                                 sortBy: $ownedItemsSortBy
                                 withMarketData: false
                             ) {
@@ -136,60 +159,62 @@ public class PersonalQueryUserStatsGraphQlDocumentBuilder {
 
     private final GraphQlVariablesService graphQlVariablesService;
 
-    public BuiltGraphQlDocuments buildPersonalQueryUserStatsDocument(Integer ownedItemsExpectedAmount) {
+    public BuiltGraphQlDocument buildPersonalQueryUserStatsDocument(Integer expectedOwnedItemsQueries) {
         StringBuilder document = new StringBuilder();
-        Map<String, Object> additionalVariables = new LinkedHashMap<>();
-        Map<String, String> ownedItemsQueryAliasesToFields = new LinkedHashMap<>();
+        Map<String, Object> resultingVariables = new LinkedHashMap<>();
+        Map<String, String> aliasesToFields = new LinkedHashMap<>();
 
         Map<String, Object> variables = graphQlVariablesService.getDefaultFetchUserStatsVariables();
 
-        int expectedOwnedItemsQueries = ownedItemsExpectedAmount / GraphQlVariablesService.MAX_LIMIT;
+        if (expectedOwnedItemsQueries <= 0) {
+            throw new IllegalArgumentException("Expected owned items queries should be greater than 0");
+        }
 
         StringBuilder variablesSection = new StringBuilder();
         StringBuilder queriesSection = new StringBuilder();
 
         for (int i = 0; i < expectedOwnedItemsQueries; i++) {
-            additionalVariables.put("ownedItemsOffset" + i, i * GraphQlVariablesService.MAX_LIMIT);
-            ownedItemsQueryAliasesToFields.put(ownedItemsQueryName + i, ownedItemsQueryName);
+            String varKey = "ownedItemsOffset" + i;
+            Integer varValue = i * GraphQlVariablesService.MAX_LIMIT;
+
+            resultingVariables.put(varKey, varValue);
+
+            variablesSection.append(", ");
+            variablesSection.append(createOwnedItemsOffsetVariableSection(varKey));
+
+            String alias = ownedItemsQueryName + i;
+
+            aliasesToFields.put(alias, ownedItemsQueryName);
+
+            queriesSection.append(createAliasedOwnedItemsQuerySection(alias, varKey));
+
+            aliasesToFields.put(ownedItemsQueryName + i, ownedItemsQueryName);
         }
-        variables.putAll(additionalVariables);
 
         document.append(personalQueryFetchUserStatsPartBeforeOwnedItemsOffsetVariables);
 
-        document.append(createOwnedItemsOffsetsVariablesSection(variables));
+        document.append(variablesSection);
 
         document.append(personalQueryFetchUserStatsPartAfterOwnedItemsOffsetVariablesBeforeQueries);
 
-        document.append(createAliasedOwnedItemsQueriesSection(ownedItemsQueryAliasesToFields));
+        document.append(queriesSection);
 
         document.append(personalQueryFetchUserStatsPartAfterQueries);
 
-        return new BuiltGraphQlDocuments(
+        resultingVariables.putAll(variables);
+
+        return new BuiltGraphQlDocument(
                 document.toString(),
-                variables,
-                ownedItemsQueryAliasesToFields
+                resultingVariables,
+                aliasesToFields
         );
     }
 
-    private String createOwnedItemsOffsetsVariablesSection(Map<String, Object> variables) {
-       StringBuilder section = new StringBuilder();
-        for (Map.Entry<String, Object> variable : variables.entrySet()) {
-            section.append("$").append(variable.getKey()).append(": ");
-            if(variable.getValue() instanceof Integer) {
-                section.append("Int");
-            }  else {
-                throw new IllegalArgumentException("Unsupported variable type as owned items offset variable: " + variable.getValue().getClass());
-            }
-
-        }
-        return section.toString();
+    private String createOwnedItemsOffsetVariableSection(String varKey) {
+        return "$" + varKey + ": Int";
     }
 
-    private String createAliasedOwnedItemsQueriesSection(Map<String, String> aliasesToFields) {
-        StringBuilder section = new StringBuilder();
-        for (Map.Entry<String, String> aliasToField : aliasesToFields.entrySet()) {
-            section.append(aliasToField.getKey()).append(": ").append(ownedItemsQuery.replace("$ownedItemsOffset", aliasToField.getValue())).append("\n");
-        }
-        return section.toString();
+    private String createAliasedOwnedItemsQuerySection(String alias, String varKey) {
+        return alias + ": " + ownedItemsQuery.replace("$defaultVarKey", "$" + varKey);
     }
 }

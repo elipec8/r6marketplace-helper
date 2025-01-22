@@ -1,11 +1,14 @@
 package github.ricemonger.marketplace.graphQl.personal_query_user_stats;
 
+import github.ricemonger.marketplace.graphQl.BuiltGraphQlDocument;
 import github.ricemonger.marketplace.graphQl.GraphQlClientFactory;
-import github.ricemonger.marketplace.graphQl.personal_query_user_stats.DTO.Meta;
-import github.ricemonger.utils.DTOs.personal.UserTradesLimitations;
+import github.ricemonger.marketplace.graphQl.GraphQlVariablesService;
+import github.ricemonger.marketplace.graphQl.personal_query_owned_items.PersonalQueryOwnedItemsGraphQlClientService;
+import github.ricemonger.utils.DTOs.personal.UbiUserStats;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalLockedItemsMappingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.graphql.client.ClientGraphQlResponse;
 import org.springframework.graphql.client.HttpGraphQlClient;
 
 @RequiredArgsConstructor
@@ -16,18 +19,26 @@ public class PersonalQueryUserStatsGraphQlClientService {
 
     private final PersonalQueryUserStatsMapper personalQueryUserStatsMapper;
 
-    public UserTradesLimitations fetchUserStatsForUser(AuthorizationDTO authorizationDTO, Integer ownedItemsExpectedAmount) throws GraphQlPersonalLockedItemsMappingException {
+    private final PersonalQueryOwnedItemsGraphQlClientService personalQueryOwnedItemsGraphQlClientService;
+
+    public UbiUserStats fetchUbiUserStatsForUser(AuthorizationDTO authorizationDTO, Integer ownedItemsExpectedAmount) throws GraphQlPersonalLockedItemsMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
 
-        BuiltGraphQlDocuments builtGraphQlDocuments = personalQueryUserStatsGraphQlDocumentBuilder.buildPersonalQueryUserStatsDocument(ownedItemsExpectedAmount);
+        int expectedOwnedItemsQueries = Math.max((int) Math.ceil((double) ownedItemsExpectedAmount / GraphQlVariablesService.MAX_LIMIT), 1);
 
-        Meta meta = client
-                .document(builtGraphQlDocuments.getDocument())
-                .variables(builtGraphQlDocuments.getVariables())
-                .retrieve("game.viewer.meta")
-                .toEntity(Meta.class)
-                .block();
+        BuiltGraphQlDocument builtGraphQlDocument = personalQueryUserStatsGraphQlDocumentBuilder.buildPersonalQueryUserStatsDocument(expectedOwnedItemsQueries);
 
-        return personalQueryUserStatsMapper.mapUserStats(meta, builtGraphQlDocuments.getAliasesToFields(), authorizationDTO.getProfileId());
+        ClientGraphQlResponse response = client
+                .document(builtGraphQlDocument.getDocument())
+                .variables(builtGraphQlDocument.getVariables())
+                .execute().block();
+
+        UbiUserStats stats = personalQueryUserStatsMapper.mapUserStats(response, builtGraphQlDocument.getAliasesToFields(), authorizationDTO.getProfileId());
+
+        if (stats.getOwnedItemsIds().size() % GraphQlVariablesService.MAX_LIMIT == 0) {
+            stats.getOwnedItemsIds().addAll(personalQueryOwnedItemsGraphQlClientService.fetchAllOwnedItemsIdsForUserByOffset(authorizationDTO, stats.getOwnedItemsIds().size()));
+        }
+
+        return stats;
     }
 }

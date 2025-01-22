@@ -12,10 +12,12 @@ import org.springframework.stereotype.Component;
 public class UbiAccountEntryEntityMapper {
 
     public UserAuthorizedUbiAccount createUserUbiAccountEntry(UserAuthorizedUbiAccountProjection projection) {
+
         return new UserAuthorizedUbiAccount(
                 projection.getUserId(),
                 projection.getProfileId(),
                 projection.getCreditAmount(),
+                projection.getOwnedItemsIdsCount(),
                 projection.getTicket(),
                 projection.getSpaceId(),
                 projection.getSessionId(),

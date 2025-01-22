@@ -19,6 +19,7 @@ class UbiAccountEntryEntityMapperTest {
         projection.setUserId(1L);
         projection.setProfileId("ubiProfileId");
         projection.setCreditAmount(3);
+        projection.setOwnedItemsIdsCount(4);
         projection.setTicket("ubiAuthTicket");
         projection.setSpaceId("ubiSpaceId");
         projection.setSessionId("ubiSessionId");
@@ -30,6 +31,7 @@ class UbiAccountEntryEntityMapperTest {
         assertEquals(1L, userAuthorizedUbiAccount.getUserId());
         assertEquals("ubiProfileId", userAuthorizedUbiAccount.getProfileId());
         assertEquals(3, userAuthorizedUbiAccount.getCreditAmount());
+        assertEquals(4, userAuthorizedUbiAccount.getOwnedItemsIdsCount());
         assertEquals("ubiAuthTicket", userAuthorizedUbiAccount.getTicket());
         assertEquals("ubiSpaceId", userAuthorizedUbiAccount.getSpaceId());
         assertEquals("ubiSessionId", userAuthorizedUbiAccount.getSessionId());

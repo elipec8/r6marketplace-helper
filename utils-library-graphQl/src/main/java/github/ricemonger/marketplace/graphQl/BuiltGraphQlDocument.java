@@ -1,4 +1,4 @@
-package github.ricemonger.marketplace.graphQl.personal_query_user_stats;
+package github.ricemonger.marketplace.graphQl;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BuiltGraphQlDocuments {
+public class BuiltGraphQlDocument {
     private String document;
     private Map<String, Object> variables;
     private Map<String, String> aliasesToFields;

@@ -1,6 +1,7 @@
 package github.ricemonger.ubi_users_stats_fetcher.postgres.repositories;
 
 import github.ricemonger.ubi_users_stats_fetcher.postgres.dto_projections.UserAuthorizedUbiAccountProjection;
+import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountEntryEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountStatsEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
@@ -35,6 +36,11 @@ class UserAuthorizedUbiAccountEntryPostgresRepositoryTest {
         UserEntity userEntity1 = new UserEntity();
         entityManager.persist(userEntity1);
 
+        ItemEntity itemEntity1 = new ItemEntity("itemId1");
+        entityManager.persist(itemEntity1);
+        ItemEntity itemEntity2 = new ItemEntity("itemId2");
+        entityManager.persist(itemEntity2);
+
         UbiAccountEntryEntity ubiAccountEntryEntity1 = new UbiAccountEntryEntity();
         ubiAccountEntryEntity1.setUser(userEntity1);
         ubiAccountEntryEntity1.setEmail("email1");
@@ -48,6 +54,7 @@ class UserAuthorizedUbiAccountEntryPostgresRepositoryTest {
         UbiAccountStatsEntity ubiAccountStatsEntity1 = new UbiAccountStatsEntity();
         ubiAccountStatsEntity1.setUbiProfileId("ubiProfileId1");
         ubiAccountStatsEntity1.setCreditAmount(101);
+        ubiAccountStatsEntity1.setOwnedItems(List.of(itemEntity1, itemEntity2));
         entityManager.persist(ubiAccountStatsEntity1);
 
         ubiAccountEntryEntity1.setUbiAccountStats(ubiAccountStatsEntity1);
@@ -69,6 +76,7 @@ class UserAuthorizedUbiAccountEntryPostgresRepositoryTest {
         UbiAccountStatsEntity ubiAccountStatsEntity2 = new UbiAccountStatsEntity();
         ubiAccountStatsEntity2.setUbiProfileId("ubiProfileId2");
         ubiAccountStatsEntity2.setCreditAmount(102);
+        ubiAccountStatsEntity2.setOwnedItems(List.of());
         entityManager.persist(ubiAccountStatsEntity2);
 
         ubiAccountEntryEntity2.setUbiAccountStats(ubiAccountStatsEntity2);
@@ -95,6 +103,7 @@ class UserAuthorizedUbiAccountEntryPostgresRepositoryTest {
         projection1.setUserId(userEntity1.getId());
         projection1.setProfileId("ubiProfileId1");
         projection1.setCreditAmount(101);
+        projection1.setOwnedItemsIdsCount(2);
         projection1.setTicket("ubiAuthTicket1");
         projection1.setSpaceId("ubiSpaceId1");
         projection1.setSessionId("ubiSessionId1");
@@ -105,6 +114,7 @@ class UserAuthorizedUbiAccountEntryPostgresRepositoryTest {
         projection2.setUserId(userEntity2.getId());
         projection2.setProfileId("ubiProfileId2");
         projection2.setCreditAmount(102);
+        projection2.setOwnedItemsIdsCount(0);
         projection2.setTicket("ubiAuthTicket2");
         projection2.setSpaceId("ubiSpaceId2");
         projection2.setSessionId("ubiSessionId2");

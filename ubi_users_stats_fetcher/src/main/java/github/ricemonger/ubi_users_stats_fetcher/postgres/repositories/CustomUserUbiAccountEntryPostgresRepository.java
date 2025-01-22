@@ -16,6 +16,7 @@ public interface CustomUserUbiAccountEntryPostgresRepository extends JpaReposito
            "u.user.id," +
            " u.ubiAccountStats.ubiProfileId," +
            " u.ubiAccountStats.creditAmount," +
+           "size(u.ubiAccountStats.ownedItems)," +
            " u.ubiAuthTicket," +
            " u.ubiSpaceId," +
            " u.ubiSessionId," +

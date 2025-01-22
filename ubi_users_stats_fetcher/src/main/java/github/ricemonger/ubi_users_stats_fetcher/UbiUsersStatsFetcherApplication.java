@@ -1,11 +1,7 @@
 package github.ricemonger.ubi_users_stats_fetcher;
 
 import github.ricemonger.marketplace.databases.redis.services.RedisUtilsConfiguration;
-import github.ricemonger.marketplace.graphQl.personal_query_credits_amount.PersonalQueryCreditAmountGraphQlConfiguration;
-import github.ricemonger.marketplace.graphQl.personal_query_current_orders.PersonalQueryCurrentOrdersGraphQlConfiguration;
-import github.ricemonger.marketplace.graphQl.personal_query_finished_orders.PersonalQueryFinishedOrdersGraphQlConfiguration;
-import github.ricemonger.marketplace.graphQl.personal_query_trades_limitations.PersonalQueryTradesLimitationsGraphQlConfiguration;
-import github.ricemonger.marketplace.graphQl.personal_query_owned_items.PersonalQueryOwnedItemsGraphQlConfiguration;
+import github.ricemonger.marketplace.graphQl.personal_query_user_stats.PersonalQueryUserStatsGraphQlConfiguration;
 import github.ricemonger.utils.SchedulingUtilsConfiguration;
 import github.ricemonger.utils.services.calculators.TradeStatsCalculatorUtilsConfiguration;
 import github.ricemonger.utilslibrarykafka.KafkaUtilsConfiguration;
@@ -23,11 +19,7 @@ import org.springframework.context.annotation.Import;
         KafkaUtilsConfiguration.class,
         RedisUtilsConfiguration.class,
         SchedulingUtilsConfiguration.class,
-        PersonalQueryTradesLimitationsGraphQlConfiguration.class,
-        PersonalQueryOwnedItemsGraphQlConfiguration.class,
-        PersonalQueryCurrentOrdersGraphQlConfiguration.class,
-        PersonalQueryFinishedOrdersGraphQlConfiguration.class,
-        PersonalQueryCreditAmountGraphQlConfiguration.class,
+        PersonalQueryUserStatsGraphQlConfiguration.class,
         TradeStatsCalculatorUtilsConfiguration.class
 })
 public class UbiUsersStatsFetcherApplication {

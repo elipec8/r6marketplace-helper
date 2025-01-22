@@ -15,5 +15,6 @@ public class Meta {
     private TradesLimitations tradesLimitations;
     private MarketableItems marketableItems;
     private SecondaryStoreItem secondaryStoreItem;
-    private Trades trades;
+    private Trades currentTrades;
+    private Trades finishedTrades;
 }

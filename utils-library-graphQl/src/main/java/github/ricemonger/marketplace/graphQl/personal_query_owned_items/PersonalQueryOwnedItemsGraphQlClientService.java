@@ -22,10 +22,13 @@ public class PersonalQueryOwnedItemsGraphQlClientService {
     private final PersonalQueryOwnedItemsMapper personalQueryOwnedItemsMapper;
 
     public List<String> fetchAllOwnedItemsIdsForUser(AuthorizationDTO authorizationDTO) throws GraphQlPersonalOwnedItemsMappingException {
+        return fetchAllOwnedItemsIdsForUserByOffset(authorizationDTO, 0);
+    }
+
+    public List<String> fetchAllOwnedItemsIdsForUserByOffset(AuthorizationDTO authorizationDTO, int offset) throws GraphQlPersonalOwnedItemsMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
         MarketableItems marketableItems;
         List<Node> nodes = new ArrayList<>();
-        int offset = 0;
 
         do {
             marketableItems = client

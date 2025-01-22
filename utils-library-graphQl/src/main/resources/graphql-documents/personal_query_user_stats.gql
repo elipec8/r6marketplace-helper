@@ -36,10 +36,23 @@ query GetUserStats(
                     __typename
                 }
 
-                trades(
+                currentTrades: trades(
                     limit: $tradesLimit
                     offset: $tradesOffset
-                    filterBy: {states: [Created, Succeeded, Failed]}
+                    filterBy: {states: [Created]}
+                    sortBy: {field: LAST_MODIFIED_AT}
+                ) {
+                    nodes {
+                        ...TradeFragment
+                        __typename
+                    }
+                    __typename
+                }
+
+                finishedTrades: trades(
+                    limit: $tradesLimit
+                    offset: $tradesOffset
+                    filterBy: {states: [Succeeded, Failed]}
                     sortBy: {field: LAST_MODIFIED_AT}
                 ) {
                     nodes {
@@ -85,7 +98,7 @@ fragment MarketableItemFragment on MarketableItem {
 }
 
 fragment SecondaryStoreItemFragment on SecondaryStoreItem {
-    id
+    itemId
 }
 
 fragment TradeFragment on Trade {
