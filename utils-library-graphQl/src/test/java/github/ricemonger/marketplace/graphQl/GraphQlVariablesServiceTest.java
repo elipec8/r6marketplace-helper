@@ -207,6 +207,21 @@ public class GraphQlVariablesServiceTest {
         assertTrue(mapContainsEntries((Map) result.get("ownedItemsSortBy"), Map.entry("paymentItemId", paymentItemId)));
     }
 
+    @Test
+    public void getDefaultFetchLimitedItemsPricesVariables_should_have_provided_variables() {
+        String spaceId = "mainUserSpaceId";
+        String paymentItemId = "paymentItemId";
+
+        when(commonValuesService.getUbiGameSpaceId()).thenReturn(spaceId);
+        when(commonValuesService.getPaymentItemId()).thenReturn(paymentItemId);
+
+        Map<String, Object> result = graphQlVariablesService.getDefaultFetchLimitedItemsPricesVariables();
+
+        assertTrue(mapContainsEntries(result, Map.entry("spaceId", spaceId)));
+
+        assertTrue(mapContainsEntries((Map) result.get("sortBy"), Map.entry("paymentItemId", paymentItemId)));
+    }
+
     @SafeVarargs
     private <K, V> boolean mapContainsEntries(Map<K, V> map, Map.Entry<K, V>... entries) {
         for (Map.Entry<K, V> entry : entries) {

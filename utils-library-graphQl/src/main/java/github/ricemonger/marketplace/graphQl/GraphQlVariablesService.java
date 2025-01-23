@@ -176,4 +176,15 @@ public class GraphQlVariablesService {
                         "direction", "DESC",
                         "paymentItemId", graphQlCommonValuesService.getPaymentItemId()));
     }
+
+    public Map<String, Object> getDefaultFetchLimitedItemsPricesVariables() {
+        return Map.of(
+                "withOwnership", false,
+                "spaceId", graphQlCommonValuesService.getUbiGameSpaceId(),
+                "sortBy", Map.of(
+                        "field", "ACTIVE_COUNT",
+                        "orderType", "Sell",
+                        "direction", "ASC",
+                        "paymentItemId", graphQlCommonValuesService.getPaymentItemId()));
+    }
 }

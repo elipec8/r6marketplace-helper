@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+fetching_accounts_credentials.json
 auth_constants.env
 auth-values.yaml
 *.log

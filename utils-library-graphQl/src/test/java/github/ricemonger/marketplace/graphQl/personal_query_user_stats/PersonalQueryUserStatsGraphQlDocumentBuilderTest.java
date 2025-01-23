@@ -140,7 +140,8 @@ class PersonalQueryUserStatsGraphQlDocumentBuilderTest {
                              "    lastModifiedAt\n" +
                              "    tradeItems {\n" +
                              "        item {\n" +
-                             "            ...SecondaryStoreItemFragment\n" +
+                             "            itemId\n" +
+                             "            name\n" +
                              "            __typename\n" +
                              "        }\n" +
                              "        __typename\n" +
@@ -178,6 +179,8 @@ class PersonalQueryUserStatsGraphQlDocumentBuilderTest {
         );
 
         BuiltGraphQlDocument result = personalQueryUserStatsGraphQlDocumentBuilder.buildPersonalQueryUserStatsDocument(1);
+
+        System.out.println(result);
 
         assertEquals(expected.getDocument(), result.getDocument());
         assertEquals(expected.getVariables().size(), result.getVariables().size());
@@ -327,7 +330,8 @@ class PersonalQueryUserStatsGraphQlDocumentBuilderTest {
                              "    lastModifiedAt\n" +
                              "    tradeItems {\n" +
                              "        item {\n" +
-                             "            ...SecondaryStoreItemFragment\n" +
+                             "            itemId\n" +
+                             "            name\n" +
                              "            __typename\n" +
                              "        }\n" +
                              "        __typename\n" +
@@ -368,6 +372,7 @@ class PersonalQueryUserStatsGraphQlDocumentBuilderTest {
 
         BuiltGraphQlDocument result = personalQueryUserStatsGraphQlDocumentBuilder.buildPersonalQueryUserStatsDocument(3);
 
+        System.out.println(result);
 
         assertEquals(expected.getDocument(), result.getDocument());
         assertEquals(expected.getVariables().size(), result.getVariables().size());
