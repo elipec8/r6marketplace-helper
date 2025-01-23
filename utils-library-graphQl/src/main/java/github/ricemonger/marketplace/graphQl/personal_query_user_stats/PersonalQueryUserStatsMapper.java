@@ -176,6 +176,7 @@ public class PersonalQueryUserStatsMapper {
 
         Item item = new Item();
         item.setItemId(node.getTradeItems()[0].getItem().getItemId());
+        item.setName(node.getTradeItems()[0].getItem().getName());
 
         result.setItem(item);
 
