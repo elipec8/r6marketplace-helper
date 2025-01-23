@@ -113,7 +113,8 @@ public class PersonalQueryUserStatsGraphQlDocumentBuilder {
                 lastModifiedAt
                 tradeItems {
                     item {
-                        ...SecondaryStoreItemFragment
+                        itemId
+                        name
                         __typename
                     }
                     __typename
