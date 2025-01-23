@@ -237,4 +237,12 @@ class CommonValuesServiceTest {
 
         assertEquals(limit, commonValuesService.getFastTradeOwnedItemsLimit());
     }
+
+    @Test
+    public void getFetchUsersItemsLimit_should_handle_to_service() {
+        Integer limit = 10;
+        when(fastSellManagementConfiguration.getFetchUsersItemsLimit()).thenReturn(limit);
+
+        assertEquals(limit, commonValuesService.getFetchUsersItemsLimit());
+    }
 }

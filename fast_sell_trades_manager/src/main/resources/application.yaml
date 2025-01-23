@@ -25,10 +25,14 @@ server:
 app:
   scheduling:
     enabled: ${SCHEDULING_ENABLED:true}
-    management_submit:
-      fixedRate: ${SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_SUBMIT:302} # 100ms - 20s trade, 40s errors cycle. Too many requests error is
+    management_update:
+      fixedRate: ${SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_UPDATE:360} # fetches owned items and orders via managed user
+      # 100ms - 20s trade, 40s errors cycle. Too many requests error is
       # account specific, approx 200 requests in 1min allowed, orders alter commands limit approx 300/day, including failed tries
-      initialDelay: ${SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_SUBMIT:10500}
+      initialDelay: ${SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_UPDATE:10500}
+    management_fetch:
+      fixedRate: ${SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_FETCH:300} # fetches owned items via fetching users
+      initialDelay: ${SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_FETCH:12500}
     management_execute:
       fixedRate: ${SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_EXECUTE:1} # checks arrayList, doesnt do any requests if no commands
       initialDelay: ${SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_EXECUTE:10500}
@@ -48,6 +52,7 @@ fast_sell_management:
   min_median_price_difference: ${FAST_SELL_MIN_MEDIAN_PRICE_DIFFERENCE:500}
   min_median_price_difference_percentage: ${FAST_SELL_MIN_MEDIAN_PRICE_DIFFERENCE_PERCENTAGE:100}
   owned_items_limit: ${FAST_SELL_OWNED_ITEMS_LIMIT:140}
+  fetch_users_items_limit: ${FAST_SELL_FETCH_USERS_ITEMS_LIMIT:1000}
 
 logging:
   level:

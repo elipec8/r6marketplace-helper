@@ -6,8 +6,11 @@ import github.ricemonger.fast_sell_trade_manager.services.DTOs.ItemMedianPriceAn
 import github.ricemonger.fast_sell_trade_manager.services.DTOs.PotentialTrade;
 import github.ricemonger.fast_sell_trade_manager.services.factories.PotentialTradeFactory;
 import github.ricemonger.fast_sell_trade_manager.services.factories.TradeManagementCommandsFactory;
+import github.ricemonger.marketplace.graphQl.common_query_items_prices.CommonQueryItemsPricesGraphQlClientService;
 import github.ricemonger.marketplace.graphQl.personal_query_owned_items_prices_and_current_sell_orders.PersonalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientService;
+import github.ricemonger.utils.DTOs.common.ItemCurrentPrices;
 import github.ricemonger.utils.DTOs.personal.FastUserUbiStats;
+import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,7 @@ import java.util.concurrent.Future;
 @RequiredArgsConstructor
 public class UserFastSellTradesManager {
     private final PersonalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientService personalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientService;
+    private final CommonQueryItemsPricesGraphQlClientService commonQueryItemsPricesGraphQlClientService;
 
     private final CommonValuesService commonValuesService;
 
@@ -33,9 +37,49 @@ public class UserFastSellTradesManager {
     private final List<CompletableFuture<?>> createFastSellCommandsTasks = new CopyOnWriteArrayList<>();
     private final List<FastSellCommand> fastSellCommands = new CopyOnWriteArrayList<>();
 
-    public void submitAsyncCreateCommandsTask(FastSellManagedUser managedUser, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
+    private FastUserUbiStats savedUserStats;
+
+    public void submitCreateCommandsTaskByFetchedUserStats(FastSellManagedUser managedUser, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
         if (fastSellCommands.isEmpty()) {
-            submitAsyncCreateFastSellCommandsTask(managedUser, itemsMedianPriceAndRarity, sellLimit, sellSlots);
+            CompletableFuture<?> task = CompletableFuture.supplyAsync(() -> fastSellCommands.addAll(fetchAndUpdateUserStatsAndCreateCommandsByThem(managedUser, itemsMedianPriceAndRarity, sellLimit, sellSlots)));
+            createFastSellCommandsTasks.add(task);
+        }
+    }
+
+    private List<FastSellCommand> fetchAndUpdateUserStatsAndCreateCommandsByThem(FastSellManagedUser managedUser, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
+        try {
+            FastUserUbiStats userStats = personalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientService.fetchOwnedItemsCurrentPricesAndSellOrdersForUser(managedUser.toAuthorizationDTO(), commonValuesService.getFastTradeOwnedItemsLimit());
+
+            this.savedUserStats = userStats;
+
+            List<PotentialTrade> items = potentialTradeFactory.createPotentialTradesForUser(userStats.getItemsCurrentPrices(), itemsMedianPriceAndRarity, commonValuesService.getMinMedianPriceDifference(), commonValuesService.getMinMedianPriceDifferencePercentage());
+
+            return tradeManagementCommandsFactory.createFastSellCommandsForUser(managedUser, userStats.getCurrentSellOrders(), userStats.getItemsCurrentPrices(), itemsMedianPriceAndRarity, items, sellLimit, sellSlots);
+        } catch (Exception e) {
+            log.error("Error while creating fast sell commands for user with id: {} : {}", managedUser.getUbiProfileId(), e.getMessage());
+            return List.of();
+        }
+    }
+
+    public void submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices(FastSellManagedUser managedUser, AuthorizationDTO authorizationDTO, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
+        if (fastSellCommands.isEmpty()) {
+            CompletableFuture<?> task = CompletableFuture.supplyAsync(() -> fastSellCommands.addAll(fetchItemsCurrentStatsAndCreateCommandsByThemAndSavedUserStats(managedUser, authorizationDTO, itemsMedianPriceAndRarity, sellLimit, sellSlots)));
+            createFastSellCommandsTasks.add(task);
+        }
+    }
+
+    private List<FastSellCommand> fetchItemsCurrentStatsAndCreateCommandsByThemAndSavedUserStats(FastSellManagedUser managedUser, AuthorizationDTO authorizationDTO, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
+        try {
+            List<ItemCurrentPrices> fetchedItemCurrentPrices = commonQueryItemsPricesGraphQlClientService.fetchLimitedItemsStats(authorizationDTO, commonValuesService.getFetchUsersItemsLimit());
+
+            List<ItemCurrentPrices> ownedItemsCurrentPrices = fetchedItemCurrentPrices.stream().filter(fetched -> savedUserStats.getItemsCurrentPrices().stream().anyMatch(saved -> saved.getItemId().equals(fetched.getItemId()))).toList();
+
+            List<PotentialTrade> items = potentialTradeFactory.createPotentialTradesForUser(ownedItemsCurrentPrices, itemsMedianPriceAndRarity, commonValuesService.getMinMedianPriceDifference(), commonValuesService.getMinMedianPriceDifferencePercentage());
+
+            return tradeManagementCommandsFactory.createFastSellCommandsForUser(managedUser, savedUserStats.getCurrentSellOrders(), ownedItemsCurrentPrices, itemsMedianPriceAndRarity, items, sellLimit, sellSlots);
+        } catch (Exception e) {
+            log.error("Error while creating fast sell commands for user with id: {} : {}", managedUser.getUbiProfileId(), e.getMessage());
+            return List.of();
         }
     }
 
@@ -69,28 +113,10 @@ public class UserFastSellTradesManager {
         }
     }
 
-    private void submitAsyncCreateFastSellCommandsTask(FastSellManagedUser managedUser, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
-        CompletableFuture<?> task = CompletableFuture.supplyAsync(() -> fastSellCommands.addAll(createFastSellCommandsByCurrentStats(managedUser, itemsMedianPriceAndRarity, sellLimit, sellSlots)));
-        createFastSellCommandsTasks.add(task);
-    }
-
     private void cancelAllCreateFastSellCommandsTasks() {
         for (Future<?> future : createFastSellCommandsTasks) {
             future.cancel(true);
         }
         createFastSellCommandsTasks.clear();
-    }
-
-    private List<FastSellCommand> createFastSellCommandsByCurrentStats(FastSellManagedUser managedUser, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
-        try {
-            FastUserUbiStats userStats = personalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientService.fetchOwnedItemsCurrentPricesAndSellOrdersForUser(managedUser.toAuthorizationDTO(), commonValuesService.getFastTradeOwnedItemsLimit());
-
-            List<PotentialTrade> items = potentialTradeFactory.createPotentialTradesForUser(userStats.getItemsCurrentPrices(), itemsMedianPriceAndRarity, commonValuesService.getMinMedianPriceDifference(), commonValuesService.getMinMedianPriceDifferencePercentage());
-
-            return tradeManagementCommandsFactory.createFastSellCommandsForUser(managedUser, userStats.getCurrentSellOrders(), userStats.getItemsCurrentPrices(), itemsMedianPriceAndRarity, items, sellLimit, sellSlots);
-        } catch (Exception e) {
-            log.error("Error while creating fast sell commands for user with id: {} : {}", managedUser.getUbiProfileId(), e.getMessage());
-            return List.of();
-        }
     }
 }

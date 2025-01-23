@@ -2,8 +2,8 @@ package github.ricemonger.marketplace.graphQl.common_query_items_prices;
 
 import github.ricemonger.marketplace.graphQl.BuiltGraphQlDocument;
 import github.ricemonger.marketplace.graphQl.GraphQlClientFactory;
-import github.ricemonger.marketplace.graphQl.GraphQlVariablesService;
 import github.ricemonger.utils.DTOs.common.ItemCurrentPrices;
+import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.exceptions.server.GraphQlCommonItemMappingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.client.ClientGraphQlResponse;
@@ -19,8 +19,8 @@ public class CommonQueryItemsPricesGraphQlClientService {
 
     private final CommonQueryItemsPricesGraphQlDocumentBuilder commonQueryItemsPricesGraphQlDocumentBuilder;
 
-    public List<ItemCurrentPrices> fetchLimitedItemsStats(int limit) throws GraphQlCommonItemMappingException {
-        HttpGraphQlClient client = graphQlClientFactory.createMainUserClient();
+    public List<ItemCurrentPrices> fetchLimitedItemsStats(AuthorizationDTO dto, int limit) throws GraphQlCommonItemMappingException {
+        HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(dto);
 
         BuiltGraphQlDocument builtGraphQlDocument = commonQueryItemsPricesGraphQlDocumentBuilder.buildCommonQueryItemsPricesDocument(limit);
 

@@ -1,6 +1,7 @@
 package github.ricemonger.fast_sell_trade_manager;
 
 import github.ricemonger.marketplace.databases.redis.services.RedisUtilsConfiguration;
+import github.ricemonger.marketplace.graphQl.common_query_items_prices.CommonQueryItemsPricesGraphQlConfiguration;
 import github.ricemonger.marketplace.graphQl.personal_mutation_cancel.PersonalMutationCancelGraphQlConfiguration;
 import github.ricemonger.marketplace.graphQl.personal_mutation_sell_create.PersonalMutationSellCreateGraphQlConfiguration;
 import github.ricemonger.marketplace.graphQl.personal_mutation_sell_update.PersonalMutationSellUpdateGraphQlConfiguration;
@@ -22,7 +23,8 @@ import org.springframework.context.annotation.Import;
         PersonalMutationSellCreateGraphQlConfiguration.class,
         PersonalMutationSellUpdateGraphQlConfiguration.class,
         PersonalMutationCancelGraphQlConfiguration.class,
-        PersonalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlConfiguration.class
+        PersonalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlConfiguration.class,
+        CommonQueryItemsPricesGraphQlConfiguration.class
 })
 public class FastSellTradeManagerApplication {
 

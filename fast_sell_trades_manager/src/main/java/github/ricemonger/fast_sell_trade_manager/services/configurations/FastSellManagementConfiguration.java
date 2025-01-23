@@ -19,4 +19,6 @@ public class FastSellManagementConfiguration {
     private Integer minMedianPriceDifferencePercentage;
     @Value("${fast_sell_management.owned_items_limit}")
     private Integer ownedItemsLimit;
+    @Value("${fast_sell_management.fetch_users_items_limit}")
+    private Integer fetchUsersItemsLimit;
 }

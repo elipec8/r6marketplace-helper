@@ -14,9 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class UbiAccountEntryServiceTest {
+class UbiAccountServiceTest {
     @Autowired
-    private UbiAccountEntryService ubiAccountEntryService;
+    private UbiAccountService ubiAccountService;
     @MockBean
     private UbiAccountEntryDatabaseService ubiAccountEntryDatabaseService;
 
@@ -26,7 +26,7 @@ class UbiAccountEntryServiceTest {
 
         when(ubiAccountEntryDatabaseService.getFastSellManagedUserById(1L, "email")).thenReturn(user);
 
-        assertSame(user, ubiAccountEntryService.getFastSellManagedUserById(1L, "email"));
+        assertSame(user, ubiAccountService.getFastSellManagedUserById(1L, "email"));
     }
 
     @Test
@@ -35,6 +35,15 @@ class UbiAccountEntryServiceTest {
 
         when(ubiAccountEntryDatabaseService.getOwnedItemsMedianPriceAndRarity("ubiProfileId")).thenReturn(list);
 
-        assertSame(list, ubiAccountEntryService.getOwnedItemsMedianPriceAndRarity("ubiProfileId"));
+        assertSame(list, ubiAccountService.getOwnedItemsMedianPriceAndRarity("ubiProfileId"));
+    }
+
+    @Test
+    public void getAllFetchAccountsAuthorizationDTOs_should_return_db_service_result() {
+        List list = Mockito.mock(List.class);
+
+        when(ubiAccountEntryDatabaseService.getAllFetchAccountsAuthorizationDTOs()).thenReturn(list);
+
+        assertSame(list, ubiAccountService.getAllFetchAccountsAuthorizationDTOs());
     }
 }
