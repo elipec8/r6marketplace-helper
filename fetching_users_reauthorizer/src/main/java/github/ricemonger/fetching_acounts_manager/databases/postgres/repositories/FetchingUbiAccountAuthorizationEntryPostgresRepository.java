@@ -1,0 +1,7 @@
+package github.ricemonger.fetching_acounts_manager.databases.postgres.repositories;
+
+import github.ricemonger.utilspostgresschema.full_entities.fetch.FetchingUbiAccountAuthorizationEntryEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface FetchingUbiAccountAuthorizationEntryPostgresRepository extends JpaRepository<FetchingUbiAccountAuthorizationEntryEntity, String> {
+}

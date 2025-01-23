@@ -243,6 +243,31 @@ services:
       - postgres
       - redis
 
+  fetching_users_reauthorizer:
+    container_name: r6helper-fetching-users-reauthorizer
+    build:
+      context: .
+      dockerfile: fetching_users_reauthorizer/Dockerfile
+    image: r6helper-fetching-users-reauthorizer
+    ports:
+      - "8102:8078"
+    env_file:
+      - ubi_constants.env
+      - containers_constants.env
+      - auth_constants.env
+    environment:
+      SCHEDULING_ENABLED: true
+      SCHEDULING_FIXED_DELAY: 9000000
+      SCHEDULING_INITIAL_DELAY: 0
+    #volumes: you should provide your own fetching_accounts_credentials.json with list of ubi account credentials to fetch info from db, now is
+    #used only for fast sell trades management
+     # - ./src/main/resources/fetching_accounts_credentials.json:/app/resources/fetching_accounts_credentials.json
+    networks:
+      - postgres-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+
   ubi_users_stats_fetcher:
     container_name: r6helper-ubi-users-stats-fetcher
     build:

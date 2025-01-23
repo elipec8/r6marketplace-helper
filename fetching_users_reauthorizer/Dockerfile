@@ -11,25 +11,20 @@ COPY ./utils-library/src ./utils-library/src
 
 RUN mvn -f ./utils-library/pom.xml clean install -DskipTests
 
-COPY ./utils-library-redis/pom.xml ./utils-library-redis/pom.xml
-COPY ./utils-library-redis/src ./utils-library-redis/src
-
-RUN mvn -f ./utils-library-redis/pom.xml clean install -DskipTests
-
 COPY ./utils-postgres-schema/pom.xml ./utils-postgres-schema/pom.xml
 COPY ./utils-postgres-schema/src ./utils-postgres-schema/src
 
 RUN mvn -f ./utils-postgres-schema/pom.xml clean install -DskipTests
 
-COPY ./telegram_bot_updates_consumer/pom.xml ./telegram_bot_updates_consumer/pom.xml
-COPY ./telegram_bot_updates_consumer/src ./telegram_bot_updates_consumer/src
+COPY ./fetching_users_reauthorizer/pom.xml ./fetching_users_reauthorizer/pom.xml
+COPY ./fetching_users_reauthorizer/src ./fetching_users_reauthorizer/src
 
-RUN mvn -f ./telegram_bot_updates_consumer/pom.xml clean install -DskipTests
+RUN mvn -f ./fetching_users_reauthorizer/pom.xml clean install -DskipTests
 
 FROM eclipse-temurin:21.0.2_13-jre-alpine
 
 WORKDIR /app
 
-COPY --from=builder /app/telegram_bot_updates_consumer/target/*.jar /app/telegram_bot_updates_consumer.jar
+COPY --from=builder /app/fetching_users_reauthorizer/target/*.jar /app/fetching_users_reauthorizer.jar
 
-CMD ["java", "-jar", "telegram_bot_updates_consumer.jar"]
+CMD ["java", "-jar", "fetching_users_reauthorizer.jar"]
