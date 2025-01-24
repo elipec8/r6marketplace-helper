@@ -41,7 +41,7 @@ public class PotentialTradeFactory {
         }
 
         if (!potentialTrades.isEmpty()) {
-            log.info("Potential trades for user: {}", potentialTrades);
+            log.debug("Potential trades for user: {}", potentialTrades);
         }
 
         return potentialTrades;

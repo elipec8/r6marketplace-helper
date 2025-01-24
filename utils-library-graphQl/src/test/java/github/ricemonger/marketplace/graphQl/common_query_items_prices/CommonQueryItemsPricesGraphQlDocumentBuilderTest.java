@@ -108,6 +108,109 @@ class CommonQueryItemsPricesGraphQlDocumentBuilderTest {
     }
 
     @Test
+    public void buildPersonalQueryUserStatsDocument_should_return_expected_result_for_divisible_without_remainder_limit() {
+        BuiltGraphQlDocument expected = new BuiltGraphQlDocument();
+
+        when(graphQlVariablesService.getDefaultFetchLimitedItemsPricesVariables()).thenReturn(Map.of(
+                "paymentItemId", "paymentItemIdVar1",
+                "tradesOffset", "tradesOffsetVar1"
+        ));
+
+        expected.setDocument("query GetSellableItems(\n" +
+                             "    $spaceId: String!,\n" +
+                             "    $sortBy: MarketableItemSort\n" +
+                             ", $limit: Int, $offset0: Int, $offset1: Int, $lastQueryLimit: Int) {\n" +
+                             "    game(spaceId: $spaceId) {\n" +
+                             "marketableItems0: marketableItems(\n" +
+                             "                    limit: $limit\n" +
+                             "                    offset: $offset0\n" +
+                             "                    sortBy: $sortBy\n" +
+                             "                    withMarketData: true\n" +
+                             "                ) {\n" +
+                             "                    nodes {\n" +
+                             "                        ...MarketableItemFragment\n" +
+                             "                        __typename\n" +
+                             "                    }\n" +
+                             "                    totalCount\n" +
+                             "                    __typename\n" +
+                             "                }\n" +
+                             "marketableItems1: marketableItems(\n" +
+                             "                    limit: $lastQueryLimit\n" +
+                             "                    offset: $offset1\n" +
+                             "                    sortBy: $sortBy\n" +
+                             "                    withMarketData: true\n" +
+                             "                ) {\n" +
+                             "                    nodes {\n" +
+                             "                        ...MarketableItemFragment\n" +
+                             "                        __typename\n" +
+                             "                    }\n" +
+                             "                    totalCount\n" +
+                             "                    __typename\n" +
+                             "                }\n" +
+                             "               __typename\n" +
+                             "      }\n" +
+                             "      __typename\n" +
+                             "  }\n" +
+                             "\n" +
+                             "  fragment MarketableItemFragment on MarketableItem {\n" +
+                             "  item {\n" +
+                             "  ...SecondaryStoreItemFragment\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "  marketData {\n" +
+                             "  ...MarketDataFragment\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "\n" +
+                             "  fragment SecondaryStoreItemFragment on SecondaryStoreItem {\n" +
+                             "  itemId\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "\n" +
+                             "  fragment MarketDataFragment on MarketableItemMarketData {\n" +
+                             "  sellStats {\n" +
+                             "  lowestPrice\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "  buyStats {\n" +
+                             "  highestPrice\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "  __typename\n" +
+                             "  }\n");
+
+        expected.setVariables(
+                Map.of(
+                        "offset0", 0,
+                        "offset1", 500,
+                        "limit", 500,
+                        "paymentItemId", "paymentItemIdVar1",
+                        "tradesOffset", "tradesOffsetVar1",
+                        "lastQueryLimit", 500
+                )
+        );
+
+        expected.setAliasesToFields(
+                Map.of(
+                        "marketableItems0", "marketableItems",
+                        "marketableItems1", "marketableItems"
+                )
+        );
+
+        BuiltGraphQlDocument result = builder.buildCommonQueryItemsPricesDocument(1000);
+
+        System.out.println(result);
+
+        assertEquals(expected.getDocument(), result.getDocument());
+        assertEquals(expected.getVariables().size(), result.getVariables().size());
+        assertTrue(expected.getVariables().entrySet().containsAll(result.getVariables().entrySet()));
+        assertEquals(expected.getAliasesToFields().size(), result.getAliasesToFields().size());
+        assertTrue(expected.getAliasesToFields().entrySet().containsAll(result.getAliasesToFields().entrySet()));
+    }
+
+    @Test
     public void buildPersonalQueryUserStatsDocument_should_return_expected_result_for_3_expected_queries() {
 
         when(graphQlVariablesService.getDefaultFetchLimitedItemsPricesVariables()).thenReturn(Map.of(

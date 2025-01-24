@@ -74,6 +74,8 @@ public class UserFastSellTradesManager {
 
             List<ItemCurrentPrices> ownedItemsCurrentPrices = fetchedItemCurrentPrices.stream().filter(fetched -> savedUserStats.getItemsCurrentPrices().stream().anyMatch(saved -> saved.getItemId().equals(fetched.getItemId()))).toList();
 
+            log.debug("Sorted fetched items current prices size: {}", ownedItemsCurrentPrices.size());
+
             List<PotentialTrade> items = potentialTradeFactory.createPotentialTradesForUser(ownedItemsCurrentPrices, itemsMedianPriceAndRarity, commonValuesService.getMinMedianPriceDifference(), commonValuesService.getMinMedianPriceDifferencePercentage());
 
             return tradeManagementCommandsFactory.createFastSellCommandsForUser(managedUser, savedUserStats.getCurrentSellOrders(), ownedItemsCurrentPrices, itemsMedianPriceAndRarity, items, sellLimit, sellSlots);

@@ -113,6 +113,9 @@ public class CommonQueryItemsPricesGraphQlDocumentBuilder {
                         limitRemainder = limit;
                     } else {
                         limitRemainder = limit % ((expectedOwnedItemsQueries - 1) * GraphQlVariablesService.MAX_LIMIT);
+                        if (limitRemainder == 0) {
+                            limitRemainder = GraphQlVariablesService.MAX_LIMIT;
+                        }
                     }
                     createVariable("lastQueryLimit", limitRemainder, resultingVariables, variablesSection);
                 }
