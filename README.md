@@ -48,10 +48,14 @@ It's better to not use it in **fetching_accounts_credentials.json**, to prevent 
 >**TELEGRAM_BOT_TOKEN** - your Telegram bot token, receive from @BotFather  
 **TELEGRAM_BOT_USERNAME** - your Telegram bot username, receive from @BotFather  
 &nbsp;  
+Used in **Telegram Bot Updates Consumer** and **Notifications Service**.  
+&nbsp;  
 [@BotFather](https://t.me/BotFather)
 
 
 >**PASSWORD_ENCRYPTION_KEY** - AES password encryption key for storing Ubisoft Accounts' passwords in database  
+&nbsp;  
+Used in **Telegram Bot Updates Consumer** and **Users Ubisoft Accounts Reauthorizer**.  
 &nbsp;  
 [AES encryption key generator - get Encryption Key 256](https://acte.ltd/utils/randomkeygen)
 
@@ -117,7 +121,7 @@ Notifies Users via Notifications Service about performed operations.
 * **Ubi Users Stats Fetcher** - fetches stats for linked Ubisoft Accounts and notify their owners via Notifications Service about changes.
 
 
-* **Ubi Users Stats Reauthorizer** - reauthorizes linked Ubisoft Accounts and saves their Authorization Tokens and Headers to DB.  
+* **Users Ubisoft Accounts Reauthorizer** - reauthorizes linked Ubisoft Accounts and saves their Authorization Tokens and Headers to DB.  
 Notifies Users via Notifications Service if theirs Ubisoft Account reauthorization failed.
 
 
