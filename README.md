@@ -34,7 +34,7 @@ Trade Managers can use either Items' Filters or single Item ID. User can have an
 
 ## Environmental authorization variables description:  
 
->**UBI_PLATFORM** - platform of your Ubisoft Account's, typically UPLAY  
+><span style="color: white;">**UBI_PLATFORM** - platform of your Ubisoft Account's, typically UPLAY  
 **UBI_EMAIL** - your Ubisoft Account's email  
 **UBI_PASSWORD** - your Ubisoft Account's password  
 &nbsp;  
@@ -45,18 +45,18 @@ It's better to not use it in **fetching_accounts_credentials.json**, to prevent 
 [Create Ubisoft Account](https://account.ubisoft.com/en-US/login)
 
 
->**TELEGRAM_BOT_TOKEN** - your Telegram bot token, receive from @BotFather  
+><span style="color: white;">**TELEGRAM_BOT_TOKEN** - your Telegram bot token, receive from @BotFather  
 **TELEGRAM_BOT_USERNAME** - your Telegram bot username, receive from @BotFather  
 &nbsp;  
 [@BotFather](https://t.me/BotFather)
 
 
->**PASSWORD_ENCRYPTION_KEY** - AES password encryption key for storing Ubisoft Accounts' passwords in database  
+><span style="color: white;">**PASSWORD_ENCRYPTION_KEY** - AES password encryption key for storing Ubisoft Accounts' passwords in database  
 &nbsp;  
 [AES encryption key generator - get Encryption Key 256](https://acte.ltd/utils/randomkeygen)
 
 
->**POSTGRES_USER** - postgres container root user   
+><span style="color: white;">**POSTGRES_USER** - postgres container root user   
 **POSTGRES_PASSWORD** - postgres container root password  
 &nbsp;  
 **PGADMIN_DEFAULT_EMAIL** - pgadmin container root user email  
