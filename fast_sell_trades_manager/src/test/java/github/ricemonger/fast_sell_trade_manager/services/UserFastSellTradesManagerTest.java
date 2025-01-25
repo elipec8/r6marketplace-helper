@@ -11,6 +11,8 @@ import github.ricemonger.utils.DTOs.personal.FastUserUbiStats;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -102,6 +104,77 @@ class UserFastSellTradesManagerTest {
         assertTrue(commands.size() == 2);
         assertTrue(commands.stream().anyMatch(c -> c == command1));
         assertTrue(commands.stream().anyMatch(c -> c == command2));
+    }
+
+    @Test
+    public void submitCreateCommandsTaskByFetchedUserStats_should_additionally_check_commands_list_before_adding_new_commands() throws Exception {
+        userFastSellTradesManager = new UserFastSellTradesManager(personalGraphQlClientService, commonGraphQlClientService, commonValuesService, potentialTradeFactory, tradeManagementCommandsFactory, fastTradeManagementCommandExecutor);
+
+        FastSellManagedUser user = mock(FastSellManagedUser.class);
+
+        AuthorizationDTO dto = mock(AuthorizationDTO.class);
+
+        when(user.toAuthorizationDTO()).thenReturn(dto);
+
+        List itemsMedianPriceAndRarity = mock(List.class);
+
+        List<FastSellCommand> commands = new ArrayList<>();
+        List<CompletableFuture<?>> tasks = new ArrayList<>();
+        FastUserUbiStats savedUserStats = new FastUserUbiStats();
+        savedUserStats.setCurrentSellOrders(mock(List.class));
+        savedUserStats.setItemsCurrentPrices(List.of(
+                new ItemCurrentPrices("itemId1", 1, 2),
+                new ItemCurrentPrices("itemId2", 3, 4)
+        ));
+
+        ReflectionTestUtils.setField(userFastSellTradesManager, "fastSellCommands", commands);
+        ReflectionTestUtils.setField(userFastSellTradesManager, "createFastSellCommandsTasks", tasks);
+        ReflectionTestUtils.setField(userFastSellTradesManager, "savedUserStats", savedUserStats);
+
+        FastUserUbiStats fetchedUserStats = new FastUserUbiStats();
+        savedUserStats.setCurrentSellOrders(mock(List.class));
+        savedUserStats.setItemsCurrentPrices(List.of(
+                new ItemCurrentPrices("itemId3", 5, 6),
+                new ItemCurrentPrices("itemId4", 7, 8)
+        ));
+
+        when(commonValuesService.getFastTradeOwnedItemsLimit()).thenReturn(200);
+
+        when(personalGraphQlClientService.fetchOwnedItemsCurrentPricesAndSellOrdersForUser(same(dto), eq(200))).then(new Answer<FastUserUbiStats>() {
+            @Override
+            public FastUserUbiStats answer(InvocationOnMock invocation) throws Throwable {
+                Thread.sleep(100);
+                return fetchedUserStats;
+            }
+        });
+
+        List potentialTrades = mock(List.class);
+
+        when(commonValuesService.getMinMedianPriceDifference()).thenReturn(1);
+        when(commonValuesService.getMinMedianPriceDifferencePercentage()).thenReturn(2);
+
+        when(potentialTradeFactory.createPotentialTradesForUser(same(fetchedUserStats.getItemsCurrentPrices()), same(itemsMedianPriceAndRarity), eq(1), eq(2))).thenReturn(potentialTrades);
+
+        FastSellCommand command1 = mock(FastSellCommand.class);
+        FastSellCommand command2 = mock(FastSellCommand.class);
+
+        List<FastSellCommand> createdCommands = List.of(command1, command2);
+
+        when(tradeManagementCommandsFactory.createFastSellCommandsForUser(same(user), same(fetchedUserStats.getCurrentSellOrders()), same(fetchedUserStats.getItemsCurrentPrices()), same(itemsMedianPriceAndRarity), same(potentialTrades), eq(3), eq(4))).thenReturn(createdCommands);
+
+        userFastSellTradesManager.submitCreateCommandsTaskByFetchedUserStats(user, itemsMedianPriceAndRarity, 3, 4);
+
+        assertTrue(tasks.size() == 1);
+
+        FastSellCommand command3 = mock(FastSellCommand.class);
+        commands.add(command3);
+
+        tasks.get(0).get();
+
+        assertTrue(commands.size() == 1);
+        assertTrue(commands.stream().noneMatch(c -> c == command1));
+        assertTrue(commands.stream().noneMatch(c -> c == command2));
+        assertTrue(commands.stream().anyMatch(c -> c == command3));
     }
 
     @Test
@@ -223,6 +296,77 @@ class UserFastSellTradesManagerTest {
         assertTrue(commands.size() == 2);
         assertTrue(commands.stream().anyMatch(c -> c == command1));
         assertTrue(commands.stream().anyMatch(c -> c == command2));
+    }
+
+    @Test
+    public void submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices_should_additionally_check_if_commands_list_empty_before_adding_new() throws Exception {
+        userFastSellTradesManager = new UserFastSellTradesManager(personalGraphQlClientService, commonGraphQlClientService, commonValuesService, potentialTradeFactory, tradeManagementCommandsFactory, fastTradeManagementCommandExecutor);
+
+        FastSellManagedUser user = mock(FastSellManagedUser.class);
+        List itemsMedianPriceAndRarity = mock(List.class);
+
+        AuthorizationDTO authorizationDTO = mock(AuthorizationDTO.class);
+
+        List<FastSellCommand> commands = new ArrayList<>();
+        List<CompletableFuture<?>> tasks = new ArrayList<>();
+        FastUserUbiStats savedUserStats = new FastUserUbiStats();
+        savedUserStats.setCurrentSellOrders(mock(List.class));
+        savedUserStats.setItemsCurrentPrices(List.of(
+                new ItemCurrentPrices("itemId1", 1, 2),
+                new ItemCurrentPrices("itemId2", 3, 4)
+        ));
+
+        ReflectionTestUtils.setField(userFastSellTradesManager, "fastSellCommands", commands);
+        ReflectionTestUtils.setField(userFastSellTradesManager, "createFastSellCommandsTasks", tasks);
+        ReflectionTestUtils.setField(userFastSellTradesManager, "savedUserStats", savedUserStats);
+
+        when(commonValuesService.getFetchUsersItemsLimit()).thenReturn(200);
+
+        List<ItemCurrentPrices> fetchedCurrentPrices = List.of(
+                new ItemCurrentPrices("itemId1", 5, 6),
+                new ItemCurrentPrices("itemId3", 7, 8)
+        );
+
+        when(commonGraphQlClientService.fetchLimitedItemsStats(same(authorizationDTO), eq(200))).then(new Answer<List<ItemCurrentPrices>>() {
+            @Override
+            public List<ItemCurrentPrices> answer(InvocationOnMock invocation) throws Throwable {
+                Thread.sleep(100);
+                return fetchedCurrentPrices;
+            }
+        });
+
+        List<ItemCurrentPrices> ownedItemsCurrentPrices = List.of(
+                new ItemCurrentPrices("itemId1", 5, 6)
+        );
+
+        List potentialTrades = mock(List.class);
+
+        when(commonValuesService.getMinMedianPriceDifference()).thenReturn(1);
+        when(commonValuesService.getMinMedianPriceDifferencePercentage()).thenReturn(2);
+
+        when(potentialTradeFactory.createPotentialTradesForUser(argThat(arg -> arg.containsAll(ownedItemsCurrentPrices) && arg.size() == ownedItemsCurrentPrices.size()), same(itemsMedianPriceAndRarity), eq(1), eq(2))).thenReturn(potentialTrades);
+
+        FastSellCommand command1 = mock(FastSellCommand.class);
+        FastSellCommand command2 = mock(FastSellCommand.class);
+
+        List<FastSellCommand> createdCommands = List.of(command1, command2);
+
+
+        when(tradeManagementCommandsFactory.createFastSellCommandsForUser(same(user), same(savedUserStats.getCurrentSellOrders()), argThat(arg -> arg.containsAll(ownedItemsCurrentPrices) && arg.size() == ownedItemsCurrentPrices.size()), same(itemsMedianPriceAndRarity), same(potentialTrades), eq(3), eq(4))).thenReturn(createdCommands);
+
+        userFastSellTradesManager.submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices(user, authorizationDTO, itemsMedianPriceAndRarity, 3, 4);
+
+        assertTrue(tasks.size() == 1);
+
+        FastSellCommand command3 = mock(FastSellCommand.class);
+        commands.add(command3);
+
+        tasks.get(0).get();
+
+        assertTrue(commands.size() == 1);
+        assertTrue(commands.stream().noneMatch(c -> c == command1));
+        assertTrue(commands.stream().noneMatch(c -> c == command2));
+        assertTrue(commands.stream().anyMatch(c -> c == command3));
     }
 
     @Test

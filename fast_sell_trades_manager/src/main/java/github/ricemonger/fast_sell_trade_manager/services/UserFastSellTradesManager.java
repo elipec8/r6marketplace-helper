@@ -41,7 +41,15 @@ public class UserFastSellTradesManager {
 
     public void submitCreateCommandsTaskByFetchedUserStats(FastSellManagedUser managedUser, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
         if (fastSellCommands.isEmpty()) {
-            CompletableFuture<?> task = CompletableFuture.supplyAsync(() -> fastSellCommands.addAll(fetchAndUpdateUserStatsAndCreateCommandsByThem(managedUser, itemsMedianPriceAndRarity, sellLimit, sellSlots)));
+            CompletableFuture<?> task = CompletableFuture.supplyAsync(() -> {
+                List<FastSellCommand> newCommands = fetchAndUpdateUserStatsAndCreateCommandsByThem(managedUser, itemsMedianPriceAndRarity, sellLimit, sellSlots);
+
+                if (fastSellCommands.isEmpty()) {
+                    fastSellCommands.addAll(newCommands);
+                }
+
+                return newCommands;
+            });
             createFastSellCommandsTasks.add(task);
         }
     }
@@ -63,7 +71,15 @@ public class UserFastSellTradesManager {
 
     public void submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices(FastSellManagedUser managedUser, AuthorizationDTO authorizationDTO, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
         if (fastSellCommands.isEmpty()) {
-            CompletableFuture<?> task = CompletableFuture.supplyAsync(() -> fastSellCommands.addAll(fetchItemsCurrentStatsAndCreateCommandsByThemAndSavedUserStats(managedUser, authorizationDTO, itemsMedianPriceAndRarity, sellLimit, sellSlots)));
+            CompletableFuture<?> task = CompletableFuture.supplyAsync(() -> {
+                List<FastSellCommand> newCommands = fetchItemsCurrentStatsAndCreateCommandsByThemAndSavedUserStats(managedUser, authorizationDTO, itemsMedianPriceAndRarity, sellLimit, sellSlots);
+
+                if (fastSellCommands.isEmpty()) {
+                    fastSellCommands.addAll(newCommands);
+                }
+
+                return newCommands;
+            });
             createFastSellCommandsTasks.add(task);
         }
     }

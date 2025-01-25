@@ -31,11 +31,11 @@ app:
       # account specific, approx 200 requests in 1min allowed, orders alter commands limit approx 300/day, including failed tries
       initialDelay: ${SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_UPDATE:10500}
     management_fetch:
-      fixedRate: ${SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_FETCH:45} # fetches owned items via fetching users,
-      # should be  300/(Amount of provided fetching accounts - 1)
+      fixedRate: ${SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_FETCH:50} # fetches owned items via fetching users,
+      # should be  300/(Amount of provided fetching accounts)
       initialDelay: ${SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_FETCH:12500}
     management_execute:
-      fixedRate: ${SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_EXECUTE:2} # checks commands list, doesn't do any requests if empty
+      fixedRate: ${SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_EXECUTE:5} # checks commands list, doesn't do any requests if empty
       initialDelay: ${SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_EXECUTE:10500}
     keep_unused_slot:
       fixedRate: ${SCHEDULING_FIXED_DELAY_KEEP_UNUSED_SLOT:600000}
