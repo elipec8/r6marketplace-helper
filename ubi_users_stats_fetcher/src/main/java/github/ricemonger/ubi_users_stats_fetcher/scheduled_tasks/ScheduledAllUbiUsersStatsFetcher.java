@@ -37,6 +37,8 @@ public class ScheduledAllUbiUsersStatsFetcher {
 
     @Scheduled(fixedRateString = "${app.scheduling.fixedRate}", initialDelayString = "${app.scheduling.initialDelay}")
     public void fetchAllAuthorizedUbiUsersStats() {
+        commonValuesService.setLastUbiUsersStatsFetchTime(LocalDateTime.now().withNano(0).plusSeconds(5));
+
         List<UserAuthorizedUbiAccount> userAuthorizedUbiAccounts = ubiAccountService.findAllUsersUbiAccountEntries();
 
         List<UbiAccountStats> updatedUbiAccountsStats = new ArrayList<>();
@@ -48,8 +50,6 @@ public class ScheduledAllUbiUsersStatsFetcher {
                 log.error("Error while fetching user stats for user : {}", userAuthorizedUbiAccount, e);
             }
         }
-
-        commonValuesService.setLastUbiUsersStatsFetchTime(LocalDateTime.now().withNano(0).plusSeconds(10));
 
         ubiAccountService.saveAllUbiAccountStats(updatedUbiAccountsStats);
     }

@@ -56,7 +56,7 @@ public class UserUbiAccountEntryAuthorizationService {
     private AuthorizationDTO tryToReauthorizeByRememberDeviceTicket(UserUbiAccountCredentials credentials) {
         try {
             return authorizationService.reauthorizeAndGet2FaAuthorizedDtoForEncodedPasswordWithRememberDeviceTicket(credentials.getEmail(), credentials.getEncodedPassword(), credentials.getRememberDeviceTicket());
-        } catch (UbiUserAuthorizationClientErrorException | UbiUserAuthorizationServerErrorException e) {
+        } catch (Exception e) {
             log.info("Ubi error during reauthorization via rememberDeviceTicket for user: {} ", credentials, e);
             return new AuthorizationDTO();
         }
