@@ -65,63 +65,63 @@ It's better to not use it in **fetching_accounts_credentials.json**, to prevent 
 
 ## Modules description:
 
->
-**Configs Fetcher** - fetches all available Item Tags and Types, marketplace's limitations of Trade slots, day limits and expire timeout.  
-Uses Main Ubisoft Account's Authorization Token and Headers, received from Redis service.
->
 
-**Fast Sell Trade Manager** - manages sell trades only for 1 selected user from database.  
+* **Configs Fetcher** - fetches all available Item Tags and Types, marketplace's limitations of Trade slots, day limits and expire timeout.  
+Uses Main Ubisoft Account's Authorization Token and Headers, received from Redis service.
+
+
+* **Fast Sell Trade Manager** - manages sell trades only for 1 selected user from database.  
 Selects managed account by User's ID and linked Ubisoft Account's email, provided in configuration.  
 Uses this account's Authorization Token and Headers, received from DB.  
 Also uses Fetching Users from DB to fetch the data more often, avoiding too many requests error.
->
 
-**Fetching Users Reauthorizer** - reauthorizes Fetching Users, which are used in **Fast Sell Trade Manager** and
+
+* **Fetching Users Reauthorizer** - reauthorizes Fetching Users, which are used in **Fast Sell Trade Manager** and
 saves their Authorization Tokens and Headers to DB.
->
 
-**Item Day Sales Ubi Stats Fetcher** - fetches and saves to DB all items last month sales stats, provided by Ubisoft (only min/max/avg prices and 
+
+* **Item Day Sales Ubi Stats Fetcher** - fetches and saves to DB all items last month sales stats, provided by Ubisoft (only min/max/avg prices and 
 sales count for item per each day).  
 Uses Main Ubisoft Account's Authorization Token and Headers, received from Redis service.
 
 
-**Item Stats Fetcher** - fetches and saves to DB all Items' current stats, including their last sales, as more accurate sale stats, comparing to 
+* **Item Stats Fetcher** - fetches and saves to DB all Items' current stats, including their last sales, as more accurate sale stats, comparing to 
 Day Sales Stats, provided by Ubisoft. May notify all users via Notifications Service, if items' amount was increased (which means that Marketplace was updated).  
 Uses Main Ubisoft Account's Authorization Token and Headers, received from Redis service.
->
-> 
-**Item Trade Stats Calculator** - recalculates Items' sale history stats in DB, such as min/max/avg/median prices, approximate price to buy in 
+
+
+* **Item Trade Stats Calculator** - recalculates Items' sale history stats in DB, such as min/max/avg/median prices, approximate price to buy in 
 chosen time or to time to sell by chosen price, trade priorities, bases on Item's sale stats. Saves recalculated stats to DB.
->
 
-**Main User Reauthorizer** - reauthorizes Main User, which is used in **Configs Fetcher**, **Item Day Sales Ubi Stats Fetcher**
+
+* **Main User Reauthorizer** - reauthorizes Main User, which is used in **Configs Fetcher**, **Item Day Sales Ubi Stats Fetcher**
 and **Item Stats Fetcher** to fetch data from Ubisoft Server. Saves its Authorization Token and Headers to Redis service.   
->
 
-**Notifications Service** - sends notifications to User via Telegram Bot, consuming them from Kafka service.  
->
 
-**Telegram Bot Updates Consumer** - the main and only user interface. Provided via Telegram Bot.  
+* **Notifications Service** - sends notifications to User via Telegram Bot, consuming them from Kafka service.  
+
+
+* **Telegram Bot Updates Consumer** - the main and only user interface. Provided via Telegram Bot.  
 Provides methods to:  
 Fetch Items by Item Filters  
 Operate Trade Managers  
 Operate Item Filters  
 Link Managed Ubisoft Account  
 Configure Notifications  
->
 
-**Trades Manager** - manages trades for all Users in DB, who have linked Ubisoft Account, have trade managers and enabled trade management setting.
+
+* **Trades Manager** - manages trades for all Users in DB, who have linked Ubisoft Account, have trade managers and enabled trade management setting.
 Notifies Users via Notifications Service about performed operations.  
->
 
-**Ubi Users Stats Fetcher** - fetches stats for linked Ubisoft Accounts and notify their owners via Notifications Service about changes.
->
 
-**Ubi Users Stats Reauthorizer** - reauthorizes linked Ubisoft Accounts and saves their Authorization Tokens and Headers to DB.  
+* **Ubi Users Stats Fetcher** - fetches stats for linked Ubisoft Accounts and notify their owners via Notifications Service about changes.
+
+
+* **Ubi Users Stats Reauthorizer** - reauthorizes linked Ubisoft Accounts and saves their Authorization Tokens and Headers to DB.  
 Notifies Users via Notifications Service if theirs Ubisoft Account reauthorization failed.
->
 
-**Utils** - contains shared resources:  
+
+* **Utils** - contains shared resources:  
 utils-dependencies - parent pom.xml for all modules.  
 utils-library - shared DTOs, Enums, Exceptions, Services, etc.  
 utils-library-graphQl - everything related to GraphQL.  
