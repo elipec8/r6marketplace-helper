@@ -42,7 +42,7 @@ public class TelegramUserInputPostgresService implements TelegramUserInputDataba
     @Override
     @Transactional(readOnly = true)
     public TelegramUserInput findById(String chatId, InputState inputState) throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
-        return telegramUserInputRepository.findById(new TelegramUserInputEntityId(chatId, inputState))
+        return telegramUserInputRepository.findInputById(chatId, inputState)
                 .map(telegramUserInputEntityMapper::createDTO)
                 .orElseThrow(() -> new TelegramUserInputDoesntExistException("Telegram user input with chatId " + chatId + " and inputState " + inputState + " doesn't exist"));
     }
