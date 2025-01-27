@@ -59,12 +59,11 @@ class TelegramUserInputPostgresServiceTest {
     public void findById_should_return_mapped_dto() throws TelegramUserDoesntExistException, TelegramUserInputDoesntExistException {
         TelegramUserEntity user = new TelegramUserEntity();
         user.setChatId("chatId");
-        TelegramUserInputEntityId id = new TelegramUserInputEntityId(user, InputState.UBI_ACCOUNT_ENTRY_2FA_CODE);
-        TelegramUserInputEntity entity = new TelegramUserInputEntity();
+        TelegramUserInputProjection projection = new TelegramUserInputProjection();
         TelegramUserInput input = new TelegramUserInput("chatId", InputState.UBI_ACCOUNT_ENTRY_2FA_CODE, "value");
 
-        when(telegramUserInputRepository.findById(eq(id))).thenReturn(Optional.of(entity));
-        when(telegramUserInputEntityMapper.createDTO(same(entity))).thenReturn(input);
+        when(telegramUserInputRepository.findInputById("chatId",InputState.UBI_ACCOUNT_ENTRY_2FA_CODE)).thenReturn(Optional.of(projection));
+        when(telegramUserInputEntityMapper.createDTO(same(projection))).thenReturn(input);
 
         TelegramUserInput result = inputService.findById("chatId", InputState.UBI_ACCOUNT_ENTRY_2FA_CODE);
 
