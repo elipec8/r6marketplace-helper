@@ -15,9 +15,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Future;
 
 @Slf4j
@@ -34,8 +35,8 @@ public class UserFastSellTradesManager {
     private final TradeManagementCommandsFactory tradeManagementCommandsFactory;
     private final TradeManagementCommandsExecutor fastTradeManagementCommandExecutor;
 
-    private final List<CompletableFuture<?>> createFastSellCommandsTasks = new CopyOnWriteArrayList<>();
-    private final List<FastSellCommand> fastSellCommands = new CopyOnWriteArrayList<>();
+    private final List<CompletableFuture<?>> createFastSellCommandsTasks = Collections.synchronizedList(new LinkedList<>());
+    private final List<FastSellCommand> fastSellCommands = Collections.synchronizedList(new LinkedList<>());
 
     private FastUserUbiStats savedUserStats;
 
