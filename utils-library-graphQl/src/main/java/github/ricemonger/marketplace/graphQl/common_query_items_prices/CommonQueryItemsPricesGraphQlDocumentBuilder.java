@@ -80,7 +80,7 @@ public class CommonQueryItemsPricesGraphQlDocumentBuilder {
 
     private final GraphQlVariablesService graphQlVariablesService;
 
-    public BuiltGraphQlDocument buildCommonQueryItemsPricesDocument(Integer limit) {
+    public BuiltGraphQlDocument buildCommonQueryItemsPricesDocument(Integer limit, Integer offset) {
         StringBuilder document = new StringBuilder();
         Map<String, Object> resultingVariables = new LinkedHashMap<>();
         Map<String, String> aliasesToFields = new LinkedHashMap<>();
@@ -97,7 +97,7 @@ public class CommonQueryItemsPricesGraphQlDocumentBuilder {
         StringBuilder queriesSection = new StringBuilder();
 
         if (expectedOwnedItemsQueries == 1) {
-            createVariable("offset", 0, resultingVariables, variablesSection);
+            createVariable("offset", offset, resultingVariables, variablesSection);
             createVariable("limit", limit, resultingVariables, variablesSection);
 
             queriesSection.append(createItemQuerySection("offset"));
@@ -105,7 +105,7 @@ public class CommonQueryItemsPricesGraphQlDocumentBuilder {
             createVariable("limit", GraphQlVariablesService.MAX_LIMIT, resultingVariables, variablesSection);
             for (int i = 0; i < expectedOwnedItemsQueries; i++) {
                 String varKey = "offset" + i;
-                createVariable(varKey, i * GraphQlVariablesService.MAX_LIMIT, resultingVariables, variablesSection);
+                createVariable(varKey, offset + i * GraphQlVariablesService.MAX_LIMIT, resultingVariables, variablesSection);
 
                 if (i == expectedOwnedItemsQueries - 1) {
                     int limitRemainder;

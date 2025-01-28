@@ -232,7 +232,7 @@ class UserFastSellTradesManagerTest {
         assertTrue(tasks.size() == 0);
 
         verify(fastTradeManagementCommandExecutor, never()).executeCommand(any());
-        verify(commonGraphQlClientService, never()).fetchLimitedItemsStats(any(), anyInt());
+        verify(commonGraphQlClientService, never()).fetchLimitedItemsStats(any(), anyInt(), anyInt());
         verify(potentialTradeFactory, never()).createPotentialTradesForUser(any(), any(), anyInt(), anyInt());
         verify(tradeManagementCommandsFactory, never()).createFastSellCommandsForUser(any(), any(), any(), any(), any(), anyInt(), anyInt());
     }
@@ -260,13 +260,14 @@ class UserFastSellTradesManagerTest {
         ReflectionTestUtils.setField(userFastSellTradesManager, "savedUserStats", savedUserStats);
 
         when(commonValuesService.getFetchUsersItemsLimit()).thenReturn(200);
+        when(commonValuesService.getFetchUsersItemsOffset()).thenReturn(20);
 
         List<ItemCurrentPrices> fetchedCurrentPrices = List.of(
                 new ItemCurrentPrices("itemId1", 5, 6),
                 new ItemCurrentPrices("itemId3", 7, 8)
         );
 
-        when(commonGraphQlClientService.fetchLimitedItemsStats(same(authorizationDTO), eq(200))).thenReturn(fetchedCurrentPrices);
+        when(commonGraphQlClientService.fetchLimitedItemsStats(same(authorizationDTO), eq(200), eq(20))).thenReturn(fetchedCurrentPrices);
 
         List<ItemCurrentPrices> ownedItemsCurrentPrices = List.of(
                 new ItemCurrentPrices("itemId1", 5, 6)
@@ -321,13 +322,14 @@ class UserFastSellTradesManagerTest {
         ReflectionTestUtils.setField(userFastSellTradesManager, "savedUserStats", savedUserStats);
 
         when(commonValuesService.getFetchUsersItemsLimit()).thenReturn(200);
+        when(commonValuesService.getFetchUsersItemsOffset()).thenReturn(20);
 
         List<ItemCurrentPrices> fetchedCurrentPrices = List.of(
                 new ItemCurrentPrices("itemId1", 5, 6),
                 new ItemCurrentPrices("itemId3", 7, 8)
         );
 
-        when(commonGraphQlClientService.fetchLimitedItemsStats(same(authorizationDTO), eq(200))).then(new Answer<List<ItemCurrentPrices>>() {
+        when(commonGraphQlClientService.fetchLimitedItemsStats(same(authorizationDTO), eq(200), eq(20))).then(new Answer<List<ItemCurrentPrices>>() {
             @Override
             public List<ItemCurrentPrices> answer(InvocationOnMock invocation) throws Throwable {
                 Thread.sleep(100);
@@ -393,13 +395,14 @@ class UserFastSellTradesManagerTest {
         ReflectionTestUtils.setField(userFastSellTradesManager, "savedUserStats", savedUserStats);
 
         when(commonValuesService.getFetchUsersItemsLimit()).thenReturn(200);
+        when(commonValuesService.getFetchUsersItemsOffset()).thenReturn(20);
 
         List<ItemCurrentPrices> fetchedCurrentPrices = List.of(
                 new ItemCurrentPrices("itemId1", 5, 6),
                 new ItemCurrentPrices("itemId3", 7, 8)
         );
 
-        when(commonGraphQlClientService.fetchLimitedItemsStats(same(authorizationDTO), eq(200))).thenReturn(fetchedCurrentPrices);
+        when(commonGraphQlClientService.fetchLimitedItemsStats(same(authorizationDTO), eq(200), eq(20))).thenReturn(fetchedCurrentPrices);
 
         List<ItemCurrentPrices> ownedItemsCurrentPrices = List.of(
                 new ItemCurrentPrices("itemId1", 5, 6)
@@ -425,7 +428,7 @@ class UserFastSellTradesManagerTest {
         assertTrue(tasks.size() == 0);
 
         verify(fastTradeManagementCommandExecutor, never()).executeCommand(any());
-        verify(commonGraphQlClientService, never()).fetchLimitedItemsStats(any(), anyInt());
+        verify(commonGraphQlClientService, never()).fetchLimitedItemsStats(any(), anyInt(), anyInt());
         verify(potentialTradeFactory, never()).createPotentialTradesForUser(any(), any(), anyInt(), anyInt());
         verify(tradeManagementCommandsFactory, never()).createFastSellCommandsForUser(any(), any(), any(), any(), any(), anyInt(), anyInt());
     }

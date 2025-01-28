@@ -18,7 +18,7 @@ class CommonQueryItemsPricesGraphQlDocumentBuilderTest {
     @Test
     public void buildPersonalQueryUserStatsDocument_should_throw_if_0_limit() {
         assertThrows(IllegalArgumentException.class, () -> {
-            builder.buildCommonQueryItemsPricesDocument(0);
+            builder.buildCommonQueryItemsPricesDocument(0, 0);
         });
     }
 
@@ -85,7 +85,7 @@ class CommonQueryItemsPricesGraphQlDocumentBuilderTest {
 
         expected.setVariables(
                 Map.of(
-                        "offset", 0,
+                        "offset", 25,
                         "limit", 250,
                         "paymentItemId", "paymentItemIdVar1",
                         "tradesOffset", "tradesOffsetVar1"
@@ -96,7 +96,7 @@ class CommonQueryItemsPricesGraphQlDocumentBuilderTest {
                 Map.of()
         );
 
-        BuiltGraphQlDocument result = builder.buildCommonQueryItemsPricesDocument(250);
+        BuiltGraphQlDocument result = builder.buildCommonQueryItemsPricesDocument(250, 25);
 
         System.out.println(result);
 
@@ -183,8 +183,8 @@ class CommonQueryItemsPricesGraphQlDocumentBuilderTest {
 
         expected.setVariables(
                 Map.of(
-                        "offset0", 0,
-                        "offset1", 500,
+                        "offset0", 50,
+                        "offset1", 550,
                         "limit", 500,
                         "paymentItemId", "paymentItemIdVar1",
                         "tradesOffset", "tradesOffsetVar1",
@@ -199,7 +199,7 @@ class CommonQueryItemsPricesGraphQlDocumentBuilderTest {
                 )
         );
 
-        BuiltGraphQlDocument result = builder.buildCommonQueryItemsPricesDocument(1000);
+        BuiltGraphQlDocument result = builder.buildCommonQueryItemsPricesDocument(1000, 50);
 
         System.out.println(result);
 
@@ -313,7 +313,7 @@ class CommonQueryItemsPricesGraphQlDocumentBuilderTest {
                 "marketableItems2", "marketableItems"
         ));
 
-        BuiltGraphQlDocument result = builder.buildCommonQueryItemsPricesDocument(1350);
+        BuiltGraphQlDocument result = builder.buildCommonQueryItemsPricesDocument(1350, 0);
 
         System.out.println(result);
 
