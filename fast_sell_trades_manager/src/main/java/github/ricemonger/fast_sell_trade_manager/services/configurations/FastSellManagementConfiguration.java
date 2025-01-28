@@ -21,4 +21,6 @@ public class FastSellManagementConfiguration {
     private Integer ownedItemsLimit;
     @Value("${fast_sell_management.fetch_users_items_limit}")
     private Integer fetchUsersItemsLimit;
+    @Value("${fast_sell_management.fetch_users_items_offset}")
+    private Integer fetchUsersItemsOffset;
 }

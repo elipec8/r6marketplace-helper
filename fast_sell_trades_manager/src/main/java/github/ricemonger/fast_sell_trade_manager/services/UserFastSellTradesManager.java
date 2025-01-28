@@ -87,7 +87,7 @@ public class UserFastSellTradesManager {
 
     private List<FastSellCommand> fetchItemsCurrentStatsAndCreateCommandsByThemAndSavedUserStats(FastSellManagedUser managedUser, AuthorizationDTO authorizationDTO, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
         try {
-            List<ItemCurrentPrices> fetchedItemCurrentPrices = commonQueryItemsPricesGraphQlClientService.fetchLimitedItemsStats(authorizationDTO, commonValuesService.getFetchUsersItemsLimit());
+            List<ItemCurrentPrices> fetchedItemCurrentPrices = commonQueryItemsPricesGraphQlClientService.fetchLimitedItemsStats(authorizationDTO, commonValuesService.getFetchUsersItemsLimit(), commonValuesService.getFetchUsersItemsOffset());
 
             List<ItemCurrentPrices> ownedItemsCurrentPrices = fetchedItemCurrentPrices.stream().filter(fetched -> savedUserStats.getItemsCurrentPrices().stream().anyMatch(saved -> saved.getItemId().equals(fetched.getItemId()))).toList();
 

@@ -470,15 +470,15 @@ class PersonalQueryUserStatsMapperTest {
         Trades currentTrades = new Trades();
         List<Nodes> currentTradesNodes = new ArrayList<>();
         currentTradesNodes.add(new Nodes("tradeId1", "Created", "Buy", "2021-01-01", "2021-01-01",
-                new TradeItems[]{new TradeItems(new github.ricemonger.marketplace.graphQl.personal_query_user_stats.DTO.meta.trades.nodes.tradeItems.Item("1","itemName1"))}, new Payment(1000, 100), new PaymentOptions[]{new PaymentOptions(199)}, null));
+                new TradeItems[]{new TradeItems(new github.ricemonger.marketplace.graphQl.personal_query_user_stats.DTO.meta.trades.nodes.tradeItems.Item("1", "itemName1"))}, new Payment(1000, 100), new PaymentOptions[]{new PaymentOptions(199)}, null));
         currentTradesNodes.add(new Nodes("tradeId2", "Created", "Buy", "2021-01-01", "2021-01-01",
-                new TradeItems[]{new TradeItems(new github.ricemonger.marketplace.graphQl.personal_query_user_stats.DTO.meta.trades.nodes.tradeItems.Item("2","itemName2"))}, new Payment(1000, 100), null, new PaymentProposal(299)));
+                new TradeItems[]{new TradeItems(new github.ricemonger.marketplace.graphQl.personal_query_user_stats.DTO.meta.trades.nodes.tradeItems.Item("2", "itemName2"))}, new Payment(1000, 100), null, new PaymentProposal(299)));
 
         currentTrades.setNodes(currentTradesNodes);
 
         List<Nodes> finishedTradesNodes = new ArrayList<>();
         finishedTradesNodes.add(new Nodes("tradeId3", "Created", "Buy", "2021-01-01", "2021-01-01",
-                new TradeItems[]{new TradeItems(new github.ricemonger.marketplace.graphQl.personal_query_user_stats.DTO.meta.trades.nodes.tradeItems.Item("3","itemName3"))}, new Payment(1000, 100), new PaymentOptions[]{}, new PaymentProposal(499)));
+                new TradeItems[]{new TradeItems(new github.ricemonger.marketplace.graphQl.personal_query_user_stats.DTO.meta.trades.nodes.tradeItems.Item("3", "itemName3"))}, new Payment(1000, 100), new PaymentOptions[]{}, new PaymentProposal(499)));
         Trades finishedTrades = new Trades(finishedTradesNodes);
 
         meta.setTradesLimitations(tradesLimitations);

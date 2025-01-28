@@ -1,5 +1,7 @@
 package github.ricemonger.utilspostgresschema.full_entities.user;
 
+import github.ricemonger.utils.enums.BuyTradingStrategy;
+import github.ricemonger.utils.enums.SellTradingStrategy;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -78,6 +80,13 @@ public class UserEntity {
     private Boolean sellTradesManagingEnabledFlag = true;
     @Column(name = "buy_trades_managing_enabled_flag")
     private Boolean buyTradesManagingEnabledFlag = true;
+
+    @Column(name = "ignore_unmanaged_items_trades_flag")
+    private Boolean ignoreUnmanagedItemsTradesFlag = false;
+    @Column(name = "buy_trading_strategy")
+    private BuyTradingStrategy buyTradingStrategy = BuyTradingStrategy.DEFAULT;
+    @Column(name = "sell_trading_strategy")
+    private SellTradingStrategy sellTradingStrategy = SellTradingStrategy.DEFAULT;
 
     public UserEntity(Long userId) {
         this.id = userId;

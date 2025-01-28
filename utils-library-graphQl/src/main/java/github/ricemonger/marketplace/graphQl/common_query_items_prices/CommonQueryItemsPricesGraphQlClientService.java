@@ -19,10 +19,10 @@ public class CommonQueryItemsPricesGraphQlClientService {
 
     private final CommonQueryItemsPricesGraphQlDocumentBuilder commonQueryItemsPricesGraphQlDocumentBuilder;
 
-    public List<ItemCurrentPrices> fetchLimitedItemsStats(AuthorizationDTO dto, int limit) throws GraphQlCommonItemMappingException {
+    public List<ItemCurrentPrices> fetchLimitedItemsStats(AuthorizationDTO dto, int limit, int offset) throws GraphQlCommonItemMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(dto);
 
-        BuiltGraphQlDocument builtGraphQlDocument = commonQueryItemsPricesGraphQlDocumentBuilder.buildCommonQueryItemsPricesDocument(limit);
+        BuiltGraphQlDocument builtGraphQlDocument = commonQueryItemsPricesGraphQlDocumentBuilder.buildCommonQueryItemsPricesDocument(limit, offset);
 
         ClientGraphQlResponse response = client
                 .document(builtGraphQlDocument.getDocument())

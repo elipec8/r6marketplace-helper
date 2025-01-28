@@ -23,30 +23,30 @@ query GetSellableItems(
 }
 
 fragment MarketableItemFragment on MarketableItem {
-item {
-...SecondaryStoreItemFragment
-__typename
-}
-marketData {
-...MarketDataFragment
-__typename
-}
-__typename
+    item {
+        ...SecondaryStoreItemFragment
+        __typename
+    }
+    marketData {
+        ...MarketDataFragment
+        __typename
+    }
+    __typename
 }
 
 fragment SecondaryStoreItemFragment on SecondaryStoreItem {
-itemId
-__typename
+    itemId
+    __typename
 }
 
 fragment MarketDataFragment on MarketableItemMarketData {
-sellStats {
-lowestPrice
-__typename
-}
-buyStats {
-highestPrice
-__typename
-}
-__typename
+    sellStats {
+        lowestPrice
+        __typename
+    }
+    buyStats {
+        highestPrice
+        __typename
+    }
+    __typename
 }

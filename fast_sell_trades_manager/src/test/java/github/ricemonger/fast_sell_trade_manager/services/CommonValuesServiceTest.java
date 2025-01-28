@@ -245,4 +245,12 @@ class CommonValuesServiceTest {
 
         assertEquals(limit, commonValuesService.getFetchUsersItemsLimit());
     }
+
+    @Test
+    public void getFetchUsersItemsOffset_should_handle_to_service() {
+        Integer offset = 100;
+        when(fastSellManagementConfiguration.getFetchUsersItemsOffset()).thenReturn(offset);
+
+        assertEquals(offset, commonValuesService.getFetchUsersItemsOffset());
+    }
 }
