@@ -1,7 +1,7 @@
 # Rainbow 6 Siege Marketplace Trade Manager
 
-This is app, which collects data about all items on marketplace and utilize it to user’s advantage, able to automatically create/update/cancel trade 
-orders on user’s account.  
+This is app, which collects data about all items on Marketplace and utilize it to User’s advantage, able to automatically create/update/cancel Trade 
+Orders on User’s account.  
 Requires from end user only his Ubisoft Account’s credentials, specification of items to be managed and boundaries for manager, which can be 
  configured for each item separately.  
 &nbsp;  
@@ -45,8 +45,8 @@ It's better to not use it in **fetching_accounts_credentials.json**, to prevent 
 [Create Ubisoft Account](https://account.ubisoft.com/en-US/login)
 
 
->**TELEGRAM_BOT_TOKEN** - your Telegram bot token, receive from @BotFather  
-**TELEGRAM_BOT_USERNAME** - your Telegram bot username, receive from @BotFather  
+>**TELEGRAM_BOT_TOKEN** - your Telegram Bot token, receive from @BotFather  
+**TELEGRAM_BOT_USERNAME** - your Telegram Bot username, receive from @BotFather  
 &nbsp;  
 Used in **Telegram Bot Updates Consumer** and **Notifications Service**.  
 &nbsp;  
