@@ -67,7 +67,7 @@ Used in **Telegram Bot Updates Consumer** and **Users Ubisoft Accounts Reauthori
 **PGADMIN_DEFAULT_PASSWORD** - PgAdmin root user password, use any  
 
 
-## Modules description:
+## Modules Description:
 
 
 * **Configs Fetcher** - fetches all available Item Tags and Types, Marketplace's limitations of Trade slots, per day Trades limits and Trade expire timeout.  
@@ -105,7 +105,7 @@ and **Item Stats Fetcher** to fetch data from Ubisoft Server. Saves its Authoriz
 * **Notifications Service** - sends notifications to User via Telegram Bot, consuming requests from Kafka service.  
 
 
-* **Telegram Bot Updates Consumer** - the main and only user interface. Provided via Telegram Bot.  
+* **Telegram Bot Updates Consumer** - the main and only User Interface. Provided via Telegram Bot.  
 Allows User to:  
 Fetch Items by Item Filters  
 Operate Trade Managers  
