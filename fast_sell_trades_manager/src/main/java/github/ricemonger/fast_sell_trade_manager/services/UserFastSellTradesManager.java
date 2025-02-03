@@ -15,9 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
@@ -36,7 +34,7 @@ public class UserFastSellTradesManager {
     private final TradeManagementCommandsExecutor fastTradeManagementCommandExecutor;
 
     private final List<CompletableFuture<?>> createFastSellCommandsTasks = Collections.synchronizedList(new LinkedList<>());
-    private final List<FastSellCommand> fastSellCommands = Collections.synchronizedList(new LinkedList<>());
+    private final Set<FastSellCommand> fastSellCommands = Collections.synchronizedSortedSet((new TreeSet<>()));
 
     private FastUserUbiStats savedUserStats;
 
@@ -125,7 +123,7 @@ public class UserFastSellTradesManager {
         }
     }
 
-    private void executeCommandsInOrder(List<FastSellCommand> commands) {
+    private void executeCommandsInOrder(Collection<FastSellCommand> commands) {
         for (FastSellCommand command : commands.stream().sorted().toList()) {
             fastTradeManagementCommandExecutor.executeCommand(command);
             log.info("Executed command: {}", command.toLogString());

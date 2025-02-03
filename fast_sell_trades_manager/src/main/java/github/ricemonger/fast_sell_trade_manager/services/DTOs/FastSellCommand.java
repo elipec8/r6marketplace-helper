@@ -45,7 +45,12 @@ public class FastSellCommand implements Comparable<FastSellCommand> {
 
     @Override
     public int compareTo(FastSellCommand o) {
-        return this.commandType.compareTo(o.commandType);
+        int typeCompare = this.commandType.compareTo(o.commandType);
+        if (typeCompare != 0) {
+            return typeCompare;
+        } else {
+            return this.itemId.compareTo(o.itemId);
+        }
     }
 
     public String toLogString() {
