@@ -35,6 +35,8 @@ import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.set
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.settings.buyTradeManagingFlag.TradeManagersSettingsChangeBuyManagingEnabledFlagAskFlagCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.settings.buyTradeManagingFlag.TradeManagersSettingsChangeBuyManagingEnabledFlagNoCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.settings.buyTradeManagingFlag.TradeManagersSettingsChangeBuyManagingEnabledFlagYesCallback;
+import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.settings.buyTradePriorityExpression.TradeManagersSettingsChangeBuyTradePriorityExpressionAskCallback;
+import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.settings.buyTradePriorityExpression.TradeManagersSettingsChangeBuyTradePriorityExpressionConfirmCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagAskFlagCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagNoCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.settings.managingEnabledFlag.TradeManagersSettingsChangeManagingEnabledFlagYesCallback;
@@ -44,6 +46,8 @@ import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.set
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.settings.sellTradeManagingFlag.TradeManagersSettingsChangeSellManagingEnabledFlagAskFlagCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.settings.sellTradeManagingFlag.TradeManagersSettingsChangeSellManagingEnabledFlagNoCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.settings.sellTradeManagingFlag.TradeManagersSettingsChangeSellManagingEnabledFlagYesCallback;
+import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.settings.sellTradePriorityExpression.TradeManagersSettingsChangeSellTradePriorityExpressionAskCallback;
+import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.settings.sellTradePriorityExpression.TradeManagersSettingsChangeSellTradePriorityExpressionConfirmCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.show.TradeByFiltersManagersShowAllCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.show.TradeByItemIdManagersShowAllCallback;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.show.TradeManagersChooseTypeCallback;
@@ -369,6 +373,22 @@ class CallbackCommandListenerTest {
     }
 
     @Test
+    public void handleUpdate_should_trade_managers_settings_change_sell_trade_priority_expression() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_SELL_TRADE_PRIORITY_EXPRESSION));
+
+        verify(executorsService).execute(TradeManagersSettingsChangeSellTradePriorityExpressionAskCallback.class, updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_SELL_TRADE_PRIORITY_EXPRESSION));
+    }
+
+    @Test
+    public void handleUpdate_should_trade_managers_settings_change_sell_trade_priority_expression_confirmed() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_SELL_TRADE_PRIORITY_EXPRESSION_CONFIRMED));
+
+        verify(executorsService).execute(TradeManagersSettingsChangeSellTradePriorityExpressionConfirmCallback.class,
+                updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_SELL_TRADE_PRIORITY_EXPRESSION_CONFIRMED));
+    }
+
+
+    @Test
     public void handleUpdate_should_trade_managers_settings_change_buy_manager_enabled_flag() {
         callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_BUY_MANAGING_ENABLED_FLAG));
 
@@ -387,6 +407,22 @@ class CallbackCommandListenerTest {
         callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_BUY_MANAGING_ENABLED_FLAG_NO));
 
         verify(executorsService).execute(TradeManagersSettingsChangeBuyManagingEnabledFlagNoCallback.class, updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_BUY_MANAGING_ENABLED_FLAG_NO));
+    }
+
+    @Test
+    public void handleUpdate_should_trade_managers_settings_change_buy_trade_priority_expression() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_BUY_TRADE_PRIORITY_EXPRESSION));
+
+        verify(executorsService).execute(TradeManagersSettingsChangeBuyTradePriorityExpressionAskCallback.class,
+                updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_BUY_TRADE_PRIORITY_EXPRESSION));
+    }
+
+    @Test
+    public void handleUpdate_should_trade_managers_settings_change_buy_trade_priority_expression_confirmed() {
+        callbackCommandListener.handleUpdate(updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_BUY_TRADE_PRIORITY_EXPRESSION_CONFIRMED));
+
+        verify(executorsService).execute(TradeManagersSettingsChangeBuyTradePriorityExpressionConfirmCallback.class,
+                updateInfo(Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_BUY_TRADE_PRIORITY_EXPRESSION_CONFIRMED));
     }
 
     @Test

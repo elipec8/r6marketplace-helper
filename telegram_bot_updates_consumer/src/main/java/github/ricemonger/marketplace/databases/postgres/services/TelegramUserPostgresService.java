@@ -138,6 +138,18 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
     }
 
     @Override
+    @Transactional
+    public void setUserTradeManagersSellSettingsTradePriorityExpression(String chatId, String expression) {
+        userRepository.updateTradeManagersSellSettingsTradePriorityExpressionByTelegramUserChatId(chatId, expression);
+    }
+
+    @Override
+    @Transactional
+    public void setUserTradeManagersBuySettingsTradePriorityExpression(String chatId, String expression) {
+        userRepository.updateTradeManagersBuySettingsTradePriorityExpressionByTelegramUserChatId(chatId, expression);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public TradeManagersSettings findUserTradeManagersSettings(String chatId) throws TelegramUserDoesntExistException {
         return userEntityMapper.createTradeManagersSettings(userRepository.findTradeManagersSettingsByTelegramUserChatId(chatId).orElseThrow(() -> new TelegramUserDoesntExistException("Telegram user with chatId " + chatId + " not found")));

@@ -22,6 +22,8 @@ import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.edi
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage2AskBoundaryPriceInput;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage3AskPriorityInput;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage4AskConfirmationFinishInput;
+import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.settings.buyTradePriorityExpression.TradeManagersSettingsChangeBuyTradePriorityExpressionAskConfirmInput;
+import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.settings.sellTradePriorityExpression.TradeManagersSettingsChangeSellTradePriorityExpressionAskConfirmInput;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.show.remove_or_change_enabled.itemFilters.TradeByFiltersManagerRemoveStage2AskConfirmationFinishInput;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.show.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput;
 import github.ricemonger.telegramBot.update_consumer.executors.ubi_account_entry.link.UbiAccountEntryAuthorizeStage2AskPasswordInput;
@@ -73,6 +75,12 @@ public class InputCommandListener {
                 case TRADE_BY_FILTERS_MANAGER_SHOW_OR_REMOVE -> tradeByFiltersManagerRemoveInputGroup(updateInfo);
 
                 case TRADE_BY_ITEM_ID_MANAGER_SHOW_OR_REMOVE -> tradeByItemIdManagerRemoveInputGroup(updateInfo);
+
+                case TRADE_MANAGERS_SETTINGS_CHANGE_SELL_TRADE_PRIORITY_EXPRESSION ->
+                        tradeManagersSettingsChangeSellTradePriorityExpressionInputGroup(updateInfo);
+
+                case TRADE_MANAGERS_SETTINGS_CHANGE_BUY_TRADE_PRIORITY_EXPRESSION ->
+                        tradeManagersSettingsChangeBuyTradePriorityExpressionInputGroup(updateInfo);
 
                 case UBI_ACCOUNT_ENTRY_LINK -> ubiAccountEntryLinkInputGroup(updateInfo);
 
@@ -307,6 +315,28 @@ public class InputCommandListener {
             case TRADE_BY_ITEM_ID_MANAGER_ITEM_ID ->
                     executorsService.execute(TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput.class, updateInfo);
 
+            default ->
+                    throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+        }
+    }
+
+    private void tradeManagersSettingsChangeSellTradePriorityExpressionInputGroup(UpdateInfo updateInfo) {
+        InputState inputState = updateInfo.getInputState();
+
+        switch (inputState) {
+            case TRADE_MANAGERS_SETTINGS_TRADE_PRIORITY_EXPRESSION ->
+                    executorsService.execute(TradeManagersSettingsChangeSellTradePriorityExpressionAskConfirmInput.class, updateInfo);
+            default ->
+                    throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
+        }
+    }
+
+    private void tradeManagersSettingsChangeBuyTradePriorityExpressionInputGroup(UpdateInfo updateInfo) {
+        InputState inputState = updateInfo.getInputState();
+
+        switch (inputState) {
+            case TRADE_MANAGERS_SETTINGS_TRADE_PRIORITY_EXPRESSION ->
+                    executorsService.execute(TradeManagersSettingsChangeBuyTradePriorityExpressionAskConfirmInput.class, updateInfo);
             default ->
                     throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
         }

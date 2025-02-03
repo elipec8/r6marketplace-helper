@@ -20,9 +20,12 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
@@ -46,7 +49,7 @@ class UserFastSellTradesManagerTest {
     private TradeManagementCommandsExecutor fastTradeManagementCommandExecutor;
 
     @Test
-    public void submitCreateCommandsTaskByFetchedUserStats_should_add_commands_to_commands_list_if_it_is_empty() throws Exception {
+    public void submitCreateCommandsTaskByFetchedUserStats_should_add_commands_to_commands_list_and_set_saved_users_to_null_if_list_is_empty() throws Exception {
         userFastSellTradesManager = new UserFastSellTradesManager(personalGraphQlClientService, commonGraphQlClientService, commonValuesService, potentialTradeFactory, tradeManagementCommandsFactory, fastTradeManagementCommandExecutor);
 
         FastSellManagedUser user = mock(FastSellManagedUser.class);
@@ -57,7 +60,7 @@ class UserFastSellTradesManagerTest {
 
         List itemsMedianPriceAndRarity = mock(List.class);
 
-        List<FastSellCommand> commands = new ArrayList<>();
+        Set<FastSellCommand> commands = new TreeSet<>();
         List<CompletableFuture<?>> tasks = new ArrayList<>();
         FastUserUbiStats savedUserStats = new FastUserUbiStats();
         savedUserStats.setCurrentSellOrders(mock(List.class));
@@ -104,6 +107,7 @@ class UserFastSellTradesManagerTest {
         assertTrue(commands.size() == 2);
         assertTrue(commands.stream().anyMatch(c -> c == command1));
         assertTrue(commands.stream().anyMatch(c -> c == command2));
+        assertNull(ReflectionTestUtils.getField(userFastSellTradesManager, "savedUserStats"));
     }
 
     @Test
@@ -118,7 +122,7 @@ class UserFastSellTradesManagerTest {
 
         List itemsMedianPriceAndRarity = mock(List.class);
 
-        List<FastSellCommand> commands = new ArrayList<>();
+        Set<FastSellCommand> commands = new TreeSet<>();
         List<CompletableFuture<?>> tasks = new ArrayList<>();
         FastUserUbiStats savedUserStats = new FastUserUbiStats();
         savedUserStats.setCurrentSellOrders(mock(List.class));
@@ -189,7 +193,7 @@ class UserFastSellTradesManagerTest {
 
         List itemsMedianPriceAndRarity = mock(List.class);
 
-        List<FastSellCommand> commands = new ArrayList<>();
+        Set<FastSellCommand> commands = new TreeSet<>();
         commands.add(mock(FastSellCommand.class));
         List<CompletableFuture<?>> tasks = new ArrayList<>();
         FastUserUbiStats savedUserStats = new FastUserUbiStats();
@@ -238,7 +242,7 @@ class UserFastSellTradesManagerTest {
     }
 
     @Test
-    public void submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices_should_add_commands_to_commands_list_if_it_is_empty() throws Exception {
+    public void submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices_should_add_commands_to_commands_list_and_set_saved_users_to_null_if_list_is_empty() throws Exception {
         userFastSellTradesManager = new UserFastSellTradesManager(personalGraphQlClientService, commonGraphQlClientService, commonValuesService, potentialTradeFactory, tradeManagementCommandsFactory, fastTradeManagementCommandExecutor);
 
         FastSellManagedUser user = mock(FastSellManagedUser.class);
@@ -246,7 +250,7 @@ class UserFastSellTradesManagerTest {
 
         AuthorizationDTO authorizationDTO = mock(AuthorizationDTO.class);
 
-        List<FastSellCommand> commands = new ArrayList<>();
+        Set<FastSellCommand> commands = new TreeSet<>();
         List<CompletableFuture<?>> tasks = new ArrayList<>();
         FastUserUbiStats savedUserStats = new FastUserUbiStats();
         savedUserStats.setCurrentSellOrders(mock(List.class));
@@ -297,6 +301,67 @@ class UserFastSellTradesManagerTest {
         assertTrue(commands.size() == 2);
         assertTrue(commands.stream().anyMatch(c -> c == command1));
         assertTrue(commands.stream().anyMatch(c -> c == command2));
+        assertNull(ReflectionTestUtils.getField(userFastSellTradesManager, "savedUserStats"));
+    }
+
+    @Test
+    public void submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices_should_add_empty_list_if_savedUserStats_is_null() throws Exception {
+        userFastSellTradesManager = new UserFastSellTradesManager(personalGraphQlClientService, commonGraphQlClientService, commonValuesService, potentialTradeFactory, tradeManagementCommandsFactory, fastTradeManagementCommandExecutor);
+
+        FastSellManagedUser user = mock(FastSellManagedUser.class);
+        List itemsMedianPriceAndRarity = mock(List.class);
+
+        AuthorizationDTO authorizationDTO = mock(AuthorizationDTO.class);
+
+        Set<FastSellCommand> commands = new TreeSet<>();
+        List<CompletableFuture<?>> tasks = new ArrayList<>();
+        FastUserUbiStats savedUserStats = new FastUserUbiStats();
+        savedUserStats.setCurrentSellOrders(mock(List.class));
+        savedUserStats.setItemsCurrentPrices(List.of(
+                new ItemCurrentPrices("itemId1", 1, 2),
+                new ItemCurrentPrices("itemId2", 3, 4)
+        ));
+
+        ReflectionTestUtils.setField(userFastSellTradesManager, "fastSellCommands", commands);
+        ReflectionTestUtils.setField(userFastSellTradesManager, "createFastSellCommandsTasks", tasks);
+        ReflectionTestUtils.setField(userFastSellTradesManager, "savedUserStats", null);
+
+        when(commonValuesService.getFetchUsersItemsLimit()).thenReturn(200);
+        when(commonValuesService.getFetchUsersItemsOffset()).thenReturn(20);
+
+        List<ItemCurrentPrices> fetchedCurrentPrices = List.of(
+                new ItemCurrentPrices("itemId1", 5, 6),
+                new ItemCurrentPrices("itemId3", 7, 8)
+        );
+
+        when(commonGraphQlClientService.fetchLimitedItemsStats(same(authorizationDTO), eq(200), eq(20))).thenReturn(fetchedCurrentPrices);
+
+        List<ItemCurrentPrices> ownedItemsCurrentPrices = List.of(
+                new ItemCurrentPrices("itemId1", 5, 6)
+        );
+
+        List potentialTrades = mock(List.class);
+
+        when(commonValuesService.getMinMedianPriceDifference()).thenReturn(1);
+        when(commonValuesService.getMinMedianPriceDifferencePercentage()).thenReturn(2);
+
+        when(potentialTradeFactory.createPotentialTradesForUser(argThat(arg -> arg.containsAll(ownedItemsCurrentPrices) && arg.size() == ownedItemsCurrentPrices.size()), same(itemsMedianPriceAndRarity), eq(1), eq(2))).thenReturn(potentialTrades);
+
+        FastSellCommand command1 = mock(FastSellCommand.class);
+        FastSellCommand command2 = mock(FastSellCommand.class);
+
+        List<FastSellCommand> createdCommands = List.of(command1, command2);
+
+
+        when(tradeManagementCommandsFactory.createFastSellCommandsForUser(same(user), same(savedUserStats.getCurrentSellOrders()), argThat(arg -> arg.containsAll(ownedItemsCurrentPrices) && arg.size() == ownedItemsCurrentPrices.size()), same(itemsMedianPriceAndRarity), same(potentialTrades), eq(3), eq(4))).thenReturn(createdCommands);
+
+        userFastSellTradesManager.submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices(user, authorizationDTO, itemsMedianPriceAndRarity, 3, 4);
+
+        assertTrue(tasks.size() == 1);
+
+        tasks.get(0).get();
+
+        assertTrue(commands.size() == 0);
     }
 
     @Test
@@ -308,7 +373,7 @@ class UserFastSellTradesManagerTest {
 
         AuthorizationDTO authorizationDTO = mock(AuthorizationDTO.class);
 
-        List<FastSellCommand> commands = new ArrayList<>();
+        Set<FastSellCommand> commands = new TreeSet<>();
         List<CompletableFuture<?>> tasks = new ArrayList<>();
         FastUserUbiStats savedUserStats = new FastUserUbiStats();
         savedUserStats.setCurrentSellOrders(mock(List.class));
@@ -380,7 +445,7 @@ class UserFastSellTradesManagerTest {
 
         AuthorizationDTO authorizationDTO = mock(AuthorizationDTO.class);
 
-        List<FastSellCommand> commands = new ArrayList<>();
+        Set<FastSellCommand> commands = new TreeSet<>();
         commands.add(mock(FastSellCommand.class));
         List<CompletableFuture<?>> tasks = new ArrayList<>();
         FastUserUbiStats savedUserStats = new FastUserUbiStats();
@@ -439,7 +504,7 @@ class UserFastSellTradesManagerTest {
 
         FastSellCommand command1 = mock(FastSellCommand.class);
         FastSellCommand command2 = mock(FastSellCommand.class);
-        List commands = new ArrayList<>();
+        Set commands = new TreeSet();
         commands.add(command1);
         commands.add(command2);
 
@@ -467,7 +532,7 @@ class UserFastSellTradesManagerTest {
     public void executeFastSellCommands_should_do_nothing_is_commands_is_empty() {
         userFastSellTradesManager = new UserFastSellTradesManager(personalGraphQlClientService, commonGraphQlClientService, commonValuesService, potentialTradeFactory, tradeManagementCommandsFactory, fastTradeManagementCommandExecutor);
 
-        List commands = new ArrayList<>();
+        Set commands = new TreeSet();
 
         Future future1 = mock(Future.class);
         Future future2 = mock(Future.class);

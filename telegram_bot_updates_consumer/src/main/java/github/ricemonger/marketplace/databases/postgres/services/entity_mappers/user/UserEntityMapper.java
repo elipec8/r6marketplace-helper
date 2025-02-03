@@ -36,10 +36,13 @@ public class UserEntityMapper {
     }
 
     public TradeManagersSettings createTradeManagersSettings(TradeManagersSettingsProjection tradeManagersSettingsProjection) {
-        return new TradeManagersSettings(tradeManagersSettingsProjection.getNewManagersAreActiveFlag(),
+        return new TradeManagersSettings(
+                tradeManagersSettingsProjection.getNewManagersAreActiveFlag(),
                 tradeManagersSettingsProjection.getManagingEnabledFlag(),
                 tradeManagersSettingsProjection.getSellTradesManagingEnabledFlag(),
-                tradeManagersSettingsProjection.getBuyTradesManagingEnabledFlag());
+                tradeManagersSettingsProjection.getSellTradePriorityExpression(),
+                tradeManagersSettingsProjection.getBuyTradesManagingEnabledFlag(),
+                tradeManagersSettingsProjection.getBuyTradePriorityExpression());
     }
 
     public NotificationsSettings createNotificationsSettings(NotificationsSettingsProjection notificationsSettingsProjection) {

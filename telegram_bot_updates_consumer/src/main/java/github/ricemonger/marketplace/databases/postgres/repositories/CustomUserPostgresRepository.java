@@ -68,6 +68,20 @@ public interface CustomUserPostgresRepository extends JpaRepository<UserEntity, 
            "WHERE u.telegramUser.chatId = :chatId")
     void updateTradeManagersBuySettingsManagingEnabledFlagByTelegramUserChatId(String chatId, boolean flag);
 
+    @Transactional
+    @Modifying
+    @Query("UPDATE UserEntity u SET " +
+           "u.sellTradePriorityExpression = :#{#expression} " +
+           "WHERE u.telegramUser.chatId = :chatId")
+    void updateTradeManagersSellSettingsTradePriorityExpressionByTelegramUserChatId(String chatId, String expression);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE UserEntity u SET " +
+           "u.buyTradePriorityExpression = :#{#expression} " +
+           "WHERE u.telegramUser.chatId = :chatId")
+    void updateTradeManagersBuySettingsTradePriorityExpressionByTelegramUserChatId(String chatId, String expression);
+
     @Transactional(readOnly = true)
     boolean existsByTelegramUserChatId(String chatId);
 
@@ -101,8 +115,13 @@ public interface CustomUserPostgresRepository extends JpaRepository<UserEntity, 
     Optional<ItemShowSettingsProjection> findItemShowSettingsByTelegramUserChatId(String chatId);
 
     @Transactional(readOnly = true)
-    @Query("SELECT new github.ricemonger.marketplace.databases.postgres.dto_projections.TradeManagersSettingsProjection(u.newManagersAreActiveFlag, u" +
-           ".managingEnabledFlag, u.sellTradesManagingEnabledFlag, u.buyTradesManagingEnabledFlag) " +
+    @Query("SELECT new github.ricemonger.marketplace.databases.postgres.dto_projections.TradeManagersSettingsProjection(" +
+           "u.newManagersAreActiveFlag, " +
+           "u.managingEnabledFlag, " +
+           "u.sellTradesManagingEnabledFlag, " +
+           "u.sellTradePriorityExpression, " +
+           "u.buyTradesManagingEnabledFlag," +
+           "u.buyTradePriorityExpression) " +
            "FROM UserEntity u WHERE u.telegramUser.chatId = :chatId")
     Optional<TradeManagersSettingsProjection> findTradeManagersSettingsByTelegramUserChatId(String chatId);
 

@@ -77,14 +77,18 @@ class UserEntityMapperTest {
         tradeManagersSettingsProjection.setNewManagersAreActiveFlag(true);
         tradeManagersSettingsProjection.setManagingEnabledFlag(false);
         tradeManagersSettingsProjection.setSellTradesManagingEnabledFlag(true);
+        tradeManagersSettingsProjection.setSellTradePriorityExpression("sellTradePriorityExpression");
         tradeManagersSettingsProjection.setBuyTradesManagingEnabledFlag(false);
+        tradeManagersSettingsProjection.setBuyTradePriorityExpression("buyTradePriorityExpression");
 
         TradeManagersSettings tradeManagersSettings = userEntityMapper.createTradeManagersSettings(tradeManagersSettingsProjection);
 
         assertEquals(tradeManagersSettingsProjection.getNewManagersAreActiveFlag(), tradeManagersSettings.getNewManagersAreActiveFlag());
         assertEquals(tradeManagersSettingsProjection.getManagingEnabledFlag(), tradeManagersSettings.getManagingEnabledFlag());
         assertEquals(tradeManagersSettingsProjection.getSellTradesManagingEnabledFlag(), tradeManagersSettings.getSellTradesManagingEnabledFlag());
+        assertEquals(tradeManagersSettingsProjection.getSellTradePriorityExpression(), tradeManagersSettings.getSellTradePriorityExpression());
         assertEquals(tradeManagersSettingsProjection.getBuyTradesManagingEnabledFlag(), tradeManagersSettings.getBuyTradesManagingEnabledFlag());
+        assertEquals(tradeManagersSettingsProjection.getBuyTradePriorityExpression(), tradeManagersSettings.getBuyTradePriorityExpression());
     }
 
     @Test

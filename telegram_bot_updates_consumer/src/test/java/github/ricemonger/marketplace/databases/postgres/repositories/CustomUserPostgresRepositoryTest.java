@@ -148,12 +148,42 @@ class CustomUserPostgresRepositoryTest {
     }
 
     @Test
+    public void updateTradeManagersSellSettingsTradePriorityExpressionByTelegramUserChatId_should_update_field() {
+        UserEntity userEntity1 = customUserPostgresRepository.save(new UserEntity());
+        TelegramUserEntity telegramUserEntity1 = new TelegramUserEntity();
+        telegramUserEntity1.setChatId("chatId1");
+        telegramUserEntity1.setUser(userEntity1);
+        telegramUserEntity1 = customTelegramUserPostgresRepository.save(telegramUserEntity1);
+
+        customUserPostgresRepository.updateTradeManagersSellSettingsTradePriorityExpressionByTelegramUserChatId(telegramUserEntity1.getChatId(), "tradePriorityExpression");
+
+        UserEntity userEntity2 = customUserPostgresRepository.findById(userEntity1.getId()).get();
+        assertEquals("tradePriorityExpression", userEntity2.getSellTradePriorityExpression());
+    }
+
+    @Test
+    public void updateTradeManagersBuySettingsTradePriorityExpressionByTelegramUserChatId_should_update_field() {
+        UserEntity userEntity1 = customUserPostgresRepository.save(new UserEntity());
+        TelegramUserEntity telegramUserEntity1 = new TelegramUserEntity();
+        telegramUserEntity1.setChatId("chatId1");
+        telegramUserEntity1.setUser(userEntity1);
+        telegramUserEntity1 = customTelegramUserPostgresRepository.save(telegramUserEntity1);
+
+        customUserPostgresRepository.updateTradeManagersBuySettingsTradePriorityExpressionByTelegramUserChatId(telegramUserEntity1.getChatId(), "tradePriorityExpression");
+
+        UserEntity userEntity2 = customUserPostgresRepository.findById(userEntity1.getId()).get();
+        assertEquals("tradePriorityExpression", userEntity2.getBuyTradePriorityExpression());
+    }
+
+    @Test
     public void findTradeManagersSettingsByTelegramUserChatId_should_return_expected_value() {
         UserEntity userEntity1 = new UserEntity();
         userEntity1.setNewManagersAreActiveFlag(true);
         userEntity1.setManagingEnabledFlag(false);
         userEntity1.setSellTradesManagingEnabledFlag(false);
+        userEntity1.setSellTradePriorityExpression("sellTradePriorityExpression");
         userEntity1.setBuyTradesManagingEnabledFlag(true);
+        userEntity1.setBuyTradePriorityExpression("buyTradePriorityExpression");
         userEntity1 = customUserPostgresRepository.save(userEntity1);
         TelegramUserEntity telegramUserEntity1 = new TelegramUserEntity();
         telegramUserEntity1.setChatId("chatId1");
@@ -161,7 +191,13 @@ class CustomUserPostgresRepositoryTest {
         telegramUserEntity1 = customTelegramUserPostgresRepository.save(telegramUserEntity1);
 
         assertEquals(customUserPostgresRepository.findTradeManagersSettingsByTelegramUserChatId(telegramUserEntity1.getChatId()).get(),
-                new TradeManagersSettingsProjection(true, false, false, true));
+                new TradeManagersSettingsProjection(
+                        true,
+                        false,
+                        false,
+                        "sellTradePriorityExpression",
+                        true,
+                        "buyTradePriorityExpression"));
     }
 
     @Test
