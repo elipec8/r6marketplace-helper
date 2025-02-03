@@ -9,7 +9,6 @@ import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistExceptio
 import github.ricemonger.utils.exceptions.server.TelegramUserInputDoesntExistException;
 import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserInputEntity;
-import github.ricemonger.utilspostgresschema.ids.user.TelegramUserInputEntityId;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -62,7 +61,7 @@ class TelegramUserInputPostgresServiceTest {
         TelegramUserInputProjection projection = new TelegramUserInputProjection();
         TelegramUserInput input = new TelegramUserInput("chatId", InputState.UBI_ACCOUNT_ENTRY_2FA_CODE, "value");
 
-        when(telegramUserInputRepository.findInputById("chatId",InputState.UBI_ACCOUNT_ENTRY_2FA_CODE)).thenReturn(Optional.of(projection));
+        when(telegramUserInputRepository.findInputById("chatId", InputState.UBI_ACCOUNT_ENTRY_2FA_CODE)).thenReturn(Optional.of(projection));
         when(telegramUserInputEntityMapper.createDTO(same(projection))).thenReturn(input);
 
         TelegramUserInput result = inputService.findById("chatId", InputState.UBI_ACCOUNT_ENTRY_2FA_CODE);

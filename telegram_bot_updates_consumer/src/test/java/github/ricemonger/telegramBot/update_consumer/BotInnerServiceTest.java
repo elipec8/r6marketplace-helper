@@ -16,6 +16,7 @@ import github.ricemonger.utils.enums.InputState;
 import github.ricemonger.utils.enums.TagGroup;
 import github.ricemonger.utils.enums.TradeOperationType;
 import github.ricemonger.utils.exceptions.server.InvalidTelegramUserInputException;
+import github.ricemonger.utils.services.calculators.TradePriorityExpressionDeserializer;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -51,6 +52,8 @@ public class BotInnerServiceTest {
     private ItemService itemService;
     @MockBean
     private TagService tagService;
+    @MockBean
+    private TradePriorityExpressionDeserializer tradePriorityExpressionDeserializer;
 
     @Test
     public void sendText_should_handle_to_service() {
@@ -241,7 +244,7 @@ public class BotInnerServiceTest {
     @Test
     public void getUserItemShowSettings_should_return_service_result() {
         ItemShowSettings settings = Mockito.mock(ItemShowSettings.class);
-        when(telegramUserService.getItemShowSettings(1L)).thenReturn(settings);
+        when(telegramUserService.getUserItemShowSettings(1L)).thenReturn(settings);
         assertSame(settings, botInnerService.getUserItemShowSettings(1L));
     }
 
@@ -249,26 +252,26 @@ public class BotInnerServiceTest {
     public void setUserItemShowSettingsFewItemsInMessageFlag_should_handle_to_service() {
         long chatId = 1L;
         botInnerService.setUserItemShowSettingsFewItemsInMessageFlag(chatId, true);
-        verify(telegramUserService).setItemShowFewItemsInMessageFlag(chatId, true);
+        verify(telegramUserService).setUserItemShowFewItemsInMessageFlag(chatId, true);
 
         reset(telegramUserService);
 
         botInnerService.setUserItemShowSettingsFewItemsInMessageFlag(chatId, false);
-        verify(telegramUserService).setItemShowFewItemsInMessageFlag(chatId, false);
+        verify(telegramUserService).setUserItemShowFewItemsInMessageFlag(chatId, false);
     }
 
     @Test
     public void setUserItemShowSettingsMessageLimitOrEdgeValueByUserInput_should_handle_to_service() {
         long chatId = 1L;
         botInnerService.setUserItemShowSettingsMessageLimitOrEdgeValueByUserInput(chatId);
-        verify(telegramUserService).setItemShowMessagesLimitByUserInput(chatId);
+        verify(telegramUserService).setUserItemShowMessagesLimitByUserInput(chatId);
     }
 
     @Test
     public void setUserItemShownFieldsSettingByUserInput_should_handle_to_service() {
         botInnerService.setUserItemShownFieldsSettingByUserInput(1L);
 
-        verify(telegramUserService).setItemShownFieldsSettingsByUserInput(1L, Callbacks.INPUT_CALLBACK_TRUE, Callbacks.INPUT_CALLBACK_FALSE);
+        verify(telegramUserService).setUserItemShownFieldsSettingsByUserInput(1L, Callbacks.INPUT_CALLBACK_TRUE, Callbacks.INPUT_CALLBACK_FALSE);
     }
 
     @Test
@@ -292,8 +295,9 @@ public class BotInnerServiceTest {
     @Test
     public void saveUserTradeByItemIdManagerByUserInput_should_handle_to_service() {
         TradeByItemIdManager manager = Mockito.mock(TradeByItemIdManager.class);
-        TradeManagersSettings settings = new TradeManagersSettings(true, true, true, true);
-        when(telegramUserService.getTradeManagersSettings(1L)).thenReturn(settings);
+        TradeManagersSettings settings = new TradeManagersSettings(true, true, true, "expression1", true, "expression2");
+
+        when(telegramUserService.getUserTradeManagersSettings(1L)).thenReturn(settings);
         doReturn(manager).when(botInnerService).generateTradeByItemIdManagerByUserInput(1L, TradeOperationType.SELL);
 
         botInnerService.saveUserTradeByItemIdManagerByUserInput(1L, TradeOperationType.SELL);
@@ -304,8 +308,8 @@ public class BotInnerServiceTest {
     @Test
     public void saveUserTradeByFiltersManagerByUserInput_should_handle_to_service() {
         TradeByFiltersManager manager = Mockito.mock(TradeByFiltersManager.class);
-        TradeManagersSettings settings = new TradeManagersSettings(true, true, true, true);
-        when(telegramUserService.getTradeManagersSettings(1L)).thenReturn(settings);
+        TradeManagersSettings settings = new TradeManagersSettings(true, true, true, "expression1", true, "expression2");
+        when(telegramUserService.getUserTradeManagersSettings(1L)).thenReturn(settings);
         doReturn(manager).when(botInnerService).generateTradeByFiltersManagerByUserInput(1L);
 
         botInnerService.saveUserTradeByFiltersManagerByUserInput(1L);
@@ -318,7 +322,7 @@ public class BotInnerServiceTest {
         List inputs = Mockito.mock(List.class);
         when(telegramUserService.getAllUserInputs(1L)).thenReturn(inputs);
 
-        TradeManagersSettings settings = new TradeManagersSettings(true, true, true, false);
+        TradeManagersSettings settings = new TradeManagersSettings(true, true, true, "expression1", false, "expression2");
         doReturn(settings).when(botInnerService).getUserTradeManagersSettings(1L);
 
         TradeByItemIdManager tradeManager = Mockito.mock(TradeByItemIdManager.class);
@@ -332,7 +336,7 @@ public class BotInnerServiceTest {
         List inputs = Mockito.mock(List.class);
         when(telegramUserService.getAllUserInputs(1L)).thenReturn(inputs);
 
-        TradeManagersSettings settings = new TradeManagersSettings(true, true, true, false);
+        TradeManagersSettings settings = new TradeManagersSettings(true, true, true, "expression1", false, "expression2");
         doReturn(settings).when(botInnerService).getUserTradeManagersSettings(1L);
 
         TradeByFiltersManager tradeManager = Mockito.mock(TradeByFiltersManager.class);
@@ -435,98 +439,116 @@ public class BotInnerServiceTest {
         TradeManagersSettings settings = new TradeManagersSettings();
         settings.setNewManagersAreActiveFlag(true);
         settings.setManagingEnabledFlag(false);
-        when(telegramUserService.getTradeManagersSettings(1L)).thenReturn(settings);
+        when(telegramUserService.getUserTradeManagersSettings(1L)).thenReturn(settings);
         assertEquals(settings, botInnerService.getUserTradeManagersSettings(1L));
     }
 
     @Test
     public void setUserTradeManagersSettingsNewManagersAreActiveFlag_should_handle_to_service_true_flag() {
         botInnerService.setUserTradeManagersSettingsNewManagersAreActiveFlag(1L, true);
-        verify(telegramUserService).setTradeManagersSettingsNewManagersAreActiveFlag(1L, true);
+        verify(telegramUserService).setUserTradeManagersSettingsNewManagersAreActiveFlag(1L, true);
     }
 
     @Test
     public void setUserTradeManagersSettingsNewManagersAreActiveFlag_should_handle_to_service_false_flag() {
         botInnerService.setUserTradeManagersSettingsNewManagersAreActiveFlag(1L, false);
-        verify(telegramUserService).setTradeManagersSettingsNewManagersAreActiveFlag(1L, false);
+        verify(telegramUserService).setUserTradeManagersSettingsNewManagersAreActiveFlag(1L, false);
     }
 
     @Test
     public void setUserTradeManagersSettingsManagingEnabledFlag_should_handle_to_service_true_flag() {
         botInnerService.setUserTradeManagersSettingsManagingEnabledFlag(1L, true);
-        verify(telegramUserService).setTradeManagersSettingsManagingEnabledFlag(1L, true);
+        verify(telegramUserService).setUserTradeManagersSettingsManagingEnabledFlag(1L, true);
     }
 
     @Test
     public void setUserTradeManagersSettingsManagingEnabledFlag_should_handle_to_service_false_flag() {
         botInnerService.setUserTradeManagersSettingsManagingEnabledFlag(1L, false);
-        verify(telegramUserService).setTradeManagersSettingsManagingEnabledFlag(1L, false);
+        verify(telegramUserService).setUserTradeManagersSettingsManagingEnabledFlag(1L, false);
     }
 
     @Test
     public void setUserTradeManagersSellSettingsManagingEnabledFlag_should_handle_to_service_true_flag() {
         botInnerService.setUserTradeManagersSellSettingsManagingEnabledFlag(1L, true);
-        verify(telegramUserService).setTradeManagersSellSettingsManagingEnabledFlag(1L, true);
+        verify(telegramUserService).setUserTradeManagersSellSettingsManagingEnabledFlag(1L, true);
     }
 
     @Test
     public void setUserTradeManagersSellSettingsManagingEnabledFlag_should_handle_to_service_false_flag() {
         botInnerService.setUserTradeManagersSellSettingsManagingEnabledFlag(1L, false);
-        verify(telegramUserService).setTradeManagersSellSettingsManagingEnabledFlag(1L, false);
+        verify(telegramUserService).setUserTradeManagersSellSettingsManagingEnabledFlag(1L, false);
     }
 
     @Test
     public void setUserTradeManagersBuySettingsManagingEnabledFlag_should_handle_to_service_true_flag() {
         botInnerService.setUserTradeManagersBuySettingsManagingEnabledFlag(1L, true);
-        verify(telegramUserService).setTradeManagersBuySettingsManagingEnabledFlag(1L, true);
+        verify(telegramUserService).setUserTradeManagersBuySettingsManagingEnabledFlag(1L, true);
     }
 
     @Test
     public void setUserTradeManagersBuySettingsManagingEnabledFlag_should_handle_to_service_false_flag() {
         botInnerService.setUserTradeManagersBuySettingsManagingEnabledFlag(1L, false);
-        verify(telegramUserService).setTradeManagersBuySettingsManagingEnabledFlag(1L, false);
+        verify(telegramUserService).setUserTradeManagersBuySettingsManagingEnabledFlag(1L, false);
+    }
+
+    @Test
+    public void setUserTradeManagersSellSettingsTradePriorityExpressionByUserInput_should_handle_to_service() {
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_MANAGERS_SETTINGS_TRADE_PRIORITY_EXPRESSION)).thenReturn("expression");
+
+        botInnerService.setUserTradeManagersSellSettingsTradePriorityExpressionByUserInput(1L);
+
+        verify(telegramUserService).setUserTradeManagersSellSettingsTradePriorityExpression(1L, "expression");
+    }
+
+    @Test
+    public void setUserTradeManagersBuySettingsTradePriorityExpressionByUserInput_should_handle_to_service() {
+        when(telegramUserService.getUserInputByState(1L, InputState.TRADE_MANAGERS_SETTINGS_TRADE_PRIORITY_EXPRESSION)).thenReturn("expression");
+
+        botInnerService.setUserTradeManagersBuySettingsTradePriorityExpressionByUserInput(1L);
+
+        verify(telegramUserService).setUserTradeManagersBuySettingsTradePriorityExpression(1L, "expression");
     }
 
     @Test
     public void invertUserPrivateNotificationsFlag_should_handle_to_service() {
         long chatId = 1L;
         botInnerService.invertUserPrivateNotificationsFlag(chatId);
-        verify(telegramUserService).invertPrivateNotificationsFlag(chatId);
+        verify(telegramUserService).invertUserPrivateNotificationsFlag(chatId);
     }
 
     @Test
     public void invertUserPublicNotificationsFlag_should_handle_to_service() {
         long chatId = 1L;
         botInnerService.invertUserPublicNotificationsFlag(chatId);
-        verify(telegramUserService).invertPublicNotificationsFlag(chatId);
+        verify(telegramUserService).invertUserPublicNotificationsFlag(chatId);
     }
 
     @Test
     public void invertUserUbiStatsUpdatedNotificationsFlag_should_handle_to_service() {
         long chatId = 1L;
         botInnerService.invertUserUbiStatsUpdatedNotificationsFlag(chatId);
-        verify(telegramUserService).invertUbiStatsUpdatedNotificationsFlag(chatId);
+        verify(telegramUserService).invertUserUbiStatsUpdatedNotificationsFlag(chatId);
     }
 
     @Test
     public void invertUserTradeManagerNotificationsFlag_should_handle_to_service() {
         long chatId = 1L;
         botInnerService.invertUserTradeManagerNotificationsFlag(chatId);
-        verify(telegramUserService).invertTradeManagerNotificationsFlag(chatId);
+        verify(telegramUserService).invertUserTradeManagerNotificationsFlag(chatId);
     }
 
     @Test
     public void invertUserAuthorizationNotificationsFlag_should_handle_to_service() {
         long chatId = 1L;
         botInnerService.invertUserAuthorizationNotificationsFlag(chatId);
-        verify(telegramUserService).invertAuthorizationNotificationsFlag(chatId);
+        verify(telegramUserService).invertUserAuthorizationNotificationsFlag(chatId);
     }
 
     @Test
     public void getUserNotificationsSettings_should_return_service_result() {
         NotificationsSettings settings = mock(NotificationsSettings.class);
 
-        when(telegramUserService.getNotificationsSettings(1L)).thenReturn(settings);
+        when(telegramUserService.getUserNotificationsSettings(1L)).thenReturn(settings);
 
         assertSame(settings, botInnerService.getUserNotificationsSettings(1L));
     }
@@ -558,5 +580,16 @@ public class BotInnerServiceTest {
         when(telegramUserService.getUbiUserByChatId(1L)).thenReturn(entry);
 
         assertEquals(email, botInnerService.getUserUbiAccountEntryEmail(1L));
+    }
+
+    @Test
+    public void isTradePriorityExpressionValid_should_return_service_result() {
+        when(tradePriorityExpressionDeserializer.isValidExpression("1")).thenReturn(true);
+
+        assertTrue(botInnerService.isTradePriorityExpressionValid("1"));
+
+        when(tradePriorityExpressionDeserializer.isValidExpression("2")).thenReturn(false);
+
+        assertFalse(botInnerService.isTradePriorityExpressionValid("2"));
     }
 }

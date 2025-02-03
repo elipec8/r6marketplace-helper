@@ -8,7 +8,6 @@ import github.ricemonger.marketplace.services.abstractions.TelegramUserInputData
 import github.ricemonger.utils.enums.InputState;
 import github.ricemonger.utils.exceptions.client.TelegramUserDoesntExistException;
 import github.ricemonger.utils.exceptions.server.TelegramUserInputDoesntExistException;
-import github.ricemonger.utilspostgresschema.ids.user.TelegramUserInputEntityId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

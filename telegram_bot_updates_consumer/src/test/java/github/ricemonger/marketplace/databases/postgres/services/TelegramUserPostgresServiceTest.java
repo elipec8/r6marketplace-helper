@@ -254,6 +254,20 @@ class TelegramUserPostgresServiceTest {
     }
 
     @Test
+    public void setUserTradeManagersSellSettingsTradePriorityExpression_should_update_expression() {
+        telegramUserService.setUserTradeManagersSellSettingsTradePriorityExpression("chatId", "expression");
+
+        Mockito.verify(userRepository).updateTradeManagersSellSettingsTradePriorityExpressionByTelegramUserChatId("chatId", "expression");
+    }
+
+    @Test
+    public void setUserTradeManagersBuySettingsTradePriorityExpression_should_update_expression() {
+        telegramUserService.setUserTradeManagersBuySettingsTradePriorityExpression("chatId", "expression");
+
+        Mockito.verify(userRepository).updateTradeManagersBuySettingsTradePriorityExpressionByTelegramUserChatId("chatId", "expression");
+    }
+
+    @Test
     public void setUserTradeManagersBuySettingsManagingEnabledFlag_should_update_flag_false() {
         telegramUserService.setUserTradeManagersBuySettingsManagingEnabledFlag("chatId", false);
 

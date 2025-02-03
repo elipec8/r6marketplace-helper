@@ -22,6 +22,8 @@ import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.edi
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage2AskBoundaryPriceInput;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage3AskPriorityInput;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.edit.oneItem.sell.TradeByItemIdManagerSellEditStage4AskConfirmationFinishInput;
+import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.settings.buyTradePriorityExpression.TradeManagersSettingsChangeBuyTradePriorityExpressionAskConfirmInput;
+import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.settings.sellTradePriorityExpression.TradeManagersSettingsChangeSellTradePriorityExpressionAskConfirmInput;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.show.remove_or_change_enabled.itemFilters.TradeByFiltersManagerRemoveStage2AskConfirmationFinishInput;
 import github.ricemonger.telegramBot.update_consumer.executors.tradeManagers.show.remove_or_change_enabled.itemId.TradeByItemIdManagerRemoveStage2AskConfirmationFinishInput;
 import github.ricemonger.telegramBot.update_consumer.executors.ubi_account_entry.link.UbiAccountEntryAuthorizeStage2AskPasswordInput;
@@ -511,6 +513,40 @@ class InputCommandListenerTest {
     public void handleUpdate_should_trade_by_item_id_manager_remove_throw() {
         assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
             UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_BY_ITEM_ID_MANAGER_SHOW_OR_REMOVE, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE);
+            inputCommandListener.handleUpdate(updateInfo);
+        });
+    }
+
+    @Test
+    public void handleUpdate_should_sell_trade_priority_expression() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_MANAGERS_SETTINGS_CHANGE_SELL_TRADE_PRIORITY_EXPRESSION, InputState.TRADE_MANAGERS_SETTINGS_TRADE_PRIORITY_EXPRESSION);
+
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeManagersSettingsChangeSellTradePriorityExpressionAskConfirmInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_sell_trade_priority_expression_throw() {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
+            UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_MANAGERS_SETTINGS_CHANGE_SELL_TRADE_PRIORITY_EXPRESSION, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE);
+            inputCommandListener.handleUpdate(updateInfo);
+        });
+    }
+
+    @Test
+    public void handleUpdate_should_buy_trade_priority_expression() {
+        UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_MANAGERS_SETTINGS_CHANGE_BUY_TRADE_PRIORITY_EXPRESSION, InputState.TRADE_MANAGERS_SETTINGS_TRADE_PRIORITY_EXPRESSION);
+
+        inputCommandListener.handleUpdate(updateInfo);
+
+        verify(executorsService).execute(TradeManagersSettingsChangeBuyTradePriorityExpressionAskConfirmInput.class, updateInfo);
+    }
+
+    @Test
+    public void handleUpdate_should_buy_trade_priority_expression_throw() {
+        assertThrows(UnexpectedUserInputStateAndGroupConjunctionException.class, () -> {
+            UpdateInfo updateInfo = updateInfo(InputGroup.TRADE_MANAGERS_SETTINGS_CHANGE_BUY_TRADE_PRIORITY_EXPRESSION, InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_PICTURE);
             inputCommandListener.handleUpdate(updateInfo);
         });
     }

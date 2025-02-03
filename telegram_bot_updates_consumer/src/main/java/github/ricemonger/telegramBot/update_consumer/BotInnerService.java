@@ -16,6 +16,7 @@ import github.ricemonger.utils.enums.TagGroup;
 import github.ricemonger.utils.enums.TradeOperationType;
 import github.ricemonger.utils.exceptions.server.InvalidTelegramUserInputException;
 import github.ricemonger.utils.exceptions.server.MissingCallbackPrefixInUserInputException;
+import github.ricemonger.utils.services.calculators.TradePriorityExpressionDeserializer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,8 @@ public class BotInnerService {
 
     private final TagService tagService;
 
+    private final TradePriorityExpressionDeserializer tradePriorityExpressionDeserializer;
+
     public void sendText(UpdateInfo updateInfo, String text) {
         telegramBotClientService.sendText(updateInfo, text);
     }
@@ -59,7 +62,7 @@ public class BotInnerService {
     }
 
     public void sendItemsByUserItemShowSettingsAndUserInputOffset(UpdateInfo updateInfo) {
-        ItemShowSettings settings = telegramUserService.getItemShowSettings(updateInfo.getChatId());
+        ItemShowSettings settings = telegramUserService.getUserItemShowSettings(updateInfo.getChatId());
 
         int offset = getItemOffsetOrZeroByUserCurrentInput(updateInfo);
 
@@ -185,19 +188,19 @@ public class BotInnerService {
     }
 
     public ItemShowSettings getUserItemShowSettings(Long chatId) {
-        return telegramUserService.getItemShowSettings(chatId);
+        return telegramUserService.getUserItemShowSettings(chatId);
     }
 
     public void setUserItemShowSettingsFewItemsInMessageFlag(Long chatId, boolean flag) {
-        telegramUserService.setItemShowFewItemsInMessageFlag(chatId, flag);
+        telegramUserService.setUserItemShowFewItemsInMessageFlag(chatId, flag);
     }
 
     public Integer setUserItemShowSettingsMessageLimitOrEdgeValueByUserInput(Long chatId) {
-        return telegramUserService.setItemShowMessagesLimitByUserInput(chatId);
+        return telegramUserService.setUserItemShowMessagesLimitByUserInput(chatId);
     }
 
     public void setUserItemShownFieldsSettingByUserInput(Long chatId) {
-        telegramUserService.setItemShownFieldsSettingsByUserInput(chatId, Callbacks.INPUT_CALLBACK_TRUE, Callbacks.INPUT_CALLBACK_FALSE);
+        telegramUserService.setUserItemShownFieldsSettingsByUserInput(chatId, Callbacks.INPUT_CALLBACK_TRUE, Callbacks.INPUT_CALLBACK_FALSE);
     }
 
     public void addItemShowAppliedFilterByUserInput(Long chatId) {
@@ -269,47 +272,59 @@ public class BotInnerService {
     }
 
     public TradeManagersSettings getUserTradeManagersSettings(Long chatId) {
-        return telegramUserService.getTradeManagersSettings(chatId);
+        return telegramUserService.getUserTradeManagersSettings(chatId);
     }
 
     public void setUserTradeManagersSettingsNewManagersAreActiveFlag(Long chatId, boolean flag) {
-        telegramUserService.setTradeManagersSettingsNewManagersAreActiveFlag(chatId, flag);
+        telegramUserService.setUserTradeManagersSettingsNewManagersAreActiveFlag(chatId, flag);
     }
 
     public void setUserTradeManagersSettingsManagingEnabledFlag(Long chatId, boolean flag) {
-        telegramUserService.setTradeManagersSettingsManagingEnabledFlag(chatId, flag);
+        telegramUserService.setUserTradeManagersSettingsManagingEnabledFlag(chatId, flag);
     }
 
     public void setUserTradeManagersSellSettingsManagingEnabledFlag(Long chatId, boolean flag) {
-        telegramUserService.setTradeManagersSellSettingsManagingEnabledFlag(chatId, flag);
+        telegramUserService.setUserTradeManagersSellSettingsManagingEnabledFlag(chatId, flag);
     }
 
     public void setUserTradeManagersBuySettingsManagingEnabledFlag(Long chatId, boolean flag) {
-        telegramUserService.setTradeManagersBuySettingsManagingEnabledFlag(chatId, flag);
+        telegramUserService.setUserTradeManagersBuySettingsManagingEnabledFlag(chatId, flag);
+    }
+
+    public void setUserTradeManagersSellSettingsTradePriorityExpressionByUserInput(Long chatId) {
+        String expression = getUserInputByState(chatId, InputState.TRADE_MANAGERS_SETTINGS_TRADE_PRIORITY_EXPRESSION);
+
+        telegramUserService.setUserTradeManagersSellSettingsTradePriorityExpression(chatId, expression);
+    }
+
+    public void setUserTradeManagersBuySettingsTradePriorityExpressionByUserInput(Long chatId) {
+        String expression = getUserInputByState(chatId, InputState.TRADE_MANAGERS_SETTINGS_TRADE_PRIORITY_EXPRESSION);
+
+        telegramUserService.setUserTradeManagersBuySettingsTradePriorityExpression(chatId, expression);
     }
 
     public void invertUserPrivateNotificationsFlag(Long chatId) {
-        telegramUserService.invertPrivateNotificationsFlag(chatId);
+        telegramUserService.invertUserPrivateNotificationsFlag(chatId);
     }
 
     public void invertUserPublicNotificationsFlag(Long chatId) {
-        telegramUserService.invertPublicNotificationsFlag(chatId);
+        telegramUserService.invertUserPublicNotificationsFlag(chatId);
     }
 
     public void invertUserAuthorizationNotificationsFlag(Long chatId) {
-        telegramUserService.invertAuthorizationNotificationsFlag(chatId);
+        telegramUserService.invertUserAuthorizationNotificationsFlag(chatId);
     }
 
     public void invertUserTradeManagerNotificationsFlag(Long chatId) {
-        telegramUserService.invertTradeManagerNotificationsFlag(chatId);
+        telegramUserService.invertUserTradeManagerNotificationsFlag(chatId);
     }
 
     public void invertUserUbiStatsUpdatedNotificationsFlag(Long chatId) {
-        telegramUserService.invertUbiStatsUpdatedNotificationsFlag(chatId);
+        telegramUserService.invertUserUbiStatsUpdatedNotificationsFlag(chatId);
     }
 
     public NotificationsSettings getUserNotificationsSettings(Long chatId) {
-        return telegramUserService.getNotificationsSettings(chatId);
+        return telegramUserService.getUserNotificationsSettings(chatId);
     }
 
     public void addUserUbiAccountEntryByUserInput(Long chatId) {
@@ -326,6 +341,10 @@ public class BotInnerService {
 
     public String getUserUbiAccountEntryEmail(Long chatId) {
         return telegramUserService.getUbiUserByChatId(chatId).getEmail();
+    }
+
+    public boolean isTradePriorityExpressionValid(String expression) {
+        return tradePriorityExpressionDeserializer.isValidExpression(expression);
     }
 
     private String getUserInputValueWithoutCallbackPrefix(Long chatId, InputState inputState) {
