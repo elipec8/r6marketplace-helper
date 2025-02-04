@@ -101,6 +101,43 @@ class ItemTradeStatsCalculatorTest {
     }
 
     @Test
+    public void calculatePotentialBuyTradePriceForTime_should_return_expected_result() {
+        Map<Integer, Integer> priceAndQuantity1 = new HashMap<>();
+        priceAndQuantity1.put(500, 250);
+        priceAndQuantity1.put(1000, 250);
+        priceAndQuantity1.put(1500, 250);
+        ItemDaySalesStatsByItemId itemDaySalesStatsByItemId1 = new ItemDaySalesStatsByItemId();
+        itemDaySalesStatsByItemId1.setPriceAndQuantity(priceAndQuantity1);
+
+        Map<Integer, Integer> priceAndQuantity2 = new HashMap<>();
+        priceAndQuantity2.put(500, 250); //500
+        priceAndQuantity2.put(1000, 250); //500
+        priceAndQuantity2.put(1500, 250); //500
+        ItemDaySalesStatsByItemId itemDaySalesStatsByItemId2 = new ItemDaySalesStatsByItemId();
+        itemDaySalesStatsByItemId2.setPriceAndQuantity(priceAndQuantity2);
+
+        Item item = new Item();
+        item.setBuyOrdersCount(5);
+        item.setMaxBuyPrice(5);
+
+        doReturn(280).when(itemTradeTimeCalculator).getSameOrHigherPricesBuyOrdersAmount(item, 1000);
+        Integer expected = 100;
+        assertEquals(expected, itemTradeStatsCalculator.calculatePotentialBuyTradePriceForTime(item, List.of(itemDaySalesStatsByItemId1, itemDaySalesStatsByItemId2), MINUTES_IN_AN_HOUR));
+
+        doReturn(281).when(itemTradeTimeCalculator).getSameOrHigherPricesBuyOrdersAmount(item, 1000);
+        expected = 1500;
+        assertEquals(expected, itemTradeStatsCalculator.calculatePotentialBuyTradePriceForTime(item, List.of(itemDaySalesStatsByItemId1, itemDaySalesStatsByItemId2), MINUTES_IN_AN_HOUR));
+
+        doReturn(470).when(itemTradeTimeCalculator).getSameOrHigherPricesBuyOrdersAmount(item, 500);
+        expected = 500;
+        assertEquals(expected, itemTradeStatsCalculator.calculatePotentialBuyTradePriceForTime(item, List.of(itemDaySalesStatsByItemId1, itemDaySalesStatsByItemId2), MINUTES_IN_A_DAY));
+
+        doReturn(471).when(itemTradeTimeCalculator).getSameOrHigherPricesBuyOrdersAmount(item, 500);
+        expected = 1000;
+        assertEquals(expected, itemTradeStatsCalculator.calculatePotentialBuyTradePriceForTime(item, List.of(itemDaySalesStatsByItemId1, itemDaySalesStatsByItemId2), MINUTES_IN_A_DAY));
+    }
+
+    @Test
     public void calculatePotentialSellTradeStatsForExistingTrade_should_return_expected_result() {
         UbiTrade existingTrade = new UbiTrade();
         existingTrade.setProposedPaymentPrice(1000);

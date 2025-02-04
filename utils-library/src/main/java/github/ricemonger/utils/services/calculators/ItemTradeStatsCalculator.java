@@ -34,6 +34,12 @@ public class ItemTradeStatsCalculator {
     }
 
     public PotentialTradeStats calculatePotentialBuyTradeStatsForTime(Item item, Collection<ItemDaySalesStatsByItemId> resultingPerDayStats, Integer minutesToBuy) {
+        int price = calculatePotentialBuyTradePriceForTime(item, resultingPerDayStats, minutesToBuy);
+
+        return calculatePotentialBuyTradeStats(item, price, minutesToBuy);
+    }
+
+    public Integer calculatePotentialBuyTradePriceForTime(Item item, Collection<ItemDaySalesStatsByItemId> resultingPerDayStats, Integer minutesToBuy) {
         TreeMap<Integer, Integer> sortedMonthPricesAndQuantities = new TreeMap<>(Comparator.naturalOrder());
         for (ItemDaySalesStatsByItemId dayStat : resultingPerDayStats) {
             for (Map.Entry<Integer, Integer> priceAndQuantity : dayStat.getPriceAndQuantity().entrySet()) {
@@ -56,11 +62,11 @@ public class ItemTradeStatsCalculator {
             totalAmount += quantity;
 
             if (basicRequiredSalesAmount + itemTradeTimeCalculator.getSameOrHigherPricesBuyOrdersAmount(item, price) <= totalAmount) {
-                return calculatePotentialBuyTradeStats(item, itemFancyPriceCalculator.getCurrentFancyBuyPrice(item, price), minutesToBuy);
+                itemFancyPriceCalculator.getCurrentFancyBuyPrice(item, price);
             }
         }
 
-        return calculatePotentialBuyTradeStats(item, null, minutesToBuy);
+        return null;
     }
 
     public PotentialTradeStats calculatePotentialSellTradeStatsForExistingTrade(UbiTradeI existingTrade) {
