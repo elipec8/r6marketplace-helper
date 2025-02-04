@@ -80,25 +80,6 @@ public class ItemEntity {
     @Column(name = "day_sales")
     private Integer daySales;
 
-    @Column(name = "priority_to_sell_by_max_buy_price")
-    private Long priorityToSellByMaxBuyPrice;
-    @Column(name = "priority_to_sell_by_next_fancy_sell_price")
-    private Long priorityToSellByNextFancySellPrice;
-
-    @Column(name = "priority_to_buy_by_min_sell_price")
-    private Long priorityToBuyByMinSellPrice;
-
-    @Column(name = "priority_to_buy_in_1_hour")
-    private Long priorityToBuyIn1Hour;
-    @Column(name = "priority_to_buy_in_6_hours")
-    private Long priorityToBuyIn6Hours;
-    @Column(name = "priority_to_buy_in_24_hours")
-    private Long priorityToBuyIn24Hours;
-    @Column(name = "priority_to_buy_in_168_hours")
-    private Long priorityToBuyIn168Hours;
-    @Column(name = "priority_to_buy_in_720_hours")
-    private Long priorityToBuyIn720Hours;
-
     @Column(name = "price_to_buy_in_1_hour")
     private Integer priceToBuyIn1Hour;
     @Column(name = "price_to_buy_in_6_hours")
@@ -160,14 +141,6 @@ public class ItemEntity {
                Objects.equals(dayMaxPrice, itemEntity.dayMaxPrice) &&
                Objects.equals(dayMinPrice, itemEntity.dayMinPrice) &&
                Objects.equals(daySales, itemEntity.daySales) &&
-               Objects.equals(priorityToSellByMaxBuyPrice, itemEntity.priorityToSellByMaxBuyPrice) &&
-               Objects.equals(priorityToSellByNextFancySellPrice, itemEntity.priorityToSellByNextFancySellPrice) &&
-               Objects.equals(priorityToBuyByMinSellPrice, itemEntity.priorityToBuyByMinSellPrice) &&
-               Objects.equals(priorityToBuyIn1Hour, itemEntity.priorityToBuyIn1Hour) &&
-               Objects.equals(priorityToBuyIn6Hours, itemEntity.priorityToBuyIn6Hours) &&
-               Objects.equals(priorityToBuyIn24Hours, itemEntity.priorityToBuyIn24Hours) &&
-               Objects.equals(priorityToBuyIn168Hours, itemEntity.priorityToBuyIn168Hours) &&
-               Objects.equals(priorityToBuyIn720Hours, itemEntity.priorityToBuyIn720Hours) &&
                Objects.equals(priceToBuyIn1Hour, itemEntity.priceToBuyIn1Hour) &&
                Objects.equals(priceToBuyIn6Hours, itemEntity.priceToBuyIn6Hours) &&
                Objects.equals(priceToBuyIn24Hours, itemEntity.priceToBuyIn24Hours) &&

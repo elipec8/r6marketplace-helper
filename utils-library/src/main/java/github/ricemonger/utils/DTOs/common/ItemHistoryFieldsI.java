@@ -47,38 +47,6 @@ public interface ItemHistoryFieldsI extends ItemIdFieldI {
 
     void setDaySales(Integer daySales);
 
-    Long getPriorityToSellByMaxBuyPrice();
-
-    void setPriorityToSellByMaxBuyPrice(Long priorityToSellByMaxBuyPrice);
-
-    Long getPriorityToSellByNextFancySellPrice();
-
-    void setPriorityToSellByNextFancySellPrice(Long priorityToSellByNextFancySellPrice);
-
-    Long getPriorityToBuyByMinSellPrice();
-
-    void setPriorityToBuyByMinSellPrice(Long priorityToBuyByMinSellPrice);
-
-    Long getPriorityToBuyIn1Hour();
-
-    void setPriorityToBuyIn1Hour(Long priorityToBuyIn1Hour);
-
-    Long getPriorityToBuyIn6Hours();
-
-    void setPriorityToBuyIn6Hours(Long priorityToBuyIn6Hours);
-
-    Long getPriorityToBuyIn24Hours();
-
-    void setPriorityToBuyIn24Hours(Long priorityToBuyIn24Hours);
-
-    Long getPriorityToBuyIn168Hours();
-
-    void setPriorityToBuyIn168Hours(Long priorityToBuyIn168Hours);
-
-    Long getPriorityToBuyIn720Hours();
-
-    void setPriorityToBuyIn720Hours(Long priorityToBuyIn720Hours);
-
     Integer getPriceToBuyIn1Hour();
 
     void setPriceToBuyIn1Hour(Integer priceToBuyIn1Hour);
@@ -99,14 +67,6 @@ public interface ItemHistoryFieldsI extends ItemIdFieldI {
 
     void setPriceToBuyIn720Hours(Integer priceToBuyIn720Hours);
 
-    default void updateCurrentPricesPriorities(Long priorityToSellByMaxBuyPrice,
-                                               Long priorityToSellByNextFancySellPrice,
-                                               Long priorityToBuyByMinSellPrice) {
-        setPriorityToSellByMaxBuyPrice(priorityToSellByMaxBuyPrice);
-        setPriorityToSellByNextFancySellPrice(priorityToSellByNextFancySellPrice);
-        setPriorityToBuyByMinSellPrice(priorityToBuyByMinSellPrice);
-    }
-
     default boolean itemHistoryFieldsAreEqual(Object o) {
         if (o == this) {
             return true;
@@ -124,14 +84,6 @@ public interface ItemHistoryFieldsI extends ItemIdFieldI {
                    Objects.equals(item.getDayMaxPrice(), this.getDayMaxPrice()) &&
                    Objects.equals(item.getDayMinPrice(), this.getDayMinPrice()) &&
                    Objects.equals(item.getDaySales(), this.getDaySales()) &&
-                   Objects.equals(item.getPriorityToSellByMaxBuyPrice(), this.getPriorityToSellByMaxBuyPrice()) &&
-                   Objects.equals(item.getPriorityToSellByNextFancySellPrice(), this.getPriorityToSellByNextFancySellPrice()) &&
-                   Objects.equals(item.getPriorityToBuyByMinSellPrice(), this.getPriorityToBuyByMinSellPrice()) &&
-                   Objects.equals(item.getPriorityToBuyIn1Hour(), this.getPriorityToBuyIn1Hour()) &&
-                   Objects.equals(item.getPriorityToBuyIn6Hours(), this.getPriorityToBuyIn6Hours()) &&
-                   Objects.equals(item.getPriorityToBuyIn24Hours(), this.getPriorityToBuyIn24Hours()) &&
-                   Objects.equals(item.getPriorityToBuyIn168Hours(), this.getPriorityToBuyIn168Hours()) &&
-                   Objects.equals(item.getPriorityToBuyIn720Hours(), this.getPriorityToBuyIn720Hours()) &&
                    Objects.equals(item.getPriceToBuyIn1Hour(), this.getPriceToBuyIn1Hour()) &&
                    Objects.equals(item.getPriceToBuyIn6Hours(), this.getPriceToBuyIn6Hours()) &&
                    Objects.equals(item.getPriceToBuyIn24Hours(), this.getPriceToBuyIn24Hours()) &&
@@ -154,17 +106,6 @@ public interface ItemHistoryFieldsI extends ItemIdFieldI {
         this.setDayMaxPrice(historyFieldsI.getDayMaxPrice());
         this.setDayMinPrice(historyFieldsI.getDayMinPrice());
         this.setDaySales(historyFieldsI.getDaySales());
-
-        this.setPriorityToSellByMaxBuyPrice(historyFieldsI.getPriorityToSellByMaxBuyPrice());
-        this.setPriorityToSellByNextFancySellPrice(historyFieldsI.getPriorityToSellByNextFancySellPrice());
-
-        this.setPriorityToBuyByMinSellPrice(historyFieldsI.getPriorityToBuyByMinSellPrice());
-
-        this.setPriorityToBuyIn1Hour(historyFieldsI.getPriorityToBuyIn1Hour());
-        this.setPriorityToBuyIn6Hours(historyFieldsI.getPriorityToBuyIn6Hours());
-        this.setPriorityToBuyIn24Hours(historyFieldsI.getPriorityToBuyIn24Hours());
-        this.setPriorityToBuyIn168Hours(historyFieldsI.getPriorityToBuyIn168Hours());
-        this.setPriorityToBuyIn720Hours(historyFieldsI.getPriorityToBuyIn720Hours());
 
         this.setPriceToBuyIn1Hour(historyFieldsI.getPriceToBuyIn1Hour());
         this.setPriceToBuyIn6Hours(historyFieldsI.getPriceToBuyIn6Hours());

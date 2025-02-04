@@ -48,11 +48,6 @@ public class TradeEntity {
     @Column(name = "proposed_payment_fee")
     private Integer proposedPaymentFee;
 
-    @Column(name = "minutes_to_trade")
-    private Integer minutesToTrade;
-    @Column(name = "trade_priority")
-    private Long tradePriority;
-
     @Override
     public int hashCode() {
         return Objects.hash(tradeId);
@@ -85,8 +80,6 @@ public class TradeEntity {
                ", successPaymentFee=" + successPaymentFee +
                ", proposedPaymentPrice=" + proposedPaymentPrice +
                ", proposedPaymentFee=" + proposedPaymentFee +
-               ", minutesToTrade=" + minutesToTrade +
-               ", tradePriority=" + tradePriority +
                '}';
     }
 
@@ -100,8 +93,6 @@ public class TradeEntity {
                Objects.equals(successPaymentPrice, trade.successPaymentPrice) &&
                Objects.equals(successPaymentFee, trade.successPaymentFee) &&
                Objects.equals(proposedPaymentPrice, trade.proposedPaymentPrice) &&
-               Objects.equals(proposedPaymentFee, trade.proposedPaymentFee) &&
-               Objects.equals(minutesToTrade, trade.minutesToTrade) &&
-               Objects.equals(tradePriority, trade.tradePriority);
+               Objects.equals(proposedPaymentFee, trade.proposedPaymentFee);
     }
 }
