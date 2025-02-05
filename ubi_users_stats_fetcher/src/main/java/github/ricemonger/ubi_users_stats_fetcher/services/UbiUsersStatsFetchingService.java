@@ -44,7 +44,7 @@ public class UbiUsersStatsFetchingService {
             }
         }
 
-        commonValuesService.setLastUbiUsersStatsFetchTime(LocalDateTime.now().withNano(0).plusSeconds(10));
+        commonValuesService.setLastUbiUsersStatsFetchTime(LocalDateTime.now().withNano(0).plusSeconds(20));
 
         ubiAccountService.saveAllUbiAccountStats(updatedUbiAccountsStats);
     }

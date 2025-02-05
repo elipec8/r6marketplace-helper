@@ -1,6 +1,5 @@
 package github.ricemonger.trades_manager.postgres.services.entity_mappers.user;
 
-import github.ricemonger.trades_manager.postgres.custom_entities.manageable_users.*;
 import github.ricemonger.trades_manager.services.DTOs.ManageableUser;
 import github.ricemonger.trades_manager.services.DTOs.TradeByFiltersManager;
 import github.ricemonger.trades_manager.services.DTOs.UbiAccountStats;

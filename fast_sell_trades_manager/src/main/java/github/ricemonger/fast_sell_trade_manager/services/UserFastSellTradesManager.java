@@ -88,7 +88,7 @@ public class UserFastSellTradesManager {
     private List<FastSellCommand> fetchItemsCurrentStatsAndCreateCommandsByThemAndSavedUserStats(FastSellManagedUser managedUser, AuthorizationDTO authorizationDTO, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
         try {
             if (savedUserStats == null) {
-                log.info("Saved user stats is null while creating fast sell commands for user with id: {}", managedUser.getUbiProfileId());
+                log.debug("Saved user stats is null while creating fast sell commands for user with id: {}", managedUser.getUbiProfileId());
                 return List.of();
             }
 

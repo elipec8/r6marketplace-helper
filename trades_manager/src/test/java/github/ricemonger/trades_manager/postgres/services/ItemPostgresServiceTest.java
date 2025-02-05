@@ -1,7 +1,7 @@
 package github.ricemonger.trades_manager.postgres.services;
 
 import github.ricemonger.trades_manager.postgres.custom_entities.items.CustomItemEntity;
-import github.ricemonger.trades_manager.postgres.repositories.CustomItemPostgresRepository;
+import github.ricemonger.trades_manager.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.trades_manager.postgres.services.entity_mappers.item.ItemEntityMapper;
 import github.ricemonger.utils.DTOs.common.Item;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ class ItemPostgresServiceTest {
     @Autowired
     private ItemPostgresService itemPostgresService;
     @MockBean
-    private CustomItemPostgresRepository itemRepository;
+    private ItemPostgresRepository itemRepository;
     @MockBean
     private ItemEntityMapper itemEntityMapper;
 

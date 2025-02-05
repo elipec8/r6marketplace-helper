@@ -6,6 +6,8 @@ import github.ricemonger.trades_manager.services.DTOs.TradeByFiltersManager;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
+import github.ricemonger.utils.DTOs.personal.UbiTrade;
+import github.ricemonger.utils.services.calculators.TradePriorityExpressionDeserializer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,10 +17,14 @@ import java.util.*;
 @RequiredArgsConstructor
 public class PersonalItemFactory {
 
+    private final TradePriorityExpressionDeserializer tradePriorityExpressionDeserializer;
+
     public Set<PersonalItem> getPersonalItemsForUser(Collection<TradeByFiltersManager> tradeByFiltersManagers,
                                                      Collection<TradeByItemIdManager> tradeByItemIdManagers,
-                                                     Collection<Trade> existingSellTrades,
-                                                     Collection<Trade> existingBuyTrades,
+                                                     Collection<UbiTrade> existingSellTrades,
+                                                     String sellTradePriorityExpression,
+                                                     Collection<UbiTrade> existingBuyTrades,
+                                                     String buyTradePriorityExpression,
                                                      Collection<String> ownedItemsId,
                                                      Collection<Item> existingItems) {
         HashSet<PersonalItem> personalItems = new HashSet<>();

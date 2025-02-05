@@ -32,6 +32,10 @@ public class ItemResaleLockEntity {
     @Column(name = "expires_at")
     private LocalDateTime expiresAt;
 
+    public String getItemId_() {
+        return item.getItemId();
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(ubiAccount, item);

@@ -3,7 +3,8 @@ package github.ricemonger.trades_manager.postgres.custom_entities.items;
 import github.ricemonger.utils.enums.TagGroup;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class CustomTagEntityTest {
     @Test

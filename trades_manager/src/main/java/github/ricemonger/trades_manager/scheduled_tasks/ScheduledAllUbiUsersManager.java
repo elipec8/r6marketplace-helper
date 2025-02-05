@@ -10,6 +10,7 @@ import github.ricemonger.trades_manager.services.factories.PotentialTradeFactory
 import github.ricemonger.trades_manager.services.factories.TradeManagerCommandsFactory;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.DTOs.common.Item;
+import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -51,14 +52,16 @@ public class ScheduledAllUbiUsersManager {
 
     public void manageUserTrades(ManageableUser manageableUser, ConfigTrades configTrades, Collection<Item> existingItems) {
 
-        List<Trade> currentSellTrades = manageableUser.getCurrentSellTrades();
-        List<Trade> currentBuyTrades = manageableUser.getCurrentBuyTrades();
+        List<UbiTrade> currentSellTrades = manageableUser.getCurrentSellTrades();
+        List<UbiTrade> currentBuyTrades = manageableUser.getCurrentBuyTrades();
 
         Set<PersonalItem> personalItems = personalItemFactory.getPersonalItemsForUser(
                 manageableUser.getTradeByFiltersManagers(),
                 manageableUser.getTradeByItemIdManagers(),
                 currentSellTrades,
+                manageableUser.getSellTradePriorityExpression(),
                 currentBuyTrades,
+                manageableUser.getBuyTradePriorityExpression(),
                 manageableUser.getOwnedItemsIds(),
                 existingItems);
 

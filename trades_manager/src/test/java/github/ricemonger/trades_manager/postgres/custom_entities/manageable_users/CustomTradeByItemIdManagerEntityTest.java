@@ -4,7 +4,8 @@ import github.ricemonger.trades_manager.postgres.custom_entities.items.CustomIte
 import github.ricemonger.utils.enums.TradeOperationType;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class CustomTradeByItemIdManagerEntityTest {
     @Test

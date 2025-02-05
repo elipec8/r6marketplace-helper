@@ -5,6 +5,7 @@ import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalSellTrade
 import github.ricemonger.trades_manager.services.DTOs.Trade;
 import github.ricemonger.trades_manager.services.DTOs.TradeManagerCommand;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
+import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.CentralTradeManagerCommandType;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +18,9 @@ import java.util.*;
 public class TradeManagerCommandsFactory {
 
     public List<TradeManagerCommand> createTradeManagerCommandsForUser(Collection<PotentialPersonalSellTrade> resultingSellTrades,
-                                                                       Collection<Trade> currentSellTrades,
+                                                                       Collection<UbiTrade> currentSellTrades,
                                                                        Collection<PotentialPersonalBuyTrade> resultingBuyTrades,
-                                                                       Collection<Trade> currentBuyTrades,
+                                                                       Collection<UbiTrade> currentBuyTrades,
                                                                        Long userId,
                                                                        AuthorizationDTO authorizationDTO,
                                                                        ConfigTrades configTrades) {

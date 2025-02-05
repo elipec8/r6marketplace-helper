@@ -1,6 +1,7 @@
 package github.ricemonger.trades_manager.services.DTOs;
 
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
+import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,9 +27,9 @@ public class UbiAccountStats {
 
     private List<ItemResaleLock> resaleLocks = new ArrayList<>();
 
-    private List<Trade> currentSellTrades = new ArrayList<>();
+    private List<UbiTrade> currentSellTrades = new ArrayList<>();
 
-    private List<Trade> currentBuyTrades = new ArrayList<>();
+    private List<UbiTrade> currentBuyTrades = new ArrayList<>();
 
     @Override
     public int hashCode() {

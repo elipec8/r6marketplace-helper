@@ -3,7 +3,6 @@ package github.ricemonger.trades_manager.services.factories;
 import github.ricemonger.trades_manager.services.DTOs.PersonalItem;
 import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalBuyTrade;
 import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalSellTrade;
-import github.ricemonger.trades_manager.services.PotentialTradeStatsService;
 import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
 import github.ricemonger.utils.enums.TradeOperationType;
@@ -21,8 +20,6 @@ import static github.ricemonger.utils.enums.TradeCategory.Sell;
 @Component
 @RequiredArgsConstructor
 public class PotentialTradeFactory {
-
-    private final PotentialTradeStatsService potentialTradeStatsService;
 
     public List<PotentialPersonalSellTrade> getResultingPersonalSellTrades(Collection<PersonalItem> personalItems, Collection<? extends ItemResaleLock> resaleLocks, Integer soldIn24h, int sellSlots, int sellLimit) {
 
@@ -74,7 +71,7 @@ public class PotentialTradeFactory {
                 continue;
             }
 
-            List<PotentialTradeStats> potentialSellTradesStats = potentialTradeStatsService.getPotentialSellTradesStatsOfItem(personalItem.getItem());
+            List<PotentialTradeStats> potentialSellTradesStats = personalItem.getPotentialSellTradesStatsOfItem();
             for (PotentialTradeStats potentialTradeStats : potentialSellTradesStats) {
                 if (!potentialTradeStats.isValid()) {
                     continue;
@@ -173,7 +170,7 @@ public class PotentialTradeFactory {
                 continue;
             }
 
-            List<PotentialTradeStats> potentialBuyTradesStats = potentialTradeStatsService.getPotentialBuyTradesStatsOfItem(personalItem.getItem());
+            List<PotentialTradeStats> potentialBuyTradesStats = personalItem.getPotentialBuyTradesStatsOfItem();
             for (PotentialTradeStats potentialTradeStats : potentialBuyTradesStats) {
                 if (!potentialTradeStats.isValid()) {
                     continue;

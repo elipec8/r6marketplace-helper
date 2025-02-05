@@ -12,6 +12,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 public abstract class PotentialTrade implements Comparable<PotentialTrade> {
+
     private final PersonalItem personalItem;
 
     private final PotentialTradeStats potentialTradeStats;

@@ -1,6 +1,6 @@
 package github.ricemonger.trades_manager.postgres.services.entity_mappers.user;
 
-import github.ricemonger.trades_manager.postgres.custom_entities.manageable_users.CustomManageableUserEntity;
+import github.ricemonger.trades_manager.postgres.dto_projections.ManageableUserProjection;
 import github.ricemonger.trades_manager.services.DTOs.ManageableUser;
 import github.ricemonger.trades_manager.services.DTOs.UbiAccountStats;
 import lombok.RequiredArgsConstructor;
@@ -18,22 +18,24 @@ public class UserEntityMapper {
 
     private final UbiAccountStatsEntityMapper ubiAccountStatsEntityMapper;
 
-    public ManageableUser createManageableUser(CustomManageableUserEntity entity) {
+    public ManageableUser createManageableUser(ManageableUserProjection projection) {
 
-        UbiAccountStats ubiAccountStats = ubiAccountStatsEntityMapper.createDTO(entity.getUbiAccountEntry().getUbiAccountStats());
+        UbiAccountStats ubiAccountStats = ubiAccountStatsEntityMapper.createDTO(projection.getUbiAccountStats());
 
         return new ManageableUser(
-                entity.getId(),
+                projection.getId(),
                 ubiAccountStats,
-                entity.getUbiAccountEntry().getUbiAuthTicket(),
-                entity.getUbiAccountEntry().getUbiSpaceId(),
-                entity.getUbiAccountEntry().getUbiSessionId(),
-                entity.getUbiAccountEntry().getUbiRememberDeviceTicket(),
-                entity.getUbiAccountEntry().getUbiRememberMeTicket(),
-                entity.getTradeByFiltersManagers().stream().map(tradeByFiltersManagerEntityMapper::createDTO).toList(),
-                entity.getTradeByItemIdManagers().stream().map(tradeByItemIdManagerEntityMapper::createDTO).toList(),
-                entity.getSellTradesManagingEnabledFlag(),
-                entity.getBuyTradesManagingEnabledFlag()
+                projection.getUbiAuthTicket(),
+                projection.getUbiSpaceId(),
+                projection.getUbiSessionId(),
+                projection.getUbiRememberDeviceTicket(),
+                projection.getUbiRememberMeTicket(),
+                projection.getTradeByFiltersManagers().stream().map(tradeByFiltersManagerEntityMapper::createDTO).toList(),
+                projection.getTradeByItemIdManagers().stream().map(tradeByItemIdManagerEntityMapper::createDTO).toList(),
+                projection.getSellTradesManagingEnabledFlag(),
+                projection.getSellTradePriorityExpression(),
+                projection.getBuyTradesManagingEnabledFlag(),
+                projection.getBuyTradePriorityExpression()
         );
     }
 }

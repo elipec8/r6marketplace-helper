@@ -1,10 +1,10 @@
 package github.ricemonger.trades_manager.postgres.services.entity_mappers.item;
 
-import github.ricemonger.trades_manager.postgres.custom_entities.items.CustomItemEntity;
-import github.ricemonger.trades_manager.postgres.custom_entities.items.CustomTagValueEntity;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
+import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
+import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,13 +22,13 @@ class CustomItemEntityMapperTest {
 
     @Test
     public void createDTO_should_properly_map_entity_to_dto() {
-        CustomItemEntity entity = new CustomItemEntity();
+        ItemEntity entity = new ItemEntity();
         entity.setItemId("itemId");
         entity.setAssetUrl("assetUrl");
         entity.setName("name");
-        CustomTagValueEntity tagEntity1 = new CustomTagValueEntity();
+        TagEntity tagEntity1 = new TagEntity();
         tagEntity1.setValue("tag1");
-        CustomTagValueEntity tagEntity2 = new CustomTagValueEntity();
+        TagEntity tagEntity2 = new TagEntity();
         tagEntity2.setValue("tag2");
         entity.setTags(List.of(tagEntity1, tagEntity2));
         entity.setRarity(ItemRarity.RARE);
@@ -50,14 +50,6 @@ class CustomItemEntityMapperTest {
         entity.setDayMaxPrice(14);
         entity.setDayMinPrice(15);
         entity.setDaySales(16);
-        entity.setPriorityToSellByMaxBuyPrice(17L);
-        entity.setPriorityToSellByNextFancySellPrice(18L);
-        entity.setPriorityToBuyByMinSellPrice(19L);
-        entity.setPriorityToBuyIn1Hour(20L);
-        entity.setPriorityToBuyIn6Hours(21L);
-        entity.setPriorityToBuyIn24Hours(22L);
-        entity.setPriorityToBuyIn168Hours(23L);
-        entity.setPriorityToBuyIn720Hours(24L);
         entity.setPriceToBuyIn1Hour(25);
         entity.setPriceToBuyIn6Hours(26);
         entity.setPriceToBuyIn24Hours(27);
@@ -89,14 +81,6 @@ class CustomItemEntityMapperTest {
         assertEquals(entity.getDayMaxPrice(), item.getDayMaxPrice());
         assertEquals(entity.getDayMinPrice(), item.getDayMinPrice());
         assertEquals(entity.getDaySales(), item.getDaySales());
-        assertEquals(entity.getPriorityToSellByMaxBuyPrice(), item.getPriorityToSellByMaxBuyPrice());
-        assertEquals(entity.getPriorityToSellByNextFancySellPrice(), item.getPriorityToSellByNextFancySellPrice());
-        assertEquals(entity.getPriorityToBuyByMinSellPrice(), item.getPriorityToBuyByMinSellPrice());
-        assertEquals(entity.getPriorityToBuyIn1Hour(), item.getPriorityToBuyIn1Hour());
-        assertEquals(entity.getPriorityToBuyIn6Hours(), item.getPriorityToBuyIn6Hours());
-        assertEquals(entity.getPriorityToBuyIn24Hours(), item.getPriorityToBuyIn24Hours());
-        assertEquals(entity.getPriorityToBuyIn168Hours(), item.getPriorityToBuyIn168Hours());
-        assertEquals(entity.getPriorityToBuyIn720Hours(), item.getPriorityToBuyIn720Hours());
         assertEquals(entity.getPriceToBuyIn1Hour(), item.getPriceToBuyIn1Hour());
         assertEquals(entity.getPriceToBuyIn6Hours(), item.getPriceToBuyIn6Hours());
         assertEquals(entity.getPriceToBuyIn24Hours(), item.getPriceToBuyIn24Hours());

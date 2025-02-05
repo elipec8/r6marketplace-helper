@@ -1,7 +1,7 @@
 package github.ricemonger.trades_manager.postgres.services;
 
 import github.ricemonger.trades_manager.postgres.custom_entities.manageable_users.CustomManageableUserEntity;
-import github.ricemonger.trades_manager.postgres.repositories.CustomManageableUserPostgresRepository;
+import github.ricemonger.trades_manager.postgres.repositories.CustomUserPostgresRepository;
 import github.ricemonger.trades_manager.postgres.services.entity_mappers.user.UserEntityMapper;
 import github.ricemonger.trades_manager.services.DTOs.ManageableUser;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ class UserPostgresServiceTest {
     @Autowired
     private UserPostgresService userPostgresService;
     @MockBean
-    private CustomManageableUserPostgresRepository userRepository;
+    private CustomUserPostgresRepository userRepository;
     @MockBean
     private UserEntityMapper userEntityMapper;
 

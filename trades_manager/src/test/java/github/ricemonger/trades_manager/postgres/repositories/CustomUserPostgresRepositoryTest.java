@@ -1,7 +1,6 @@
 package github.ricemonger.trades_manager.postgres.repositories;
 
 import github.ricemonger.trades_manager.postgres.custom_entities.items.CustomItemIdEntity;
-import github.ricemonger.trades_manager.postgres.custom_entities.manageable_users.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
-class CustomManageableUserPostgresRepositoryTest {
+class CustomUserPostgresRepositoryTest {
     @Autowired
-    private CustomManageableUserPostgresRepository userRepository;
+    private CustomUserPostgresRepository userRepository;
 
     @BeforeEach
     public void setUp() {

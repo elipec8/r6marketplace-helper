@@ -15,6 +15,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Trade {
+
     private UbiTrade ubiTrade = new UbiTrade();
 
     private Integer minutesToTrade;
