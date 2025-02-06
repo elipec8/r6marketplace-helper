@@ -16,7 +16,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class PotentialTradeStatsServiceTest {
+class PrioritizedPotentialTradeStatsServiceTest {
     @Autowired
     private PotentialTradeStatsService potentialTradeStatsService;
     @MockBean

@@ -1,7 +1,7 @@
 package github.ricemonger.utils.services.calculators;
 
 import github.ricemonger.utils.DTOs.common.Item;
-import github.ricemonger.utils.DTOs.common.PotentialTradePriceAndTimeStats;
+import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
 import github.ricemonger.utils.DTOs.personal.UbiTradeI;
 import github.ricemonger.utils.enums.TradeCategory;
 import lombok.RequiredArgsConstructor;
@@ -66,11 +66,11 @@ public class ItemTradeTimeCalculator {
         }
     }
 
-    public PotentialTradePriceAndTimeStats calculatePriceAndTimeForNextFancySellPriceSale(Item item) {
+    public PotentialTradeStats calculatePriceAndTimeForNextFancySellPriceSale(Item item) {
         int nextFancySellPrice = itemFancyPriceCalculator.getNextFancySellPrice(item);
         int timeToSellByNextFancySellPrice = calculatePrognosedTimeToSellItemByNextSellPrice(item);
 
-        return new PotentialTradePriceAndTimeStats(nextFancySellPrice, timeToSellByNextFancySellPrice);
+        return new PotentialTradeStats(nextFancySellPrice, timeToSellByNextFancySellPrice);
     }
 
     public Integer calculatePrognosedTimeToSellItemByNextSellPrice(Item item) {

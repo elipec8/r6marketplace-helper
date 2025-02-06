@@ -3,7 +3,7 @@ package github.ricemonger.trades_manager.services.factories;
 import github.ricemonger.trades_manager.services.DTOs.*;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.DTOs.common.Item;
-import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
+import github.ricemonger.utils.DTOs.common.PrioritizedPotentialTradeStats;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.CentralTradeManagerCommandType;
 import org.junit.jupiter.api.Test;
@@ -30,9 +30,9 @@ class TradeManagerCommandsFactoryTest {
         personalItemSellTradeCreate.setItem(new Item("1"));
         personalItemSellTradeCreate.getItem().setName("name");
         personalItemSellTradeCreate.setTradeAlreadyExists(false);
-        PotentialTradeStats potentialTradeStatsSellTradeCreate = new PotentialTradeStats();
-        potentialTradeStatsSellTradeCreate.setPrice(1);
-        PotentialPersonalSellTrade potentialSellTradeCreate = new PotentialPersonalSellTrade(personalItemSellTradeCreate, potentialTradeStatsSellTradeCreate);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsSellTradeCreate = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsSellTradeCreate.setPrice(1);
+        PotentialPersonalSellTrade potentialSellTradeCreate = new PotentialPersonalSellTrade(personalItemSellTradeCreate, prioritizedPotentialTradeStatsSellTradeCreate);
 
         PersonalItem personalItemSellTradeUpdate = new PersonalItem();
         personalItemSellTradeUpdate.setItem(new Item("2"));
@@ -41,9 +41,9 @@ class TradeManagerCommandsFactoryTest {
         personalItemSellTradeUpdate.setExistingTrade(new Trade());
         personalItemSellTradeUpdate.getExistingTrade().setTradeId("tradeId2");
         personalItemSellTradeUpdate.getExistingTrade().setProposedPaymentPrice(2);
-        PotentialTradeStats potentialTradeStatsSellTradeUpdate = new PotentialTradeStats();
-        potentialTradeStatsSellTradeUpdate.setPrice(20);
-        PotentialPersonalSellTrade potentialSellTradeUpdate = new PotentialPersonalSellTrade(personalItemSellTradeUpdate, potentialTradeStatsSellTradeUpdate);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsSellTradeUpdate = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsSellTradeUpdate.setPrice(20);
+        PotentialPersonalSellTrade potentialSellTradeUpdate = new PotentialPersonalSellTrade(personalItemSellTradeUpdate, prioritizedPotentialTradeStatsSellTradeUpdate);
 
         PersonalItem personalItemSellTradeLeave = new PersonalItem();
         personalItemSellTradeLeave.setItem(new Item("3"));
@@ -52,9 +52,9 @@ class TradeManagerCommandsFactoryTest {
         personalItemSellTradeLeave.setExistingTrade(new Trade());
         personalItemSellTradeLeave.getExistingTrade().setTradeId("tradeId3");
         personalItemSellTradeLeave.getExistingTrade().setProposedPaymentPrice(3);
-        PotentialTradeStats potentialTradeStatsSellTradeLeave = new PotentialTradeStats();
-        potentialTradeStatsSellTradeLeave.setPrice(3);
-        PotentialPersonalSellTrade potentialSellTradeLeave = new PotentialPersonalSellTrade(personalItemSellTradeLeave, potentialTradeStatsSellTradeLeave);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsSellTradeLeave = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsSellTradeLeave.setPrice(3);
+        PotentialPersonalSellTrade potentialSellTradeLeave = new PotentialPersonalSellTrade(personalItemSellTradeLeave, prioritizedPotentialTradeStatsSellTradeLeave);
 
         Collection<PotentialPersonalSellTrade> resultingSellTrades = List.of(potentialSellTradeCreate, potentialSellTradeUpdate, potentialSellTradeLeave);
 
@@ -73,9 +73,9 @@ class TradeManagerCommandsFactoryTest {
         personalItemBuyTradeCreate.setItem(new Item("4"));
         personalItemBuyTradeCreate.getItem().setName("name4");
         personalItemBuyTradeCreate.setTradeAlreadyExists(false);
-        PotentialTradeStats potentialTradeStatsBuyTradeCreate = new PotentialTradeStats();
-        potentialTradeStatsBuyTradeCreate.setPrice(4);
-        PotentialPersonalBuyTrade potentialBuyTradeCreate = new PotentialPersonalBuyTrade(personalItemBuyTradeCreate, potentialTradeStatsBuyTradeCreate);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsBuyTradeCreate = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsBuyTradeCreate.setPrice(4);
+        PotentialPersonalBuyTrade potentialBuyTradeCreate = new PotentialPersonalBuyTrade(personalItemBuyTradeCreate, prioritizedPotentialTradeStatsBuyTradeCreate);
 
         PersonalItem personalItemBuyTradeUpdate = new PersonalItem();
         personalItemBuyTradeUpdate.setItem(new Item("5"));
@@ -84,9 +84,9 @@ class TradeManagerCommandsFactoryTest {
         personalItemBuyTradeUpdate.setExistingTrade(new Trade());
         personalItemBuyTradeUpdate.getExistingTrade().setTradeId("tradeId5");
         personalItemBuyTradeUpdate.getExistingTrade().setProposedPaymentPrice(5);
-        PotentialTradeStats potentialTradeStatsBuyTradeUpdate = new PotentialTradeStats();
-        potentialTradeStatsBuyTradeUpdate.setPrice(50);
-        PotentialPersonalBuyTrade potentialBuyTradeUpdate = new PotentialPersonalBuyTrade(personalItemBuyTradeUpdate, potentialTradeStatsBuyTradeUpdate);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsBuyTradeUpdate = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsBuyTradeUpdate.setPrice(50);
+        PotentialPersonalBuyTrade potentialBuyTradeUpdate = new PotentialPersonalBuyTrade(personalItemBuyTradeUpdate, prioritizedPotentialTradeStatsBuyTradeUpdate);
 
         PersonalItem personalItemBuyTradeLeave = new PersonalItem();
         personalItemBuyTradeLeave.setItem(new Item("6"));
@@ -95,9 +95,9 @@ class TradeManagerCommandsFactoryTest {
         personalItemBuyTradeLeave.setExistingTrade(new Trade());
         personalItemBuyTradeLeave.getExistingTrade().setTradeId("tradeId6");
         personalItemBuyTradeLeave.getExistingTrade().setProposedPaymentPrice(6);
-        PotentialTradeStats potentialTradeStatsBuyTradeLeave = new PotentialTradeStats();
-        potentialTradeStatsBuyTradeLeave.setPrice(6);
-        PotentialPersonalBuyTrade potentialBuyTradeLeave = new PotentialPersonalBuyTrade(personalItemBuyTradeLeave, potentialTradeStatsBuyTradeLeave);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsBuyTradeLeave = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsBuyTradeLeave.setPrice(6);
+        PotentialPersonalBuyTrade potentialBuyTradeLeave = new PotentialPersonalBuyTrade(personalItemBuyTradeLeave, prioritizedPotentialTradeStatsBuyTradeLeave);
 
         Collection<PotentialPersonalBuyTrade> resultingBuyTrades = List.of(potentialBuyTradeCreate, potentialBuyTradeUpdate, potentialBuyTradeLeave);
 
@@ -158,9 +158,9 @@ class TradeManagerCommandsFactoryTest {
         personalItemSellTradeCreate.setItem(new Item("1"));
         personalItemSellTradeCreate.getItem().setName("name");
         personalItemSellTradeCreate.setTradeAlreadyExists(false);
-        PotentialTradeStats potentialTradeStatsSellTradeCreate = new PotentialTradeStats();
-        potentialTradeStatsSellTradeCreate.setPrice(1);
-        PotentialPersonalSellTrade potentialSellTradeCreate = new PotentialPersonalSellTrade(personalItemSellTradeCreate, potentialTradeStatsSellTradeCreate);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsSellTradeCreate = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsSellTradeCreate.setPrice(1);
+        PotentialPersonalSellTrade potentialSellTradeCreate = new PotentialPersonalSellTrade(personalItemSellTradeCreate, prioritizedPotentialTradeStatsSellTradeCreate);
 
         PersonalItem personalItemSellTradeUpdate = new PersonalItem();
         personalItemSellTradeUpdate.setItem(new Item("2"));
@@ -169,9 +169,9 @@ class TradeManagerCommandsFactoryTest {
         personalItemSellTradeUpdate.setExistingTrade(new Trade());
         personalItemSellTradeUpdate.getExistingTrade().setTradeId("tradeId2");
         personalItemSellTradeUpdate.getExistingTrade().setProposedPaymentPrice(2);
-        PotentialTradeStats potentialTradeStatsSellTradeUpdate = new PotentialTradeStats();
-        potentialTradeStatsSellTradeUpdate.setPrice(20);
-        PotentialPersonalSellTrade potentialSellTradeUpdate = new PotentialPersonalSellTrade(personalItemSellTradeUpdate, potentialTradeStatsSellTradeUpdate);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsSellTradeUpdate = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsSellTradeUpdate.setPrice(20);
+        PotentialPersonalSellTrade potentialSellTradeUpdate = new PotentialPersonalSellTrade(personalItemSellTradeUpdate, prioritizedPotentialTradeStatsSellTradeUpdate);
 
         PersonalItem personalItemSellTradeLeave = new PersonalItem();
         personalItemSellTradeLeave.setItem(new Item("3"));
@@ -180,9 +180,9 @@ class TradeManagerCommandsFactoryTest {
         personalItemSellTradeLeave.setExistingTrade(new Trade());
         personalItemSellTradeLeave.getExistingTrade().setTradeId("tradeId3");
         personalItemSellTradeLeave.getExistingTrade().setProposedPaymentPrice(3);
-        PotentialTradeStats potentialTradeStatsSellTradeLeave = new PotentialTradeStats();
-        potentialTradeStatsSellTradeLeave.setPrice(3);
-        PotentialPersonalSellTrade potentialSellTradeLeave = new PotentialPersonalSellTrade(personalItemSellTradeLeave, potentialTradeStatsSellTradeLeave);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsSellTradeLeave = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsSellTradeLeave.setPrice(3);
+        PotentialPersonalSellTrade potentialSellTradeLeave = new PotentialPersonalSellTrade(personalItemSellTradeLeave, prioritizedPotentialTradeStatsSellTradeLeave);
 
         Collection<PotentialPersonalSellTrade> resultingSellTrades = List.of(potentialSellTradeCreate, potentialSellTradeUpdate, potentialSellTradeLeave);
 
@@ -201,9 +201,9 @@ class TradeManagerCommandsFactoryTest {
         personalItemBuyTradeCreate.setItem(new Item("4"));
         personalItemBuyTradeCreate.getItem().setName("name4");
         personalItemBuyTradeCreate.setTradeAlreadyExists(false);
-        PotentialTradeStats potentialTradeStatsBuyTradeCreate = new PotentialTradeStats();
-        potentialTradeStatsBuyTradeCreate.setPrice(4);
-        PotentialPersonalBuyTrade potentialBuyTradeCreate = new PotentialPersonalBuyTrade(personalItemBuyTradeCreate, potentialTradeStatsBuyTradeCreate);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsBuyTradeCreate = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsBuyTradeCreate.setPrice(4);
+        PotentialPersonalBuyTrade potentialBuyTradeCreate = new PotentialPersonalBuyTrade(personalItemBuyTradeCreate, prioritizedPotentialTradeStatsBuyTradeCreate);
 
         PersonalItem personalItemBuyTradeUpdate = new PersonalItem();
         personalItemBuyTradeUpdate.setItem(new Item("5"));
@@ -212,9 +212,9 @@ class TradeManagerCommandsFactoryTest {
         personalItemBuyTradeUpdate.setExistingTrade(new Trade());
         personalItemBuyTradeUpdate.getExistingTrade().setTradeId("tradeId5");
         personalItemBuyTradeUpdate.getExistingTrade().setProposedPaymentPrice(5);
-        PotentialTradeStats potentialTradeStatsBuyTradeUpdate = new PotentialTradeStats();
-        potentialTradeStatsBuyTradeUpdate.setPrice(50);
-        PotentialPersonalBuyTrade potentialBuyTradeUpdate = new PotentialPersonalBuyTrade(personalItemBuyTradeUpdate, potentialTradeStatsBuyTradeUpdate);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsBuyTradeUpdate = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsBuyTradeUpdate.setPrice(50);
+        PotentialPersonalBuyTrade potentialBuyTradeUpdate = new PotentialPersonalBuyTrade(personalItemBuyTradeUpdate, prioritizedPotentialTradeStatsBuyTradeUpdate);
 
         PersonalItem personalItemBuyTradeLeave = new PersonalItem();
         personalItemBuyTradeLeave.setItem(new Item("6"));
@@ -223,9 +223,9 @@ class TradeManagerCommandsFactoryTest {
         personalItemBuyTradeLeave.setExistingTrade(new Trade());
         personalItemBuyTradeLeave.getExistingTrade().setTradeId("tradeId6");
         personalItemBuyTradeLeave.getExistingTrade().setProposedPaymentPrice(6);
-        PotentialTradeStats potentialTradeStatsBuyTradeLeave = new PotentialTradeStats();
-        potentialTradeStatsBuyTradeLeave.setPrice(6);
-        PotentialPersonalBuyTrade potentialBuyTradeLeave = new PotentialPersonalBuyTrade(personalItemBuyTradeLeave, potentialTradeStatsBuyTradeLeave);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsBuyTradeLeave = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsBuyTradeLeave.setPrice(6);
+        PotentialPersonalBuyTrade potentialBuyTradeLeave = new PotentialPersonalBuyTrade(personalItemBuyTradeLeave, prioritizedPotentialTradeStatsBuyTradeLeave);
 
         Collection<PotentialPersonalBuyTrade> resultingBuyTrades = List.of(potentialBuyTradeCreate, potentialBuyTradeUpdate, potentialBuyTradeLeave);
 

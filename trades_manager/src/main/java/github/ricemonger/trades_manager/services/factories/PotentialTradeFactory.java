@@ -4,8 +4,10 @@ import github.ricemonger.trades_manager.services.DTOs.PersonalItem;
 import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalBuyTrade;
 import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalSellTrade;
 import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
+import github.ricemonger.utils.DTOs.common.PrioritizedPotentialTradeStats;
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
 import github.ricemonger.utils.enums.TradeOperationType;
+import github.ricemonger.utils.services.calculators.TradePriorityExpressionDeserializer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -21,9 +23,11 @@ import static github.ricemonger.utils.enums.TradeCategory.Sell;
 @RequiredArgsConstructor
 public class PotentialTradeFactory {
 
-    public List<PotentialPersonalSellTrade> getResultingPersonalSellTrades(Collection<PersonalItem> personalItems, Collection<? extends ItemResaleLock> resaleLocks, Integer soldIn24h, int sellSlots, int sellLimit) {
+    private final TradePriorityExpressionDeserializer tradePriorityExpressionDeserializer;
 
-        List<PotentialPersonalSellTrade> filteredPersonalSellTrades = getFilteredPotentialSellTradesForUser(personalItems, resaleLocks);
+    public List<PotentialPersonalSellTrade> getResultingPersonalSellTrades(String sellTradePriorityExpression, Collection<PersonalItem> personalItems, Collection<? extends ItemResaleLock> resaleLocks, Integer soldIn24h, int sellSlots, int sellLimit) {
+
+        List<PotentialPersonalSellTrade> filteredPersonalSellTrades = getFilteredPotentialSellTradesForUser(sellTradePriorityExpression, personalItems, resaleLocks);
 
         List<PotentialPersonalSellTrade> resultingPersonalSellTrades = new LinkedList<>();
         int slotsLeft = sellSlots;
@@ -54,8 +58,9 @@ public class PotentialTradeFactory {
         return resultingPersonalSellTrades;
     }
 
-    public List<PotentialPersonalSellTrade> getFilteredPotentialSellTradesForUser(Collection<PersonalItem> personalItems,
-                                                                                  Collection<? extends ItemResaleLock> resaleLocks) {
+    public List<PotentialPersonalSellTrade> getFilteredPotentialSellTradesForUser(String sellTradePriorityExpression,
+                                                                                  Collection<PersonalItem> personalItems,
+                                                                                  Collection<? extends ItemResaleLock> resaleLocks){
         List<PotentialPersonalSellTrade> potentialPersonalSellTrades = new ArrayList<>();
         for (PersonalItem personalItem : personalItems) {
             boolean itemIsNotOwned = !personalItem.getIsOwned();
@@ -71,7 +76,7 @@ public class PotentialTradeFactory {
                 continue;
             }
 
-            List<PotentialTradeStats> potentialSellTradesStats = personalItem.getPotentialSellTradesStatsOfItem();
+            List<PotentialTradeStats> potentialSellTradesStats = personalItem.getPotentialSellTradesStats();
             for (PotentialTradeStats potentialTradeStats : potentialSellTradesStats) {
                 if (!potentialTradeStats.isValid()) {
                     continue;
@@ -101,13 +106,15 @@ public class PotentialTradeFactory {
                     continue;
                 }
 
-                potentialPersonalSellTrades.add(new PotentialPersonalSellTrade(personalItem, potentialTradeStats));
+                Long tradePriority = tradePriorityExpressionDeserializer.calculateTradePriority(sellTradePriorityExpression, personalItem.getItem(), potentialTradeStats.getPrice(), potentialTradeStats.getTime());
+
+                potentialPersonalSellTrades.add(new PotentialPersonalSellTrade(personalItem, new PrioritizedPotentialTradeStats(potentialTradeStats, tradePriority)));
             }
 
             if (personalItem.getTradeAlreadyExists() && personalItem.getExistingTrade().getCategory() == Sell) {
-                PotentialTradeStats potentialTradeStats = new PotentialTradeStats(personalItem.getExistingTrade().getProposedPaymentPrice(), personalItem.getExistingTrade().getMinutesToTrade(), personalItem.getExistingTrade().getTradePriority());
-                if (potentialTradeStats.isValid()) {
-                    potentialPersonalSellTrades.add(new PotentialPersonalSellTrade(personalItem, potentialTradeStats));
+                PrioritizedPotentialTradeStats prioritizedPotentialTradeStats = new PrioritizedPotentialTradeStats(personalItem.getExistingTrade().getProposedPaymentPrice(), personalItem.getExistingTrade().getMinutesToTrade(), personalItem.getExistingTrade().getTradePriority());
+                if (prioritizedPotentialTradeStats.isValid()) {
+                    potentialPersonalSellTrades.add(new PotentialPersonalSellTrade(personalItem, prioritizedPotentialTradeStats));
                 }
             }
         }
@@ -115,13 +122,14 @@ public class PotentialTradeFactory {
         return potentialPersonalSellTrades;
     }
 
-    public List<PotentialPersonalBuyTrade> getResultingPersonalBuyTrades(Collection<PersonalItem> personalItems, Integer creditAmount, Integer boughtIn24h, int buySlots, int buyLimit) {
+    public List<PotentialPersonalBuyTrade> getResultingPersonalBuyTrades(String buyTradePriorityExpression, Collection<PersonalItem> personalItems,
+                                                                         Integer creditAmount, Integer boughtIn24h, int buySlots, int buyLimit) {
         List<PotentialPersonalBuyTrade> resultingPersonalBuyTrades = new LinkedList<>();
         int slotsLeft = buySlots;
         int limitLeft = buyLimit - boughtIn24h;
         int creditLeft = creditAmount;
 
-        List<PotentialPersonalBuyTrade> filteredPersonalBuyTrades = getFilteredPotentialBuyTradesForUser(personalItems);
+        List<PotentialPersonalBuyTrade> filteredPersonalBuyTrades = getFilteredPotentialBuyTradesForUser(buyTradePriorityExpression,personalItems);
 
         for (PotentialPersonalBuyTrade buyTrade : filteredPersonalBuyTrades.stream().sorted().toList()) {
 
@@ -158,7 +166,8 @@ public class PotentialTradeFactory {
         return resultingPersonalBuyTrades;
     }
 
-    public List<PotentialPersonalBuyTrade> getFilteredPotentialBuyTradesForUser(Collection<PersonalItem> personalItems) {
+    public List<PotentialPersonalBuyTrade> getFilteredPotentialBuyTradesForUser(String buyTradePriorityExpression,
+                                                                                Collection<PersonalItem> personalItems) {
         List<PotentialPersonalBuyTrade> potentialPersonalBuyTrades = new ArrayList<>();
         for (PersonalItem personalItem : personalItems) {
             boolean itemIsOwned = personalItem.getIsOwned();
@@ -196,13 +205,15 @@ public class PotentialTradeFactory {
                     continue;
                 }
 
-                potentialPersonalBuyTrades.add(new PotentialPersonalBuyTrade(personalItem, potentialTradeStats));
+                Long tradePriority = tradePriorityExpressionDeserializer.calculateTradePriority(buyTradePriorityExpression, personalItem.getItem(), potentialTradeStats.getPrice(), potentialTradeStats.getTime());
+
+                potentialPersonalBuyTrades.add(new PotentialPersonalBuyTrade(personalItem, new PrioritizedPotentialTradeStats(potentialTradeStats, tradePriority)));
             }
 
             if (personalItem.getTradeAlreadyExists() && personalItem.getExistingTrade().getCategory() == Buy) {
-                PotentialTradeStats potentialTradeStats = new PotentialTradeStats(personalItem.getExistingTrade().getProposedPaymentPrice(), personalItem.getExistingTrade().getMinutesToTrade(), personalItem.getExistingTrade().getTradePriority());
-                if (potentialTradeStats.isValid()) {
-                    potentialPersonalBuyTrades.add(new PotentialPersonalBuyTrade(personalItem, potentialTradeStats));
+                PrioritizedPotentialTradeStats prioritizedPotentialTradeStats = new PrioritizedPotentialTradeStats(personalItem.getExistingTrade().getProposedPaymentPrice(), personalItem.getExistingTrade().getMinutesToTrade(), personalItem.getExistingTrade().getTradePriority());
+                if (prioritizedPotentialTradeStats.isValid()) {
+                    potentialPersonalBuyTrades.add(new PotentialPersonalBuyTrade(personalItem, prioritizedPotentialTradeStats));
                 }
             }
         }

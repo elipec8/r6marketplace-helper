@@ -2,8 +2,8 @@ package github.ricemonger.utils.services.calculators;
 
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.ItemDaySalesStatsByItemId;
-import github.ricemonger.utils.DTOs.common.PotentialTradePriceAndTimeStats;
 import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
+import github.ricemonger.utils.DTOs.common.PrioritizedPotentialTradeStats;
 import github.ricemonger.utils.DTOs.personal.UbiTradeI;
 import lombok.RequiredArgsConstructor;
 
@@ -20,20 +20,20 @@ public class ItemTradeStatsCalculator {
 
     private final ItemTradePriorityCalculator itemTradePriorityCalculator;
 
-    public PotentialTradeStats calculatePotentialSellTradeStatsByMaxBuyPrice(Item item) {
+    public PrioritizedPotentialTradeStats calculatePotentialSellTradeStatsByMaxBuyPrice(Item item) {
         return calculatePotentialSellTradeStats(item, item.getMaxBuyPrice(), TRADE_MANAGER_FIXED_RATE_MINUTES);
     }
 
-    public PotentialTradeStats calculatePotentialSellTradeStatsByNextFancySellPrice(Item item) {
-        PotentialTradePriceAndTimeStats priceAndTime = itemTradeTimeCalculator.calculatePriceAndTimeForNextFancySellPriceSale(item);
+    public PrioritizedPotentialTradeStats calculatePotentialSellTradeStatsByNextFancySellPrice(Item item) {
+        PotentialTradeStats priceAndTime = itemTradeTimeCalculator.calculatePriceAndTimeForNextFancySellPriceSale(item);
         return calculatePotentialSellTradeStats(item, priceAndTime.price(), priceAndTime.time());
     }
 
-    public PotentialTradeStats calculatePotentialBuyTradeStatsByMinSellPrice(Item item) {
+    public PrioritizedPotentialTradeStats calculatePotentialBuyTradeStatsByMinSellPrice(Item item) {
         return calculatePotentialBuyTradeStats(item, item.getMinSellPrice(), TRADE_MANAGER_FIXED_RATE_MINUTES);
     }
 
-    public PotentialTradeStats calculatePotentialBuyTradeStatsForTime(Item item, Collection<ItemDaySalesStatsByItemId> resultingPerDayStats, Integer minutesToBuy) {
+    public PrioritizedPotentialTradeStats calculatePotentialBuyTradeStatsForTime(Item item, Collection<ItemDaySalesStatsByItemId> resultingPerDayStats, Integer minutesToBuy) {
         int price = calculatePotentialBuyTradePriceForTime(item, resultingPerDayStats, minutesToBuy);
 
         return calculatePotentialBuyTradeStats(item, price, minutesToBuy);
@@ -69,19 +69,19 @@ public class ItemTradeStatsCalculator {
         return null;
     }
 
-    public PotentialTradeStats calculatePotentialSellTradeStatsForExistingTrade(UbiTradeI existingTrade) {
+    public PrioritizedPotentialTradeStats calculatePotentialSellTradeStatsForExistingTrade(UbiTradeI existingTrade) {
         return calculatePotentialSellTradeStats(existingTrade.getItem(), existingTrade.getProposedPaymentPrice(), itemTradeTimeCalculator.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(existingTrade));
     }
 
-    public PotentialTradeStats calculatePotentialBuyTradeStatsForExistingTrade(UbiTradeI existingTrade) {
+    public PrioritizedPotentialTradeStats calculatePotentialBuyTradeStatsForExistingTrade(UbiTradeI existingTrade) {
         return calculatePotentialBuyTradeStats(existingTrade.getItem(), existingTrade.getProposedPaymentPrice(), itemTradeTimeCalculator.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(existingTrade));
     }
 
-    public PotentialTradeStats calculatePotentialSellTradeStats(Item item, Integer price, Integer minutesToTrade) {
-        return new PotentialTradeStats(price, minutesToTrade, itemTradePriorityCalculator.calculatePotentialSellTradePriority(item, price, minutesToTrade));
+    public PrioritizedPotentialTradeStats calculatePotentialSellTradeStats(Item item, Integer price, Integer minutesToTrade) {
+        return new PrioritizedPotentialTradeStats(price, minutesToTrade, itemTradePriorityCalculator.calculatePotentialSellTradePriority(item, price, minutesToTrade));
     }
 
-    public PotentialTradeStats calculatePotentialBuyTradeStats(Item item, Integer price, Integer minutesToTrade) {
-        return new PotentialTradeStats(price, minutesToTrade, itemTradePriorityCalculator.calculatePotentialBuyTradePriority(item, price, minutesToTrade));
+    public PrioritizedPotentialTradeStats calculatePotentialBuyTradeStats(Item item, Integer price, Integer minutesToTrade) {
+        return new PrioritizedPotentialTradeStats(price, minutesToTrade, itemTradePriorityCalculator.calculatePotentialBuyTradePriority(item, price, minutesToTrade));
     }
 }

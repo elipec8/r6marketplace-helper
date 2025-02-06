@@ -59,9 +59,7 @@ public class ScheduledAllUbiUsersManager {
                 manageableUser.getTradeByFiltersManagers(),
                 manageableUser.getTradeByItemIdManagers(),
                 currentSellTrades,
-                manageableUser.getSellTradePriorityExpression(),
                 currentBuyTrades,
-                manageableUser.getBuyTradePriorityExpression(),
                 manageableUser.getOwnedItemsIds(),
                 existingItems);
 

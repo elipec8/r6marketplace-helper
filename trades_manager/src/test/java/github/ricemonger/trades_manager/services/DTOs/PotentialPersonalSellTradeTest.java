@@ -1,7 +1,7 @@
 package github.ricemonger.trades_manager.services.DTOs;
 
 import github.ricemonger.utils.DTOs.common.Item;
-import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
+import github.ricemonger.utils.DTOs.common.PrioritizedPotentialTradeStats;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.TradeCategory;
 import org.junit.jupiter.api.Test;
@@ -13,8 +13,8 @@ class PotentialPersonalSellTradeTest {
     @Test
     public void getTradeCategory_should_return_sell() {
         PersonalItem personalItem = new PersonalItem();
-        PotentialTradeStats potentialTradeStats = new PotentialTradeStats();
-        PotentialPersonalSellTrade potentialPersonalSellTrade = new PotentialPersonalSellTrade(personalItem, potentialTradeStats);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStats = new PrioritizedPotentialTradeStats();
+        PotentialPersonalSellTrade potentialPersonalSellTrade = new PotentialPersonalSellTrade(personalItem, prioritizedPotentialTradeStats);
         assertEquals(TradeCategory.Sell, potentialPersonalSellTrade.getTradeCategory());
     }
 
@@ -22,18 +22,18 @@ class PotentialPersonalSellTradeTest {
     public void compareTo_should_compare_by_new_price_desc_if_itemId_priority_equal() {
         PersonalItem personalItem1 = new PersonalItem();
         personalItem1.setItem(new Item("itemId"));
-        PotentialTradeStats potentialTradeStats1 = new PotentialTradeStats();
-        potentialTradeStats1.setPrice(1);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStats1 = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStats1.setPrice(1);
         personalItem1.setPriorityMultiplier(1);
-        potentialTradeStats1.setTradePriority(1L);
+        prioritizedPotentialTradeStats1.setTradePriority(1L);
         PersonalItem personalItem2 = new PersonalItem();
         personalItem2.setItem(new Item("itemId"));
-        PotentialTradeStats potentialTradeStats2 = new PotentialTradeStats();
-        potentialTradeStats2.setPrice(5);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStats2 = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStats2.setPrice(5);
         personalItem2.setPriorityMultiplier(1);
-        potentialTradeStats2.setTradePriority(1L);
-        PotentialPersonalSellTrade potentialTrade1 = new PotentialPersonalSellTrade(personalItem1, potentialTradeStats1);
-        PotentialPersonalSellTrade potentialTrade2 = new PotentialPersonalSellTrade(personalItem2, potentialTradeStats2);
+        prioritizedPotentialTradeStats2.setTradePriority(1L);
+        PotentialPersonalSellTrade potentialTrade1 = new PotentialPersonalSellTrade(personalItem1, prioritizedPotentialTradeStats1);
+        PotentialPersonalSellTrade potentialTrade2 = new PotentialPersonalSellTrade(personalItem2, prioritizedPotentialTradeStats2);
 
         int result = potentialTrade1.compareTo(potentialTrade2);
 
@@ -46,15 +46,15 @@ class PotentialPersonalSellTradeTest {
         personalItem1.setItem(new Item("itemId1"));
         PersonalItem personalItem2 = new PersonalItem();
         personalItem2.setItem(new Item("itemId2"));
-        PotentialTradeStats potentialTradeStats1 = new PotentialTradeStats();
-        potentialTradeStats1.setTradePriority(1L);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStats1 = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStats1.setTradePriority(1L);
         personalItem1.setPriorityMultiplier(1);
-        PotentialTradeStats potentialTradeStats2 = new PotentialTradeStats();
-        potentialTradeStats2.setTradePriority(1L);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStats2 = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStats2.setTradePriority(1L);
         personalItem2.setPriorityMultiplier(1);
 
-        PotentialPersonalSellTrade potentialTrade1 = new PotentialPersonalSellTrade(personalItem1, potentialTradeStats1);
-        PotentialPersonalSellTrade potentialTrade2 = new PotentialPersonalSellTrade(personalItem2, potentialTradeStats2);
+        PotentialPersonalSellTrade potentialTrade1 = new PotentialPersonalSellTrade(personalItem1, prioritizedPotentialTradeStats1);
+        PotentialPersonalSellTrade potentialTrade2 = new PotentialPersonalSellTrade(personalItem2, prioritizedPotentialTradeStats2);
 
         int result = potentialTrade1.compareTo(potentialTrade2);
 
@@ -67,15 +67,15 @@ class PotentialPersonalSellTradeTest {
         personalItem1.setItem(new Item("itemId1"));
         PersonalItem personalItem2 = new PersonalItem();
         personalItem2.setItem(new Item("itemId1"));
-        PotentialTradeStats potentialTradeStats1 = new PotentialTradeStats();
-        potentialTradeStats1.setTradePriority(10L);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStats1 = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStats1.setTradePriority(10L);
         personalItem1.setPriorityMultiplier(1);
-        PotentialTradeStats potentialTradeStats2 = new PotentialTradeStats();
-        potentialTradeStats2.setTradePriority(5L);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStats2 = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStats2.setTradePriority(5L);
         personalItem2.setPriorityMultiplier(1);
 
-        PotentialPersonalSellTrade potentialTrade1 = new PotentialPersonalSellTrade(personalItem1, potentialTradeStats1);
-        PotentialPersonalSellTrade potentialTrade2 = new PotentialPersonalSellTrade(personalItem2, potentialTradeStats2);
+        PotentialPersonalSellTrade potentialTrade1 = new PotentialPersonalSellTrade(personalItem1, prioritizedPotentialTradeStats1);
+        PotentialPersonalSellTrade potentialTrade2 = new PotentialPersonalSellTrade(personalItem2, prioritizedPotentialTradeStats2);
 
         int result = potentialTrade1.compareTo(potentialTrade2);
 
@@ -88,15 +88,15 @@ class PotentialPersonalSellTradeTest {
         personalItem1.setItem(new Item("itemId1"));
         PersonalItem personalItem2 = new PersonalItem();
         personalItem2.setItem(new Item("itemId1"));
-        PotentialTradeStats potentialTradeStats1 = new PotentialTradeStats();
-        potentialTradeStats1.setTradePriority(10L);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStats1 = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStats1.setTradePriority(10L);
         personalItem1.setPriorityMultiplier(1);
-        PotentialTradeStats potentialTradeStats2 = new PotentialTradeStats();
-        potentialTradeStats2.setTradePriority(5L);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStats2 = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStats2.setTradePriority(5L);
         personalItem2.setPriorityMultiplier(3);
 
-        PotentialPersonalSellTrade potentialTrade1 = new PotentialPersonalSellTrade(personalItem1, potentialTradeStats1);
-        PotentialPersonalSellTrade potentialTrade2 = new PotentialPersonalSellTrade(personalItem2, potentialTradeStats2);
+        PotentialPersonalSellTrade potentialTrade1 = new PotentialPersonalSellTrade(personalItem1, prioritizedPotentialTradeStats1);
+        PotentialPersonalSellTrade potentialTrade2 = new PotentialPersonalSellTrade(personalItem2, prioritizedPotentialTradeStats2);
 
         int result = potentialTrade1.compareTo(potentialTrade2);
 
@@ -109,15 +109,15 @@ class PotentialPersonalSellTradeTest {
         personalItem1.setItem(new Item("itemId1"));
         PersonalItem personalItem2 = new PersonalItem();
         personalItem2.setItem(new Item("itemId1"));
-        PotentialTradeStats potentialTradeStats1 = new PotentialTradeStats();
-        potentialTradeStats1.setTradePriority(-10L);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStats1 = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStats1.setTradePriority(-10L);
         personalItem1.setPriorityMultiplier(1);
-        PotentialTradeStats potentialTradeStats2 = new PotentialTradeStats();
-        potentialTradeStats2.setTradePriority(-5L);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStats2 = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStats2.setTradePriority(-5L);
         personalItem2.setPriorityMultiplier(1);
 
-        PotentialPersonalSellTrade potentialTrade1 = new PotentialPersonalSellTrade(personalItem1, potentialTradeStats1);
-        PotentialPersonalSellTrade potentialTrade2 = new PotentialPersonalSellTrade(personalItem2, potentialTradeStats2);
+        PotentialPersonalSellTrade potentialTrade1 = new PotentialPersonalSellTrade(personalItem1, prioritizedPotentialTradeStats1);
+        PotentialPersonalSellTrade potentialTrade2 = new PotentialPersonalSellTrade(personalItem2, prioritizedPotentialTradeStats2);
 
         int result = potentialTrade1.compareTo(potentialTrade2);
 
@@ -130,15 +130,15 @@ class PotentialPersonalSellTradeTest {
         personalItem1.setItem(new Item("itemId1"));
         PersonalItem personalItem2 = new PersonalItem();
         personalItem2.setItem(new Item("itemId1"));
-        PotentialTradeStats potentialTradeStats1 = new PotentialTradeStats();
-        potentialTradeStats1.setTradePriority(-10L);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStats1 = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStats1.setTradePriority(-10L);
         personalItem1.setPriorityMultiplier(3);
-        PotentialTradeStats potentialTradeStats2 = new PotentialTradeStats();
-        potentialTradeStats2.setTradePriority(-5L);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStats2 = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStats2.setTradePriority(-5L);
         personalItem2.setPriorityMultiplier(1);
 
-        PotentialPersonalSellTrade potentialTrade1 = new PotentialPersonalSellTrade(personalItem1, potentialTradeStats1);
-        PotentialPersonalSellTrade potentialTrade2 = new PotentialPersonalSellTrade(personalItem2, potentialTradeStats2);
+        PotentialPersonalSellTrade potentialTrade1 = new PotentialPersonalSellTrade(personalItem1, prioritizedPotentialTradeStats1);
+        PotentialPersonalSellTrade potentialTrade2 = new PotentialPersonalSellTrade(personalItem2, prioritizedPotentialTradeStats2);
 
         int result = potentialTrade1.compareTo(potentialTrade2);
 
@@ -165,9 +165,9 @@ class PotentialPersonalSellTradeTest {
 
     @Test
     public void getTradePriority_should_return_tradePriority() {
-        PotentialTradeStats potentialTradeStats = new PotentialTradeStats();
-        potentialTradeStats.setTradePriority(1L);
-        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(null, potentialTradeStats);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStats = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStats.setTradePriority(1L);
+        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(null, prioritizedPotentialTradeStats);
 
         assertEquals(1L, PotentialPersonalSellTrade.getTradePriority());
     }
@@ -219,9 +219,9 @@ class PotentialPersonalSellTradeTest {
 
     @Test
     public void getNewPrice_should_return_price() {
-        PotentialTradeStats potentialTradeStats = new PotentialTradeStats();
-        potentialTradeStats.setPrice(1);
-        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(null, potentialTradeStats);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStats = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStats.setPrice(1);
+        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(null, prioritizedPotentialTradeStats);
 
         assertEquals(1, PotentialPersonalSellTrade.getNewPrice());
     }
