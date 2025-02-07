@@ -3,6 +3,7 @@ package github.ricemonger.trades_manager.services.factories;
 import github.ricemonger.trades_manager.services.DTOs.PersonalItem;
 import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalBuyTrade;
 import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalSellTrade;
+import github.ricemonger.trades_manager.services.PotentialTradeStatsService;
 import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
 import github.ricemonger.utils.DTOs.common.PrioritizedPotentialTradeStats;
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
@@ -24,6 +25,8 @@ import static github.ricemonger.utils.enums.TradeCategory.Sell;
 public class PotentialTradeFactory {
 
     private final TradePriorityExpressionDeserializer tradePriorityExpressionDeserializer;
+
+    private final PotentialTradeStatsService potentialTradeStatsService;
 
     public List<PotentialPersonalSellTrade> getResultingPersonalSellTrades(String sellTradePriorityExpression, Collection<PersonalItem> personalItems, Collection<? extends ItemResaleLock> resaleLocks, Integer soldIn24h, int sellSlots, int sellLimit) {
 
@@ -76,7 +79,7 @@ public class PotentialTradeFactory {
                 continue;
             }
 
-            List<PotentialTradeStats> potentialSellTradesStats = personalItem.getPotentialSellTradesStats();
+            List<PotentialTradeStats> potentialSellTradesStats = potentialTradeStatsService.getPotentialSellTradesStatsOfItem(personalItem.getItem());
             for (PotentialTradeStats potentialTradeStats : potentialSellTradesStats) {
                 if (!potentialTradeStats.isValid()) {
                     continue;
@@ -109,13 +112,6 @@ public class PotentialTradeFactory {
                 Long tradePriority = tradePriorityExpressionDeserializer.calculateTradePriority(sellTradePriorityExpression, personalItem.getItem(), potentialTradeStats.getPrice(), potentialTradeStats.getTime());
 
                 potentialPersonalSellTrades.add(new PotentialPersonalSellTrade(personalItem, new PrioritizedPotentialTradeStats(potentialTradeStats, tradePriority)));
-            }
-
-            if (personalItem.getTradeAlreadyExists() && personalItem.getExistingTrade().getCategory() == Sell) {
-                PrioritizedPotentialTradeStats prioritizedPotentialTradeStats = new PrioritizedPotentialTradeStats(personalItem.getExistingTrade().getProposedPaymentPrice(), personalItem.getExistingTrade().getMinutesToTrade(), personalItem.getExistingTrade().getTradePriority());
-                if (prioritizedPotentialTradeStats.isValid()) {
-                    potentialPersonalSellTrades.add(new PotentialPersonalSellTrade(personalItem, prioritizedPotentialTradeStats));
-                }
             }
         }
 
@@ -179,7 +175,7 @@ public class PotentialTradeFactory {
                 continue;
             }
 
-            List<PotentialTradeStats> potentialBuyTradesStats = personalItem.getPotentialBuyTradesStatsOfItem();
+            List<PotentialTradeStats> potentialBuyTradesStats = potentialTradeStatsService.getPotentialBuyTradesStatsOfItem(personalItem.getItem());
             for (PotentialTradeStats potentialTradeStats : potentialBuyTradesStats) {
                 if (!potentialTradeStats.isValid()) {
                     continue;
@@ -208,13 +204,6 @@ public class PotentialTradeFactory {
                 Long tradePriority = tradePriorityExpressionDeserializer.calculateTradePriority(buyTradePriorityExpression, personalItem.getItem(), potentialTradeStats.getPrice(), potentialTradeStats.getTime());
 
                 potentialPersonalBuyTrades.add(new PotentialPersonalBuyTrade(personalItem, new PrioritizedPotentialTradeStats(potentialTradeStats, tradePriority)));
-            }
-
-            if (personalItem.getTradeAlreadyExists() && personalItem.getExistingTrade().getCategory() == Buy) {
-                PrioritizedPotentialTradeStats prioritizedPotentialTradeStats = new PrioritizedPotentialTradeStats(personalItem.getExistingTrade().getProposedPaymentPrice(), personalItem.getExistingTrade().getMinutesToTrade(), personalItem.getExistingTrade().getTradePriority());
-                if (prioritizedPotentialTradeStats.isValid()) {
-                    potentialPersonalBuyTrades.add(new PotentialPersonalBuyTrade(personalItem, prioritizedPotentialTradeStats));
-                }
             }
         }
 

@@ -109,11 +109,11 @@ public class UserFastSellTradesManager {
 
     public void executeFastSellCommands() {
         if (!fastSellCommands.isEmpty()) {
-            cancelAllCreateFastSellCommandsTasks();
+                cancelAllCreateFastSellCommandsTasks();
 
-            executeCommandsInOrder(fastSellCommands);
+                executeCommandsInOrder(fastSellCommands);
 
-            fastSellCommands.clear();
+                fastSellCommands.clear();
         }
     }
 

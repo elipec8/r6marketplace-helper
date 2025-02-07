@@ -66,6 +66,7 @@ public class ScheduledAllUbiUsersManager {
         List<PotentialPersonalSellTrade> resultingSellTrades;
         if (manageableUser.getSellTradesManagingEnabledFlag() != null && manageableUser.getSellTradesManagingEnabledFlag()) {
             resultingSellTrades = potentialTradeFactory.getResultingPersonalSellTrades(
+                    manageableUser.getSellTradePriorityExpression(),
                     personalItems,
                     manageableUser.getResaleLocks(),
                     manageableUser.getSoldIn24h(),
@@ -78,6 +79,7 @@ public class ScheduledAllUbiUsersManager {
         List<PotentialPersonalBuyTrade> resultingBuyTrades;
         if (manageableUser.getBuyTradesManagingEnabledFlag() != null && manageableUser.getBuyTradesManagingEnabledFlag()) {
             resultingBuyTrades = potentialTradeFactory.getResultingPersonalBuyTrades(
+                    manageableUser.getBuyTradePriorityExpression(),
                     personalItems,
                     manageableUser.getCreditAmount(),
                     manageableUser.getBoughtIn24h(),
@@ -95,7 +97,6 @@ public class ScheduledAllUbiUsersManager {
                 manageableUser.getId(),
                 manageableUser.toAuthorizationDTO(),
                 configTrades));
-
         for (TradeManagerCommand command : commands.stream().sorted().toList()) {
             tradeManagementCommandsExecutor.executeCommand(command);
         }

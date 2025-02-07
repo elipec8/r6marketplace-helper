@@ -2,6 +2,7 @@ package github.ricemonger.trades_manager.services.DTOs;
 
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
+import github.ricemonger.utils.DTOs.common.PrioritizedPotentialTradeStats;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.TradeOperationType;
@@ -12,6 +13,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+
+import static github.ricemonger.utils.enums.TradeCategory.Buy;
+import static github.ricemonger.utils.enums.TradeCategory.Sell;
 
 @Data
 @NoArgsConstructor
@@ -97,5 +101,23 @@ public class PersonalItem {
                Objects.equals(isOwned, other.isOwned) &&
                Objects.equals(tradeAlreadyExists, other.tradeAlreadyExists) &&
                existingTradesAreEqual;
+    }
+
+    public List<PotentialTradeStats> getPotentialBuyTradesStatsOfItem() {
+        if (personalItem.getTradeAlreadyExists() && personalItem.getExistingTrade().getCategory() == Buy) {
+            PrioritizedPotentialTradeStats prioritizedPotentialTradeStats = new PrioritizedPotentialTradeStats(personalItem.getExistingTrade().getProposedPaymentPrice(), personalItem.getExistingTrade().getMinutesToTrade(), personalItem.getExistingTrade().getTradePriority());
+            if (prioritizedPotentialTradeStats.isValid()) {
+                potentialPersonalBuyTrades.add(new PotentialPersonalBuyTrade(personalItem, prioritizedPotentialTradeStats));
+            }
+        }
+    }
+
+    public List<PotentialTradeStats> getPotentialSellTradesStats() {
+        if (personalItem.getTradeAlreadyExists() && personalItem.getExistingTrade().getCategory() == Sell) {
+            PrioritizedPotentialTradeStats prioritizedPotentialTradeStats = new PrioritizedPotentialTradeStats(personalItem.getExistingTrade().getProposedPaymentPrice(), personalItem.getExistingTrade().getMinutesToTrade(), personalItem.getExistingTrade().getTradePriority());
+            if (prioritizedPotentialTradeStats.isValid()) {
+                potentialPersonalSellTrades.add(new PotentialPersonalSellTrade(personalItem, prioritizedPotentialTradeStats));
+            }
+        }
     }
 }

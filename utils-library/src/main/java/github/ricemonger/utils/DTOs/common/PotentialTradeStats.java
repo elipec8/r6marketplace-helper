@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class PotentialTradeStats {
+public class PotentialTradeStats {
     private Integer price;
     private Integer time;
 
