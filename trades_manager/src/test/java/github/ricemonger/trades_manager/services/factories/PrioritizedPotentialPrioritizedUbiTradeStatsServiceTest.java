@@ -21,7 +21,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class PrioritizedPotentialTradeStatsServiceTest {
+class PrioritizedPotentialPrioritizedUbiTradeStatsServiceTest {
     @SpyBean
     private PotentialTradeStatsService potentialTradeStatsService;
     @MockBean

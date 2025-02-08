@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class CustomTradeByItemIdManagerEntityTest {
+class CustomPrioritizedUbiTradeByItemIdManagerEntityTest {
     @Test
     public void equals_should_return_true_if_same_object() {
         CustomTradeByItemIdManagerEntity manager = new CustomTradeByItemIdManagerEntity();

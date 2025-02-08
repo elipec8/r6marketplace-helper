@@ -64,6 +64,7 @@ public class ScheduledAllUbiUsersManager {
                 existingItems);
 
         List<PotentialPersonalSellTrade> resultingSellTrades;
+        List<PrioritizedUbiTrade> prioritizedCurrentSellTrades;
         if (manageableUser.getSellTradesManagingEnabledFlag() != null && manageableUser.getSellTradesManagingEnabledFlag()) {
             resultingSellTrades = potentialTradeFactory.getResultingPersonalSellTrades(
                     manageableUser.getSellTradePriorityExpression(),
@@ -72,11 +73,15 @@ public class ScheduledAllUbiUsersManager {
                     manageableUser.getSoldIn24h(),
                     configTrades.getSellSlots(),
                     configTrades.getSellLimit());
+            prioritizedCurrentSellTrades = potentialTradeFactory.prioritizeCurrentSellTrades(manageableUser.getSellTradePriorityExpression(), currentSellTrades);
         } else {
             resultingSellTrades = new ArrayList<>();
+            prioritizedCurrentSellTrades = new ArrayList<>();
+
         }
 
         List<PotentialPersonalBuyTrade> resultingBuyTrades;
+        List<PrioritizedUbiTrade> prioritizedCurrentBuyTrades;
         if (manageableUser.getBuyTradesManagingEnabledFlag() != null && manageableUser.getBuyTradesManagingEnabledFlag()) {
             resultingBuyTrades = potentialTradeFactory.getResultingPersonalBuyTrades(
                     manageableUser.getBuyTradePriorityExpression(),
@@ -85,15 +90,17 @@ public class ScheduledAllUbiUsersManager {
                     manageableUser.getBoughtIn24h(),
                     configTrades.getBuySlots(),
                     configTrades.getBuyLimit());
+            prioritizedCurrentBuyTrades = potentialTradeFactory.prioritizeCurrentBuyTrades(manageableUser.getBuyTradePriorityExpression(), currentBuyTrades);
         } else {
             resultingBuyTrades = new ArrayList<>();
+            prioritizedCurrentBuyTrades = new ArrayList<>();
         }
 
         List<TradeManagerCommand> commands = new ArrayList<>(tradeManagerCommandsFactory.createTradeManagerCommandsForUser(
                 resultingSellTrades,
-                currentSellTrades,
+                prioritizedCurrentSellTrades,
                 resultingBuyTrades,
-                currentBuyTrades,
+                prioritizedCurrentBuyTrades,
                 manageableUser.getId(),
                 manageableUser.toAuthorizationDTO(),
                 configTrades));

@@ -17,7 +17,7 @@ class UbiAccountStatsTest {
         stats1.setCreditAmount(3);
         stats1.setOwnedItemsIds(List.of("1"));
         stats1.setResaleLocks(List.of(new ItemResaleLock()));
-        stats1.setCurrentSellTrades(List.of(new Trade()));
+        stats1.setCurrentSellTrades(List.of(new PrioritizedUbiTrade()));
         stats1.setCurrentBuyTrades(List.of());
 
         UbiAccountStats stats2 = new UbiAccountStats();
@@ -42,7 +42,7 @@ class UbiAccountStatsTest {
         stats1.setCreditAmount(3);
         stats1.setOwnedItemsIds(List.of("1"));
         stats1.setResaleLocks(List.of(new ItemResaleLock()));
-        stats1.setCurrentSellTrades(List.of(new Trade()));
+        stats1.setCurrentSellTrades(List.of(new PrioritizedUbiTrade()));
         stats1.setCurrentBuyTrades(List.of());
 
         UbiAccountStats stats2 = new UbiAccountStats();
@@ -78,7 +78,7 @@ class UbiAccountStatsTest {
         stats1.setCreditAmount(3);
         stats1.setOwnedItemsIds(List.of("1"));
         stats1.setResaleLocks(List.of(new ItemResaleLock()));
-        stats1.setCurrentSellTrades(List.of(new Trade()));
+        stats1.setCurrentSellTrades(List.of(new PrioritizedUbiTrade()));
         stats1.setCurrentBuyTrades(List.of());
 
         UbiAccountStats stats2 = new UbiAccountStats();
@@ -88,7 +88,7 @@ class UbiAccountStatsTest {
         stats2.setCreditAmount(3);
         stats2.setOwnedItemsIds(List.of("1"));
         stats2.setResaleLocks(List.of(new ItemResaleLock()));
-        stats2.setCurrentSellTrades(List.of(new Trade()));
+        stats2.setCurrentSellTrades(List.of(new PrioritizedUbiTrade()));
         stats2.setCurrentBuyTrades(List.of());
 
         assertTrue(stats2.isFullyEqual(stats2));
@@ -103,7 +103,7 @@ class UbiAccountStatsTest {
         stats1.setCreditAmount(3);
         stats1.setOwnedItemsIds(List.of("1"));
         stats1.setResaleLocks(List.of(new ItemResaleLock()));
-        stats1.setCurrentSellTrades(List.of(new Trade()));
+        stats1.setCurrentSellTrades(List.of(new PrioritizedUbiTrade()));
         stats1.setCurrentBuyTrades(List.of());
 
         UbiAccountStats stats2 = new UbiAccountStats();
@@ -113,7 +113,7 @@ class UbiAccountStatsTest {
         stats2.setCreditAmount(3);
         stats2.setOwnedItemsIds(List.of("1"));
         stats2.setResaleLocks(List.of(new ItemResaleLock()));
-        stats2.setCurrentSellTrades(List.of(new Trade()));
+        stats2.setCurrentSellTrades(List.of(new PrioritizedUbiTrade()));
         stats2.setCurrentBuyTrades(List.of());
 
         stats1.setUbiProfileId("ubiProfileId1");
@@ -136,7 +136,7 @@ class UbiAccountStatsTest {
         stats1.setResaleLocks(List.of(new ItemResaleLock()));
         stats1.setCurrentSellTrades(null);
         assertFalse(stats2.isFullyEqual(stats1));
-        stats1.setCurrentSellTrades(List.of(new Trade()));
+        stats1.setCurrentSellTrades(List.of(new PrioritizedUbiTrade()));
         stats1.setCurrentBuyTrades(null);
         assertFalse(stats2.isFullyEqual(stats1));
     }

@@ -3,7 +3,7 @@ package github.ricemonger.trades_manager.postgres.services.entity_mappers.user;
 import github.ricemonger.trades_manager.postgres.custom_entities.items.CustomItemEntity;
 import github.ricemonger.trades_manager.postgres.custom_entities.manageable_users.CustomTradeEntity;
 import github.ricemonger.trades_manager.postgres.services.entity_mappers.item.ItemEntityMapper;
-import github.ricemonger.trades_manager.services.DTOs.Trade;
+import github.ricemonger.trades_manager.services.DTOs.PrioritizedUbiTrade;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class CustomTradeEntityMapperTest {
+class CustomPrioritizedUbiTradeEntityMapperTest {
     @Autowired
     private TradeEntityMapper tradeEntityMapper;
     @MockBean
@@ -48,7 +48,7 @@ class CustomTradeEntityMapperTest {
         entity.setMinutesToTrade(5);
         entity.setTradePriority(6L);
 
-        Trade result = tradeEntityMapper.createDTO(entity);
+        PrioritizedUbiTrade result = tradeEntityMapper.createDTO(entity);
 
         assertEquals("tradeId", result.getTradeId());
         assertEquals(TradeState.Created, result.getState());

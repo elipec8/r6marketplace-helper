@@ -8,7 +8,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class CustomTradeByFiltersManagerEntityTest {
+class CustomPrioritizedUbiTradeByFiltersManagerEntityTest {
     @Test
     public void equals_should_return_true_if_same() {
         CustomTradeByFiltersManagerEntity manager1 = new CustomTradeByFiltersManagerEntity();

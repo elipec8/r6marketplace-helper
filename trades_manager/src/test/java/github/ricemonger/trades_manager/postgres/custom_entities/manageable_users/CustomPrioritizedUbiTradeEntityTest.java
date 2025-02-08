@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class CustomTradeEntityTest {
+class CustomPrioritizedUbiTradeEntityTest {
 
     @Test
     public void equals_should_return_true_for_equal_id() {

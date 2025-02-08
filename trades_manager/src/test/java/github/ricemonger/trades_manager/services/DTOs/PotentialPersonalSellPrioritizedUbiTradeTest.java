@@ -8,18 +8,18 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PotentialPersonalBuyTradeTest {
+class PotentialPersonalSellPrioritizedUbiTradeTest {
 
     @Test
-    void getTradeCategory_should_return_buy() {
+    public void getTradeCategory_should_return_sell() {
         PersonalItem personalItem = new PersonalItem();
         PrioritizedPotentialTradeStats prioritizedPotentialTradeStats = new PrioritizedPotentialTradeStats();
-        PotentialPersonalBuyTrade potentialPersonalBuyTrade = new PotentialPersonalBuyTrade(personalItem, prioritizedPotentialTradeStats);
-        assertEquals(TradeCategory.Buy, potentialPersonalBuyTrade.getTradeCategory());
+        PotentialPersonalSellTrade potentialPersonalSellTrade = new PotentialPersonalSellTrade(personalItem, prioritizedPotentialTradeStats);
+        assertEquals(TradeCategory.Sell, potentialPersonalSellTrade.getTradeCategory());
     }
 
     @Test
-    public void compareTo_should_compare_by_new_price_asc_if_itemId_priority_equal() {
+    public void compareTo_should_compare_by_new_price_desc_if_itemId_priority_equal() {
         PersonalItem personalItem1 = new PersonalItem();
         personalItem1.setItem(new Item("itemId"));
         PrioritizedPotentialTradeStats prioritizedPotentialTradeStats1 = new PrioritizedPotentialTradeStats();
@@ -32,12 +32,12 @@ class PotentialPersonalBuyTradeTest {
         prioritizedPotentialTradeStats2.setPrice(5);
         personalItem2.setPriorityMultiplier(1);
         prioritizedPotentialTradeStats2.setTradePriority(1L);
-        PotentialPersonalBuyTrade potentialTrade1 = new PotentialPersonalBuyTrade(personalItem1, prioritizedPotentialTradeStats1);
-        PotentialPersonalBuyTrade potentialTrade2 = new PotentialPersonalBuyTrade(personalItem2, prioritizedPotentialTradeStats2);
+        PotentialPersonalSellTrade potentialTrade1 = new PotentialPersonalSellTrade(personalItem1, prioritizedPotentialTradeStats1);
+        PotentialPersonalSellTrade potentialTrade2 = new PotentialPersonalSellTrade(personalItem2, prioritizedPotentialTradeStats2);
 
         int result = potentialTrade1.compareTo(potentialTrade2);
 
-        assertEquals(-1, result);
+        assertEquals(1, result);
     }
 
     @Test
@@ -53,8 +53,8 @@ class PotentialPersonalBuyTradeTest {
         prioritizedPotentialTradeStats2.setTradePriority(1L);
         personalItem2.setPriorityMultiplier(1);
 
-        PotentialPersonalBuyTrade potentialTrade1 = new PotentialPersonalBuyTrade(personalItem1, prioritizedPotentialTradeStats1);
-        PotentialPersonalBuyTrade potentialTrade2 = new PotentialPersonalBuyTrade(personalItem2, prioritizedPotentialTradeStats2);
+        PotentialPersonalSellTrade potentialTrade1 = new PotentialPersonalSellTrade(personalItem1, prioritizedPotentialTradeStats1);
+        PotentialPersonalSellTrade potentialTrade2 = new PotentialPersonalSellTrade(personalItem2, prioritizedPotentialTradeStats2);
 
         int result = potentialTrade1.compareTo(potentialTrade2);
 
@@ -74,8 +74,8 @@ class PotentialPersonalBuyTradeTest {
         prioritizedPotentialTradeStats2.setTradePriority(5L);
         personalItem2.setPriorityMultiplier(1);
 
-        PotentialPersonalBuyTrade potentialTrade1 = new PotentialPersonalBuyTrade(personalItem1, prioritizedPotentialTradeStats1);
-        PotentialPersonalBuyTrade potentialTrade2 = new PotentialPersonalBuyTrade(personalItem2, prioritizedPotentialTradeStats2);
+        PotentialPersonalSellTrade potentialTrade1 = new PotentialPersonalSellTrade(personalItem1, prioritizedPotentialTradeStats1);
+        PotentialPersonalSellTrade potentialTrade2 = new PotentialPersonalSellTrade(personalItem2, prioritizedPotentialTradeStats2);
 
         int result = potentialTrade1.compareTo(potentialTrade2);
 
@@ -95,8 +95,8 @@ class PotentialPersonalBuyTradeTest {
         prioritizedPotentialTradeStats2.setTradePriority(5L);
         personalItem2.setPriorityMultiplier(3);
 
-        PotentialPersonalBuyTrade potentialTrade1 = new PotentialPersonalBuyTrade(personalItem1, prioritizedPotentialTradeStats1);
-        PotentialPersonalBuyTrade potentialTrade2 = new PotentialPersonalBuyTrade(personalItem2, prioritizedPotentialTradeStats2);
+        PotentialPersonalSellTrade potentialTrade1 = new PotentialPersonalSellTrade(personalItem1, prioritizedPotentialTradeStats1);
+        PotentialPersonalSellTrade potentialTrade2 = new PotentialPersonalSellTrade(personalItem2, prioritizedPotentialTradeStats2);
 
         int result = potentialTrade1.compareTo(potentialTrade2);
 
@@ -116,8 +116,8 @@ class PotentialPersonalBuyTradeTest {
         prioritizedPotentialTradeStats2.setTradePriority(-5L);
         personalItem2.setPriorityMultiplier(1);
 
-        PotentialPersonalBuyTrade potentialTrade1 = new PotentialPersonalBuyTrade(personalItem1, prioritizedPotentialTradeStats1);
-        PotentialPersonalBuyTrade potentialTrade2 = new PotentialPersonalBuyTrade(personalItem2, prioritizedPotentialTradeStats2);
+        PotentialPersonalSellTrade potentialTrade1 = new PotentialPersonalSellTrade(personalItem1, prioritizedPotentialTradeStats1);
+        PotentialPersonalSellTrade potentialTrade2 = new PotentialPersonalSellTrade(personalItem2, prioritizedPotentialTradeStats2);
 
         int result = potentialTrade1.compareTo(potentialTrade2);
 
@@ -137,8 +137,8 @@ class PotentialPersonalBuyTradeTest {
         prioritizedPotentialTradeStats2.setTradePriority(-5L);
         personalItem2.setPriorityMultiplier(1);
 
-        PotentialPersonalBuyTrade potentialTrade1 = new PotentialPersonalBuyTrade(personalItem1, prioritizedPotentialTradeStats1);
-        PotentialPersonalBuyTrade potentialTrade2 = new PotentialPersonalBuyTrade(personalItem2, prioritizedPotentialTradeStats2);
+        PotentialPersonalSellTrade potentialTrade1 = new PotentialPersonalSellTrade(personalItem1, prioritizedPotentialTradeStats1);
+        PotentialPersonalSellTrade potentialTrade2 = new PotentialPersonalSellTrade(personalItem2, prioritizedPotentialTradeStats2);
 
         int result = potentialTrade1.compareTo(potentialTrade2);
 
@@ -149,16 +149,16 @@ class PotentialPersonalBuyTradeTest {
     public void getPriorityMultiplier_should_return_priorityMultiplier() {
         PersonalItem personalItem = new PersonalItem();
         personalItem.setPriorityMultiplier(1);
-        PotentialPersonalBuyTrade PotentialPersonalBuyTrade = new PotentialPersonalBuyTrade(personalItem, null);
+        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(personalItem, null);
 
-        assertEquals(1, PotentialPersonalBuyTrade.getPriorityMultiplier());
+        assertEquals(1, PotentialPersonalSellTrade.getPriorityMultiplier());
     }
 
     @Test
     public void getPriorityMultiplier_should_return_null_when_personalItem_is_null() {
-        PotentialPersonalBuyTrade PotentialPersonalBuyTrade = new PotentialPersonalBuyTrade(null, null);
+        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(null, null);
 
-        Integer result = PotentialPersonalBuyTrade.getPriorityMultiplier();
+        Integer result = PotentialPersonalSellTrade.getPriorityMultiplier();
 
         assertNull(result);
     }
@@ -167,16 +167,16 @@ class PotentialPersonalBuyTradeTest {
     public void getTradePriority_should_return_tradePriority() {
         PrioritizedPotentialTradeStats prioritizedPotentialTradeStats = new PrioritizedPotentialTradeStats();
         prioritizedPotentialTradeStats.setTradePriority(1L);
-        PotentialPersonalBuyTrade PotentialPersonalBuyTrade = new PotentialPersonalBuyTrade(null, prioritizedPotentialTradeStats);
+        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(null, prioritizedPotentialTradeStats);
 
-        assertEquals(1L, PotentialPersonalBuyTrade.getTradePriority());
+        assertEquals(1L, PotentialPersonalSellTrade.getTradePriority());
     }
 
     @Test
     public void getTradePriority_should_return_null_when_potentialTradeStats_is_null() {
-        PotentialPersonalBuyTrade PotentialPersonalBuyTrade = new PotentialPersonalBuyTrade(null, null);
+        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(null, null);
 
-        Long result = PotentialPersonalBuyTrade.getTradePriority();
+        Long result = PotentialPersonalSellTrade.getTradePriority();
 
         assertNull(result);
     }
@@ -185,16 +185,16 @@ class PotentialPersonalBuyTradeTest {
     public void tradeForItemAlreadyExists_should_return_tradeAlreadyExists() {
         PersonalItem personalItem = new PersonalItem();
         personalItem.setTradeAlreadyExists(true);
-        PotentialPersonalBuyTrade PotentialPersonalBuyTrade = new PotentialPersonalBuyTrade(personalItem, null);
+        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(personalItem, null);
 
-        assertTrue(PotentialPersonalBuyTrade.tradeForItemAlreadyExists());
+        assertTrue(PotentialPersonalSellTrade.tradeForItemAlreadyExists());
     }
 
     @Test
     public void tradeForItemAlreadyExists_should_return_null_when_personalItem_is_null() {
-        PotentialPersonalBuyTrade PotentialPersonalBuyTrade = new PotentialPersonalBuyTrade(null, null);
+        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(null, null);
 
-        Boolean result = PotentialPersonalBuyTrade.tradeForItemAlreadyExists();
+        Boolean result = PotentialPersonalSellTrade.tradeForItemAlreadyExists();
 
         assertNull(result);
     }
@@ -203,16 +203,16 @@ class PotentialPersonalBuyTradeTest {
     public void getItemId_should_return_itemId() {
         PersonalItem personalItem = new PersonalItem();
         personalItem.setItem(new Item("itemId"));
-        PotentialPersonalBuyTrade PotentialPersonalBuyTrade = new PotentialPersonalBuyTrade(personalItem, null);
+        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(personalItem, null);
 
-        assertEquals("itemId", PotentialPersonalBuyTrade.getItemId());
+        assertEquals("itemId", PotentialPersonalSellTrade.getItemId());
     }
 
     @Test
     public void getItemId_should_return_null_when_personalItem_is_null() {
-        PotentialPersonalBuyTrade PotentialPersonalBuyTrade = new PotentialPersonalBuyTrade(null, null);
+        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(null, null);
 
-        String result = PotentialPersonalBuyTrade.getItemId();
+        String result = PotentialPersonalSellTrade.getItemId();
 
         assertNull(result);
     }
@@ -221,16 +221,16 @@ class PotentialPersonalBuyTradeTest {
     public void getNewPrice_should_return_price() {
         PrioritizedPotentialTradeStats prioritizedPotentialTradeStats = new PrioritizedPotentialTradeStats();
         prioritizedPotentialTradeStats.setPrice(1);
-        PotentialPersonalBuyTrade PotentialPersonalBuyTrade = new PotentialPersonalBuyTrade(null, prioritizedPotentialTradeStats);
+        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(null, prioritizedPotentialTradeStats);
 
-        assertEquals(1, PotentialPersonalBuyTrade.getNewPrice());
+        assertEquals(1, PotentialPersonalSellTrade.getNewPrice());
     }
 
     @Test
     public void getNewPrice_should_return_null_when_potentialTradeStats_is_null() {
-        PotentialPersonalBuyTrade PotentialPersonalBuyTrade = new PotentialPersonalBuyTrade(null, null);
+        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(null, null);
 
-        Integer result = PotentialPersonalBuyTrade.getNewPrice();
+        Integer result = PotentialPersonalSellTrade.getNewPrice();
 
         assertNull(result);
     }
@@ -238,20 +238,20 @@ class PotentialPersonalBuyTradeTest {
     @Test
     public void getOldPrice_should_return_proposedPaymentPrice() {
         PersonalItem personalItem = new PersonalItem();
-        Trade ubiTrade = new Trade();
-        ubiTrade.setUbiTrade(new UbiTrade());
-        ubiTrade.setProposedPaymentPrice(1);
-        personalItem.setExistingTrade(ubiTrade);
-        PotentialPersonalBuyTrade PotentialPersonalBuyTrade = new PotentialPersonalBuyTrade(personalItem, null);
+        PrioritizedUbiTrade ubiPrioritizedUbiTrade = new PrioritizedUbiTrade();
+        ubiPrioritizedUbiTrade.setUbiTrade(new UbiTrade());
+        ubiPrioritizedUbiTrade.setProposedPaymentPrice(1);
+        personalItem.setExistingTrade(ubiPrioritizedUbiTrade);
+        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(personalItem, null);
 
-        assertEquals(1, PotentialPersonalBuyTrade.getOldPrice());
+        assertEquals(1, PotentialPersonalSellTrade.getOldPrice());
     }
 
     @Test
     public void getOldPrice_should_return_null_when_personalItem_is_null() {
-        PotentialPersonalBuyTrade PotentialPersonalBuyTrade = new PotentialPersonalBuyTrade(null, null);
+        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(null, null);
 
-        Integer result = PotentialPersonalBuyTrade.getOldPrice();
+        Integer result = PotentialPersonalSellTrade.getOldPrice();
 
         assertNull(result);
     }
@@ -262,15 +262,16 @@ class PotentialPersonalBuyTradeTest {
         Item item = new Item();
         item.setName("name");
         personalItem.setItem(item);
-        PotentialPersonalBuyTrade PotentialPersonalBuyTrade = new PotentialPersonalBuyTrade(personalItem, null);
+        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(personalItem, null);
 
-        assertEquals("name", PotentialPersonalBuyTrade.getItemName());
+        assertEquals("name", PotentialPersonalSellTrade.getItemName());
     }
 
     @Test
     public void getItemName_should_return_null_when_personalItem_is_null() {
-        PotentialPersonalBuyTrade PotentialPersonalBuyTrade = new PotentialPersonalBuyTrade(null, null);
-        String result = PotentialPersonalBuyTrade.getItemName();
+        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(null, null);
+
+        String result = PotentialPersonalSellTrade.getItemName();
 
         assertNull(result);
     }
@@ -278,20 +279,20 @@ class PotentialPersonalBuyTradeTest {
     @Test
     public void getTradeId_should_return_tradeId() {
         PersonalItem personalItem = new PersonalItem();
-        Trade ubiTrade = new Trade();
-        ubiTrade.setUbiTrade(new UbiTrade());
-        ubiTrade.setTradeId("tradeId");
-        personalItem.setExistingTrade(ubiTrade);
-        PotentialPersonalBuyTrade PotentialPersonalBuyTrade = new PotentialPersonalBuyTrade(personalItem, null);
+        PrioritizedUbiTrade ubiPrioritizedUbiTrade = new PrioritizedUbiTrade();
+        ubiPrioritizedUbiTrade.setUbiTrade(new UbiTrade());
+        ubiPrioritizedUbiTrade.setTradeId("tradeId");
+        personalItem.setExistingTrade(ubiPrioritizedUbiTrade);
+        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(personalItem, null);
 
-        assertEquals("tradeId", PotentialPersonalBuyTrade.getTradeId());
+        assertEquals("tradeId", PotentialPersonalSellTrade.getTradeId());
     }
 
     @Test
     public void getTradeId_should_return_null_when_personalItem_is_null() {
-        PotentialPersonalBuyTrade PotentialPersonalBuyTrade = new PotentialPersonalBuyTrade(null, null);
+        PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(null, null);
 
-        String result = PotentialPersonalBuyTrade.getTradeId();
+        String result = PotentialPersonalSellTrade.getTradeId();
 
         assertNull(result);
     }

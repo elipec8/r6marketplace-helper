@@ -116,10 +116,10 @@ class ManageableUserTest {
     @Test
     public void getCurrentSellTrades_should_return_currentSellTrades_when_ubiAccountStats_is_not_null() {
         ManageableUser manageableUser = new ManageableUser();
-        manageableUser.setUbiAccountStats(new UbiAccountStats("ubiProfileId", 0, 0, 0, List.of(), List.of(), List.of(new Trade()),
+        manageableUser.setUbiAccountStats(new UbiAccountStats("ubiProfileId", 0, 0, 0, List.of(), List.of(), List.of(new PrioritizedUbiTrade()),
                 List.of()));
 
-        assertEquals(List.of(new Trade()), manageableUser.getCurrentSellTrades());
+        assertEquals(List.of(new PrioritizedUbiTrade()), manageableUser.getCurrentSellTrades());
     }
 
     @Test
@@ -133,9 +133,9 @@ class ManageableUserTest {
     public void getCurrentBuyTrades_should_return_currentBuyTrades_when_ubiAccountStats_is_not_null() {
         ManageableUser manageableUser = new ManageableUser();
         manageableUser.setUbiAccountStats(new UbiAccountStats("ubiProfileId", 0, 0, 0, List.of(), List.of(), List.of(),
-                List.of(new Trade())));
+                List.of(new PrioritizedUbiTrade())));
 
-        assertEquals(List.of(new Trade()), manageableUser.getCurrentBuyTrades());
+        assertEquals(List.of(new PrioritizedUbiTrade()), manageableUser.getCurrentBuyTrades());
     }
 
     @Test

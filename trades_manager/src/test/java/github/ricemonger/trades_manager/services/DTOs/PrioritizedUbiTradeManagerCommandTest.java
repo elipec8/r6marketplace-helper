@@ -4,7 +4,7 @@ import github.ricemonger.utils.enums.CentralTradeManagerCommandType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class TradeManagerCommandTest {
+class PrioritizedUbiTradeManagerCommandTest {
 
     @Test
     public void compareTo_should_compareByCommandType_only() {

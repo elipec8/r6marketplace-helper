@@ -3,10 +3,12 @@ package github.ricemonger.trades_manager.services.factories;
 import github.ricemonger.trades_manager.services.DTOs.PersonalItem;
 import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalBuyTrade;
 import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalSellTrade;
+import github.ricemonger.trades_manager.services.DTOs.PrioritizedUbiTrade;
 import github.ricemonger.trades_manager.services.PotentialTradeStatsService;
 import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
 import github.ricemonger.utils.DTOs.common.PrioritizedPotentialTradeStats;
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
+import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.TradeOperationType;
 import github.ricemonger.utils.services.calculators.TradePriorityExpressionDeserializer;
 import lombok.RequiredArgsConstructor;
@@ -208,5 +210,13 @@ public class PotentialTradeFactory {
         }
 
         return potentialPersonalBuyTrades;
+    }
+
+    public List<PrioritizedUbiTrade> prioritizeCurrentSellTrades(String sellTradePriorityExpression, List<UbiTrade> currentSellTrades) {
+
+    }
+
+    public List<PrioritizedUbiTrade> prioritizeCurrentBuyTrades(String buyTradePriorityExpression, List<UbiTrade> currentBuyTrades) {
+
     }
 }

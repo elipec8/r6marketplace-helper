@@ -7,7 +7,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class CustomCustomTradeByFiltersManagerEntityIdTest {
+class CustomCustomPrioritizedUbiTradeByFiltersManagerEntityIdTest {
     @Test
     public void hashCode_should_return_same_hash_for_equal_objects() {
         CustomManageableUserEntity user1 = new CustomManageableUserEntity();

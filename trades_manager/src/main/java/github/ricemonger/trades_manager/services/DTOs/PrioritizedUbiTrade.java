@@ -14,7 +14,7 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Trade {
+public class PrioritizedUbiTrade {
 
     private UbiTrade ubiTrade = new UbiTrade();
 
@@ -22,7 +22,7 @@ public class Trade {
 
     private Long tradePriority;
 
-    public Trade(String tradeId, TradeState state, TradeCategory category, LocalDateTime expiresAt, LocalDateTime lastModifiedAt, Item item, Integer successPaymentPrice, Integer successPaymentFee, Integer proposedPaymentPrice, Integer proposedPaymentFee, Integer minutesToTrade, Long tradePriority) {
+    public PrioritizedUbiTrade(String tradeId, TradeState state, TradeCategory category, LocalDateTime expiresAt, LocalDateTime lastModifiedAt, Item item, Integer successPaymentPrice, Integer successPaymentFee, Integer proposedPaymentPrice, Integer proposedPaymentFee, Integer minutesToTrade, Long tradePriority) {
         this.ubiTrade = new UbiTrade(tradeId, state, category, expiresAt, lastModifiedAt, item, successPaymentPrice, successPaymentFee, proposedPaymentPrice, proposedPaymentFee);
         this.minutesToTrade = minutesToTrade;
         this.tradePriority = tradePriority;
@@ -92,13 +92,13 @@ public class Trade {
         return ubiTrade == null ? null : ubiTrade.getItemName();
     }
 
-    public boolean isFullyEqual(Trade existingTrade) {
-        if (existingTrade == null) {
+    public boolean isFullyEqual(PrioritizedUbiTrade existingPrioritizedUbiTrade) {
+        if (existingPrioritizedUbiTrade == null) {
             return false;
         } else {
-            return Objects.equals(minutesToTrade, existingTrade.minutesToTrade) &&
-                   Objects.equals(tradePriority, existingTrade.tradePriority) &&
-                   ubiTrade.isFullyEqual(existingTrade.ubiTrade);
+            return Objects.equals(minutesToTrade, existingPrioritizedUbiTrade.minutesToTrade) &&
+                   Objects.equals(tradePriority, existingPrioritizedUbiTrade.tradePriority) &&
+                   ubiTrade.isFullyEqual(existingPrioritizedUbiTrade.ubiTrade);
         }
     }
 }

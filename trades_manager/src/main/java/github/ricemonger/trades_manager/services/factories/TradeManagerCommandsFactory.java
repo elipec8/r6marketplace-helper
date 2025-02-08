@@ -2,7 +2,7 @@ package github.ricemonger.trades_manager.services.factories;
 
 import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalBuyTrade;
 import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalSellTrade;
-import github.ricemonger.trades_manager.services.DTOs.Trade;
+import github.ricemonger.trades_manager.services.DTOs.PrioritizedUbiTrade;
 import github.ricemonger.trades_manager.services.DTOs.TradeManagerCommand;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
@@ -18,9 +18,9 @@ import java.util.*;
 public class TradeManagerCommandsFactory {
 
     public List<TradeManagerCommand> createTradeManagerCommandsForUser(Collection<PotentialPersonalSellTrade> resultingSellTrades,
-                                                                       Collection<UbiTrade> currentSellTrades,
+                                                                       Collection<PrioritizedUbiTrade> prioritizedCurrentSellTrades,
                                                                        Collection<PotentialPersonalBuyTrade> resultingBuyTrades,
-                                                                       Collection<UbiTrade> currentBuyTrades,
+                                                                       Collection<PrioritizedUbiTrade> prioritizedCurrentBuyTrades,
                                                                        Long userId,
                                                                        AuthorizationDTO authorizationDTO,
                                                                        ConfigTrades configTrades) {
@@ -29,8 +29,8 @@ public class TradeManagerCommandsFactory {
         int sellOrdersCreated = 0;
         int buyOrdersCreated = 0;
 
-        int sellOrdersSlotsLeft = configTrades.getSellSlots() - currentSellTrades.size();
-        int buyOrdersSlotsLeft = configTrades.getBuySlots() - currentBuyTrades.size();
+        int sellOrdersSlotsLeft = configTrades.getSellSlots() - prioritizedCurrentSellTrades.size();
+        int buyOrdersSlotsLeft = configTrades.getBuySlots() - prioritizedCurrentBuyTrades.size();
 
         for (PotentialPersonalSellTrade sellTrade : resultingSellTrades) {
             if (sellTrade.tradeForItemAlreadyExists()) {
@@ -47,9 +47,9 @@ public class TradeManagerCommandsFactory {
             }
         }
 
-        for (Trade currentSellTrade : currentSellTrades.stream().sorted(new Comparator<Trade>() {
+        for (PrioritizedUbiTrade currentSellPrioritizedUbiTrade : prioritizedCurrentSellTrades.stream().sorted(new Comparator<PrioritizedUbiTrade>() {
             @Override
-            public int compare(Trade o1, Trade o2) {
+            public int compare(PrioritizedUbiTrade o1, PrioritizedUbiTrade o2) {
                 Long tradePriority1 = o1.getTradePriority() == null ? Long.MIN_VALUE : o1.getTradePriority();
                 Long tradePriority2 = o2.getTradePriority() == null ? Long.MIN_VALUE : o2.getTradePriority();
 
@@ -57,11 +57,11 @@ public class TradeManagerCommandsFactory {
             }
         }).toList()) {
             if (sellOrdersSlotsLeft < sellOrdersCreated && resultingSellTrades.stream().noneMatch(sellTrade -> sellTrade.getTradeId() != null && Objects.equals(sellTrade.getTradeId(),
-                    currentSellTrade.getTradeId()))) {
+                    currentSellPrioritizedUbiTrade.getTradeId()))) {
                 sellOrdersSlotsLeft++;
                 commands.add(new TradeManagerCommand(userId, authorizationDTO,
-                        CentralTradeManagerCommandType.SELL_ORDER_CANCEL, currentSellTrade.getItemId(), currentSellTrade.getItemName(),
-                        currentSellTrade.getTradeId(), currentSellTrade.getProposedPaymentPrice()));
+                        CentralTradeManagerCommandType.SELL_ORDER_CANCEL, currentSellPrioritizedUbiTrade.getItemId(), currentSellPrioritizedUbiTrade.getItemName(),
+                        currentSellPrioritizedUbiTrade.getTradeId(), currentSellPrioritizedUbiTrade.getProposedPaymentPrice()));
             }
         }
 
@@ -80,9 +80,9 @@ public class TradeManagerCommandsFactory {
             }
         }
 
-        for (Trade currentBuyTrade : currentBuyTrades.stream().sorted(new Comparator<Trade>() {
+        for (PrioritizedUbiTrade currentBuyPrioritizedUbiTrade : prioritizedCurrentBuyTrades.stream().sorted(new Comparator<PrioritizedUbiTrade>() {
             @Override
-            public int compare(Trade o1, Trade o2) {
+            public int compare(PrioritizedUbiTrade o1, PrioritizedUbiTrade o2) {
                 Long tradePriority1 = o1.getTradePriority() == null ? Long.MIN_VALUE : o1.getTradePriority();
                 Long tradePriority2 = o2.getTradePriority() == null ? Long.MIN_VALUE : o2.getTradePriority();
 
@@ -90,11 +90,11 @@ public class TradeManagerCommandsFactory {
             }
         }).toList()) {
             if (buyOrdersSlotsLeft < buyOrdersCreated && resultingBuyTrades.stream().noneMatch(buyTrade -> buyTrade.getTradeId() != null && Objects.equals(buyTrade.getTradeId(),
-                    currentBuyTrade.getTradeId()))) {
+                    currentBuyPrioritizedUbiTrade.getTradeId()))) {
                 buyOrdersSlotsLeft++;
                 commands.add(new TradeManagerCommand(userId, authorizationDTO,
-                        CentralTradeManagerCommandType.BUY_ORDER_CANCEL, currentBuyTrade.getItemId(), currentBuyTrade.getItemName(),
-                        currentBuyTrade.getTradeId(), currentBuyTrade.getProposedPaymentPrice()));
+                        CentralTradeManagerCommandType.BUY_ORDER_CANCEL, currentBuyPrioritizedUbiTrade.getItemId(), currentBuyPrioritizedUbiTrade.getItemName(),
+                        currentBuyPrioritizedUbiTrade.getTradeId(), currentBuyPrioritizedUbiTrade.getProposedPaymentPrice()));
             }
         }
 

@@ -3,7 +3,7 @@ package github.ricemonger.trades_manager.services.factories;
 import github.ricemonger.trades_manager.services.DTOs.PersonalItem;
 import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalBuyTrade;
 import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalSellTrade;
-import github.ricemonger.trades_manager.services.DTOs.Trade;
+import github.ricemonger.trades_manager.services.DTOs.PrioritizedUbiTrade;
 import github.ricemonger.trades_manager.services.PotentialTradeStatsService;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.PrioritizedPotentialTradeStats;
@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class PotentialTradeFactoryTest {
+class PotentialPrioritizedUbiTradeFactoryTest {
     @SpyBean
     private PotentialTradeFactory potentialTradeFactory;
     @MockBean
@@ -35,9 +35,9 @@ class PotentialTradeFactoryTest {
         personalItemExistingTrade1.setItem(new Item("1"));
         personalItemExistingTrade1.setPriorityMultiplier(1);
         personalItemExistingTrade1.setTradeAlreadyExists(true);
-        Trade ubiTrade1 = new Trade();
-        ubiTrade1.setProposedPaymentPrice(10);
-        personalItemExistingTrade1.setExistingTrade(ubiTrade1);
+        PrioritizedUbiTrade ubiPrioritizedUbiTrade1 = new PrioritizedUbiTrade();
+        ubiPrioritizedUbiTrade1.setProposedPaymentPrice(10);
+        personalItemExistingTrade1.setExistingTrade(ubiPrioritizedUbiTrade1);
 
         PersonalItem personalItemLowerPriority2 = new PersonalItem();
         personalItemLowerPriority2.setItem(new Item("2"));
@@ -78,9 +78,9 @@ class PotentialTradeFactoryTest {
         personalItemExistingTrade1.setItem(new Item("1"));
         personalItemExistingTrade1.setPriorityMultiplier(1);
         personalItemExistingTrade1.setTradeAlreadyExists(true);
-        Trade ubiTrade1 = new Trade();
-        ubiTrade1.setProposedPaymentPrice(10);
-        personalItemExistingTrade1.setExistingTrade(ubiTrade1);
+        PrioritizedUbiTrade ubiPrioritizedUbiTrade1 = new PrioritizedUbiTrade();
+        ubiPrioritizedUbiTrade1.setProposedPaymentPrice(10);
+        personalItemExistingTrade1.setExistingTrade(ubiPrioritizedUbiTrade1);
 
         PersonalItem personalItemLowerPriority2 = new PersonalItem();
         personalItemLowerPriority2.setItem(new Item("2"));
@@ -121,9 +121,9 @@ class PotentialTradeFactoryTest {
         personalItemExistingTrade1.setItem(new Item("1"));
         personalItemExistingTrade1.setPriorityMultiplier(1);
         personalItemExistingTrade1.setTradeAlreadyExists(true);
-        Trade ubiTrade1 = new Trade();
-        ubiTrade1.setProposedPaymentPrice(10);
-        personalItemExistingTrade1.setExistingTrade(ubiTrade1);
+        PrioritizedUbiTrade ubiPrioritizedUbiTrade1 = new PrioritizedUbiTrade();
+        ubiPrioritizedUbiTrade1.setProposedPaymentPrice(10);
+        personalItemExistingTrade1.setExistingTrade(ubiPrioritizedUbiTrade1);
 
         PersonalItem personalItemLowerPriority2 = new PersonalItem();
         personalItemLowerPriority2.setItem(new Item("2"));
@@ -181,13 +181,13 @@ class PotentialTradeFactoryTest {
         alreadyExistingTradeWithWrongCategoryPersonalItem.setItem(new Item("3"));
         alreadyExistingTradeWithWrongCategoryPersonalItem.setIsOwned(true);
         alreadyExistingTradeWithWrongCategoryPersonalItem.setTradeOperationType(TradeOperationType.BUY_AND_SELL);
-        Trade ubiTrade1 = new Trade();
-        ubiTrade1.setCategory(TradeCategory.Buy);
-        ubiTrade1.setProposedPaymentPrice(30);
-        ubiTrade1.setMinutesToTrade(20);
-        ubiTrade1.setTradePriority(100L);
+        PrioritizedUbiTrade ubiPrioritizedUbiTrade1 = new PrioritizedUbiTrade();
+        ubiPrioritizedUbiTrade1.setCategory(TradeCategory.Buy);
+        ubiPrioritizedUbiTrade1.setProposedPaymentPrice(30);
+        ubiPrioritizedUbiTrade1.setMinutesToTrade(20);
+        ubiPrioritizedUbiTrade1.setTradePriority(100L);
         alreadyExistingTradeWithWrongCategoryPersonalItem.setTradeAlreadyExists(true);
-        alreadyExistingTradeWithWrongCategoryPersonalItem.setExistingTrade(ubiTrade1);
+        alreadyExistingTradeWithWrongCategoryPersonalItem.setExistingTrade(ubiPrioritizedUbiTrade1);
         alreadyExistingTradeWithWrongCategoryPersonalItem.setSellBoundaryPrice(25);
         PrioritizedPotentialTradeStats prioritizedPotentialTradeStats3 = new PrioritizedPotentialTradeStats(25, 8, 9L);
         PrioritizedPotentialTradeStats prioritizedPotentialTradeStats4 = new PrioritizedPotentialTradeStats(26, 11, 12L);
@@ -199,13 +199,13 @@ class PotentialTradeFactoryTest {
         alreadyExistingTradeWithProperCategoryPersonalItem.setItem(new Item("4"));
         alreadyExistingTradeWithProperCategoryPersonalItem.setIsOwned(true);
         alreadyExistingTradeWithProperCategoryPersonalItem.setTradeOperationType(TradeOperationType.SELL);
-        Trade ubiTrade2 = new Trade();
-        ubiTrade2.setCategory(TradeCategory.Sell);
-        ubiTrade2.setProposedPaymentPrice(33);
-        ubiTrade2.setMinutesToTrade(20);
-        ubiTrade2.setTradePriority(100L);
+        PrioritizedUbiTrade ubiPrioritizedUbiTrade2 = new PrioritizedUbiTrade();
+        ubiPrioritizedUbiTrade2.setCategory(TradeCategory.Sell);
+        ubiPrioritizedUbiTrade2.setProposedPaymentPrice(33);
+        ubiPrioritizedUbiTrade2.setMinutesToTrade(20);
+        ubiPrioritizedUbiTrade2.setTradePriority(100L);
         alreadyExistingTradeWithProperCategoryPersonalItem.setTradeAlreadyExists(true);
-        alreadyExistingTradeWithProperCategoryPersonalItem.setExistingTrade(ubiTrade2);
+        alreadyExistingTradeWithProperCategoryPersonalItem.setExistingTrade(ubiPrioritizedUbiTrade2);
         alreadyExistingTradeWithProperCategoryPersonalItem.setSellBoundaryPrice(44);
         alreadyExistingTradeWithProperCategoryPersonalItem.getItem().setMonthMedianPrice(30);
         alreadyExistingTradeWithProperCategoryPersonalItem.setMinMedianPriceDifference(14);
@@ -263,9 +263,9 @@ class PotentialTradeFactoryTest {
         personalItemExistingTrade1.setItem(new Item("1"));
         personalItemExistingTrade1.setPriorityMultiplier(1);
         personalItemExistingTrade1.setTradeAlreadyExists(true);
-        Trade ubiTrade1 = new Trade();
-        ubiTrade1.setProposedPaymentPrice(10);
-        personalItemExistingTrade1.setExistingTrade(ubiTrade1);
+        PrioritizedUbiTrade ubiPrioritizedUbiTrade1 = new PrioritizedUbiTrade();
+        ubiPrioritizedUbiTrade1.setProposedPaymentPrice(10);
+        personalItemExistingTrade1.setExistingTrade(ubiPrioritizedUbiTrade1);
 
         PersonalItem personalItemLowerPriority2 = new PersonalItem();
         personalItemLowerPriority2.setItem(new Item("2"));
@@ -308,9 +308,9 @@ class PotentialTradeFactoryTest {
         personalItemExistingTrade1.setItem(new Item("1"));
         personalItemExistingTrade1.setPriorityMultiplier(1);
         personalItemExistingTrade1.setTradeAlreadyExists(true);
-        Trade ubiTrade1 = new Trade();
-        ubiTrade1.setProposedPaymentPrice(10);
-        personalItemExistingTrade1.setExistingTrade(ubiTrade1);
+        PrioritizedUbiTrade ubiPrioritizedUbiTrade1 = new PrioritizedUbiTrade();
+        ubiPrioritizedUbiTrade1.setProposedPaymentPrice(10);
+        personalItemExistingTrade1.setExistingTrade(ubiPrioritizedUbiTrade1);
 
         PersonalItem personalItemLowerPriority2 = new PersonalItem();
         personalItemLowerPriority2.setItem(new Item("2"));
@@ -351,9 +351,9 @@ class PotentialTradeFactoryTest {
         personalItemExistingTrade1.setItem(new Item("1"));
         personalItemExistingTrade1.setPriorityMultiplier(1);
         personalItemExistingTrade1.setTradeAlreadyExists(true);
-        Trade ubiTrade1 = new Trade();
-        ubiTrade1.setProposedPaymentPrice(10);
-        personalItemExistingTrade1.setExistingTrade(ubiTrade1);
+        PrioritizedUbiTrade ubiPrioritizedUbiTrade1 = new PrioritizedUbiTrade();
+        ubiPrioritizedUbiTrade1.setProposedPaymentPrice(10);
+        personalItemExistingTrade1.setExistingTrade(ubiPrioritizedUbiTrade1);
 
         PersonalItem personalItemLowerPriority2 = new PersonalItem();
         personalItemLowerPriority2.setItem(new Item("2"));
@@ -393,9 +393,9 @@ class PotentialTradeFactoryTest {
         personalItemExistingTrade1.setItem(new Item("1"));
         personalItemExistingTrade1.setPriorityMultiplier(1);
         personalItemExistingTrade1.setTradeAlreadyExists(true);
-        Trade ubiTrade1 = new Trade();
-        ubiTrade1.setProposedPaymentPrice(10);
-        personalItemExistingTrade1.setExistingTrade(ubiTrade1);
+        PrioritizedUbiTrade ubiPrioritizedUbiTrade1 = new PrioritizedUbiTrade();
+        ubiPrioritizedUbiTrade1.setProposedPaymentPrice(10);
+        personalItemExistingTrade1.setExistingTrade(ubiPrioritizedUbiTrade1);
 
         PersonalItem personalItemLowerPriority2 = new PersonalItem();
         personalItemLowerPriority2.setItem(new Item("2"));
@@ -445,13 +445,13 @@ class PotentialTradeFactoryTest {
         alreadyExistingTradeWithWrongCategoryPersonalItem.setItem(new Item("3"));
         alreadyExistingTradeWithWrongCategoryPersonalItem.setIsOwned(false);
         alreadyExistingTradeWithWrongCategoryPersonalItem.setTradeOperationType(TradeOperationType.BUY_AND_SELL);
-        Trade ubiTrade1 = new Trade();
-        ubiTrade1.setCategory(TradeCategory.Sell);
-        ubiTrade1.setProposedPaymentPrice(30);
-        ubiTrade1.setMinutesToTrade(20);
-        ubiTrade1.setTradePriority(100L);
+        PrioritizedUbiTrade ubiPrioritizedUbiTrade1 = new PrioritizedUbiTrade();
+        ubiPrioritizedUbiTrade1.setCategory(TradeCategory.Sell);
+        ubiPrioritizedUbiTrade1.setProposedPaymentPrice(30);
+        ubiPrioritizedUbiTrade1.setMinutesToTrade(20);
+        ubiPrioritizedUbiTrade1.setTradePriority(100L);
         alreadyExistingTradeWithWrongCategoryPersonalItem.setTradeAlreadyExists(true);
-        alreadyExistingTradeWithWrongCategoryPersonalItem.setExistingTrade(ubiTrade1);
+        alreadyExistingTradeWithWrongCategoryPersonalItem.setExistingTrade(ubiPrioritizedUbiTrade1);
         alreadyExistingTradeWithWrongCategoryPersonalItem.setBuyBoundaryPrice(25);
         PrioritizedPotentialTradeStats prioritizedPotentialTradeStats3 = new PrioritizedPotentialTradeStats(25, 8, 9L);
         PrioritizedPotentialTradeStats prioritizedPotentialTradeStats4 = new PrioritizedPotentialTradeStats(24, 11, 12L);
@@ -463,13 +463,13 @@ class PotentialTradeFactoryTest {
         alreadyExistingTradeWithProperCategoryPersonalItem.setItem(new Item("4"));
         alreadyExistingTradeWithProperCategoryPersonalItem.setIsOwned(false);
         alreadyExistingTradeWithProperCategoryPersonalItem.setTradeOperationType(TradeOperationType.BUY);
-        Trade ubiTrade2 = new Trade();
-        ubiTrade2.setCategory(TradeCategory.Buy);
-        ubiTrade2.setProposedPaymentPrice(30);
-        ubiTrade2.setMinutesToTrade(20);
-        ubiTrade2.setTradePriority(100L);
+        PrioritizedUbiTrade ubiPrioritizedUbiTrade2 = new PrioritizedUbiTrade();
+        ubiPrioritizedUbiTrade2.setCategory(TradeCategory.Buy);
+        ubiPrioritizedUbiTrade2.setProposedPaymentPrice(30);
+        ubiPrioritizedUbiTrade2.setMinutesToTrade(20);
+        ubiPrioritizedUbiTrade2.setTradePriority(100L);
         alreadyExistingTradeWithProperCategoryPersonalItem.setTradeAlreadyExists(true);
-        alreadyExistingTradeWithProperCategoryPersonalItem.setExistingTrade(ubiTrade2);
+        alreadyExistingTradeWithProperCategoryPersonalItem.setExistingTrade(ubiPrioritizedUbiTrade2);
         alreadyExistingTradeWithProperCategoryPersonalItem.setBuyBoundaryPrice(25);
         alreadyExistingTradeWithProperCategoryPersonalItem.getItem().setMonthMedianPrice(30);
         alreadyExistingTradeWithProperCategoryPersonalItem.setMinMedianPriceDifference(10);
@@ -487,13 +487,13 @@ class PotentialTradeFactoryTest {
         nullPriceExistingTradePersonalItem.setItem(new Item("6"));
         nullPriceExistingTradePersonalItem.setIsOwned(false);
         nullPriceExistingTradePersonalItem.setTradeOperationType(TradeOperationType.BUY);
-        Trade ubiTrade3 = new Trade();
-        ubiTrade3.setCategory(TradeCategory.Buy);
-        ubiTrade3.setProposedPaymentPrice(null);
-        ubiTrade3.setMinutesToTrade(20);
-        ubiTrade3.setTradePriority(100L);
+        PrioritizedUbiTrade ubiPrioritizedUbiTrade3 = new PrioritizedUbiTrade();
+        ubiPrioritizedUbiTrade3.setCategory(TradeCategory.Buy);
+        ubiPrioritizedUbiTrade3.setProposedPaymentPrice(null);
+        ubiPrioritizedUbiTrade3.setMinutesToTrade(20);
+        ubiPrioritizedUbiTrade3.setTradePriority(100L);
         nullPriceExistingTradePersonalItem.setTradeAlreadyExists(true);
-        nullPriceExistingTradePersonalItem.setExistingTrade(ubiTrade3);
+        nullPriceExistingTradePersonalItem.setExistingTrade(ubiPrioritizedUbiTrade3);
         nullPriceExistingTradePersonalItem.setBuyBoundaryPrice(25);
         nullPriceExistingTradePersonalItem.getItem().setMonthMedianPrice(30);
         nullPriceExistingTradePersonalItem.setMinMedianPriceDifference(10);
@@ -505,13 +505,13 @@ class PotentialTradeFactoryTest {
         nullTimeExistingTradePersonalItem.setItem(new Item("7"));
         nullTimeExistingTradePersonalItem.setIsOwned(false);
         nullTimeExistingTradePersonalItem.setTradeOperationType(TradeOperationType.BUY);
-        Trade ubiTrade4 = new Trade();
-        ubiTrade4.setCategory(TradeCategory.Buy);
-        ubiTrade4.setProposedPaymentPrice(10);
-        ubiTrade4.setMinutesToTrade(null);
-        ubiTrade4.setTradePriority(100L);
+        PrioritizedUbiTrade ubiPrioritizedUbiTrade4 = new PrioritizedUbiTrade();
+        ubiPrioritizedUbiTrade4.setCategory(TradeCategory.Buy);
+        ubiPrioritizedUbiTrade4.setProposedPaymentPrice(10);
+        ubiPrioritizedUbiTrade4.setMinutesToTrade(null);
+        ubiPrioritizedUbiTrade4.setTradePriority(100L);
         nullTimeExistingTradePersonalItem.setTradeAlreadyExists(true);
-        nullTimeExistingTradePersonalItem.setExistingTrade(ubiTrade4);
+        nullTimeExistingTradePersonalItem.setExistingTrade(ubiPrioritizedUbiTrade4);
         nullTimeExistingTradePersonalItem.setBuyBoundaryPrice(25);
         nullTimeExistingTradePersonalItem.getItem().setMonthMedianPrice(30);
         nullTimeExistingTradePersonalItem.setMinMedianPriceDifference(10);
@@ -523,13 +523,13 @@ class PotentialTradeFactoryTest {
         nullPriorityExistingTradePersonalItem.setItem(new Item("8"));
         nullPriorityExistingTradePersonalItem.setIsOwned(false);
         nullPriorityExistingTradePersonalItem.setTradeOperationType(TradeOperationType.BUY);
-        Trade ubiTrade5 = new Trade();
-        ubiTrade5.setCategory(TradeCategory.Buy);
-        ubiTrade5.setProposedPaymentPrice(10);
-        ubiTrade5.setMinutesToTrade(20);
-        ubiTrade5.setTradePriority(null);
+        PrioritizedUbiTrade ubiPrioritizedUbiTrade5 = new PrioritizedUbiTrade();
+        ubiPrioritizedUbiTrade5.setCategory(TradeCategory.Buy);
+        ubiPrioritizedUbiTrade5.setProposedPaymentPrice(10);
+        ubiPrioritizedUbiTrade5.setMinutesToTrade(20);
+        ubiPrioritizedUbiTrade5.setTradePriority(null);
         nullPriorityExistingTradePersonalItem.setTradeAlreadyExists(true);
-        nullPriorityExistingTradePersonalItem.setExistingTrade(ubiTrade5);
+        nullPriorityExistingTradePersonalItem.setExistingTrade(ubiPrioritizedUbiTrade5);
         nullPriorityExistingTradePersonalItem.setBuyBoundaryPrice(25);
         nullPriorityExistingTradePersonalItem.getItem().setMonthMedianPrice(30);
         nullPriorityExistingTradePersonalItem.setMinMedianPriceDifference(10);

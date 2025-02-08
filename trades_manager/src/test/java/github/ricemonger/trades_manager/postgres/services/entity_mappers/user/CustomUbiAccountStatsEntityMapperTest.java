@@ -4,7 +4,7 @@ import github.ricemonger.trades_manager.postgres.custom_entities.items.CustomIte
 import github.ricemonger.trades_manager.postgres.custom_entities.manageable_users.CustomItemResaleLockEntity;
 import github.ricemonger.trades_manager.postgres.custom_entities.manageable_users.CustomTradeEntity;
 import github.ricemonger.trades_manager.postgres.custom_entities.manageable_users.CustomUbiAccountStatsEntity;
-import github.ricemonger.trades_manager.services.DTOs.Trade;
+import github.ricemonger.trades_manager.services.DTOs.PrioritizedUbiTrade;
 import github.ricemonger.trades_manager.services.DTOs.UbiAccountStats;
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
 import org.junit.jupiter.api.Test;
@@ -41,20 +41,20 @@ class CustomUbiAccountStatsEntityMapperTest {
         CustomTradeEntity buyTradeEntity1 = Mockito.mock(CustomTradeEntity.class);
         CustomTradeEntity buyTradeEntity2 = Mockito.mock(CustomTradeEntity.class);
 
-        Trade buyTrade1 = Mockito.mock(Trade.class);
-        Trade buyTrade2 = Mockito.mock(Trade.class);
+        PrioritizedUbiTrade buyPrioritizedUbiTrade1 = Mockito.mock(PrioritizedUbiTrade.class);
+        PrioritizedUbiTrade buyPrioritizedUbiTrade2 = Mockito.mock(PrioritizedUbiTrade.class);
 
-        Mockito.when(tradeEntityMapper.createDTO(buyTradeEntity1)).thenReturn(buyTrade1);
-        Mockito.when(tradeEntityMapper.createDTO(buyTradeEntity2)).thenReturn(buyTrade2);
+        Mockito.when(tradeEntityMapper.createDTO(buyTradeEntity1)).thenReturn(buyPrioritizedUbiTrade1);
+        Mockito.when(tradeEntityMapper.createDTO(buyTradeEntity2)).thenReturn(buyPrioritizedUbiTrade2);
 
         CustomTradeEntity sellTradeEntity1 = Mockito.mock(CustomTradeEntity.class);
         CustomTradeEntity sellTradeEntity2 = Mockito.mock(CustomTradeEntity.class);
 
-        Trade sellTrade1 = Mockito.mock(Trade.class);
-        Trade sellTrade2 = Mockito.mock(Trade.class);
+        PrioritizedUbiTrade sellPrioritizedUbiTrade1 = Mockito.mock(PrioritizedUbiTrade.class);
+        PrioritizedUbiTrade sellPrioritizedUbiTrade2 = Mockito.mock(PrioritizedUbiTrade.class);
 
-        Mockito.when(tradeEntityMapper.createDTO(sellTradeEntity1)).thenReturn(sellTrade1);
-        Mockito.when(tradeEntityMapper.createDTO(sellTradeEntity2)).thenReturn(sellTrade2);
+        Mockito.when(tradeEntityMapper.createDTO(sellTradeEntity1)).thenReturn(sellPrioritizedUbiTrade1);
+        Mockito.when(tradeEntityMapper.createDTO(sellTradeEntity2)).thenReturn(sellPrioritizedUbiTrade2);
 
         CustomUbiAccountStatsEntity entity = new CustomUbiAccountStatsEntity();
         entity.setUbiProfileId("ubiProfileId");
@@ -82,12 +82,12 @@ class CustomUbiAccountStatsEntityMapperTest {
         assertTrue(result.getResaleLocks().stream().anyMatch(lock -> lock == resaleLock2));
 
         assertEquals(2, result.getCurrentSellTrades().size());
-        assertTrue(result.getCurrentSellTrades().stream().anyMatch(trade -> trade == sellTrade1));
-        assertTrue(result.getCurrentSellTrades().stream().anyMatch(trade -> trade == sellTrade2));
+        assertTrue(result.getCurrentSellTrades().stream().anyMatch(trade -> trade == sellPrioritizedUbiTrade1));
+        assertTrue(result.getCurrentSellTrades().stream().anyMatch(trade -> trade == sellPrioritizedUbiTrade2));
 
         assertEquals(2, result.getCurrentBuyTrades().size());
-        assertTrue(result.getCurrentBuyTrades().stream().anyMatch(trade -> trade == buyTrade1));
-        assertTrue(result.getCurrentBuyTrades().stream().anyMatch(trade -> trade == buyTrade2));
+        assertTrue(result.getCurrentBuyTrades().stream().anyMatch(trade -> trade == buyPrioritizedUbiTrade1));
+        assertTrue(result.getCurrentBuyTrades().stream().anyMatch(trade -> trade == buyPrioritizedUbiTrade2));
 
     }
 }
