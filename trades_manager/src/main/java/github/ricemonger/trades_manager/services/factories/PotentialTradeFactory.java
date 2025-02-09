@@ -10,7 +10,7 @@ import github.ricemonger.utils.DTOs.common.PrioritizedPotentialTradeStats;
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.TradeOperationType;
-import github.ricemonger.utils.services.calculators.TradePriorityExpressionDeserializer;
+import github.ricemonger.utils.services.calculators.ItemTradePriorityByExpressionCalculator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,14 +19,11 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import static github.ricemonger.utils.enums.TradeCategory.Buy;
-import static github.ricemonger.utils.enums.TradeCategory.Sell;
-
 @Component
 @RequiredArgsConstructor
 public class PotentialTradeFactory {
 
-    private final TradePriorityExpressionDeserializer tradePriorityExpressionDeserializer;
+    private final ItemTradePriorityByExpressionCalculator itemTradePriorityByExpressionCalculator;
 
     private final PotentialTradeStatsService potentialTradeStatsService;
 
@@ -65,7 +62,7 @@ public class PotentialTradeFactory {
 
     public List<PotentialPersonalSellTrade> getFilteredPotentialSellTradesForUser(String sellTradePriorityExpression,
                                                                                   Collection<PersonalItem> personalItems,
-                                                                                  Collection<? extends ItemResaleLock> resaleLocks){
+                                                                                  Collection<? extends ItemResaleLock> resaleLocks) {
         List<PotentialPersonalSellTrade> potentialPersonalSellTrades = new ArrayList<>();
         for (PersonalItem personalItem : personalItems) {
             boolean itemIsNotOwned = !personalItem.getIsOwned();
@@ -111,7 +108,7 @@ public class PotentialTradeFactory {
                     continue;
                 }
 
-                Long tradePriority = tradePriorityExpressionDeserializer.calculateTradePriority(sellTradePriorityExpression, personalItem.getItem(), potentialTradeStats.getPrice(), potentialTradeStats.getTime());
+                Long tradePriority = itemTradePriorityByExpressionCalculator.calculateTradePriority(sellTradePriorityExpression, personalItem.getItem(), potentialTradeStats.getPrice(), potentialTradeStats.getTime());
 
                 potentialPersonalSellTrades.add(new PotentialPersonalSellTrade(personalItem, new PrioritizedPotentialTradeStats(potentialTradeStats, tradePriority)));
             }
@@ -127,7 +124,7 @@ public class PotentialTradeFactory {
         int limitLeft = buyLimit - boughtIn24h;
         int creditLeft = creditAmount;
 
-        List<PotentialPersonalBuyTrade> filteredPersonalBuyTrades = getFilteredPotentialBuyTradesForUser(buyTradePriorityExpression,personalItems);
+        List<PotentialPersonalBuyTrade> filteredPersonalBuyTrades = getFilteredPotentialBuyTradesForUser(buyTradePriorityExpression, personalItems);
 
         for (PotentialPersonalBuyTrade buyTrade : filteredPersonalBuyTrades.stream().sorted().toList()) {
 
@@ -203,7 +200,7 @@ public class PotentialTradeFactory {
                     continue;
                 }
 
-                Long tradePriority = tradePriorityExpressionDeserializer.calculateTradePriority(buyTradePriorityExpression, personalItem.getItem(), potentialTradeStats.getPrice(), potentialTradeStats.getTime());
+                Long tradePriority = itemTradePriorityByExpressionCalculator.calculateTradePriority(buyTradePriorityExpression, personalItem.getItem(), potentialTradeStats.getPrice(), potentialTradeStats.getTime());
 
                 potentialPersonalBuyTrades.add(new PotentialPersonalBuyTrade(personalItem, new PrioritizedPotentialTradeStats(potentialTradeStats, tradePriority)));
             }
@@ -212,11 +209,16 @@ public class PotentialTradeFactory {
         return potentialPersonalBuyTrades;
     }
 
-    public List<PrioritizedUbiTrade> prioritizeCurrentSellTrades(String sellTradePriorityExpression, List<UbiTrade> currentSellTrades) {
+    public List<PrioritizedUbiTrade> prioritizeCurrentTrades(String tradePriorityExpression, List<UbiTrade> currentSellTrades) {
+        List<PrioritizedUbiTrade> prioritizedCurrentTrades = new ArrayList<>();
 
-    }
+        for (UbiTrade ubiTrade : currentSellTrades) {
+            Integer minutesToTrade = potentialTradeStatsService.calculateExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade);
 
-    public List<PrioritizedUbiTrade> prioritizeCurrentBuyTrades(String buyTradePriorityExpression, List<UbiTrade> currentBuyTrades) {
+            Long tradePriority = itemTradePriorityByExpressionCalculator.calculateTradePriority(tradePriorityExpression, ubiTrade.getItem(), ubiTrade.getProposedPaymentPrice(), minutesToTrade);
+            prioritizedCurrentTrades.add(new PrioritizedUbiTrade(ubiTrade, minutesToTrade, tradePriority));
+        }
 
+        return prioritizedCurrentTrades;
     }
 }

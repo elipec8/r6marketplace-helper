@@ -24,7 +24,7 @@ public class ItemTradeTimeCalculator {
 
     private final ItemFancyPriceCalculator itemFancyPriceCalculator;
 
-    public Integer getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(UbiTradeI ubiTrade) {
+    public Integer calculateExpectedPaymentsSuccessMinutesForExistingTradeOrNull(UbiTradeI ubiTrade) {
         int minutesTradeExists = (int) Duration.between(ubiTrade.getLastModifiedAt(), LocalDateTime.now().plusMinutes(10)).toMinutes();
 
         Integer prognosedTradeSuccessMinutes = getPrognosedTradeSuccessMinutesByPriceOrNull(ubiTrade.getItem(), ubiTrade.getProposedPaymentPrice(), ubiTrade.getCategory());

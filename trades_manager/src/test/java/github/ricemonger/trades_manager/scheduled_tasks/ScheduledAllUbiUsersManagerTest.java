@@ -82,16 +82,18 @@ class ScheduledAllUbiUsersManagerTest {
         manageableUser1.getUbiAccountStats().setCurrentSellTrades(currentSellTrades1);
         manageableUser1.getUbiAccountStats().setCurrentBuyTrades(currentBuyTrades1);
         manageableUser1.setSellTradesManagingEnabledFlag(true);
+        manageableUser1.setSellTradePriorityExpression("sellTradePriorityExpression1");
         manageableUser1.setBuyTradesManagingEnabledFlag(true);
+        manageableUser1.setBuyTradePriorityExpression("buyTradePriorityExpression1");
 
         Set personalItems1 = mock(Set.class);
         when(personalItemFactory.getPersonalItemsForUser(same(tradeByFiltersManagers1), same(tradeByItemIdManagers1), same(currentSellTrades1), same(currentBuyTrades1), same(ownedItemsIds1), same(existingItems))).thenReturn(personalItems1);
 
         List resultingSellTrades1 = mock(List.class);
-        when(potentialTradeFactory.getResultingPersonalSellTrades(same(personalItems1), same(resaleLocks1), same(1), eq(configTrades.getSellSlots()), same(configTrades.getSellLimit()))).thenReturn(resultingSellTrades1);
+        when(potentialTradeFactory.getResultingPersonalSellTrades(eq("sellTradePriorityExpression1"),same(personalItems1), same(resaleLocks1), same(1), eq(configTrades.getSellSlots()), same(configTrades.getSellLimit()))).thenReturn(resultingSellTrades1);
 
         List resultingBuyTrades1 = mock(List.class);
-        when(potentialTradeFactory.getResultingPersonalBuyTrades(same(personalItems1), eq(1000), eq(10), eq(configTrades.getBuySlots()), eq(configTrades.getBuyLimit()))).thenReturn(resultingBuyTrades1);
+        when(potentialTradeFactory.getResultingPersonalBuyTrades(eq("buyTradePriorityExpression1"),same(personalItems1), eq(1000), eq(10), eq(configTrades.getBuySlots()), eq(configTrades.getBuyLimit()))).thenReturn(resultingBuyTrades1);
 
         TradeManagerCommand buyCancelCommand1 = mock(TradeManagerCommand.class);
         when(buyCancelCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_CANCEL);
@@ -209,16 +211,18 @@ class ScheduledAllUbiUsersManagerTest {
         manageableUser2.getUbiAccountStats().setCurrentSellTrades(currentSellTrades2);
         manageableUser2.getUbiAccountStats().setCurrentBuyTrades(currentBuyTrades2);
         manageableUser2.setSellTradesManagingEnabledFlag(true);
+        manageableUser2.setSellTradePriorityExpression("sellTradePriorityExpression2");
         manageableUser2.setBuyTradesManagingEnabledFlag(true);
+        manageableUser2.setBuyTradePriorityExpression("buyTradePriorityExpression2");
 
         Set personalItems2 = mock(Set.class);
         when(personalItemFactory.getPersonalItemsForUser(same(tradeByFiltersManagers2), same(tradeByItemIdManagers2), same(currentSellTrades2), same(currentBuyTrades2), same(ownedItemsIds2), same(existingItems))).thenReturn(personalItems2);
 
         List resultingSellTrades2 = mock(List.class);
-        when(potentialTradeFactory.getResultingPersonalSellTrades(same(personalItems2), same(resaleLocks2), same(2), eq(configTrades.getSellSlots()), same(configTrades.getSellLimit()))).thenReturn(resultingSellTrades2);
+        when(potentialTradeFactory.getResultingPersonalSellTrades(eq("sellTradePriorityExpression2"),same(personalItems2), same(resaleLocks2), same(2), eq(configTrades.getSellSlots()), same(configTrades.getSellLimit()))).thenReturn(resultingSellTrades2);
 
         List resultingBuyTrades2 = mock(List.class);
-        when(potentialTradeFactory.getResultingPersonalBuyTrades(same(personalItems2), eq(2000), eq(20), eq(configTrades.getBuySlots()), eq(configTrades.getBuyLimit()))).thenReturn(resultingBuyTrades2);
+        when(potentialTradeFactory.getResultingPersonalBuyTrades(eq("buyTradePriorityExpression2"),same(personalItems2), eq(2000), eq(20), eq(configTrades.getBuySlots()), eq(configTrades.getBuyLimit()))).thenReturn(resultingBuyTrades2);
 
         TradeManagerCommand buyCancelCommand2 = mock(TradeManagerCommand.class);
         when(buyCancelCommand2.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_CANCEL);
@@ -325,16 +329,19 @@ class ScheduledAllUbiUsersManagerTest {
         manageableUser1.getUbiAccountStats().setCurrentSellTrades(currentSellTrades1);
         manageableUser1.getUbiAccountStats().setCurrentBuyTrades(currentBuyTrades1);
         manageableUser1.setSellTradesManagingEnabledFlag(true);
+        manageableUser1.setSellTradePriorityExpression("sellTradePriorityExpression1");
         manageableUser1.setBuyTradesManagingEnabledFlag(false);
+        manageableUser1.setBuyTradePriorityExpression("buyTradePriorityExpression1");
+
 
         Set personalItems1 = mock(Set.class);
         when(personalItemFactory.getPersonalItemsForUser(same(tradeByFiltersManagers1), same(tradeByItemIdManagers1), same(currentSellTrades1), same(currentBuyTrades1), same(ownedItemsIds1), same(existingItems))).thenReturn(personalItems1);
 
         List resultingSellTrades1 = mock(List.class);
-        when(potentialTradeFactory.getResultingPersonalSellTrades(same(personalItems1), same(resaleLocks1), same(1), eq(configTrades.getSellSlots()), same(configTrades.getSellLimit()))).thenReturn(resultingSellTrades1);
+        when(potentialTradeFactory.getResultingPersonalSellTrades(eq("sellTradePriorityExpression1"),same(personalItems1), same(resaleLocks1), same(1), eq(configTrades.getSellSlots()), same(configTrades.getSellLimit()))).thenReturn(resultingSellTrades1);
 
         List resultingBuyTrades1 = mock(List.class);
-        when(potentialTradeFactory.getResultingPersonalBuyTrades(same(personalItems1), eq(1000), eq(10), eq(configTrades.getBuySlots()), eq(configTrades.getBuyLimit()))).thenReturn(resultingBuyTrades1);
+        when(potentialTradeFactory.getResultingPersonalBuyTrades(eq("buyTradePriorityExpression1"),same(personalItems1), eq(1000), eq(10), eq(configTrades.getBuySlots()), eq(configTrades.getBuyLimit()))).thenReturn(resultingBuyTrades1);
 
         TradeManagerCommand sellCancelCommand1 = mock(TradeManagerCommand.class);
         when(sellCancelCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_CANCEL);
@@ -410,16 +417,18 @@ class ScheduledAllUbiUsersManagerTest {
         manageableUser2.getUbiAccountStats().setCurrentSellTrades(currentSellTrades2);
         manageableUser2.getUbiAccountStats().setCurrentBuyTrades(currentBuyTrades2);
         manageableUser2.setSellTradesManagingEnabledFlag(false);
+        manageableUser2.setSellTradePriorityExpression("sellTradePriorityExpression2");
         manageableUser2.setBuyTradesManagingEnabledFlag(true);
+        manageableUser2.setBuyTradePriorityExpression("buyTradePriorityExpression2");
 
         Set personalItems2 = mock(Set.class);
         when(personalItemFactory.getPersonalItemsForUser(same(tradeByFiltersManagers2), same(tradeByItemIdManagers2), same(currentSellTrades2), same(currentBuyTrades2), same(ownedItemsIds2), same(existingItems))).thenReturn(personalItems2);
 
         List resultingSellTrades2 = mock(List.class);
-        when(potentialTradeFactory.getResultingPersonalSellTrades(same(personalItems2), same(resaleLocks2), same(2), eq(configTrades.getSellSlots()), same(configTrades.getSellLimit()))).thenReturn(resultingSellTrades2);
+        when(potentialTradeFactory.getResultingPersonalSellTrades(eq("sellTradePriorityExpression2"),same(personalItems2), same(resaleLocks2), same(2), eq(configTrades.getSellSlots()), same(configTrades.getSellLimit()))).thenReturn(resultingSellTrades2);
 
         List resultingBuyTrades2 = mock(List.class);
-        when(potentialTradeFactory.getResultingPersonalBuyTrades(same(personalItems2), eq(2000), eq(20), eq(configTrades.getBuySlots()), eq(configTrades.getBuyLimit()))).thenReturn(resultingBuyTrades2);
+        when(potentialTradeFactory.getResultingPersonalBuyTrades(eq("buyTradePriorityExpression2"),same(personalItems2), eq(2000), eq(20), eq(configTrades.getBuySlots()), eq(configTrades.getBuyLimit()))).thenReturn(resultingBuyTrades2);
 
         TradeManagerCommand buyCancelCommand2 = mock(TradeManagerCommand.class);
         when(buyCancelCommand2.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_CANCEL);

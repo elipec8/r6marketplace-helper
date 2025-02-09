@@ -1,9 +1,13 @@
 package github.ricemonger.trades_manager.postgres.services.entity_mappers.user;
 
+import github.ricemonger.trades_manager.postgres.dto_projections.ManageableUserProjection;
 import github.ricemonger.trades_manager.services.DTOs.ManageableUser;
 import github.ricemonger.trades_manager.services.DTOs.TradeByFiltersManager;
 import github.ricemonger.trades_manager.services.DTOs.UbiAccountStats;
 import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
+import github.ricemonger.utilspostgresschema.full_entities.user.TradeByFiltersManagerEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.TradeByItemIdManagerEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountStatsEntity;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +31,8 @@ class UserEntityMapperTest {
 
     @Test
     public void createManageableUser_should_return_expected_result() {
-        CustomTradeByFiltersManagerEntity tradeByFiltersManagerEntity1 = Mockito.mock(CustomTradeByFiltersManagerEntity.class);
-        CustomTradeByFiltersManagerEntity tradeByFiltersManagerEntity2 = Mockito.mock(CustomTradeByFiltersManagerEntity.class);
+        TradeByFiltersManagerEntity tradeByFiltersManagerEntity1 = Mockito.mock(TradeByFiltersManagerEntity.class);
+        TradeByFiltersManagerEntity tradeByFiltersManagerEntity2 = Mockito.mock(TradeByFiltersManagerEntity.class);
 
         TradeByFiltersManager tradeByFiltersManager1 = Mockito.mock(TradeByFiltersManager.class);
         TradeByFiltersManager tradeByFiltersManager2 = Mockito.mock(TradeByFiltersManager.class);
@@ -36,8 +40,8 @@ class UserEntityMapperTest {
         Mockito.when(tradeByFiltersManagerEntityMapper.createDTO(tradeByFiltersManagerEntity1)).thenReturn(tradeByFiltersManager1);
         Mockito.when(tradeByFiltersManagerEntityMapper.createDTO(tradeByFiltersManagerEntity2)).thenReturn(tradeByFiltersManager2);
 
-        CustomTradeByItemIdManagerEntity tradeByItemIdManagerEntity1 = Mockito.mock(CustomTradeByItemIdManagerEntity.class);
-        CustomTradeByItemIdManagerEntity tradeByItemIdManagerEntity2 = Mockito.mock(CustomTradeByItemIdManagerEntity.class);
+        TradeByItemIdManagerEntity tradeByItemIdManagerEntity1 = Mockito.mock(TradeByItemIdManagerEntity.class);
+        TradeByItemIdManagerEntity tradeByItemIdManagerEntity2 = Mockito.mock(TradeByItemIdManagerEntity.class);
 
         TradeByItemIdManager tradeByItemIdManager1 = Mockito.mock(TradeByItemIdManager.class);
         TradeByItemIdManager tradeByItemIdManager2 = Mockito.mock(TradeByItemIdManager.class);
@@ -45,27 +49,28 @@ class UserEntityMapperTest {
         Mockito.when(tradeByItemIdManagerEntityMapper.createDTO(tradeByItemIdManagerEntity1)).thenReturn(tradeByItemIdManager1);
         Mockito.when(tradeByItemIdManagerEntityMapper.createDTO(tradeByItemIdManagerEntity2)).thenReturn(tradeByItemIdManager2);
 
-        CustomUbiAccountStatsEntity ubiAccountStatsEntity = Mockito.mock(CustomUbiAccountStatsEntity.class);
+        UbiAccountStatsEntity ubiAccountStatsEntity = Mockito.mock(UbiAccountStatsEntity.class);
 
         UbiAccountStats ubiAccountStats = Mockito.mock(UbiAccountStats.class);
 
         Mockito.when(ubiAccountStatsEntityMapper.createDTO(ubiAccountStatsEntity)).thenReturn(ubiAccountStats);
 
-        CustomManageableUserEntity entity = new CustomManageableUserEntity();
-        entity.setId(1L);
-        entity.setUbiAccountEntry(new CustomManageableUserUbiAccountEntryEntity());
-        entity.getUbiAccountEntry().setUbiAccountStats(ubiAccountStatsEntity);
-        entity.getUbiAccountEntry().setUbiAuthTicket("ubiAuthTicket");
-        entity.getUbiAccountEntry().setUbiSpaceId("ubiSpaceId");
-        entity.getUbiAccountEntry().setUbiSessionId("ubiSessionId");
-        entity.getUbiAccountEntry().setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
-        entity.getUbiAccountEntry().setUbiRememberMeTicket("ubiRememberMeTicket");
-        entity.setSellTradesManagingEnabledFlag(true);
-        entity.setBuyTradesManagingEnabledFlag(false);
-        entity.setTradeByFiltersManagers(List.of(tradeByFiltersManagerEntity1, tradeByFiltersManagerEntity2));
-        entity.setTradeByItemIdManagers(List.of(tradeByItemIdManagerEntity1, tradeByItemIdManagerEntity2));
+        ManageableUserProjection projection = new ManageableUserProjection();
+        projection.setId(1L);
+        projection.setUbiAccountStats(ubiAccountStatsEntity);
+        projection.setUbiAuthTicket("ubiAuthTicket");
+        projection.setUbiSpaceId("ubiSpaceId");
+        projection.setUbiSessionId("ubiSessionId");
+        projection.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
+        projection.setUbiRememberMeTicket("ubiRememberMeTicket");
+        projection.setTradeByFiltersManagers(List.of(tradeByFiltersManagerEntity1, tradeByFiltersManagerEntity2));
+        projection.setTradeByItemIdManagers(List.of(tradeByItemIdManagerEntity1, tradeByItemIdManagerEntity2));
+        projection.setSellTradesManagingEnabledFlag(true);
+        projection.setSellTradePriorityExpression("sellTradePriorityExpression");
+        projection.setBuyTradesManagingEnabledFlag(false);
+        projection.setBuyTradePriorityExpression("buyTradePriorityExpression");
 
-        ManageableUser result = userEntityMapper.createManageableUser(entity);
+        ManageableUser result = userEntityMapper.createManageableUser(projection);
 
         assertEquals(1L, result.getId());
         assertSame(ubiAccountStats, result.getUbiAccountStats());
@@ -79,6 +84,8 @@ class UserEntityMapperTest {
         assertTrue(result.getTradeByItemIdManagers().stream().anyMatch(tm -> tm == tradeByItemIdManager1));
         assertTrue(result.getTradeByItemIdManagers().stream().anyMatch(tm -> tm == tradeByItemIdManager2));
         assertTrue(result.getSellTradesManagingEnabledFlag());
+        assertEquals("sellTradePriorityExpression", result.getSellTradePriorityExpression());
         assertFalse(result.getBuyTradesManagingEnabledFlag());
+        assertEquals("buyTradePriorityExpression", result.getBuyTradePriorityExpression());
     }
 }

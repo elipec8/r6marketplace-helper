@@ -2,7 +2,7 @@ package github.ricemonger.trades_manager.services;
 
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
-import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
+import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.services.calculators.ItemTradeTimeCalculator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,15 +23,14 @@ public class PotentialTradeStatsService {
     public List<PotentialTradeStats> getPotentialBuyTradesStatsOfItem(Item item) {
         List<PotentialTradeStats> result = new ArrayList<>();
 
-        if (item.getPriorityToBuyByMinSellPrice() != null) {
-            int price;
-            if (item.getMinSellPrice() == null || item.getMinSellPrice() <= 0) {
-                price = commonValuesService.getMinimumPriceByRarity(item.getRarity());
-            } else {
-                price = item.getMinSellPrice();
-            }
-            result.add(new PotentialTradeStats(price, TRADE_MANAGER_FIXED_RATE_MINUTES));
+        int immediateBuyPrice;
+        if (item.getMinSellPrice() == null || item.getMinSellPrice() <= 0) {
+            immediateBuyPrice = commonValuesService.getMinimumPriceByRarity(item.getRarity());
+        } else {
+            immediateBuyPrice = item.getMinSellPrice();
         }
+        result.add(new PotentialTradeStats(immediateBuyPrice, TRADE_MANAGER_FIXED_RATE_MINUTES));
+
         if (item.getPriceToBuyIn1Hour() != null) {
             result.add(new PotentialTradeStats(item.getPriceToBuyIn1Hour(), MINUTES_IN_AN_HOUR));
         }
@@ -54,15 +53,17 @@ public class PotentialTradeStatsService {
     public List<PotentialTradeStats> getPotentialSellTradesStatsOfItem(Item item) {
         List<PotentialTradeStats> result = new ArrayList<>();
 
-        if (item.getPriorityToSellByNextFancySellPrice() != null) {
-            PotentialTradeStats priceAndTime = itemTradeTimeCalculator.calculatePriceAndTimeForNextFancySellPriceSale(item);
-            result.add(new PotentialTradeStats(priceAndTime.price(), priceAndTime.time(), item.getPriorityToSellByNextFancySellPrice()));
-        }
+        PotentialTradeStats nextFancySellPriceTradeStats = itemTradeTimeCalculator.calculatePriceAndTimeForNextFancySellPriceSale(item);
+        result.add(new PotentialTradeStats(nextFancySellPriceTradeStats.getPrice(), nextFancySellPriceTradeStats.getTime()));
 
         if (item.getMaxBuyPrice() != null) {
             result.add(new PotentialTradeStats(item.getMaxBuyPrice(), TRADE_MANAGER_FIXED_RATE_MINUTES));
         }
 
         return result;
+    }
+
+    public Integer calculateExpectedPaymentsSuccessMinutesForExistingTradeOrNull(UbiTrade existingTrade) {
+        return itemTradeTimeCalculator.calculateExpectedPaymentsSuccessMinutesForExistingTradeOrNull(existingTrade);
     }
 }

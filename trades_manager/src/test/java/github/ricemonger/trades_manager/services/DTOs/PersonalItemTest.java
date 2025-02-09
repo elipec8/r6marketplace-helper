@@ -1,6 +1,7 @@
 package github.ricemonger.trades_manager.services.DTOs;
 
 import github.ricemonger.utils.DTOs.common.Item;
+import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.TradeOperationType;
 import org.junit.jupiter.api.Test;
@@ -95,9 +96,9 @@ class PersonalItemTest {
     @Test
     public void getProposedPaymentPrice_should_return_proposedPaymentPrice() {
         PersonalItem personalItem = new PersonalItem();
-        PrioritizedUbiTrade ubiPrioritizedUbiTrade = new PrioritizedUbiTrade();
-        ubiPrioritizedUbiTrade.setProposedPaymentPrice(100);
-        personalItem.setExistingTrade(ubiPrioritizedUbiTrade);
+        UbiTrade ubiUbiTrade = new UbiTrade();
+        ubiUbiTrade.setProposedPaymentPrice(100);
+        personalItem.setExistingTrade(ubiUbiTrade);
         assertEquals(100, personalItem.getProposedPaymentPrice());
     }
 
@@ -111,9 +112,9 @@ class PersonalItemTest {
     @Test
     public void getTradeId_should_return_tradeId() {
         PersonalItem personalItem = new PersonalItem();
-        PrioritizedUbiTrade ubiPrioritizedUbiTrade = new PrioritizedUbiTrade();
-        ubiPrioritizedUbiTrade.setTradeId("tradeId");
-        personalItem.setExistingTrade(ubiPrioritizedUbiTrade);
+        UbiTrade ubiUbiTrade = new UbiTrade();
+        ubiUbiTrade.setTradeId("tradeId");
+        personalItem.setExistingTrade(ubiUbiTrade);
         assertEquals("tradeId", personalItem.getTradeId());
     }
 
@@ -138,7 +139,7 @@ class PersonalItemTest {
         personalItem1.setPriorityMultiplier(500);
         personalItem1.setIsOwned(true);
         personalItem1.setTradeAlreadyExists(true);
-        personalItem1.setExistingTrade(new PrioritizedUbiTrade());
+        personalItem1.setExistingTrade(new UbiTrade());
 
         PersonalItem personalItem2 = new PersonalItem();
         personalItem2.setItem(item);
@@ -158,8 +159,8 @@ class PersonalItemTest {
     @Test
     public void equals_should_return_true_for_equal_objects() {
         Item item = Mockito.mock(Item.class);
-        PrioritizedUbiTrade ubiPrioritizedUbiTrade1 = Mockito.mock(PrioritizedUbiTrade.class);
-        PrioritizedUbiTrade ubiPrioritizedUbiTrade2 = Mockito.mock(PrioritizedUbiTrade.class);
+        UbiTrade ubiUbiTrade1 = Mockito.mock(UbiTrade.class);
+        UbiTrade ubiUbiTrade2 = Mockito.mock(UbiTrade.class);
 
         PersonalItem personalItem1 = new PersonalItem();
         personalItem1.setItem(item);
@@ -171,7 +172,7 @@ class PersonalItemTest {
         personalItem1.setPriorityMultiplier(500);
         personalItem1.setIsOwned(true);
         personalItem1.setTradeAlreadyExists(true);
-        personalItem1.setExistingTrade(ubiPrioritizedUbiTrade1);
+        personalItem1.setExistingTrade(ubiUbiTrade1);
 
         PersonalItem personalItem2 = new PersonalItem();
         personalItem2.setItem(item);
@@ -183,7 +184,7 @@ class PersonalItemTest {
         personalItem2.setPriorityMultiplier(5000);
         personalItem2.setIsOwned(false);
         personalItem2.setTradeAlreadyExists(false);
-        personalItem2.setExistingTrade(ubiPrioritizedUbiTrade2);
+        personalItem2.setExistingTrade(ubiUbiTrade2);
 
         assertEquals(personalItem1, personalItem2);
     }
@@ -191,10 +192,10 @@ class PersonalItemTest {
     @Test
     public void equals_should_return_false_for_different_objects() {
         Item item = Mockito.mock(Item.class);
-        PrioritizedUbiTrade ubiPrioritizedUbiTrade = Mockito.mock(PrioritizedUbiTrade.class);
+        UbiTrade ubiUbiTrade = Mockito.mock(UbiTrade.class);
 
         when(item.isFullyEquals(any())).thenReturn(true);
-        when(ubiPrioritizedUbiTrade.isFullyEqual(any())).thenReturn(true);
+        when(ubiUbiTrade.isFullyEqual(any())).thenReturn(true);
 
         PersonalItem personalItem1 = new PersonalItem();
         personalItem1.setItem(item);
@@ -206,7 +207,7 @@ class PersonalItemTest {
         personalItem1.setPriorityMultiplier(500);
         personalItem1.setIsOwned(true);
         personalItem1.setTradeAlreadyExists(true);
-        personalItem1.setExistingTrade(ubiPrioritizedUbiTrade);
+        personalItem1.setExistingTrade(ubiUbiTrade);
 
         PersonalItem personalItem2 = new PersonalItem();
         personalItem2.setItem(item);
@@ -218,7 +219,7 @@ class PersonalItemTest {
         personalItem2.setPriorityMultiplier(500);
         personalItem2.setIsOwned(true);
         personalItem2.setTradeAlreadyExists(true);
-        personalItem2.setExistingTrade(ubiPrioritizedUbiTrade);
+        personalItem2.setExistingTrade(ubiUbiTrade);
 
         when(item.isFullyEquals(any())).thenReturn(false);
         assertFalse(personalItem1.isFullyEqual(personalItem2));
@@ -254,7 +255,7 @@ class PersonalItemTest {
         personalItem1.setPriorityMultiplier(500);
         personalItem1.setIsOwned(true);
         personalItem1.setTradeAlreadyExists(true);
-        personalItem1.setExistingTrade(new PrioritizedUbiTrade());
+        personalItem1.setExistingTrade(new UbiTrade());
 
         assertFalse(personalItem1.equals(null));
     }
@@ -262,10 +263,10 @@ class PersonalItemTest {
     @Test
     public void isFullyEqual_should_return_true_for_equal_objects() {
         Item item = Mockito.mock(Item.class);
-        PrioritizedUbiTrade ubiPrioritizedUbiTrade = Mockito.mock(PrioritizedUbiTrade.class);
+        UbiTrade ubiUbiTrade = Mockito.mock(UbiTrade.class);
 
         when(item.isFullyEquals(any())).thenReturn(true);
-        when(ubiPrioritizedUbiTrade.isFullyEqual(any())).thenReturn(true);
+        when(ubiUbiTrade.isFullyEqual(any())).thenReturn(true);
 
         PersonalItem personalItem1 = new PersonalItem();
         personalItem1.setItem(item);
@@ -277,7 +278,7 @@ class PersonalItemTest {
         personalItem1.setPriorityMultiplier(500);
         personalItem1.setIsOwned(true);
         personalItem1.setTradeAlreadyExists(true);
-        personalItem1.setExistingTrade(ubiPrioritizedUbiTrade);
+        personalItem1.setExistingTrade(ubiUbiTrade);
 
         PersonalItem personalItem2 = new PersonalItem();
         personalItem2.setItem(item);
@@ -289,7 +290,7 @@ class PersonalItemTest {
         personalItem2.setPriorityMultiplier(500);
         personalItem2.setIsOwned(true);
         personalItem2.setTradeAlreadyExists(true);
-        personalItem2.setExistingTrade(ubiPrioritizedUbiTrade);
+        personalItem2.setExistingTrade(ubiUbiTrade);
 
         assertTrue(personalItem1.isFullyEqual(personalItem2));
     }
@@ -297,10 +298,10 @@ class PersonalItemTest {
     @Test
     public void isFullyEqual_should_return_false_for_different_objects() {
         Item item = Mockito.mock(Item.class);
-        PrioritizedUbiTrade ubiPrioritizedUbiTrade = Mockito.mock(PrioritizedUbiTrade.class);
+        UbiTrade ubiUbiTrade = Mockito.mock(UbiTrade.class);
 
         when(item.isFullyEquals(any())).thenReturn(true);
-        when(ubiPrioritizedUbiTrade.isFullyEqual(any())).thenReturn(true);
+        when(ubiUbiTrade.isFullyEqual(any())).thenReturn(true);
 
         PersonalItem personalItem1 = new PersonalItem();
         personalItem1.setItem(item);
@@ -312,7 +313,7 @@ class PersonalItemTest {
         personalItem1.setPriorityMultiplier(500);
         personalItem1.setIsOwned(true);
         personalItem1.setTradeAlreadyExists(true);
-        personalItem1.setExistingTrade(ubiPrioritizedUbiTrade);
+        personalItem1.setExistingTrade(ubiUbiTrade);
 
         PersonalItem personalItem2 = new PersonalItem();
         personalItem2.setItem(item);
@@ -324,7 +325,7 @@ class PersonalItemTest {
         personalItem2.setPriorityMultiplier(500);
         personalItem2.setIsOwned(true);
         personalItem2.setTradeAlreadyExists(true);
-        personalItem2.setExistingTrade(ubiPrioritizedUbiTrade);
+        personalItem2.setExistingTrade(ubiUbiTrade);
 
         when(item.isFullyEquals(any())).thenReturn(false);
         assertFalse(personalItem1.isFullyEqual(personalItem2));
@@ -353,7 +354,7 @@ class PersonalItemTest {
         personalItem1.setTradeAlreadyExists(false);
         assertFalse(personalItem1.isFullyEqual(personalItem2));
         personalItem1.setTradeAlreadyExists(true);
-        when(ubiPrioritizedUbiTrade.isFullyEqual(any())).thenReturn(false);
+        when(ubiUbiTrade.isFullyEqual(any())).thenReturn(false);
         assertFalse(personalItem1.isFullyEqual(personalItem2));
     }
 

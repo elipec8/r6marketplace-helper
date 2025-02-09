@@ -1,9 +1,9 @@
 package github.ricemonger.trades_manager.postgres.services;
 
-import github.ricemonger.trades_manager.postgres.custom_entities.items.CustomItemEntity;
 import github.ricemonger.trades_manager.postgres.repositories.ItemPostgresRepository;
 import github.ricemonger.trades_manager.postgres.services.entity_mappers.item.ItemEntityMapper;
 import github.ricemonger.utils.DTOs.common.Item;
+import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +26,8 @@ class ItemPostgresServiceTest {
 
     @Test
     public void findAll_should_return_mapped_repository_result() {
-        CustomItemEntity entity1 = Mockito.mock(CustomItemEntity.class);
-        CustomItemEntity entity2 = Mockito.mock(CustomItemEntity.class);
+        ItemEntity entity1 = Mockito.mock(ItemEntity.class);
+        ItemEntity entity2 = Mockito.mock(ItemEntity.class);
 
         Item item1 = Mockito.mock(Item.class);
         Item item2 = Mockito.mock(Item.class);

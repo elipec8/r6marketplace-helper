@@ -1,11 +1,15 @@
 package github.ricemonger.trades_manager.postgres.repositories;
 
-import github.ricemonger.trades_manager.postgres.custom_entities.items.CustomItemIdEntity;
+import github.ricemonger.trades_manager.postgres.dto_projections.ManageableUserProjection;
+import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -25,105 +29,105 @@ class CustomUserPostgresRepositoryTest {
 
         //Have nothing
 
-        userRepository.save(new CustomManageableUserEntity());
-        userRepository.save(new CustomManageableUserEntity());
-        userRepository.save(new CustomManageableUserEntity());
+        userRepository.save(new UserEntity());
+        userRepository.save(new UserEntity());
+        userRepository.save(new UserEntity());
 
         // Have managers, true flag and ubi account entry - must be returned
 
-        CustomManageableUserEntity userWithTradeByItemIdManagerTrue = new CustomManageableUserEntity();
-        CustomUbiAccountStatsEntity ubiAccountStatsEntity1 = new CustomUbiAccountStatsEntity();
+        UserEntity userWithTradeByItemIdManagerTrue = new UserEntity();
+        UbiAccountStatsEntity ubiAccountStatsEntity1 = new UbiAccountStatsEntity();
         ubiAccountStatsEntity1.setUbiProfileId("ubiProfileId1");
-        CustomManageableUserUbiAccountEntryEntity ubiAccountEntryEntity1 = new CustomManageableUserUbiAccountEntryEntity();
+        UbiAccountEntryEntity ubiAccountEntryEntity1 = new UbiAccountEntryEntity();
         ubiAccountEntryEntity1.setUser(userWithTradeByItemIdManagerTrue);
         ubiAccountEntryEntity1.setEmail("email");
         ubiAccountEntryEntity1.setUbiAccountStats(ubiAccountStatsEntity1);
         userWithTradeByItemIdManagerTrue.setUbiAccountEntry(ubiAccountEntryEntity1);
         userWithTradeByItemIdManagerTrue.setManagingEnabledFlag(true);
-        CustomTradeByItemIdManagerEntity tradeByItemIdManagerEntityTrue = new CustomTradeByItemIdManagerEntity();
-        tradeByItemIdManagerEntityTrue.setItem(new CustomItemIdEntity("1"));
+        TradeByItemIdManagerEntity tradeByItemIdManagerEntityTrue = new TradeByItemIdManagerEntity();
+        tradeByItemIdManagerEntityTrue.setItem(new ItemEntity("1"));
         tradeByItemIdManagerEntityTrue.setUser(userWithTradeByItemIdManagerTrue);
         userWithTradeByItemIdManagerTrue.getTradeByItemIdManagers().add(tradeByItemIdManagerEntityTrue);
 
-        CustomManageableUserEntity userWithTradeByFiltersManagerTrue = new CustomManageableUserEntity();
-        CustomUbiAccountStatsEntity ubiAccountStatsEntity2 = new CustomUbiAccountStatsEntity();
+        UserEntity userWithTradeByFiltersManagerTrue = new UserEntity();
+        UbiAccountStatsEntity ubiAccountStatsEntity2 = new UbiAccountStatsEntity();
         ubiAccountStatsEntity2.setUbiProfileId("ubiProfileId2");
-        CustomManageableUserUbiAccountEntryEntity ubiAccountEntryEntity2 = new CustomManageableUserUbiAccountEntryEntity();
+        UbiAccountEntryEntity ubiAccountEntryEntity2 = new UbiAccountEntryEntity();
         ubiAccountEntryEntity2.setUser(userWithTradeByFiltersManagerTrue);
         ubiAccountEntryEntity2.setEmail("email");
         ubiAccountEntryEntity2.setUbiAccountStats(ubiAccountStatsEntity2);
         userWithTradeByFiltersManagerTrue.setUbiAccountEntry(ubiAccountEntryEntity2);
         userWithTradeByFiltersManagerTrue.setManagingEnabledFlag(true);
-        CustomTradeByFiltersManagerEntity tradeByFiltersManagerEntityTrue = new CustomTradeByFiltersManagerEntity();
+        TradeByFiltersManagerEntity tradeByFiltersManagerEntityTrue = new TradeByFiltersManagerEntity();
         tradeByFiltersManagerEntityTrue.setName("name");
         tradeByFiltersManagerEntityTrue.setUser(userWithTradeByFiltersManagerTrue);
         userWithTradeByFiltersManagerTrue.getTradeByFiltersManagers().add(tradeByFiltersManagerEntityTrue);
 
-        CustomManageableUserEntity userWithBothManagersTrue = new CustomManageableUserEntity();
-        CustomUbiAccountStatsEntity ubiAccountStatsEntity3 = new CustomUbiAccountStatsEntity();
+        UserEntity userWithBothManagersTrue = new UserEntity();
+        UbiAccountStatsEntity ubiAccountStatsEntity3 = new UbiAccountStatsEntity();
         ubiAccountStatsEntity3.setUbiProfileId("ubiProfileId3");
-        CustomManageableUserUbiAccountEntryEntity ubiAccountEntryEntity3 = new CustomManageableUserUbiAccountEntryEntity();
+        UbiAccountEntryEntity ubiAccountEntryEntity3 = new UbiAccountEntryEntity();
         ubiAccountEntryEntity3.setUser(userWithBothManagersTrue);
         ubiAccountEntryEntity3.setEmail("email");
         ubiAccountEntryEntity3.setUbiAccountStats(ubiAccountStatsEntity3);
         userWithBothManagersTrue.setUbiAccountEntry(ubiAccountEntryEntity3);
         userWithBothManagersTrue.setManagingEnabledFlag(true);
-        CustomTradeByItemIdManagerEntity tradeByItemIdManagerEntityForBothTrue = new CustomTradeByItemIdManagerEntity();
-        tradeByItemIdManagerEntityForBothTrue.setItem(new CustomItemIdEntity("2"));
+        TradeByItemIdManagerEntity tradeByItemIdManagerEntityForBothTrue = new TradeByItemIdManagerEntity();
+        tradeByItemIdManagerEntityForBothTrue.setItem(new ItemEntity("2"));
         tradeByItemIdManagerEntityForBothTrue.setUser(userWithBothManagersTrue);
-        CustomTradeByFiltersManagerEntity tradeByFiltersManagerEntityForBothTrue = new CustomTradeByFiltersManagerEntity();
+        TradeByFiltersManagerEntity tradeByFiltersManagerEntityForBothTrue = new TradeByFiltersManagerEntity();
         tradeByFiltersManagerEntityForBothTrue.setName("name");
         tradeByFiltersManagerEntityForBothTrue.setUser(userWithBothManagersTrue);
         userWithBothManagersTrue.getTradeByItemIdManagers().add(tradeByItemIdManagerEntityForBothTrue);
         userWithBothManagersTrue.getTradeByFiltersManagers().add(tradeByFiltersManagerEntityForBothTrue);
 
-        userRepository.save(userWithTradeByItemIdManagerTrue);
-        userRepository.save(userWithTradeByFiltersManagerTrue);
-        userRepository.save(userWithBothManagersTrue);
+        userWithTradeByItemIdManagerTrue = userRepository.save(userWithTradeByItemIdManagerTrue);
+        userWithTradeByFiltersManagerTrue = userRepository.save(userWithTradeByFiltersManagerTrue);
+        userWithBothManagersTrue = userRepository.save(userWithBothManagersTrue);
 
         // Have managers and ubi account entry, but false flag
 
-        CustomManageableUserEntity userWithTradeByItemIdManagerFalse = new CustomManageableUserEntity();
-        CustomUbiAccountStatsEntity ubiAccountStatsEntity4 = new CustomUbiAccountStatsEntity();
+        UserEntity userWithTradeByItemIdManagerFalse = new UserEntity();
+        UbiAccountStatsEntity ubiAccountStatsEntity4 = new UbiAccountStatsEntity();
         ubiAccountStatsEntity4.setUbiProfileId("ubiProfileId4");
-        CustomManageableUserUbiAccountEntryEntity ubiAccountEntryEntity4 = new CustomManageableUserUbiAccountEntryEntity();
+        UbiAccountEntryEntity ubiAccountEntryEntity4 = new UbiAccountEntryEntity();
         ubiAccountEntryEntity4.setUser(userWithTradeByItemIdManagerFalse);
         ubiAccountEntryEntity4.setEmail("email");
         ubiAccountEntryEntity4.setUbiAccountStats(ubiAccountStatsEntity4);
         userWithTradeByItemIdManagerFalse.setUbiAccountEntry(ubiAccountEntryEntity4);
         userWithTradeByItemIdManagerFalse.setManagingEnabledFlag(false);
-        CustomTradeByItemIdManagerEntity tradeByItemIdManagerEntityFalse = new CustomTradeByItemIdManagerEntity();
-        tradeByItemIdManagerEntityFalse.setItem(new CustomItemIdEntity("3"));
+        TradeByItemIdManagerEntity tradeByItemIdManagerEntityFalse = new TradeByItemIdManagerEntity();
+        tradeByItemIdManagerEntityFalse.setItem(new ItemEntity("3"));
         tradeByItemIdManagerEntityFalse.setUser(userWithTradeByItemIdManagerFalse);
         userWithTradeByItemIdManagerFalse.getTradeByItemIdManagers().add(tradeByItemIdManagerEntityFalse);
 
-        CustomManageableUserEntity userWithTradeByFiltersManagerFalse = new CustomManageableUserEntity();
-        CustomUbiAccountStatsEntity ubiAccountStatsEntity5 = new CustomUbiAccountStatsEntity();
+        UserEntity userWithTradeByFiltersManagerFalse = new UserEntity();
+        UbiAccountStatsEntity ubiAccountStatsEntity5 = new UbiAccountStatsEntity();
         ubiAccountStatsEntity5.setUbiProfileId("ubiProfileId5");
-        CustomManageableUserUbiAccountEntryEntity ubiAccountEntryEntity5 = new CustomManageableUserUbiAccountEntryEntity();
+        UbiAccountEntryEntity ubiAccountEntryEntity5 = new UbiAccountEntryEntity();
         ubiAccountEntryEntity5.setUser(userWithTradeByFiltersManagerFalse);
         ubiAccountEntryEntity5.setEmail("email");
         ubiAccountEntryEntity5.setUbiAccountStats(ubiAccountStatsEntity5);
         userWithTradeByFiltersManagerFalse.setUbiAccountEntry(ubiAccountEntryEntity5);
         userWithTradeByFiltersManagerFalse.setManagingEnabledFlag(false);
-        CustomTradeByFiltersManagerEntity tradeByFiltersManagerEntityFalse = new CustomTradeByFiltersManagerEntity();
+        TradeByFiltersManagerEntity tradeByFiltersManagerEntityFalse = new TradeByFiltersManagerEntity();
         tradeByFiltersManagerEntityFalse.setName("name");
         tradeByFiltersManagerEntityFalse.setUser(userWithTradeByFiltersManagerFalse);
         userWithTradeByFiltersManagerFalse.getTradeByFiltersManagers().add(tradeByFiltersManagerEntityFalse);
 
-        CustomManageableUserEntity userWithBothManagersFalse = new CustomManageableUserEntity();
-        CustomUbiAccountStatsEntity ubiAccountStatsEntity6 = new CustomUbiAccountStatsEntity();
+        UserEntity userWithBothManagersFalse = new UserEntity();
+        UbiAccountStatsEntity ubiAccountStatsEntity6 = new UbiAccountStatsEntity();
         ubiAccountStatsEntity6.setUbiProfileId("ubiProfileId6");
-        CustomManageableUserUbiAccountEntryEntity ubiAccountEntryEntity6 = new CustomManageableUserUbiAccountEntryEntity();
+        UbiAccountEntryEntity ubiAccountEntryEntity6 = new UbiAccountEntryEntity();
         ubiAccountEntryEntity6.setUser(userWithBothManagersFalse);
         ubiAccountEntryEntity6.setEmail("email");
         ubiAccountEntryEntity6.setUbiAccountStats(ubiAccountStatsEntity6);
         userWithBothManagersFalse.setUbiAccountEntry(ubiAccountEntryEntity6);
         userWithBothManagersFalse.setManagingEnabledFlag(false);
-        CustomTradeByItemIdManagerEntity tradeByItemIdManagerEntityForBothFalse = new CustomTradeByItemIdManagerEntity();
-        tradeByItemIdManagerEntityForBothFalse.setItem(new CustomItemIdEntity("4"));
+        TradeByItemIdManagerEntity tradeByItemIdManagerEntityForBothFalse = new TradeByItemIdManagerEntity();
+        tradeByItemIdManagerEntityForBothFalse.setItem(new ItemEntity("4"));
         tradeByItemIdManagerEntityForBothFalse.setUser(userWithBothManagersFalse);
-        CustomTradeByFiltersManagerEntity tradeByFiltersManagerEntityForBothFalse = new CustomTradeByFiltersManagerEntity();
+        TradeByFiltersManagerEntity tradeByFiltersManagerEntityForBothFalse = new TradeByFiltersManagerEntity();
         tradeByFiltersManagerEntityForBothFalse.setName("name");
         tradeByFiltersManagerEntityForBothFalse.setUser(userWithBothManagersFalse);
         userWithBothManagersFalse.getTradeByItemIdManagers().add(tradeByItemIdManagerEntityForBothFalse);
@@ -133,8 +137,10 @@ class CustomUserPostgresRepositoryTest {
         userRepository.save(userWithTradeByFiltersManagerFalse);
         userRepository.save(userWithBothManagersFalse);
 
+        List<ManageableUserProjection> projections = userRepository.findAllManageableUsers();
+
         assertEquals(9, userRepository.count());
-        assertEquals(3, userRepository.findAllManageableUsers().size());
+        assertEquals(3, projections.size());
     }
 
     @Test
@@ -142,32 +148,32 @@ class CustomUserPostgresRepositoryTest {
 
         //Have nothing
 
-        userRepository.save(new CustomManageableUserEntity());
-        userRepository.save(new CustomManageableUserEntity());
-        userRepository.save(new CustomManageableUserEntity());
+        userRepository.save(new UserEntity());
+        userRepository.save(new UserEntity());
+        userRepository.save(new UserEntity());
 
         // Have managers and true flag but no ubi account entry
 
-        CustomManageableUserEntity userWithTradeByItemIdManagerTrue = new CustomManageableUserEntity();
+        UserEntity userWithTradeByItemIdManagerTrue = new UserEntity();
         userWithTradeByItemIdManagerTrue.setManagingEnabledFlag(true);
-        CustomTradeByItemIdManagerEntity tradeByItemIdManagerEntityTrue = new CustomTradeByItemIdManagerEntity();
-        tradeByItemIdManagerEntityTrue.setItem(new CustomItemIdEntity("1"));
+        TradeByItemIdManagerEntity tradeByItemIdManagerEntityTrue = new TradeByItemIdManagerEntity();
+        tradeByItemIdManagerEntityTrue.setItem(new ItemEntity("1"));
         tradeByItemIdManagerEntityTrue.setUser(userWithTradeByItemIdManagerTrue);
         userWithTradeByItemIdManagerTrue.getTradeByItemIdManagers().add(tradeByItemIdManagerEntityTrue);
 
-        CustomManageableUserEntity userWithTradeByFiltersManagerTrue = new CustomManageableUserEntity();
+        UserEntity userWithTradeByFiltersManagerTrue = new UserEntity();
         userWithTradeByFiltersManagerTrue.setManagingEnabledFlag(true);
-        CustomTradeByFiltersManagerEntity tradeByFiltersManagerEntityTrue = new CustomTradeByFiltersManagerEntity();
+        TradeByFiltersManagerEntity tradeByFiltersManagerEntityTrue = new TradeByFiltersManagerEntity();
         tradeByFiltersManagerEntityTrue.setName("name");
         tradeByFiltersManagerEntityTrue.setUser(userWithTradeByFiltersManagerTrue);
         userWithTradeByFiltersManagerTrue.getTradeByFiltersManagers().add(tradeByFiltersManagerEntityTrue);
 
-        CustomManageableUserEntity userWithBothManagersTrue = new CustomManageableUserEntity();
+        UserEntity userWithBothManagersTrue = new UserEntity();
         userWithBothManagersTrue.setManagingEnabledFlag(true);
-        CustomTradeByItemIdManagerEntity tradeByItemIdManagerEntityForBothTrue = new CustomTradeByItemIdManagerEntity();
-        tradeByItemIdManagerEntityForBothTrue.setItem(new CustomItemIdEntity("2"));
+        TradeByItemIdManagerEntity tradeByItemIdManagerEntityForBothTrue = new TradeByItemIdManagerEntity();
+        tradeByItemIdManagerEntityForBothTrue.setItem(new ItemEntity("2"));
         tradeByItemIdManagerEntityForBothTrue.setUser(userWithBothManagersTrue);
-        CustomTradeByFiltersManagerEntity tradeByFiltersManagerEntityForBothTrue = new CustomTradeByFiltersManagerEntity();
+        TradeByFiltersManagerEntity tradeByFiltersManagerEntityForBothTrue = new TradeByFiltersManagerEntity();
         tradeByFiltersManagerEntityForBothTrue.setName("name");
         tradeByFiltersManagerEntityForBothTrue.setUser(userWithBothManagersTrue);
         userWithBothManagersTrue.getTradeByItemIdManagers().add(tradeByItemIdManagerEntityForBothTrue);
@@ -179,26 +185,26 @@ class CustomUserPostgresRepositoryTest {
 
         // Have managers, but false flag and no entry
 
-        CustomManageableUserEntity userWithTradeByItemIdManagerFalse = new CustomManageableUserEntity();
+        UserEntity userWithTradeByItemIdManagerFalse = new UserEntity();
         userWithTradeByItemIdManagerFalse.setManagingEnabledFlag(false);
-        CustomTradeByItemIdManagerEntity tradeByItemIdManagerEntityFalse = new CustomTradeByItemIdManagerEntity();
-        tradeByItemIdManagerEntityFalse.setItem(new CustomItemIdEntity("3"));
+        TradeByItemIdManagerEntity tradeByItemIdManagerEntityFalse = new TradeByItemIdManagerEntity();
+        tradeByItemIdManagerEntityFalse.setItem(new ItemEntity("3"));
         tradeByItemIdManagerEntityFalse.setUser(userWithTradeByItemIdManagerFalse);
         userWithTradeByItemIdManagerFalse.getTradeByItemIdManagers().add(tradeByItemIdManagerEntityFalse);
 
-        CustomManageableUserEntity userWithTradeByFiltersManagerFalse = new CustomManageableUserEntity();
+        UserEntity userWithTradeByFiltersManagerFalse = new UserEntity();
         userWithTradeByFiltersManagerFalse.setManagingEnabledFlag(false);
-        CustomTradeByFiltersManagerEntity tradeByFiltersManagerEntityFalse = new CustomTradeByFiltersManagerEntity();
+        TradeByFiltersManagerEntity tradeByFiltersManagerEntityFalse = new TradeByFiltersManagerEntity();
         tradeByFiltersManagerEntityFalse.setName("name");
         tradeByFiltersManagerEntityFalse.setUser(userWithTradeByFiltersManagerFalse);
         userWithTradeByFiltersManagerFalse.getTradeByFiltersManagers().add(tradeByFiltersManagerEntityFalse);
 
-        CustomManageableUserEntity userWithBothManagersFalse = new CustomManageableUserEntity();
+        UserEntity userWithBothManagersFalse = new UserEntity();
         userWithBothManagersFalse.setManagingEnabledFlag(false);
-        CustomTradeByItemIdManagerEntity tradeByItemIdManagerEntityForBothFalse = new CustomTradeByItemIdManagerEntity();
-        tradeByItemIdManagerEntityForBothFalse.setItem(new CustomItemIdEntity("4"));
+        TradeByItemIdManagerEntity tradeByItemIdManagerEntityForBothFalse = new TradeByItemIdManagerEntity();
+        tradeByItemIdManagerEntityForBothFalse.setItem(new ItemEntity("4"));
         tradeByItemIdManagerEntityForBothFalse.setUser(userWithBothManagersFalse);
-        CustomTradeByFiltersManagerEntity tradeByFiltersManagerEntityForBothFalse = new CustomTradeByFiltersManagerEntity();
+        TradeByFiltersManagerEntity tradeByFiltersManagerEntityForBothFalse = new TradeByFiltersManagerEntity();
         tradeByFiltersManagerEntityForBothFalse.setName("name");
         tradeByFiltersManagerEntityForBothFalse.setUser(userWithBothManagersFalse);
         userWithBothManagersFalse.getTradeByItemIdManagers().add(tradeByItemIdManagerEntityForBothFalse);
@@ -210,38 +216,38 @@ class CustomUserPostgresRepositoryTest {
 
         // Have managers and true flag and ubi account entry but no ubi account stats
 
-        CustomManageableUserEntity userWithTradeByItemIdManagerTrueNoStats = new CustomManageableUserEntity();
-        CustomManageableUserUbiAccountEntryEntity ubiAccountEntryEntity1 = new CustomManageableUserUbiAccountEntryEntity();
+        UserEntity userWithTradeByItemIdManagerTrueNoStats = new UserEntity();
+        UbiAccountEntryEntity ubiAccountEntryEntity1 = new UbiAccountEntryEntity();
         ubiAccountEntryEntity1.setUser(userWithTradeByItemIdManagerTrueNoStats);
         ubiAccountEntryEntity1.setEmail("email");
         userWithTradeByItemIdManagerTrueNoStats.setUbiAccountEntry(ubiAccountEntryEntity1);
         userWithTradeByItemIdManagerTrueNoStats.setManagingEnabledFlag(true);
-        CustomTradeByItemIdManagerEntity tradeByItemIdManagerEntityTrueNoStats = new CustomTradeByItemIdManagerEntity();
-        tradeByItemIdManagerEntityTrueNoStats.setItem(new CustomItemIdEntity("5"));
+        TradeByItemIdManagerEntity tradeByItemIdManagerEntityTrueNoStats = new TradeByItemIdManagerEntity();
+        tradeByItemIdManagerEntityTrueNoStats.setItem(new ItemEntity("5"));
         tradeByItemIdManagerEntityTrueNoStats.setUser(userWithTradeByItemIdManagerTrueNoStats);
         userWithTradeByItemIdManagerTrueNoStats.getTradeByItemIdManagers().add(tradeByItemIdManagerEntityTrueNoStats);
 
-        CustomManageableUserEntity userWithTradeByFiltersManagerTrueNoStats = new CustomManageableUserEntity();
-        CustomManageableUserUbiAccountEntryEntity ubiAccountEntryEntity2 = new CustomManageableUserUbiAccountEntryEntity();
+        UserEntity userWithTradeByFiltersManagerTrueNoStats = new UserEntity();
+        UbiAccountEntryEntity ubiAccountEntryEntity2 = new UbiAccountEntryEntity();
         ubiAccountEntryEntity2.setUser(userWithTradeByFiltersManagerTrueNoStats);
         ubiAccountEntryEntity2.setEmail("email");
         userWithTradeByFiltersManagerTrueNoStats.setUbiAccountEntry(ubiAccountEntryEntity2);
         userWithTradeByFiltersManagerTrueNoStats.setManagingEnabledFlag(true);
-        CustomTradeByFiltersManagerEntity tradeByFiltersManagerEntityTrueNoStats = new CustomTradeByFiltersManagerEntity();
+        TradeByFiltersManagerEntity tradeByFiltersManagerEntityTrueNoStats = new TradeByFiltersManagerEntity();
         tradeByFiltersManagerEntityTrueNoStats.setName("name");
         tradeByFiltersManagerEntityTrueNoStats.setUser(userWithTradeByFiltersManagerTrueNoStats);
         userWithTradeByFiltersManagerTrueNoStats.getTradeByFiltersManagers().add(tradeByFiltersManagerEntityTrueNoStats);
 
-        CustomManageableUserEntity userWithBothManagersTrueNoStats = new CustomManageableUserEntity();
-        CustomManageableUserUbiAccountEntryEntity ubiAccountEntryEntity3 = new CustomManageableUserUbiAccountEntryEntity();
+        UserEntity userWithBothManagersTrueNoStats = new UserEntity();
+        UbiAccountEntryEntity ubiAccountEntryEntity3 = new UbiAccountEntryEntity();
         ubiAccountEntryEntity3.setUser(userWithBothManagersTrueNoStats);
         ubiAccountEntryEntity3.setEmail("email");
         userWithBothManagersTrueNoStats.setUbiAccountEntry(ubiAccountEntryEntity3);
         userWithBothManagersTrueNoStats.setManagingEnabledFlag(true);
-        CustomTradeByItemIdManagerEntity tradeByItemIdManagerEntityForBothTrueNoStats = new CustomTradeByItemIdManagerEntity();
-        tradeByItemIdManagerEntityForBothTrueNoStats.setItem(new CustomItemIdEntity("6"));
+        TradeByItemIdManagerEntity tradeByItemIdManagerEntityForBothTrueNoStats = new TradeByItemIdManagerEntity();
+        tradeByItemIdManagerEntityForBothTrueNoStats.setItem(new ItemEntity("6"));
         tradeByItemIdManagerEntityForBothTrueNoStats.setUser(userWithBothManagersTrueNoStats);
-        CustomTradeByFiltersManagerEntity tradeByFiltersManagerEntityForBothTrueNoStats = new CustomTradeByFiltersManagerEntity();
+        TradeByFiltersManagerEntity tradeByFiltersManagerEntityForBothTrueNoStats = new TradeByFiltersManagerEntity();
         tradeByFiltersManagerEntityForBothTrueNoStats.setName("name");
         tradeByFiltersManagerEntityForBothTrueNoStats.setUser(userWithBothManagersTrueNoStats);
         userWithBothManagersTrueNoStats.getTradeByItemIdManagers().add(tradeByItemIdManagerEntityForBothTrueNoStats);

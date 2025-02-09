@@ -1,6 +1,6 @@
 package github.ricemonger.trades_manager.postgres.services;
 
-import github.ricemonger.trades_manager.postgres.custom_entities.manageable_users.CustomManageableUserEntity;
+import github.ricemonger.trades_manager.postgres.dto_projections.ManageableUserProjection;
 import github.ricemonger.trades_manager.postgres.repositories.CustomUserPostgresRepository;
 import github.ricemonger.trades_manager.postgres.services.entity_mappers.user.UserEntityMapper;
 import github.ricemonger.trades_manager.services.DTOs.ManageableUser;
@@ -26,16 +26,16 @@ class UserPostgresServiceTest {
 
     @Test
     public void getAllManageableUsers_should_return_mapped_repository_result() {
-        CustomManageableUserEntity entity1 = Mockito.mock(CustomManageableUserEntity.class);
-        CustomManageableUserEntity entity2 = Mockito.mock(CustomManageableUserEntity.class);
+        ManageableUserProjection projection1 = Mockito.mock(ManageableUserProjection.class);
+        ManageableUserProjection projection2 = Mockito.mock(ManageableUserProjection.class);
 
-        Mockito.when(userRepository.findAllManageableUsers()).thenReturn(List.of(entity1, entity2));
+        Mockito.when(userRepository.findAllManageableUsers()).thenReturn(List.of(projection1, projection2));
 
         ManageableUser dto1 = Mockito.mock(ManageableUser.class);
         ManageableUser dto2 = Mockito.mock(ManageableUser.class);
 
-        Mockito.when(userEntityMapper.createManageableUser(entity1)).thenReturn(dto1);
-        Mockito.when(userEntityMapper.createManageableUser(entity2)).thenReturn(dto2);
+        Mockito.when(userEntityMapper.createManageableUser(projection1)).thenReturn(dto1);
+        Mockito.when(userEntityMapper.createManageableUser(projection2)).thenReturn(dto2);
 
         List<ManageableUser> result = userPostgresService.getAllManageableUsers();
 

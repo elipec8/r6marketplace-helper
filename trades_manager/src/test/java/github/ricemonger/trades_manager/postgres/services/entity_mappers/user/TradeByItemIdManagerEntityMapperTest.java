@@ -1,22 +1,24 @@
 package github.ricemonger.trades_manager.postgres.services.entity_mappers.user;
 
-import github.ricemonger.trades_manager.postgres.custom_entities.items.CustomItemIdEntity;
-import github.ricemonger.trades_manager.postgres.custom_entities.manageable_users.CustomTradeByItemIdManagerEntity;
 import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
 import github.ricemonger.utils.enums.TradeOperationType;
+import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.TradeByItemIdManagerEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest
-class CustomPrioritizedUbiTradeByItemIdManagerEntityMapperTest {
+class TradeByItemIdManagerEntityMapperTest {
     @Autowired
     TradeByItemIdManagerEntityMapper tradeByItemIdManagerEntityMapper;
 
     @Test
     public void createDTO_should_return_expected_result() {
-        CustomTradeByItemIdManagerEntity entity = new CustomTradeByItemIdManagerEntity();
-        entity.setItem(new CustomItemIdEntity("itemId"));
+        TradeByItemIdManagerEntity entity = new TradeByItemIdManagerEntity();
+        entity.setItem(new ItemEntity("itemId"));
         entity.setEnabled(true);
         entity.setTradeOperationType(TradeOperationType.SELL);
         entity.setSellBoundaryPrice(100);

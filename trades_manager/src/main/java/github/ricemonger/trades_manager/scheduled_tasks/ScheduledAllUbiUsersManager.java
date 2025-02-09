@@ -73,7 +73,7 @@ public class ScheduledAllUbiUsersManager {
                     manageableUser.getSoldIn24h(),
                     configTrades.getSellSlots(),
                     configTrades.getSellLimit());
-            prioritizedCurrentSellTrades = potentialTradeFactory.prioritizeCurrentSellTrades(manageableUser.getSellTradePriorityExpression(), currentSellTrades);
+            prioritizedCurrentSellTrades = potentialTradeFactory.prioritizeCurrentTrades(manageableUser.getSellTradePriorityExpression(), currentSellTrades);
         } else {
             resultingSellTrades = new ArrayList<>();
             prioritizedCurrentSellTrades = new ArrayList<>();
@@ -90,7 +90,7 @@ public class ScheduledAllUbiUsersManager {
                     manageableUser.getBoughtIn24h(),
                     configTrades.getBuySlots(),
                     configTrades.getBuyLimit());
-            prioritizedCurrentBuyTrades = potentialTradeFactory.prioritizeCurrentBuyTrades(manageableUser.getBuyTradePriorityExpression(), currentBuyTrades);
+            prioritizedCurrentBuyTrades = potentialTradeFactory.prioritizeCurrentTrades(manageableUser.getBuyTradePriorityExpression(), currentBuyTrades);
         } else {
             resultingBuyTrades = new ArrayList<>();
             prioritizedCurrentBuyTrades = new ArrayList<>();

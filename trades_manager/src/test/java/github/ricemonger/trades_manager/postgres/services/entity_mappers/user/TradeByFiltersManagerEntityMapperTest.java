@@ -1,11 +1,11 @@
 package github.ricemonger.trades_manager.postgres.services.entity_mappers.user;
 
-import github.ricemonger.trades_manager.postgres.custom_entities.manageable_users.CustomItemFilterEntity;
-import github.ricemonger.trades_manager.postgres.custom_entities.manageable_users.CustomManageableUserEntity;
-import github.ricemonger.trades_manager.postgres.custom_entities.manageable_users.CustomTradeByFiltersManagerEntity;
 import github.ricemonger.trades_manager.services.DTOs.TradeByFiltersManager;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.enums.TradeOperationType;
+import github.ricemonger.utilspostgresschema.full_entities.user.ItemFilterEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.TradeByFiltersManagerEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class CustomPrioritizedUbiTradeByFiltersManagerEntityMapperTest {
+class TradeByFiltersManagerEntityMapperTest {
     @Autowired
     private TradeByFiltersManagerEntityMapper tradeByFiltersManagerEntityMapper;
     @MockBean
@@ -28,12 +28,12 @@ class CustomPrioritizedUbiTradeByFiltersManagerEntityMapperTest {
     public void createDTO_should_properly_map_dto() {
         when(itemFilterEntityMapper.createDTO(any())).thenReturn(new ItemFilter());
 
-        CustomTradeByFiltersManagerEntity entity = new CustomTradeByFiltersManagerEntity();
-        entity.setUser(new CustomManageableUserEntity(1L));
+        TradeByFiltersManagerEntity entity = new TradeByFiltersManagerEntity();
+        entity.setUser(new UserEntity(1L));
         entity.setName("name");
         entity.setEnabled(true);
         entity.setTradeOperationType(TradeOperationType.BUY);
-        entity.setAppliedFilters(List.of(new CustomItemFilterEntity()));
+        entity.setAppliedFilters(List.of(new ItemFilterEntity()));
         entity.setMinDifferenceFromMedianPrice(10);
         entity.setMinDifferenceFromMedianPricePercent(11);
         entity.setPriorityMultiplier(12);

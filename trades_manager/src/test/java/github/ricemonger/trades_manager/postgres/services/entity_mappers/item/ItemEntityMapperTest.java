@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-class CustomItemEntityMapperTest {
+class ItemEntityMapperTest {
     @Autowired
     private ItemEntityMapper itemEntityMapper;
 

@@ -23,7 +23,7 @@ class ItemTradeTimeCalculatorTest {
     private final ItemTradeTimeCalculator itemTradeTimeCalculator = spy(new ItemTradeTimeCalculator(commonValuesService, itemFancyPriceCalculator));
 
     @Test
-    public void getExpectedPaymentsSuccessMinutesForExistingTradeOrNull_should_return_expected_result() {
+    public void calculateExpectedPaymentsSuccessMinutesForExistingTradeOrNull_should_return_expected_result() {
         UbiTrade ubiTrade = new UbiTrade();
         LocalDateTime now = LocalDateTime.now();
         ubiTrade.setLastModifiedAt(now.minusDays(10));
@@ -33,15 +33,15 @@ class ItemTradeTimeCalculatorTest {
 
         int expectedTradeTime = 12600; //27000 - 1440 x 10
 
-        int result = Math.abs(itemTradeTimeCalculator.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade) - expectedTradeTime);
+        int result = Math.abs(itemTradeTimeCalculator.calculateExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade) - expectedTradeTime);
 
         assertTrue(result > 5 && result < 15);
 
         doReturn(10).when(itemTradeTimeCalculator).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), any(), any());
-        assertEquals(TRADE_MANAGER_FIXED_RATE_MINUTES, itemTradeTimeCalculator.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
+        assertEquals(TRADE_MANAGER_FIXED_RATE_MINUTES, itemTradeTimeCalculator.calculateExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
 
         doReturn(null).when(itemTradeTimeCalculator).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), any(), any());
-        assertNull(itemTradeTimeCalculator.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
+        assertNull(itemTradeTimeCalculator.calculateExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
     }
 
     @Test

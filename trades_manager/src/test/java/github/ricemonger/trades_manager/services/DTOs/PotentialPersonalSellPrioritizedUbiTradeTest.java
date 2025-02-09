@@ -238,10 +238,9 @@ class PotentialPersonalSellPrioritizedUbiTradeTest {
     @Test
     public void getOldPrice_should_return_proposedPaymentPrice() {
         PersonalItem personalItem = new PersonalItem();
-        PrioritizedUbiTrade ubiPrioritizedUbiTrade = new PrioritizedUbiTrade();
-        ubiPrioritizedUbiTrade.setUbiTrade(new UbiTrade());
-        ubiPrioritizedUbiTrade.setProposedPaymentPrice(1);
-        personalItem.setExistingTrade(ubiPrioritizedUbiTrade);
+        UbiTrade ubiUbiTrade = new UbiTrade();
+        ubiUbiTrade.setProposedPaymentPrice(1);
+        personalItem.setExistingTrade(ubiUbiTrade);
         PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(personalItem, null);
 
         assertEquals(1, PotentialPersonalSellTrade.getOldPrice());
@@ -279,10 +278,9 @@ class PotentialPersonalSellPrioritizedUbiTradeTest {
     @Test
     public void getTradeId_should_return_tradeId() {
         PersonalItem personalItem = new PersonalItem();
-        PrioritizedUbiTrade ubiPrioritizedUbiTrade = new PrioritizedUbiTrade();
-        ubiPrioritizedUbiTrade.setUbiTrade(new UbiTrade());
-        ubiPrioritizedUbiTrade.setTradeId("tradeId");
-        personalItem.setExistingTrade(ubiPrioritizedUbiTrade);
+        UbiTrade ubiUbiTrade = new UbiTrade();
+        ubiUbiTrade.setTradeId("tradeId");
+        personalItem.setExistingTrade(ubiUbiTrade);
         PotentialPersonalSellTrade PotentialPersonalSellTrade = new PotentialPersonalSellTrade(personalItem, null);
 
         assertEquals("tradeId", PotentialPersonalSellTrade.getTradeId());

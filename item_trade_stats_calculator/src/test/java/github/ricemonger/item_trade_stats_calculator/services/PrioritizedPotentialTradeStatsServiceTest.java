@@ -2,7 +2,7 @@ package github.ricemonger.item_trade_stats_calculator.services;
 
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.ItemDaySalesStatsByItemId;
-import github.ricemonger.utils.services.calculators.ItemTradeStatsCalculator;
+import github.ricemonger.utils.services.calculators.ItemPotentialTradeStatsCalculator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +20,7 @@ class PrioritizedPotentialTradeStatsServiceTest {
     @Autowired
     private PotentialTradeStatsService potentialTradeStatsService;
     @MockBean
-    private ItemTradeStatsCalculator itemTradeStatsCalculator;
+    private ItemPotentialTradeStatsCalculator itemPotentialTradeStatsCalculator;
 
     @Test
     public void calculatePotentialBuyTradePriceForTime_should_return_calculator_result() {
@@ -28,7 +28,7 @@ class PrioritizedPotentialTradeStatsServiceTest {
         List<ItemDaySalesStatsByItemId> resultingPerDayStats = mock(List.class);
         Integer minutesToTrade = 0;
 
-        when(itemTradeStatsCalculator.calculatePotentialBuyTradePriceForTime(same(item), same(resultingPerDayStats), same(minutesToTrade))).thenReturn(100);
+        when(itemPotentialTradeStatsCalculator.calculatePotentialBuyTradePriceForTime(same(item), same(resultingPerDayStats), same(minutesToTrade))).thenReturn(100);
 
         Integer result = potentialTradeStatsService.calculatePotentialBuyTradePriceForTime(item, resultingPerDayStats, minutesToTrade);
 

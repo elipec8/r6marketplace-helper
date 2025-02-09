@@ -5,7 +5,6 @@ import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalSellTrade
 import github.ricemonger.trades_manager.services.DTOs.PrioritizedUbiTrade;
 import github.ricemonger.trades_manager.services.DTOs.TradeManagerCommand;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
-import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.CentralTradeManagerCommandType;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +46,7 @@ public class TradeManagerCommandsFactory {
             }
         }
 
-        for (PrioritizedUbiTrade currentSellPrioritizedUbiTrade : prioritizedCurrentSellTrades.stream().sorted(new Comparator<PrioritizedUbiTrade>() {
+        for (PrioritizedUbiTrade prioritizedCurrentSellTrade : prioritizedCurrentSellTrades.stream().sorted(new Comparator<PrioritizedUbiTrade>() {
             @Override
             public int compare(PrioritizedUbiTrade o1, PrioritizedUbiTrade o2) {
                 Long tradePriority1 = o1.getTradePriority() == null ? Long.MIN_VALUE : o1.getTradePriority();
@@ -57,11 +56,11 @@ public class TradeManagerCommandsFactory {
             }
         }).toList()) {
             if (sellOrdersSlotsLeft < sellOrdersCreated && resultingSellTrades.stream().noneMatch(sellTrade -> sellTrade.getTradeId() != null && Objects.equals(sellTrade.getTradeId(),
-                    currentSellPrioritizedUbiTrade.getTradeId()))) {
+                    prioritizedCurrentSellTrade.getTradeId()))) {
                 sellOrdersSlotsLeft++;
                 commands.add(new TradeManagerCommand(userId, authorizationDTO,
-                        CentralTradeManagerCommandType.SELL_ORDER_CANCEL, currentSellPrioritizedUbiTrade.getItemId(), currentSellPrioritizedUbiTrade.getItemName(),
-                        currentSellPrioritizedUbiTrade.getTradeId(), currentSellPrioritizedUbiTrade.getProposedPaymentPrice()));
+                        CentralTradeManagerCommandType.SELL_ORDER_CANCEL, prioritizedCurrentSellTrade.getItemId(), prioritizedCurrentSellTrade.getItemName(),
+                        prioritizedCurrentSellTrade.getTradeId(), prioritizedCurrentSellTrade.getProposedPaymentPrice()));
             }
         }
 
@@ -80,7 +79,7 @@ public class TradeManagerCommandsFactory {
             }
         }
 
-        for (PrioritizedUbiTrade currentBuyPrioritizedUbiTrade : prioritizedCurrentBuyTrades.stream().sorted(new Comparator<PrioritizedUbiTrade>() {
+        for (PrioritizedUbiTrade prioritizedCurrentBuyTrade : prioritizedCurrentBuyTrades.stream().sorted(new Comparator<PrioritizedUbiTrade>() {
             @Override
             public int compare(PrioritizedUbiTrade o1, PrioritizedUbiTrade o2) {
                 Long tradePriority1 = o1.getTradePriority() == null ? Long.MIN_VALUE : o1.getTradePriority();
@@ -90,11 +89,11 @@ public class TradeManagerCommandsFactory {
             }
         }).toList()) {
             if (buyOrdersSlotsLeft < buyOrdersCreated && resultingBuyTrades.stream().noneMatch(buyTrade -> buyTrade.getTradeId() != null && Objects.equals(buyTrade.getTradeId(),
-                    currentBuyPrioritizedUbiTrade.getTradeId()))) {
+                    prioritizedCurrentBuyTrade.getTradeId()))) {
                 buyOrdersSlotsLeft++;
                 commands.add(new TradeManagerCommand(userId, authorizationDTO,
-                        CentralTradeManagerCommandType.BUY_ORDER_CANCEL, currentBuyPrioritizedUbiTrade.getItemId(), currentBuyPrioritizedUbiTrade.getItemName(),
-                        currentBuyPrioritizedUbiTrade.getTradeId(), currentBuyPrioritizedUbiTrade.getProposedPaymentPrice()));
+                        CentralTradeManagerCommandType.BUY_ORDER_CANCEL, prioritizedCurrentBuyTrade.getItemId(), prioritizedCurrentBuyTrade.getItemName(),
+                        prioritizedCurrentBuyTrade.getTradeId(), prioritizedCurrentBuyTrade.getProposedPaymentPrice()));
             }
         }
 

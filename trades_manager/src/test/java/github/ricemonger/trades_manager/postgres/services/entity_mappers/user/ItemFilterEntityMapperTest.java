@@ -1,13 +1,13 @@
 package github.ricemonger.trades_manager.postgres.services.entity_mappers.user;
 
-import github.ricemonger.trades_manager.postgres.custom_entities.items.CustomTagEntity;
-import github.ricemonger.trades_manager.postgres.custom_entities.manageable_users.CustomItemFilterEntity;
 import github.ricemonger.trades_manager.postgres.services.entity_mappers.item.TagEntityMapper;
 import github.ricemonger.utils.DTOs.common.Tag;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.enums.TagGroup;
+import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.ItemFilterEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class CustomItemFilterEntityMapperTest {
+class ItemFilterEntityMapperTest {
     @Autowired
     private ItemFilterEntityMapper itemFilterEntityMapper;
     @MockBean
@@ -29,9 +29,9 @@ class CustomItemFilterEntityMapperTest {
 
     @Test
     public void createDTO_should_properly_map_dto() {
-        CustomTagEntity tagEntity = new CustomTagEntity("value", "name", TagGroup.Rarity);
+        TagEntity tagEntity = new TagEntity("value", "name", TagGroup.Rarity);
 
-        CustomItemFilterEntity entity = new CustomItemFilterEntity();
+        ItemFilterEntity entity = new ItemFilterEntity();
         entity.setName("name");
         entity.setFilterType(FilterType.ALLOW);
         entity.setItemNamePatterns("pattern1,pattern2");
