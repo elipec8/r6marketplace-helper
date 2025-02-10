@@ -19,7 +19,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class PrioritizedUbiTradeManagementCommandsExecutorTest {
+class TradeManagementCommandsExecutorTest {
     @Autowired
     private TradeManagementCommandsExecutor tradeManagementCommandsExecutor;
     @MockBean

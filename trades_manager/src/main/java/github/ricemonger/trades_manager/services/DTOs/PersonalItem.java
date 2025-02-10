@@ -102,22 +102,4 @@ public class PersonalItem {
                Objects.equals(tradeAlreadyExists, other.tradeAlreadyExists) &&
                existingTradesAreEqual;
     }
-
-    public List<PotentialTradeStats> getPotentialBuyTradesStatsOfItem() {
-        if (personalItem.getTradeAlreadyExists() && personalItem.getExistingTrade().getCategory() == Buy) {
-            PrioritizedPotentialTradeStats prioritizedPotentialTradeStats = new PrioritizedPotentialTradeStats(personalItem.getExistingTrade().getProposedPaymentPrice(), personalItem.getExistingTrade().getMinutesToTrade(), personalItem.getExistingTrade().getTradePriority());
-            if (prioritizedPotentialTradeStats.isValid()) {
-                potentialPersonalBuyTrades.add(new PotentialPersonalBuyTrade(personalItem, prioritizedPotentialTradeStats));
-            }
-        }
-    }
-
-    public List<PotentialTradeStats> getPotentialSellTradesStats() {
-        if (personalItem.getTradeAlreadyExists() && personalItem.getExistingTrade().getCategory() == Sell) {
-            PrioritizedPotentialTradeStats prioritizedPotentialTradeStats = new PrioritizedPotentialTradeStats(personalItem.getExistingTrade().getProposedPaymentPrice(), personalItem.getExistingTrade().getMinutesToTrade(), personalItem.getExistingTrade().getTradePriority());
-            if (prioritizedPotentialTradeStats.isValid()) {
-                potentialPersonalSellTrades.add(new PotentialPersonalSellTrade(personalItem, prioritizedPotentialTradeStats));
-            }
-        }
-    }
 }

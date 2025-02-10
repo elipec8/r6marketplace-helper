@@ -20,6 +20,19 @@ public class PotentialTradeStatsService {
 
     private final ItemTradeTimeCalculator itemTradeTimeCalculator;
 
+    public List<PotentialTradeStats> getPotentialSellTradesStatsOfItem(Item item) {
+        List<PotentialTradeStats> result = new ArrayList<>();
+
+        PotentialTradeStats nextFancySellPriceTradeStats = itemTradeTimeCalculator.calculatePriceAndTimeForNextFancySellPriceSale(item);
+        result.add(new PotentialTradeStats(nextFancySellPriceTradeStats.getPrice(), nextFancySellPriceTradeStats.getTime()));
+
+        if (item.getMaxBuyPrice() != null) {
+            result.add(new PotentialTradeStats(item.getMaxBuyPrice(), TRADE_MANAGER_FIXED_RATE_MINUTES));
+        }
+
+        return result;
+    }
+
     public List<PotentialTradeStats> getPotentialBuyTradesStatsOfItem(Item item) {
         List<PotentialTradeStats> result = new ArrayList<>();
 
@@ -45,19 +58,6 @@ public class PotentialTradeStatsService {
         }
         if (item.getPriceToBuyIn720Hours() != null) {
             result.add(new PotentialTradeStats(item.getPriceToBuyIn720Hours(), MINUTES_IN_A_MONTH));
-        }
-
-        return result;
-    }
-
-    public List<PotentialTradeStats> getPotentialSellTradesStatsOfItem(Item item) {
-        List<PotentialTradeStats> result = new ArrayList<>();
-
-        PotentialTradeStats nextFancySellPriceTradeStats = itemTradeTimeCalculator.calculatePriceAndTimeForNextFancySellPriceSale(item);
-        result.add(new PotentialTradeStats(nextFancySellPriceTradeStats.getPrice(), nextFancySellPriceTradeStats.getTime()));
-
-        if (item.getMaxBuyPrice() != null) {
-            result.add(new PotentialTradeStats(item.getMaxBuyPrice(), TRADE_MANAGER_FIXED_RATE_MINUTES));
         }
 
         return result;

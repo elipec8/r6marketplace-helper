@@ -7,10 +7,10 @@ import lombok.RequiredArgsConstructor;
 public class ItemTradePriorityByExpressionCalculator {
 
     public boolean isValidExpression(String tradePriorityExpression) {
-
+        return false;
     }
 
     public Long calculateTradePriority(String tradePriorityExpression, Item item, Integer price, Integer time) {
-
+        return null;
     }
 }

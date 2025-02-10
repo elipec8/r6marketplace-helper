@@ -65,9 +65,7 @@ public class PersonalItemFactory {
 
     public Set<PersonalItem> getPersonalItemsFromTradeByFiltersManager(TradeByFiltersManager tradeByFiltersManager,
                                                                        Collection<UbiTrade> existingSellTrades,
-
                                                                        Collection<UbiTrade> existingBuyTrades,
-
                                                                        Collection<String> ownedItemsIds,
                                                                        Collection<Item> existingItems) {
         if (tradeByFiltersManager.getEnabled() == null ||
@@ -113,9 +111,7 @@ public class PersonalItemFactory {
 
     public Set<PersonalItem> getPersonalItemsFromTradeByItemIdManagersByPriority(Collection<TradeByItemIdManager> tradeByItemIdManagers,
                                                                                  Collection<UbiTrade> existingSellTrades,
-
                                                                                  Collection<UbiTrade> existingBuyTrades,
-
                                                                                  Collection<String> ownedItemsIds,
                                                                                  Collection<Item> existingItems) {
         Set<PersonalItem> personalItems = new HashSet<>();
@@ -145,9 +141,7 @@ public class PersonalItemFactory {
 
     public PersonalItem getPersonalItemFromTradeByItemIdManagerOrNull(TradeByItemIdManager tradeByItemIdManager,
                                                                       Collection<UbiTrade> existingSellTrades,
-
                                                                       Collection<UbiTrade> existingBuyTrades,
-
                                                                       Collection<String> ownedItemsIds,
                                                                       Collection<Item> existingItems) {
 

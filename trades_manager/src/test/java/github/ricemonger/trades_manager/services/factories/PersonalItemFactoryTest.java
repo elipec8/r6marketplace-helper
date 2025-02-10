@@ -1,11 +1,11 @@
 package github.ricemonger.trades_manager.services.factories;
 
 import github.ricemonger.trades_manager.services.DTOs.PersonalItem;
-import github.ricemonger.trades_manager.services.DTOs.PrioritizedUbiTrade;
 import github.ricemonger.trades_manager.services.DTOs.TradeByFiltersManager;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
+import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.TradeOperationType;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -28,8 +28,8 @@ class PersonalItemFactoryTest {
     public void getPersonalItemsForUser_should_return_sets_from_byFilters_and_itemId_managers_with_higher_priority_for_itemId_managers() {
         Collection<TradeByFiltersManager> tradeByFiltersManagers = mock(Collection.class);
         Collection<TradeByItemIdManager> tradeByItemIdManagers = mock(Collection.class);
-        Collection<PrioritizedUbiTrade> existingSellPrioritizedUbiTrades = mock(Collection.class);
-        Collection<PrioritizedUbiTrade> existingBuyPrioritizedUbiTrades = mock(Collection.class);
+        Collection<UbiTrade> existingSellTrades = mock(Collection.class);
+        Collection<UbiTrade> existingBuyTrades = mock(Collection.class);
         Collection<String> ownedItemsId = mock(Collection.class);
         Collection<Item> existingItems = mock(Collection.class);
 
@@ -78,11 +78,11 @@ class PersonalItemFactoryTest {
         Set<PersonalItem> byItemIdSet = Set.of(personalItem1SellLowerPriority, personalItem2SellLowerPriority, personalItem3Sell, personalItem4Sell);
 
         doReturn(byFiltersSet).when(personalItemFactory).getPersonalItemsFromTradeByFiltersManagersByPriority(same(tradeByFiltersManagers),
-                same(existingSellPrioritizedUbiTrades), same(existingBuyPrioritizedUbiTrades), same(ownedItemsId), same(existingItems));
+                same(existingSellTrades), same(existingBuyTrades), same(ownedItemsId), same(existingItems));
         doReturn(byItemIdSet).when(personalItemFactory).getPersonalItemsFromTradeByItemIdManagersByPriority(same(tradeByItemIdManagers),
-                same(existingSellPrioritizedUbiTrades), same(existingBuyPrioritizedUbiTrades), same(ownedItemsId), same(existingItems));
+                same(existingSellTrades), same(existingBuyTrades), same(ownedItemsId), same(existingItems));
 
-        Set<PersonalItem> result = personalItemFactory.getPersonalItemsForUser(tradeByFiltersManagers, tradeByItemIdManagers, existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems);
+        Set<PersonalItem> result = personalItemFactory.getPersonalItemsForUser(tradeByFiltersManagers, tradeByItemIdManagers, existingSellTrades, existingBuyTrades, ownedItemsId, existingItems);
 
         for (PersonalItem personalItem : result) {
             System.out.println(personalItem);
@@ -99,26 +99,26 @@ class PersonalItemFactoryTest {
 
     @Test
     public void getPersonalItemsFromTradeByFiltersManagersByPriority_should_return_empty_list_for_empty_or_null_appliedFilters_or_existingItems() {
-        Collection<PrioritizedUbiTrade> existingSellPrioritizedUbiTrades = mock(Collection.class);
-        Collection<PrioritizedUbiTrade> existingBuyPrioritizedUbiTrades = mock(Collection.class);
+        Collection<UbiTrade> existingSellUbiTrades = mock(Collection.class);
+        Collection<UbiTrade> existingBuyUbiTrades = mock(Collection.class);
         Collection<String> ownedItemsId = mock(Collection.class);
         Collection<Item> existingItems = mock(Collection.class);
         when(existingItems.isEmpty()).thenReturn(false);
 
         TradeByFiltersManager tradeByFiltersManager = mock(TradeByFiltersManager.class);
 
-        assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManagersByPriority(List.of(), existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems).isEmpty());
-        assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManagersByPriority(null, existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems).isEmpty());
-        assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManagersByPriority(List.of(tradeByFiltersManager), existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, null).isEmpty());
+        assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManagersByPriority(List.of(), existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems).isEmpty());
+        assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManagersByPriority(null, existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems).isEmpty());
+        assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManagersByPriority(List.of(tradeByFiltersManager), existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, null).isEmpty());
         when(existingItems.isEmpty()).thenReturn(true);
-        assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManagersByPriority(List.of(tradeByFiltersManager), existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems).isEmpty());
+        assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManagersByPriority(List.of(tradeByFiltersManager), existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems).isEmpty());
     }
 
     @Test
     public void getPersonalItemsFromTradeByFiltersManagersByPriority_should_create_set_of_non_null_personal_items_from_tradeByFiltersManagers_skip_lower_priority_dupes() {
         try (MockedStatic<ItemFilter> mockedStaticFilter = Mockito.mockStatic(ItemFilter.class)) {
-            Collection<PrioritizedUbiTrade> existingSellPrioritizedUbiTrades = mock(Collection.class);
-            Collection<PrioritizedUbiTrade> existingBuyPrioritizedUbiTrades = mock(Collection.class);
+            Collection<UbiTrade> existingSellUbiTrades = mock(Collection.class);
+            Collection<UbiTrade> existingBuyUbiTrades = mock(Collection.class);
             Collection<String> ownedItemsId = mock(Collection.class);
             Collection<Item> existingItems = mock(Collection.class);
             when(existingItems.isEmpty()).thenReturn(false);
@@ -156,7 +156,7 @@ class PersonalItemFactoryTest {
             personalItem2Sell.setTradeOperationType(TradeOperationType.SELL);
             personalItem2Sell.setPriorityMultiplier(2);
 
-            doReturn(Set.of(personalItem1Sell, personalItem2Sell)).when(personalItemFactory).getPersonalItemsFromTradeByFiltersManager(same(tradeByFiltersManagerItemSet1), same(existingSellPrioritizedUbiTrades), same(existingBuyPrioritizedUbiTrades), same(ownedItemsId), same(existingItems));
+            doReturn(Set.of(personalItem1Sell, personalItem2Sell)).when(personalItemFactory).getPersonalItemsFromTradeByFiltersManager(same(tradeByFiltersManagerItemSet1), same(existingSellUbiTrades), same(existingBuyUbiTrades), same(ownedItemsId), same(existingItems));
 
             PersonalItem personalItem1SellLowerPriority = new PersonalItem();
             personalItem1SellLowerPriority.setItem(new Item("1"));
@@ -168,7 +168,7 @@ class PersonalItemFactoryTest {
             personalItem2SellLowerPriority.setTradeOperationType(TradeOperationType.SELL);
             personalItem2SellLowerPriority.setPriorityMultiplier(1);
 
-            doReturn(Set.of(personalItem1SellLowerPriority, personalItem2SellLowerPriority)).when(personalItemFactory).getPersonalItemsFromTradeByFiltersManager(same(tradeByFiltersManagerItemSet1LowerPriority), same(existingSellPrioritizedUbiTrades), same(existingBuyPrioritizedUbiTrades), same(ownedItemsId), same(existingItems));
+            doReturn(Set.of(personalItem1SellLowerPriority, personalItem2SellLowerPriority)).when(personalItemFactory).getPersonalItemsFromTradeByFiltersManager(same(tradeByFiltersManagerItemSet1LowerPriority), same(existingSellUbiTrades), same(existingBuyUbiTrades), same(ownedItemsId), same(existingItems));
 
             PersonalItem personalItem1Buy = new PersonalItem();
             personalItem1Buy.setItem(new Item("1"));
@@ -180,7 +180,7 @@ class PersonalItemFactoryTest {
             personalItem2Buy.setTradeOperationType(TradeOperationType.BUY);
             personalItem2Buy.setPriorityMultiplier(2);
 
-            doReturn(Set.of(personalItem1Buy, personalItem2Buy)).when(personalItemFactory).getPersonalItemsFromTradeByFiltersManager(same(tradeByFiltersManagerItemSet1OtherOperation), same(existingSellPrioritizedUbiTrades), same(existingBuyPrioritizedUbiTrades), same(ownedItemsId), same(existingItems));
+            doReturn(Set.of(personalItem1Buy, personalItem2Buy)).when(personalItemFactory).getPersonalItemsFromTradeByFiltersManager(same(tradeByFiltersManagerItemSet1OtherOperation), same(existingSellUbiTrades), same(existingBuyUbiTrades), same(ownedItemsId), same(existingItems));
 
             PersonalItem personalItem3Sell = new PersonalItem();
             personalItem3Sell.setItem(new Item("3"));
@@ -192,13 +192,13 @@ class PersonalItemFactoryTest {
             personalItem4Sell.setTradeOperationType(TradeOperationType.SELL);
             personalItem4Sell.setPriorityMultiplier(2);
 
-            doReturn(Set.of(personalItem3Sell, personalItem4Sell)).when(personalItemFactory).getPersonalItemsFromTradeByFiltersManager(same(tradeByFiltersManagerItemSet2), same(existingSellPrioritizedUbiTrades),
-                    same(existingBuyPrioritizedUbiTrades), same(ownedItemsId), same(existingItems));
+            doReturn(Set.of(personalItem3Sell, personalItem4Sell)).when(personalItemFactory).getPersonalItemsFromTradeByFiltersManager(same(tradeByFiltersManagerItemSet2), same(existingSellUbiTrades),
+                    same(existingBuyUbiTrades), same(ownedItemsId), same(existingItems));
 
             Set<PersonalItem> result = personalItemFactory.getPersonalItemsFromTradeByFiltersManagersByPriority(
                     Set.of(tradeByFiltersManagerItemSet1, tradeByFiltersManagerItemSet1LowerPriority, tradeByFiltersManagerItemSet1OtherOperation, tradeByFiltersManagerItemSet2),
-                    existingSellPrioritizedUbiTrades,
-                    existingBuyPrioritizedUbiTrades,
+                    existingSellUbiTrades,
+                    existingBuyUbiTrades,
                     ownedItemsId,
                     existingItems);
 
@@ -224,8 +224,8 @@ class PersonalItemFactoryTest {
             List<Item> items = List.of(new Item("1"), new Item("2"));
             mockedStatic.when(() -> ItemFilter.filterItems(Mockito.any(), Mockito.any())).thenReturn(items);
 
-            Collection<PrioritizedUbiTrade> existingSellPrioritizedUbiTrades = mock(Collection.class);
-            Collection<PrioritizedUbiTrade> existingBuyPrioritizedUbiTrades = mock(Collection.class);
+            Collection<UbiTrade> existingSellUbiTrades = mock(Collection.class);
+            Collection<UbiTrade> existingBuyUbiTrades = mock(Collection.class);
             Collection<String> ownedItemsId = mock(Collection.class);
             Collection<Item> existingItems = mock(Collection.class);
             when(existingItems.isEmpty()).thenReturn(false);
@@ -234,21 +234,21 @@ class PersonalItemFactoryTest {
             when(tradeByFiltersManager.getAppliedFilters()).thenReturn(List.of(new ItemFilter()));
             when(tradeByFiltersManager.getEnabled()).thenReturn(true);
 
-            assertFalse(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems).isEmpty());
+            assertFalse(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems).isEmpty());
 
             when(tradeByFiltersManager.getAppliedFilters()).thenReturn(new ArrayList<>());
-            assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems).isEmpty());
+            assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems).isEmpty());
             when(tradeByFiltersManager.getAppliedFilters()).thenReturn(null);
-            assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems).isEmpty());
+            assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems).isEmpty());
             when(tradeByFiltersManager.getAppliedFilters()).thenReturn(List.of(new ItemFilter()));
-            assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, null).isEmpty());
+            assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, null).isEmpty());
             when(existingItems.isEmpty()).thenReturn(true);
-            assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems).isEmpty());
+            assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems).isEmpty());
             when(existingItems.isEmpty()).thenReturn(false);
             when(tradeByFiltersManager.getEnabled()).thenReturn(false);
-            assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems).isEmpty());
+            assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems).isEmpty());
             when(tradeByFiltersManager.getEnabled()).thenReturn(null);
-            assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems).isEmpty());
+            assertTrue(personalItemFactory.getPersonalItemsFromTradeByFiltersManager(tradeByFiltersManager, existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems).isEmpty());
         }
     }
 
@@ -266,15 +266,15 @@ class PersonalItemFactoryTest {
             manager.setPriorityMultiplier(3);
             manager.setEnabled(true);
 
-            PrioritizedUbiTrade sellPrioritizedUbiTrade = new PrioritizedUbiTrade();
-            sellPrioritizedUbiTrade.setTradeId("sellTradeId1");
-            sellPrioritizedUbiTrade.setItem(new Item("2"));
-            Collection<PrioritizedUbiTrade> existingSellPrioritizedUbiTrades = Set.of(sellPrioritizedUbiTrade);
+            UbiTrade sellUbiTrade = new UbiTrade();
+            sellUbiTrade.setTradeId("sellTradeId1");
+            sellUbiTrade.setItem(new Item("2"));
+            Collection<UbiTrade> existingSellUbiTrades = Set.of(sellUbiTrade);
 
-            PrioritizedUbiTrade buyPrioritizedUbiTrade = new PrioritizedUbiTrade();
-            buyPrioritizedUbiTrade.setTradeId("buyTradeId2");
-            buyPrioritizedUbiTrade.setItem(new Item("1"));
-            Collection<PrioritizedUbiTrade> existingBuyPrioritizedUbiTrades = Set.of(buyPrioritizedUbiTrade);
+            UbiTrade buyUbiTrade = new UbiTrade();
+            buyUbiTrade.setTradeId("buyTradeId2");
+            buyUbiTrade.setItem(new Item("1"));
+            Collection<UbiTrade> existingBuyUbiTrades = Set.of(buyUbiTrade);
 
             Collection<String> ownedItemsId = Set.of("1", "3");
 
@@ -305,7 +305,7 @@ class PersonalItemFactoryTest {
             personalItem2.setExistingTrade(null);
 
 
-            Set<PersonalItem> result = personalItemFactory.getPersonalItemsFromTradeByFiltersManager(manager, existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems);
+            Set<PersonalItem> result = personalItemFactory.getPersonalItemsFromTradeByFiltersManager(manager, existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems);
 
             assertEquals(2, result.size());
             assertTrue(result.stream().filter(p -> p.equals(personalItem1)).findFirst().get().isFullyEqual(personalItem1));
@@ -327,15 +327,15 @@ class PersonalItemFactoryTest {
             manager.setPriorityMultiplier(3);
             manager.setEnabled(true);
 
-            PrioritizedUbiTrade sellPrioritizedUbiTrade = new PrioritizedUbiTrade();
-            sellPrioritizedUbiTrade.setTradeId("sellTradeId1");
-            sellPrioritizedUbiTrade.setItem(new Item("1"));
-            Collection<PrioritizedUbiTrade> existingSellPrioritizedUbiTrades = Set.of(sellPrioritizedUbiTrade);
+            UbiTrade sellUbiTrade = new UbiTrade();
+            sellUbiTrade.setTradeId("sellTradeId1");
+            sellUbiTrade.setItem(new Item("1"));
+            Collection<UbiTrade> existingSellUbiTrades = Set.of(sellUbiTrade);
 
-            PrioritizedUbiTrade buyPrioritizedUbiTrade = new PrioritizedUbiTrade();
-            buyPrioritizedUbiTrade.setTradeId("buyTradeId2");
-            buyPrioritizedUbiTrade.setItem(new Item("2"));
-            Collection<PrioritizedUbiTrade> existingBuyPrioritizedUbiTrades = Set.of(buyPrioritizedUbiTrade);
+            UbiTrade buyUbiTrade = new UbiTrade();
+            buyUbiTrade.setTradeId("buyTradeId2");
+            buyUbiTrade.setItem(new Item("2"));
+            Collection<UbiTrade> existingBuyUbiTrades = Set.of(buyUbiTrade);
 
             Collection<String> ownedItemsId = Set.of("1", "3");
 
@@ -351,7 +351,7 @@ class PersonalItemFactoryTest {
             personalItem1.setPriorityMultiplier(3);
             personalItem1.setIsOwned(true);
             personalItem1.setTradeAlreadyExists(true);
-            personalItem1.setExistingTrade(sellPrioritizedUbiTrade);
+            personalItem1.setExistingTrade(sellUbiTrade);
 
             PersonalItem personalItem2 = new PersonalItem();
             personalItem2.setItem(new Item("2"));
@@ -363,10 +363,10 @@ class PersonalItemFactoryTest {
             personalItem2.setPriorityMultiplier(3);
             personalItem2.setIsOwned(false);
             personalItem2.setTradeAlreadyExists(true);
-            personalItem2.setExistingTrade(buyPrioritizedUbiTrade);
+            personalItem2.setExistingTrade(buyUbiTrade);
 
 
-            Set<PersonalItem> result = personalItemFactory.getPersonalItemsFromTradeByFiltersManager(manager, existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems);
+            Set<PersonalItem> result = personalItemFactory.getPersonalItemsFromTradeByFiltersManager(manager, existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems);
 
             assertEquals(2, result.size());
             assertTrue(result.stream().filter(p -> p.equals(personalItem1)).findFirst().get().isFullyEqual(personalItem1));
@@ -378,18 +378,18 @@ class PersonalItemFactoryTest {
     public void getPersonalItemsFromTradeByItemIdManagersByPriority_should_return_empty_list_if_managers_or_existing_items_is_null_or_empty() {
         TradeByItemIdManager tradeByItemIdManagerItem1 = mock(TradeByItemIdManager.class);
 
-        Collection<PrioritizedUbiTrade> existingSellPrioritizedUbiTrades = mock(Collection.class);
-        Collection<PrioritizedUbiTrade> existingBuyPrioritizedUbiTrades = mock(Collection.class);
+        Collection<UbiTrade> existingSellUbiTrades = mock(Collection.class);
+        Collection<UbiTrade> existingBuyUbiTrades = mock(Collection.class);
         Collection<String> ownedItemsId = mock(Collection.class);
         Collection<Item> existingItems = mock(Collection.class);
         when(existingItems.isEmpty()).thenReturn(false);
 
-        assertTrue(personalItemFactory.getPersonalItemsFromTradeByItemIdManagersByPriority(null, existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems).isEmpty());
-        assertTrue(personalItemFactory.getPersonalItemsFromTradeByItemIdManagersByPriority(Set.of(), existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems).isEmpty());
+        assertTrue(personalItemFactory.getPersonalItemsFromTradeByItemIdManagersByPriority(null, existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems).isEmpty());
+        assertTrue(personalItemFactory.getPersonalItemsFromTradeByItemIdManagersByPriority(Set.of(), existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems).isEmpty());
 
-        assertTrue(personalItemFactory.getPersonalItemsFromTradeByItemIdManagersByPriority(Set.of(tradeByItemIdManagerItem1), existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, null).isEmpty());
+        assertTrue(personalItemFactory.getPersonalItemsFromTradeByItemIdManagersByPriority(Set.of(tradeByItemIdManagerItem1), existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, null).isEmpty());
         when(existingItems.isEmpty()).thenReturn(false);
-        assertTrue(personalItemFactory.getPersonalItemsFromTradeByItemIdManagersByPriority(Set.of(tradeByItemIdManagerItem1), existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems).isEmpty());
+        assertTrue(personalItemFactory.getPersonalItemsFromTradeByItemIdManagersByPriority(Set.of(tradeByItemIdManagerItem1), existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems).isEmpty());
     }
 
     @Test
@@ -400,8 +400,8 @@ class PersonalItemFactoryTest {
         TradeByItemIdManager tradeByItemIdManagerItem2 = mock(TradeByItemIdManager.class);
         TradeByItemIdManager tradeByItemIdManagerNull = mock(TradeByItemIdManager.class);
 
-        Collection<PrioritizedUbiTrade> existingSellPrioritizedUbiTrades = mock(Collection.class);
-        Collection<PrioritizedUbiTrade> existingBuyPrioritizedUbiTrades = mock(Collection.class);
+        Collection<UbiTrade> existingSellUbiTrades = mock(Collection.class);
+        Collection<UbiTrade> existingBuyUbiTrades = mock(Collection.class);
         Collection<String> ownedItemsId = mock(Collection.class);
         Collection<Item> existingItems = mock(Collection.class);
         when(existingItems.isEmpty()).thenReturn(false);
@@ -430,24 +430,24 @@ class PersonalItemFactoryTest {
         personalItem2.setItem(new Item("2"));
         personalItem2.setTradeOperationType(TradeOperationType.SELL);
 
-        doReturn(personalItem1).when(personalItemFactory).getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManagerItem1, existingSellPrioritizedUbiTrades,
-                existingBuyPrioritizedUbiTrades,
+        doReturn(personalItem1).when(personalItemFactory).getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManagerItem1, existingSellUbiTrades,
+                existingBuyUbiTrades,
                 ownedItemsId, existingItems);
-        doReturn(personalItem1OtherOperation).when(personalItemFactory).getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManagerItem1OtherOperation, existingSellPrioritizedUbiTrades,
-                existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems);
-        doReturn(personalItem1LowerPriority).when(personalItemFactory).getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManagerItem1LowerPriority, existingSellPrioritizedUbiTrades,
-                existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems);
-        doReturn(personalItem2).when(personalItemFactory).getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManagerItem2, existingSellPrioritizedUbiTrades,
-                existingBuyPrioritizedUbiTrades,
+        doReturn(personalItem1OtherOperation).when(personalItemFactory).getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManagerItem1OtherOperation, existingSellUbiTrades,
+                existingBuyUbiTrades, ownedItemsId, existingItems);
+        doReturn(personalItem1LowerPriority).when(personalItemFactory).getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManagerItem1LowerPriority, existingSellUbiTrades,
+                existingBuyUbiTrades, ownedItemsId, existingItems);
+        doReturn(personalItem2).when(personalItemFactory).getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManagerItem2, existingSellUbiTrades,
+                existingBuyUbiTrades,
                 ownedItemsId, existingItems);
-        doReturn(null).when(personalItemFactory).getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManagerNull, existingSellPrioritizedUbiTrades,
-                existingBuyPrioritizedUbiTrades,
+        doReturn(null).when(personalItemFactory).getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManagerNull, existingSellUbiTrades,
+                existingBuyUbiTrades,
                 ownedItemsId, existingItems);
 
         Set<PersonalItem> result = personalItemFactory.getPersonalItemsFromTradeByItemIdManagersByPriority(
                 Set.of(tradeByItemIdManagerItem1, tradeByItemIdManagerItem1OtherOperation, tradeByItemIdManagerItem1LowerPriority, tradeByItemIdManagerItem2, tradeByItemIdManagerNull),
-                existingSellPrioritizedUbiTrades,
-                existingBuyPrioritizedUbiTrades,
+                existingSellUbiTrades,
+                existingBuyUbiTrades,
                 ownedItemsId,
                 existingItems);
 
@@ -467,38 +467,38 @@ class PersonalItemFactoryTest {
     @Test
     public void getPersonalItemFromTradeByItemIdManager_should_return_expected_null_if_item_doesnt_existOrNull_or_disabled_manager() {
         TradeByItemIdManager tradeByItemIdManager = getDefaultItemIdManager();
-        Collection<PrioritizedUbiTrade> existingSellPrioritizedUbiTrades = new HashSet<>();
-        Collection<PrioritizedUbiTrade> existingBuyPrioritizedUbiTrades = new HashSet<>();
+        Collection<UbiTrade> existingSellUbiTrades = new HashSet<>();
+        Collection<UbiTrade> existingBuyUbiTrades = new HashSet<>();
         Collection<String> ownedItemsId = new HashSet<>();
         Collection<Item> existingItems = Set.of(new Item("1"));
         tradeByItemIdManager.setEnabled(true);
 
-        assertNotNull(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems));
+        assertNotNull(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems));
 
         existingItems = Set.of(new Item("12"));
-        assertNull(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems));
+        assertNull(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems));
 
         existingItems = null;
-        assertNull(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems));
+        assertNull(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems));
 
         existingItems = Set.of(new Item("1"));
         tradeByItemIdManager.setEnabled(false);
-        assertNull(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems));
+        assertNull(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems));
     }
 
     @Test
     public void getPersonalItemFromTradeByItemIdManager_should_return_expected_object_isOwned_false_and_buy_trade_doesnt_existOrNull() {
         TradeByItemIdManager tradeByItemIdManager = getDefaultItemIdManager();
 
-        PrioritizedUbiTrade sellPrioritizedUbiTrade = new PrioritizedUbiTrade();
-        sellPrioritizedUbiTrade.setTradeId("tradeId");
-        sellPrioritizedUbiTrade.setItem(new Item("1"));
-        Collection<PrioritizedUbiTrade> existingSellPrioritizedUbiTrades = Set.of(sellPrioritizedUbiTrade);
+        UbiTrade sellUbiTrade = new UbiTrade();
+        sellUbiTrade.setTradeId("tradeId");
+        sellUbiTrade.setItem(new Item("1"));
+        Collection<UbiTrade> existingSellUbiTrades = Set.of(sellUbiTrade);
 
-        PrioritizedUbiTrade buyPrioritizedUbiTrade = new PrioritizedUbiTrade();
-        buyPrioritizedUbiTrade.setTradeId("tradeId");
-        buyPrioritizedUbiTrade.setItem(new Item("2"));
-        Collection<PrioritizedUbiTrade> existingBuyPrioritizedUbiTrades = Set.of(buyPrioritizedUbiTrade);
+        UbiTrade buyUbiTrade = new UbiTrade();
+        buyUbiTrade.setTradeId("tradeId");
+        buyUbiTrade.setItem(new Item("2"));
+        Collection<UbiTrade> existingBuyUbiTrades = Set.of(buyUbiTrade);
 
         Collection<String> ownedItemsId = new HashSet<>();
 
@@ -516,22 +516,22 @@ class PersonalItemFactoryTest {
         expected.setTradeAlreadyExists(false);
         expected.setExistingTrade(null);
 
-        assertTrue(expected.isFullyEqual(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems)));
+        assertTrue(expected.isFullyEqual(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems)));
     }
 
     @Test
     public void getPersonalItemFromTradeByItemIdManager_should_return_expected_object_isOwned_false_and_buy_trade_existsOrNull() {
         TradeByItemIdManager tradeByItemIdManager = getDefaultItemIdManager();
 
-        PrioritizedUbiTrade sellPrioritizedUbiTrade = new PrioritizedUbiTrade();
-        sellPrioritizedUbiTrade.setTradeId("tradeId");
-        sellPrioritizedUbiTrade.setItem(new Item("2"));
-        Collection<PrioritizedUbiTrade> existingSellPrioritizedUbiTrades = Set.of(sellPrioritizedUbiTrade);
+        UbiTrade sellUbiTrade = new UbiTrade();
+        sellUbiTrade.setTradeId("tradeId");
+        sellUbiTrade.setItem(new Item("2"));
+        Collection<UbiTrade> existingSellUbiTrades = Set.of(sellUbiTrade);
 
-        PrioritizedUbiTrade buyPrioritizedUbiTrade = new PrioritizedUbiTrade();
-        buyPrioritizedUbiTrade.setTradeId("tradeId");
-        buyPrioritizedUbiTrade.setItem(new Item("1"));
-        Collection<PrioritizedUbiTrade> existingBuyPrioritizedUbiTrades = Set.of(buyPrioritizedUbiTrade);
+        UbiTrade buyUbiTrade = new UbiTrade();
+        buyUbiTrade.setTradeId("tradeId");
+        buyUbiTrade.setItem(new Item("1"));
+        Collection<UbiTrade> existingBuyUbiTrades = Set.of(buyUbiTrade);
 
         Collection<String> ownedItemsId = new HashSet<>();
 
@@ -547,24 +547,24 @@ class PersonalItemFactoryTest {
         expected.setPriorityMultiplier(3);
         expected.setIsOwned(false);
         expected.setTradeAlreadyExists(true);
-        expected.setExistingTrade(buyPrioritizedUbiTrade);
+        expected.setExistingTrade(buyUbiTrade);
 
-        assertTrue(expected.isFullyEqual(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems)));
+        assertTrue(expected.isFullyEqual(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems)));
     }
 
     @Test
     public void getPersonalItemFromTradeByItemIdManager_should_return_expected_object_all_other_category_tradeOrNull() {
         TradeByItemIdManager tradeByItemIdManager = getDefaultItemIdManager();
 
-        PrioritizedUbiTrade sellPrioritizedUbiTrade = new PrioritizedUbiTrade();
-        sellPrioritizedUbiTrade.setTradeId("tradeId");
-        sellPrioritizedUbiTrade.setItem(new Item("2"));
-        Collection<PrioritizedUbiTrade> existingSellPrioritizedUbiTrades = Set.of(sellPrioritizedUbiTrade);
+        UbiTrade sellUbiTrade = new UbiTrade();
+        sellUbiTrade.setTradeId("tradeId");
+        sellUbiTrade.setItem(new Item("2"));
+        Collection<UbiTrade> existingSellUbiTrades = Set.of(sellUbiTrade);
 
-        PrioritizedUbiTrade buyPrioritizedUbiTrade = new PrioritizedUbiTrade();
-        buyPrioritizedUbiTrade.setTradeId("tradeId");
-        buyPrioritizedUbiTrade.setItem(new Item("1"));
-        Collection<PrioritizedUbiTrade> existingBuyPrioritizedUbiTrades = Set.of(buyPrioritizedUbiTrade);
+        UbiTrade buyUbiTrade = new UbiTrade();
+        buyUbiTrade.setTradeId("tradeId");
+        buyUbiTrade.setItem(new Item("1"));
+        Collection<UbiTrade> existingBuyUbiTrades = Set.of(buyUbiTrade);
 
         Collection<String> ownedItemsId = new HashSet<>();
         ownedItemsId.add("1");
@@ -583,22 +583,22 @@ class PersonalItemFactoryTest {
         expected.setTradeAlreadyExists(false);
         expected.setExistingTrade(null);
 
-        assertTrue(expected.isFullyEqual(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems)));
+        assertTrue(expected.isFullyEqual(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems)));
     }
 
     @Test
     public void getPersonalItemFromTradeByItemIdManager_OrNull_should_return_expected_object_all_fields() {
         TradeByItemIdManager tradeByItemIdManager = getDefaultItemIdManager();
 
-        PrioritizedUbiTrade sellPrioritizedUbiTrade = new PrioritizedUbiTrade();
-        sellPrioritizedUbiTrade.setTradeId("tradeId");
-        sellPrioritizedUbiTrade.setItem(new Item("1"));
-        Collection<PrioritizedUbiTrade> existingSellPrioritizedUbiTrades = Set.of(sellPrioritizedUbiTrade);
+        UbiTrade sellUbiTrade = new UbiTrade();
+        sellUbiTrade.setTradeId("tradeId");
+        sellUbiTrade.setItem(new Item("1"));
+        Collection<UbiTrade> existingSellUbiTrades = Set.of(sellUbiTrade);
 
-        PrioritizedUbiTrade buyPrioritizedUbiTrade = new PrioritizedUbiTrade();
-        buyPrioritizedUbiTrade.setTradeId("tradeId");
-        buyPrioritizedUbiTrade.setItem(new Item("2"));
-        Collection<PrioritizedUbiTrade> existingBuyPrioritizedUbiTrades = Set.of(buyPrioritizedUbiTrade);
+        UbiTrade buyUbiTrade = new UbiTrade();
+        buyUbiTrade.setTradeId("tradeId");
+        buyUbiTrade.setItem(new Item("2"));
+        Collection<UbiTrade> existingBuyUbiTrades = Set.of(buyUbiTrade);
 
         Collection<String> ownedItemsId = new HashSet<>();
         ownedItemsId.add("1");
@@ -615,9 +615,9 @@ class PersonalItemFactoryTest {
         expected.setPriorityMultiplier(3);
         expected.setIsOwned(true);
         expected.setTradeAlreadyExists(true);
-        expected.setExistingTrade(sellPrioritizedUbiTrade);
+        expected.setExistingTrade(sellUbiTrade);
 
-        assertTrue(expected.isFullyEqual(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellPrioritizedUbiTrades, existingBuyPrioritizedUbiTrades, ownedItemsId, existingItems)));
+        assertTrue(expected.isFullyEqual(personalItemFactory.getPersonalItemFromTradeByItemIdManagerOrNull(tradeByItemIdManager, existingSellUbiTrades, existingBuyUbiTrades, ownedItemsId, existingItems)));
     }
 
     private TradeByItemIdManager getDefaultItemIdManager() {

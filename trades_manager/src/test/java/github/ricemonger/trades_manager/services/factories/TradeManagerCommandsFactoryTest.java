@@ -4,6 +4,7 @@ import github.ricemonger.trades_manager.services.DTOs.*;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.PrioritizedPotentialTradeStats;
+import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.CentralTradeManagerCommandType;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-class PrioritizedUbiTradeManagerCommandsFactoryTest {
+class TradeManagerCommandsFactoryTest {
     @Autowired
     private TradeManagerCommandsFactory tradeManagerCommandsFactory;
 
@@ -38,7 +39,7 @@ class PrioritizedUbiTradeManagerCommandsFactoryTest {
         personalItemSellTradeUpdate.setItem(new Item("2"));
         personalItemSellTradeUpdate.getItem().setName("name2");
         personalItemSellTradeUpdate.setTradeAlreadyExists(true);
-        personalItemSellTradeUpdate.setExistingTrade(new PrioritizedUbiTrade());
+        personalItemSellTradeUpdate.setExistingTrade(new UbiTrade());
         personalItemSellTradeUpdate.getExistingTrade().setTradeId("tradeId2");
         personalItemSellTradeUpdate.getExistingTrade().setProposedPaymentPrice(2);
         PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsSellTradeUpdate = new PrioritizedPotentialTradeStats();
@@ -49,7 +50,7 @@ class PrioritizedUbiTradeManagerCommandsFactoryTest {
         personalItemSellTradeLeave.setItem(new Item("3"));
         personalItemSellTradeLeave.getItem().setName("name3");
         personalItemSellTradeLeave.setTradeAlreadyExists(true);
-        personalItemSellTradeLeave.setExistingTrade(new PrioritizedUbiTrade());
+        personalItemSellTradeLeave.setExistingTrade(new UbiTrade());
         personalItemSellTradeLeave.getExistingTrade().setTradeId("tradeId3");
         personalItemSellTradeLeave.getExistingTrade().setProposedPaymentPrice(3);
         PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsSellTradeLeave = new PrioritizedPotentialTradeStats();
@@ -81,7 +82,7 @@ class PrioritizedUbiTradeManagerCommandsFactoryTest {
         personalItemBuyTradeUpdate.setItem(new Item("5"));
         personalItemBuyTradeUpdate.getItem().setName("name5");
         personalItemBuyTradeUpdate.setTradeAlreadyExists(true);
-        personalItemBuyTradeUpdate.setExistingTrade(new PrioritizedUbiTrade());
+        personalItemBuyTradeUpdate.setExistingTrade(new UbiTrade());
         personalItemBuyTradeUpdate.getExistingTrade().setTradeId("tradeId5");
         personalItemBuyTradeUpdate.getExistingTrade().setProposedPaymentPrice(5);
         PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsBuyTradeUpdate = new PrioritizedPotentialTradeStats();
@@ -92,7 +93,7 @@ class PrioritizedUbiTradeManagerCommandsFactoryTest {
         personalItemBuyTradeLeave.setItem(new Item("6"));
         personalItemBuyTradeLeave.getItem().setName("name6");
         personalItemBuyTradeLeave.setTradeAlreadyExists(true);
-        personalItemBuyTradeLeave.setExistingTrade(new PrioritizedUbiTrade());
+        personalItemBuyTradeLeave.setExistingTrade(new UbiTrade());
         personalItemBuyTradeLeave.getExistingTrade().setTradeId("tradeId6");
         personalItemBuyTradeLeave.getExistingTrade().setProposedPaymentPrice(6);
         PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsBuyTradeLeave = new PrioritizedPotentialTradeStats();
@@ -166,7 +167,7 @@ class PrioritizedUbiTradeManagerCommandsFactoryTest {
         personalItemSellTradeUpdate.setItem(new Item("2"));
         personalItemSellTradeUpdate.getItem().setName("name2");
         personalItemSellTradeUpdate.setTradeAlreadyExists(true);
-        personalItemSellTradeUpdate.setExistingTrade(new PrioritizedUbiTrade());
+        personalItemSellTradeUpdate.setExistingTrade(new UbiTrade());
         personalItemSellTradeUpdate.getExistingTrade().setTradeId("tradeId2");
         personalItemSellTradeUpdate.getExistingTrade().setProposedPaymentPrice(2);
         PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsSellTradeUpdate = new PrioritizedPotentialTradeStats();
@@ -177,7 +178,7 @@ class PrioritizedUbiTradeManagerCommandsFactoryTest {
         personalItemSellTradeLeave.setItem(new Item("3"));
         personalItemSellTradeLeave.getItem().setName("name3");
         personalItemSellTradeLeave.setTradeAlreadyExists(true);
-        personalItemSellTradeLeave.setExistingTrade(new PrioritizedUbiTrade());
+        personalItemSellTradeLeave.setExistingTrade(new UbiTrade());
         personalItemSellTradeLeave.getExistingTrade().setTradeId("tradeId3");
         personalItemSellTradeLeave.getExistingTrade().setProposedPaymentPrice(3);
         PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsSellTradeLeave = new PrioritizedPotentialTradeStats();
@@ -209,7 +210,7 @@ class PrioritizedUbiTradeManagerCommandsFactoryTest {
         personalItemBuyTradeUpdate.setItem(new Item("5"));
         personalItemBuyTradeUpdate.getItem().setName("name5");
         personalItemBuyTradeUpdate.setTradeAlreadyExists(true);
-        personalItemBuyTradeUpdate.setExistingTrade(new PrioritizedUbiTrade());
+        personalItemBuyTradeUpdate.setExistingTrade(new UbiTrade());
         personalItemBuyTradeUpdate.getExistingTrade().setTradeId("tradeId5");
         personalItemBuyTradeUpdate.getExistingTrade().setProposedPaymentPrice(5);
         PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsBuyTradeUpdate = new PrioritizedPotentialTradeStats();
@@ -220,7 +221,7 @@ class PrioritizedUbiTradeManagerCommandsFactoryTest {
         personalItemBuyTradeLeave.setItem(new Item("6"));
         personalItemBuyTradeLeave.getItem().setName("name6");
         personalItemBuyTradeLeave.setTradeAlreadyExists(true);
-        personalItemBuyTradeLeave.setExistingTrade(new PrioritizedUbiTrade());
+        personalItemBuyTradeLeave.setExistingTrade(new UbiTrade());
         personalItemBuyTradeLeave.getExistingTrade().setTradeId("tradeId6");
         personalItemBuyTradeLeave.getExistingTrade().setProposedPaymentPrice(6);
         PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsBuyTradeLeave = new PrioritizedPotentialTradeStats();
