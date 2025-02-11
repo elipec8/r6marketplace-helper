@@ -1,6 +1,5 @@
 package github.ricemonger.trades_manager.postgres.repositories;
 
-import github.ricemonger.trades_manager.postgres.dto_projections.ManageableUserProjection;
 import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -137,10 +136,10 @@ class CustomUserPostgresRepositoryTest {
         userRepository.save(userWithTradeByFiltersManagerFalse);
         userRepository.save(userWithBothManagersFalse);
 
-        List<ManageableUserProjection> projections = userRepository.findAllManageableUsers();
+        List<UserEntity> entities = userRepository.findAllManageableUsers();
 
         assertEquals(9, userRepository.count());
-        assertEquals(3, projections.size());
+        assertEquals(3, entities.size());
     }
 
     @Test

@@ -95,6 +95,12 @@ class ScheduledAllUbiUsersManagerTest {
         List resultingBuyTrades1 = mock(List.class);
         when(potentialTradeFactory.getResultingPersonalBuyTrades(eq("buyTradePriorityExpression1"), same(personalItems1), eq(1000), eq(10), eq(configTrades.getBuySlots()), eq(configTrades.getBuyLimit()))).thenReturn(resultingBuyTrades1);
 
+        List prioritizedSellTrades1 = mock(List.class);
+        when(potentialTradeFactory.prioritizeCurrentTrades(eq("sellTradePriorityExpression1"), same(currentSellTrades1))).thenReturn(prioritizedSellTrades1);
+
+        List prioritizedBuyTrades1 = mock(List.class);
+        when(potentialTradeFactory.prioritizeCurrentTrades(eq("buyTradePriorityExpression1"), same(currentBuyTrades1))).thenReturn(prioritizedBuyTrades1);
+
         TradeManagerCommand buyCancelCommand1 = mock(TradeManagerCommand.class);
         when(buyCancelCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_CANCEL);
         when(buyCancelCommand1.getAuthorizationDTO()).thenReturn(authDTO1);
@@ -181,8 +187,8 @@ class ScheduledAllUbiUsersManagerTest {
 
         AuthorizationDTO updatedAuthDTO1 = new AuthorizationDTO(authDTO1.getTicket(), manageableUser1.getUbiProfileId(), authDTO1.getSpaceId(), authDTO1.getSessionId(), authDTO1.getRememberDeviceTicket(), authDTO1.getRememberMeTicket());
 
-        when(tradeManagerCommandsFactory.createTradeManagerCommandsForUser(same(resultingSellTrades1), same(currentSellTrades1),
-                same(resultingBuyTrades1), same(currentBuyTrades1), eq(1L), eq(updatedAuthDTO1), eq(configTrades))).thenReturn(commands1);
+        when(tradeManagerCommandsFactory.createTradeManagerCommandsForUser(same(resultingSellTrades1), same(prioritizedSellTrades1),
+                same(resultingBuyTrades1), same(prioritizedBuyTrades1), eq(1L), eq(updatedAuthDTO1), eq(configTrades))).thenReturn(commands1);
 
         List tradeByFiltersManagers2 = mock(List.class);
         List tradeByItemIdManagers2 = mock(List.class);
@@ -223,6 +229,12 @@ class ScheduledAllUbiUsersManagerTest {
 
         List resultingBuyTrades2 = mock(List.class);
         when(potentialTradeFactory.getResultingPersonalBuyTrades(eq("buyTradePriorityExpression2"), same(personalItems2), eq(2000), eq(20), eq(configTrades.getBuySlots()), eq(configTrades.getBuyLimit()))).thenReturn(resultingBuyTrades2);
+
+        List prioritizedSellTrades2 = mock(List.class);
+        when(potentialTradeFactory.prioritizeCurrentTrades(eq("sellTradePriorityExpression2"), same(currentSellTrades2))).thenReturn(prioritizedSellTrades2);
+
+        List prioritizedBuyTrades2 = mock(List.class);
+        when(potentialTradeFactory.prioritizeCurrentTrades(eq("buyTradePriorityExpression2"), same(currentBuyTrades2))).thenReturn(prioritizedBuyTrades2);
 
         TradeManagerCommand buyCancelCommand2 = mock(TradeManagerCommand.class);
         when(buyCancelCommand2.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_CANCEL);
@@ -268,7 +280,8 @@ class ScheduledAllUbiUsersManagerTest {
 
         AuthorizationDTO updatedAuthDTO2 = new AuthorizationDTO(authDTO2.getTicket(), manageableUser2.getUbiProfileId(), authDTO2.getSpaceId(), authDTO2.getSessionId(), authDTO2.getRememberDeviceTicket(), authDTO2.getRememberMeTicket());
 
-        when(tradeManagerCommandsFactory.createTradeManagerCommandsForUser(same(resultingSellTrades2), same(currentSellTrades2), same(resultingBuyTrades2), same(currentBuyTrades2), eq(2L), eq(updatedAuthDTO2), eq(configTrades))).thenReturn(commands2);
+        when(tradeManagerCommandsFactory.createTradeManagerCommandsForUser(same(resultingSellTrades2), same(prioritizedSellTrades2), same(resultingBuyTrades2),
+                same(prioritizedBuyTrades2), eq(2L), eq(updatedAuthDTO2), eq(configTrades))).thenReturn(commands2);
 
         List<ManageableUser> manageableUsers = List.of(manageableUser1, manageableUser2);
 
@@ -343,6 +356,12 @@ class ScheduledAllUbiUsersManagerTest {
         List resultingBuyTrades1 = mock(List.class);
         when(potentialTradeFactory.getResultingPersonalBuyTrades(eq("buyTradePriorityExpression1"), same(personalItems1), eq(1000), eq(10), eq(configTrades.getBuySlots()), eq(configTrades.getBuyLimit()))).thenReturn(resultingBuyTrades1);
 
+        List prioritizedSellTrades1 = mock(List.class);
+        when(potentialTradeFactory.prioritizeCurrentTrades(eq("sellTradePriorityExpression1"), same(currentSellTrades1))).thenReturn(prioritizedSellTrades1);
+
+        List prioritizedBuyTrades1 = mock(List.class);
+        when(potentialTradeFactory.prioritizeCurrentTrades(eq("buyTradePriorityExpression1"), same(currentBuyTrades1))).thenReturn(prioritizedBuyTrades1);
+
         TradeManagerCommand sellCancelCommand1 = mock(TradeManagerCommand.class);
         when(sellCancelCommand1.getCommandType()).thenReturn(CentralTradeManagerCommandType.SELL_ORDER_CANCEL);
         when(sellCancelCommand1.getAuthorizationDTO()).thenReturn(authDTO1);
@@ -387,8 +406,8 @@ class ScheduledAllUbiUsersManagerTest {
 
         AuthorizationDTO updatedAuthDTO1 = new AuthorizationDTO(authDTO1.getTicket(), manageableUser1.getUbiProfileId(), authDTO1.getSpaceId(), authDTO1.getSessionId(), authDTO1.getRememberDeviceTicket(), authDTO1.getRememberMeTicket());
 
-        when(tradeManagerCommandsFactory.createTradeManagerCommandsForUser(same(resultingSellTrades1), same(currentSellTrades1),
-                argThat(arg -> arg != resultingBuyTrades1), same(currentBuyTrades1), eq(1L), eq(updatedAuthDTO1), eq(configTrades))).thenReturn(commands1);
+        when(tradeManagerCommandsFactory.createTradeManagerCommandsForUser(same(resultingSellTrades1), same(prioritizedSellTrades1),
+                argThat(arg -> arg != resultingBuyTrades1), argThat(arg -> arg != prioritizedBuyTrades1), eq(1L), eq(updatedAuthDTO1), eq(configTrades))).thenReturn(commands1);
 
         List tradeByFiltersManagers2 = mock(List.class);
         List tradeByItemIdManagers2 = mock(List.class);
@@ -430,6 +449,12 @@ class ScheduledAllUbiUsersManagerTest {
         List resultingBuyTrades2 = mock(List.class);
         when(potentialTradeFactory.getResultingPersonalBuyTrades(eq("buyTradePriorityExpression2"), same(personalItems2), eq(2000), eq(20), eq(configTrades.getBuySlots()), eq(configTrades.getBuyLimit()))).thenReturn(resultingBuyTrades2);
 
+        List prioritizedSellTrades2 = mock(List.class);
+        when(potentialTradeFactory.prioritizeCurrentTrades(eq("sellTradePriorityExpression2"), same(currentSellTrades2))).thenReturn(prioritizedSellTrades2);
+
+        List prioritizedBuyTrades2 = mock(List.class);
+        when(potentialTradeFactory.prioritizeCurrentTrades(eq("buyTradePriorityExpression2"), same(currentBuyTrades2))).thenReturn(prioritizedBuyTrades2);
+
         TradeManagerCommand buyCancelCommand2 = mock(TradeManagerCommand.class);
         when(buyCancelCommand2.getCommandType()).thenReturn(CentralTradeManagerCommandType.BUY_ORDER_CANCEL);
         when(buyCancelCommand2.getAuthorizationDTO()).thenReturn(authDTO2);
@@ -454,7 +479,8 @@ class ScheduledAllUbiUsersManagerTest {
 
         AuthorizationDTO updatedAuthDTO2 = new AuthorizationDTO(authDTO2.getTicket(), manageableUser2.getUbiProfileId(), authDTO2.getSpaceId(), authDTO2.getSessionId(), authDTO2.getRememberDeviceTicket(), authDTO2.getRememberMeTicket());
 
-        when(tradeManagerCommandsFactory.createTradeManagerCommandsForUser(argThat(arg -> arg != resultingSellTrades2), same(currentSellTrades2), same(resultingBuyTrades2), same(currentBuyTrades2), eq(2L), eq(updatedAuthDTO2), eq(configTrades))).thenReturn(commands2);
+        when(tradeManagerCommandsFactory.createTradeManagerCommandsForUser(argThat(arg -> arg != resultingSellTrades2), argThat(arg -> arg != prioritizedSellTrades2),
+                same(resultingBuyTrades2), same(prioritizedBuyTrades2), eq(2L), eq(updatedAuthDTO2), eq(configTrades))).thenReturn(commands2);
 
         List<ManageableUser> manageableUsers = List.of(manageableUser1, manageableUser2);
 

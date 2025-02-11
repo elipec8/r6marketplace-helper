@@ -1,8 +1,6 @@
 package github.ricemonger.trades_manager.services.DTOs;
 
 import github.ricemonger.utils.DTOs.common.Item;
-import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
-import github.ricemonger.utils.DTOs.common.PrioritizedPotentialTradeStats;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.TradeOperationType;
@@ -11,11 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
-
-import static github.ricemonger.utils.enums.TradeCategory.Buy;
-import static github.ricemonger.utils.enums.TradeCategory.Sell;
 
 @Data
 @NoArgsConstructor

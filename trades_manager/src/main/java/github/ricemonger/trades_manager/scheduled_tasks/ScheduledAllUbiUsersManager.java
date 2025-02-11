@@ -77,7 +77,6 @@ public class ScheduledAllUbiUsersManager {
         } else {
             resultingSellTrades = new ArrayList<>();
             prioritizedCurrentSellTrades = new ArrayList<>();
-
         }
 
         List<PotentialPersonalBuyTrade> resultingBuyTrades;

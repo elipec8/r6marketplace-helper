@@ -1,13 +1,10 @@
 package github.ricemonger.trades_manager.postgres.services.entity_mappers.user;
 
-import github.ricemonger.trades_manager.postgres.dto_projections.ManageableUserProjection;
 import github.ricemonger.trades_manager.services.DTOs.ManageableUser;
 import github.ricemonger.trades_manager.services.DTOs.TradeByFiltersManager;
 import github.ricemonger.trades_manager.services.DTOs.UbiAccountStats;
 import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
-import github.ricemonger.utilspostgresschema.full_entities.user.TradeByFiltersManagerEntity;
-import github.ricemonger.utilspostgresschema.full_entities.user.TradeByItemIdManagerEntity;
-import github.ricemonger.utilspostgresschema.full_entities.user.UbiAccountStatsEntity;
+import github.ricemonger.utilspostgresschema.full_entities.user.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,22 +52,23 @@ class UserEntityMapperTest {
 
         Mockito.when(ubiAccountStatsEntityMapper.createDTO(ubiAccountStatsEntity)).thenReturn(ubiAccountStats);
 
-        ManageableUserProjection projection = new ManageableUserProjection();
-        projection.setId(1L);
-        projection.setUbiAccountStats(ubiAccountStatsEntity);
-        projection.setUbiAuthTicket("ubiAuthTicket");
-        projection.setUbiSpaceId("ubiSpaceId");
-        projection.setUbiSessionId("ubiSessionId");
-        projection.setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
-        projection.setUbiRememberMeTicket("ubiRememberMeTicket");
-        projection.setTradeByFiltersManagers(List.of(tradeByFiltersManagerEntity1, tradeByFiltersManagerEntity2));
-        projection.setTradeByItemIdManagers(List.of(tradeByItemIdManagerEntity1, tradeByItemIdManagerEntity2));
-        projection.setSellTradesManagingEnabledFlag(true);
-        projection.setSellTradePriorityExpression("sellTradePriorityExpression");
-        projection.setBuyTradesManagingEnabledFlag(false);
-        projection.setBuyTradePriorityExpression("buyTradePriorityExpression");
+        UserEntity entity = new UserEntity();
+        entity.setId(1L);
+        entity.setUbiAccountEntry(new UbiAccountEntryEntity());
+        entity.getUbiAccountEntry().setUbiAccountStats(ubiAccountStatsEntity);
+        entity.getUbiAccountEntry().setUbiAuthTicket("ubiAuthTicket");
+        entity.getUbiAccountEntry().setUbiSpaceId("ubiSpaceId");
+        entity.getUbiAccountEntry().setUbiSessionId("ubiSessionId");
+        entity.getUbiAccountEntry().setUbiRememberDeviceTicket("ubiRememberDeviceTicket");
+        entity.getUbiAccountEntry().setUbiRememberMeTicket("ubiRememberMeTicket");
+        entity.setTradeByFiltersManagers(List.of(tradeByFiltersManagerEntity1, tradeByFiltersManagerEntity2));
+        entity.setTradeByItemIdManagers(List.of(tradeByItemIdManagerEntity1, tradeByItemIdManagerEntity2));
+        entity.setSellTradesManagingEnabledFlag(true);
+        entity.setSellTradePriorityExpression("sellTradePriorityExpression");
+        entity.setBuyTradesManagingEnabledFlag(false);
+        entity.setBuyTradePriorityExpression("buyTradePriorityExpression");
 
-        ManageableUser result = userEntityMapper.createManageableUser(projection);
+        ManageableUser result = userEntityMapper.createManageableUser(entity);
 
         assertEquals(1L, result.getId());
         assertSame(ubiAccountStats, result.getUbiAccountStats());
