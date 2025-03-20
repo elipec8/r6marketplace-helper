@@ -16,7 +16,7 @@ Requires from end User only his Ubisoft Account’s credentials, specification o
  3. Provide **fetching_accounts_credentials.json** in **fetching_users_reauthorizer** module's src/main/resources with Uplay accounts' credentials(more the better)
     One accounts may be used to deal 200 request per minute(300ms), fast_sell_trades_manager's SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_FETCH by amount of accounts  
      &nbsp;  
- 4. Run the app with ```docker-compose up``` in root directory
+ 4. Run the app with ```docker-compose up``` in root directory  
      &nbsp;
  5. fast_sell_trades_manager service in **docker-compose.yaml** must be launched separately with confugired FAST_SELL_USER_ID and FAST_SELL_EMAIL after registering user via Telegram Bot
 
