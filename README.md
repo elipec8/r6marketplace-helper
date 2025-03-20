@@ -9,13 +9,13 @@ Requires from end User only his Ubisoft Account’s credentials, specification o
 
 
 ## To run:  
- 1. Provide required auth_constants.env file by its sample
-    &nbsp;
- 2. Provide empty or configured(auth_constants.env values have higher priority) auth-values.yaml files in main_user_reauthorizer, users_ubi_accs_reauthorizer, notifications_service and telegram_bot_updates_consumer modules' src/main/resources directories
+ 1. Provide required auth_constants.env file by its sample  
+    &nbsp;  
+ 2. Provide empty or configured(auth_constants.env values have higher priority) auth-values.yaml files in main_user_reauthorizer, users_ubi_accs_reauthorizer, notifications_service and telegram_bot_updates_consumer modules' src/main/resources directories  
     &nbsp;  
  3. Either provide **fetching_accounts_credentials.json** in **fetching_users_reauthorizer** module OR  
     Configure its docker-compose service to get the file from another source  
-     &nbsp;
+     &nbsp;  
  4. Run the app with ```docker-compose up``` in root directory
 
 
