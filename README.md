@@ -11,10 +11,10 @@ Requires from end User only his Ubisoft Account’s credentials, specification o
 ## To run:  
  1. Provide required auth_constants.env file by its sample  
     &nbsp;  
- 2. Provide empty or configured(auth_constants.env values have higher priority) auth-values.yaml files in main_user_reauthorizer, users_ubi_accs_reauthorizer, notifications_service and telegram_bot_updates_consumer modules' src/main/resources directories  
+ 2. Provide empty or configured(auth_constants.env values have higher priority) auth-values.yaml files in **main_user_reauthorizer**, **users_ubi_accs_reauthorizer**, **notifications_service** and **telegram_bot_updates_consumer** modules' src/main/resources directory
     &nbsp;  
- 3. Either provide **fetching_accounts_credentials.json** in **fetching_users_reauthorizer** module OR  
-    Configure its docker-compose service to get the file from another source  
+ 3. Provide **fetching_accounts_credentials.json** in **fetching_users_reauthorizer** module's src/main/resources with Uplay accounts' credentials(more the better)
+    One accounts may be used to deal 200 request per minute(300ms), fast_sell_trades_manager's SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_FETCH by amount of accounts
      &nbsp;  
  4. Run the app with ```docker-compose up``` in root directory
 
