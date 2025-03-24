@@ -24,16 +24,19 @@ Requires from end User only his Ubisoft Account’s credentials, specification o
 ## To use:
 
 For using **Fast Sell Trade Manager**, after linking your Ubisoft Account via Telegram Bot,
-configure environmental variables in **fast_sell_trade_manager** module's docker-compose service to select proper user.  
+configure environmental variables in **fast_sell_trade_manager** module's docker-compose service to select only one user for being managed.    
+Can create/update/cancel only sell trades. Expression for trade priority is unchangeable, only boundary price difference from normal price for item can be configured.  
+Profit is approximately **7000-10000** credits/day for account with 1600 items.  
 
 
-For using **Trades Manager**, link your Ubisoft Account and create Trade Manager via Telegram Bot.  
+For using **Trades Manager**, link your Ubisoft Account and create Trade Manager via Telegram Bot. Any amount of users can user this service.  
+Can create/update/cancel both buy and sell orders on Marketplace. Buy and Sell trade priority expression can be configured by each user personally.  
 Trade Managers can use either Items' Filters or single Item ID. User can have any amount of Trade Managers.  
   * For Managers by Item ID, you can provide boundary prices to be sold/bought and multiplier for trade priority, to highlight managed item among 
    items from other managers.  
    * For Managers by Item Filters, instead of boundary prices, you can provide minimum difference between trade price and item's month median price.
-      Can use few Item Filters at once.  Item Filters are also created by User.
-
+      Can use few Item Filters at once. Item Filters are also created by User.  
+Profit is approximately **1200** credits/day for account with 1600 items and ~150.000 credits account worth.
 
 
 ## Environmental authorization variables description:  
