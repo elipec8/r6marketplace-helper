@@ -37,7 +37,7 @@ Trade Managers can use either Items' Filters or single Item ID. User can have an
    * For Managers by Item Filters, instead of boundary prices, you can provide minimum difference between trade price and item's month median price.
       Can use few Item Filters at once. Item Filters are also created by User.
      
-Profit is approximately **1200** credits/day for account with 1600 items and ~150.000 credits account worth.
+Profit is approximately **1200** credits/day for account with 1600 items and ~250.000 credits account worth.
 
 
 ## Environmental authorization variables description:  
