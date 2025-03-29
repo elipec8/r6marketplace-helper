@@ -68,7 +68,7 @@ Used in **Telegram Bot Updates Consumer** and **Users Ubisoft Accounts Reauthori
 [AES encryption key generator - get Encryption Key 256](https://acte.ltd/utils/randomkeygen)
 
 
->**POSTGRES_USER** - Postgres root user, use any
+>**POSTGRES_USER** - Postgres root user, use any  
 **POSTGRES_PASSWORD** - Postgres root password, use any  
 &nbsp;  
 **PGADMIN_DEFAULT_EMAIL** - PgAdmin root user email, use any  
