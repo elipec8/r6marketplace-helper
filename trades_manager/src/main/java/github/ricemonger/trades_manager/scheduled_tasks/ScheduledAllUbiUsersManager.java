@@ -10,6 +10,7 @@ import github.ricemonger.trades_manager.services.factories.PotentialTradeFactory
 import github.ricemonger.trades_manager.services.factories.TradeManagerCommandsFactory;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.DTOs.common.Item;
+import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -51,8 +52,8 @@ public class ScheduledAllUbiUsersManager {
 
     public void manageUserTrades(ManageableUser manageableUser, ConfigTrades configTrades, Collection<Item> existingItems) {
 
-        List<Trade> currentSellTrades = manageableUser.getCurrentSellTrades();
-        List<Trade> currentBuyTrades = manageableUser.getCurrentBuyTrades();
+        List<UbiTrade> currentSellTrades = manageableUser.getCurrentSellTrades();
+        List<UbiTrade> currentBuyTrades = manageableUser.getCurrentBuyTrades();
 
         Set<PersonalItem> personalItems = personalItemFactory.getPersonalItemsForUser(
                 manageableUser.getTradeByFiltersManagers(),
@@ -63,38 +64,45 @@ public class ScheduledAllUbiUsersManager {
                 existingItems);
 
         List<PotentialPersonalSellTrade> resultingSellTrades;
+        List<PrioritizedUbiTrade> prioritizedCurrentSellTrades;
         if (manageableUser.getSellTradesManagingEnabledFlag() != null && manageableUser.getSellTradesManagingEnabledFlag()) {
             resultingSellTrades = potentialTradeFactory.getResultingPersonalSellTrades(
+                    manageableUser.getSellTradePriorityExpression(),
                     personalItems,
                     manageableUser.getResaleLocks(),
                     manageableUser.getSoldIn24h(),
                     configTrades.getSellSlots(),
                     configTrades.getSellLimit());
+            prioritizedCurrentSellTrades = potentialTradeFactory.prioritizeCurrentTrades(manageableUser.getSellTradePriorityExpression(), currentSellTrades);
         } else {
             resultingSellTrades = new ArrayList<>();
+            prioritizedCurrentSellTrades = new ArrayList<>();
         }
 
         List<PotentialPersonalBuyTrade> resultingBuyTrades;
+        List<PrioritizedUbiTrade> prioritizedCurrentBuyTrades;
         if (manageableUser.getBuyTradesManagingEnabledFlag() != null && manageableUser.getBuyTradesManagingEnabledFlag()) {
             resultingBuyTrades = potentialTradeFactory.getResultingPersonalBuyTrades(
+                    manageableUser.getBuyTradePriorityExpression(),
                     personalItems,
                     manageableUser.getCreditAmount(),
                     manageableUser.getBoughtIn24h(),
                     configTrades.getBuySlots(),
                     configTrades.getBuyLimit());
+            prioritizedCurrentBuyTrades = potentialTradeFactory.prioritizeCurrentTrades(manageableUser.getBuyTradePriorityExpression(), currentBuyTrades);
         } else {
             resultingBuyTrades = new ArrayList<>();
+            prioritizedCurrentBuyTrades = new ArrayList<>();
         }
 
         List<TradeManagerCommand> commands = new ArrayList<>(tradeManagerCommandsFactory.createTradeManagerCommandsForUser(
                 resultingSellTrades,
-                currentSellTrades,
+                prioritizedCurrentSellTrades,
                 resultingBuyTrades,
-                currentBuyTrades,
+                prioritizedCurrentBuyTrades,
                 manageableUser.getId(),
                 manageableUser.toAuthorizationDTO(),
                 configTrades));
-
         for (TradeManagerCommand command : commands.stream().sorted().toList()) {
             tradeManagementCommandsExecutor.executeCommand(command);
         }

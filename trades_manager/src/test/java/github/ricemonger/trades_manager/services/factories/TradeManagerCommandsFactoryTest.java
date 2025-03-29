@@ -3,7 +3,8 @@ package github.ricemonger.trades_manager.services.factories;
 import github.ricemonger.trades_manager.services.DTOs.*;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.DTOs.common.Item;
-import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
+import github.ricemonger.utils.DTOs.common.PrioritizedPotentialTradeStats;
+import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.CentralTradeManagerCommandType;
 import org.junit.jupiter.api.Test;
@@ -30,87 +31,87 @@ class TradeManagerCommandsFactoryTest {
         personalItemSellTradeCreate.setItem(new Item("1"));
         personalItemSellTradeCreate.getItem().setName("name");
         personalItemSellTradeCreate.setTradeAlreadyExists(false);
-        PotentialTradeStats potentialTradeStatsSellTradeCreate = new PotentialTradeStats();
-        potentialTradeStatsSellTradeCreate.setPrice(1);
-        PotentialPersonalSellTrade potentialSellTradeCreate = new PotentialPersonalSellTrade(personalItemSellTradeCreate, potentialTradeStatsSellTradeCreate);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsSellTradeCreate = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsSellTradeCreate.setPrice(1);
+        PotentialPersonalSellTrade potentialSellTradeCreate = new PotentialPersonalSellTrade(personalItemSellTradeCreate, prioritizedPotentialTradeStatsSellTradeCreate);
 
         PersonalItem personalItemSellTradeUpdate = new PersonalItem();
         personalItemSellTradeUpdate.setItem(new Item("2"));
         personalItemSellTradeUpdate.getItem().setName("name2");
         personalItemSellTradeUpdate.setTradeAlreadyExists(true);
-        personalItemSellTradeUpdate.setExistingTrade(new Trade());
+        personalItemSellTradeUpdate.setExistingTrade(new UbiTrade());
         personalItemSellTradeUpdate.getExistingTrade().setTradeId("tradeId2");
         personalItemSellTradeUpdate.getExistingTrade().setProposedPaymentPrice(2);
-        PotentialTradeStats potentialTradeStatsSellTradeUpdate = new PotentialTradeStats();
-        potentialTradeStatsSellTradeUpdate.setPrice(20);
-        PotentialPersonalSellTrade potentialSellTradeUpdate = new PotentialPersonalSellTrade(personalItemSellTradeUpdate, potentialTradeStatsSellTradeUpdate);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsSellTradeUpdate = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsSellTradeUpdate.setPrice(20);
+        PotentialPersonalSellTrade potentialSellTradeUpdate = new PotentialPersonalSellTrade(personalItemSellTradeUpdate, prioritizedPotentialTradeStatsSellTradeUpdate);
 
         PersonalItem personalItemSellTradeLeave = new PersonalItem();
         personalItemSellTradeLeave.setItem(new Item("3"));
         personalItemSellTradeLeave.getItem().setName("name3");
         personalItemSellTradeLeave.setTradeAlreadyExists(true);
-        personalItemSellTradeLeave.setExistingTrade(new Trade());
+        personalItemSellTradeLeave.setExistingTrade(new UbiTrade());
         personalItemSellTradeLeave.getExistingTrade().setTradeId("tradeId3");
         personalItemSellTradeLeave.getExistingTrade().setProposedPaymentPrice(3);
-        PotentialTradeStats potentialTradeStatsSellTradeLeave = new PotentialTradeStats();
-        potentialTradeStatsSellTradeLeave.setPrice(3);
-        PotentialPersonalSellTrade potentialSellTradeLeave = new PotentialPersonalSellTrade(personalItemSellTradeLeave, potentialTradeStatsSellTradeLeave);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsSellTradeLeave = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsSellTradeLeave.setPrice(3);
+        PotentialPersonalSellTrade potentialSellTradeLeave = new PotentialPersonalSellTrade(personalItemSellTradeLeave, prioritizedPotentialTradeStatsSellTradeLeave);
 
         Collection<PotentialPersonalSellTrade> resultingSellTrades = List.of(potentialSellTradeCreate, potentialSellTradeUpdate, potentialSellTradeLeave);
 
-        Trade currentSellTradeBeUpdated = new Trade();
-        currentSellTradeBeUpdated.setTradeId("tradeId2");
-        Trade currentSellTradeBeLeft = new Trade();
-        currentSellTradeBeLeft.setTradeId("tradeId3");
-        Trade currentSellTradeBeCanceled = new Trade();
-        currentSellTradeBeCanceled.setTradeId("tradeId4");
-        currentSellTradeBeCanceled.setItem(new Item("44"));
-        currentSellTradeBeCanceled.getItem().setName("name44");
-        currentSellTradeBeCanceled.setProposedPaymentPrice(44);
-        Collection<Trade> currentSellTrades = List.of(currentSellTradeBeUpdated, currentSellTradeBeLeft, currentSellTradeBeCanceled);
+        PrioritizedUbiTrade currentSellPrioritizedUbiTradeBeUpdated = new PrioritizedUbiTrade();
+        currentSellPrioritizedUbiTradeBeUpdated.setTradeId("tradeId2");
+        PrioritizedUbiTrade currentSellPrioritizedUbiTradeBeLeft = new PrioritizedUbiTrade();
+        currentSellPrioritizedUbiTradeBeLeft.setTradeId("tradeId3");
+        PrioritizedUbiTrade currentSellPrioritizedUbiTradeBeCanceled = new PrioritizedUbiTrade();
+        currentSellPrioritizedUbiTradeBeCanceled.setTradeId("tradeId4");
+        currentSellPrioritizedUbiTradeBeCanceled.setItem(new Item("44"));
+        currentSellPrioritizedUbiTradeBeCanceled.getItem().setName("name44");
+        currentSellPrioritizedUbiTradeBeCanceled.setProposedPaymentPrice(44);
+        Collection<PrioritizedUbiTrade> currentSellPrioritizedUbiTrades = List.of(currentSellPrioritizedUbiTradeBeUpdated, currentSellPrioritizedUbiTradeBeLeft, currentSellPrioritizedUbiTradeBeCanceled);
 
         PersonalItem personalItemBuyTradeCreate = new PersonalItem();
         personalItemBuyTradeCreate.setItem(new Item("4"));
         personalItemBuyTradeCreate.getItem().setName("name4");
         personalItemBuyTradeCreate.setTradeAlreadyExists(false);
-        PotentialTradeStats potentialTradeStatsBuyTradeCreate = new PotentialTradeStats();
-        potentialTradeStatsBuyTradeCreate.setPrice(4);
-        PotentialPersonalBuyTrade potentialBuyTradeCreate = new PotentialPersonalBuyTrade(personalItemBuyTradeCreate, potentialTradeStatsBuyTradeCreate);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsBuyTradeCreate = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsBuyTradeCreate.setPrice(4);
+        PotentialPersonalBuyTrade potentialBuyTradeCreate = new PotentialPersonalBuyTrade(personalItemBuyTradeCreate, prioritizedPotentialTradeStatsBuyTradeCreate);
 
         PersonalItem personalItemBuyTradeUpdate = new PersonalItem();
         personalItemBuyTradeUpdate.setItem(new Item("5"));
         personalItemBuyTradeUpdate.getItem().setName("name5");
         personalItemBuyTradeUpdate.setTradeAlreadyExists(true);
-        personalItemBuyTradeUpdate.setExistingTrade(new Trade());
+        personalItemBuyTradeUpdate.setExistingTrade(new UbiTrade());
         personalItemBuyTradeUpdate.getExistingTrade().setTradeId("tradeId5");
         personalItemBuyTradeUpdate.getExistingTrade().setProposedPaymentPrice(5);
-        PotentialTradeStats potentialTradeStatsBuyTradeUpdate = new PotentialTradeStats();
-        potentialTradeStatsBuyTradeUpdate.setPrice(50);
-        PotentialPersonalBuyTrade potentialBuyTradeUpdate = new PotentialPersonalBuyTrade(personalItemBuyTradeUpdate, potentialTradeStatsBuyTradeUpdate);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsBuyTradeUpdate = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsBuyTradeUpdate.setPrice(50);
+        PotentialPersonalBuyTrade potentialBuyTradeUpdate = new PotentialPersonalBuyTrade(personalItemBuyTradeUpdate, prioritizedPotentialTradeStatsBuyTradeUpdate);
 
         PersonalItem personalItemBuyTradeLeave = new PersonalItem();
         personalItemBuyTradeLeave.setItem(new Item("6"));
         personalItemBuyTradeLeave.getItem().setName("name6");
         personalItemBuyTradeLeave.setTradeAlreadyExists(true);
-        personalItemBuyTradeLeave.setExistingTrade(new Trade());
+        personalItemBuyTradeLeave.setExistingTrade(new UbiTrade());
         personalItemBuyTradeLeave.getExistingTrade().setTradeId("tradeId6");
         personalItemBuyTradeLeave.getExistingTrade().setProposedPaymentPrice(6);
-        PotentialTradeStats potentialTradeStatsBuyTradeLeave = new PotentialTradeStats();
-        potentialTradeStatsBuyTradeLeave.setPrice(6);
-        PotentialPersonalBuyTrade potentialBuyTradeLeave = new PotentialPersonalBuyTrade(personalItemBuyTradeLeave, potentialTradeStatsBuyTradeLeave);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsBuyTradeLeave = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsBuyTradeLeave.setPrice(6);
+        PotentialPersonalBuyTrade potentialBuyTradeLeave = new PotentialPersonalBuyTrade(personalItemBuyTradeLeave, prioritizedPotentialTradeStatsBuyTradeLeave);
 
         Collection<PotentialPersonalBuyTrade> resultingBuyTrades = List.of(potentialBuyTradeCreate, potentialBuyTradeUpdate, potentialBuyTradeLeave);
 
-        Trade currentBuyTradeBeUpdated = new Trade();
-        currentBuyTradeBeUpdated.setTradeId("tradeId5");
-        Trade currentBuyTradeBeLeft = new Trade();
-        currentBuyTradeBeLeft.setTradeId("tradeId6");
-        Trade currentBuyTradeBeCanceled = new Trade();
-        currentBuyTradeBeCanceled.setTradeId("tradeId7");
-        currentBuyTradeBeCanceled.setItem(new Item("77"));
-        currentBuyTradeBeCanceled.getItem().setName("name77");
-        currentBuyTradeBeCanceled.setProposedPaymentPrice(77);
-        Collection<Trade> currentBuyTrades = List.of(currentBuyTradeBeUpdated, currentBuyTradeBeLeft, currentBuyTradeBeCanceled);
+        PrioritizedUbiTrade currentBuyPrioritizedUbiTradeBeUpdated = new PrioritizedUbiTrade();
+        currentBuyPrioritizedUbiTradeBeUpdated.setTradeId("tradeId5");
+        PrioritizedUbiTrade currentBuyPrioritizedUbiTradeBeLeft = new PrioritizedUbiTrade();
+        currentBuyPrioritizedUbiTradeBeLeft.setTradeId("tradeId6");
+        PrioritizedUbiTrade currentBuyPrioritizedUbiTradeBeCanceled = new PrioritizedUbiTrade();
+        currentBuyPrioritizedUbiTradeBeCanceled.setTradeId("tradeId7");
+        currentBuyPrioritizedUbiTradeBeCanceled.setItem(new Item("77"));
+        currentBuyPrioritizedUbiTradeBeCanceled.getItem().setName("name77");
+        currentBuyPrioritizedUbiTradeBeCanceled.setProposedPaymentPrice(77);
+        Collection<PrioritizedUbiTrade> currentBuyPrioritizedUbiTrades = List.of(currentBuyPrioritizedUbiTradeBeUpdated, currentBuyPrioritizedUbiTradeBeLeft, currentBuyPrioritizedUbiTradeBeCanceled);
 
 
         TradeManagerCommand commandCreateSell = new TradeManagerCommand(userId, authorizationDTO,
@@ -130,15 +131,15 @@ class TradeManagerCommandsFactoryTest {
                 potentialBuyTradeUpdate.getTradeId(), potentialBuyTradeUpdate.getOldPrice(), potentialBuyTradeUpdate.getNewPrice());
 
         TradeManagerCommand commandCancelBuy = new TradeManagerCommand(userId, authorizationDTO,
-                CentralTradeManagerCommandType.BUY_ORDER_CANCEL, currentBuyTradeBeCanceled.getItemId(), currentBuyTradeBeCanceled.getItemName(),
-                currentBuyTradeBeCanceled.getTradeId(), currentBuyTradeBeCanceled.getProposedPaymentPrice());
+                CentralTradeManagerCommandType.BUY_ORDER_CANCEL, currentBuyPrioritizedUbiTradeBeCanceled.getItemId(), currentBuyPrioritizedUbiTradeBeCanceled.getItemName(),
+                currentBuyPrioritizedUbiTradeBeCanceled.getTradeId(), currentBuyPrioritizedUbiTradeBeCanceled.getProposedPaymentPrice());
 
         ConfigTrades configTrades = new ConfigTrades();
         configTrades.setSellSlots(4);
         configTrades.setBuySlots(3);
 
         List<TradeManagerCommand> result = tradeManagerCommandsFactory.createTradeManagerCommandsForUser(resultingSellTrades
-                , currentSellTrades, resultingBuyTrades, currentBuyTrades, userId, authorizationDTO, configTrades);
+                , currentSellPrioritizedUbiTrades, resultingBuyTrades, currentBuyPrioritizedUbiTrades, userId, authorizationDTO, configTrades);
 
 
         assertEquals(5, result.size());
@@ -158,87 +159,87 @@ class TradeManagerCommandsFactoryTest {
         personalItemSellTradeCreate.setItem(new Item("1"));
         personalItemSellTradeCreate.getItem().setName("name");
         personalItemSellTradeCreate.setTradeAlreadyExists(false);
-        PotentialTradeStats potentialTradeStatsSellTradeCreate = new PotentialTradeStats();
-        potentialTradeStatsSellTradeCreate.setPrice(1);
-        PotentialPersonalSellTrade potentialSellTradeCreate = new PotentialPersonalSellTrade(personalItemSellTradeCreate, potentialTradeStatsSellTradeCreate);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsSellTradeCreate = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsSellTradeCreate.setPrice(1);
+        PotentialPersonalSellTrade potentialSellTradeCreate = new PotentialPersonalSellTrade(personalItemSellTradeCreate, prioritizedPotentialTradeStatsSellTradeCreate);
 
         PersonalItem personalItemSellTradeUpdate = new PersonalItem();
         personalItemSellTradeUpdate.setItem(new Item("2"));
         personalItemSellTradeUpdate.getItem().setName("name2");
         personalItemSellTradeUpdate.setTradeAlreadyExists(true);
-        personalItemSellTradeUpdate.setExistingTrade(new Trade());
+        personalItemSellTradeUpdate.setExistingTrade(new UbiTrade());
         personalItemSellTradeUpdate.getExistingTrade().setTradeId("tradeId2");
         personalItemSellTradeUpdate.getExistingTrade().setProposedPaymentPrice(2);
-        PotentialTradeStats potentialTradeStatsSellTradeUpdate = new PotentialTradeStats();
-        potentialTradeStatsSellTradeUpdate.setPrice(20);
-        PotentialPersonalSellTrade potentialSellTradeUpdate = new PotentialPersonalSellTrade(personalItemSellTradeUpdate, potentialTradeStatsSellTradeUpdate);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsSellTradeUpdate = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsSellTradeUpdate.setPrice(20);
+        PotentialPersonalSellTrade potentialSellTradeUpdate = new PotentialPersonalSellTrade(personalItemSellTradeUpdate, prioritizedPotentialTradeStatsSellTradeUpdate);
 
         PersonalItem personalItemSellTradeLeave = new PersonalItem();
         personalItemSellTradeLeave.setItem(new Item("3"));
         personalItemSellTradeLeave.getItem().setName("name3");
         personalItemSellTradeLeave.setTradeAlreadyExists(true);
-        personalItemSellTradeLeave.setExistingTrade(new Trade());
+        personalItemSellTradeLeave.setExistingTrade(new UbiTrade());
         personalItemSellTradeLeave.getExistingTrade().setTradeId("tradeId3");
         personalItemSellTradeLeave.getExistingTrade().setProposedPaymentPrice(3);
-        PotentialTradeStats potentialTradeStatsSellTradeLeave = new PotentialTradeStats();
-        potentialTradeStatsSellTradeLeave.setPrice(3);
-        PotentialPersonalSellTrade potentialSellTradeLeave = new PotentialPersonalSellTrade(personalItemSellTradeLeave, potentialTradeStatsSellTradeLeave);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsSellTradeLeave = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsSellTradeLeave.setPrice(3);
+        PotentialPersonalSellTrade potentialSellTradeLeave = new PotentialPersonalSellTrade(personalItemSellTradeLeave, prioritizedPotentialTradeStatsSellTradeLeave);
 
         Collection<PotentialPersonalSellTrade> resultingSellTrades = List.of(potentialSellTradeCreate, potentialSellTradeUpdate, potentialSellTradeLeave);
 
-        Trade currentSellTradeBeUpdated = new Trade();
-        currentSellTradeBeUpdated.setTradeId("tradeId2");
-        Trade currentSellTradeBeLeft = new Trade();
-        currentSellTradeBeLeft.setTradeId("tradeId3");
-        Trade currentSellTradeBeCanceled = new Trade();
-        currentSellTradeBeCanceled.setTradeId("tradeId4");
-        currentSellTradeBeCanceled.setItem(new Item("44"));
-        currentSellTradeBeCanceled.getItem().setName("name44");
-        currentSellTradeBeCanceled.setProposedPaymentPrice(44);
-        Collection<Trade> currentSellTrades = List.of(currentSellTradeBeUpdated, currentSellTradeBeLeft, currentSellTradeBeCanceled);
+        PrioritizedUbiTrade currentSellPrioritizedUbiTradeBeUpdated = new PrioritizedUbiTrade();
+        currentSellPrioritizedUbiTradeBeUpdated.setTradeId("tradeId2");
+        PrioritizedUbiTrade currentSellPrioritizedUbiTradeBeLeft = new PrioritizedUbiTrade();
+        currentSellPrioritizedUbiTradeBeLeft.setTradeId("tradeId3");
+        PrioritizedUbiTrade currentSellPrioritizedUbiTradeBeCanceled = new PrioritizedUbiTrade();
+        currentSellPrioritizedUbiTradeBeCanceled.setTradeId("tradeId4");
+        currentSellPrioritizedUbiTradeBeCanceled.setItem(new Item("44"));
+        currentSellPrioritizedUbiTradeBeCanceled.getItem().setName("name44");
+        currentSellPrioritizedUbiTradeBeCanceled.setProposedPaymentPrice(44);
+        Collection<PrioritizedUbiTrade> currentSellPrioritizedUbiTrades = List.of(currentSellPrioritizedUbiTradeBeUpdated, currentSellPrioritizedUbiTradeBeLeft, currentSellPrioritizedUbiTradeBeCanceled);
 
         PersonalItem personalItemBuyTradeCreate = new PersonalItem();
         personalItemBuyTradeCreate.setItem(new Item("4"));
         personalItemBuyTradeCreate.getItem().setName("name4");
         personalItemBuyTradeCreate.setTradeAlreadyExists(false);
-        PotentialTradeStats potentialTradeStatsBuyTradeCreate = new PotentialTradeStats();
-        potentialTradeStatsBuyTradeCreate.setPrice(4);
-        PotentialPersonalBuyTrade potentialBuyTradeCreate = new PotentialPersonalBuyTrade(personalItemBuyTradeCreate, potentialTradeStatsBuyTradeCreate);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsBuyTradeCreate = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsBuyTradeCreate.setPrice(4);
+        PotentialPersonalBuyTrade potentialBuyTradeCreate = new PotentialPersonalBuyTrade(personalItemBuyTradeCreate, prioritizedPotentialTradeStatsBuyTradeCreate);
 
         PersonalItem personalItemBuyTradeUpdate = new PersonalItem();
         personalItemBuyTradeUpdate.setItem(new Item("5"));
         personalItemBuyTradeUpdate.getItem().setName("name5");
         personalItemBuyTradeUpdate.setTradeAlreadyExists(true);
-        personalItemBuyTradeUpdate.setExistingTrade(new Trade());
+        personalItemBuyTradeUpdate.setExistingTrade(new UbiTrade());
         personalItemBuyTradeUpdate.getExistingTrade().setTradeId("tradeId5");
         personalItemBuyTradeUpdate.getExistingTrade().setProposedPaymentPrice(5);
-        PotentialTradeStats potentialTradeStatsBuyTradeUpdate = new PotentialTradeStats();
-        potentialTradeStatsBuyTradeUpdate.setPrice(50);
-        PotentialPersonalBuyTrade potentialBuyTradeUpdate = new PotentialPersonalBuyTrade(personalItemBuyTradeUpdate, potentialTradeStatsBuyTradeUpdate);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsBuyTradeUpdate = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsBuyTradeUpdate.setPrice(50);
+        PotentialPersonalBuyTrade potentialBuyTradeUpdate = new PotentialPersonalBuyTrade(personalItemBuyTradeUpdate, prioritizedPotentialTradeStatsBuyTradeUpdate);
 
         PersonalItem personalItemBuyTradeLeave = new PersonalItem();
         personalItemBuyTradeLeave.setItem(new Item("6"));
         personalItemBuyTradeLeave.getItem().setName("name6");
         personalItemBuyTradeLeave.setTradeAlreadyExists(true);
-        personalItemBuyTradeLeave.setExistingTrade(new Trade());
+        personalItemBuyTradeLeave.setExistingTrade(new UbiTrade());
         personalItemBuyTradeLeave.getExistingTrade().setTradeId("tradeId6");
         personalItemBuyTradeLeave.getExistingTrade().setProposedPaymentPrice(6);
-        PotentialTradeStats potentialTradeStatsBuyTradeLeave = new PotentialTradeStats();
-        potentialTradeStatsBuyTradeLeave.setPrice(6);
-        PotentialPersonalBuyTrade potentialBuyTradeLeave = new PotentialPersonalBuyTrade(personalItemBuyTradeLeave, potentialTradeStatsBuyTradeLeave);
+        PrioritizedPotentialTradeStats prioritizedPotentialTradeStatsBuyTradeLeave = new PrioritizedPotentialTradeStats();
+        prioritizedPotentialTradeStatsBuyTradeLeave.setPrice(6);
+        PotentialPersonalBuyTrade potentialBuyTradeLeave = new PotentialPersonalBuyTrade(personalItemBuyTradeLeave, prioritizedPotentialTradeStatsBuyTradeLeave);
 
         Collection<PotentialPersonalBuyTrade> resultingBuyTrades = List.of(potentialBuyTradeCreate, potentialBuyTradeUpdate, potentialBuyTradeLeave);
 
-        Trade currentBuyTradeBeUpdated = new Trade();
-        currentBuyTradeBeUpdated.setTradeId("tradeId5");
-        Trade currentBuyTradeBeLeft = new Trade();
-        currentBuyTradeBeLeft.setTradeId("tradeId6");
-        Trade currentBuyTradeBeCanceled = new Trade();
-        currentBuyTradeBeCanceled.setTradeId("tradeId7");
-        currentBuyTradeBeCanceled.setItem(new Item("77"));
-        currentBuyTradeBeCanceled.getItem().setName("name77");
-        currentBuyTradeBeCanceled.setProposedPaymentPrice(77);
-        Collection<Trade> currentBuyTrades = List.of(currentBuyTradeBeUpdated, currentBuyTradeBeLeft, currentBuyTradeBeCanceled);
+        PrioritizedUbiTrade currentBuyPrioritizedUbiTradeBeUpdated = new PrioritizedUbiTrade();
+        currentBuyPrioritizedUbiTradeBeUpdated.setTradeId("tradeId5");
+        PrioritizedUbiTrade currentBuyPrioritizedUbiTradeBeLeft = new PrioritizedUbiTrade();
+        currentBuyPrioritizedUbiTradeBeLeft.setTradeId("tradeId6");
+        PrioritizedUbiTrade currentBuyPrioritizedUbiTradeBeCanceled = new PrioritizedUbiTrade();
+        currentBuyPrioritizedUbiTradeBeCanceled.setTradeId("tradeId7");
+        currentBuyPrioritizedUbiTradeBeCanceled.setItem(new Item("77"));
+        currentBuyPrioritizedUbiTradeBeCanceled.getItem().setName("name77");
+        currentBuyPrioritizedUbiTradeBeCanceled.setProposedPaymentPrice(77);
+        Collection<PrioritizedUbiTrade> currentBuyPrioritizedUbiTrades = List.of(currentBuyPrioritizedUbiTradeBeUpdated, currentBuyPrioritizedUbiTradeBeLeft, currentBuyPrioritizedUbiTradeBeCanceled);
 
 
         TradeManagerCommand commandCreateSell = new TradeManagerCommand(userId, authorizationDTO,
@@ -249,8 +250,8 @@ class TradeManagerCommandsFactoryTest {
                 CentralTradeManagerCommandType.SELL_ORDER_UPDATE, potentialSellTradeUpdate.getItemId(), potentialSellTradeUpdate.getItemName(),
                 potentialSellTradeUpdate.getTradeId(), potentialSellTradeUpdate.getOldPrice(), potentialSellTradeUpdate.getNewPrice());
 
-        TradeManagerCommand commandCancelSell = new TradeManagerCommand(userId, authorizationDTO, CentralTradeManagerCommandType.SELL_ORDER_CANCEL, currentSellTradeBeCanceled.getItemId(),
-                currentSellTradeBeCanceled.getItemName(), currentSellTradeBeCanceled.getTradeId(), currentSellTradeBeCanceled.getProposedPaymentPrice());
+        TradeManagerCommand commandCancelSell = new TradeManagerCommand(userId, authorizationDTO, CentralTradeManagerCommandType.SELL_ORDER_CANCEL, currentSellPrioritizedUbiTradeBeCanceled.getItemId(),
+                currentSellPrioritizedUbiTradeBeCanceled.getItemName(), currentSellPrioritizedUbiTradeBeCanceled.getTradeId(), currentSellPrioritizedUbiTradeBeCanceled.getProposedPaymentPrice());
 
         TradeManagerCommand commandCreateBuy = new TradeManagerCommand(userId, authorizationDTO,
                 CentralTradeManagerCommandType.BUY_ORDER_CREATE, potentialBuyTradeCreate.getItemId(), potentialBuyTradeCreate.getItemName(),
@@ -265,7 +266,7 @@ class TradeManagerCommandsFactoryTest {
         configTrades.setBuySlots(4);
 
         List<TradeManagerCommand> result = tradeManagerCommandsFactory.createTradeManagerCommandsForUser(resultingSellTrades
-                , currentSellTrades, resultingBuyTrades, currentBuyTrades, userId, authorizationDTO, configTrades);
+                , currentSellPrioritizedUbiTrades, resultingBuyTrades, currentBuyPrioritizedUbiTrades, userId, authorizationDTO, configTrades);
 
 
         assertEquals(5, result.size());

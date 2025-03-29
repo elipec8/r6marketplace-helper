@@ -48,7 +48,7 @@ class TelegramUserPostgresServiceTest {
         when(telegramUserRepository.existsById("chatId")).thenReturn(false);
 
         TelegramUserEntity entity = Mockito.mock(TelegramUserEntity.class);
-        when(telegramUserEntityMapper.createNewEntityForNewUser("chatId")).thenReturn(entity);
+        when(telegramUserEntityMapper.createDefaultEntityForNewUser("chatId")).thenReturn(entity);
 
         telegramUserService.register("chatId");
 
@@ -60,7 +60,7 @@ class TelegramUserPostgresServiceTest {
         when(telegramUserRepository.existsById("chatId")).thenReturn(true);
 
         TelegramUserEntity entity = Mockito.mock(TelegramUserEntity.class);
-        when(telegramUserEntityMapper.createNewEntityForNewUser("chatId")).thenReturn(entity);
+        when(telegramUserEntityMapper.createDefaultEntityForNewUser("chatId")).thenReturn(entity);
 
         assertThrows(TelegramUserAlreadyExistsException.class, () -> telegramUserService.register("chatId"));
     }

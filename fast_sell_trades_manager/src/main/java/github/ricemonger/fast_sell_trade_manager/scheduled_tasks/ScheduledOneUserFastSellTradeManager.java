@@ -39,7 +39,7 @@ public class ScheduledOneUserFastSellTradeManager {
     @Scheduled(fixedRateString = "${app.scheduling.management_fetch.fixedRate}", initialDelayString = "${app.scheduling.management_fetch.initialDelay}")
     public void submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices() {
         if (fetchUsersAuthorizationDTOs.isEmpty()) {
-            log.info("No fetch users found in the database");
+            log.debug("No fetch users found in the database");
             return;
         } else {
             if (currentFetchUserIndex >= fetchUsersAuthorizationDTOs.size()) {

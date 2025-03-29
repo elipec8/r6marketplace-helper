@@ -16,7 +16,7 @@ import github.ricemonger.utils.enums.TagGroup;
 import github.ricemonger.utils.enums.TradeOperationType;
 import github.ricemonger.utils.exceptions.server.InvalidTelegramUserInputException;
 import github.ricemonger.utils.exceptions.server.MissingCallbackPrefixInUserInputException;
-import github.ricemonger.utils.services.calculators.TradePriorityExpressionDeserializer;
+import github.ricemonger.utils.services.calculators.ItemTradePriorityByExpressionCalculator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -47,7 +47,7 @@ public class BotInnerService {
 
     private final TagService tagService;
 
-    private final TradePriorityExpressionDeserializer tradePriorityExpressionDeserializer;
+    private final ItemTradePriorityByExpressionCalculator itemTradePriorityByExpressionCalculator;
 
     public void sendText(UpdateInfo updateInfo, String text) {
         telegramBotClientService.sendText(updateInfo, text);
@@ -344,7 +344,7 @@ public class BotInnerService {
     }
 
     public boolean isTradePriorityExpressionValid(String expression) {
-        return tradePriorityExpressionDeserializer.isValidExpression(expression);
+        return itemTradePriorityByExpressionCalculator.isValidExpression(expression);
     }
 
     private String getUserInputValueWithoutCallbackPrefix(Long chatId, InputState inputState) {

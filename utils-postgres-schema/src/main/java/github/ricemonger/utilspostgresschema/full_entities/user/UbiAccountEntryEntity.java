@@ -2,10 +2,7 @@ package github.ricemonger.utilspostgresschema.full_entities.user;
 
 import github.ricemonger.utilspostgresschema.ids.user.UbiAccountEntryEntityId;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Objects;
 
@@ -13,6 +10,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @IdClass(UbiAccountEntryEntityId.class)
@@ -20,6 +18,7 @@ public class UbiAccountEntryEntity {
     @Id
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ToString.Exclude
     private UserEntity user;
 
     @Id
@@ -40,7 +39,7 @@ public class UbiAccountEntryEntity {
     @Column(columnDefinition = "TEXT", name = "ubi_remember_me_ticket")
     private String ubiRememberMeTicket;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "ubi_profile_id", referencedColumnName = "ubi_profile_id")
     private UbiAccountStatsEntity ubiAccountStats;
 
@@ -58,6 +57,6 @@ public class UbiAccountEntryEntity {
             return false;
         }
         return Objects.equals(user, ubiAccountEntryEntity.user) &&
-               Objects.equals(email, ubiAccountEntryEntity.email);
+                Objects.equals(email, ubiAccountEntryEntity.email);
     }
 }

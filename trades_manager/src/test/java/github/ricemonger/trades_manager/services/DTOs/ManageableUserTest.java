@@ -1,6 +1,7 @@
 package github.ricemonger.trades_manager.services.DTOs;
 
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
+import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -116,10 +117,10 @@ class ManageableUserTest {
     @Test
     public void getCurrentSellTrades_should_return_currentSellTrades_when_ubiAccountStats_is_not_null() {
         ManageableUser manageableUser = new ManageableUser();
-        manageableUser.setUbiAccountStats(new UbiAccountStats("ubiProfileId", 0, 0, 0, List.of(), List.of(), List.of(new Trade()),
+        manageableUser.setUbiAccountStats(new UbiAccountStats("ubiProfileId", 0, 0, 0, List.of(), List.of(), List.of(new UbiTrade()),
                 List.of()));
 
-        assertEquals(List.of(new Trade()), manageableUser.getCurrentSellTrades());
+        assertEquals(List.of(new UbiTrade()), manageableUser.getCurrentSellTrades());
     }
 
     @Test
@@ -133,9 +134,9 @@ class ManageableUserTest {
     public void getCurrentBuyTrades_should_return_currentBuyTrades_when_ubiAccountStats_is_not_null() {
         ManageableUser manageableUser = new ManageableUser();
         manageableUser.setUbiAccountStats(new UbiAccountStats("ubiProfileId", 0, 0, 0, List.of(), List.of(), List.of(),
-                List.of(new Trade())));
+                List.of(new UbiTrade())));
 
-        assertEquals(List.of(new Trade()), manageableUser.getCurrentBuyTrades());
+        assertEquals(List.of(new UbiTrade()), manageableUser.getCurrentBuyTrades());
     }
 
     @Test

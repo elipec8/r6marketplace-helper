@@ -26,16 +26,16 @@ public class UserEntity {
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true)
     private TelegramUserEntity telegramUser;
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     private UbiAccountEntryEntity ubiAccountEntry;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<ItemFilterEntity> itemFilters = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<TradeByFiltersManagerEntity> tradeByFiltersManagers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<TradeByItemIdManagerEntity> tradeByItemIdManagers = new ArrayList<>();
 
     @Column(name = "new_managers_are_active_flag")

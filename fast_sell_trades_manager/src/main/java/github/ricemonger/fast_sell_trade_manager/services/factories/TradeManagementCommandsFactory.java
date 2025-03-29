@@ -98,7 +98,7 @@ public class TradeManagementCommandsFactory {
         List<SellTrade> sortedNotUpdatedTrades =
                 getCurrentSellTradesByPriorityAsc(currentSellTrades, currentPrices, medianPriceAndRarities).stream().filter(trade ->
                         higherPriorityExistingTrades.stream().noneMatch(id -> id.equals(trade.getTradeId()))
-                        && higherPriorityExistingCommands.stream().noneMatch(c -> trade.getTradeId().equals(c.getTradeId()))).toList();
+                                && higherPriorityExistingCommands.stream().noneMatch(c -> trade.getTradeId().equals(c.getTradeId()))).toList();
 
         if (sortedNotUpdatedTrades.isEmpty()) {
             return pairCommands;
