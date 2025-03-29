@@ -15,9 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
@@ -36,7 +34,7 @@ public class UserFastSellTradesManager {
     private final TradeManagementCommandsExecutor fastTradeManagementCommandExecutor;
 
     private final List<CompletableFuture<?>> createFastSellCommandsTasks = Collections.synchronizedList(new LinkedList<>());
-    private final List<FastSellCommand> fastSellCommands = Collections.synchronizedList(new LinkedList<>());
+    private final Set<FastSellCommand> fastSellCommands = Collections.synchronizedSortedSet((new TreeSet<>()));
 
     private FastUserUbiStats savedUserStats;
 
@@ -45,7 +43,8 @@ public class UserFastSellTradesManager {
             CompletableFuture<?> task = CompletableFuture.supplyAsync(() -> {
                 List<FastSellCommand> newCommands = fetchAndUpdateUserStatsAndCreateCommandsByThem(managedUser, itemsMedianPriceAndRarity, sellLimit, sellSlots);
 
-                if (fastSellCommands.isEmpty()) {
+                if (fastSellCommands.isEmpty() && !newCommands.isEmpty()) {
+                    savedUserStats = null;
                     fastSellCommands.addAll(newCommands);
                 }
 
@@ -75,7 +74,8 @@ public class UserFastSellTradesManager {
             CompletableFuture<?> task = CompletableFuture.supplyAsync(() -> {
                 List<FastSellCommand> newCommands = fetchItemsCurrentStatsAndCreateCommandsByThemAndSavedUserStats(managedUser, authorizationDTO, itemsMedianPriceAndRarity, sellLimit, sellSlots);
 
-                if (fastSellCommands.isEmpty()) {
+                if (fastSellCommands.isEmpty() && !newCommands.isEmpty()) {
+                    savedUserStats = null;
                     fastSellCommands.addAll(newCommands);
                 }
 
@@ -87,6 +87,11 @@ public class UserFastSellTradesManager {
 
     private List<FastSellCommand> fetchItemsCurrentStatsAndCreateCommandsByThemAndSavedUserStats(FastSellManagedUser managedUser, AuthorizationDTO authorizationDTO, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
         try {
+            if (savedUserStats == null) {
+                log.info("Saved user stats is null while creating fast sell commands for user with id: {}", managedUser.getUbiProfileId());
+                return List.of();
+            }
+
             List<ItemCurrentPrices> fetchedItemCurrentPrices = commonQueryItemsPricesGraphQlClientService.fetchLimitedItemsStats(authorizationDTO, commonValuesService.getFetchUsersItemsLimit(), commonValuesService.getFetchUsersItemsOffset());
 
             List<ItemCurrentPrices> ownedItemsCurrentPrices = fetchedItemCurrentPrices.stream().filter(fetched -> savedUserStats.getItemsCurrentPrices().stream().anyMatch(saved -> saved.getItemId().equals(fetched.getItemId()))).toList();
@@ -125,7 +130,7 @@ public class UserFastSellTradesManager {
         }
     }
 
-    private void executeCommandsInOrder(List<FastSellCommand> commands) {
+    private void executeCommandsInOrder(Collection<FastSellCommand> commands) {
         for (FastSellCommand command : commands.stream().sorted().toList()) {
             fastTradeManagementCommandExecutor.executeCommand(command);
             log.info("Executed command: {}", command.toLogString());

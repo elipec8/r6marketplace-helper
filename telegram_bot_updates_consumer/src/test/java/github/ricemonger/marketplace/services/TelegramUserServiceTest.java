@@ -98,60 +98,60 @@ class TelegramUserServiceTest {
     }
 
     @Test
-    public void getItemShowSettings_should_return_service_result() {
+    public void getUserItemShowSettings_should_return_service_result() {
         ItemShowSettings itemShowSettings = Mockito.mock(ItemShowSettings.class);
         when(telegramUserDatabaseService.findUserItemShowSettings("123")).thenReturn(itemShowSettings);
-        assertSame(itemShowSettings, telegramUserService.getItemShowSettings(123L));
+        assertSame(itemShowSettings, telegramUserService.getUserItemShowSettings(123L));
     }
 
     @Test
-    public void setItemShowFewItemsInMessageFlag_should_handle_to_service() {
-        telegramUserService.setItemShowFewItemsInMessageFlag(123L, true);
+    public void setUserItemShowFewItemsInMessageFlag_should_handle_to_service() {
+        telegramUserService.setUserItemShowFewItemsInMessageFlag(123L, true);
         verify(telegramUserDatabaseService).setUserItemShowFewItemsInMessageFlag("123", true);
     }
 
     @Test
-    public void setItemShowMessagesLimitByUserInput_should_handle_to_service_valid_value() {
+    public void setUserItemShowMessagesLimitByUserInput_should_handle_to_service_valid_value() {
         when(commonValuesService.getMaximumTelegramMessageLimit()).thenReturn(10);
         doReturn("5").when(telegramUserService).getUserInputByState(123L, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT);
-        telegramUserService.setItemShowMessagesLimitByUserInput(123L);
+        telegramUserService.setUserItemShowMessagesLimitByUserInput(123L);
         verify(telegramUserDatabaseService).setUserItemShowMessagesLimit("123", 5);
     }
 
     @Test
-    public void setItemShowMessagesLimitByUserInput_should_handle_to_service_big_value() {
+    public void setUserItemShowMessagesLimitByUserInput_should_handle_to_service_big_value() {
         when(commonValuesService.getMaximumTelegramMessageLimit()).thenReturn(10);
         doReturn("15").when(telegramUserService).getUserInputByState(123L, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT);
-        telegramUserService.setItemShowMessagesLimitByUserInput(123L);
+        telegramUserService.setUserItemShowMessagesLimitByUserInput(123L);
         verify(telegramUserDatabaseService).setUserItemShowMessagesLimit("123", 10);
     }
 
     @Test
-    public void setItemShowMessagesLimitByUserInput_should_handle_to_service_small_value() {
+    public void setUserItemShowMessagesLimitByUserInput_should_handle_to_service_small_value() {
         when(commonValuesService.getMaximumTelegramMessageLimit()).thenReturn(10);
         doReturn("0").when(telegramUserService).getUserInputByState(123L, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT);
-        telegramUserService.setItemShowMessagesLimitByUserInput(123L);
+        telegramUserService.setUserItemShowMessagesLimitByUserInput(123L);
         verify(telegramUserDatabaseService).setUserItemShowMessagesLimit("123", 1);
     }
 
     @Test
-    public void setItemShowMessagesLimitByUserInput_should_handle_to_service_input_doesnt_exist() {
+    public void setUserItemShowMessagesLimitByUserInput_should_handle_to_service_input_doesnt_exist() {
         when(commonValuesService.getMaximumTelegramMessageLimit()).thenReturn(10);
         doThrow(new TelegramUserInputDoesntExistException("")).when(telegramUserService).getUserInputByState(123L, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT);
-        telegramUserService.setItemShowMessagesLimitByUserInput(123L);
+        telegramUserService.setUserItemShowMessagesLimitByUserInput(123L);
         verify(telegramUserDatabaseService).setUserItemShowMessagesLimit("123", 10);
     }
 
     @Test
-    public void setItemShowMessagesLimitByUserInput_should_handle_to_service_input_is_not_number() {
+    public void setUserItemShowMessagesLimitByUserInput_should_handle_to_service_input_is_not_number() {
         when(commonValuesService.getMaximumTelegramMessageLimit()).thenReturn(10);
         doReturn("test").when(telegramUserService).getUserInputByState(123L, InputState.ITEMS_SHOW_SETTING_MESSAGE_LIMIT);
-        telegramUserService.setItemShowMessagesLimitByUserInput(123L);
+        telegramUserService.setUserItemShowMessagesLimitByUserInput(123L);
         verify(telegramUserDatabaseService).setUserItemShowMessagesLimit("123", 10);
     }
 
     @Test
-    public void setItemShownFieldsSettingsByUserInput_should_handle_to_service() {
+    public void setUserItemShownFieldsSettingsByUserInput_should_handle_to_service() {
         TelegramUserInput input1 = new TelegramUserInput("123", InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_NAME, "true");
         TelegramUserInput input2 = new TelegramUserInput("123", InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_TYPE, "false");
         TelegramUserInput input3 = new TelegramUserInput("123", InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_MAX_BUY_PRICE, "true");
@@ -163,7 +163,7 @@ class TelegramUserServiceTest {
 
         ItemShownFieldsSettings shownFieldsSettings = new ItemShownFieldsSettings(true, false, true, false, true, false, true);
 
-        telegramUserService.setItemShownFieldsSettingsByUserInput(123L, "anyValue", "false");
+        telegramUserService.setUserItemShownFieldsSettingsByUserInput(123L, "anyValue", "false");
 
         verify(telegramUserDatabaseService).setUserItemShowFieldsSettings("123", shownFieldsSettings);
     }
@@ -192,71 +192,83 @@ class TelegramUserServiceTest {
     }
 
     @Test
-    public void getTradeManagersSettings_should_return_service_result() {
+    public void getUserTradeManagersSettings_should_return_service_result() {
         TradeManagersSettings tradeManagersSettings = Mockito.mock(TradeManagersSettings.class);
         when(telegramUserDatabaseService.findUserTradeManagersSettings("123")).thenReturn(tradeManagersSettings);
-        assertSame(tradeManagersSettings, telegramUserService.getTradeManagersSettings(123L));
+        assertSame(tradeManagersSettings, telegramUserService.getUserTradeManagersSettings(123L));
     }
 
     @Test
-    public void setTradeManagersSettingsNewManagersAreActiveFlag_should_handle_to_service() {
-        telegramUserService.setTradeManagersSettingsNewManagersAreActiveFlag(123L, true);
+    public void setUserTradeManagersSettingsNewManagersAreActiveFlag_should_handle_to_service() {
+        telegramUserService.setUserTradeManagersSettingsNewManagersAreActiveFlag(123L, true);
         verify(telegramUserDatabaseService).setUserTradeManagersSettingsNewManagersAreActiveFlag("123", true);
     }
 
     @Test
-    public void setTradeManagersSettingsManagingEnabledFlag_should_handle_to_service() {
-        telegramUserService.setTradeManagersSettingsManagingEnabledFlag(123L, false);
+    public void setUserTradeManagersSettingsManagingEnabledFlag_should_handle_to_service() {
+        telegramUserService.setUserTradeManagersSettingsManagingEnabledFlag(123L, false);
         verify(telegramUserDatabaseService).setUserTradeManagersSettingsManagingEnabledFlag("123", false);
     }
 
     @Test
-    public void setTradeManagersSellSettingsManagingEnabledFlag_should_handle_to_service() {
-        telegramUserService.setTradeManagersSellSettingsManagingEnabledFlag(123L, true);
+    public void setUserTradeManagersSellSettingsManagingEnabledFlag_should_handle_to_service() {
+        telegramUserService.setUserTradeManagersSellSettingsManagingEnabledFlag(123L, true);
         verify(telegramUserDatabaseService).setUserTradeManagersSellSettingsManagingEnabledFlag("123", true);
     }
 
     @Test
-    public void setTradeManagersBuySettingsManagingEnabledFlag_should_handle_to_service() {
-        telegramUserService.setTradeManagersBuySettingsManagingEnabledFlag(123L, false);
+    public void setUserTradeManagersBuySettingsManagingEnabledFlag_should_handle_to_service() {
+        telegramUserService.setUserTradeManagersBuySettingsManagingEnabledFlag(123L, false);
         verify(telegramUserDatabaseService).setUserTradeManagersBuySettingsManagingEnabledFlag("123", false);
     }
 
     @Test
-    public void invertPrivateNotificationsFlag_should_handle_to_service() {
-        telegramUserService.invertPrivateNotificationsFlag(123L);
+    public void setUserTradeManagersSellSettingsTradePriorityExpression_should_handle_to_service() {
+        telegramUserService.setUserTradeManagersSellSettingsTradePriorityExpression(123L, "test");
+        verify(telegramUserDatabaseService).setUserTradeManagersSellSettingsTradePriorityExpression("123", "test");
+    }
+
+    @Test
+    public void setUserTradeManagersBuySettingsTradePriorityExpression_should_handle_to_service() {
+        telegramUserService.setUserTradeManagersBuySettingsTradePriorityExpression(123L, "test");
+        verify(telegramUserDatabaseService).setUserTradeManagersBuySettingsTradePriorityExpression("123", "test");
+    }
+
+    @Test
+    public void invertUserPrivateNotificationsFlag_should_handle_to_service() {
+        telegramUserService.invertUserPrivateNotificationsFlag(123L);
         verify(telegramUserDatabaseService).invertUserPrivateNotificationsFlag("123");
     }
 
     @Test
-    public void invertPublicNotificationsFlag_should_handle_to_service() {
-        telegramUserService.invertPublicNotificationsFlag(123L);
+    public void invertUserPublicNotificationsFlag_should_handle_to_service() {
+        telegramUserService.invertUserPublicNotificationsFlag(123L);
         verify(telegramUserDatabaseService).invertUserPublicNotificationsFlag("123");
     }
 
     @Test
-    public void invertUbiStatsUpdatedNotificationsFlag_should_handle_to_service() {
-        telegramUserService.invertUbiStatsUpdatedNotificationsFlag(123L);
+    public void invertUserUbiStatsUpdatedNotificationsFlag_should_handle_to_service() {
+        telegramUserService.invertUserUbiStatsUpdatedNotificationsFlag(123L);
         verify(telegramUserDatabaseService).invertUserUbiStatsUpdatedNotificationsFlag("123");
     }
 
     @Test
-    public void invertTradeManagerNotificationsFlag_should_handle_to_service() {
-        telegramUserService.invertTradeManagerNotificationsFlag(123L);
+    public void invertUserTradeManagerNotificationsFlag_should_handle_to_service() {
+        telegramUserService.invertUserTradeManagerNotificationsFlag(123L);
         verify(telegramUserDatabaseService).invertUserTradeManagerNotificationsFlag("123");
     }
 
     @Test
-    public void invertAuthorizationNotificationsFlag_should_handle_to_service() {
-        telegramUserService.invertAuthorizationNotificationsFlag(123L);
+    public void invertUserAuthorizationNotificationsFlag_should_handle_to_service() {
+        telegramUserService.invertUserAuthorizationNotificationsFlag(123L);
         verify(telegramUserDatabaseService).invertUserAuthorizationNotificationsFlag("123");
     }
 
     @Test
-    public void getNotificationsSettings_should_return_service_result() {
+    public void getUserNotificationsSettings_should_return_service_result() {
         NotificationsSettings notificationsSettings = Mockito.mock(NotificationsSettings.class);
         when(telegramUserDatabaseService.findUserNotificationsSettings("123")).thenReturn(notificationsSettings);
-        assertSame(notificationsSettings, telegramUserService.getNotificationsSettings(123L));
+        assertSame(notificationsSettings, telegramUserService.getUserNotificationsSettings(123L));
     }
 
     @Test

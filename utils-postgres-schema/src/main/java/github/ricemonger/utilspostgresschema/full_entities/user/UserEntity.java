@@ -1,7 +1,5 @@
 package github.ricemonger.utilspostgresschema.full_entities.user;
 
-import github.ricemonger.utils.enums.BuyTradingStrategy;
-import github.ricemonger.utils.enums.SellTradingStrategy;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,6 +38,23 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<TradeByItemIdManagerEntity> tradeByItemIdManagers = new ArrayList<>();
 
+    @Column(name = "new_managers_are_active_flag")
+    private Boolean newManagersAreActiveFlag = true;
+    @Column(name = "managing_enabled_flag")
+    private Boolean managingEnabledFlag = true;
+    @Column(name = "ignore_unmanaged_items_trades_flag")
+    private Boolean ignoreUnmanagedItemsTradesFlag = false;
+
+    @Column(name = "sell_trades_managing_enabled_flag")
+    private Boolean sellTradesManagingEnabledFlag = true;
+    @Column(name = "sell_trade_priority_expression", columnDefinition = "TEXT")
+    private String sellTradePriorityExpression;
+
+    @Column(name = "buy_trades_managing_enabled_flag")
+    private Boolean buyTradesManagingEnabledFlag = true;
+    @Column(name = "buy_trade_priority_expression", columnDefinition = "TEXT")
+    private String buyTradePriorityExpression;
+
     @Column(name = "public_notifications_enabled_flag")
     private Boolean publicNotificationsEnabledFlag = true;
     @Column(name = "private_notifications_enabled_flag")
@@ -71,22 +86,6 @@ public class UserEntity {
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = @JoinColumn(name = "item_filter_name", referencedColumnName = "name"))
     private List<ItemFilterEntity> itemShowAppliedFilters = new ArrayList<>();
-
-    @Column(name = "new_managers_are_active_flag")
-    private Boolean newManagersAreActiveFlag = true;
-    @Column(name = "managing_enabled_flag")
-    private Boolean managingEnabledFlag = true;
-    @Column(name = "sell_trades_managing_enabled_flag")
-    private Boolean sellTradesManagingEnabledFlag = true;
-    @Column(name = "buy_trades_managing_enabled_flag")
-    private Boolean buyTradesManagingEnabledFlag = true;
-
-    @Column(name = "ignore_unmanaged_items_trades_flag")
-    private Boolean ignoreUnmanagedItemsTradesFlag = false;
-    @Column(name = "buy_trading_strategy")
-    private BuyTradingStrategy buyTradingStrategy = BuyTradingStrategy.DEFAULT;
-    @Column(name = "sell_trading_strategy")
-    private SellTradingStrategy sellTradingStrategy = SellTradingStrategy.DEFAULT;
 
     public UserEntity(Long userId) {
         this.id = userId;

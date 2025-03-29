@@ -11,5 +11,7 @@ public class TradeManagersSettingsProjection {
     private Boolean newManagersAreActiveFlag;
     private Boolean managingEnabledFlag;
     private Boolean sellTradesManagingEnabledFlag;
+    private String sellTradePriorityExpression;
     private Boolean buyTradesManagingEnabledFlag;
+    private String buyTradePriorityExpression;
 }

@@ -5,7 +5,6 @@ import github.ricemonger.utils.enums.InputState;
 import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserInputEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
-import github.ricemonger.utilspostgresschema.ids.user.TelegramUserInputEntityId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

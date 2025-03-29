@@ -63,15 +63,15 @@ public class TelegramUserService {
         return telegramUserDatabaseService.findUserInputStateAndGroupById(String.valueOf(chatId));
     }
 
-    public ItemShowSettings getItemShowSettings(Long chatId) {
+    public ItemShowSettings getUserItemShowSettings(Long chatId) {
         return telegramUserDatabaseService.findUserItemShowSettings(String.valueOf(chatId));
     }
 
-    public void setItemShowFewItemsInMessageFlag(Long chatId, boolean flag) {
+    public void setUserItemShowFewItemsInMessageFlag(Long chatId, boolean flag) {
         telegramUserDatabaseService.setUserItemShowFewItemsInMessageFlag(String.valueOf(chatId), flag);
     }
 
-    public Integer setItemShowMessagesLimitByUserInput(Long chatId) {
+    public Integer setUserItemShowMessagesLimitByUserInput(Long chatId) {
         Integer limit;
 
         Integer maximumTelegramMessageLimit = commonValuesService.getMaximumTelegramMessageLimit();
@@ -92,7 +92,7 @@ public class TelegramUserService {
         return limit;
     }
 
-    public void setItemShownFieldsSettingsByUserInput(Long chatId, String trueValue, String falseValue) {
+    public void setUserItemShownFieldsSettingsByUserInput(Long chatId, String trueValue, String falseValue) {
         List<TelegramUserInput> inputs = inputDatabaseService.findAllByChatId(String.valueOf(chatId));
 
         boolean nameFlag = parseBooleanOrTrue(getInputValueByStateFromCollection(InputState.ITEMS_SHOW_SETTING_SHOWN_FIELDS_ITEM_NAME, inputs), falseValue);
@@ -127,47 +127,55 @@ public class TelegramUserService {
         return telegramUserDatabaseService.findAllUserItemShowAppliedFiltersNames(String.valueOf(chatId));
     }
 
-    public TradeManagersSettings getTradeManagersSettings(Long chatId) {
+    public TradeManagersSettings getUserTradeManagersSettings(Long chatId) {
         return telegramUserDatabaseService.findUserTradeManagersSettings(String.valueOf(chatId));
     }
 
-    public void setTradeManagersSettingsNewManagersAreActiveFlag(Long chatId, boolean flag) {
+    public void setUserTradeManagersSettingsNewManagersAreActiveFlag(Long chatId, boolean flag) {
         telegramUserDatabaseService.setUserTradeManagersSettingsNewManagersAreActiveFlag(String.valueOf(chatId), flag);
     }
 
-    public void setTradeManagersSettingsManagingEnabledFlag(Long chatId, boolean flag) {
+    public void setUserTradeManagersSettingsManagingEnabledFlag(Long chatId, boolean flag) {
         telegramUserDatabaseService.setUserTradeManagersSettingsManagingEnabledFlag(String.valueOf(chatId), flag);
     }
 
-    public void setTradeManagersSellSettingsManagingEnabledFlag(Long chatId, boolean flag) {
+    public void setUserTradeManagersSellSettingsManagingEnabledFlag(Long chatId, boolean flag) {
         telegramUserDatabaseService.setUserTradeManagersSellSettingsManagingEnabledFlag(String.valueOf(chatId), flag);
     }
 
-    public void setTradeManagersBuySettingsManagingEnabledFlag(Long chatId, boolean flag) {
+    public void setUserTradeManagersBuySettingsManagingEnabledFlag(Long chatId, boolean flag) {
         telegramUserDatabaseService.setUserTradeManagersBuySettingsManagingEnabledFlag(String.valueOf(chatId), flag);
     }
 
-    public void invertPrivateNotificationsFlag(Long chatId) {
+    public void setUserTradeManagersSellSettingsTradePriorityExpression(Long chatId, String expression) {
+        telegramUserDatabaseService.setUserTradeManagersSellSettingsTradePriorityExpression(String.valueOf(chatId), expression);
+    }
+
+    public void setUserTradeManagersBuySettingsTradePriorityExpression(Long chatId, String expression) {
+        telegramUserDatabaseService.setUserTradeManagersBuySettingsTradePriorityExpression(String.valueOf(chatId), expression);
+    }
+
+    public void invertUserPrivateNotificationsFlag(Long chatId) {
         telegramUserDatabaseService.invertUserPrivateNotificationsFlag(String.valueOf(chatId));
     }
 
-    public void invertPublicNotificationsFlag(Long chatId) {
+    public void invertUserPublicNotificationsFlag(Long chatId) {
         telegramUserDatabaseService.invertUserPublicNotificationsFlag(String.valueOf(chatId));
     }
 
-    public void invertUbiStatsUpdatedNotificationsFlag(Long chatId) {
+    public void invertUserUbiStatsUpdatedNotificationsFlag(Long chatId) {
         telegramUserDatabaseService.invertUserUbiStatsUpdatedNotificationsFlag(String.valueOf(chatId));
     }
 
-    public void invertTradeManagerNotificationsFlag(Long chatId) {
+    public void invertUserTradeManagerNotificationsFlag(Long chatId) {
         telegramUserDatabaseService.invertUserTradeManagerNotificationsFlag(String.valueOf(chatId));
     }
 
-    public void invertAuthorizationNotificationsFlag(Long chatId) {
+    public void invertUserAuthorizationNotificationsFlag(Long chatId) {
         telegramUserDatabaseService.invertUserAuthorizationNotificationsFlag(String.valueOf(chatId));
     }
 
-    public NotificationsSettings getNotificationsSettings(Long chatId) {
+    public NotificationsSettings getUserNotificationsSettings(Long chatId) {
         return telegramUserDatabaseService.findUserNotificationsSettings(String.valueOf(chatId));
     }
 
