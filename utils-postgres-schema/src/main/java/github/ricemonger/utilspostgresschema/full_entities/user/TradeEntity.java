@@ -70,29 +70,29 @@ public class TradeEntity {
         String itemId = item == null || item.getItemId() == null ? "null" : item.toString();
 
         return "TradeEntity{" +
-               "tradeId='" + tradeId + '\'' +
-               ", state=" + state +
-               ", category=" + category +
-               ", expiresAt=" + expiresAt +
-               ", lastModifiedAt=" + lastModifiedAt +
-               ", item=" + itemId +
-               ", successPaymentPrice=" + successPaymentPrice +
-               ", successPaymentFee=" + successPaymentFee +
-               ", proposedPaymentPrice=" + proposedPaymentPrice +
-               ", proposedPaymentFee=" + proposedPaymentFee +
-               '}';
+                "tradeId='" + tradeId + '\'' +
+                ", state=" + state +
+                ", category=" + category +
+                ", expiresAt=" + expiresAt +
+                ", lastModifiedAt=" + lastModifiedAt +
+                ", item=" + itemId +
+                ", successPaymentPrice=" + successPaymentPrice +
+                ", successPaymentFee=" + successPaymentFee +
+                ", proposedPaymentPrice=" + proposedPaymentPrice +
+                ", proposedPaymentFee=" + proposedPaymentFee +
+                '}';
     }
 
     public boolean isFullyEqual(TradeEntity trade) {
         return equals(trade) &&
-               state == trade.state &&
-               category == trade.category &&
-               Objects.equals(expiresAt, trade.expiresAt) &&
-               Objects.equals(lastModifiedAt, trade.lastModifiedAt) &&
-               Objects.equals(item, trade.item) &&
-               Objects.equals(successPaymentPrice, trade.successPaymentPrice) &&
-               Objects.equals(successPaymentFee, trade.successPaymentFee) &&
-               Objects.equals(proposedPaymentPrice, trade.proposedPaymentPrice) &&
-               Objects.equals(proposedPaymentFee, trade.proposedPaymentFee);
+                state == trade.state &&
+                category == trade.category &&
+                Objects.equals(expiresAt, trade.expiresAt) &&
+                Objects.equals(lastModifiedAt, trade.lastModifiedAt) &&
+                Objects.equals(item, trade.item) &&
+                Objects.equals(successPaymentPrice, trade.successPaymentPrice) &&
+                Objects.equals(successPaymentFee, trade.successPaymentFee) &&
+                Objects.equals(proposedPaymentPrice, trade.proposedPaymentPrice) &&
+                Objects.equals(proposedPaymentFee, trade.proposedPaymentFee);
     }
 }

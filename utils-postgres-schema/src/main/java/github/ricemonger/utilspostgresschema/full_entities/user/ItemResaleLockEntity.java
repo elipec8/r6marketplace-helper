@@ -50,7 +50,7 @@ public class ItemResaleLockEntity {
             return false;
         }
         return Objects.equals(ubiAccount, itemResaleLockEntity.ubiAccount) &&
-               Objects.equals(item, itemResaleLockEntity.item);
+                Objects.equals(item, itemResaleLockEntity.item);
     }
 
     @Override
@@ -61,9 +61,9 @@ public class ItemResaleLockEntity {
         String profileId = ubiAccount == null || ubiAccount.getUbiProfileId() == null ? "null" : ubiAccount.getUbiProfileId();
 
         return "ItemResaleLockEntity{" +
-               "profileId=" + profileId +
-               ", itemId=" + itemId +
-               ", expiresAt=" + expiresAt +
-               '}';
+                "profileId=" + profileId +
+                ", itemId=" + itemId +
+                ", expiresAt=" + expiresAt +
+                '}';
     }
 }

@@ -114,37 +114,37 @@ public class ItemEntity {
     public boolean isFullyEqual(ItemEntity itemEntity) {
 
         boolean tagsAreEqual = this.tags == null && itemEntity.tags == null ||
-                               this.tags != null && itemEntity.tags != null &&
-                               this.tags.size() == itemEntity.tags.size() &&
-                               new HashSet<>(this.tags).containsAll(itemEntity.tags);
+                this.tags != null && itemEntity.tags != null &&
+                        this.tags.size() == itemEntity.tags.size() &&
+                        new HashSet<>(this.tags).containsAll(itemEntity.tags);
 
         return equals(itemEntity) &&
-               Objects.equals(assetUrl, itemEntity.assetUrl) &&
-               Objects.equals(name, itemEntity.name) &&
-               tagsAreEqual &&
-               rarity == itemEntity.rarity &&
-               type == itemEntity.type &&
-               Objects.equals(maxBuyPrice, itemEntity.maxBuyPrice) &&
-               Objects.equals(buyOrdersCount, itemEntity.buyOrdersCount) &&
-               Objects.equals(minSellPrice, itemEntity.minSellPrice) &&
-               Objects.equals(sellOrdersCount, itemEntity.sellOrdersCount) &&
-               Objects.equals(lastSoldAt, itemEntity.lastSoldAt) &&
-               Objects.equals(lastSoldPrice, itemEntity.lastSoldPrice) &&
-               Objects.equals(monthAveragePrice, itemEntity.monthAveragePrice) &&
-               Objects.equals(monthMedianPrice, itemEntity.monthMedianPrice) &&
-               Objects.equals(monthMaxPrice, itemEntity.monthMaxPrice) &&
-               Objects.equals(monthMinPrice, itemEntity.monthMinPrice) &&
-               Objects.equals(monthSalesPerDay, itemEntity.monthSalesPerDay) &&
-               Objects.equals(monthSales, itemEntity.monthSales) &&
-               Objects.equals(dayAveragePrice, itemEntity.dayAveragePrice) &&
-               Objects.equals(dayMedianPrice, itemEntity.dayMedianPrice) &&
-               Objects.equals(dayMaxPrice, itemEntity.dayMaxPrice) &&
-               Objects.equals(dayMinPrice, itemEntity.dayMinPrice) &&
-               Objects.equals(daySales, itemEntity.daySales) &&
-               Objects.equals(priceToBuyIn1Hour, itemEntity.priceToBuyIn1Hour) &&
-               Objects.equals(priceToBuyIn6Hours, itemEntity.priceToBuyIn6Hours) &&
-               Objects.equals(priceToBuyIn24Hours, itemEntity.priceToBuyIn24Hours) &&
-               Objects.equals(priceToBuyIn168Hours, itemEntity.priceToBuyIn168Hours) &&
-               Objects.equals(priceToBuyIn720Hours, itemEntity.priceToBuyIn720Hours);
+                Objects.equals(assetUrl, itemEntity.assetUrl) &&
+                Objects.equals(name, itemEntity.name) &&
+                tagsAreEqual &&
+                rarity == itemEntity.rarity &&
+                type == itemEntity.type &&
+                Objects.equals(maxBuyPrice, itemEntity.maxBuyPrice) &&
+                Objects.equals(buyOrdersCount, itemEntity.buyOrdersCount) &&
+                Objects.equals(minSellPrice, itemEntity.minSellPrice) &&
+                Objects.equals(sellOrdersCount, itemEntity.sellOrdersCount) &&
+                Objects.equals(lastSoldAt, itemEntity.lastSoldAt) &&
+                Objects.equals(lastSoldPrice, itemEntity.lastSoldPrice) &&
+                Objects.equals(monthAveragePrice, itemEntity.monthAveragePrice) &&
+                Objects.equals(monthMedianPrice, itemEntity.monthMedianPrice) &&
+                Objects.equals(monthMaxPrice, itemEntity.monthMaxPrice) &&
+                Objects.equals(monthMinPrice, itemEntity.monthMinPrice) &&
+                Objects.equals(monthSalesPerDay, itemEntity.monthSalesPerDay) &&
+                Objects.equals(monthSales, itemEntity.monthSales) &&
+                Objects.equals(dayAveragePrice, itemEntity.dayAveragePrice) &&
+                Objects.equals(dayMedianPrice, itemEntity.dayMedianPrice) &&
+                Objects.equals(dayMaxPrice, itemEntity.dayMaxPrice) &&
+                Objects.equals(dayMinPrice, itemEntity.dayMinPrice) &&
+                Objects.equals(daySales, itemEntity.daySales) &&
+                Objects.equals(priceToBuyIn1Hour, itemEntity.priceToBuyIn1Hour) &&
+                Objects.equals(priceToBuyIn6Hours, itemEntity.priceToBuyIn6Hours) &&
+                Objects.equals(priceToBuyIn24Hours, itemEntity.priceToBuyIn24Hours) &&
+                Objects.equals(priceToBuyIn168Hours, itemEntity.priceToBuyIn168Hours) &&
+                Objects.equals(priceToBuyIn720Hours, itemEntity.priceToBuyIn720Hours);
     }
 }

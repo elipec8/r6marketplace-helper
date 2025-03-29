@@ -97,8 +97,8 @@ public class PrioritizedUbiTrade {
             return false;
         } else {
             return Objects.equals(minutesToTrade, existingPrioritizedUbiTrade.minutesToTrade) &&
-                   Objects.equals(tradePriority, existingPrioritizedUbiTrade.tradePriority) &&
-                   ubiTrade.isFullyEqual(existingPrioritizedUbiTrade.ubiTrade);
+                    Objects.equals(tradePriority, existingPrioritizedUbiTrade.tradePriority) &&
+                    ubiTrade.isFullyEqual(existingPrioritizedUbiTrade.ubiTrade);
         }
     }
 }

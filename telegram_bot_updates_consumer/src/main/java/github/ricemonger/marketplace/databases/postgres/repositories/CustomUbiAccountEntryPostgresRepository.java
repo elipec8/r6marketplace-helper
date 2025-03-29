@@ -18,14 +18,14 @@ public interface CustomUbiAccountEntryPostgresRepository extends JpaRepository<U
 
     @Transactional(readOnly = true)
     @Query("SELECT new github.ricemonger.marketplace.databases.postgres.dto_projections.UbiAccountAuthorizationEntryProjection(" +
-           "u.ubiAccountStats.ubiProfileId," +
-           " u.email," +
-           "u.encodedPassword," +
-           "u.ubiSessionId," +
-           "u.ubiSpaceId," +
-           "u.ubiAuthTicket," +
-           "u.ubiRememberDeviceTicket," +
-           "u.ubiRememberMeTicket) " +
-           "FROM UbiAccountEntryEntity u WHERE u.user.telegramUser.chatId = :chatId")
+            "u.ubiAccountStats.ubiProfileId," +
+            " u.email," +
+            "u.encodedPassword," +
+            "u.ubiSessionId," +
+            "u.ubiSpaceId," +
+            "u.ubiAuthTicket," +
+            "u.ubiRememberDeviceTicket," +
+            "u.ubiRememberMeTicket) " +
+            "FROM UbiAccountEntryEntity u WHERE u.user.telegramUser.chatId = :chatId")
     Optional<UbiAccountAuthorizationEntryProjection> findUbiAccountAuthorizationEntryByUserTelegramUserChatId(String chatId);
 }

@@ -69,11 +69,11 @@ public class PersonalItemFactory {
                                                                        Collection<String> ownedItemsIds,
                                                                        Collection<Item> existingItems) {
         if (tradeByFiltersManager.getEnabled() == null ||
-            !tradeByFiltersManager.getEnabled() ||
-            existingItems == null ||
-            existingItems.isEmpty() ||
-            tradeByFiltersManager.getAppliedFilters() == null ||
-            tradeByFiltersManager.getAppliedFilters().isEmpty()) {
+                !tradeByFiltersManager.getEnabled() ||
+                existingItems == null ||
+                existingItems.isEmpty() ||
+                tradeByFiltersManager.getAppliedFilters() == null ||
+                tradeByFiltersManager.getAppliedFilters().isEmpty()) {
             return new HashSet<>();
         } else {
             return new HashSet<>(ItemFilter.filterItems(existingItems, tradeByFiltersManager.getAppliedFilters())

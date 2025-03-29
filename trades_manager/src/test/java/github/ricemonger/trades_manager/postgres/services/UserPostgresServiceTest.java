@@ -1,7 +1,7 @@
 package github.ricemonger.trades_manager.postgres.services;
 
 import github.ricemonger.trades_manager.postgres.repositories.CustomUserPostgresRepository;
-import github.ricemonger.trades_manager.postgres.services.entity_mappers.user.UserEntityMapper;
+import github.ricemonger.trades_manager.postgres.services.entity_mappers.user.ManageableUserFactory;
 import github.ricemonger.trades_manager.services.DTOs.ManageableUser;
 import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ class UserPostgresServiceTest {
     @MockBean
     private CustomUserPostgresRepository userRepository;
     @MockBean
-    private UserEntityMapper userEntityMapper;
+    private ManageableUserFactory manageableUserFactory;
 
     @Test
     public void getAllManageableUsers_should_return_mapped_repository_result() {
@@ -34,8 +34,8 @@ class UserPostgresServiceTest {
         ManageableUser dto1 = Mockito.mock(ManageableUser.class);
         ManageableUser dto2 = Mockito.mock(ManageableUser.class);
 
-        Mockito.when(userEntityMapper.createManageableUser(projection1)).thenReturn(dto1);
-        Mockito.when(userEntityMapper.createManageableUser(projection2)).thenReturn(dto2);
+        Mockito.when(manageableUserFactory.createManageableUserFromPostgresEntity(projection1)).thenReturn(dto1);
+        Mockito.when(manageableUserFactory.createManageableUserFromPostgresEntity(projection2)).thenReturn(dto2);
 
         List<ManageableUser> result = userPostgresService.getAllManageableUsers();
 

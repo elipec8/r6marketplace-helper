@@ -73,22 +73,22 @@ public interface ItemHistoryFieldsI extends ItemIdFieldI {
         }
         if (o instanceof ItemHistoryFieldsI item) {
             return Objects.equals(item.getItemId(), this.getItemId()) &&
-                   Objects.equals(item.getMonthAveragePrice(), this.getMonthAveragePrice()) &&
-                   Objects.equals(item.getMonthMedianPrice(), this.getMonthMedianPrice()) &&
-                   Objects.equals(item.getMonthMaxPrice(), this.getMonthMaxPrice()) &&
-                   Objects.equals(item.getMonthMinPrice(), this.getMonthMinPrice()) &&
-                   Objects.equals(item.getMonthSalesPerDay(), this.getMonthSalesPerDay()) &&
-                   Objects.equals(item.getMonthSales(), this.getMonthSales()) &&
-                   Objects.equals(item.getDayAveragePrice(), this.getDayAveragePrice()) &&
-                   Objects.equals(item.getDayMedianPrice(), this.getDayMedianPrice()) &&
-                   Objects.equals(item.getDayMaxPrice(), this.getDayMaxPrice()) &&
-                   Objects.equals(item.getDayMinPrice(), this.getDayMinPrice()) &&
-                   Objects.equals(item.getDaySales(), this.getDaySales()) &&
-                   Objects.equals(item.getPriceToBuyIn1Hour(), this.getPriceToBuyIn1Hour()) &&
-                   Objects.equals(item.getPriceToBuyIn6Hours(), this.getPriceToBuyIn6Hours()) &&
-                   Objects.equals(item.getPriceToBuyIn24Hours(), this.getPriceToBuyIn24Hours()) &&
-                   Objects.equals(item.getPriceToBuyIn168Hours(), this.getPriceToBuyIn168Hours()) &&
-                   Objects.equals(item.getPriceToBuyIn720Hours(), this.getPriceToBuyIn720Hours());
+                    Objects.equals(item.getMonthAveragePrice(), this.getMonthAveragePrice()) &&
+                    Objects.equals(item.getMonthMedianPrice(), this.getMonthMedianPrice()) &&
+                    Objects.equals(item.getMonthMaxPrice(), this.getMonthMaxPrice()) &&
+                    Objects.equals(item.getMonthMinPrice(), this.getMonthMinPrice()) &&
+                    Objects.equals(item.getMonthSalesPerDay(), this.getMonthSalesPerDay()) &&
+                    Objects.equals(item.getMonthSales(), this.getMonthSales()) &&
+                    Objects.equals(item.getDayAveragePrice(), this.getDayAveragePrice()) &&
+                    Objects.equals(item.getDayMedianPrice(), this.getDayMedianPrice()) &&
+                    Objects.equals(item.getDayMaxPrice(), this.getDayMaxPrice()) &&
+                    Objects.equals(item.getDayMinPrice(), this.getDayMinPrice()) &&
+                    Objects.equals(item.getDaySales(), this.getDaySales()) &&
+                    Objects.equals(item.getPriceToBuyIn1Hour(), this.getPriceToBuyIn1Hour()) &&
+                    Objects.equals(item.getPriceToBuyIn6Hours(), this.getPriceToBuyIn6Hours()) &&
+                    Objects.equals(item.getPriceToBuyIn24Hours(), this.getPriceToBuyIn24Hours()) &&
+                    Objects.equals(item.getPriceToBuyIn168Hours(), this.getPriceToBuyIn168Hours()) &&
+                    Objects.equals(item.getPriceToBuyIn720Hours(), this.getPriceToBuyIn720Hours());
         }
         return false;
     }

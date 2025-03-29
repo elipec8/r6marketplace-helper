@@ -21,7 +21,7 @@ public class ItemTradePriorityByExpressionCalculator {
 
     public boolean isValidExpression(String tradePriorityExpression) {
         try {
-            // Create a dummy item with default values
+            // Creates a dummy item with default values
             Item dummyItem = new Item();
             dummyItem.setRarity(ItemRarity.EPIC);
             dummyItem.setType(ItemType.WeaponAttachmentSkinSet);
@@ -42,11 +42,11 @@ public class ItemTradePriorityByExpressionCalculator {
             dummyItem.setDayMaxPrice(0);
             dummyItem.setDayMinPrice(0);
             dummyItem.setDaySales(0);
-            dummyItem.setPriceToBuyIn1Hour(0);
-            dummyItem.setPriceToBuyIn6Hours(0);
-            dummyItem.setPriceToBuyIn24Hours(0);
-            dummyItem.setPriceToBuyIn168Hours(0);
-            dummyItem.setPriceToBuyIn720Hours(0);
+            dummyItem.setPriceToBuyIn1Hour(null);
+            dummyItem.setPriceToBuyIn6Hours(null);
+            dummyItem.setPriceToBuyIn24Hours(null);
+            dummyItem.setPriceToBuyIn168Hours(null);
+            dummyItem.setPriceToBuyIn720Hours(null);
 
             calculateTradePriority(tradePriorityExpression, dummyItem, 0, 0);
             return true;

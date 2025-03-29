@@ -222,11 +222,11 @@ class ItemServiceTest {
 
         verify(itemDatabaseService).updateAllItemsHistoryFields(argThat(arg ->
                 arg.size() == expectedResult.size() &&
-                expectedResult.stream().allMatch(expectedItem ->
-                        arg.stream().anyMatch(actualItem ->
-                                actualItem.itemHistoryFieldsAreEqual(expectedItem)
+                        expectedResult.stream().allMatch(expectedItem ->
+                                arg.stream().anyMatch(actualItem ->
+                                        actualItem.itemHistoryFieldsAreEqual(expectedItem)
+                                )
                         )
-                )
         ));
     }
 }

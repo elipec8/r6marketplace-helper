@@ -57,6 +57,6 @@ public class UbiAccountEntryEntity {
             return false;
         }
         return Objects.equals(user, ubiAccountEntryEntity.user) &&
-               Objects.equals(email, ubiAccountEntryEntity.email);
+                Objects.equals(email, ubiAccountEntryEntity.email);
     }
 }

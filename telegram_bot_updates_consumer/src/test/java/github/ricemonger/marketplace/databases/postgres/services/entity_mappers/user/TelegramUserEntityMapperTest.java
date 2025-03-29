@@ -1,12 +1,14 @@
 package github.ricemonger.marketplace.databases.postgres.services.entity_mappers.user;
 
 import github.ricemonger.marketplace.databases.postgres.repositories.CustomUserPostgresRepository;
+import github.ricemonger.marketplace.services.configurations.ItemTradePriorityByExpressionCalculatorConfiguration;
 import github.ricemonger.utilspostgresschema.full_entities.user.TelegramUserEntity;
 import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -25,8 +27,7 @@ class TelegramUserEntityMapperTest {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(1L);
         doReturn(userEntity).when(userRepository).save(any(UserEntity.class));
-
-        TelegramUserEntity entity = telegramUserEntityMapper.createNewEntityForNewUser("chatId");
+        TelegramUserEntity entity = telegramUserEntityMapper.createDefaultEntityForNewUser("chatId");
 
         assertEquals("chatId", entity.getChatId());
         assertSame(userEntity, entity.getUser());
