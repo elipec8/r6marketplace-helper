@@ -1,4 +1,5 @@
 package github.ricemonger.telegramBot.update_consumer.listeners;
+import github.ricemonger.telegramBot.update_consumer.executors.transfer.TransferDirect; // <--- ADICIONE ISSO
 
 import github.ricemonger.telegramBot.UpdateInfo;
 import github.ricemonger.telegramBot.update_consumer.executors.ExecutorsService;
@@ -41,6 +42,8 @@ public class DirectCommandListener {
             case FILTERS_COMMAND -> executorsService.execute(ItemFiltersDirect.class, updateInfo);
 
             case CREDENTIALS_COMMAND -> executorsService.execute(UbiAccountEntryDirect.class, updateInfo);
+
+            case TRANSFER_COMMAND -> executorsService.execute(TransferDirect.class, updateInfo);
 
             case CANCEL_COMMAND -> executorsService.execute(Cancel.class, updateInfo);
 

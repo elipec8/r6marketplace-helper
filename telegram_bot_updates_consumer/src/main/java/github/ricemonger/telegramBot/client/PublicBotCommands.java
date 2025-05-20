@@ -13,6 +13,7 @@ public class PublicBotCommands {
     public static final String MANAGERS_COMMAND = "/managers";
     public static final String FILTERS_COMMAND = "/filters";
     public static final String CREDENTIALS_COMMAND = "/credentials";
+    public static final String TRANSFER_COMMAND = "/transfer";
     public static final String NOTIFICATIONS_COMMAND = "/notifications";
     public static final String CANCEL_COMMAND = "/cancel";
 
@@ -23,6 +24,7 @@ public class PublicBotCommands {
             new BotCommand(MANAGERS_COMMAND, "Operate on your trade managers"),
             new BotCommand(FILTERS_COMMAND, "Manage your item filters"),
             new BotCommand(CREDENTIALS_COMMAND, "Manage your linked Ubisoft account"),
+            new BotCommand(TRANSFER_COMMAND, "Transfer credits between your Ubisoft accounts"),
             new BotCommand(NOTIFICATIONS_COMMAND, "Change your notification settings"),
             new BotCommand(CANCEL_COMMAND, "Cancels current operation")
     );
@@ -57,6 +59,14 @@ public class PublicBotCommands {
                         Each Telegram account can be linked to only one Ubisoft account.
                         Linked Ubisoft account is used to operate on your trades on Marketplace.
                         """ +
+                TRANSFER_COMMAND + " - Transfer credits between your Ubisoft accounts\n" +
+                """
+                        You can transfer credits from one of your Ubisoft accounts to another
+                        using Marketplace by placing and buying items between your own accounts.
+                        You can also use support accounts to clean up competitor listings to ensure the right transfer.
+                """+
+
+
                 NOTIFICATIONS_COMMAND + " - Change your notification settings\n" +
                 """
                         You can change your notification settings for the bot.
